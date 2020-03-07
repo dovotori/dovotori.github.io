@@ -13,7 +13,6 @@ COPY .babelrc .
 
 FROM client_base as client_dev
 EXPOSE 8080
-COPY index.html .
 ENTRYPOINT npm start
 
 FROM client_base as client_prod
