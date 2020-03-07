@@ -1,6 +1,7 @@
 image: node:12.10.0-alpine
 
 stages:
+  - build
   - test
   - deploy
 
@@ -8,9 +9,18 @@ cache:
   paths:
     - node_modules
 
+build:
+  stage: build
+  script:
+    - npm install
+  only:
+    - master
+    - develop
+
 test:
   stage: test
-  script: npm test
+  script:
+    - npm test
   artifacts:
     paths:
       - coverage/
