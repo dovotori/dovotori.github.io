@@ -1,5 +1,5 @@
 ![Dovotori](./public/app/avatar.png)
 
-# Website
+# Portfolio
 
-React version of my portfolio [website](https://dovotori.fr.nf).
+React version of my portfolio [website](https://dovotori.gitlab.io/).

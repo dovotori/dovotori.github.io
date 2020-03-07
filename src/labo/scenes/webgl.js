@@ -47,7 +47,7 @@ export default class extends Scene {
       time,
       delta,
       delta,
-      this.mngTex.get('android-chrome-256x256').get(),
+      this.mngTex.get('signature').get(),
     );
     this.postProcess.setWave(time, delta, this.centerWave);
     // this.postProcess.setRGB(
