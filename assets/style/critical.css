@@ -1,0 +1,51 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#dovotori-app {
+  width: 100%;
+  min-height: 100vh;
+}
+
+button {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+a,
+a:focus,
+button:focus {
+  text-decoration: none;
+  outline: 0;
+  border-radius: 0;
+}
+
+body {
+  line-height: 1.4;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  background-color: #222;
+  overflow-x: hidden;
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  background-color: #222;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #666;
+}
+::-moz-selection { background: #66ffcc; color: #fff; }
+::selection { background: #66ffcc; color: #fff; }
+
+@font-face {
+  font-family: 'Numbers';
+  src: url('./fonts/lintel-regular-webfont-subset-number.woff2');
+  /* 0030-0039 unicode range for numbers */
+}
+/* "Montserrat", arial, sans-serif */

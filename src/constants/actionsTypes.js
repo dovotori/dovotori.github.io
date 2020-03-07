@@ -1,0 +1,1 @@
+export const DEVICE_IS_TOUCH = 'DEVICE_IS_TOUCH';
