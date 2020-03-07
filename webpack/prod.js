@@ -94,7 +94,7 @@ module.exports = {
     new BrotliPlugin({
       test: /\.(js|css|svg|jpg|png)$/,
       deleteOriginalAssets: true,
-      asset: '[path].br[query]',
+      asset: '[path]',
       threshold: 0,
       minRatio: 1,
     }),
