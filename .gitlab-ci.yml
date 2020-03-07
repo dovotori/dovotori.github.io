@@ -11,6 +11,9 @@ cache:
 test:
   stage: test
   script: npm test
+  artifacts:
+    paths:
+      - coverage/
   only:
     - master
     - develop
