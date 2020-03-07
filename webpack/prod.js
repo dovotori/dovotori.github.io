@@ -15,6 +15,7 @@ module.exports = {
   entry: path.resolve(__dirname, '../src/index.jsx'),
   output: {
     path: `${BUILD_PATH}/public/js/`,
+    publicPath: `${ASSET_PATH}/js`,
     filename: '[name].js',
   },
   module: {
