@@ -1,5 +1,5 @@
 export default {
-  assets: ['/app/android-chrome-256x256.png'],
+  assets: ['/img/signature.png'],
   mouse: ['move'],
   postprocess: {
     effects: ['glitch', 'wave', 'rgb'],

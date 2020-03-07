@@ -109,6 +109,7 @@ const callback = (error, response) => {
   const { images, files, html } = response;
   images.forEach((img) => saveFile(`${DEST}/${img.name}`, img.contents));
   files.forEach((file) => saveFile(`${DEST}/${file.name}`, file.contents));
+  console.log('create template ejs');
   createTemplate(html.join('\n    '));
 };
 
