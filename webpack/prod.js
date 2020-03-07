@@ -5,7 +5,7 @@ const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin
 const TerserPlugin = require('terser-webpack-plugin');
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const BrotliPlugin = require('brotli-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 const config = require('../package.json');
 
 const BUILD_PATH = path.resolve(__dirname, '../build');
@@ -91,10 +91,19 @@ module.exports = {
       entry: path.join(__dirname, '../src/utils/serviceWorker.js'),
     }),
     new CopyWebpackPlugin([{ from: './assets/', to: '../' }]),
-    new BrotliPlugin({
-      test: /\.(js|css|svg|jpg|png)$/,
-      deleteOriginalAssets: true,
-      asset: '[path].br[query]',
+    new CompressionPlugin({
+      test: /\.(js|css|svg|jpg|png|html)$/,
+      algorithm: 'gzip',
+      deleteOriginalAssets: false,
+      filename: '[path].gz[query]',
+      threshold: 0,
+      minRatio: 1,
+    }),
+    new CompressionPlugin({
+      test: /\.(js|css|svg|jpg|png|html)$/,
+      algorithm: 'brotliCompress',
+      deleteOriginalAssets: false,
+      filename: '[path].br[query]',
       threshold: 0,
       minRatio: 1,
     }),
