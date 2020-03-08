@@ -32,7 +32,7 @@ const LINK = styled(Link)`
   }
 
   &:hover {
-    background-color: ${(p) => p.theme.darker};
+    background-color: ${(p) => p.theme.backgroundHighlight};
     opacity: 1;
 
     span {

@@ -5,8 +5,8 @@
   "author": "Dorian R. <dratovo@gmail.com> (https://dovotori.fr.nf)",
   "license": "CC-BY-4.0",
   "scripts": {
-    "start": "webpack-dev-server --config webpack/dev.js",
-    "build": "webpack  -r dotenv/config --config webpack/prod.js",
+    "start": "webpack-dev-server -r dotenv/config --config webpack/dev.js",
+    "build": "webpack -r dotenv/config --config webpack/prod.js",
     "lint": "npx eslint --fix --ext .jsx,.js src/ webpack/ scripts/",
     "favicon": "node scripts/favicons.js",
     "test": "jest",
@@ -60,6 +60,7 @@
     "eslint-plugin-jest": "23.8.2",
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-react": "7.18.3",
+    "eslint-plugin-react-hooks": "2.5.0",
     "favicons": "6.0.0",
     "jest": "25.1.0",
     "standard-version": "7.1.0",

@@ -1,12 +1,10 @@
-const CAT_DESIGN = 0;
-const CAT_CODE = 1;
-const CAT_BLOG = 2;
+import { CAT_DESIGN, CAT_CODE, CAT_BLOG } from '../../constants/categories';
 
 const initialState = {
   categories: {
-    [CAT_DESIGN]: 'design',
-    [CAT_CODE]: 'code',
-    [CAT_BLOG]: 'blog',
+    [CAT_DESIGN]: '設計',
+    [CAT_CODE]: 'コード',
+    [CAT_BLOG]: 'ブログ',
   },
   tags: {
     0: 'javascript',
@@ -218,7 +216,7 @@ const initialState = {
     },
   ],
   hello: {
-    title: 'Hello!',
+    title: '今日は',
     text: "Je m'appelle Dorian Ratovo, je suis un graphiste devenu developpeur.",
   },
   cv: {
@@ -354,6 +352,9 @@ const initialState = {
       ],
     },
   },
+  back: 'バック',
+  darkMode: 'dark',
+  lightMode: 'light',
 };
 
 export default initialState;

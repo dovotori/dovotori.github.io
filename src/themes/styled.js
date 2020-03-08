@@ -5,7 +5,7 @@ export const Title = styled.h1`
   text-align: left;
   font-size: 4em;
   font-weight: 800;
-  color: ${(p) => p.theme.dark};
+  color: ${(p) => p.theme.background};
   text-shadow: 0.06em 0.06em 0 ${(p) => p.theme.getColor};
   overflow-wrap: break-word;
   letter-spacing: 0.2em;

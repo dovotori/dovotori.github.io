@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Trail, animated } from 'react-spring/renderprops';
 import { config } from 'react-spring';
+import { connect } from 'react-redux';
 
 import BackArrow from 'Assets/svg/arrow.svg';
 import useHover from '../hooks/useHover';
@@ -15,7 +16,7 @@ const LINK = styled(Link)`
   width: calc(100% - 20px);
   margin: 2em auto;
   padding: 1em 10px;
-  background-color: ${(p) => (p.isFocus ? p.theme.darker : p.theme.dark)};
+  background-color: ${(p) => (p.isFocus ? p.theme.backgroundHighlight : p.theme.background)};
   transition: background-color 200ms ease-out;
   border: solid 1px ${(p) => p.theme.getColor};
   box-shadow: 2px 2px 0 ${(p) => p.theme.getColor};
@@ -41,7 +42,7 @@ const Fill = styled.div`
   left: 0;
   top: 0;
   transition: transform 300ms ${(p) => p.theme.elastic};
-  background: ${(p) => p.theme.darker};
+  background: ${(p) => p.theme.backgroundHighlight};
   transform-origin: 100% 0;
   transform: ${(p) => (p.isFocus ? 'none' : 'scale(0, 1)')};
 `;
@@ -53,11 +54,12 @@ const Span = styled.span`
   transform: translate3d(0, -50%, 0);
   display: inline-block;
   color: ${(p) => p.theme.getColor};
-  text-shadow: 1px 1px 0 ${(p) => p.theme.dark};
   ${(p) => p.theme.monospace}
 `;
 
-const ButtonBack = ({ to, className, colorType }) => {
+const ButtonBack = ({
+  to, className, colorType, text,
+}) => {
   const [hoverRef, isHovered] = useHover();
   return (
     <LINK
@@ -83,9 +85,9 @@ const ButtonBack = ({ to, className, colorType }) => {
           </animated.span>
         )}
       </Trail>
-      <Span colorType={colorType}>back</Span>
+      <Span colorType={colorType}>{text}</Span>
     </LINK>
   );
 };
 
-export default ButtonBack;
+export default connect((state) => ({ text: state.content.back }))(ButtonBack);

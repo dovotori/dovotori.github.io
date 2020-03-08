@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+
 import Linkedin from 'Assets/svg/linkedin.svg';
 import Gitlab from 'Assets/svg/gitlab.svg';
+import QuoteIcon from 'Assets/svg/quote.svg';
 import CvContainer from '../containers/CvContainer';
 import ButtonBack from './ButtonBack';
 import TypingMessage from './TypingMessage';
-
 import Bloc from './Bloc';
 import { Title } from '../themes/styled';
 
@@ -58,19 +59,21 @@ const StyledTitle = styled(Title)`
   position: relative;
 `;
 
-const Quote = styled.p`
+const Quote = styled.div`
   position: absolute;
-  font-size: 10em;
-  line-height: 0.6;
   color: ${(p) => p.theme.midl};
-  text-shadow: none;
   opacity: 0.5;
   top: 0;
   left: 50%;
+  display:flex;
 
-  :hover {
+  :hover svg {
     color: ${(p) => p.theme.primary};
   }
+`;
+
+const StyledQuoteIcon = styled(QuoteIcon)`
+  margin-right: 0.1em;
 `;
 
 const About = ({ hello, isTouchDevice }) => (
@@ -79,7 +82,10 @@ const About = ({ hello, isTouchDevice }) => (
       <MarginLeft isTouch={isTouchDevice}>
         <StyledTitle colorType>
           <a href="mailto:dorian.r@openmailbox.org">
-            <Quote>&rdquo;</Quote>
+            <Quote>
+              <StyledQuoteIcon />
+              <StyledQuoteIcon />
+            </Quote>
           </a>
           <StyledTypingMessage message={hello.title} />
         </StyledTitle>

@@ -5,7 +5,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import App from './components/App';
+import AppContainer from './containers/AppContainer';
 import SetupServiceWorker from './utils/SetupServiceWorker';
 import configureStore from './store/configureStore';
 
@@ -24,11 +24,11 @@ const render = (Component) => {
   );
 };
 
-render(App);
+render(AppContainer);
 
 if (module.hot) {
-  module.hot.accept('./components/App', () => {
-    const NextApp = require('./components/App').default;
+  module.hot.accept('./containers/AppContainer', () => {
+    const NextApp = require('./containers/AppContainer').default;
     render(NextApp);
   });
 }

@@ -3,6 +3,7 @@ import { Route, Router, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
 import TransitionRoute from './TransitionRoute';
+import FooterContainer from '../containers/FooterContainer';
 import ProjectNavigationContainer from '../containers/ProjectNavigationContainer';
 import routes from '../constants/routes';
 import { shouldNotReload } from '../utils';
@@ -37,6 +38,7 @@ const Routes = ({ isTouchDevice }) => (
       <TransitionRoute isTouchDevice={isTouchDevice}>
         {routes.map(renderRoute)}
       </TransitionRoute>
+      <FooterContainer />
     </>
   </Router>
 );

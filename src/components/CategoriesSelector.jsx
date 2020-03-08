@@ -19,14 +19,14 @@ const StyledLink = styled(Link)`
   padding: 1em 2em;
   margin: 1em 0;
   opacity: ${(p) => (p.selected ? 1 : 0.5)};
-  transition: color 100ms ease-out, background-color 100ms ease-out;
-  color: ${(p) => (p.selected ? p.theme.dark : '#fff')};
+  transition: color 100ms ease-out, background-color 100ms ease-out, box-shadow 100ms ease-out;
+  color: ${(p) => (p.selected ? p.theme.background : p.theme.text)};
   background-color: ${(p) => (p.selected ? p.theme.getColor : 'none')};
   ${(p) => p.theme.monospace}
   ${(p) => p.theme.active}
   &:hover {
     opacity: 1;
-    background-color: ${(p) => (p.selected ? p.theme.getColor : p.theme.darker)};
+    box-shadow: 2px 2px 2px ${(p) => (p.selected ? 'none' : p.theme.backgroundHighlight)};
   }
 `;
 

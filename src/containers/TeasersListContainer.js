@@ -10,7 +10,6 @@ const mapStateToProps = (state, props) => {
     props.match.params.slug,
   );
   const { entries } = state.content;
-
   return {
     entries:
       categoryId === null

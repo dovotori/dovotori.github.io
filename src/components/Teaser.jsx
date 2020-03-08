@@ -20,7 +20,7 @@ const StyledLink = styled(Link).attrs({
   width: 400px;
   height: 150px;
   opacity: ${(p) => p.levelOpacity};
-  box-shadow: 0 0 1em ${(p) => p.theme.darker};
+  box-shadow: 0 0 1em ${(p) => p.theme.backgroundHighlight};
   transform: ${(p) => (p.isVisible ? 'none' : 'translateY(20%)')};
   transition: opacity 1s ${(p) => p.theme.elastic},
     transform 1s ${(p) => p.theme.elastic};
