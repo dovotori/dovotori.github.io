@@ -46,12 +46,12 @@ const Html = styled.div`
     width: 100%;
     height: auto;
     margin: 1em auto;
-    box-shadow: 0 0 1em ${(p) => p.theme.darker};
+    box-shadow: 0 0 1em ${(p) => p.theme.backgroundHighlight};
   }
 `;
 
 const Text = styled.p`
-  background: url(Assets/img/stripesWhite.png) repeat;
+  background: ${(p) => `url(${p.theme.stripes}) repeat`};
   padding: 10px;
   width: calc(100% - 10px);
 `;

@@ -1,42 +1,51 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Border = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: ${(p) => p.theme.secondaryGradient};
-  z-index: 11;
-`;
+import license from 'Assets/img/CClicense80x15.png';
+import Toggle from './Toggle';
+
 
 const Wrap = styled.div`
   padding: 10px 4%;
-  background: ${(p) => p.theme.secondaryGradient};
-`;
-
-const P = styled.p`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 0.7em;
   text-align: right;
-  color: ${(p) => p.theme.dark};
+  color: ${(p) => p.theme.text};
 `;
 
-const IMG = styled.img`
+
+const Img = styled.img`
   display: block;
+  width: 80px;
+  height: 14px;
 `;
 
-const Footer = () => (
+const Span = styled.span`
+  margin-left: 6px;
+  letter-spacing: 0.04em;
+`;
+
+const Div = styled.div`
+  display: flex;
+  align-items: center;
+  width: 10%;
+  min-width: 150px;
+`;
+
+const Footer = ({ toggleTheme, isDarkMode }) => (
   <div className="footer">
     <Wrap>
-      <P>
-        <IMG
-          alt="license creative common"
-          src="Assets/app/CClicense80x15.png"
-        />
-      </P>
+      <Div>
+        <Toggle onClick={toggleTheme} checked={isDarkMode} />
+        <Span>{isDarkMode ? 'Light' : 'Dark'}</Span>
+      </Div>
+      <Img
+        alt="license creative common"
+        src={license}
+      />
     </Wrap>
-    <Border />
   </div>
 );
 

@@ -10,7 +10,7 @@ const StyledLazyImage = styled(LazyImage)`
   margin: 0 auto 10px;
   min-height: 100px;
   background: ${(p) => (p.colorType === 0 ? p.theme.primaryGradient : p.theme.secondaryGradient)};
-  box-shadow: 0 0 1em ${(p) => p.theme.darker};
+  box-shadow: 0 0 1em ${(p) => p.theme.backgroundHighlight};
   opacity: ${(p) => (p.isVisible ? 1 : 0)};
   transform: ${(p) => (p.isVisible ? 'none' : 'translateY(20%)')};
   transition: opacity 1s ${(p) => p.theme.elastic},

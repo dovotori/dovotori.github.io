@@ -1,8 +1,9 @@
-import { DEVICE_IS_TOUCH } from '../constants/actionsTypes';
+import { DEVICE_IS_TOUCH, TOGGLE_THEME } from '../constants/actionsTypes';
 import { isTouchDevice } from '../utils';
 
 const initialState = {
   isTouch: isTouchDevice(),
+  isDarkMode: true,
 };
 
 export default function device(state = initialState, action) {
@@ -11,6 +12,11 @@ export default function device(state = initialState, action) {
       return {
         ...state,
         isTouch: action.flag,
+      };
+    case TOGGLE_THEME:
+      return {
+        ...state,
+        isDarkMode: !state.isDarkMode,
       };
     default:
       return state;

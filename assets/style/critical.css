@@ -28,7 +28,7 @@ button:focus {
 body {
   line-height: 1.4;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  background-color: #222;
+  /* background-color: #222; */
   overflow-x: hidden;
   color: #fff;
 }

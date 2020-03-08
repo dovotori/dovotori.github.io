@@ -14,7 +14,7 @@ const Category = styled.h3`
   color: ${(p) => p.theme.light};
   white-space: nowrap;
   display: inline-block;
-  background: url(Assets/img/stripesWhite.png) repeat;
+  background: ${(p) => `url(${p.theme.stripes}) repeat`};
   padding: 0.1em 0.5em;
   letter-spacing: 0.1em;
 `;
