@@ -6,7 +6,7 @@
   "license": "CC-BY-4.0",
   "scripts": {
     "start": "webpack-dev-server -r dotenv/config --config webpack/dev.js",
-    "build": "webpack  -r dotenv/config --config webpack/prod.js",
+    "build": "webpack -r dotenv/config --config webpack/prod.js",
     "lint": "npx eslint --fix --ext .jsx,.js src/ webpack/ scripts/",
     "favicon": "node scripts/favicons.js",
     "test": "jest",
