@@ -18,8 +18,6 @@ export default class {
     });
   }
 
-  resize() {}
-
   render(program) {
     this.objet.enable(program, 'position', 3);
     this.objet.enable(program, 'texture', 2);

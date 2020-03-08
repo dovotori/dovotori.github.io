@@ -14,7 +14,7 @@ const Bloc = ({ className, children }) => {
   }, []);
 
   return (
-    <Wrap className={className} ref={onScrollTop}>
+    <Wrap className={`${className} bloc`} ref={onScrollTop}>
       {children}
     </Wrap>
   );

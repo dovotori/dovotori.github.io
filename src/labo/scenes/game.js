@@ -8,15 +8,15 @@ import {
   Bullets,
   Fxs,
   CollisionSweepPrune,
-  mapFromRange,
+  // mapFromRange,
 } from '../../game';
 
 import {
-  heros as herosSprites,
-  bullet as bulletSprites,
-  fx as fxSprites,
-  monster as monsterSprites,
-  tiles as tilesSprites,
+  spriteHeros,
+  spriteBullet,
+  spriteFx,
+  spriteMonster,
+  spriteTiles,
 } from '../../game/constants/sprites';
 
 import {
@@ -54,7 +54,7 @@ export default class extends Scene {
     this.tilemap = new Tilemap(
       assets.levels.level3,
       this.config.tilemap,
-      tilesSprites,
+      spriteTiles,
     );
 
     const { tileSize } = this.config.tilemap;
@@ -62,14 +62,14 @@ export default class extends Scene {
 
     this.heros = new Heros({
       constants: herosConstants,
-      sprites: herosSprites,
+      sprites: spriteHeros,
       viewBox,
       tileSize,
     });
-    this.bullets = new Bullets(bulletConstants, bulletSprites, viewBox);
+    this.bullets = new Bullets(bulletConstants, spriteBullet, viewBox);
     this.monster = new Monster({
       constants: monsterConstants,
-      sprites: monsterSprites,
+      sprites: spriteMonster,
       viewBox,
       tileSize,
     });
@@ -86,7 +86,7 @@ export default class extends Scene {
     this.setLampeInfos(this.mngProg.get('spritePhong'));
     this.setLampeInfos(this.mngProg.get('albedoPhong'));
 
-    this.fxs = new Fxs(fxConstants, fxSprites, viewBox);
+    this.fxs = new Fxs(fxConstants, spriteFx, viewBox);
   }
 
   // renderBeforeProcess() {
@@ -250,7 +250,7 @@ export default class extends Scene {
 
     const center = this.camera.get2dTexturePoint(posHeros);
     const delta = this.targetRGB.get();
-    const pixelize = mapFromRange(this.camera.getZoom(), 0, 1, 1, 4);
+    // const pixelize = mapFromRange(this.camera.getZoom(), 0, 1, 1, 4);
 
     this.postProcess.setRGB(delta, delta, posHeros.getX(), posHeros.getY());
     this.postProcess.setWave(this.time * 0.1, this.targetWave.get(), center);
@@ -270,7 +270,6 @@ export default class extends Scene {
   }
 
   setKeyboardInteraction(keyboard) {
-    super.setKeyboardInteraction(keyboard);
     this.heros.setInteraction(keyboard);
   }
 

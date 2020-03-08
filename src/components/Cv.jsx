@@ -94,8 +94,8 @@ const Cv = (props) => {
         <MarginLeft isTouch={isTouchDevice}>
           <Category>{formation.text}</Category>
         </MarginLeft>
-        {formation.items.map((item, idx) => (
-          <Line key={`formation${idx}`}>
+        {formation.items.map((item) => (
+          <Line key={item.text}>
             <Clear isTouch={isTouchDevice}>
               <FloatLeft isTouch={isTouchDevice}>
                 <Date isTouch={isTouchDevice}>{item.date}</Date>
@@ -117,8 +117,8 @@ const Cv = (props) => {
         <MarginLeft isTouch={isTouchDevice}>
           <Category>{jobs.text}</Category>
         </MarginLeft>
-        {jobs.items.map((item, idx) => (
-          <BlocJob key={`jobs${idx}`}>
+        {jobs.items.map((item) => (
+          <BlocJob key={item.text}>
             <Line noMarginBottom>
               <Clear isTouch={isTouchDevice}>
                 <FloatLeft isTouch={isTouchDevice}>
@@ -132,8 +132,8 @@ const Cv = (props) => {
               </Clear>
             </Line>
             <MarginLeft isTouch={isTouchDevice}>
-              {item.tasks.map((task, idx2) => (
-                <Line key={`task${idx2}`}>
+              {item.tasks.map((task) => (
+                <Line key={task}>
                   <SubText>{task}</SubText>
                 </Line>
               ))}
@@ -152,15 +152,15 @@ const Cv = (props) => {
         <MarginLeft isTouch={isTouchDevice}>
           <Category>{skills.text}</Category>
         </MarginLeft>
-        {skills.items.map((item, idx) => (
-          <Line key={`skills${idx}`}>
+        {skills.items.map((item) => (
+          <Line key={item.text}>
             <Clear isTouch={isTouchDevice}>
               <FloatLeft isTouch={isTouchDevice}>
                 <Date isTouch={isTouchDevice}>{item.text}</Date>
               </FloatLeft>
               <FloatRight isTouch={isTouchDevice}>
-                {item.items.map((subitem, idx2) => (
-                  <TwoColFloat isTouch={isTouchDevice} key={`skill${idx2}`}>
+                {item.items.map((subitem) => (
+                  <TwoColFloat isTouch={isTouchDevice} key={subitem.text}>
                     <Line noMarginTop>
                       <Text>{subitem.text}</Text>
                       <Level>{subitem.level}</Level>
@@ -182,8 +182,8 @@ const Cv = (props) => {
       <Bloc>
         <MarginLeft isTouch={isTouchDevice}>
           <Category>{hobbies.text}</Category>
-          {hobbies.items.map((item, idx) => (
-            <TwoCol noMarginTop isTouch={isTouchDevice} key={`hobbies${idx}`}>
+          {hobbies.items.map((item) => (
+            <TwoCol noMarginTop isTouch={isTouchDevice} key={item.text}>
               <Line>
                 <Text>{item.text}</Text>
               </Line>

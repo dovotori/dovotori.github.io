@@ -143,9 +143,8 @@ const Project = ({
         {images && (
           <ImagesList>
             <Images>
-              {Array(images)
-                .fill()
-                .map((_, idx) => (
+              {Array(images).fill().map((_, idx) => idx)
+                .map((idx) => (
                   <ProjectImage
                     key={`image-${slug}-${idx}`}
                     idx={idx}

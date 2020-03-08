@@ -15,10 +15,11 @@ const renderRoute = (route) => (
     key={route.path}
     path={route.path}
     exact={route.exact}
-    render={(props) => (
+    render={({ location, match }) => (
       <route.component
-        key={shouldNotReload(props.location.pathname)}
-        {...props}
+        key={shouldNotReload(location.pathname)}
+        location={location}
+        match={match}
       />
     )}
   />

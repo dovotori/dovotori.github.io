@@ -41,17 +41,7 @@ const configuration = {
   pixel_art: false,
   loadManifestWithCredentials: false,
   icons: {
-    // Platform Options:
-    // - offset - offset in percentage
-    // - background:
-    //   * false - use default
-    //   * true - force use default, e.g. set background for Android icons
-    //   * color - set background for the specified icons
-    //   * mask - apply mask in order to create circle icon (applied by default for firefox). `boolean`
-    //   * overlayGlow - apply glow effect after mask has been applied (applied by default for firefox). `boolean`
-    //   * overlayShadow - apply drop shadow after mask has been applied .`boolean`
-    //
-    android: options, // Create Android homescreen icon. `boolean` or `{ offset, background, mask, overlayGlow, overlayShadow }`
+    android: options,
     appleIcon: options,
     appleStartup: options,
     coast: false,

@@ -1,5 +1,5 @@
-export { default as tiles } from './tiles';
-export { default as heros } from './heros';
-export { default as monster } from './monster';
-export { default as bullet } from './bullet';
-export { default as fx } from './fx';
+export { default as spriteTiles } from './tiles';
+export { default as spriteHeros } from './heros';
+export { default as spriteMonster } from './monster';
+export { default as spriteBullet } from './bullet';
+export { default as spriteFx } from './fx';

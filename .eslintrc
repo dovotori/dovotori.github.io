@@ -20,8 +20,9 @@
   },
   "env": {
     "es6": true,
-    "node": false,
-    "browser": true
+    "node": true,
+    "browser": true,
+    "jest": true
   },
   "ignorePatterns": [
     "src/game/constants/shaders/"
@@ -31,6 +32,14 @@
     "react/jsx-uses-vars": "error",
     "react/prop-types": 0,
     "react/display-name": 0,
-    "no-console": 0
+    "no-console": 0,
+    "no-bitwise": 0
+  },
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "webpack/prod.js"
+      }
+    }
   }
 }

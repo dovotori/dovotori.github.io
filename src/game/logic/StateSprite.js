@@ -49,7 +49,11 @@ export default class {
       const now = new Date().getTime();
       const milli = now - this.lastFrame;
       if (milli > this.timeout) {
-        this.step < this.nbSteps - 1 ? this.nexStep() : this.endOfLoop();
+        if (this.step < this.nbSteps - 1) {
+          this.nexStep();
+        } else {
+          this.endOfLoop();
+        }
         this.setUV(this.step);
         this.lastFrame = now;
       }

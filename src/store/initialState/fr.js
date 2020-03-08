@@ -24,7 +24,11 @@ const initialState = {
     //   tags: [],
     //   date: 2014,
     //   description:
-    //     'Datavisualisation désignant les différentes institutions "ennemies d\'Internet" à travers le monde. Projet réalisé au sein de l\'association Reporters sans frontières sous la direction artistique de Pierre-Alain Leboucher.',
+    //   description:
+    //     'Datavisualisation désignant les différentes institutions
+    // ennemies d\'Internet" à travers le monde. Projet réalisé au sein de
+    // l\'association Reporters sans frontières sous la direction artistique
+    // de Pierre-Alain Leboucher.',
     //   sources: '',
     //   context: '',
     //   images: 1,
