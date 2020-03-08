@@ -208,16 +208,6 @@ const initialState = {
     //   sources: '',
     //   context: '',
     // },
-    {
-      id: 14,
-      slug: 'games',
-      title: 'Games',
-      description:
-        'Recherche graphique pour un coffret de reportages de Raymond Depardon, la série sur le monde paysan, destin fragile des travailleurs de la terre.',
-      category: CAT_BLOG,
-      tags: [],
-      date: 2018,
-    },
   ],
   hello: {
     title: 'Hello!',
