@@ -37,5 +37,5 @@ export const capitalize = (string) => string.charAt(0).toUpperCase() + string.sl
 
 export const getLocationHash = () => {
   const locationHash = window.location.hash.replace('#', '').toLowerCase();
-  return availablesLang.indexOf(locationHash) !== -1 ? locationHash : availablesLang.fr;
+  return availablesLang.indexOf(locationHash) !== -1 ? locationHash : availablesLang[0];
 };

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
-import license from 'Assets/img/CClicense80x15.png';
+import license from 'Assets/img/cclicense80x15.png';
 import Toggle from './Toggle';
 import availablesLang from '../constants/lang';
 
@@ -52,7 +52,7 @@ const Button = styled.button`
 const Footer = ({
   toggleTheme, isDarkMode, setLang, texts,
 }) => {
-  const renderLang = useCallback(() => availablesLang.map((lang) => (<Button onClick={() => setLang(lang)}>{lang}</Button>), [availablesLang]));
+  const renderLang = useCallback(() => availablesLang.map((lang) => (<Button key={lang} onClick={() => setLang(lang)}>{lang}</Button>), [availablesLang]));
   return (
     <div className="footer">
       <Wrap>
