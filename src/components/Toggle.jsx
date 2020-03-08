@@ -22,7 +22,6 @@ const CheckBoxLabel = styled.label`
     height: 18px;
     margin: 3px;
     background-color: ${(p) => p.theme.backgroundHighlight};
-    box-shadow: 1px 3px 3px 1px rgba(0, 0, 0, 0.2);
     transition: 0.2s;
   }
 `;
@@ -42,7 +41,7 @@ const CheckBox = styled.input`
       width: 18px;
       height: 18px;
       margin-left: 21px;
-      transition: background-color 0.2s,margin-left 0.2s;
+      transition: background-color 0.2s, margin-left 0.2s;
     }
   }
 `;

@@ -1,3 +1,5 @@
+import availablesLang from '../constants/lang';
+
 export const getSelectedCategory = (categories, category) => {
   if (category) {
     return parseInt(
@@ -32,3 +34,8 @@ export const getColorType = (category) => {
 };
 
 export const capitalize = (string) => string.charAt(0).toUpperCase() + string.slice(1);
+
+export const getLocationHash = () => {
+  const locationHash = window.location.hash.replace('#', '').toLowerCase();
+  return availablesLang.indexOf(locationHash) !== -1 ? locationHash : availablesLang.fr;
+};

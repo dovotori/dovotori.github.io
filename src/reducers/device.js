@@ -1,9 +1,12 @@
-import { DEVICE_IS_TOUCH, TOGGLE_THEME } from '../constants/actionsTypes';
-import { isTouchDevice } from '../utils';
+import { DEVICE_IS_TOUCH, TOGGLE_THEME, SET_LANG } from '../constants/actionsTypes';
+import { isTouchDevice, getLocationHash } from '../utils';
+import availablesLang from '../constants/lang';
+
 
 const initialState = {
   isTouch: isTouchDevice(),
   isDarkMode: true,
+  lang: getLocationHash(),
 };
 
 export default function device(state = initialState, action) {
@@ -18,6 +21,15 @@ export default function device(state = initialState, action) {
         ...state,
         isDarkMode: !state.isDarkMode,
       };
+    case SET_LANG: {
+      if (availablesLang.indexOf(action.flag.toLowerCase()) !== -1) {
+        return {
+          ...state,
+          lang: action.flag,
+        };
+      }
+      return state;
+    }
     default:
       return state;
   }

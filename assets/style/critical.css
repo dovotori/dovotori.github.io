@@ -12,6 +12,7 @@ body,
 }
 
 button {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   background: transparent;
   border: 0;
   cursor: pointer;
@@ -31,6 +32,7 @@ body {
   /* background-color: #222; */
   overflow-x: hidden;
   color: #fff;
+  transition: background-color 0.2s ease-out;
 }
 
 ::-webkit-scrollbar {

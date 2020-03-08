@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Trail, animated } from 'react-spring/renderprops';
 import { config } from 'react-spring';
+import { connect } from 'react-redux';
 
 import BackArrow from 'Assets/svg/arrow.svg';
 import useHover from '../hooks/useHover';
@@ -56,7 +57,9 @@ const Span = styled.span`
   ${(p) => p.theme.monospace}
 `;
 
-const ButtonBack = ({ to, className, colorType }) => {
+const ButtonBack = ({
+  to, className, colorType, text,
+}) => {
   const [hoverRef, isHovered] = useHover();
   return (
     <LINK
@@ -82,9 +85,9 @@ const ButtonBack = ({ to, className, colorType }) => {
           </animated.span>
         )}
       </Trail>
-      <Span colorType={colorType}>back</Span>
+      <Span colorType={colorType}>{text}</Span>
     </LINK>
   );
 };
 
-export default ButtonBack;
+export default connect((state) => ({ text: state.content.back }))(ButtonBack);
