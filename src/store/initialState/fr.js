@@ -24,7 +24,11 @@ const initialState = {
     //   tags: [],
     //   date: 2014,
     //   description:
-    //     'Datavisualisation désignant les différentes institutions "ennemies d\'Internet" à travers le monde. Projet réalisé au sein de l\'association Reporters sans frontières sous la direction artistique de Pierre-Alain Leboucher.',
+    //   description:
+    //     'Datavisualisation désignant les différentes institutions
+    // ennemies d\'Internet" à travers le monde. Projet réalisé au sein de
+    // l\'association Reporters sans frontières sous la direction artistique
+    // de Pierre-Alain Leboucher.',
     //   sources: '',
     //   context: '',
     //   images: 1,
@@ -204,16 +208,6 @@ const initialState = {
     //   sources: '',
     //   context: '',
     // },
-    {
-      id: 14,
-      slug: 'games',
-      title: 'Games',
-      description:
-        'Recherche graphique pour un coffret de reportages de Raymond Depardon, la série sur le monde paysan, destin fragile des travailleurs de la terre.',
-      category: CAT_BLOG,
-      tags: [],
-      date: 2018,
-    },
   ],
   hello: {
     title: 'Hello!',

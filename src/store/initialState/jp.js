@@ -24,7 +24,10 @@ const initialState = {
     //   tags: [],
     //   date: 2014,
     //   description:
-    //     'Datavisualisation désignant les différentes institutions "ennemies d\'Internet" à travers le monde. Projet réalisé au sein de l\'association Reporters sans frontières sous la direction artistique de Pierre-Alain Leboucher.',
+    //     'Datavisualisation désignant les différentes institutions
+    // ennemies d\'Internet" à travers le monde. Projet réalisé au sein de
+    // l\'association Reporters sans frontières sous la direction artistique
+    // de Pierre-Alain Leboucher.',
     //   sources: '',
     //   context: '',
     //   images: 1,
@@ -145,7 +148,7 @@ const initialState = {
     {
       id: 10,
       slug: 'havre',
-      title: 'Havre',
+      title: 'ルアーブル',
       category: CAT_DESIGN,
       tags: [],
       date: 2009,
@@ -171,8 +174,8 @@ const initialState = {
 
     {
       id: 12,
-      slug: 'game',
-      title: 'Game',
+      slug: 'games',
+      title: 'ゲーム',
       category: CAT_CODE,
       tags: [],
       date: 2016,
@@ -204,20 +207,10 @@ const initialState = {
     //   sources: '',
     //   context: '',
     // },
-    {
-      id: 14,
-      slug: 'games',
-      title: 'Games',
-      description:
-        'Recherche graphique pour un coffret de reportages de Raymond Depardon, la série sur le monde paysan, destin fragile des travailleurs de la terre.',
-      category: CAT_BLOG,
-      tags: [],
-      date: 2018,
-    },
   ],
   hello: {
     title: '今日は',
-    text: "Je m'appelle Dorian Ratovo, je suis un graphiste devenu developpeur.",
+    text: '私は　ドリアンです，デヴェロップ　と　グラフィックデザイナーです',
   },
   cv: {
     formation: {
@@ -332,10 +325,11 @@ const initialState = {
           ],
         },
         {
-          text: 'langues',
+          text: '語',
           items: [
-            { text: 'Anglais', level: 'lu et parlé' },
-            { text: 'Japonais', level: 'en apprentissage' },
+            { text: 'フランス語', level: '' },
+            { text: '英語', level: 'lu et parlé' },
+            { text: '日本語', level: 'en apprentissage' },
           ],
         },
       ],
@@ -344,17 +338,17 @@ const initialState = {
       text: 'Intérêts',
       items: [
         {
-          text: 'création de jeu vidéo',
+          text: 'ビデオゲームの作成',
         },
         {
-          text: 'la culture japonaise',
+          text: '日本の文化',
         },
       ],
     },
   },
   back: 'バック',
-  darkMode: 'dark',
-  lightMode: 'light',
+  darkMode: '暗い',
+  lightMode: '明るい',
 };
 
 export default initialState;

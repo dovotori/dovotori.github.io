@@ -52,7 +52,9 @@ const Button = styled.button`
 const Footer = ({
   toggleTheme, isDarkMode, setLang, texts,
 }) => {
-  const renderLang = useCallback(() => availablesLang.map((lang) => (<Button key={lang} onClick={() => setLang(lang)}>{lang}</Button>), [availablesLang]));
+  const renderLang = useCallback(() => (
+    availablesLang.map((lang) => (<Button key={lang} onClick={() => setLang(lang)}>{lang}</Button>))
+  ), [availablesLang]);
   return (
     <div className="footer">
       <Wrap>

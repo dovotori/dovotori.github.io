@@ -44,19 +44,17 @@ class CollisionPairManager {
   }
 
   getPaires(axeX, axeY, axeZ) {
-    let paires;
+    let paires = null;
     if (axeX) {
-      paires = this.listesAxe[0];
+      [paires] = this.listesAxe;
       if (axeY) {
         paires = CollisionPairManager.compareListes(paires, this.listesAxe[1]);
         if (axeZ) {
           paires = CollisionPairManager.compareListes(paires, this.listesAxe[2]);
         }
       }
-
-      return paires;
     }
-    return null;
+    return paires;
   }
 }
 

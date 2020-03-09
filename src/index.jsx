@@ -1,4 +1,3 @@
-/* global process, module */
 import '@babel/polyfill';
 
 import React from 'react';
@@ -28,6 +27,7 @@ render(AppContainer);
 
 if (module.hot) {
   module.hot.accept('./containers/AppContainer', () => {
+    /* eslint-disable-next-line global-require */
     const NextApp = require('./containers/AppContainer').default;
     render(NextApp);
   });

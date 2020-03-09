@@ -5,10 +5,10 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 
+import PlusIcon from 'Assets/svg/plus.svg';
 import LazyImage from './LazyImage';
 import { getTeaserPath, getColorType } from '../utils';
 import Loader from './Loader';
-import PlusIcon from 'Assets/svg/plus.svg';
 
 const StyledLink = styled(Link).attrs({
   className: 'teaser',

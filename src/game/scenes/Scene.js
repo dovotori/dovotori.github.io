@@ -49,8 +49,6 @@ export default class {
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
   }
 
-  setKeyboardInteraction() {}
-
   getColorPixel(x, y) {
     const pixel = new Uint8Array(4);
     this.gl.readPixels(x, y, 1, 1, this.gl.RGBA, this.gl.UNSIGNED_BYTE, pixel);

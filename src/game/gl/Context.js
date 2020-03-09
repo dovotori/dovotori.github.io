@@ -27,9 +27,7 @@ class Context {
     this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
     this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
 
-    this.gl.getExtension('WEBGL_depth_texture')
-      || this.gl.getExtension('MOZ_WEBGL_depth_texture')
-      || this.gl.getExtension('WEBKIT_WEBGL_depth_texture');
+    this.gl.getExtension('WEBGL_depth_texture');
   }
 
   get() {

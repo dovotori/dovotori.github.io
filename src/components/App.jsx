@@ -1,4 +1,3 @@
-/* global process */
 import React, { useEffect } from 'react';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 
