@@ -23,13 +23,13 @@ export default class extends Objectif {
   }
 
   move(time, offset = 0) {
-    this.position.set(
-      Math.cos(time * 0.002) * (4.0 + offset),
-      this.position.getY(),
-      Math.sin(time * 0.002) * (4.0 + offset),
-    );
-    this.lookAt();
-    this.repere.update(this.position, this.sizeRepere);
+    // this.position.set(
+    //   Math.cos(time * 0.002) * (4.0 + offset),
+    //   this.position.getY(),
+    //   Math.sin(time * 0.002) * (4.0 + offset),
+    // );
+    // this.lookAt();
+    // this.repere.update(this.position, this.sizeRepere);
   }
 
   renderRepere(camera) {

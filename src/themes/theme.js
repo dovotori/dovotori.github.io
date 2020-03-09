@@ -22,9 +22,13 @@ const common = {
     letter-spacing: 0.4em;
     font-family: monospace;
   `,
+  primaryGradient: 'linear-gradient(to right, #006666, #66ffcc)',
+  secondaryGradient: 'linear-gradient(to right, #660000, #ffb366)',
+  tertiaryGradient: 'linear-gradient(to right, #330033,  #990066)',
+  testGradient: 'linear-gradient(to bottom, #310000,  #000031)',
   media: {
     mobile: (...args) => css`
-        @media (max-width: 420px) {
+        @media (max-width: 570px) {
           ${css(...args)};
         }
       `,
@@ -63,13 +67,10 @@ export const dark = {
   ...common,
   primary: `hsl(${hue.primary}, 100%, 70%)`,
   primaryDark: `hsl(${hue.primary}, 60%, 60%)`,
-  primaryGradient: 'linear-gradient(to right, #006666, #66ffcc)',
   secondary: `hsl(${hue.secondary}, 100%, 70%)`,
   secondaryDark: `hsl(${hue.secondary}, 60%, 60%)`,
-  secondaryGradient: 'linear-gradient(to right, #660000, #ffb366)',
   tertiary: `hsl(${hue.tertiary}, 100%, 70%)`,
   tertiaryDark: `hsl(${hue.tertiary}, 100%, 60%)`,
-  tertiaryGradient: 'linear-gradient(to right, #330033,  #990066)',
   background: '#222',
   backgroundHighlight: '#111',
   midl: '#666',
@@ -82,13 +83,10 @@ export const light = {
   ...common,
   primary: `hsl(${hue.primary}, 80%, 50%)`,
   primaryDark: `hsl(${hue.primary}, 60%, 60%)`,
-  primaryGradient: 'linear-gradient(to right, #006666, #66ffcc)',
   secondary: `hsl(${hue.secondary}, 80%, 50%)`,
   secondaryDark: `hsl(${hue.secondary}, 60%, 60%)`,
-  secondaryGradient: 'linear-gradient(to right, #660000, #ffb366)',
   tertiary: `hsl(${hue.tertiary}, 80%, 50%)`,
   tertiaryDark: `hsl(${hue.tertiary}, 100%, 60%)`,
-  tertiaryGradient: 'linear-gradient(to right, #330033,  #990066)',
   background: '#fff',
   backgroundHighlight: '#ccc',
   midl: '#888',

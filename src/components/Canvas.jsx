@@ -33,8 +33,8 @@ const Canvas = (props) => {
 
     const setup = async () => {
       let assets = null;
-      const t = await import(`../labo/${props.slug}.js`);
-      const { Scene, config } = t.default;
+      const js = await import(`../labo/${props.slug}.js`);
+      const { Scene, config } = js.default;
       if (config.assets) {
         const am = new ManagerAssets();
         assets = await am.setup(config.assets.map((path) => getEnvPath(path)));

@@ -9,8 +9,6 @@ export const Title = styled.h1`
   text-shadow: 0.06em 0.06em 0 ${(p) => p.theme.getColor};
   overflow-wrap: break-word;
   letter-spacing: 0.2em;
-  margin: 1em 0;
-  padding: 0 10px;
   line-height: 1.1;
 `;
 

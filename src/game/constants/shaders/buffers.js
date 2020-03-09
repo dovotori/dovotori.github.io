@@ -48,7 +48,8 @@ void main() {
 	} else if (type == 2) {
 		color = vec4(fragPosition, 1.0);
   } else if(type == 3) {
-    float shadow = funcShadow(shadowMap, fragShadow, resolution);
+    float epsilon = 0.01; // Fix shadow acne
+    float shadow = funcShadow(shadowMap, fragShadow, resolution, epsilon);
     color = vec4(vec3(1.0) * shadow, 1.0);
 	} else {
 		color = vec4(1.0);

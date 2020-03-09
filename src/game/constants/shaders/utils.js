@@ -238,10 +238,9 @@ float softShadowPCR(sampler2D depthMap, vec2 shad, float compare, vec2 texelSize
   return resultat / 9.0;
 }
 
-float funcShadow(sampler2D depthMap, vec4 fragShadow, vec2 texelSize) {
+float funcShadow(sampler2D depthMap, vec4 fragShadow, vec2 texelSize, float epsilon) {
   float visibility;
 	vec4 shad = fragShadow / fragShadow.w;
-  float epsilon = 0.0001; // Fix shadow acne
 
 	if (
     (fragShadow.w <= 0.0)  // behind light, ignore 

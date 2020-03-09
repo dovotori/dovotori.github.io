@@ -1,11 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+
 const config = require('../package.json');
 
 const BUILD_PATH = path.resolve(__dirname, '../build');
@@ -48,7 +48,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
-      Assets: path.resolve(__dirname, '../assets/'),
+      Assets: path.resolve(__dirname, '../public/'),
     },
   },
   optimization: {
@@ -83,18 +83,22 @@ module.exports = {
         removeStyleLinkTypeAttributes: true,
       },
     }),
-    new HtmlWebpackInlineSourcePlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
         ASSET_PATH: JSON.stringify(ASSET_PATH),
         NAME: JSON.stringify(config.name),
+        MAIL: JSON.stringify(config.author.email),
       },
     }),
     new ServiceWorkerWebpackPlugin({
       entry: path.join(__dirname, '../src/utils/serviceWorker.js'),
     }),
-    new CopyWebpackPlugin([{ from: './assets/', to: '../' }]),
+    new CopyWebpackPlugin([{ from: './public/', to: '../', ignore: ['./public/app/*.xml', './public/app/*.json', './public/app/*.webapp'] },
+      { from: './public/app/browserconfig.xml', to: '../../browserconfig.xml' },
+      { from: './public/app/manifest.json', to: '../../manifest.json' },
+      { from: './public/app/manifest.webapp', to: '../../manifest.webapp' },
+    ]),
     new CompressionPlugin({
       test: /\.(js|css|svg|jpg|png|html)$/,
       algorithm: 'gzip',

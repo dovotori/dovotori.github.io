@@ -1,9 +1,10 @@
 import React, { Suspense } from 'react';
-// import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 // import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { Switch, withRouter } from 'react-router-dom';
 
 // import { shouldNotReload } from '../utils';
+import Bloc from './Bloc';
 import Loader from './Loader';
 
 // const TIME = 10000;
@@ -39,10 +40,16 @@ import Loader from './Loader';
 //   }
 // `;
 
+const renderLoader = () => (
+  <Bloc>
+    <Loader colorType={0} />
+  </Bloc>
+);
+
 const TransitionRoute = ({
   location, children, // isTouchDevice,names,
 }) => (
-  <Suspense fallback={<Loader colorType={0} />}>
+  <Suspense fallback={renderLoader()}>
     <Switch location={location}>{children}</Switch>
   </Suspense>
 );
@@ -56,7 +63,7 @@ const TransitionRoute = ({
 //       timeout={TIME}
 //       classNames="route"
 //     >
-//       <Suspense fallback={<Loader colorType={0} />}>
+//       <Suspense fallback={renderLoader()}}>
 //         <Switch location={location}>{children}</Switch>
 //       </Suspense>
 //     </CSSTransition>

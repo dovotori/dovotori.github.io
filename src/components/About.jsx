@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import Linkedin from 'Assets/svg/linkedin.svg';
 import Gitlab from 'Assets/svg/gitlab.svg';
-import QuoteIcon from 'Assets/svg/quote.svg';
+import QuoteIcon from 'Assets/svg/quote2.svg';
 import CvContainer from '../containers/CvContainer';
 import ButtonBack from './ButtonBack';
 import TypingMessage from './TypingMessage';
@@ -81,7 +81,7 @@ const About = ({ hello, isTouchDevice }) => (
     <WrapContent>
       <MarginLeft isTouch={isTouchDevice}>
         <StyledTitle colorType>
-          <a href="mailto:dorian.r@openmailbox.org">
+          <a href={`mailto:${process.env.MAIL}`}>
             <Quote>
               <StyledQuoteIcon />
               <StyledQuoteIcon />

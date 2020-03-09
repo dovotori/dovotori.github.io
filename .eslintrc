@@ -33,7 +33,8 @@
     "react/prop-types": 0,
     "react/display-name": 0,
     "no-console": 0,
-    "no-bitwise": 0
+    "no-bitwise": 0,
+    "comma-dangle": 0
   },
   "settings": {
     "import/resolver": {

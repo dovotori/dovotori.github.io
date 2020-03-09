@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import styled from 'styled-components';
 
 import ButtonBack from './ButtonBack';
@@ -8,6 +8,8 @@ import ProjectImage from './ProjectImage';
 import { Title } from '../themes/styled';
 import Canvas from './Canvas';
 import useFetchHtml from '../hooks/useFetchHtml';
+import useFetchJs from '../hooks/useFetchJs';
+import useFetchAssets from '../hooks/useFetchAssets';
 import { getHtmlPath } from '../utils';
 
 const TEXT_WIDTH = 400;
@@ -105,30 +107,48 @@ const StyledCanvas = styled(Canvas)`
   }
 `;
 
+const StyledTitle = styled(Title)`
+  margin: 1em 0;
+  padding: 0 10px;
+`;
+
 const Project = ({
   slug,
   title,
   description,
-  category,
   images,
   date,
   colorType,
   canvas,
+  sources,
+  html: hasHtml
 }) => {
-  const { pending: pendingHtml, value: html, error: errorHtml } = useFetchHtml(
-    getHtmlPath(slug),
-    category,
-  );
   const pixelRatio = window.devicePixelRatio;
+
+  const { pending: pendingHtml, value: html, error: errorHtml } = useFetchHtml(
+    getHtmlPath(slug), hasHtml
+  );
+
+  const { pending: pendingJs, value: js, error: errorJs } = useFetchJs(
+    slug
+  );
+
+  const { pending: pendingAssets, value: assets, error: errorAssets } = useFetchAssets(sources);
+
+  useLayoutEffect(() => {
+    if (!pendingAssets && !errorAssets && !pendingHtml && !errorHtml && !pendingJs && !errorJs && js) {
+      js.default(assets);
+    }
+  }, [pendingAssets, errorAssets, assets, pendingHtml, errorHtml, pendingJs, js, errorJs]);
 
   return (
     <StyledProject>
       <WrapContent>
         <WrapTexte>
           {title && (
-            <Title colorType={colorType}>
+            <StyledTitle colorType={colorType}>
               <TypingMessage message={title} />
-            </Title>
+            </StyledTitle>
           )}
           {date && <Date colorType={colorType}>{date}</Date>}
           {description && (
@@ -136,7 +156,7 @@ const Project = ({
               <Text>{description}</Text>
             </Description>
           )}
-          {html !== null && !pendingHtml && !errorHtml && (
+          {html && (
             <Html dangerouslySetInnerHTML={{ __html: html }} />
           )}
         </WrapTexte>

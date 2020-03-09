@@ -2,13 +2,14 @@ const path = require('path');
 const favicons = require('favicons');
 const fs = require('fs');
 const { promisify } = require('util');
+const utils = require('./utils');
+
 const config = require('../package.json');
 
 const readdir = promisify(fs.readdir);
-const writeFile = promisify(fs.writeFile);
 
-const SOURCE = path.resolve(__dirname, '../assets/img/source.png');
-const DEST = path.resolve(__dirname, '../assets/app');
+const SOURCE = path.resolve(__dirname, '../public/img/source.png');
+const DEST = path.resolve(__dirname, '../public/app');
 
 const BACKGROUND_COLOR = '#222';
 
@@ -21,12 +22,12 @@ const options = {
 };
 
 const configuration = {
-  path: 'PATH_ASSET/app', // Path for overriding default icons path.
+  path: '/public/app/', // Path for overriding default icons path.
   appName: config.name,
   appShortName: config.name,
   appDescription: 'portfolio de Dorian Ratovo',
   developerName: 'Dorian Ratovo',
-  developerURL: 'https://dovotori.fr.nf',
+  developerURL: 'https://dovotori.gitlab.io',
   dir: 'ltr',
   lang: 'fr-FR',
   background: BACKGROUND_COLOR,
@@ -52,14 +53,6 @@ const configuration = {
   },
 };
 
-const saveFile = (url, data) => {
-  writeFile(url, data, (err) => {
-    if (err) {
-      console.log(err);
-    }
-  });
-};
-
 const createTemplate = (htmlFavicon) => {
   const html = `<!DOCTYPE html>
 <html lang="fr">
@@ -69,8 +62,8 @@ const createTemplate = (htmlFavicon) => {
   <meta name="apple-touch-fullscreen" content="yes">
   <meta name="description" content="dorian ratovo - code + design">
   ${htmlFavicon}
-  <link rel="icon" type="image/x-icon" href="PATH_ASSET/app/favicon.ico" />
-  <link rel="stylesheet" type="text/css" href="PATH_ASSET/style/critical.css">
+  <link rel="icon" type="image/x-icon" href="<%= htmlWebpackPlugin.options.base %>/app/favicon.ico" />
+  <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.base %>/style/critical.css">
   <title>
     <%= htmlWebpackPlugin.options.title %>
   </title>
@@ -87,7 +80,7 @@ const createTemplate = (htmlFavicon) => {
 </body>
 </html>
   `;
-  saveFile(path.resolve(__dirname, '../src/templates/index.ejs'), html.replace(/PATH_ASSET/gi, '<%= htmlWebpackPlugin.options.base %>'));
+  utils.saveFile(path.resolve(__dirname, '../src/templates/index.ejs'), html);
 };
 
 const callback = (error, response) => {
@@ -97,8 +90,8 @@ const callback = (error, response) => {
   }
 
   const { images, files, html } = response;
-  images.forEach((img) => saveFile(`${DEST}/${img.name}`, img.contents));
-  files.forEach((file) => saveFile(`${DEST}/${file.name}`, file.contents));
+  images.forEach((img) => utils.saveFile(`${DEST}/${img.name}`, img.contents));
+  files.forEach((file) => utils.saveFile(`${DEST}/${file.name}`, file.contents));
   console.log('create template ejs');
   createTemplate(html.join('\n    '));
 };
@@ -108,9 +101,7 @@ const clean = (directory) => {
     if (err) throw err;
 
     files.forEach((file) => {
-      fs.unlink(path.join(directory, file), (e) => {
-        if (e) throw e;
-      });
+      utils.removeFile(path.join(directory, file));
     });
   });
 };

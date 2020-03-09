@@ -1,14 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Trail, animated } from 'react-spring/renderprops';
-import { config } from 'react-spring';
 import { connect } from 'react-redux';
 
 import BackArrow from 'Assets/svg/arrow.svg';
 import useHover from '../hooks/useHover';
-
-const newConfig = { ...config.default, tension: 100 };
 
 const LINK = styled(Link)`
   position: relative;
@@ -32,7 +28,6 @@ const StyledBackArrow = styled(BackArrow)`
   width: auto;
   height: 0.6em;
   margin: 0 0.2em;
-  transform-style: preserve-3d;
 `;
 
 const Fill = styled.div`
@@ -70,21 +65,7 @@ const ButtonBack = ({
       ref={hoverRef}
     >
       <Fill isFocus={isHovered} />
-      <Trail
-        native
-        reverse={isHovered}
-        initial={null}
-        items={[0, 1, 2, 3, 4, 5]}
-        from={{ opacity: 0 }}
-        to={{ opacity: isHovered ? 1 : 0 }}
-        config={newConfig}
-      >
-        {(item) => (style) => (
-          <animated.span key={item} style={style}>
-            <StyledBackArrow colorType={colorType} />
-          </animated.span>
-        )}
-      </Trail>
+      <StyledBackArrow colorType={colorType} />
       <Span colorType={colorType}>{text}</Span>
     </LINK>
   );

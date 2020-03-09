@@ -16,35 +16,29 @@ const initialState = {
     6: 'WebGL',
   },
   entries: [
-    // {
-    //   id: 0,
-    //   slug: 'netmap',
-    //   title: 'Net Map',
-    //   category: CAT_CODE,
-    //   tags: [],
-    //   date: 2014,
-    //   description:
-    //   description:
-    //     'Datavisualisation désignant les différentes institutions
-    // ennemies d\'Internet" à travers le monde. Projet réalisé au sein de
-    // l\'association Reporters sans frontières sous la direction artistique
-    // de Pierre-Alain Leboucher.',
-    //   sources: '',
-    //   context: '',
-    //   images: 1,
-    // },
-    // {
-    //   id: 1,
-    //   slug: 'religionmap',
-    //   title: 'Religion Map',
-    //   category: CAT_DESIGN,
-    //   tags: [],
-    //   date: 2014,
-    //   description:
-    //     'Datavisualisation désignant les pays qui utilisent la religion comme moyen de censure.',
-    //   sources: '',
-    //   context: '',
-    // },
+    {
+      id: 0,
+      slug: 'netmap',
+      title: 'Net Map',
+      category: CAT_CODE,
+      tags: [],
+      date: 2014,
+      description:
+        'Datavisualisation désignant les différentes institutions ennemies d\'Internet" à travers le monde. Projet réalisé au sein de l\'association Reporters sans frontières',
+      html: true
+    },
+    {
+      id: 1,
+      slug: 'religionmap',
+      title: 'Religion Map',
+      category: CAT_DESIGN,
+      tags: [],
+      date: 2014,
+      description:
+        'Datavisualisation désignant les pays qui utilisent la religion comme moyen de censure.',
+      sources: [{ path: '/public/data/religionmap/data.json', name: 'data', type: 'json' }],
+      html: true
+    },
     {
       id: 2,
       slug: 'barason',
@@ -55,7 +49,6 @@ const initialState = {
       description:
         "Transformation d'un comptoir de bar en séquenceur musicale, dont les sons sont déclenchés par les verres posés sur sa surface.",
       sources: '',
-      context: '',
       images: 2,
     },
     {
@@ -68,7 +61,6 @@ const initialState = {
       description:
         "Proposition pour l'identité d'une exposition fictive sur les arts de rue et le graffiti.",
       sources: '',
-      context: '',
       images: 4,
     },
     {
@@ -80,7 +72,6 @@ const initialState = {
       date: 2014,
       description: 'Identités visuelles pour différentes marques.',
       sources: '',
-      context: '',
       images: 14,
     },
     // {
@@ -92,7 +83,6 @@ const initialState = {
     //   date: 2013,
     //   description: "Site de l'artiste audiovisuel Alex Augier.",
     //   sources: '',
-    //   context: '',
     // },
     {
       id: 6,
@@ -104,7 +94,6 @@ const initialState = {
       description:
         "Recherche pour l'identité d'une exposition au sein de la Soap Factory, musée d'art contemporain à Mineapolis.",
       sources: '',
-      context: '',
       images: 3,
     },
     {
@@ -117,7 +106,6 @@ const initialState = {
       description:
         "Animation promotionnelle installée dans les gares parisiennes de l'album de Reporters sans frontières, 100 photos de Ai Weiwei pour la liberté de la presse.",
       sources: '',
-      context: '',
       images: 2,
     },
     {
@@ -130,7 +118,6 @@ const initialState = {
       description:
         "Différents projets réalisés au sein de l'association Reporters sans frontières.",
       sources: '',
-      context: '',
       images: 6,
     },
     {
@@ -143,7 +130,6 @@ const initialState = {
       description:
         "Dispositif de jeu qui a pour ambition d'intégrer n'importe quel objet du quotidien pour influencer un espace virtuel.",
       sources: '',
-      context: '',
       images: 9,
     },
     {
@@ -156,7 +142,6 @@ const initialState = {
       description:
         "Élaboration d'une identité visuelle pour la biennale d'art contemporain de la ville du Havre.",
       sources: '',
-      context: '',
       images: 11,
     },
     {
@@ -169,7 +154,6 @@ const initialState = {
       description:
         'Recherche graphique pour un coffret de reportages de Raymond Depardon, la série sur le monde paysan, destin fragile des travailleurs de la terre.',
       sources: '',
-      context: '',
       images: 4,
     },
 
@@ -182,7 +166,6 @@ const initialState = {
       date: 2016,
       description: "Conception d'un simple platformer en webgl",
       sources: '',
-      context: '',
       canvas: true,
     },
     {
@@ -194,7 +177,6 @@ const initialState = {
       date: 2016,
       description: "Parser et visualisation d'un objet 3d au format obj",
       sources: '',
-      context: '',
       canvas: true,
     },
     // {
@@ -206,12 +188,13 @@ const initialState = {
     //   date: 1,
     //   description: 'Site HappyLovers',
     //   sources: '',
-    //   context: '',
     // },
   ],
   hello: {
-    title: 'Hello!',
-    text: "Je m'appelle Dorian Ratovo, je suis un graphiste devenu developpeur.",
+    title: 'Hi!',
+    text: 'Je suis Dorian Ratovo, graphiste devenu developpeur web.',
+    contact: 'contact me',
+    about: 'A propos',
   },
   cv: {
     formation: {

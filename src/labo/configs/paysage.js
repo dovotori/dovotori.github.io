@@ -18,7 +18,7 @@ export default {
   lampes: [
     {
       type: 1,
-      position: { x: 2, y: 2, z: 0 },
+      position: { x: 2.5, y: 2.5, z: 0 },
       ambiant: [0, 0, 0],
       diffuse: [0.6, 0.5, 0.5],
       specular: [0, 0, 0],

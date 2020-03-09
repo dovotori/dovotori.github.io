@@ -39,3 +39,12 @@ export const getLocationHash = () => {
   const locationHash = window.location.hash.replace('#', '').toLowerCase();
   return availablesLang.indexOf(locationHash) !== -1 ? locationHash : availablesLang[0];
 };
+
+export const parseCsv = (string) => {
+  const lines = string.split('\n');
+  const keys = lines.shift().split(',');
+  return lines.map((line) => {
+    const l = line.split(',');
+    return keys.reduce((acc, cur, index) => ({ ...acc, [cur]: l[index] !== '' ? l[index] : null }), {});
+  });
+};

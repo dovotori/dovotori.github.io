@@ -1,5 +1,5 @@
 import React, {
-  useRef, useCallback, useState, useEffect,
+  useRef, useCallback, useState, useEffect, useLayoutEffect,
 } from 'react';
 
 const ANIM_DURATION_RANGE = 30;
@@ -7,6 +7,7 @@ const ANIM_FPS = 3000 / 60;
 
 const TypingMessage = ({ className, message }) => {
   const ref = useRef(null);
+  const wrapRef = useRef(null);
   const queue = useRef([]);
   const count = useRef(0);
   const lastFrame = useRef(new Date().getTime());
@@ -79,14 +80,30 @@ const TypingMessage = ({ className, message }) => {
     };
   }, [message]);
 
+  useLayoutEffect(() => {
+    wrapRef.current.style.display = 'inline-block';
+    wrapRef.current.style.height = `${ref.current.offsetHeight}px`;
+    ref.current.style.whiteSpace = 'no-wrap';
+    ref.current.style.position = 'absolute';
+
+    return () => {
+      if (ref.current) {
+        ref.current.style.whiteSpace = 'auto';
+        ref.current.style.position = 'inline';
+      }
+    };
+  }, [message]);
+
   useEffect(() => () => {
     if (req.current) { cancelAnimationFrame(req.current); }
   }, []);
 
 
   return (
-    <span ref={ref} className={className}>
-      {text}
+    <span ref={wrapRef}>
+      <span ref={ref} className={className}>
+        {text}
+      </span>
     </span>
   );
 };
