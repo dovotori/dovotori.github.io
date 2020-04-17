@@ -83,12 +83,10 @@ const Images = styled.div`
 const Date = styled.p`
   text-align: left;
   display: inline-block;
-  font-size: 0.7em;
-  letter-spacing: 0.4em;
   margin: 0;
   padding: 0.4em 10px;
   color: ${(p) => p.theme.getColor};
-  font-family: monospace;
+ ${(p) => p.theme.monospace}
 `;
 
 const StyledCanvas = styled(Canvas)`

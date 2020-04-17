@@ -48,3 +48,22 @@ export const parseCsv = (string) => {
     return keys.reduce((acc, cur, index) => ({ ...acc, [cur]: l[index] !== '' ? l[index] : null }), {});
   });
 };
+
+export const mapFromRange = (valeur, minRef, maxRef, minDest, maxDest) => {
+  let result = minDest + ((valeur - minRef) * (maxDest - minDest)) / (maxRef - minRef);
+  if (result < Math.min(minDest, maxDest)) {
+    result = Math.min(minDest, maxDest);
+  }
+  if (result > Math.max(minDest, maxDest)) {
+    result = Math.max(minDest, maxDest);
+  }
+  return result;
+};
+
+export const polarToCartesian = (centerX, centerY, radius, angleInDegrees) => {
+  const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
+  return {
+    x: centerX + (radius * Math.cos(angleInRadians)),
+    y: centerY + (radius * Math.sin(angleInRadians))
+  };
+};

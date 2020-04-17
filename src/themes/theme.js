@@ -17,10 +17,13 @@ const common = {
     tablet: 1020,
   },
   monospace: css`
-    font-size: 0.7em;
+    font-size: 0.8em;
     line-height: 1.6em;
     letter-spacing: 0.4em;
-    font-family: monospace;
+    font-family: 'aero_matics', monospace;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   `,
   primaryGradient: 'linear-gradient(to right, #006666, #66ffcc)',
   secondaryGradient: 'linear-gradient(to right, #660000, #ffb366)',
@@ -77,6 +80,7 @@ export const dark = {
   light: '#bbb',
   text: '#fff',
   stripes: stripesWhite,
+  isLight: false
 };
 
 export const light = {
@@ -93,4 +97,5 @@ export const light = {
   light: '#222',
   text: '#000',
   stripes,
+  isLight: true
 };

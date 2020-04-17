@@ -1,11 +1,11 @@
 {
   "files.autoSave": "onFocusChange",
   "editor.formatOnSave": true,
-  "editor.formatOnType": true,
   "eslint.enable": true,
-  "[javascript]": {
-    "editor.formatOnSave": false
-  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact"
+  ],
   "search.exclude": {
     "**/.git": true,
     "**/node_modules": true,

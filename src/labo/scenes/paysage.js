@@ -8,7 +8,6 @@ import {
   Buffers,
 } from '../../game';
 
-const NAME_OBJ = 'paysage';
 const NAME_PROG = 'paysage';
 
 export default class extends Scene {
@@ -41,17 +40,6 @@ export default class extends Scene {
     this.targetX.update();
     this.targetY.update();
     this.targetZ.update();
-    // this.camera.setPosition(null, null, this.targetZ.get());
-    this.model.identity();
-    this.model.scale(this.targetZ.get());
-    this.model.rotate(this.targetX.get(), 0, 1, 0);
-    this.model.rotate(this.targetY.get(), 1, 0, 0);
-    const normalmatrix = this.model.getMatrice3x3();
-    normalmatrix.inverse();
-
-    this.mngProg
-      .get('buffers')
-      .setMatrix('normalmatrix', normalmatrix.transpose());
     this.setLampeInfos(this.mngProg.get('diffuse'));
 
     this.buffers.render(
@@ -70,10 +58,9 @@ export default class extends Scene {
       this.containerSize.height,
     ]);
     currentProg.setFloat('time', this.time);
-    //  currentProg.setTexture(4, this.texture.get(), "displacementMap");
     currentProg.setTexture(2, this.getLampeDepthTexture(0).get(), 'shadowMap');
     currentProg.setTexture(3, this.buffers.getSsaoTexture().get(), 'ssaoMap');
-    currentProg.setMatrix('normalmatrix', normalmatrix.transpose());
+    // currentProg.setMatrix('normalmatrix', normalmatrix.transpose());
     currentProg.setMatrix('shadowview', this.getLampeViewMatrix(0).get());
     currentProg.setMatrix('model', this.model.get());
     this.setLampeInfos(currentProg);
@@ -90,34 +77,46 @@ export default class extends Scene {
   }
 
   renderToBuffer(program) {
-    program.setMatrix('model', this.model.get());
-    this.mngObj.get(NAME_OBJ).render(program.get());
-    // this.renderReperes();
+    Object.keys(this.config.positions).forEach((key) => {
+      const positions = this.config.positions[key];
+      positions.forEach(({ x, y, z }) => {
+        this.model.push();
+        this.model.translate(x, y, z);
+        this.model.scale(this.targetZ.get());
+        this.model.rotate(this.targetX.get(), 0, 1, 0);
+        this.model.rotate(this.targetY.get(), 1, 0, 0);
+        program.setMatrix('model', this.model.get());
+
+        const normalmatrix = this.model.getMatrice3x3();
+        normalmatrix.inverse();
+        program.setMatrix('normalmatrix', normalmatrix.transpose());
+
+        this.mngObj.get(key).render(program.get());
+        this.model.pop();
+      });
+    });
   }
 
   renderBasiqueForShadow() {
-    this.mngProg
-      .get('basique3d')
-      .setMatrix('projection', this.camera.getProjection().get());
-    this.mngProg
-      .get('basique3d')
-      .setMatrix('view', this.getLampeViewMatrix(0).get());
+    const program = this.mngProg.get('basique3d');
+    program.setMatrix('projection', this.camera.getProjection().get());
+    program.setMatrix('view', this.getLampeViewMatrix(0).get());
     this.mngProg.get('basique3d').setMatrix('model', this.model.get());
-    this.mngObj.get(NAME_OBJ).render(this.mngProg.get('basique3d').get());
+    this.renderToBuffer(program);
   }
 
   render() {
     super.render();
     this.randomLampesPositions();
 
-    this.bloomProcess.start();
-    this.mngObj.get(NAME_OBJ).render(this.mngProg.get('emissive').get());
-    this.bloomProcess.end();
+    // this.bloomProcess.start();
+    // this.mngObj.get(NAME_OBJ).render(this.mngProg.get('emissive').get());
+    // this.bloomProcess.end();
 
-    this.postProcess.start();
-    this.mngObj.get(NAME_OBJ).render(this.mngProg.get(NAME_PROG).get());
-    this.postProcess.end();
-    this.effects();
+    // this.postProcess.start();
+    // this.mngObj.get(NAME_OBJ).render(this.mngProg.get(NAME_PROG).get());
+    // this.postProcess.end();
+    // this.effects();
 
     this.postProcess.compose(
       this.buffers.getAlbedoTexture().get(),
@@ -140,7 +139,7 @@ export default class extends Scene {
   }
 
   onMouseWheel(mouse) {
-    let target = this.camera.getPosition()[2] + mouse.deltaY * -0.04;
+    let target = mouse.deltaY;
     target = Math.min(target, 2);
     target = Math.max(target, 1);
     this.targetZ.set(target);

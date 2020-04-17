@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Linkedin from 'Assets/svg/linkedin.svg';
-import Gitlab from 'Assets/svg/gitlab.svg';
-import QuoteIcon from 'Assets/svg/quote2.svg';
+import { ReactComponent as Linkedin } from 'Assets/svg/cv/linkedin.svg';
+import { ReactComponent as Gitlab } from 'Assets/svg/cv/gitlab.svg';
+import { ReactComponent as QuoteIcon } from 'Assets/svg/quote2.svg';
 import CvContainer from '../containers/CvContainer';
 import ButtonBack from './ButtonBack';
 import TypingMessage from './TypingMessage';

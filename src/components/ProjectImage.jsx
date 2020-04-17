@@ -7,7 +7,7 @@ import Loader from './Loader';
 import { getProjectImagePath } from '../utils';
 
 const StyledLazyImage = styled(LazyImage)`
-  margin: 0 auto 10px;
+  margin: 0 auto 10vh;
   min-height: 100px;
   background: ${(p) => (p.colorType === 0 ? p.theme.primaryGradient : p.theme.secondaryGradient)};
   box-shadow: 0 0 1em ${(p) => p.theme.backgroundHighlight};

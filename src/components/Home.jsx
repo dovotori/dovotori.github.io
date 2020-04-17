@@ -7,7 +7,7 @@ import TeasersListContainer from '../containers/TeasersListContainer';
 import CategoriesSelectorContainer from '../containers/CategoriesSelectorContainer';
 
 const StyledHome = styled(Bloc)`
-  margin: 15vh auto 10vh;
+  margin: 20vh auto;
 `;
 
 const Home = memo(() => (

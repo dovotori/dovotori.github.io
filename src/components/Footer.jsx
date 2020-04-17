@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
 import license from 'Assets/img/cclicense80x15.png';
-import Mail from 'Assets/svg/mail.svg';
+import { ReactComponent as Mail } from 'Assets/svg/mail.svg';
 import Toggle from './Toggle';
 import availablesLang from '../constants/lang';
 
@@ -45,17 +45,15 @@ const Img = styled.img`
 const Span = styled.span`
   padding: 0.4em;
   margin-left: 0.8em;
-  font-size: 0.8em;
-  letter-spacing: 0.1em;
   color: ${(p) => p.theme.light};
   text-transform: uppercase;
+  ${(p) => p.theme.monospace}
 `;
 
 const Button = styled.button`
+  ${(p) => p.theme.monospace}
   margin: 0 1em;
   padding: 0.4em;
-  font-size: 0.8em;
-  letter-spacing: 0.2em;
   color: ${(p) => p.theme.light};
   text-transform: uppercase;
    &:hover {

@@ -28,12 +28,17 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        use: {
-          loader: '@svgr/webpack',
-          options: {
-            svgo: false,
+        use: [
+          {
+            loader: '@svgr/webpack',
+            options: {
+              svgo: false,
+            },
           },
-        },
+          {
+            loader: 'url-loader'
+          }
+        ],
       },
       {
         test: /\.(jpe?g|png|gif)$/i,

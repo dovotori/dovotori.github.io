@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import Balloon from 'Assets/svg/balloon2.svg';
+import { ReactComponent as Sumo } from 'Assets/svg/sumo.svg';
 import Canvas from './Canvas';
 import TypingMessage from './TypingMessage';
 import { Title } from '../themes/styled';
@@ -12,6 +12,11 @@ const StyledLink = styled(Link)`
   padding: 0;
   display: block;
   ${(p) => p.theme.active}
+  text-align: center;
+`;
+
+const Wrap = styled.div`
+  /* padding: 10vh 0; */
 `;
 
 const Infos = styled.div`
@@ -20,6 +25,8 @@ const Infos = styled.div`
   max-width: 200px;
   margin: 0 auto;
   transform: translate3d(105%, -25%, 0);
+  background: ${(p) => p.theme.backgroundHighlight};
+  padding: 1em;
   @media (max-width: 570px) {
     transform: none;
     width: 100%;
@@ -29,12 +36,12 @@ const Infos = styled.div`
 const StyledCanvas = styled(Canvas)`
   text-align: center;
   
-  @media (min-width: 570px) {
+  /* @media (min-width: 570px) {
     position: absolute;
     top: 0;
     left: 50%;
     transform: translate3d(-50%,0,0);
-  }
+  } */
 
   canvas {
     margin: 0 auto;
@@ -45,25 +52,75 @@ const StyledCanvas = styled(Canvas)`
   }
 `;
 
-const StyledBalloon = styled(Balloon)`
+const StyledSumo = styled(Sumo)`
+  width: 200px;
+  height: auto;
+  stroke: none;
+  margin: 0 auto;
+
+  .body {
+    fill: none; /* ${(p) => p.theme.text}; */
+  }
+  .face,
+  .hair,
+  .shadow {
+    fill: ${(p) => p.theme.light};
+  }
+  .belt {
+    fill: url(#linearGradient5006);
+  }
+`;
+
+const Balloon = styled.svg`
   position: absolute;
-  bottom: 0;
+  fill: ${(p) => p.theme.backgroundHighlight};
+`;
+
+const LeftBalloon = styled(Balloon)`
+  top: 0;
+  right: 100%;
+  width: auto;
+  height: 100%;
+`;
+
+const RightBalloon = styled(Balloon)`
+  top: 0;
+  left: 100%;
+  width: auto;
+  height: 100%;
+`;
+
+const BottomBalloon = styled(Balloon)`
+  top: 100%;
   left: 0;
-  color: #fff;
-  transform: translate3d(-100%, 10%, 0);
+  height: auto;
+  width: 100%;
+`;
+
+const TopBalloon = styled(Balloon)`
+  bottom: 100%;
+  left: 0;
+  height: auto;
+  width: 100%;
+`;
+
+const SpikeBalloon = styled(Balloon)`
+  top: 100%;
+  left: 10%;
+  height: 1em;
+  width: 1em;
 `;
 
 const StyledTitle = styled(Title)`
-  position: relative;
 `;
 
 const Description = styled.p`
   color: ${(p) => p.theme.text};
   width: 100%;
   line-height: 1.4;
-  font-style: italic;
 
   a {
+    ${(p) => p.theme.monospace}
     opacity: 0.8;
     transition: opacity 300ms ease-out;
   }
@@ -80,9 +137,14 @@ const StyledTypingMessage = styled(TypingMessage)`
 `;
 
 const Signature = ({ className, hello }) => (
-  <StyledLink to="/about" className={className}>
+  <Wrap>
     <Infos>
-      <StyledBalloon />
+      <LeftBalloon viewBox="0 0 100 100"><path d="M 100 0 L 90 10 L 100 100 Z" /></LeftBalloon>
+      <RightBalloon viewBox="0 0 100 100"><path d="M 0 0 L 10 10 L 0 100 Z" /></RightBalloon>
+      <BottomBalloon viewBox="0 0 100 100"><path d="M 0 0 L 90 10 L 100 0 Z" /></BottomBalloon>
+      <TopBalloon viewBox="0 0 100 100"><path d="M 0 100 L 90 90 L 100 100 Z" /></TopBalloon>
+      <TopBalloon viewBox="0 0 100 100"><path d="M 0 100 L 90 90 L 100 100 Z" /></TopBalloon>
+      <SpikeBalloon viewBox="0 0 100 100"><path d="M 0 0 L 0 100 L 100 0 Z" /></SpikeBalloon>
       <StyledTitle>
         <StyledTypingMessage message={hello.title} />
       </StyledTitle>
@@ -92,8 +154,11 @@ const Signature = ({ className, hello }) => (
         <a href={`mailto:${process.env.MAIL}`}>{hello.contact}</a>
       </Description>
     </Infos>
-    <StyledCanvas slug="webgl" width={512} height={512} colorType={0} />
-  </StyledLink>
+    <StyledLink to="/about" className={className}>
+      <StyledSumo />
+      {/* <StyledCanvas slug="webgl" width={512} height={512} colorType={0} /> */}
+    </StyledLink>
+  </Wrap>
 );
 
 export default Signature;

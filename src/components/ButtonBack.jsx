@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
-import BackArrow from 'Assets/svg/arrow.svg';
+import { ReactComponent as BackArrow } from 'Assets/svg/arrow.svg';
 import useHover from '../hooks/useHover';
 
 const LINK = styled(Link)`
@@ -49,6 +49,7 @@ const Span = styled.span`
   transform: translate3d(0, -50%, 0);
   display: inline-block;
   color: ${(p) => p.theme.getColor};
+  font-size: 0.8em;
   ${(p) => p.theme.monospace}
 `;
 
