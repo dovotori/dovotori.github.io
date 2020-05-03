@@ -1,11 +1,11 @@
-import StateSprite from '../logic/StateSprite';
-import MeshSprite from '../meshes/MeshSpriteNormalMatrix';
+import StateSprite from "../logic/StateSprite";
+import MeshSprite from "../meshes/MeshSpriteNormalMatrix";
 
 export default class extends MeshSprite {
   constructor(tiles) {
     super();
     this.state = new StateSprite(tiles);
-    this.state.set(tiles.colors['000'].pattern);
+    this.state.set(tiles.colors["000"].pattern);
   }
 
   render(objet, program, texture) {

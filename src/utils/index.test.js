@@ -1,7 +1,7 @@
-import * as utils from '.';
+import { capitalize } from "./index";
 
-describe('Utils', () => {
-  test('capitalize', () => {
-    expect(utils.capitalize('test')).toEqual('Test');
+describe("Utils", () => {
+  test("capitalize", () => {
+    expect(capitalize("test")).toEqual("Test");
   });
 });

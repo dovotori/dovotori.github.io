@@ -1,13 +1,13 @@
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-import TeasersList from '../components/TeasersList';
-import { getSelectedCategory } from '../utils';
+import TeasersList from "../components/TeasersList";
+import { getSelectedCategory } from "../utils";
 
 const mapStateToProps = (state, props) => {
   const categoryId = getSelectedCategory(
     state.content.categories,
-    props.match.params.slug,
+    props.match.params.slug
   );
   const { entries } = state.content;
   return {

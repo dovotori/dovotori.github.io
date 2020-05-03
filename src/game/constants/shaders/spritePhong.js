@@ -1,6 +1,8 @@
 import {
-  uniformLights, addLights, funcMap, funcLightsColor,
-} from './utils';
+  uniformLights, addLightLocations, funcLightsColor,
+} from './utils/light';
+
+import { funcMap } from './utils';
 
 const vertex = `
 attribute vec3 position;
@@ -55,9 +57,8 @@ varying vec2 fragTexture;
 varying vec3 fragNormale;
 
 ${uniformLights}
-uniform sampler2D textureMap;
-
 ${funcLightsColor}
+uniform sampler2D textureMap;
 
 void main() {
   vec4 ambiant = texture2D(textureMap, fragTexture);
@@ -85,5 +86,5 @@ export default {
     'spriteSize',
     'inverseX',
     'spriteRefSize',
-  ].concat(addLights()),
+  ].concat(addLightLocations()),
 };

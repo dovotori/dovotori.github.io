@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import React from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
-import { ReactComponent as BackArrow } from 'Assets/svg/arrow.svg';
+import { ReactComponent as BackArrow } from "assets/svg/arrow.svg";
 
 const Wrap = styled.div`
   position: relative;

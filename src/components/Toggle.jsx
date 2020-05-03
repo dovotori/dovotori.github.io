@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const CheckBoxWrapper = styled.div`
   position: relative;
@@ -48,7 +48,12 @@ const CheckBox = styled.input`
 
 const Toggle = ({ onClick, checked, className }) => (
   <CheckBoxWrapper className={className}>
-    <CheckBox id="checkbox" type="checkbox" onClick={onClick} checked={checked} />
+    <CheckBox
+      id="checkbox"
+      type="checkbox"
+      onClick={onClick}
+      checked={checked}
+    />
     <CheckBoxLabel htmlFor="checkbox" />
   </CheckBoxWrapper>
 );

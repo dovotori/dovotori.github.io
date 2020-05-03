@@ -49,7 +49,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
-      Assets: path.resolve(__dirname, '../public/'),
+      assets: path.resolve(__dirname, '../public/'),
     },
   },
   plugins: [

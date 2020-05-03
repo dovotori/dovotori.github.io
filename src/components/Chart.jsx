@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from 'react';
-import styled from 'styled-components';
+import React, { useCallback, useState } from "react";
+import styled from "styled-components";
 
-import * as svgs from 'Assets/svg/cv2';
-import { mapFromRange } from '../utils';
-import ArcWithItem from './ArcWithItem';
+import * as svgs from "assets/svg/cv2";
+import { mapFromRange } from "../utils";
+import ArcWithItem from "./ArcWithItem";
 
 // .test {
 //       color: #3b4994;
@@ -34,19 +34,26 @@ const Svg = styled.svg`
   }
 `;
 
-const Text = styled.text`
-  text-anchor: middle;
-  fill: ${(p) => p.theme.text};
-`;
+// const Text = styled.text`
+//   text-anchor: middle;
+//   fill: ${(p) => p.theme.text};
+// `;
 
 const StyledArcWithItem = styled(ArcWithItem)`
   stroke: #3b4994;
   stroke-width: ${STROKE_WIDTH};
 `;
 
+// const Back = styled.g``;
+
+// const BackArrow = styled.path`
+//   fill: ${(p) => p.theme.text};
+//   cursor: pointer;
+// `;
+
 const Chart = ({ data }) => {
   const [curretName, setCurrentName] = useState(data.name);
-  const [text, setText] = useState(data.name);
+  // const [text, setText] = useState(data.name);
 
   const handleClickArc = useCallback(
     (node, parent) => (e) => {
@@ -57,15 +64,15 @@ const Chart = ({ data }) => {
       } else if (node.children) {
         setCurrentName(node.name);
       }
-      setText(goBack ? parent.text || parent.name : node.text || node.name);
+      // setText(goBack ? parent.text || parent.name : node.text || node.name);
     },
-    [curretName],
+    [curretName]
   );
 
-  const goBack = useCallback(() => {
-    setCurrentName(data.name);
-    setText(data.text || data.name);
-  }, [data]);
+  // const goBack = useCallback(() => {
+  //   setCurrentName(data.name);
+  //   setText(data.text || data.name);
+  // }, [data]);
 
   const drawNodes = useCallback(
     (current, x, y, node, depth = 1, parentStart = 0, parentAngle = 360) => {
@@ -82,8 +89,12 @@ const Chart = ({ data }) => {
         const childHasChildren = !!child.children;
         if (isActive) {
           const isFirst = current !== data.name && depth === 1;
-          angle = isFirst ? parentAngle : mapFromRange(value, 0, 100, 0, parentAngle);
-          newEnd = isFirst ? parentAngle : mapFromRange(value, 0, 100, 0, parentAngle);
+          angle = isFirst
+            ? parentAngle
+            : mapFromRange(value, 0, 100, 0, parentAngle);
+          newEnd = isFirst
+            ? parentAngle
+            : mapFromRange(value, 0, 100, 0, parentAngle);
           image = svgs[name] || null;
           newDepth = depth + 1;
           nextCurrent = data.name;
@@ -99,21 +110,21 @@ const Chart = ({ data }) => {
             y={y}
             strokeWidth={STROKE_WIDTH}
             radius={radius}
-            startAngle={isActive ? currentStartAngle : 360}
+            startAngle={currentStartAngle}
             depth={depth}
             image={image}
             margin={MARGIN}
             name={name}
           >
-            {childHasChildren
-              && drawNodes(
+            {childHasChildren &&
+              drawNodes(
                 nextCurrent,
                 x,
                 y,
                 child,
                 newDepth,
                 currentStartAngle,
-                newEnd,
+                newEnd
               )}
           </StyledArcWithItem>
         );
@@ -121,21 +132,21 @@ const Chart = ({ data }) => {
         return returnValue;
       });
     },
-    [handleClickArc],
+    [handleClickArc]
   );
 
   return (
     <Svg className="chart" viewBox={`0 0 ${WIDTH} ${WIDTH}`}>
       <g>{drawNodes(curretName, WIDTH / 2, WIDTH / 2, data)}</g>
-      <Text x={WIDTH / 2} y={WIDTH / 2}>
+      {/* <Text x={WIDTH / 2} y={WIDTH / 2}>
         {text}
-      </Text>
-      {curretName !== data.name
+      </Text> */}
+      {/* {curretName !== data.name
       && (
-      <Text x={WIDTH / 2} y={WIDTH / 2 - STROKE_WIDTH / 2} onClick={goBack}>
-        BACK
-      </Text>
-      )}
+      <Back transform={`translate(${WIDTH / 2}, ${WIDTH / 2 - STROKE_WIDTH})`}>
+        <BackArrow d="m0 5 5-5 1 1-3 4 3 4-1 1z" onClick={goBack} />
+      </Back>
+      )} */}
     </Svg>
   );
 };

@@ -1,10 +1,8 @@
-import Perso from './Perso';
-import { CollisionBox } from '../collisions';
+import Perso from "./Perso";
+import { CollisionBox } from "../collisions";
 
 export default class extends Perso {
-  constructor({
-    id, constants, sprites, viewBox,
-  }) {
+  constructor({ id, constants, sprites, viewBox }) {
     super({ constants, sprites, viewBox });
     this.id = id || constants.id;
     this.collisionBox = new CollisionBox();

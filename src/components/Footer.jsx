@@ -1,11 +1,10 @@
-import React, { useCallback } from 'react';
-import styled from 'styled-components';
+import React, { useCallback } from "react";
+import styled from "styled-components";
 
-import license from 'Assets/img/cclicense80x15.png';
-import { ReactComponent as Mail } from 'Assets/svg/mail.svg';
-import Toggle from './Toggle';
-import availablesLang from '../constants/lang';
-
+import license from "assets/img/cclicense80x15.png";
+import { ReactComponent as Mail } from "assets/svg/mail.svg";
+import Toggle from "./Toggle";
+import availablesLang from "../constants/lang";
 
 const Wrap = styled.div`
   padding: 2em 4%;
@@ -33,7 +32,14 @@ const Div = styled.div`
 
 const StyledMail = styled(Mail)`
   color: ${(p) => p.theme.light};
-  height: 18px;
+  height: 20px;
+  margin-top: -5px;
+  .toOpen {
+    transition: transform 300ms ease-out;
+  }
+  &:hover .toOpen {
+    transform: rotate3d(1, 0, 0, 170deg);
+  }
 `;
 
 const Img = styled.img`
@@ -56,17 +62,21 @@ const Button = styled.button`
   padding: 0.4em;
   color: ${(p) => p.theme.light};
   text-transform: uppercase;
-   &:hover {
-     color: ${(p) => p.theme.text};
-   }
+  &:hover {
+    color: ${(p) => p.theme.text};
+  }
 `;
 
-const Footer = ({
-  toggleTheme, isDarkMode, setLang, texts,
-}) => {
-  const renderLang = useCallback(() => (
-    availablesLang.map((lang) => (<Button key={lang} onClick={() => setLang(lang)}>{lang}</Button>))
-  ), [availablesLang]);
+const Footer = ({ toggleTheme, isDarkMode, setLang, texts }) => {
+  const renderLang = useCallback(
+    () =>
+      availablesLang.map((lang) => (
+        <Button key={lang.id} onClick={() => setLang(lang.id)}>
+          {lang.short}
+        </Button>
+      )),
+    [availablesLang]
+  );
   return (
     <Wrap className="footer">
       <Div>
@@ -74,20 +84,15 @@ const Footer = ({
           <StyledMail />
         </a>
       </Div>
-      <Div>
-        {renderLang()}
-      </Div>
+      <Div>{renderLang()}</Div>
       <Div>
         <a href="https://creativecommons.org/licenses/by/4.0/">
-          <Img
-            alt="license creative common"
-            src={license}
-          />
+          <Img alt="license creative common" src={license} />
         </a>
       </Div>
       <Div>
         <Toggle onClick={toggleTheme} checked={isDarkMode} />
-        <Span>{(isDarkMode ? texts.lightMode : texts.darkMode)}</Span>
+        <Span>{isDarkMode ? texts.lightMode : texts.darkMode}</Span>
       </Div>
     </Wrap>
   );

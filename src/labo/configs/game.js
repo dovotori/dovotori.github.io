@@ -1,29 +1,29 @@
-export const UP = 'UP';
-export const DOWN = 'DOWN';
-export const LEFT = 'LEFT';
-export const RIGHT = 'RIGHT';
-export const SPACE = 'SPACE';
-export const SHIFT = 'SHIFT';
-export const X = 'X';
-export const W = 'W';
-export const ENTER = 'ENTER';
-export const ECHAP = 'ECHAP';
+export const UP = "UP";
+export const DOWN = "DOWN";
+export const LEFT = "LEFT";
+export const RIGHT = "RIGHT";
+export const SPACE = "SPACE";
+export const SHIFT = "SHIFT";
+export const X = "X";
+export const W = "W";
+export const ENTER = "ENTER";
+export const ECHAP = "ECHAP";
 
 export default {
   assets: [
-    '/textures/heros.png',
-    '/textures/fx.png',
-    '/textures/bullet.png',
-    '/textures/level1.png',
-    '/textures/rocks.png',
-    '/textures/ground.png',
-    '/textures/clouds.png',
-    '/objets/tile.obj',
-    '/objets/cube.obj',
-    '/objets/cubeTile.obj',
-    '/levels/level3.bmp',
+    "/textures/heros.png",
+    "/textures/fx.png",
+    "/textures/bullet.png",
+    "/textures/level1.png",
+    "/textures/rocks.png",
+    "/textures/ground.png",
+    "/textures/clouds.png",
+    "/objets/tile.obj",
+    "/objets/cube.obj",
+    "/objets/cubeTile.obj",
+    "/levels/level3.bmp",
   ],
-  programs: ['color', 'sprite', 'spritePhong', 'albedoPhong', 'background'],
+  programs: ["color", "sprite", "spritePhong", "albedoPhong", "background"],
   camera: {
     position: { x: 10, y: 10, z: 22 },
     target: { x: 10, y: 10, z: 0 },
@@ -65,7 +65,17 @@ export default {
     27: ECHAP,
   },
   postprocess: {
-    effects: ['fxaa', 'rgb', 'wave', 'watercolor', 'pixel', 'glitch4'],
+    effects: [
+      "fxaa",
+      "rgb",
+      "wave",
+      "watercolor",
+      "pixel",
+      "glitch4",
+      "sepia",
+      "sketch",
+      "oil",
+    ],
     useDepth: true,
   },
   splashscreen: false,

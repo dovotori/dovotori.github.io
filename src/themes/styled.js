@@ -1,14 +1,15 @@
-import styled, { css } from 'styled-components';
-import { glitchy } from './animations';
+import styled, { css } from "styled-components";
+import { glitchy } from "./animations";
 
 export const Title = styled.h1`
   text-align: left;
   font-size: 4em;
-  font-weight: 300;
-  color: ${(p) => p.theme.getColor};
-  overflow-wrap: break-word;
+  font-family: "matamata", monospace;
+  font-weight: 500;
   letter-spacing: 0.2em;
   line-height: 1.1;
+  color: ${(p) => p.theme.getColor};
+  overflow-wrap: break-word;
 `;
 
 export const withHoverGlitch = css`

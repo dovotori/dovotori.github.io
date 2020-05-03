@@ -1,4 +1,4 @@
-import Bullet from '../persos/Bullet';
+import Bullet from "../persos/Bullet";
 
 export default class {
   constructor(constants, sprites, viewBox) {
@@ -30,7 +30,7 @@ export default class {
 
     if (toDelete.length > 0) {
       this.bullets = this.bullets.filter(
-        (bullet, idx) => toDelete.indexOf(idx) === -1,
+        (bullet, idx) => toDelete.indexOf(idx) === -1
       );
     }
 
@@ -47,7 +47,7 @@ export default class {
         tileSize,
         startPos,
         goLeft,
-      }),
+      })
     );
     this.numero += 1;
   }
@@ -60,7 +60,7 @@ export default class {
         this.callbackShoot(
           lastBullet.getId(),
           lastBullet.getCollisionBox(),
-          this.recoil,
+          this.recoil
         );
       }
     }

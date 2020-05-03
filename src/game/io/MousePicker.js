@@ -1,5 +1,5 @@
-import { mapFromRange } from '../utils/numbers';
-import { Vec4, Mat4 } from '../geometry';
+import { mapFromRange } from "../utils/numbers";
+import { Vec4, Mat4 } from "../maths";
 
 export default class {
   constructor() {

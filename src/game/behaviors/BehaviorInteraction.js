@@ -1,6 +1,6 @@
-import Behavior from './BehaviorGravity';
-import { mapFromRange } from '../utils';
-import { Vec3 } from '../geometry';
+import Behavior from "./BehaviorGravity";
+import { mapFromRange } from "../utils";
+import { Vec3 } from "../maths";
 
 export default class extends Behavior {
   constructor(constants, updateState, tileSize) {
@@ -14,9 +14,7 @@ export default class extends Behavior {
 
   defineNextStatus() {
     super.defineNextStatus();
-    const {
-      WALL, WALL_UP, JUMP_UP, RUN_JUMP_UP,
-    } = this.constants.states;
+    const { WALL, WALL_UP, JUMP_UP, RUN_JUMP_UP } = this.constants.states;
     if (!this.isLock()) {
       // up
       if (this.speed.getY() > 0) {
@@ -48,9 +46,7 @@ export default class extends Behavior {
 
   setInteraction(keyboard) {
     const { keys, physics, states } = this.constants;
-    const {
-      DASH, AIM, SLASH, JUMP_UP,
-    } = states;
+    const { DASH, AIM, SLASH, JUMP_UP } = states;
 
     if (this.status === states.AIM) {
       this.aimingStrength = mapFromRange(
@@ -58,7 +54,7 @@ export default class extends Behavior {
         0,
         40,
         0.2,
-        1,
+        1
       );
     }
 
@@ -115,7 +111,7 @@ export default class extends Behavior {
     const { STAND, AIM } = states;
 
     if (this.status === AIM) {
-      keyboard.resetCharge(keys.W);
+      // keyboard.resetCharge(keys.W);
     }
 
     // cancel actions

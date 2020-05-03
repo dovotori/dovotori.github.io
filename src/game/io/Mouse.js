@@ -1,11 +1,9 @@
-import { mapFromRange } from '../utils/numbers';
+import { mapFromRange } from "../utils/numbers";
 
 class Mouse {
   constructor(
     div,
-    {
-      callbackDrag, callbackDown, callbackMove, callbackWheel,
-    },
+    { callbackDrag, callbackDown, callbackMove, callbackWheel }
   ) {
     this.div = div;
     this.callbackDrag = callbackDrag || null;
@@ -21,46 +19,46 @@ class Mouse {
 
   setup() {
     if (this.callbackDrag || this.callbackMove) {
-      this.div.addEventListener('mousemove', this.onMove, false);
-      this.div.addEventListener('touchmove', this.onMove, false);
+      this.div.addEventListener("mousemove", this.onMove, false);
+      this.div.addEventListener("touchmove", this.onMove, false);
     }
     if (this.callbackDrag) {
-      window.addEventListener('mouseup', this.onUp, false);
-      this.div.addEventListener('mousedown', this.onDown, false);
-      this.div.addEventListener('touchstart', this.onDown, false);
-      this.div.addEventListener('touchend', this.onUp, false);
+      window.addEventListener("mouseup", this.onUp, false);
+      this.div.addEventListener("mousedown", this.onDown, false);
+      this.div.addEventListener("touchstart", this.onDown, false);
+      this.div.addEventListener("touchend", this.onUp, false);
     }
     if (this.callbackWheel) {
-      this.div.addEventListener('wheel', this.onWheel, false);
+      this.div.addEventListener("wheel", this.onWheel, false);
     }
   }
 
   cancel() {
     if (this.callbackDrag || this.callbackMove) {
-      this.div.removeEventListener('mousemove', this.onMove, false);
-      this.div.removeEventListener('touchmove', this.onMove, false);
+      this.div.removeEventListener("mousemove", this.onMove, false);
+      this.div.removeEventListener("touchmove", this.onMove, false);
     }
     if (this.callbackDrag) {
-      window.removeEventListener('mouseup', this.onUp, false);
-      this.div.removeEventListener('mousedown', this.onDown, false);
-      this.div.removeEventListener('touchstart', this.onDown, false);
-      this.div.removeEventListener('touchend', this.onUp, false);
+      window.removeEventListener("mouseup", this.onUp, false);
+      this.div.removeEventListener("mousedown", this.onDown, false);
+      this.div.removeEventListener("touchstart", this.onDown, false);
+      this.div.removeEventListener("touchend", this.onUp, false);
     }
     if (this.callbackWheel) {
-      this.div.removeEventListener('wheel', this.onWheel, false);
+      this.div.removeEventListener("wheel", this.onWheel, false);
     }
   }
 
   static getPos(e) {
     return e.touches
       ? {
-        x: e.touches[0].clientX,
-        y: e.touches[0].clientY,
-      }
+          x: e.touches[0].clientX,
+          y: e.touches[0].clientY,
+        }
       : {
-        x: e.clientX,
-        y: e.clientY,
-      };
+          x: e.clientX,
+          y: e.clientY,
+        };
   }
 
   computeInfos(e) {

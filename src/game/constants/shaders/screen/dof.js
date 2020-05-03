@@ -1,5 +1,5 @@
 import vertex from './basicVertex';
-import { funcBlur2 } from '../utils';
+import { funcBlur2 } from '../utils/blur';
 
 const fragment = `
 precision mediump float;

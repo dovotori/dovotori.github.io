@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 const useFetchHtml = (url, hasHtml) => {
   const [pending, setPending] = useState(false);

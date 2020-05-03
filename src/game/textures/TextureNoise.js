@@ -1,4 +1,4 @@
-import Texture from './Texture';
+import Texture from "./Texture";
 
 export default class extends Texture {
   create() {
@@ -25,7 +25,7 @@ export default class extends Texture {
       0,
       this.gl.RGBA,
       this.gl.UNSIGNED_BYTE,
-      pixels,
+      pixels
     );
   }
 }

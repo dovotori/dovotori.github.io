@@ -1,4 +1,4 @@
-import fx from '../persos/fx';
+import fx from "../persos/fx";
 
 const { DUST } = fx.states;
 
@@ -9,13 +9,22 @@ export default {
   [DUST]: {
     uv: [
       {
-        x: 0, y: 0, w: 26, h: 19,
+        x: 0,
+        y: 0,
+        w: 26,
+        h: 19,
       },
       {
-        x: 0, y: 19, w: 26, h: 14,
+        x: 0,
+        y: 19,
+        w: 26,
+        h: 14,
       },
       {
-        x: 0, y: 33, w: 29, h: 12,
+        x: 0,
+        y: 33,
+        w: 29,
+        h: 12,
       },
     ],
     iteration: 1,

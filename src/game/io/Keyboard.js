@@ -17,13 +17,13 @@ export default class {
       this.charges[this.inputs[key]] = 0;
     });
 
-    document.addEventListener('keydown', this.onKeyPress, false);
-    document.addEventListener('keyup', this.onKeyUp, false);
+    document.addEventListener("keydown", this.onKeyPress, false);
+    document.addEventListener("keyup", this.onKeyUp, false);
   }
 
   cancel() {
-    document.removeEventListener('keydown', this.onKeyPress, false);
-    document.removeEventListener('keyup', this.onKeyUp, false);
+    document.removeEventListener("keydown", this.onKeyPress, false);
+    document.removeEventListener("keyup", this.onKeyUp, false);
   }
 
   start() {

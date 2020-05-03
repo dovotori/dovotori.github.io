@@ -1,4 +1,4 @@
-import { LoadObj, LoadMat } from '../parser';
+import { LoadObj, LoadMat, LoadGltf } from "../parser";
 
 class ManagerAssets {
   constructor() {
@@ -7,13 +7,14 @@ class ManagerAssets {
       objets: {},
       materials: {},
       levels: {},
+      gltfs: {},
     };
   }
 
   static getAssetInfo(path) {
     const parts = path
-      .substring(path.lastIndexOf('/') + 1, path.length)
-      .split('.');
+      .substring(path.lastIndexOf("/") + 1, path.length)
+      .split(".");
     return { name: parts[0], ext: parts[1].toLowerCase() };
   }
 
@@ -26,6 +27,22 @@ class ManagerAssets {
       });
   }
 
+  static load3dObj = (path, info) =>
+    fetch(path)
+      .then((response) => response.text())
+      .then((response) => {
+        const obj = new LoadObj(response);
+        return { data: obj.get(), info };
+      });
+
+  static load3dGltf = (path, info) =>
+    fetch(path)
+      .then((response) => response.text())
+      .then((response) => {
+        const gltf = new LoadGltf(response);
+        return { data: gltf.get(), info };
+      });
+
   static loadImage(path, info) {
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -35,18 +52,20 @@ class ManagerAssets {
     });
   }
 
-  async setup(paths) {
+  async get(paths) {
     const promesses = await paths.map(async (path) => {
       const info = ManagerAssets.getAssetInfo(path);
       switch (info.ext) {
-        case 'jpg':
-        case 'jpeg':
-        case 'png':
-        case 'bmp':
+        case "jpg":
+        case "jpeg":
+        case "png":
+        case "bmp":
           return ManagerAssets.loadImage(path, info);
-        case 'obj':
-          return this.loadObjet(path, info);
-        case 'mtl':
+        case "obj":
+          return ManagerAssets.load3dObj(path, info);
+        case "gltf":
+          return ManagerAssets.load3dGltf(path, info);
+        case "mtl":
           return ManagerAssets.loadMaterial(path, info);
         default:
           return null;
@@ -55,18 +74,21 @@ class ManagerAssets {
     return Promise.all(promesses).then((data) => {
       data.forEach((item) => {
         switch (item.info.ext) {
-          case 'jpg':
-          case 'jpeg':
-          case 'png':
+          case "jpg":
+          case "jpeg":
+          case "png":
             this.assets.textures[item.info.name] = item.data;
             break;
-          case 'bmp':
+          case "bmp":
             this.assets.levels[item.info.name] = item.data;
             break;
-          case 'obj':
+          case "obj":
             this.assets.objets[item.info.name] = item.data;
             break;
-          case 'mtl':
+          case "gltf":
+            this.assets.gltfs[item.info.name] = item.data;
+            break;
+          case "mtl":
             this.assets.materials[item.info.name] = item.data;
             break;
           default:
@@ -75,40 +97,6 @@ class ManagerAssets {
       });
       return this.assets;
     });
-  }
-
-  loadImg = (path) => new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = reject;
-    img.src = path;
-  });
-
-  loadObjet = (path, info) => fetch(path)
-    .then((response) => response.text())
-    .then((response) => {
-      const obj = new LoadObj(response);
-      return { data: obj.get(), info };
-    });
-
-  async getAssets(assets) {
-    return assets.map(async (asset) => {
-      const info = ManagerAssets.getAssetInfo(asset);
-      switch (info.ext) {
-        case 'jpg':
-        case 'jpeg':
-        case 'png':
-        case 'bmp':
-          return ManagerAssets.loadImage(asset, info);
-        case 'obj':
-          return this.loadObjet(asset, info);
-        default: return null;
-      }
-    });
-  }
-
-  get() {
-    return this.assets;
   }
 }
 

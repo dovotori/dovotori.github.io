@@ -1,5 +1,5 @@
-import Texture from './Texture';
-import PerlinNoise from '../utils/perlinNoise';
+import Texture from "./Texture";
+import PerlinNoise from "../utils/perlinNoise";
 
 export default class extends Texture {
   create() {
@@ -11,7 +11,9 @@ export default class extends Texture {
     for (let y = 0; y < this.size.height; y += 1) {
       for (let x = 0; x < this.size.width; x += 1) {
         const color = this.perlinNoise.get(x, y) * 255;
-        pixels[cptRVBA] = color; pixels[cptRVBA + 1] = color; pixels[cptRVBA + 2] = color;
+        pixels[cptRVBA] = color;
+        pixels[cptRVBA + 1] = color;
+        pixels[cptRVBA + 2] = color;
         pixels[cptRVBA + 3] = 255;
         cptRVBA += 4;
       }
@@ -26,7 +28,7 @@ export default class extends Texture {
       0,
       this.gl.RGBA,
       this.gl.UNSIGNED_BYTE,
-      pixels,
+      pixels
     );
   }
 }

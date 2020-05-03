@@ -36,19 +36,24 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        use: {
-          loader: '@svgr/webpack',
-          options: {
-            svgo: false,
+        use: [
+          {
+            loader: '@svgr/webpack',
+            options: {
+              svgo: false,
+            },
           },
-        },
+          {
+            loader: 'url-loader'
+          }
+        ],
       },
     ],
   },
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
-      Assets: path.resolve(__dirname, '../public/'),
+      assets: path.resolve(__dirname, '../public/'),
     },
   },
   optimization: {

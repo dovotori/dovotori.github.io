@@ -1,5 +1,10 @@
-import { ManagerTextures, ManagerObjets, ManagerPrograms } from '../managers';
-import PostProcess from '../gl/PostProcess';
+import {
+  ManagerTextures,
+  ManagerObjets,
+  ManagerPrograms,
+  ManagerGltfs,
+} from "../managers";
+import PostProcess from "../gl/PostProcess";
 
 export default class {
   constructor(gl, config, assets) {
@@ -21,7 +26,7 @@ export default class {
         this.config.postprocess.effects,
         width,
         height,
-        this.config.postprocess.useDepth,
+        this.config.postprocess.useDepth
       );
     }
 
@@ -31,6 +36,10 @@ export default class {
 
     if (assets.objets) {
       this.mngObj = new ManagerObjets(this.gl, assets.objets, assets.materials);
+    }
+
+    if (assets.gltfs) {
+      this.mngGltf = new ManagerGltfs(this.gl, assets.gltfs);
     }
   }
 

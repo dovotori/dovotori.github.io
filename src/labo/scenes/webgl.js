@@ -1,4 +1,4 @@
-import { Scene } from '../../game';
+import { Scene } from "../../game";
 
 export default class extends Scene {
   constructor(gl, config, assets, width = 512, height = 512) {
@@ -43,12 +43,13 @@ export default class extends Scene {
 
     const delta = Math.sin(this.value) * 0.1;
     const time = this.time * 0.04;
-    this.postProcess.setGlitch(
-      time,
-      delta,
-      delta,
-      this.mngTex.get('signature').get(),
+    this.postProcess.setWatercolorMoving(
+      this.time * 0.2,
+      [this.value, this.value],
+      4.0,
+      this.mngTex.get("signature").get()
     );
+    this.postProcess.setGlitch(time, delta, delta);
     this.postProcess.setWave(time, delta, this.centerWave);
     // this.postProcess.setRGB(
     //   delta * 100.0,

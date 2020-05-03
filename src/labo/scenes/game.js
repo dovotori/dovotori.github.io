@@ -9,7 +9,7 @@ import {
   Fxs,
   CollisionSweepPrune,
   // mapFromRange,
-} from '../../game';
+} from "../../game";
 
 import {
   spriteHeros,
@@ -17,19 +17,20 @@ import {
   spriteFx,
   spriteMonster,
   spriteTiles,
-} from '../../game/constants/sprites';
+} from "../../game/constants/sprites";
 
 import {
   heros as herosConstants,
   bullet as bulletConstants,
   fx as fxConstants,
   monster as monsterConstants,
-} from '../../game/constants/persos';
+} from "../../game/constants/persos";
 
 const isCollide = (pair, id1, id2) => {
   if (pair[0] === id1 && pair[1] === id2) {
     return pair;
-  } if (pair[0] === id2 && pair[1] === id1) {
+  }
+  if (pair[0] === id2 && pair[1] === id1) {
     return [pair[1], pair[0]];
   }
   return null;
@@ -38,7 +39,8 @@ const isCollide = (pair, id1, id2) => {
 const isCollideGroup = (pair, id1, groupId) => {
   if (pair[0] === id1 && pair[1].indexOf(groupId) !== -1) {
     return pair;
-  } if (pair[0].indexOf(groupId) !== -1 && pair[1] === id1) {
+  }
+  if (pair[0].indexOf(groupId) !== -1 && pair[1] === id1) {
     return [pair[1], pair[0]];
   }
   return null;
@@ -54,7 +56,7 @@ export default class extends Scene {
     this.tilemap = new Tilemap(
       assets.levels.level3,
       this.config.tilemap,
-      spriteTiles,
+      spriteTiles
     );
 
     const { tileSize } = this.config.tilemap;
@@ -83,8 +85,8 @@ export default class extends Scene {
     this.oldInverse = false;
     this.oldAiming = false;
 
-    this.setLampeInfos(this.mngProg.get('spritePhong'));
-    this.setLampeInfos(this.mngProg.get('albedoPhong'));
+    this.setLampeInfos(this.mngProg.get("spritePhong"));
+    this.setLampeInfos(this.mngProg.get("albedoPhong"));
 
     this.fxs = new Fxs(fxConstants, spriteFx, viewBox);
   }
@@ -112,7 +114,7 @@ export default class extends Scene {
     const herosInvX = this.heros.getInverseX();
     const herosIsAim = this.heros.getAiming();
     this.tilemap.follow(herosPos);
-    this.tilemap.update(this.mngProg.get('spritePhong'));
+    this.tilemap.update(this.mngProg.get("spritePhong"));
     this.background.update(herosPos);
     this.heros.update(map, tileSize);
     this.monster.update(map, tileSize);
@@ -121,20 +123,20 @@ export default class extends Scene {
       tileSize,
       this.heros.getAimingPos(),
       herosIsAim,
-      herosInvX,
+      herosInvX
     );
     // if (this.mousePos !== null) {
     //   const pixel = this.getColorPixel(this.mousePos);
     //   this.perso.setSelected(pixel);
     // }
     this.collision.getPaires().forEach((pair) => {
-      if (isCollide(pair, 'heros', 'monster')) {
+      if (isCollide(pair, "heros", "monster")) {
         this.heros.addToSpeed(this.monster.getX() < this.heros.getX() ? 1 : -1);
       } else {
-        const newPair = isCollideGroup(pair, 'monster', 'bullet');
+        const newPair = isCollideGroup(pair, "monster", "bullet");
         if (newPair) {
           this.monster.addToSpeed(
-            this.monster.getX() < this.heros.getX() ? -1 : 1,
+            this.monster.getX() < this.heros.getX() ? -1 : 1
           );
           this.collision.removeBox(newPair[1]);
           this.bullets.removeOne(newPair[1]);
@@ -145,72 +147,72 @@ export default class extends Scene {
 
   renderToProcess() {
     this.background.renderMountains(
-      this.mngObj.get('tile'),
-      this.mngProg.get('color'),
+      this.mngObj.get("tile"),
+      this.mngProg.get("color")
     );
     this.background.updateScreens(-0.15);
     this.mngProg
-      .get('background')
-      .setTexture(0, this.mngTex.get('clouds').get(), 'textureMap');
+      .get("background")
+      .setTexture(0, this.mngTex.get("clouds").get(), "textureMap");
     this.background.renderScreen(
-      this.mngObj.get('tile'),
-      this.mngProg.get('background'),
+      this.mngObj.get("tile"),
+      this.mngProg.get("background"),
       this.heros.getPosition()[0],
-      0.0005,
+      0.0005
     );
     this.background.updateScreens(-0.1);
     this.mngProg
-      .get('background')
-      .setTexture(0, this.mngTex.get('rocks').get(), 'textureMap');
+      .get("background")
+      .setTexture(0, this.mngTex.get("rocks").get(), "textureMap");
     this.background.renderScreen(
-      this.mngObj.get('tile'),
-      this.mngProg.get('background'),
+      this.mngObj.get("tile"),
+      this.mngProg.get("background"),
       this.heros.getPosition()[0],
-      0.001,
+      0.001
     );
     this.background.updateScreens(-0.05);
     this.mngProg
-      .get('background')
-      .setTexture(0, this.mngTex.get('ground').get(), 'textureMap');
+      .get("background")
+      .setTexture(0, this.mngTex.get("ground").get(), "textureMap");
     this.background.renderScreen(
-      this.mngObj.get('tile'),
-      this.mngProg.get('background'),
+      this.mngObj.get("tile"),
+      this.mngProg.get("background"),
       this.heros.getPosition()[0],
-      0.005,
+      0.005
     );
     this.background.renderCloudsBack(
-      this.mngObj.get('tile'),
-      this.mngProg.get('color'),
+      this.mngObj.get("tile"),
+      this.mngProg.get("color")
     );
     this.tilemap.render(
-      this.mngProg.get('spritePhong'),
-      this.mngTex.get('level1'),
-      this.mngObj.get('cubeTile'),
-      this.mngObj.get('tile'),
+      this.mngProg.get("spritePhong"),
+      this.mngTex.get("level1"),
+      this.mngObj.get("cubeTile"),
+      this.mngObj.get("tile")
     );
     this.heros.render(
-      this.mngProg.get('sprite'),
-      this.mngTex.get('heros'),
-      this.mngObj.get('tile'),
+      this.mngProg.get("sprite"),
+      this.mngTex.get("heros"),
+      this.mngObj.get("tile")
     );
     this.monster.render(
-      this.mngProg.get('sprite'),
-      this.mngTex.get('heros'),
-      this.mngObj.get('tile'),
+      this.mngProg.get("sprite"),
+      this.mngTex.get("heros"),
+      this.mngObj.get("tile")
     );
     this.fxs.render(
-      this.mngProg.get('sprite'),
-      this.mngTex.get('fx'),
-      this.mngObj.get('tile'),
+      this.mngProg.get("sprite"),
+      this.mngTex.get("fx"),
+      this.mngObj.get("tile")
     );
     this.bullets.render(
-      this.mngProg.get('sprite'),
-      this.mngTex.get('bullet'),
-      this.mngObj.get('tile'),
+      this.mngProg.get("sprite"),
+      this.mngTex.get("bullet"),
+      this.mngObj.get("tile")
     );
     this.background.renderCloudsFront(
-      this.mngObj.get('tile'),
-      this.mngProg.get('color'),
+      this.mngObj.get("tile"),
+      this.mngProg.get("color")
     );
   }
 
@@ -224,8 +226,8 @@ export default class extends Scene {
 
     this.fxs.update();
     if (
-      this.heros.isStatusChanged()
-      && (herosStatus === JUMP_UP || herosStatus === RUN_JUMP_UP)
+      this.heros.isStatusChanged() &&
+      (herosStatus === JUMP_UP || herosStatus === RUN_JUMP_UP)
     ) {
       this.fxs.createNewOne(this.heros.getLastJumpingPosition(), DUST);
     }
@@ -243,7 +245,7 @@ export default class extends Scene {
     }
     if (herosIsAim !== this.oldAiming) {
       this.targetWave.set(herosIsAim ? 0.01 : 0);
-      this.camera.setSmoothZoom(herosIsAim ? 0.4 : 1);
+      this.camera.setSmoothZoom(herosIsAim ? 0.8 : 1);
       this.oldAiming = herosIsAim;
     }
     this.targetRGB.set(this.heros.getDashing() ? 2 : 0);
@@ -256,6 +258,9 @@ export default class extends Scene {
     this.postProcess.setWave(this.time * 0.1, this.targetWave.get(), center);
     // this.postProcess.setPixel(pixelize, pixelize);
     // this.postProcess.setGlitch4(this.time, delta, 0.4);
+    this.postProcess.setSketch(0.2);
+    // this.postProcess.setSepia(0.5);
+    // this.postProcess.setOil(1);
     this.postProcess.setFXAA();
   }
 

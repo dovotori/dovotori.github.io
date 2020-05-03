@@ -1,11 +1,15 @@
-import { SET_LANG } from '../constants/actionsTypes';
-import * as contents from '../store/initialState';
-import { getLocationHash } from '../utils';
+import { SET_LANG } from "../constants/actionsTypes";
+import * as contents from "../store/initialState";
+import { defaultLang } from "./device";
 
-export default function device(state = contents[getLocationHash()], action) {
+const initialState = {
+  ...contents[defaultLang],
+};
+
+export default function device(state = initialState, action, otherState) {
   switch (action.type) {
     case SET_LANG: {
-      const newContent = contents[action.flag.toLowerCase()];
+      const newContent = contents[otherState.device.lang];
       return newContent || state;
     }
     default:

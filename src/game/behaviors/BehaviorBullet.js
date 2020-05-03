@@ -1,4 +1,4 @@
-import Behavior from './BehaviorCollision';
+import Behavior from "./BehaviorCollision";
 
 export default class extends Behavior {
   constructor(constants, updateState = null, tileSize, startPos, goLeft) {

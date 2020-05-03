@@ -37,10 +37,10 @@ class Vec4 {
 
   length() {
     return Math.sqrt(
-      this.d[0] * this.d[0]
-        + this.d[1] * this.d[1]
-        + this.d[2] * this.d[2]
-        + this.d[3] * this.d[3],
+      this.d[0] * this.d[0] +
+        this.d[1] * this.d[1] +
+        this.d[2] * this.d[2] +
+        this.d[3] * this.d[3]
     );
   }
 
@@ -151,10 +151,10 @@ class Vec4 {
 
   distance(vec) {
     return Math.sqrt(
-      (vec.d[0] - this.d[0]) * (vec.d[0] - this.d[0])
-        + (vec.d[1] - this.d[1]) * (vec.d[1] - this.d[1])
-        + (vec.d[2] - this.d[2]) * (vec.d[2] - this.d[2])
-        + (vec.d[3] - this.d[3]) * (vec.d[3] - this.d[3]),
+      (vec.d[0] - this.d[0]) * (vec.d[0] - this.d[0]) +
+        (vec.d[1] - this.d[1]) * (vec.d[1] - this.d[1]) +
+        (vec.d[2] - this.d[2]) * (vec.d[2] - this.d[2]) +
+        (vec.d[3] - this.d[3]) * (vec.d[3] - this.d[3])
     );
   }
 }

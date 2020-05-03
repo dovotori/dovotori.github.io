@@ -1,4 +1,4 @@
-import Fx from './Fx';
+import Fx from "./Fx";
 
 export default class {
   constructor(constants, sprites, viewBox) {
@@ -31,7 +31,7 @@ export default class {
       this.viewBox,
       startPos,
       status,
-      this.endOfAnimation(this.cpt),
+      this.endOfAnimation(this.cpt)
     );
     this.cpt += 1;
   }

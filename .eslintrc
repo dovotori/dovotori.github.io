@@ -1,6 +1,8 @@
 {
   "extends": [
-    "airbnb"
+    "airbnb",
+    "prettier",
+    "eslint:recommended"
   ],
   "plugins": [
     "react",
@@ -20,12 +22,13 @@
   },
   "env": {
     "es6": true,
-    "node": true,
+    "node": false,
     "browser": true,
     "jest": true
   },
   "ignorePatterns": [
-    "src/game/constants/shaders/"
+    "src/game/constants/shaders/",
+    "src/store/"
   ],
   "rules": {
     "react/jsx-uses-react": "error",
@@ -34,13 +37,12 @@
     "react/display-name": 0,
     "no-console": 0,
     "no-bitwise": 0,
-    "comma-dangle": 0
-  },
-  "settings": {
-    "import/resolver": {
-      "webpack": {
-        "config": "webpack/prod.js"
-      }
-    }
+    "no-plusplus": 0,
+    "comma-dangle": 0,
+    "import/prefer-default-export": 0,
+    "max-len": [
+      "error",
+      100
+    ]
   }
 }

@@ -1,34 +1,24 @@
+const MAIN_PROG = "paysage2";
+const MAIN_OBJ = "paysage";
 export default {
-  programs: [
-    'basique3d',
-    'paysage',
-    'emissive',
-    'buffers',
-    'albedo',
-    'diffuse',
-  ],
-  assets: [
-    '/objets/plot.obj', '/objets/plot.mtl',
-    '/objets/road.obj', '/objets/road.mtl',
-    '/objets/mailbox.obj', '/objets/mailbox.mtl',
-    '/objets/panel.obj', '/objets/panel.mtl',
-    '/objets/bench.obj', '/objets/bench.mtl',
-    '/objets/electric.obj', '/objets/electric.mtl'
-  ],
+  MAIN_PROG,
+  MAIN_OBJ,
+  programs: ["basique3d", "bone", MAIN_PROG],
+  assets: [`/objets/${MAIN_OBJ}.gltf`],
   positions: {
     plot: [
       { x: -0.74175, z: -0.889829, y: 0.03561 },
       { x: -0.57378, z: -0.91103, y: 0.03561 },
-      { x: -0.363515, z: -0.8868, y: 0.03561 }
+      { x: -0.363515, z: -0.8868, y: 0.03561 },
     ],
     road: [{ x: 0, y: -0.2, z: 0 }],
     electric: [{ x: -0.5, y: 0, z: -0.4 }],
     mailbox: [{ x: -0.2, y: 0, z: -0.4 }],
     bench: [{ x: -0.2, y: 0, z: -0.4 }],
-    panel: [{ x: 0, y: 0, z: 0 }]
+    panel: [{ x: 0, y: 0, z: 0 }],
   },
   camera: {
-    position: { x: 2, y: 2, z: 4 },
+    position: { x: -4, y: 2, z: 4 },
     target: { x: 0, y: 0, z: 0 },
     near: 1,
     far: 40,
@@ -36,27 +26,37 @@ export default {
   },
   lampes: [
     {
-      type: 1,
-      position: { x: 2.5, y: 2.5, z: 0 },
-      ambiant: [0, 0, 0],
-      diffuse: [0.6, 0.5, 0.5],
-      specular: [0, 0, 0],
-      radius: 1,
+      type: 0,
+      position: { x: 4, y: 4, z: 4 },
+      ambiant: [1, 0.8, 0.6],
+      diffuse: [0.8, 0.6, 0.5],
+      specular: [1, 0.8, 0.7],
+      brillance: 1,
       // direction: [0, 0, 1]
     },
-    // {
-    //   type: 1,
-    //   position: { x: 0, y: 0, z: 4 },
-    //   ambiant: [0, 0, 0],
-    //   diffuse: [1, 1, 1],
-    //   specular: [0, 0, 0],
-    //   radius: 10,
-    //   direction: [0, 0, 1]
-    // }
+    {
+      type: 0,
+      position: { x: -4, y: 4, z: 4 },
+      ambiant: [0.8, 0.6, 1],
+      diffuse: [0.6, 0.5, 0.8],
+      specular: [0.8, 0.7, 1],
+      brillance: 100,
+      radius: 10,
+      direction: [0, 0, 1],
+    },
   ],
-  mouse: ['drag', 'wheel'],
+  mouse: ["drag", "wheel"],
   postprocess: {
-    effects: ['blur', 'dof', 'bloom', 'fxaa', 'gamma', 'compose'],
+    effects: [
+      "glitch",
+      "kuwahara",
+      "fxaa",
+      "blur",
+      "gamma",
+      "dof",
+      "bloom",
+      "compose",
+    ],
     useDepth: true,
   },
   canvas: {

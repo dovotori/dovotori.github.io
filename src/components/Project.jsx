@@ -1,16 +1,16 @@
-import React, { useLayoutEffect } from 'react';
-import styled from 'styled-components';
+import React, { useLayoutEffect } from "react";
+import styled from "styled-components";
 
-import ButtonBack from './ButtonBack';
-import Bloc from './Bloc';
-import TypingMessage from './TypingMessage';
-import ProjectImage from './ProjectImage';
-import { Title } from '../themes/styled';
-import Canvas from './Canvas';
-import useFetchHtml from '../hooks/useFetchHtml';
-import useFetchJs from '../hooks/useFetchJs';
-import useFetchAssets from '../hooks/useFetchAssets';
-import { getHtmlPath } from '../utils';
+import ButtonBack from "./ButtonBack";
+import Bloc from "./Bloc";
+import TypingMessage from "./TypingMessage";
+import ProjectImage from "./ProjectImage";
+import { Title } from "../themes/styled";
+import Canvas from "./Canvas";
+import useFetchHtml from "../hooks/useFetchHtml";
+import useFetchJs from "../hooks/useFetchJs";
+import useFetchAssets from "../hooks/useFetchAssets";
+import { getHtmlPath } from "../utils";
 
 const TEXT_WIDTH = 400;
 
@@ -86,7 +86,7 @@ const Date = styled.p`
   margin: 0;
   padding: 0.4em 10px;
   color: ${(p) => p.theme.getColor};
- ${(p) => p.theme.monospace}
+  ${(p) => p.theme.monospace}
 `;
 
 const StyledCanvas = styled(Canvas)`
@@ -119,25 +119,45 @@ const Project = ({
   colorType,
   canvas,
   sources,
-  html: hasHtml
+  html: hasHtml,
 }) => {
   const pixelRatio = window.devicePixelRatio;
 
   const { pending: pendingHtml, value: html, error: errorHtml } = useFetchHtml(
-    getHtmlPath(slug), hasHtml
+    getHtmlPath(slug),
+    hasHtml
   );
 
-  const { pending: pendingJs, value: js, error: errorJs } = useFetchJs(
-    slug
-  );
+  const { pending: pendingJs, value: js, error: errorJs } = useFetchJs(slug);
 
-  const { pending: pendingAssets, value: assets, error: errorAssets } = useFetchAssets(sources);
+  const {
+    pending: pendingAssets,
+    value: assets,
+    error: errorAssets,
+  } = useFetchAssets(sources);
 
   useLayoutEffect(() => {
-    if (!pendingAssets && !errorAssets && !pendingHtml && !errorHtml && !pendingJs && !errorJs && js) {
+    if (
+      !pendingAssets &&
+      !errorAssets &&
+      !pendingHtml &&
+      !errorHtml &&
+      !pendingJs &&
+      !errorJs &&
+      js
+    ) {
       js.default(assets);
     }
-  }, [pendingAssets, errorAssets, assets, pendingHtml, errorHtml, pendingJs, js, errorJs]);
+  }, [
+    pendingAssets,
+    errorAssets,
+    assets,
+    pendingHtml,
+    errorHtml,
+    pendingJs,
+    js,
+    errorJs,
+  ]);
 
   return (
     <StyledProject>
@@ -151,17 +171,21 @@ const Project = ({
           {date && <Date colorType={colorType}>{date}</Date>}
           {description && (
             <Description>
-              <Text>{description}</Text>
+              {Array.isArray(description) ? (
+                description.map((text) => <Text key={text}>{text}</Text>)
+              ) : (
+                <Text>{description}</Text>
+              )}
             </Description>
           )}
-          {html && (
-            <Html dangerouslySetInnerHTML={{ __html: html }} />
-          )}
+          {html && <Html dangerouslySetInnerHTML={{ __html: html }} />}
         </WrapTexte>
         {images && (
           <ImagesList>
             <Images>
-              {Array(images).fill().map((_, idx) => idx)
+              {Array(images)
+                .fill()
+                .map((_, idx) => idx)
                 .map((idx) => (
                   <ProjectImage
                     key={`image-${slug}-${idx}`}

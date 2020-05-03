@@ -1,4 +1,4 @@
-import Objet from '../gl/ObjetObj';
+import Objet from "../gl/ObjetObj";
 
 export default class {
   constructor(gl, objets, materials = null) {
@@ -7,7 +7,7 @@ export default class {
       this.objets[name] = new Objet(
         gl,
         objets[name],
-        materials && materials[name],
+        materials && materials[name]
       );
     });
   }

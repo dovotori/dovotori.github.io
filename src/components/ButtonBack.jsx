@@ -1,10 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
+import React from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { connect } from "react-redux";
 
-import { ReactComponent as BackArrow } from 'Assets/svg/arrow.svg';
-import useHover from '../hooks/useHover';
+import { ReactComponent as BackArrow } from "assets/svg/arrow.svg";
+import useHover from "../hooks/useHover";
 
 const LINK = styled(Link)`
   position: relative;
@@ -12,8 +12,6 @@ const LINK = styled(Link)`
   width: calc(100% - 20px);
   margin: 2em auto;
   padding: 1em 10px;
-  background-color: ${(p) => (p.isFocus ? p.theme.backgroundHighlight : p.theme.background)};
-  transition: background-color 200ms ease-out;
   border: solid 1px ${(p) => p.theme.getColor};
   box-shadow: 2px 2px 0 ${(p) => p.theme.getColor};
   max-width: 400px;
@@ -39,7 +37,7 @@ const Fill = styled.div`
   transition: transform 300ms ${(p) => p.theme.elastic};
   background: ${(p) => p.theme.backgroundHighlight};
   transform-origin: 100% 0;
-  transform: ${(p) => (p.isFocus ? 'none' : 'scale(0, 1)')};
+  transform: ${(p) => (p.isFocus ? "none" : "scale(0, 1)")};
 `;
 
 const Span = styled.span`
@@ -53,13 +51,11 @@ const Span = styled.span`
   ${(p) => p.theme.monospace}
 `;
 
-const ButtonBack = ({
-  to, className, colorType, text,
-}) => {
+const ButtonBack = ({ to, className, colorType, text }) => {
   const [hoverRef, isHovered] = useHover();
   return (
     <LINK
-      to={to || '/'}
+      to={to || "/"}
       className={className}
       isFocus={isHovered}
       colorType={colorType}

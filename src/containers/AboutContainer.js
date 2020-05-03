@@ -1,6 +1,6 @@
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
-import About from '../components/About';
+import About from "../components/About";
 
 const mapStateToProps = (state) => ({
   hello: state.content.hello,

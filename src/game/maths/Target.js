@@ -1,8 +1,8 @@
 export default class {
-  constructor(value = 0, sampling) {
+  constructor(value = 0, sampling = 0.04) {
     this.value = value;
     this.target = value;
-    this.sampling = sampling || 0.04;
+    this.sampling = sampling;
   }
 
   update() {

@@ -1,11 +1,12 @@
+import { attributeColors, varyingColors } from './utils/';
+
 import {
-  attributeColors,
-  varyingColors,
   uniformLights,
-  addLights,
+  addLightLocations,
   funcLightsColor,
-  funcShadow,
-} from './utils';
+} from './utils/light';
+
+import { funcShadow} from './utils/shadow';
 
 const vertex = `
 attribute vec3 position;
@@ -103,5 +104,5 @@ export default {
     'normalmatrix',
     'posEye',
     'resolution',
-  ].concat(addLights()),
+  ].concat(addLightLocations()),
 };

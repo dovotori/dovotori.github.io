@@ -1,8 +1,12 @@
-import { combineReducers } from 'redux';
-import device from './device';
-import content from './content';
+import device from "./device";
+import content from "./content";
 
-export default combineReducers({
-  content,
-  device,
-});
+const rootReducer = (state = {}, action) => {
+  const deviceState = device(state.device, action);
+  return {
+    device: deviceState,
+    content: content(state.content, action, { device: deviceState }),
+  };
+};
+
+export default rootReducer;

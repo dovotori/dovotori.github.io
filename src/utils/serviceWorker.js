@@ -1,10 +1,10 @@
-window.self.addEventListener('install', (event) => {
+window.self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open('v1').then((cache) => cache.addAll(['/', '/index.html'])),
+    caches.open("v1").then((cache) => cache.addAll(["/", "/index.html"]))
   );
 });
 
-window.self.addEventListener('fetch', (event) => {
+window.self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
       // caches.match() always resolves
@@ -19,12 +19,12 @@ window.self.addEventListener('fetch', (event) => {
           // and serve second one
           const responseClone = response2.clone();
 
-          caches.open('v1').then((cache) => {
+          caches.open("v1").then((cache) => {
             cache.put(event.request, responseClone);
           });
           return response2;
         })
-        .catch(() => caches.match('./index.html'));
-    }),
+        .catch(() => caches.match("./index.html"));
+    })
   );
 });

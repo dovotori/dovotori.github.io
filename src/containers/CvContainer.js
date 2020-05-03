@@ -1,6 +1,6 @@
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
-import Cv from '../components/Cv';
+import Cv from "../components/Cv";
 
 const mapStateToProps = (state) => ({
   jobs: state.content.cv.jobs,
@@ -8,7 +8,7 @@ const mapStateToProps = (state) => ({
   skills: state.content.cv.skills,
   chart: state.content.cv.chart,
   hobbies: state.content.cv.hobbies,
-  isTouchDevice: state.device.isTouch
+  isTouchDevice: state.device.isTouch,
 });
 
 export default connect(mapStateToProps)(Cv);

@@ -1,9 +1,10 @@
 import {
   uniformLights,
-  addLights,
+  addLightLocations,
   funcLightAttenuation,
   funcLightConeAttenuation,
-} from '../utils';
+} from '../utils/light';
+
 import vertex from './basicVertex';
 
 const fragment = `
@@ -59,6 +60,6 @@ export default {
   fragment,
   attributes: ['position', 'texture'],
   uniforms: ['flipY', 'depthMap', 'normalMap', 'positionMap'].concat(
-    addLights(),
+    addLightLocations(),
   ),
 };

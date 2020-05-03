@@ -19,7 +19,7 @@ export default class {
     this.gl.bufferData(
       this.gl.ELEMENT_ARRAY_BUFFER,
       new Uint16Array(indices),
-      this.modeCalcul,
+      this.modeCalcul
     );
   }
 
@@ -29,7 +29,7 @@ export default class {
     this.gl.bufferData(
       this.gl.ARRAY_BUFFER,
       new Float32Array(points),
-      this.modeCalcul,
+      this.modeCalcul
     );
   }
 
@@ -43,7 +43,7 @@ export default class {
       this.gl.FLOAT,
       false,
       0,
-      0,
+      0
     );
   }
 
@@ -53,7 +53,7 @@ export default class {
       this.modeDessin,
       this.objet.indice.count,
       this.gl.UNSIGNED_SHORT,
-      0,
+      0
     );
     this.end();
   }

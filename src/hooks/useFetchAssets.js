@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { parseCsv } from '../utils';
+import { useEffect, useState } from "react";
+import { parseCsv } from "../utils";
 
 const useFetchAssets = (sources) => {
   const [pending, setPending] = useState(false);
@@ -16,9 +16,9 @@ const useFetchAssets = (sources) => {
           const data = await fetch(path);
           const text = await data.text();
           switch (type) {
-            case 'json':
+            case "json":
               return { name, data: JSON.parse(text) };
-            case 'csv':
+            case "csv":
               return { name, data: parseCsv(text) };
 
             default:
@@ -26,7 +26,9 @@ const useFetchAssets = (sources) => {
           }
         });
         const assets = await Promise.all(promesses);
-        setValue(assets.reduce((acc, curr) => ({ ...acc, [curr.name]: curr.data }), {}));
+        setValue(
+          assets.reduce((acc, curr) => ({ ...acc, [curr.name]: curr.data }), {})
+        );
       } catch (e) {
         setError(true);
       }

@@ -1,17 +1,15 @@
-import React, {
-  useEffect, useCallback, useState, useMemo,
-} from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { useInView } from 'react-intersection-observer';
+import React, { useEffect, useCallback, useState, useMemo } from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { useInView } from "react-intersection-observer";
 
-import { ReactComponent as PlusIcon } from 'Assets/svg/plus.svg';
-import LazyImage from './LazyImage';
-import { getTeaserPath, getColorType } from '../utils';
-import Loader from './Loader';
+import { ReactComponent as PlusIcon } from "assets/svg/plus.svg";
+import LazyImage from "./LazyImage";
+import { getTeaserPath, getColorType } from "../utils";
+import Loader from "./Loader";
 
 const StyledLink = styled(Link).attrs({
-  className: 'teaser',
+  className: "teaser",
 })`
   position: relative;
   overflow: hidden;
@@ -21,7 +19,7 @@ const StyledLink = styled(Link).attrs({
   height: 150px;
   opacity: ${(p) => p.levelOpacity};
   box-shadow: 0 0 1em ${(p) => p.theme.backgroundHighlight};
-  transform: ${(p) => (p.isVisible ? 'none' : 'translateY(20%)')};
+  transform: ${(p) => (p.isVisible ? "none" : "translateY(20%)")};
   transition: opacity 1s ${(p) => p.theme.elastic},
     transform 1s ${(p) => p.theme.elastic};
 
@@ -31,7 +29,7 @@ const StyledLink = styled(Link).attrs({
 
 const StyledLazyImage = styled(LazyImage)`
   width: 100%;
-  transform: ${(p) => (p.isFocus ? 'scale(1.1)' : 'none')};
+  transform: ${(p) => (p.isFocus ? "scale(1.1)" : "none")};
   transition: transform 5000ms ${(p) => p.theme.elastic};
   height: 100%;
   img {
@@ -80,12 +78,13 @@ const Teaser = ({
 
   const onEnter = useCallback(() => setIsHovered(true), [setIsHovered]);
   const onLeave = useCallback(() => setIsHovered(false), [setIsHovered]);
-  useEffect(() => setCurrentHover(isHovered ? slug : ''), [isHovered]);
+  useEffect(() => setCurrentHover(isHovered ? slug : ""), [isHovered]);
 
   const opacity = useMemo(() => {
     if (!inView) {
       return 0;
-    } if (isTouchDevice || currentHover === slug || currentHover === '') {
+    }
+    if (isTouchDevice || currentHover === slug || currentHover === "") {
       return 1;
     }
     return 0.5;

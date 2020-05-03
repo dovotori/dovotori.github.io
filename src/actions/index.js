@@ -1,4 +1,4 @@
-import * as deviceActions from './device';
+import * as deviceActions from "./device";
 
 export default {
   deviceActions,

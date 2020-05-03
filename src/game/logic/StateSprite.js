@@ -8,7 +8,10 @@ export default class {
     this.lastFrame = null;
     this.sprite = {
       uv: {
-        x: 0, y: 0, w: 1, h: 1,
+        x: 0,
+        y: 0,
+        w: 1,
+        h: 1,
       },
       size: { w: 1, h: 1 },
     };
@@ -130,7 +133,10 @@ export default class {
     px = px !== null ? px * this.scale : null;
     py = py !== null ? py * this.scale : null;
     return {
-      w, h, px, py,
+      w,
+      h,
+      px,
+      py,
     };
   }
 

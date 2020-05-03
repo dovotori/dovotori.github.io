@@ -1,4 +1,4 @@
-import Vec3 from './Vec3';
+import Vec3 from "./Vec3";
 
 class Mat3 {
   constructor() {
@@ -90,7 +90,7 @@ class Mat3 {
       }
       this.empilement -= 1;
     } else {
-      console.error('pop de trop');
+      console.error("pop de trop");
     }
     return this;
   }
@@ -120,9 +120,9 @@ class Mat3 {
     const copie = new Array(9);
     const det = this.getDeterminant();
 
-    if (Math.abs(det) < 0.0005) {
+    if (det === 0) {
       this.identity();
-      console.error('Inversement impossible de la matrice');
+      console.error("Inversement impossible de la matrice");
       return null;
     }
 
@@ -146,9 +146,9 @@ class Mat3 {
 
   getDeterminant() {
     return (
-      this.d[0] * (this.d[4] * this.d[8] - this.d[7] * this.d[5])
-      + this.d[1] * (this.d[5] * this.d[6] - this.d[3] * this.d[8])
-      + this.d[2] * (this.d[3] * this.d[7] - this.d[6] * this.d[4])
+      this.d[0] * (this.d[4] * this.d[8] - this.d[7] * this.d[5]) +
+      this.d[1] * (this.d[5] * this.d[6] - this.d[3] * this.d[8]) +
+      this.d[2] * (this.d[3] * this.d[7] - this.d[6] * this.d[4])
     );
   }
 
@@ -159,17 +159,26 @@ class Mat3 {
     const axe = new Vec3(x, y, z);
     axe.normalise();
 
-    rotation.d[0] = axe.x * axe.x * (1 - Math.cos(newAngle)) + Math.cos(newAngle);
-    rotation.d[1] = axe.x * axe.y * (1 - Math.cos(newAngle)) - axe.z * Math.sin(newAngle);
-    rotation.d[2] = axe.x * axe.z * (1 - Math.cos(newAngle)) + axe.y * Math.sin(newAngle);
+    rotation.d[0] =
+      axe.x * axe.x * (1 - Math.cos(newAngle)) + Math.cos(newAngle);
+    rotation.d[1] =
+      axe.x * axe.y * (1 - Math.cos(newAngle)) - axe.z * Math.sin(newAngle);
+    rotation.d[2] =
+      axe.x * axe.z * (1 - Math.cos(newAngle)) + axe.y * Math.sin(newAngle);
 
-    rotation.d[3] = axe.x * axe.y * (1 - Math.cos(newAngle)) + axe.z * Math.sin(newAngle);
-    rotation.d[4] = axe.y * axe.y * (1 - Math.cos(newAngle)) + Math.cos(newAngle);
-    rotation.d[5] = axe.y * axe.z * (1 - Math.cos(newAngle)) - axe.x * Math.sin(newAngle);
+    rotation.d[3] =
+      axe.x * axe.y * (1 - Math.cos(newAngle)) + axe.z * Math.sin(newAngle);
+    rotation.d[4] =
+      axe.y * axe.y * (1 - Math.cos(newAngle)) + Math.cos(newAngle);
+    rotation.d[5] =
+      axe.y * axe.z * (1 - Math.cos(newAngle)) - axe.x * Math.sin(newAngle);
 
-    rotation.d[6] = axe.x * axe.z * (1 - Math.cos(newAngle)) - axe.y * Math.sin(newAngle);
-    rotation.d[7] = axe.y * axe.z * (1 - Math.cos(newAngle)) + axe.x * Math.sin(newAngle);
-    rotation.d[8] = axe.z * axe.z * (1 - Math.cos(newAngle)) + Math.cos(newAngle);
+    rotation.d[6] =
+      axe.x * axe.z * (1 - Math.cos(newAngle)) - axe.y * Math.sin(newAngle);
+    rotation.d[7] =
+      axe.y * axe.z * (1 - Math.cos(newAngle)) + axe.x * Math.sin(newAngle);
+    rotation.d[8] =
+      axe.z * axe.z * (1 - Math.cos(newAngle)) + Math.cos(newAngle);
 
     this.multiply(rotation);
     return this;
