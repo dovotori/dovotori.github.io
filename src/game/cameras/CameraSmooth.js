@@ -1,5 +1,5 @@
-import Camera from './CameraCoordinatesConversion';
-import { Target } from '../geometry';
+import Camera from "./CameraCoordinatesConversion";
+import { Target } from "../maths";
 
 export default class extends Camera {
   constructor(options) {
@@ -17,19 +17,19 @@ export default class extends Camera {
     this.targetX.update();
 
     this.position.set(
-      this.options.position.x
-        + this.targetX.get()
-        + Math.sin(this.rotationX.get())
-          * (this.options.position.z * this.zoomZ.get()),
+      this.options.position.x +
+        this.targetX.get() +
+        Math.sin(this.rotationX.get()) *
+          (this.options.position.z * this.zoomZ.get()),
       this.options.position.y,
-      Math.cos(this.rotationX.get())
-        * (this.options.position.z * this.zoomZ.get()),
+      Math.cos(this.rotationX.get()) *
+        (this.options.position.z * this.zoomZ.get())
     );
 
     this.target.set(
       this.options.target.x, // + this.targetX.get(),
       this.options.target.y,
-      this.options.target.z,
+      this.options.target.z
     );
   }
 

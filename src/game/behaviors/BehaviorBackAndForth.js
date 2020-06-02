@@ -1,4 +1,4 @@
-import Behavior from './BehaviorGravity';
+import Behavior from "./BehaviorGravity";
 
 export default class extends Behavior {
   updateSpeed() {
@@ -10,7 +10,7 @@ export default class extends Behavior {
     }
     if (this.isCollision.bottom) {
       this.speed.addX(
-        (this.inverseSprite ? -1 : 1) * this.constants.physics.run,
+        (this.inverseSprite ? -1 : 1) * this.constants.physics.run
       );
     }
   }

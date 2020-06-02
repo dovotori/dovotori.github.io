@@ -1,14 +1,15 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import Linkedin from 'Assets/svg/linkedin.svg';
-import Gitlab from 'Assets/svg/gitlab.svg';
-import QuoteIcon from 'Assets/svg/quote.svg';
-import CvContainer from '../containers/CvContainer';
-import ButtonBack from './ButtonBack';
-import TypingMessage from './TypingMessage';
-import Bloc from './Bloc';
-import { Title } from '../themes/styled';
+import { ReactComponent as Linkedin } from "Assets/svg/cv/linkedin.svg";
+import { ReactComponent as Gitlab } from "Assets/svg/cv/gitlab.svg";
+import { ReactComponent as QuoteIcon } from "Assets/svg/quote2.svg";
+import CvContainer from "../containers/CvContainer";
+import ButtonBack from "./ButtonBack";
+import Button from "./Button";
+import TypingMessage from "./TypingMessage";
+import Bloc from "./Bloc";
+import { Title } from "../themes/styled";
 
 const Links = styled.div`
   margin: 4em 0;
@@ -40,14 +41,19 @@ const Description = styled.p`
   width: 100%;
   line-height: 1.4;
   font-style: italic;
+  margin-bottom: 1em;
 `;
 
 const MarginLeft = styled.div`
-  margin: ${(p) => !p.isTouch && '0 0 0 20%'};
+  margin: ${(p) => !p.isTouch && "0 0 0 20%"};
 `;
 
 const StyledButtonBack = styled(ButtonBack)`
-  margin: ${(p) => (!p.isTouch ? '6em 0 2em' : '6em auto 2em')};
+  margin: ${(p) => (!p.isTouch ? "6em 0 2em" : "6em auto 2em")};
+`;
+
+const StyledButton = styled(Button)`
+  margin: ${(p) => (!p.isTouch ? "6em 0 2em" : "6em auto 2em")};
 `;
 
 const StyledTypingMessage = styled(TypingMessage)`
@@ -65,7 +71,7 @@ const Quote = styled.div`
   opacity: 0.5;
   top: 0;
   left: 50%;
-  display:flex;
+  display: flex;
 
   :hover svg {
     color: ${(p) => p.theme.primary};
@@ -81,15 +87,20 @@ const About = ({ hello, isTouchDevice }) => (
     <WrapContent>
       <MarginLeft isTouch={isTouchDevice}>
         <StyledTitle colorType>
-          <a href="mailto:dorian.r@openmailbox.org">
+          <a href={`mailto:${process.env.MAIL}`}>
             <Quote>
               <StyledQuoteIcon />
               <StyledQuoteIcon />
             </Quote>
           </a>
-          <StyledTypingMessage message={hello.title} />
+          <StyledTypingMessage message={hello.about} />
         </StyledTitle>
-        <Description>{hello.text}</Description>
+        {hello.description.map((text) => (
+          <Description>{text}</Description>
+        ))}
+      </MarginLeft>
+      <CvContainer />
+      <MarginLeft isTouch={isTouchDevice}>
         <Links>
           <a href="https://gitlab.com/dovotori">
             <Gitlab />
@@ -99,9 +110,13 @@ const About = ({ hello, isTouchDevice }) => (
           </a>
         </Links>
       </MarginLeft>
-      <CvContainer />
-
       <MarginLeft isTouch={isTouchDevice}>
+        <StyledButton
+          to={`mailto:${process.env.MAIL}`}
+          colorType
+          isTouch={isTouchDevice}
+          text={hello.contact}
+        />
         <StyledButtonBack colorType isTouch={isTouchDevice} />
       </MarginLeft>
     </WrapContent>

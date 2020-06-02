@@ -1,14 +1,16 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useLayoutEffect } from "react";
+import styled from "styled-components";
 
-import ButtonBack from './ButtonBack';
-import Bloc from './Bloc';
-import TypingMessage from './TypingMessage';
-import ProjectImage from './ProjectImage';
-import { Title } from '../themes/styled';
-import Canvas from './Canvas';
-import useFetchHtml from '../hooks/useFetchHtml';
-import { getHtmlPath } from '../utils';
+import ButtonBack from "./ButtonBack";
+import Bloc from "./Bloc";
+import TypingMessage from "./TypingMessage";
+import ProjectImage from "./ProjectImage";
+import { Title } from "../themes/styled";
+import Canvas from "./Canvas";
+import useFetchHtml from "../hooks/useFetchHtml";
+import useFetchJs from "../hooks/useFetchJs";
+import useFetchAssets from "../hooks/useFetchAssets";
+import { getHtmlPath } from "../utils";
 
 const TEXT_WIDTH = 400;
 
@@ -81,12 +83,10 @@ const Images = styled.div`
 const Date = styled.p`
   text-align: left;
   display: inline-block;
-  font-size: 0.7em;
-  letter-spacing: 0.4em;
   margin: 0;
   padding: 0.4em 10px;
   color: ${(p) => p.theme.getColor};
-  font-family: monospace;
+  ${(p) => p.theme.monospace}
 `;
 
 const StyledCanvas = styled(Canvas)`
@@ -105,45 +105,87 @@ const StyledCanvas = styled(Canvas)`
   }
 `;
 
+const StyledTitle = styled(Title)`
+  margin: 1em 0;
+  padding: 0 10px;
+`;
+
 const Project = ({
   slug,
   title,
   description,
-  category,
   images,
   date,
   colorType,
   canvas,
+  sources,
+  html: hasHtml,
 }) => {
+  const pixelRatio = window.devicePixelRatio;
+
   const { pending: pendingHtml, value: html, error: errorHtml } = useFetchHtml(
     getHtmlPath(slug),
-    category,
+    hasHtml
   );
-  const pixelRatio = window.devicePixelRatio;
+
+  const { pending: pendingJs, value: js, error: errorJs } = useFetchJs(slug);
+
+  const {
+    pending: pendingAssets,
+    value: assets,
+    error: errorAssets,
+  } = useFetchAssets(sources);
+
+  useLayoutEffect(() => {
+    if (
+      !pendingAssets &&
+      !errorAssets &&
+      !pendingHtml &&
+      !errorHtml &&
+      !pendingJs &&
+      !errorJs &&
+      js
+    ) {
+      js.default(assets);
+    }
+  }, [
+    pendingAssets,
+    errorAssets,
+    assets,
+    pendingHtml,
+    errorHtml,
+    pendingJs,
+    js,
+    errorJs,
+  ]);
 
   return (
     <StyledProject>
       <WrapContent>
         <WrapTexte>
           {title && (
-            <Title colorType={colorType}>
+            <StyledTitle colorType={colorType}>
               <TypingMessage message={title} />
-            </Title>
+            </StyledTitle>
           )}
           {date && <Date colorType={colorType}>{date}</Date>}
           {description && (
             <Description>
-              <Text>{description}</Text>
+              {Array.isArray(description) ? (
+                description.map((text) => <Text key={text}>{text}</Text>)
+              ) : (
+                <Text>{description}</Text>
+              )}
             </Description>
           )}
-          {html !== null && !pendingHtml && !errorHtml && (
-            <Html dangerouslySetInnerHTML={{ __html: html }} />
-          )}
+          {html && <Html dangerouslySetInnerHTML={{ __html: html }} />}
         </WrapTexte>
         {images && (
           <ImagesList>
             <Images>
-              {Array(images).fill().map((_, idx) => idx)
+              {Array(images)
+                .fill()
+                .map((_, idx) => idx)
                 .map((idx) => (
                   <ProjectImage
                     key={`image-${slug}-${idx}`}

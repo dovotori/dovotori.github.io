@@ -1,12 +1,12 @@
-import React from 'react';
-import { Route, Router, Switch } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
+import React from "react";
+import { Route, Router, Switch } from "react-router-dom";
+import { createBrowserHistory } from "history";
 
-import TransitionRoute from './TransitionRoute';
-import FooterContainer from '../containers/FooterContainer';
-import ProjectNavigationContainer from '../containers/ProjectNavigationContainer';
-import routes from '../constants/routes';
-import { shouldNotReload } from '../utils';
+import TransitionRoute from "./TransitionRoute";
+import FooterContainer from "../containers/FooterContainer";
+import ProjectNavigationContainer from "../containers/ProjectNavigationContainer";
+import routes from "../constants/routes";
+import { shouldNotReload } from "../utils";
 
 const history = createBrowserHistory();
 
@@ -29,7 +29,7 @@ const Routes = ({ isTouchDevice }) => (
   <Router history={history}>
     <>
       <Switch>
-        <Route path={['/about']} exact component={null} />
+        <Route path={["/about"]} exact component={null} />
         <Route
           path="/project/:slug"
           exact

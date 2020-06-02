@@ -1,5 +1,5 @@
-import { Mat4, Vec3 } from '../geometry';
-import Objectif from '../gl/Objectif';
+import { Mat4, Vec3 } from "../maths";
+import Objectif from "../gl/Objectif";
 
 export default class extends Objectif {
   constructor(config) {
@@ -42,7 +42,7 @@ export default class extends Objectif {
 
       this.position.getX(),
       Math.sin(time * 0.02) * (2.0 + offset),
-      this.position.getZ(),
+      this.position.getZ()
     );
     this.lookAt();
   }

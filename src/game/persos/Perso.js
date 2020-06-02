@@ -1,6 +1,6 @@
-import StateSprite from '../logic/StateSprite';
-import MeshSprite from '../meshes/MeshSprite';
-import { Vec3 } from '../geometry';
+import StateSprite from "../logic/StateSprite";
+import MeshSprite from "../meshes/MeshSprite";
+import { Vec3 } from "../maths";
 
 export default class extends MeshSprite {
   constructor({ constants, sprites, viewBox }) {
@@ -22,9 +22,7 @@ export default class extends MeshSprite {
   }
 
   render(program, texture, objet) {
-    const {
-      w, h, px, py,
-    } = this.stateSprite.getRelSize();
+    const { w, h, px, py } = this.stateSprite.getRelSize();
     let offsetX = 0;
     if (px !== null) {
       offsetX = this.inverseX ? -w - px : w - (w - px);
@@ -33,10 +31,10 @@ export default class extends MeshSprite {
     this.setTranslate(
       this.behavior.getX() - this.viewBox.x + offsetX,
       this.behavior.getY() - this.viewBox.y - (1 - h) + (py || 0),
-      this.behavior.getZ(),
+      this.behavior.getZ()
     );
     program.setTexture(0, texture.get());
-    program.setInt('inverseX', this.inverseX ? 1 : 0);
+    program.setInt("inverseX", this.inverseX ? 1 : 0);
     super.render(objet, program);
     this.setSprite(this.stateSprite.get());
   }
@@ -68,7 +66,7 @@ export default class extends MeshSprite {
       .set(
         this.behavior.getX() - this.viewBox.x,
         this.behavior.getY() - this.viewBox.y,
-        this.behavior.getZ(),
+        this.behavior.getZ()
       )
       .get();
   }

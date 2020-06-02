@@ -1,5 +1,5 @@
-import CollisionEndpoint from './CollisionEndpoint';
-import CollisionPairManager from './CollisionPairManager';
+import CollisionEndpoint from "./CollisionEndpoint";
+import CollisionPairManager from "./CollisionPairManager";
 
 class CollisionSweepPrune {
   static addEndpointDecroissant(liste, newMin, newMax) {
@@ -62,12 +62,12 @@ class CollisionSweepPrune {
       endpointsDecroissantsX = CollisionSweepPrune.addEndpointDecroissant(
         endpointsDecroissantsX,
         boxs[i].getMin(0),
-        boxs[i].getMax(0),
+        boxs[i].getMax(0)
       );
       endpointsDecroissantsY = CollisionSweepPrune.addEndpointDecroissant(
         endpointsDecroissantsY,
         boxs[i].getMin(1),
-        boxs[i].getMax(1),
+        boxs[i].getMax(1)
       );
     }
 
@@ -80,7 +80,7 @@ class CollisionSweepPrune {
 
   addEndPointsOnListe(
     axe,
-    newEndPoints, // array des new points en sens decroissant
+    newEndPoints // array des new points en sens decroissant
   ) {
     const e = new CollisionEndpoint();
     e.set(9999);
@@ -165,7 +165,9 @@ class CollisionSweepPrune {
   }
 
   removeBox(id) {
-    this.listeAxe = this.listeAxe.map((list) => list.filter((point) => point.ownerId !== id));
+    this.listeAxe = this.listeAxe.map((list) =>
+      list.filter((point) => point.ownerId !== id)
+    );
   }
 }
 

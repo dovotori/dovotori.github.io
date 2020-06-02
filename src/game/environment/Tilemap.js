@@ -1,9 +1,9 @@
-import Tile from './TileNormalMatrix';
+import Tile from "./TileNormalMatrix";
 
 class Tilemap {
   static setupContext(img) {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
     canvas.width = img.width;
     canvas.height = img.height;
     context.drawImage(img, 0, 0);
@@ -38,7 +38,7 @@ class Tilemap {
       this.viewBox.x,
       this.viewBox.y,
       this.viewBox.w,
-      this.viewBox.h,
+      this.viewBox.h
     );
   }
 
@@ -60,9 +60,7 @@ class Tilemap {
             x: x - this.smoothTilePos.x,
             y: y - this.smoothTilePos.y,
           };
-          const {
-            objType, pattern, scale, z,
-          } = this.sprite.colors[state];
+          const { objType, pattern, scale, z } = this.sprite.colors[state];
           this.tile.setState(pattern);
           if (scale) {
             const { w, refSize } = this.tile.getState();
@@ -71,7 +69,7 @@ class Tilemap {
             this.tile.setTranslate(
               translate.x - (centerX - 1) * 0.5,
               translate.y - (1 - scale.y),
-              z || 0,
+              z || 0
             );
           } else {
             this.tile.setTranslate(translate.x, translate.y, z || 0);
@@ -85,11 +83,13 @@ class Tilemap {
   follow(pos) {
     let offsetX = pos[0] - this.scrollBox.w;
     if (offsetX < 0) offsetX = 0;
-    if (offsetX > this.levelSize.w - this.viewBox.w) offsetX = this.levelSize.w - this.viewBox.w;
+    if (offsetX > this.levelSize.w - this.viewBox.w)
+      offsetX = this.levelSize.w - this.viewBox.w;
 
     let offsetY = pos[1] - this.scrollBox.h;
     if (offsetY < 0) offsetY = 0;
-    if (offsetY > this.levelSize.h - this.viewBox.h) offsetY = this.levelSize.h - this.viewBox.h;
+    if (offsetY > this.levelSize.h - this.viewBox.h)
+      offsetY = this.levelSize.h - this.viewBox.h;
 
     if (this.viewBox.x !== offsetX || this.viewBox.y !== offsetY) {
       this.viewBox.x = offsetX;

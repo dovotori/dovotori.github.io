@@ -6,7 +6,7 @@ COPY package.json .
 COPY package-lock.json .
 RUN npm install
 COPY ./webpack ./webpack
-COPY ./assets ./assets
+COPY ./public ./public
 COPY ./src ./src
 COPY .eslintrc .
 COPY .babelrc .

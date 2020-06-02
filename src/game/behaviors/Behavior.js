@@ -1,4 +1,4 @@
-import { Vec3 } from '../geometry';
+import { Vec3 } from "../maths";
 
 export default class {
   constructor(constants, updateState) {
@@ -7,7 +7,7 @@ export default class {
     this.position = new Vec3(
       constants.x || 0,
       constants.y || 0,
-      constants.z || 0,
+      constants.z || 0
     );
     this.status = constants.states[Object.keys(constants.states)[0]];
     this.speed = new Vec3(0, 0, 0);

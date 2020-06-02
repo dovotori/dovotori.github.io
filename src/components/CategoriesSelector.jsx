@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import React from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
-import { getColorType } from '../utils';
+import { getColorType } from "../utils";
 
 const Wrap = styled.div`
   text-align: center;
@@ -19,14 +19,16 @@ const StyledLink = styled(Link)`
   padding: 1em 2em;
   margin: 1em 0;
   opacity: ${(p) => (p.selected ? 1 : 0.5)};
-  transition: color 100ms ease-out, background-color 100ms ease-out, box-shadow 100ms ease-out;
+  transition: color 100ms ease-out, background-color 100ms ease-out,
+    box-shadow 100ms ease-out;
   color: ${(p) => (p.selected ? p.theme.background : p.theme.text)};
-  background-color: ${(p) => (p.selected ? p.theme.getColor : 'none')};
+  background-color: ${(p) => (p.selected ? p.theme.getColor : "none")};
   ${(p) => p.theme.monospace}
   ${(p) => p.theme.active}
   &:hover {
     opacity: 1;
-    box-shadow: 2px 2px 2px ${(p) => (p.selected ? 'none' : p.theme.backgroundHighlight)};
+    box-shadow: 2px 2px 2px
+      ${(p) => (p.selected ? "none" : p.theme.backgroundHighlight)};
   }
 `;
 
@@ -37,7 +39,7 @@ const CategoriesSelector = ({ selected, className, categories }) => (
       return (
         <StyledLink
           key={categories[categoryId]}
-          to={isLinkSelected ? '/' : `/category/${categories[categoryId]}`}
+          to={isLinkSelected ? "/" : `/category/${categories[categoryId]}`}
           selected={isLinkSelected}
           colorType={getColorType(parseInt(categoryId, 10))}
         >

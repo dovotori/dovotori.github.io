@@ -1,18 +1,21 @@
-import React, { memo } from 'react';
-import styled from 'styled-components';
+import React, { memo } from "react";
+import styled from "styled-components";
 
-import Bloc from './Bloc';
-import Signature from './Signature';
-import TeasersListContainer from '../containers/TeasersListContainer';
-import CategoriesSelectorContainer from '../containers/CategoriesSelectorContainer';
+import Bloc from "./Bloc";
+import SignatureContainer from "../containers/SignatureContainer";
+import TeasersListContainer from "../containers/TeasersListContainer";
+import CategoriesSelectorContainer from "../containers/CategoriesSelectorContainer";
 
 const StyledHome = styled(Bloc)`
-  margin: 10vh auto;
+  margin: 20vh auto;
+  @media (max-width: 570px) {
+    margin-top: 10vh;
+  }
 `;
 
 const Home = memo(() => (
   <StyledHome>
-    <Signature />
+    <SignatureContainer />
     <CategoriesSelectorContainer />
     <TeasersListContainer />
   </StyledHome>

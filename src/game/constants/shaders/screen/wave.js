@@ -9,7 +9,7 @@ uniform float radius;
 uniform vec2 center; // coor texture 0 à 1
 
 void main() {
-	float w = center.x - (fragTexture.x);
+	float w = center.x - fragTexture.x;
   float h = center.y - fragTexture.y;
 	float distanceFromCenter = sqrt(w * w + h * h);
 	float sinArg = distanceFromCenter * 1.0 - time * 1.0;

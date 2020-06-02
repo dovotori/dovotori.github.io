@@ -1,11 +1,5 @@
 import vertex from './basicVertex';
-
-const fragment = `
-precision mediump float;
-void main() {
-  gl_FragColor = vec4(1.0);
-}
-`;
+import fragment from './basicFrag';
 
 export default {
   vertex,

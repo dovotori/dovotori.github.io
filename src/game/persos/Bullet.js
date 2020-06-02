@@ -1,12 +1,13 @@
-import PersoCollision from './PersoCollision';
-import Behavior from '../behaviors/BehaviorBullet';
+import PersoCollision from "./PersoCollision";
+import Behavior from "../behaviors/BehaviorBullet";
 
 export default class extends PersoCollision {
-  constructor({
-    id, constants, sprites, viewBox, tileSize, startPos, goLeft,
-  }) {
+  constructor({ id, constants, sprites, viewBox, tileSize, startPos, goLeft }) {
     super({
-      id, constants, sprites, viewBox,
+      id,
+      constants,
+      sprites,
+      viewBox,
     });
     this.behavior = new Behavior(constants, null, tileSize, startPos, goLeft);
     this.inverseX = goLeft;

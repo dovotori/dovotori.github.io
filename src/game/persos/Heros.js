@@ -1,13 +1,14 @@
-import PersoCollision from './PersoCollision';
-import { Vec3 } from '../geometry';
-import Behavior from '../behaviors/BehaviorInteraction';
+import PersoCollision from "./PersoCollision";
+import { Vec3 } from "../maths";
+import Behavior from "../behaviors/BehaviorInteraction";
 
 export default class extends PersoCollision {
-  constructor({
-    id, constants, sprites, viewBox, tileSize,
-  }) {
+  constructor({ id, constants, sprites, viewBox, tileSize }) {
     super({
-      id, constants, sprites, viewBox,
+      id,
+      constants,
+      sprites,
+      viewBox,
     });
     this.behavior = new Behavior(constants, this.updateState, tileSize);
     this.offsetAiming = this.getAimingOffsetVector();
@@ -19,7 +20,7 @@ export default class extends PersoCollision {
     super.update(map, tileSize);
     this.aimingPos.equal(this.behavior.getPosition());
     this.aimingPos.addX(
-      this.inverseX ? this.offsetAiming.invX : this.offsetAiming.x,
+      this.inverseX ? this.offsetAiming.invX : this.offsetAiming.x
     );
     this.aimingPos.addY(this.offsetAiming.y);
   }
@@ -49,11 +50,11 @@ export default class extends PersoCollision {
   getAimingPosition() {
     const { h } = this.stateSprite.getRelSize();
     return new Vec3(
-      this.behavior.getX()
-        - this.viewBox.x
-        + (this.inverseX ? this.offsetAiming.invX : this.offsetAiming.x),
+      this.behavior.getX() -
+        this.viewBox.x +
+        (this.inverseX ? this.offsetAiming.invX : this.offsetAiming.x),
       this.behavior.getY() - this.viewBox.y - h + this.offsetAiming.y,
-      this.behavior.getZ(),
+      this.behavior.getZ()
     );
   }
 
@@ -63,9 +64,9 @@ export default class extends PersoCollision {
 
   getLastRunningPosition() {
     if (
-      this.behavior.getStatus() === this.constants.states.RUN
-      && this.stateSprite.isNewStep()
-      && (this.stateSprite.getStep() === 0 || this.stateSprite.getStep() === 2)
+      this.behavior.getStatus() === this.constants.states.RUN &&
+      this.stateSprite.isNewStep() &&
+      (this.stateSprite.getStep() === 0 || this.stateSprite.getStep() === 2)
     ) {
       return this.behavior.getPosition();
     }

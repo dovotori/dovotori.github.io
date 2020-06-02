@@ -1,11 +1,11 @@
-import { Vec3, Mat4 } from '../geometry';
+import { Vec3, Mat4 } from "../maths";
 
 export default class {
   constructor(config) {
     this.position = new Vec3(
       config.position.x,
       config.position.y,
-      config.position.z,
+      config.position.z
     );
     this.target = new Vec3(0.0, 0.0, 0.0);
     this.view = new Mat4();
@@ -23,7 +23,7 @@ export default class {
         this.target.getZ(),
         0,
         1,
-        0,
+        0
       );
   }
 

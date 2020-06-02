@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const config = require('../package.json');
 
 const port = process.env.PORT || 8080;
@@ -27,12 +28,17 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        use: {
-          loader: '@svgr/webpack',
-          options: {
-            svgo: false,
+        use: [
+          {
+            loader: '@svgr/webpack',
+            options: {
+              svgo: false,
+            },
           },
-        },
+          {
+            loader: 'url-loader'
+          }
+        ],
       },
       {
         test: /\.(jpe?g|png|gif)$/i,
@@ -47,6 +53,7 @@ module.exports = {
     },
   },
   plugins: [
+    new BundleAnalyzerPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.DefinePlugin({
@@ -54,6 +61,7 @@ module.exports = {
         NODE_ENV: JSON.stringify('developement'),
         ASSET_PATH: JSON.stringify('/assets'),
         NAME: JSON.stringify(config.name),
+        MAIL: JSON.stringify(config.author.email),
       },
     }),
     new HtmlWebpackPlugin({

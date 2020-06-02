@@ -1,12 +1,17 @@
 import React, {
-  useRef, useCallback, useState, useEffect,
-} from 'react';
+  useRef,
+  useCallback,
+  useState,
+  useEffect,
+  useLayoutEffect,
+} from "react";
 
 const ANIM_DURATION_RANGE = 30;
 const ANIM_FPS = 3000 / 60;
 
 const TypingMessage = ({ className, message }) => {
   const ref = useRef(null);
+  const wrapRef = useRef(null);
   const queue = useRef([]);
   const count = useRef(0);
   const lastFrame = useRef(new Date().getTime());
@@ -14,7 +19,7 @@ const TypingMessage = ({ className, message }) => {
   const [text, setText] = useState(message);
 
   const randomChar = useCallback(() => {
-    const chars = '!<>-_\\/[]{}—=+*^?#________';
+    const chars = "!<>-_\\/[]{}—=+*^?#________";
     return chars[Math.floor(Math.random() * chars.length)];
   }, []);
 
@@ -24,14 +29,10 @@ const TypingMessage = ({ className, message }) => {
 
     let complete = 0;
     if (milli > ANIM_FPS) {
-      let output = '';
+      let output = "";
       for (let i = 0, n = queue.current.length; i < n; i += 1) {
-        const {
-          from, to, start, end,
-        } = queue.current[i];
-        let {
-          char,
-        } = queue.current[i];
+        const { from, to, start, end } = queue.current[i];
+        let { char } = queue.current[i];
         if (count.current >= end) {
           complete += 1;
           output += to;
@@ -61,12 +62,15 @@ const TypingMessage = ({ className, message }) => {
     const length = Math.max(oldText.length, message.length);
     queue.current = [];
     for (let i = 0; i < length; i += 1) {
-      const from = oldText[i] || '';
-      const to = message[i] || '';
+      const from = oldText[i] || "";
+      const to = message[i] || "";
       const start = Math.floor(Math.random() * ANIM_DURATION_RANGE);
       const end = start + Math.floor(Math.random() * ANIM_DURATION_RANGE);
       queue.current.push({
-        from, to, start, end,
+        from,
+        to,
+        start,
+        end,
       });
     }
     cancelAnimationFrame(req.current);
@@ -75,18 +79,40 @@ const TypingMessage = ({ className, message }) => {
     req.current = requestAnimationFrame(update);
 
     return () => {
-      if (req.current) { cancelAnimationFrame(req.current); }
+      if (req.current) {
+        cancelAnimationFrame(req.current);
+      }
     };
   }, [message]);
 
-  useEffect(() => () => {
-    if (req.current) { cancelAnimationFrame(req.current); }
-  }, []);
+  useLayoutEffect(() => {
+    wrapRef.current.style.display = "inline-block";
+    wrapRef.current.style.height = `${ref.current.offsetHeight}px`;
+    ref.current.style.whiteSpace = "no-wrap";
+    ref.current.style.position = "absolute";
 
+    return () => {
+      if (ref.current) {
+        ref.current.style.whiteSpace = "auto";
+        ref.current.style.position = "inline";
+      }
+    };
+  }, [message]);
+
+  useEffect(
+    () => () => {
+      if (req.current) {
+        cancelAnimationFrame(req.current);
+      }
+    },
+    []
+  );
 
   return (
-    <span ref={ref} className={className}>
-      {text}
+    <span ref={wrapRef}>
+      <span ref={ref} className={className}>
+        {text}
+      </span>
     </span>
   );
 };

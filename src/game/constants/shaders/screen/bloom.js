@@ -9,7 +9,6 @@ uniform vec2 resolution;
 uniform float gamma;
 uniform float exposure;
 
-
 void main() {
   vec4 color;
   vec4 hdr = texture2D(textureMap, fragTexture);      

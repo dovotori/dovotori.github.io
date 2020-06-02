@@ -1,4 +1,4 @@
-import { funcPhong } from './utils';
+import { funcPhong } from './utils/light';
 
 const vertex = `
 attribute vec3 position;

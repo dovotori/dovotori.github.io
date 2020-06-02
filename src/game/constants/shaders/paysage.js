@@ -1,11 +1,12 @@
+import { attributeColors, varyingColors } from './utils/';
+
 import {
-  attributeColors,
-  varyingColors,
   uniformLights,
-  addLights,
+  addLightLocations,
   funcLightsColor,
-  funcShadow,
-} from './utils';
+} from './utils/light';
+
+import { funcShadow} from './utils/shadow';
 
 const vertex = `
 attribute vec3 position;
@@ -70,9 +71,10 @@ ${funcLightsColor}
 ${funcShadow}
 
 void main() {
+  float epsilon = 0.01; // Fix shadow acne
   float depth = gl_FragCoord.z / gl_FragCoord.w;
   vec3 color = funcLightsColor(fragAmbiant, fragDiffuse, fragSpecular, fragNormale, fragPosition);
-  float shadow = funcShadow(shadowMap, fragShadow, resolution);
+  float shadow = funcShadow(shadowMap, fragShadow, resolution, epsilon);
   gl_FragColor = vec4(color * shadow, fragOpacity);
 }
 `;
@@ -102,5 +104,5 @@ export default {
     'normalmatrix',
     'posEye',
     'resolution',
-  ].concat(addLights()),
+  ].concat(addLightLocations()),
 };

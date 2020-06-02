@@ -1,14 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import { Trail, animated } from 'react-spring/renderprops';
-import { config } from 'react-spring';
-import { connect } from 'react-redux';
+import React from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { connect } from "react-redux";
 
-import BackArrow from 'Assets/svg/arrow.svg';
-import useHover from '../hooks/useHover';
-
-const newConfig = { ...config.default, tension: 100 };
+import { ReactComponent as BackArrow } from "Assets/svg/arrow.svg";
+import useHover from "../hooks/useHover";
 
 const LINK = styled(Link)`
   position: relative;
@@ -16,8 +12,6 @@ const LINK = styled(Link)`
   width: calc(100% - 20px);
   margin: 2em auto;
   padding: 1em 10px;
-  background-color: ${(p) => (p.isFocus ? p.theme.backgroundHighlight : p.theme.background)};
-  transition: background-color 200ms ease-out;
   border: solid 1px ${(p) => p.theme.getColor};
   box-shadow: 2px 2px 0 ${(p) => p.theme.getColor};
   max-width: 400px;
@@ -32,7 +26,6 @@ const StyledBackArrow = styled(BackArrow)`
   width: auto;
   height: 0.6em;
   margin: 0 0.2em;
-  transform-style: preserve-3d;
 `;
 
 const Fill = styled.div`
@@ -44,7 +37,7 @@ const Fill = styled.div`
   transition: transform 300ms ${(p) => p.theme.elastic};
   background: ${(p) => p.theme.backgroundHighlight};
   transform-origin: 100% 0;
-  transform: ${(p) => (p.isFocus ? 'none' : 'scale(0, 1)')};
+  transform: ${(p) => (p.isFocus ? "none" : "scale(0, 1)")};
 `;
 
 const Span = styled.span`
@@ -54,37 +47,22 @@ const Span = styled.span`
   transform: translate3d(0, -50%, 0);
   display: inline-block;
   color: ${(p) => p.theme.getColor};
+  font-size: 0.8em;
   ${(p) => p.theme.monospace}
 `;
 
-const ButtonBack = ({
-  to, className, colorType, text,
-}) => {
+const ButtonBack = ({ to, className, colorType, text }) => {
   const [hoverRef, isHovered] = useHover();
   return (
     <LINK
-      to={to || '/'}
+      to={to || "/"}
       className={className}
       isFocus={isHovered}
       colorType={colorType}
       ref={hoverRef}
     >
       <Fill isFocus={isHovered} />
-      <Trail
-        native
-        reverse={isHovered}
-        initial={null}
-        items={[0, 1, 2, 3, 4, 5]}
-        from={{ opacity: 0 }}
-        to={{ opacity: isHovered ? 1 : 0 }}
-        config={newConfig}
-      >
-        {(item) => (style) => (
-          <animated.span key={item} style={style}>
-            <StyledBackArrow colorType={colorType} />
-          </animated.span>
-        )}
-      </Trail>
+      <StyledBackArrow colorType={colorType} />
       <Span colorType={colorType}>{text}</Span>
     </LINK>
   );

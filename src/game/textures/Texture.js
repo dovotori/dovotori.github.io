@@ -36,7 +36,7 @@ export default class {
       0,
       this.gl.ALPHA,
       this.gl.UNSIGNED_BYTE,
-      pixels,
+      pixels
     );
   }
 
@@ -44,22 +44,22 @@ export default class {
     this.gl.texParameteri(
       this.gl.TEXTURE_2D,
       this.gl.TEXTURE_MAG_FILTER,
-      this.filter,
+      this.filter
     );
     this.gl.texParameteri(
       this.gl.TEXTURE_2D,
       this.gl.TEXTURE_MIN_FILTER,
-      this.filter,
+      this.filter
     );
     this.gl.texParameteri(
       this.gl.TEXTURE_2D,
       this.gl.TEXTURE_WRAP_S,
-      this.gl.REPEAT,
+      this.gl.REPEAT
     );
     this.gl.texParameteri(
       this.gl.TEXTURE_2D,
       this.gl.TEXTURE_WRAP_T,
-      this.gl.REPEAT,
+      this.gl.REPEAT
     );
   }
 

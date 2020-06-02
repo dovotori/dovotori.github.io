@@ -1,6 +1,6 @@
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
-import Routes from '../components/Routes';
+import Routes from "../components/Routes";
 
 const mapStateToProps = (state) => ({
   isTouchDevice: state.device.isTouch,

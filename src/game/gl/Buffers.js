@@ -1,6 +1,6 @@
-import Fbo from './Fbo';
-import PostProcess from './PostProcess';
-import Screen from './Screen';
+import Fbo from "./Fbo";
+import PostProcess from "./PostProcess";
+import Screen from "./Screen";
 
 export default class {
   constructor(gl, width = 1024, height = 1024) {
@@ -14,10 +14,10 @@ export default class {
     this.screen = new Screen(this.gl);
     this.postProcess = new PostProcess(
       this.gl,
-      ['ssao', 'blurDirection'],
+      ["ssao", "blurDirection"],
       width,
       height,
-      false,
+      false
     );
     this.width = width;
     this.height = height;
@@ -30,28 +30,28 @@ export default class {
     programAlbedo,
     programDiffuse,
     lampeDepthTex,
-    lampeMatrix,
+    lampeMatrix
   ) {
     this.fboColorDepth.start();
-    program.setInt('type', 0);
+    program.setInt("type", 0);
     renderScene(program);
     this.fboColorDepth.end();
 
     this.fboNormal.start();
-    program.setInt('type', 1);
+    program.setInt("type", 1);
     renderScene(program);
     this.fboNormal.end();
 
     this.fboPosition.start();
-    program.setInt('type', 2);
+    program.setInt("type", 2);
     renderScene(program);
     this.fboPosition.end();
 
     this.fboShadow.start();
-    program.setInt('type', 3);
-    program.setTexture(0, lampeDepthTex, 'shadowMap');
-    program.setMatrix('shadowview', lampeMatrix);
-    program.setVector('resolution', [this.width, this.height]);
+    program.setInt("type", 3);
+    program.setTexture(0, lampeDepthTex, "shadowMap");
+    program.setMatrix("shadowview", lampeMatrix);
+    program.setVector("resolution", [this.width, this.height]);
     renderScene(program);
     this.fboShadow.end();
 
@@ -59,12 +59,12 @@ export default class {
     renderScene(programAlbedo);
     this.fboAlbedo.end();
 
-    programDiffuse.setTexture(0, this.getNormalTexture().get(), 'normalMap');
-    programDiffuse.setTexture(1, this.getDepthTexture().get(), 'depthMap');
+    programDiffuse.setTexture(0, this.getNormalTexture().get(), "normalMap");
+    programDiffuse.setTexture(1, this.getDepthTexture().get(), "depthMap");
     programDiffuse.setTexture(
       2,
       this.getPositionTexture().get(),
-      'positionMap',
+      "positionMap"
     );
     this.fboDiffuse.start();
     this.postProcess.renderSimple(programDiffuse);
@@ -79,7 +79,7 @@ export default class {
       this.getPositionTexture().get(),
       this.getNormalTexture().get(),
       this.getDepthTexture().get(),
-      0.02,
+      0.02
     );
     this.postProcess.setBlurPass(0.02, 2);
   }

@@ -59,13 +59,14 @@ float fbm(vec3 p) {
 }
 
 vec4 funcWatercolor(vec2 uv) {
-    vec3 inkColor = vec3(0.15, 0.25, 0.4);
-    vec4 color = texture2D(textureMap, fragTexture);
-    float f = fbm(vec3(uv, 1.0) );
-    return mix(vec4(f), color, 0.93);
+  vec3 inkColor = vec3(0.15, 0.25, 0.4);
+  vec4 color = texture2D(textureMap, fragTexture);
+  float f = fbm(vec3(uv, 1.0) );
+  return mix(vec4(f), color, 0.93);
 }
 
 void main() {
+  // mix with a sort of watercolor texture
   gl_FragColor = funcWatercolor(fragTexture);
 }
 `;

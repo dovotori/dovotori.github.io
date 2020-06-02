@@ -1,4 +1,4 @@
-import Mesh from './Mesh';
+import Mesh from "./Mesh";
 
 export default class extends Mesh {
   constructor() {
@@ -8,8 +8,8 @@ export default class extends Mesh {
 
   render(objet, program) {
     this.setProgram(program);
-    program.setInt('selected', this.selected);
-    program.setVector('color', [
+    program.setInt("selected", this.selected);
+    program.setVector("color", [
       this.color[0] / 255,
       this.color[1] / 255,
       this.color[2] / 255,

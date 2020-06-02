@@ -1,5 +1,5 @@
-import Scene from './SceneCamera';
-import Lampe from '../gl/Lampe';
+import Scene from "./SceneCamera";
+import Lampe from "../gl/Lampe";
 
 export default class extends Scene {
   constructor(gl, config, assets) {
@@ -11,7 +11,7 @@ export default class extends Scene {
         this.gl,
         this.config.lampes[i],
         config.canvas.width,
-        config.canvas.height,
+        config.canvas.height
       );
     }
   }
@@ -31,8 +31,8 @@ export default class extends Scene {
   }
 
   setLampeInfos(program) {
-    program.setVector('posEye', this.camera.getPosition());
-    program.setInt('numLights', this.config.lampes.length);
+    program.setVector("posEye", this.camera.getPosition());
+    program.setInt("numLights", this.config.lampes.length);
     for (let i = 0; i < this.config.lampes.length; i += 1) {
       const {
         type,
@@ -64,7 +64,7 @@ export default class extends Scene {
 
   computeLampesDepthTexture() {
     // for (let i = 0; i < this.config.lampes.length; i += 1) {
-    if (typeof this.renderBasiqueForShadow === 'function') {
+    if (typeof this.renderBasiqueForShadow === "function") {
       for (let i = 0; i < 1; i += 1) {
         this.lampes[i].start();
         this.renderBasiqueForShadow();

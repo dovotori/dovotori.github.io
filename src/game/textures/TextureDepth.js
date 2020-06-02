@@ -1,4 +1,4 @@
-import Texture from './Texture';
+import Texture from "./Texture";
 
 export default class extends Texture {
   create() {
@@ -11,7 +11,7 @@ export default class extends Texture {
       0,
       this.gl.DEPTH_COMPONENT,
       this.gl.UNSIGNED_SHORT,
-      null,
+      null
     );
   }
 
@@ -19,22 +19,22 @@ export default class extends Texture {
     this.gl.texParameteri(
       this.gl.TEXTURE_2D,
       this.gl.TEXTURE_MIN_FILTER,
-      this.gl.NEAREST,
+      this.gl.NEAREST
     );
     this.gl.texParameteri(
       this.gl.TEXTURE_2D,
       this.gl.TEXTURE_MAG_FILTER,
-      this.gl.NEAREST,
+      this.gl.NEAREST
     );
     this.gl.texParameteri(
       this.gl.TEXTURE_2D,
       this.gl.TEXTURE_WRAP_S,
-      this.gl.CLAMP_TO_EDGE,
+      this.gl.CLAMP_TO_EDGE
     );
     this.gl.texParameteri(
       this.gl.TEXTURE_2D,
       this.gl.TEXTURE_WRAP_T,
-      this.gl.CLAMP_TO_EDGE,
+      this.gl.CLAMP_TO_EDGE
     );
   }
 }
