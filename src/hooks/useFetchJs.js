@@ -10,7 +10,7 @@ const useFetchJs = (url) => {
       setError(false);
       setPending(true);
       try {
-        const js = await import(`assets/js/${url}.js`);
+        const js = await import(`Assets/js/${url}.js`);
         setValue(js);
       } catch (e) {
         setError(true);

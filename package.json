@@ -1,6 +1,6 @@
 {
   "name": "dovotori-site",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "React version of my portfolio website",
   "author": {
     "name": "Dorian Ratovo",
@@ -9,15 +9,15 @@
   },
   "license": "CC-BY-4.0",
   "scripts": {
-    "start": "webpack-dev-server -r dotenv/config --config webpack/dev.js",
-    "build": "webpack -r dotenv/config --config webpack/prod.js",
+    "start": "webpack-dev-server --config webpack/dev.js",
+    "build": "webpack --config webpack/prod.js",
     "lint": "npx run eslint --fix --config .eslintrc --ext .jsx,.js src/",
     "favicon": "node scripts/favicons.js",
-    "test": "jest",
+    "test": "jest --config=jest.config.js",
     "docker:build:dev": "docker build --no-cache --target client_dev --tag dovotori_client_dev:latest .",
     "docker:run:dev": "docker run --name dovotori_client_dev -p 8080:8080 -v /c/Users/Dovotori/git/portfolio/client/src:/client/src -d --rm dovotori_client_dev:latest",
     "docker:build:prod": "docker build --no-cache --target client_prod --tag dovotori_client_prod:latest .",
-    "docker:run:prod": "docker run --name dovotori_client_prod -d --rm dovotori_client_prod:latest"
+    "docker:run:prod": "docker run --name dovotori_client_prod --rm dovotori_client_prod:latest"
   },
   "engines": {
     "node": ">=12.10.0"
@@ -57,7 +57,6 @@
     "babel-eslint": "8.2.6",
     "babel-jest": "^26.0.1",
     "csv-parser": "^2.3.2",
-    "dotenv": "8.2.0",
     "eslint": "6.8.0",
     "eslint-config-airbnb": "18.0.1",
     "eslint-config-prettier": "^6.11.0",
@@ -77,15 +76,17 @@
   "main": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/dovotori/website.git"
+    "url": "git+https://gitlab.com/dovotori/dovotori.gitlab.io.git"
   },
   "keywords": [
     "dovotori",
-    "website"
+    "website",
+    "portfolio",
+    "dorian"
   ],
   "bugs": {
-    "url": "https://gitlab.com/dovotori/website/issues",
+    "url": "https://gitlab.com/dovotori/dovotori.gitlab.io/issues",
     "email": "dratovo@gmail.com"
   },
-  "homepage": "https://gitlab.com/dovotori/website#readme"
+  "homepage": "https://gitlab.com/dovotori/dovotori.gitlab.io#readme"
 }

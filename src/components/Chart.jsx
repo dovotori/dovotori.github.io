@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 
-import * as svgs from "assets/svg/cv2";
+import * as svgs from "Assets/svg/cv2";
 import { mapFromRange } from "../utils";
 import ArcWithItem from "./ArcWithItem";
 

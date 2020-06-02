@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
-import { ReactComponent as BackArrow } from "assets/svg/arrow.svg";
+import { ReactComponent as BackArrow } from "Assets/svg/arrow.svg";
 import useHover from "../hooks/useHover";
 
 const LINK = styled(Link)`

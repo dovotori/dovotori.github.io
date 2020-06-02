@@ -49,7 +49,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
-      assets: path.resolve(__dirname, '../public/'),
+      Assets: path.resolve(__dirname, '../assets/'),
     },
   },
   plugins: [
@@ -59,7 +59,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('developement'),
-        ASSET_PATH: JSON.stringify('/public'),
+        ASSET_PATH: JSON.stringify('/assets'),
         NAME: JSON.stringify(config.name),
         MAIL: JSON.stringify(config.author.email),
       },
@@ -68,7 +68,7 @@ module.exports = {
       title: config.name,
       filename: 'index.html',
       inject: 'body',
-      base: '/public',
+      base: '/assets',
       template: path.resolve(__dirname, '../src/templates/index.ejs'),
     }),
   ],
