@@ -37,6 +37,7 @@ pages:
   stage: deploy
   script:
     - mv build/ public/
+    - ls public/
   artifacts:
     paths:
       - public/
