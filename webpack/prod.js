@@ -100,7 +100,7 @@ module.exports = {
     new ServiceWorkerWebpackPlugin({
       entry: path.join(__dirname, '../src/utils/serviceWorker.js'),
     }),
-    new CopyWebpackPlugin([{ from: SRC_ASSET_PATH, to: BUILD_PATH, ignore: [ `${SRC_ASSET_PATH  }/app/*.xml`,  `${SRC_ASSET_PATH  }/app/*.json`,  `${SRC_ASSET_PATH  }/app/*.webapp`] },
+    new CopyWebpackPlugin([{ from: SRC_ASSET_PATH, to: `${BUILD_PATH}${BUILD_ASSET_PATH}`, ignore: [ `${SRC_ASSET_PATH  }/app/*.xml`,  `${SRC_ASSET_PATH  }/app/*.json`,  `${SRC_ASSET_PATH  }/app/*.webapp`] },
       { from: `${SRC_ASSET_PATH  }/app/browserconfig.xml`, to: `${BUILD_PATH  }/browserconfig.xml` },
       { from: `${SRC_ASSET_PATH  }/app/manifest.json`, to: `${BUILD_PATH  }/manifest.json` },
       { from: `${SRC_ASSET_PATH  }/app/manifest.webapp`, to: `${BUILD_PATH  }/manifest.webapp` },
