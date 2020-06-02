@@ -9,14 +9,15 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const config = require('../package.json');
 
 const BUILD_PATH = path.resolve(__dirname, '../build');
-const ASSET_PATH = process.env.ASSET_PATH || '/public';
+const SRC_ASSET_PATH = path.resolve(__dirname, '../assets');
+const BUILD_ASSET_PATH = process.env.ASSET_PATH || '/public';
 
 module.exports = {
   mode: 'production',
   entry: path.resolve(__dirname, '../src/index.jsx'),
   output: {
     path: `${BUILD_PATH}/public/js/`,
-    publicPath: `${ASSET_PATH}/js/`,
+    publicPath: `${BUILD_ASSET_PATH}/js/`,
     filename: '[name].js',
   },
   module: {
@@ -53,7 +54,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
-      Assets: path.resolve(__dirname, '../assets/'),
+      Assets: SRC_ASSET_PATH,
     },
   },
   optimization: {
@@ -77,7 +78,7 @@ module.exports = {
       title: config.name,
       filename: `${BUILD_PATH}/index.html`,
       inject: 'body',
-      base: ASSET_PATH,
+      base: BUILD_ASSET_PATH,
       template: path.resolve(__dirname, '../src/templates/index.ejs'),
       minify: {
         collapseWhitespace: true,
@@ -91,7 +92,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
-        ASSET_PATH: JSON.stringify(ASSET_PATH),
+        ASSET_PATH: JSON.stringify(BUILD_ASSET_PATH),
         NAME: JSON.stringify(config.name),
         MAIL: JSON.stringify(config.author.email),
       },
@@ -99,10 +100,10 @@ module.exports = {
     new ServiceWorkerWebpackPlugin({
       entry: path.join(__dirname, '../src/utils/serviceWorker.js'),
     }),
-    new CopyWebpackPlugin([{ from: './public/', to: '../', ignore: ['./public/app/*.xml', './public/app/*.json', './public/app/*.webapp'] },
-      { from: './public/app/browserconfig.xml', to: '../../browserconfig.xml' },
-      { from: './public/app/manifest.json', to: '../../manifest.json' },
-      { from: './public/app/manifest.webapp', to: '../../manifest.webapp' },
+    new CopyWebpackPlugin([{ from: SRC_ASSET_PATH, to: BUILD_PATH, ignore: [ `${SRC_ASSET_PATH  }/app/*.xml`,  `${SRC_ASSET_PATH  }/app/*.json`,  `${SRC_ASSET_PATH  }/app/*.webapp`] },
+      { from: `${SRC_ASSET_PATH  }/app/browserconfig.xml`, to: `${BUILD_PATH  }/browserconfig.xml` },
+      { from: `${SRC_ASSET_PATH  }/app/manifest.json`, to: `${BUILD_PATH  }/manifest.json` },
+      { from: `${SRC_ASSET_PATH  }/app/manifest.webapp`, to: `${BUILD_PATH  }/manifest.webapp` },
     ]),
     new CompressionPlugin({
       test: /\.(js|css|svg|jpg|png|html)$/,
