@@ -2,7 +2,7 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 import { Link } from "react-router-dom";
 
-// import { ReactComponent as Sumo } from 'assets/svg/sumo.svg';
+// import { ReactComponent as Sumo } from 'Assets/svg/sumo.svg';
 import Canvas from "./Canvas";
 import TypingMessage from "./TypingMessage";
 import { Title } from "../themes/styled";

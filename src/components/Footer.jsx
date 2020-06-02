@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import styled from "styled-components";
 
-import license from "assets/img/cclicense80x15.png";
-import { ReactComponent as Mail } from "assets/svg/mail.svg";
+import license from "Assets/img/cclicense80x15.png";
+import { ReactComponent as Mail } from "Assets/svg/mail.svg";
 import Toggle from "./Toggle";
 import availablesLang from "../constants/lang";
 

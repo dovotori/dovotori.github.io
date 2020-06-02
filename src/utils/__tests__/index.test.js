@@ -1,4 +1,4 @@
-import { capitalize } from "./index";
+import { capitalize } from "../index";
 
 describe("Utils", () => {
   test("capitalize", () => {

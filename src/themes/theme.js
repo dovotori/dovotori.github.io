@@ -1,7 +1,7 @@
 import { css } from "styled-components";
 
-import stripes from "assets/img/stripes.png";
-import stripesWhite from "assets/img/stripesWhite.png";
+import stripes from "Assets/img/stripes.png";
+import stripesWhite from "Assets/img/stripesWhite.png";
 
 const hue = {
   primary: 160, // hsl(160, 100%, 70%) // rgb(102, 255, 204) // #66ffcc

@@ -53,7 +53,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
-      assets: path.resolve(__dirname, '../public/'),
+      Assets: path.resolve(__dirname, '../assets/'),
     },
   },
   optimization: {

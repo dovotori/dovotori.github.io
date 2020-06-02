@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import styled from "styled-components";
 
-import * as icons from "assets/svg/cv";
+import * as icons from "Assets/svg/cv";
 import Chart from "./Chart";
 
 const styledIcons = Object.keys(icons).reduce(
