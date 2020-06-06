@@ -2,7 +2,9 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
 const config = require('../package.json');
+const { alias } = require('./common');
 
 const port = process.env.PORT || 8080;
 const host = process.env.HOST || '0.0.0.0';
@@ -48,9 +50,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx'],
-    alias: {
-      Assets: path.resolve(__dirname, '../assets/'),
-    },
+    alias,
   },
   plugins: [
     new BundleAnalyzerPlugin(),
@@ -69,7 +69,7 @@ module.exports = {
       filename: 'index.html',
       inject: 'body',
       base: '/assets',
-      template: path.resolve(__dirname, '../src/templates/index.ejs'),
+      template: path.resolve(__dirname, './templates/index.ejs'),
     }),
   ],
   devServer: {

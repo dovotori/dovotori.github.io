@@ -1,0 +1,25 @@
+body {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 12px;
+  color: #333;
+  margin: 0;
+}
+
+svg {
+  background: rgb(34, 34, 34);
+}
+
+.map path {
+  stroke-width: 0.4;
+  stroke: #222;
+  fill: #A2AFAE;
+  transition: fill 300ms ease-out, stroke 300ms ease-out;
+}
+
+.map path.enemy {
+  fill: #cd1335;
+}
+
+.map path.enemy:hover {
+  fill: #580823;
+}

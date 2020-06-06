@@ -1,12 +1,12 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 
 const config = require('../package.json');
+const { alias, optimization } = require('./common');
 
 const BUILD_PATH = path.resolve(__dirname, '../build');
 const SRC_ASSET_PATH = path.resolve(__dirname, '../assets');
@@ -18,7 +18,7 @@ module.exports = {
   output: {
     path: `${BUILD_PATH}/public/js/`,
     publicPath: `${BUILD_ASSET_PATH}/js/`,
-    filename: '[name].js',
+    filename: `${config.name}.js`,
   },
   module: {
     rules: [
@@ -53,33 +53,16 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx'],
-    alias: {
-      Assets: SRC_ASSET_PATH,
-    },
+    alias,
   },
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        parallel: true,
-        terserOptions: {
-          ecma: 6,
-          warnings: false,
-          sourceMap: false,
-        },
-      }),
-    ],
-  },
+  optimization,
   plugins: [
     new HtmlWebpackPlugin({
       title: config.name,
       filename: `${BUILD_PATH}/index.html`,
       inject: 'body',
       base: BUILD_ASSET_PATH,
-      template: path.resolve(__dirname, '../src/templates/index.ejs'),
+      template: path.resolve(__dirname, './templates/index.ejs'),
       minify: {
         collapseWhitespace: true,
         preserveLineBreaks: false,

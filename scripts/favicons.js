@@ -6,10 +6,8 @@ const utils = require('./utils');
 
 const config = require('../package.json');
 
-const readdir = promisify(fs.readdir);
-
-const SOURCE = path.resolve(__dirname, '../public/img/source.png');
-const DEST = path.resolve(__dirname, '../public/app');
+const SOURCE = path.resolve(__dirname, '../assets/img/source.png');
+const DEST = path.resolve(__dirname, '../assets/app');
 
 const BACKGROUND_COLOR = '#222';
 
@@ -22,7 +20,7 @@ const options = {
 };
 
 const configuration = {
-  path: '/public/app/', // Path for overriding default icons path.
+  path: '/assets/app/', // Path for overriding default icons path.
   appName: config.name,
   appShortName: config.name,
   appDescription: 'portfolio de Dorian Ratovo',
@@ -80,7 +78,7 @@ const createTemplate = (htmlFavicon) => {
 </body>
 </html>
   `;
-  utils.saveFile(path.resolve(__dirname, '../src/templates/index.ejs'), html);
+  utils.saveFile(path.resolve(__dirname, './templates/index.ejs'), html);
 };
 
 const callback = (error, response) => {
@@ -96,18 +94,8 @@ const callback = (error, response) => {
   createTemplate(html.join('\n    '));
 };
 
-const clean = (directory) => {
-  readdir(directory, (err, files) => {
-    if (err) throw err;
-
-    files.forEach((file) => {
-      utils.removeFile(path.join(directory, file));
-    });
-  });
-};
-
 const main = async () => {
-  await clean(DEST);
+  await utils.clean(DEST);
   console.log('clean');
   await favicons(SOURCE, configuration, callback);
   console.log('done');

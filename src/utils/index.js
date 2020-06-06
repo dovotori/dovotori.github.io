@@ -101,3 +101,8 @@ export const storage = {
     return item !== null && item !== undefined ? JSON.parse(item) : null;
   },
 };
+
+export const chunkArray = (arr, size) =>
+Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+  arr.slice(i * size, i * size + size)
+);

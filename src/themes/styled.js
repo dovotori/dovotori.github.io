@@ -3,7 +3,7 @@ import { glitchy } from "./animations";
 
 export const Title = styled.h1`
   text-align: left;
-  font-size: 4em;
+  font-size: 3em;
   font-family: "matamata", monospace;
   font-weight: 500;
   letter-spacing: 0.2em;

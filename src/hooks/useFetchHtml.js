@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const useFetchHtml = (url, hasHtml) => {
+const useFetchHtml = (url) => {
   const [pending, setPending] = useState(false);
   const [value, setValue] = useState(null);
   const [error, setError] = useState(false);
@@ -22,10 +22,8 @@ const useFetchHtml = (url, hasHtml) => {
       }
       setPending(false);
     };
-    if (hasHtml) {
-      fetchData();
-    }
-  }, [url, hasHtml]);
+    fetchData();
+  }, [url]);
 
   return { pending, value, error };
 };

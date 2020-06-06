@@ -6,15 +6,6 @@ const initialState = {
     [CAT_CODE]: "code",
     [CAT_BLOG]: "blog",
   },
-  tags: {
-    0: "javascript",
-    1: "d3.js",
-    2: "OpenCV",
-    3: "processing",
-    4: "openNI",
-    5: "Kinect",
-    6: "WebGL",
-  },
   entries: [
     {
       id: 0,
@@ -24,8 +15,8 @@ const initialState = {
       tags: [],
       date: 2014,
       description:
-        "Datavisualisation désignant les différentes institutions ennemies d'Internet\" à travers le monde. Projet réalisé au sein de l'association Reporters sans frontières",
-      html: true,
+        ["Datavisualisation désignant les différentes institutions ennemies d'Internet\" à travers le monde.", "Projet réalisé au sein de l'association Reporters sans frontières."],
+      html: true
     },
     {
       id: 1,
@@ -34,16 +25,8 @@ const initialState = {
       category: CAT_DESIGN,
       tags: [],
       date: 2014,
-      description:
-        "Datavisualisation désignant les pays qui utilisent la religion comme moyen de censure.",
-      sources: [
-        {
-          path: "/public/data/religionmap/data.json",
-          name: "data",
-          type: "json",
-        },
-      ],
-      html: true,
+      description: "Datavisualisation désignant les pays qui utilisent la religion comme moyen de censure.",
+      html: true
     },
     {
       id: 2,
@@ -54,8 +37,7 @@ const initialState = {
       date: 2013,
       description:
         "Transformation d'un comptoir de bar en séquenceur musicale, dont les sons sont déclenchés par les verres posés sur sa surface.",
-      sources: "",
-      images: 2,
+      images: 2
     },
     {
       id: 3,
@@ -66,8 +48,7 @@ const initialState = {
       date: 2009,
       description:
         "Proposition pour l'identité d'une exposition fictive sur les arts de rue et le graffiti.",
-      sources: "",
-      images: 4,
+      images: 4
     },
     {
       id: 4,
@@ -77,8 +58,7 @@ const initialState = {
       tags: [],
       date: 2014,
       description: "Identités visuelles pour différentes marques.",
-      sources: "",
-      images: 14,
+      images: 14
     },
     {
       id: 5,
@@ -88,8 +68,7 @@ const initialState = {
       tags: [],
       date: 2013,
       description: "Site de l'artiste audiovisuel Alex Augier.",
-      sources: "",
-      images: 2,
+      images: 2
     },
     {
       id: 6,
@@ -100,8 +79,7 @@ const initialState = {
       date: 2009,
       description:
         "Recherche pour l'identité d'une exposition au sein de la Soap Factory, musée d'art contemporain à Mineapolis.",
-      sources: "",
-      images: 3,
+      images: 3
     },
     {
       id: 7,
@@ -112,8 +90,7 @@ const initialState = {
       date: 2014,
       description:
         "Animation promotionnelle installée dans les gares parisiennes de l'album de Reporters sans frontières, 100 photos de Ai Weiwei pour la liberté de la presse.",
-      sources: "",
-      images: 2,
+      images: 2
     },
     {
       id: 8,
@@ -124,7 +101,6 @@ const initialState = {
       date: 2014,
       description:
         "Différents projets réalisés au sein de l'association Reporters sans frontières.",
-      sources: "",
       images: 6,
     },
     {
@@ -136,8 +112,7 @@ const initialState = {
       date: 2013,
       description:
         "Dispositif de jeu qui a pour ambition d'intégrer n'importe quel objet du quotidien pour influencer un espace virtuel.",
-      sources: "",
-      images: 9,
+      images: 9
     },
     {
       id: 10,
@@ -148,8 +123,7 @@ const initialState = {
       date: 2009,
       description:
         "Élaboration d'une identité visuelle pour la biennale d'art contemporain de la ville du Havre.",
-      sources: "",
-      images: 11,
+      images: 11
     },
     {
       id: 11,
@@ -160,8 +134,7 @@ const initialState = {
       date: 2009,
       description:
         "Recherche graphique pour un coffret de reportages de Raymond Depardon, la série sur le monde paysan, destin fragile des travailleurs de la terre.",
-      sources: "",
-      images: 4,
+      images: 4
     },
 
     {
@@ -175,8 +148,7 @@ const initialState = {
         "Conception d'un simple platformer en 2D avec webgl (toujours en developpement).",
         "Espace pour sauter / X pour attaquer / W pour tirer.",
       ],
-      sources: "",
-      canvas: true,
+      html: true
     },
     {
       id: 13,
@@ -186,9 +158,8 @@ const initialState = {
       tags: [],
       date: 2019,
       description:
-        "Chargement et visualisation d'une scène 3d au format gltlf 2.0 en webgl, en suivant les spécifications du Khronos group",
-      sources: "",
-      canvas: true,
+        "Chargement et visualisation d'une scène 3d au format gltlf 2.0 en webgl, en suivant les spécifications du Khronos group.",
+      html: true
     },
     {
       id: 14,
@@ -197,14 +168,58 @@ const initialState = {
       category: CAT_CODE,
       tags: [],
       date: 2020,
-      description:
-        "Developpement sur l'application de paris sportifs au sein de l'entreprise Winamax",
-      sources: "",
+      description: "Developpement sur l'application de paris sportifs au sein de l'entreprise Winamax.",
+      images: 8
     },
+    {
+      id: 15,
+      slug: "japon",
+      title: "Japon",
+      category: CAT_BLOG,
+      tags: [],
+      date: 2017,
+      description: "Quelques souvenirs du Japon.",
+      html: true,
+      images: 16
+    },
+    {
+      id: 16,
+      slug: "norway",
+      title: "Norvege",
+      category: CAT_BLOG,
+      tags: [],
+      date: 2018,
+      description: "Quelques souvenirs de Norvège.",
+      sources: "",
+      html: true,
+      images: 18
+    },
+    {
+      id: 17,
+      slug: "hongkong",
+      title: "Hong Kong",
+      category: CAT_BLOG,
+      tags: [],
+      date: 2019,
+      description: "Quelques souvenirs de Hong Kong.",
+      sources: "",
+      images: 20
+    },
+    {
+      id: 18,
+      slug: "budapest",
+      title: "Budapest",
+      category: CAT_BLOG,
+      tags: [],
+      date: 2019,
+      description: "Quelques souvenirs de Budapest.",
+      sources: "",
+      images: 13
+    }
   ],
   hello: {
     title: "Dorian Ratovo",
-    text: "graphiste devenu developpeur web.",
+    text: "graphiste devenu developpeur web",
     contact: "Contact",
     about: "Enchanté!",
     description: [
@@ -249,20 +264,20 @@ const initialState = {
       ],
     },
     jobs: {
-      text: "Experience",
+      text: "Experiences",
       items: [
         {
-          start_date: 0,
-          end_date: 0,
+          startDate: 0,
+          endDate: 0,
           text: "Développeur Front-end au sein de Winamax",
           tasks: [
             "développement des évolutions de l'application de paris sportifs",
             "développement de l'application le jeu de l'entraîneur",
-          ],
+          ]
         },
         {
-          start_date: 2014,
-          end_date: 2016,
+          startDate: 2014,
+          endDate: 2016,
           text:
             "Co-gérant de l’entreprise de Web design Pix 21, responsable du design et du développement web",
           tasks: [
@@ -273,8 +288,8 @@ const initialState = {
           ],
         },
         {
-          start_date: 2013,
-          end_date: 2014,
+          startDate: 2013,
+          endDate: 2014,
           text: "Graphiste au sein de l’association Reporters sans frontières",
           tasks: [
             "réalisation de cartes intéractives en ligne",
@@ -282,8 +297,8 @@ const initialState = {
           ],
         },
         {
-          start_date: 2012,
-          end_date: 2012,
+          startDate: 2012,
+          endDate: 2012,
           text:
             "Semestre au laboratoire de recherche Ideas Lab au CEA de Grenoble",
           tasks: [
@@ -292,8 +307,8 @@ const initialState = {
           ],
         },
         {
-          start_date: 2009,
-          end_date: 2009,
+          startDate: 2009,
+          endDate: 2009,
           text:
             "Stage puis missions au sein de l’atelier des Giboulées, agence  de conseil et création graphique",
           tasks: [
@@ -348,12 +363,17 @@ const initialState = {
       items: [
         {
           text: "Création de jeu vidéo",
+          about: "/project/game"
         },
         {
           text: "Culture japonaise",
         },
         {
           text: "Modélisation et rendu 3d",
+          about: "/project/paysage"
+        },
+        {
+          text: "Datavisualisation",
         },
       ],
     },

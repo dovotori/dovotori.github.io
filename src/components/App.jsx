@@ -6,7 +6,7 @@ import RoutesContainer from "../containers/RoutesContainer";
 
 const GlobalStyle = createGlobalStyle`
   body {
-    font-size: ${14 + 2 * window.devicePixelRatio}px;
+    font-size: 14px;
   }
 `;
 

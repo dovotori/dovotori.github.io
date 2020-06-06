@@ -39,6 +39,7 @@ export default function device(state = initialState, action) {
         availablesLang.map((l) => l.id).indexOf(lang) !== -1
       ) {
         storage.setItem("lang", lang);
+        document.documentElement.setAttribute("lang", lang);
         return {
           ...state,
           lang,

@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import ButtonBack from "./ButtonBack";
@@ -7,10 +7,7 @@ import TypingMessage from "./TypingMessage";
 import ProjectImage from "./ProjectImage";
 import { Title } from "../themes/styled";
 import Canvas from "./Canvas";
-import useFetchHtml from "../hooks/useFetchHtml";
-import useFetchJs from "../hooks/useFetchJs";
-import useFetchAssets from "../hooks/useFetchAssets";
-import { getHtmlPath } from "../utils";
+import ProjectHtml from "./ProjectHtml";
 
 const TEXT_WIDTH = 400;
 
@@ -35,21 +32,6 @@ const Description = styled.div`
   ${(p) => p.theme.media.tablet`
     width: 100%;
   `};
-`;
-
-const Html = styled.div`
-  text-align: left;
-  color: ${(p) => p.theme.light};
-  margin: 4em auto;
-  max-width: none;
-  width: calc(100% - 20px);
-
-  img {
-    width: 100%;
-    height: auto;
-    margin: 1em auto;
-    box-shadow: 0 0 1em ${(p) => p.theme.backgroundHighlight};
-  }
 `;
 
 const Text = styled.p`
@@ -118,46 +100,9 @@ const Project = ({
   date,
   colorType,
   canvas,
-  sources,
   html: hasHtml,
 }) => {
   const pixelRatio = window.devicePixelRatio;
-
-  const { pending: pendingHtml, value: html, error: errorHtml } = useFetchHtml(
-    getHtmlPath(slug),
-    hasHtml
-  );
-
-  const { pending: pendingJs, value: js, error: errorJs } = useFetchJs(slug);
-
-  const {
-    pending: pendingAssets,
-    value: assets,
-    error: errorAssets,
-  } = useFetchAssets(sources);
-
-  useLayoutEffect(() => {
-    if (
-      !pendingAssets &&
-      !errorAssets &&
-      !pendingHtml &&
-      !errorHtml &&
-      !pendingJs &&
-      !errorJs &&
-      js
-    ) {
-      js.default(assets);
-    }
-  }, [
-    pendingAssets,
-    errorAssets,
-    assets,
-    pendingHtml,
-    errorHtml,
-    pendingJs,
-    js,
-    errorJs,
-  ]);
 
   return (
     <StyledProject>
@@ -178,7 +123,7 @@ const Project = ({
               )}
             </Description>
           )}
-          {html && <Html dangerouslySetInnerHTML={{ __html: html }} />}
+          {hasHtml && <ProjectHtml slug={slug} colorType={colorType} />}
         </WrapTexte>
         {images && (
           <ImagesList>

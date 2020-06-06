@@ -1,9 +1,9 @@
-import React from "react";
+import React, { Fragment } from "react";
 import styled, { keyframes } from "styled-components";
 import { Link } from "react-router-dom";
 
 // import { ReactComponent as Sumo } from 'Assets/svg/sumo.svg';
-import Canvas from "./Canvas";
+import ProjectHtml from "./ProjectHtml";
 import TypingMessage from "./TypingMessage";
 import { Title } from "../themes/styled";
 
@@ -51,15 +51,15 @@ const Infos = styled.div`
   }
 `;
 
-const StyledCanvas = styled(Canvas)`
+const StyledHtml = styled(ProjectHtml)`
   text-align: center;
+  margin: 0 auto;
+  width: 100%;
+  height: 60vh;
+  max-height: 512px;
 
   canvas {
-    margin: 0 auto;
-    width: 60vh;
-    height: 60vh;
-    max-width: 512px;
-    max-height: 512px;
+    
   }
 `;
 
@@ -150,18 +150,12 @@ const Description = styled.p`
   }
 `;
 
-const StyledTypingMessage = styled(TypingMessage)`
-  pointer-events: none;
-  position: relative;
-  overflow: hidden;
-`;
-
 const Signature = ({ className, hello }) => (
   <Wrap>
     <Appear>
       <StyledLink to="/about" className={className}>
         {/* <StyledSumo /> */}
-        <StyledCanvas slug="signature" width={512} height={512} colorType={0} />
+        <StyledHtml slug="signature" colorType={0} />
       </StyledLink>
       <Infos>
         <LeftBalloon viewBox="0 0 100 100">
@@ -183,7 +177,12 @@ const Signature = ({ className, hello }) => (
           <path d="M 20 0 L 0 100 L 100 0 Z" />
         </SpikeBalloon>
         <StyledTitle>
-          <StyledTypingMessage message={hello.title} />
+          {hello.title.split(' ').map(text => (
+            <Fragment key={text}>
+              <TypingMessage message={text} />
+              {' '}
+            </Fragment>
+))}
         </StyledTitle>
         <Description>
           {hello.text}

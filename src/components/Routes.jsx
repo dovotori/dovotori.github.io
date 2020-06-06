@@ -10,24 +10,31 @@ import { shouldNotReload } from "../utils";
 
 const history = createBrowserHistory();
 
-const renderRoute = (route) => (
+const renderRoute = (route) => route.isDefault ? (
   <Route
     key={route.path}
-    path={route.path}
-    exact={route.exact}
-    render={({ location, match }) => (
-      <route.component
-        key={shouldNotReload(location.pathname)}
-        location={location}
-        match={match}
-      />
-    )}
+    component={route.component}
   />
+  ) : (
+    <Route
+      key={route.path}
+      path={route.path}
+      exact={route.exact}
+      render={({ location, match }) => 
+      (
+        <route.component
+          key={shouldNotReload(location.pathname)}
+          location={location}
+          match={match}
+        />
+)}
+    />
 );
 
 const Routes = ({ isTouchDevice }) => (
   <Router history={history}>
     <>
+      {/* Navigation Top */}
       <Switch>
         <Route path={["/about"]} exact component={null} />
         <Route

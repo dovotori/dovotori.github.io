@@ -2,7 +2,7 @@ import { lazy } from "react";
 
 const routes = [
   {
-    path: ["/", "/category/:slug"],
+    path: "/category/:slug",
     component: lazy(() => import("../components/Home")),
     exact: true,
   },
@@ -16,6 +16,12 @@ const routes = [
     component: lazy(() => import("../containers/ProjectContainer")),
     exact: false,
   },
+  {
+    isDefault: true,
+    path: "/",
+    component: lazy(() => import("../components/Home")),
+    exact: true,
+  }
 ];
 
 export default routes;

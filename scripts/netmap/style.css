@@ -1,0 +1,280 @@
+#worldmap {
+  display: block;
+  margin: 0 auto;
+  overflow:visible;
+}
+
+#worldmap .map path {
+  stroke-width: 0.4;
+  stroke: #222;
+  fill: #A2AFAE;
+  transition: fill 300ms ease-out, stroke 300ms ease-out;
+}
+
+[theme=light] #worldmap path {
+  stroke: #fff;
+}
+
+[theme=light] #worldmap .lines path {
+  stroke: #000;
+}
+
+#worldmap .institutions text {
+  font-family: Verdana, sans-serif;
+  font-size: 0.6em;
+  fill: #fff;
+  transition: fill 300ms ease-out;
+}
+
+[theme=light] #worldmap .institutions text {
+  fill: #000;
+}
+
+#worldmap .institutions g rect {
+  fill: transparent;
+}
+
+#worldmap .institutions g rect,
+#worldmap .institutions g text {
+  trasnform-origin: center;
+  transition: transform 300ms ease-out;
+}
+
+#worldmap .institutions g:hover rect,
+#worldmap .institutions g:hover text {
+  transform: scale(1.5);
+}
+
+@-webkit-keyframes scale {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1 ; }
+}
+@keyframes scale {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@-webkit-keyframes fadein { to { opacity: 1; }  }
+@keyframes fadein { to { opacity: 1; }  }
+
+@-webkit-keyframes line { to { stroke-dashoffset: 0; }  }
+@keyframes line { to { stroke-dashoffset: 0; }  }
+
+@-webkit-keyframes fill { to { fill: #cd1335; }  }
+@keyframes fill { to { fill: #cd1335; }  }
+
+:root {
+  --timing: 100ms;
+  --timing-line: 400ms;
+}
+
+#worldmap .institutions g {
+  opacity: 0;
+  animation: 1s ease-out 1s 1 normal both running fadein;
+}
+
+#worldmap .lines path {
+  fill:none;
+  stroke: #fff;
+  stroke-width: 0.6;
+  animation: 1s ease-out 1s 1 normal both running line;
+}
+
+#worldmap .lines path:nth-child(1) {
+stroke-dasharray: 150.3589324951172;
+stroke-dashoffset: 150.3589324951172;
+animation-delay: calc(1s + (var(--timing-line) * 0));
+}
+
+#worldmap .lines path:nth-child(2) {
+stroke-dasharray: 166.9129180908203;
+stroke-dashoffset: 166.9129180908203;
+animation-delay: calc(1s + (var(--timing-line) * 1));
+}
+
+#worldmap .lines path:nth-child(3) {
+stroke-dasharray: 177.9630126953125;
+stroke-dashoffset: 177.9630126953125;
+animation-delay: calc(1s + (var(--timing-line) * 2));
+}
+
+#worldmap .lines path:nth-child(4) {
+stroke-dasharray: 203.51161193847656;
+stroke-dashoffset: 203.51161193847656;
+animation-delay: calc(1s + (var(--timing-line) * 3));
+}
+
+#worldmap .lines path:nth-child(5) {
+stroke-dasharray: 219.8951873779297;
+stroke-dashoffset: 219.8951873779297;
+animation-delay: calc(1s + (var(--timing-line) * 4));
+}
+
+#worldmap .lines path:nth-child(6) {
+stroke-dasharray: 250.66116333007812;
+stroke-dashoffset: 250.66116333007812;
+animation-delay: calc(1s + (var(--timing-line) * 5));
+}
+
+#worldmap .lines path:nth-child(7) {
+stroke-dasharray: 225.90911865234375;
+stroke-dashoffset: 225.90911865234375;
+animation-delay: calc(1s + (var(--timing-line) * 6));
+}
+
+#worldmap .lines path:nth-child(8) {
+stroke-dasharray: 232.41268920898438;
+stroke-dashoffset: 232.41268920898438;
+animation-delay: calc(1s + (var(--timing-line) * 7));
+}
+
+#worldmap .lines path:nth-child(9) {
+stroke-dasharray: 217.76168823242188;
+stroke-dashoffset: 217.76168823242188;
+animation-delay: calc(1s + (var(--timing-line) * 8));
+}
+
+#worldmap .lines path:nth-child(10) {
+stroke-dasharray: 216.74835205078125;
+stroke-dashoffset: 216.74835205078125;
+animation-delay: calc(1s + (var(--timing-line) * 9));
+}
+
+#worldmap .lines path:nth-child(11) {
+stroke-dasharray: 182.97213745117188;
+stroke-dashoffset: 182.97213745117188;
+animation-delay: calc(1s + (var(--timing-line) * 10));
+}
+
+#worldmap .lines path:nth-child(12) {
+stroke-dasharray: 121.26878356933594;
+stroke-dashoffset: 121.26878356933594;
+animation-delay: calc(1s + (var(--timing-line) * 11));
+}
+
+#worldmap .lines path:nth-child(13) {
+stroke-dasharray: 216.7762908935547;
+stroke-dashoffset: 216.7762908935547;
+animation-delay: calc(1s + (var(--timing-line) * 12));
+}
+
+#worldmap .lines path:nth-child(14) {
+stroke-dasharray: 147.59503173828125;
+stroke-dashoffset: 147.59503173828125;
+animation-delay: calc(1s + (var(--timing-line) * 13));
+}
+
+#worldmap .lines path:nth-child(15) {
+stroke-dasharray: 255.2417755126953;
+stroke-dashoffset: 255.2417755126953;
+animation-delay: calc(1s + (var(--timing-line) * 14));
+}
+
+#worldmap .lines path:nth-child(16) {
+stroke-dasharray: 194.39549255371094;
+stroke-dashoffset: 194.39549255371094;
+animation-delay: calc(1s + (var(--timing-line) * 15));
+}
+
+#worldmap .lines path:nth-child(17) {
+stroke-dasharray: 250.56935119628906;
+stroke-dashoffset: 250.56935119628906;
+animation-delay: calc(1s + (var(--timing-line) * 16));
+}
+
+#worldmap .lines path:nth-child(18) {
+stroke-dasharray: 178.78468322753906;
+stroke-dashoffset: 178.78468322753906;
+animation-delay: calc(1s + (var(--timing-line) * 17));
+}
+
+#worldmap .lines path:nth-child(19) {
+stroke-dasharray: 76.12278747558594;
+stroke-dashoffset: 76.12278747558594;
+animation-delay: calc(1s + (var(--timing-line) * 18));
+}
+
+#worldmap .lines path:nth-child(20) {
+stroke-dasharray: 163.36639404296875;
+stroke-dashoffset: 163.36639404296875;
+animation-delay: calc(1s + (var(--timing-line) * 19));
+}
+
+#worldmap .lines path:nth-child(21) {
+stroke-dasharray: 110.88713073730469;
+stroke-dashoffset: 110.88713073730469;
+animation-delay: calc(1s + (var(--timing-line) * 20));
+}
+
+#worldmap .lines path:nth-child(22) {
+stroke-dasharray: 152.17100524902344;
+stroke-dashoffset: 152.17100524902344;
+animation-delay: calc(1s + (var(--timing-line) * 21));
+}
+
+#worldmap .lines path:nth-child(23) {
+stroke-dasharray: 144.9206085205078;
+stroke-dashoffset: 144.9206085205078;
+animation-delay: calc(1s + (var(--timing-line) * 22));
+}
+
+#worldmap .lines path:nth-child(24) {
+stroke-dasharray: 108.11825561523438;
+stroke-dashoffset: 108.11825561523438;
+animation-delay: calc(1s + (var(--timing-line) * 23));
+}
+
+#worldmap .lines path:nth-child(25) {
+stroke-dasharray: 138.34242248535156;
+stroke-dashoffset: 138.34242248535156;
+animation-delay: calc(1s + (var(--timing-line) * 24));
+}
+
+#worldmap .lines path:nth-child(26) {
+stroke-dasharray: 142.0396728515625;
+stroke-dashoffset: 142.0396728515625;
+animation-delay: calc(1s + (var(--timing-line) * 25));
+}
+
+#worldmap .lines path:nth-child(27) {
+stroke-dasharray: 149.6945037841797;
+stroke-dashoffset: 149.6945037841797;
+animation-delay: calc(1s + (var(--timing-line) * 26));
+}
+
+#worldmap .institutions g:nth-child(1) { animation-delay: calc(1s + (var(--timing) * 0)); }
+#worldmap .institutions g:nth-child(2) { animation-delay: calc(1s + (var(--timing) * 1)); }
+#worldmap .institutions g:nth-child(3) { animation-delay: calc(1s + (var(--timing) * 2)); }
+#worldmap .institutions g:nth-child(4) { animation-delay: calc(1s + (var(--timing) * 3)); }
+#worldmap .institutions g:nth-child(5) { animation-delay: calc(1s + (var(--timing) * 4)); }
+#worldmap .institutions g:nth-child(6) { animation-delay: calc(1s + (var(--timing) * 5)); }
+#worldmap .institutions g:nth-child(7) { animation-delay: calc(1s + (var(--timing) * 6)); }
+#worldmap .institutions g:nth-child(8) { animation-delay: calc(1s + (var(--timing) * 7)); }
+#worldmap .institutions g:nth-child(9) { animation-delay: calc(1s + (var(--timing) * 8)); }
+#worldmap .institutions g:nth-child(10) { animation-delay: calc(1s + (var(--timing) * 9)); }
+#worldmap .institutions g:nth-child(11) { animation-delay: calc(1s + (var(--timing) * 10)); }
+#worldmap .institutions g:nth-child(12) { animation-delay: calc(1s + (var(--timing) * 11)); }
+#worldmap .institutions g:nth-child(13) { animation-delay: calc(1s + (var(--timing) * 12)); }
+#worldmap .institutions g:nth-child(14) { animation-delay: calc(1s + (var(--timing) * 13)); }
+#worldmap .institutions g:nth-child(15) { animation-delay: calc(1s + (var(--timing) * 14)); }
+#worldmap .institutions g:nth-child(16) { animation-delay: calc(1s + (var(--timing) * 15)); }
+#worldmap .institutions g:nth-child(17) { animation-delay: calc(1s + (var(--timing) * 16)); }
+#worldmap .institutions g:nth-child(18) { animation-delay: calc(1s + (var(--timing) * 17)); }
+#worldmap .institutions g:nth-child(19) { animation-delay: calc(1s + (var(--timing) * 18)); }
+#worldmap .institutions g:nth-child(20) { animation-delay: calc(1s + (var(--timing) * 19)); }
+#worldmap .institutions g:nth-child(21) { animation-delay: calc(1s + (var(--timing) * 20)); }
+#worldmap .institutions g:nth-child(22) { animation-delay: calc(1s + (var(--timing) * 21)); }
+
+#worldmap .map {
+  transform-origin: center center;
+  transform: scale(0);
+  animation: 1s ease-out 0s 1 normal both running scale;
+}
+
+#worldmap .map path.enemy {
+  animation: 1s ease-out 1s 1 normal both running fill;
+}
+
+#worldmap .map path.enemy:hover {
+  fill: #580823;
+}

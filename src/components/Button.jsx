@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 
 import useHover from "../hooks/useHover";
 
-const LINK = styled(Link)`
+const common = css`
   position: relative;
   display: flex;
-  width: calc(100% - 20px);
+  width: 100%;
   margin: 2em auto;
   padding: 1em 10px;
   background-color: ${(p) => p.theme.getColor};
@@ -17,6 +17,14 @@ const LINK = styled(Link)`
   -webkit-tap-highlight-color: ${(p) => p.theme.backgroundHighlight};
   ${(p) => p.theme.active}
   justify-content: flex-end;
+`;
+
+const LINK = styled(Link)`
+  ${common}
+`;
+
+const A = styled.a`
+  ${common}
 `;
 
 const Fill = styled.div`
@@ -41,10 +49,12 @@ const Span = styled.span`
   ${(p) => p.theme.monospace}
 `;
 
-const Button = ({ to, className, colorType, text }) => {
+const Button = ({ to, className, href, colorType, text }) => {
   const [hoverRef, isHovered] = useHover();
+  const Component = href ? A : LINK;
   return (
-    <LINK
+    <Component
+      href={href}
       to={to || "/"}
       className={className}
       isFocus={isHovered}
@@ -53,7 +63,7 @@ const Button = ({ to, className, colorType, text }) => {
     >
       <Fill isFocus={isHovered} />
       <Span colorType={colorType}>{text}</Span>
-    </LINK>
+    </Component>
   );
 };
 

@@ -6,44 +6,36 @@ const initialState = {
     [CAT_CODE]: "コード",
     [CAT_BLOG]: "ブログ",
   },
-  tags: {
-    0: "javascript",
-    1: "d3.js",
-    2: "OpenCV",
-    3: "processing",
-    4: "openNI",
-    5: "Kinect",
-    6: "WebGL",
-  },
   entries: [
-    // {
-    //   id: 0,
-    //   slug: 'netmap',
-    //   title: 'Net Map',
-    //   category: CAT_CODE,
-    //   tags: [],
-    //   date: 2014,
-    //   description:
-    //     'Datavisualisation désignant les différentes institutions
-    // ennemies d\'Internet" à travers le monde. Projet réalisé au sein de
-    // l\'association Reporters sans frontières sous la direction artistique
-    // de Pierre-Alain Leboucher.',
-    //   sources: '',
-    //   context: '',
-    //   images: 1,
-    // },
-    // {
-    //   id: 1,
-    //   slug: 'religionmap',
-    //   title: 'Religion Map',
-    //   category: CAT_DESIGN,
-    //   tags: [],
-    //   date: 2014,
-    //   description:
-    //     'Datavisualisation désignant les pays qui utilisent la religion comme moyen de censure.',
-    //   sources: '',
-    //   context: '',
-    // },
+    {
+      id: 0,
+      slug: "netmap",
+      title: "Net Map",
+      category: CAT_CODE,
+      tags: [],
+      date: 2014,
+      description:
+        ["Datavisualisation désignant les différentes institutions ennemies d'Internet\" à travers le monde.", "Projet réalisé au sein de l'association Reporters sans frontières."],
+      html: true,
+    },
+    {
+      id: 1,
+      slug: "religionmap",
+      title: "Religion Map",
+      category: CAT_DESIGN,
+      tags: [],
+      date: 2014,
+      description:
+        "Datavisualisation désignant les pays qui utilisent la religion comme moyen de censure.",
+      sources: [
+        {
+          path: "/public/data/religionmap/data.json",
+          name: "data",
+          type: "json",
+        },
+      ],
+      html: true,
+    },
     {
       id: 2,
       slug: "barason",
@@ -54,7 +46,6 @@ const initialState = {
       description:
         "Transformation d'un comptoir de bar en séquenceur musicale, dont les sons sont déclenchés par les verres posés sur sa surface.",
       sources: "",
-      context: "",
       images: 2,
     },
     {
@@ -67,7 +58,6 @@ const initialState = {
       description:
         "Proposition pour l'identité d'une exposition fictive sur les arts de rue et le graffiti.",
       sources: "",
-      context: "",
       images: 4,
     },
     {
@@ -79,20 +69,19 @@ const initialState = {
       date: 2014,
       description: "Identités visuelles pour différentes marques.",
       sources: "",
-      context: "",
       images: 14,
     },
-    // {
-    //   id: 5,
-    //   slug: 'electro',
-    //   title: 'Electro',
-    //   category: CAT_DESIGN,
-    //   tags: [],
-    //   date: 2013,
-    //   description: "Site de l'artiste audiovisuel Alex Augier.",
-    //   sources: '',
-    //   context: '',
-    // },
+    {
+      id: 5,
+      slug: "electro",
+      title: "Electro",
+      category: CAT_DESIGN,
+      tags: [],
+      date: 2013,
+      description: "Site de l'artiste audiovisuel Alex Augier.",
+      sources: "",
+      images: 2,
+    },
     {
       id: 6,
       slug: "soap",
@@ -103,7 +92,6 @@ const initialState = {
       description:
         "Recherche pour l'identité d'une exposition au sein de la Soap Factory, musée d'art contemporain à Mineapolis.",
       sources: "",
-      context: "",
       images: 3,
     },
     {
@@ -116,7 +104,6 @@ const initialState = {
       description:
         "Animation promotionnelle installée dans les gares parisiennes de l'album de Reporters sans frontières, 100 photos de Ai Weiwei pour la liberté de la presse.",
       sources: "",
-      context: "",
       images: 2,
     },
     {
@@ -129,7 +116,6 @@ const initialState = {
       description:
         "Différents projets réalisés au sein de l'association Reporters sans frontières.",
       sources: "",
-      context: "",
       images: 6,
     },
     {
@@ -142,7 +128,6 @@ const initialState = {
       description:
         "Dispositif de jeu qui a pour ambition d'intégrer n'importe quel objet du quotidien pour influencer un espace virtuel.",
       sources: "",
-      context: "",
       images: 9,
     },
     {
@@ -174,7 +159,7 @@ const initialState = {
 
     {
       id: 12,
-      slug: "games",
+      slug: "game",
       title: "ゲーム",
       category: CAT_CODE,
       tags: [],
@@ -196,25 +181,32 @@ const initialState = {
       context: "",
       canvas: true,
     },
-    // {
-    //   id: 12,
-    //   slug: 'amour',
-    //   title: 'Amour',
-    //   category: CAT_CODE,
-    //   tags: [],
-    //   date: 1,
-    //   description: 'Site HappyLovers',
-    //   sources: '',
-    //   context: '',
-    // },
+    {
+      id: 14,
+      slug: "sport",
+      title: "Sport",
+      category: CAT_CODE,
+      tags: [],
+      date: 2020,
+      description:
+        "Developpement sur l'application de paris sportifs au sein de l'entreprise Winamax",
+      sources: "",
+    },
   ],
   hello: {
-    title: "今日は",
-    text: "私は　ドリアンです，デヴェロップ　と　グラフィックデザイナーです",
+    title: "Dorian Ratovo",
+    text: "graphiste devenu developpeur web",
+    contact: "Contact",
+    about: "Enchanté!",
+    description: [
+      "Après des études dans le domaine de la conception graphique, les possibilités du développement web m'ont amené à me former en autodidacte (avec l'aide de fameuses formations en ligne).",
+      "Le javascript est devenu mon outil favori pour expérimenter ces possibilités notamment la génération d'image via les contextes 2D et 3D de l'api canvas.",
+      "J'ai eu plusieurs possibilités d'appliquer ces connaissances en milieu professionnel et je continue à expérimenter.",
+    ],
   },
   cv: {
     formation: {
-      text: "Formation",
+      text: "études",
       items: [
         {
           date: 2013,
@@ -248,17 +240,17 @@ const initialState = {
       ],
     },
     jobs: {
-      text: "Parcours",
+      text: "Experiences",
       items: [
         {
-          start_date: 0,
-          end_date: 0,
+          startDate: 0,
+          endDate: 0,
           text: "Développeur Front-end au sein de Winamax",
           tasks: [""],
         },
         {
-          start_date: 2014,
-          end_date: 2016,
+          startDate: 2014,
+          endDate: 2016,
           text:
             "Co-gérant de l’entreprise de Web design Pix 21, responsable du design et du développement web",
           tasks: [
@@ -269,8 +261,8 @@ const initialState = {
           ],
         },
         {
-          start_date: 2013,
-          end_date: 2014,
+          startDate: 2013,
+          endDate: 2014,
           text: "Graphiste au sein de l’association Reporters sans frontières",
           tasks: [
             "réalisation de cartes intéractives en ligne",
@@ -278,8 +270,8 @@ const initialState = {
           ],
         },
         {
-          start_date: 2012,
-          end_date: 2012,
+          startDate: 2012,
+          endDate: 2012,
           text:
             "Semestre au laboratoire de recherche Ideas Lab au CEA de Grenoble",
           tasks: [
@@ -288,8 +280,8 @@ const initialState = {
           ],
         },
         {
-          start_date: 2009,
-          end_date: 2009,
+          startDate: 2009,
+          endDate: 2009,
           text:
             "Stage puis missions au sein de l’atelier des Giboulées, agence  de conseil et création graphique",
           tasks: [
@@ -342,6 +334,92 @@ const initialState = {
         },
         {
           text: "日本の文化",
+        },
+      ],
+    },
+    chart: {
+      name: "skills",
+      value: 100,
+      children: [
+        {
+          name: "dev",
+          value: 50,
+          children: [
+            {
+              name: "php",
+              value: 10,
+            },
+            {
+              name: "js",
+              value: 70,
+              children: [
+                {
+                  name: "node",
+                  value: 10,
+                },
+                {
+                  name: "react",
+                  value: 20,
+                },
+                {
+                  name: "redux",
+                  value: 20,
+                },
+                {
+                  name: "webgl",
+                  value: 10,
+                },
+                {
+                  name: "d3",
+                  value: 10,
+                },
+                {
+                  name: "env",
+                  value: 30,
+                  children: [
+                    {
+                      name: "flow",
+                      value: 30,
+                    },
+                    {
+                      name: "jest",
+                      value: 30,
+                    },
+                    {
+                      name: "webpack",
+                      value: 20,
+                    },
+                    {
+                      name: "gitlab",
+                      value: 20,
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              name: "html",
+              value: 10,
+            },
+            {
+              name: "css",
+              value: 10,
+            },
+          ],
+        },
+        {
+          name: "design",
+          value: 50,
+          children: [
+            {
+              name: "blender",
+              value: 50,
+            },
+            {
+              name: "inkscape",
+              value: 50,
+            },
+          ],
         },
       ],
     },

@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 
-import { Loop, Context, Mouse, ManagerAssets, Keyboard } from "../game";
+import { Loop, Context, Mouse, ManagerAssets, Keyboard } from "Labo/webgl";
 
 import Loader from "./Loader";
 import { capitalize, getEnvPath } from "../utils";
@@ -21,54 +21,54 @@ const Canvas = (props) => {
 
   useEffect(() => {
     const loop = new Loop();
-    let mouse = null;
-    let keyboard = null;
+    const mouse = null;
+    const keyboard = null;
 
-    const setup = async () => {
-      let assets = null;
-      const js = await import(`../labo/${props.slug}.js`);
-      const { Scene, config } = js.default;
-      if (config.assets) {
-        const am = new ManagerAssets();
-        assets = await am.get(config.assets.map((path) => getEnvPath(path)));
-      }
-      const context = new Context(ref.current);
+    // const setup = async () => {
+    //   let assets = null;
+    //   const js = await import(`../labo/${props.slug}.js`);
+    //   const { Scene, config } = js.default;
+    //   if (config.assets) {
+    //     const am = new ManagerAssets();
+    //     assets = await am.get(config.assets.map((path) => getEnvPath(path)));
+    //   }
+    //   const context = new Context(ref.current);
 
-      const scene = new Scene(
-        context.get(),
-        config,
-        assets,
-        props.width,
-        props.height
-      );
+    //   const scene = new Scene(
+    //     context.get(),
+    //     config,
+    //     assets,
+    //     props.width,
+    //     props.height
+    //   );
 
-      if (config.keyboard) {
-        keyboard = new Keyboard(config.keyboard);
-      }
-      if (config.mouse) {
-        const callbacks = config.mouse.reduce(
-          (acc, cur) => ({
-            ...acc,
-            [`callback${capitalize(cur)}`]: scene[`onMouse${capitalize(cur)}`],
-          }),
-          {}
-        );
-        mouse = new Mouse(ref.current, callbacks);
-      }
+    //   if (config.keyboard) {
+    //     keyboard = new Keyboard(config.keyboard);
+    //   }
+    //   if (config.mouse) {
+    //     const callbacks = config.mouse.reduce(
+    //       (acc, cur) => ({
+    //         ...acc,
+    //         [`callback${capitalize(cur)}`]: scene[`onMouse${capitalize(cur)}`],
+    //       }),
+    //       {}
+    //     );
+    //     mouse = new Mouse(ref.current, callbacks);
+    //   }
 
-      loop.setCallback(() => {
-        if (keyboard) {
-          keyboard.start();
-          scene.setKeyboardInteraction(keyboard);
-        }
-        scene.render();
-        if (keyboard) keyboard.end();
-      });
-      loop.start();
-      setIsLoading(false);
-    };
+    //   loop.setCallback(() => {
+    //     if (keyboard) {
+    //       keyboard.start();
+    //       scene.setKeyboardInteraction(keyboard);
+    //     }
+    //     scene.render();
+    //     if (keyboard) keyboard.end();
+    //   });
+    //   loop.start();
+    //   setIsLoading(false);
+    // };
 
-    setup();
+    // setup();
 
     return () => {
       loop.stop();
