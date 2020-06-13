@@ -55,6 +55,7 @@ export default class extends Scene {
       this.containerSize.width,
       this.containerSize.height,
     ]);
+    program.setFloat('time', this.time);
     this.setLampeInfos(program);
   }
 

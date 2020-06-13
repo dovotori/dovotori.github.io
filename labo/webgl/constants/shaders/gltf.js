@@ -5,6 +5,7 @@ import {
 const vertex = `
 attribute vec3 position;
 attribute vec3 normale;
+attribute vec4 tangent;
 uniform mat4 projection;
 uniform mat4 model;
 uniform mat4 view;
@@ -42,7 +43,7 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'normale'],
+  attributes: ['position', 'normale', 'tangent'],
   uniforms: [
     'projection',
     'model',

@@ -1,4 +1,4 @@
-import availablesLang from "../constants/lang";
+import availablesLang from "../constants/locales";
 
 export const getSelectedCategory = (categories, category) => {
   if (category) {

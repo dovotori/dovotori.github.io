@@ -5,8 +5,9 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const config = require('../package.json');
 const { alias, optimization } = require('./common');
 
-const name = process.env.NAME || "signature";
+const name = process.env.NAME || "labo";
 
+// const BUILD_PATH = path.resolve(__dirname, `../assets/js/${name}`);
 const BUILD_PATH = path.resolve(__dirname, '../build');
 // const SRC_ASSET_PATH = path.resolve(__dirname, '../assets');
 const BUILD_ASSET_PATH = process.env.ASSET_PATH || '/public';

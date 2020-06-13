@@ -46,6 +46,7 @@ const mapStateToProps = (state, props) => {
     prevEntry,
     colorType,
     isTouchDevice: state.device.isTouch,
+    labelBack: state.content.back
   };
 };
 

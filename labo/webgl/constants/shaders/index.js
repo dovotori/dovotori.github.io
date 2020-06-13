@@ -19,3 +19,4 @@ export { default as skin } from './skin';
 export { default as bone } from './bone';
 export { default as gltf } from './gltf';
 export { default as paysage2 } from './paysage2';
+export { default as signature } from './signature';

@@ -1,4 +1,4 @@
-const MAIN_PROG = "gltf";
+const MAIN_PROG = "signature";
 const MAIN_OBJ = "head";
 export default {
   MAIN_PROG,

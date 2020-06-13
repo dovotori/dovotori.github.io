@@ -4,7 +4,7 @@ import {
   SET_LANG,
 } from "../constants/actionsTypes";
 import { isTouchDevice, getLocationHash, storage } from "../utils";
-import availablesLang from "../constants/lang";
+import availablesLang from "../constants/locales";
 
 export const defaultLang =
   getLocationHash() || storage.getItem("lang") || availablesLang[0].id;

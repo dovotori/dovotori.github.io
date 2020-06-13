@@ -63,12 +63,12 @@ const Span = styled.span`
   `}
 `;
 
-const ProjectNavigation = ({ prevEntry, nextEntry, colorType }) => (
+const ProjectNavigation = ({ prevEntry, nextEntry, colorType, labelBack }) => (
   <Wrap>
     <LINK colorType={colorType} to="/">
       <Arrow colorType={colorType} />
       <Arrow colorType={colorType} />
-      <Span>Back</Span>
+      <Span>{labelBack}</Span>
     </LINK>
     <LINK colorType={colorType} to={`/project/${prevEntry.slug}`}>
       <Arrow colorType={colorType} />

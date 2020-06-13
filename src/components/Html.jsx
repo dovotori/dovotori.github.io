@@ -16,7 +16,6 @@ const Html = ({ className, slug }) => {
 
   const { pending: pendingJs, value: js, error: errorJs } = useFetchJs(slug);
 
-
   useLayoutEffect(() => {
     if (
       !pendingHtml &&
