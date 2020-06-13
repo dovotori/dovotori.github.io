@@ -1,7 +1,3 @@
-/*
-
- */
-
 export default class {
   constructor(inputs) {
     this.inputs = inputs;

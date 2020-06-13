@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import CategoriesSelector from "../components/CategoriesSelector";
+import CategoriesFilters from "../components/CategoriesFilters";
 import { getSelectedCategory } from "../utils";
 
 const mapStateToProps = (state, props) => {
@@ -21,4 +21,4 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps)(CategoriesSelector));
+export default withRouter(connect(mapStateToProps)(CategoriesFilters));

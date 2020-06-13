@@ -1,4 +1,6 @@
-import { LoadObj, LoadMat, LoadGltf } from "../parser";
+import LoadObj from "../parser/LoadObj";
+import LoadMat from "../parser/LoadMat";
+import LoadGltf from "../parser/LoadGltf";
 
 class ManagerAssets {
   constructor() {

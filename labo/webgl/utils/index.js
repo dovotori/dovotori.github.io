@@ -1,7 +1,3 @@
-export { default as PerlinNoise } from "./perlinNoise";
-export * from "./easing";
-export * from "./numbers";
-
 export const chunkArray = (arr, size) =>
 Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
   arr.slice(i * size, i * size + size)

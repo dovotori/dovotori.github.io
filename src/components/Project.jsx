@@ -6,7 +6,6 @@ import Bloc from "./Bloc";
 import TypingMessage from "./TypingMessage";
 import ProjectImage from "./ProjectImage";
 import { Title } from "../themes/styled";
-import Canvas from "./Canvas";
 import ProjectHtml from "./ProjectHtml";
 
 const TEXT_WIDTH = 400;
@@ -71,25 +70,13 @@ const Date = styled.p`
   ${(p) => p.theme.monospace}
 `;
 
-const StyledCanvas = styled(Canvas)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  margin: 0 auto;
-
-  canvas {
-    margin: 0 auto;
-    width: 100%;
-    height: 100%;
-    max-width: ${(p) => p.width}px;
-    max-height: ${(p) => p.height}px;
-  }
-`;
-
 const StyledTitle = styled(Title)`
   margin: 1em 0;
   padding: 0 10px;
+`;
+
+const StyledProjectHtml = styled(ProjectHtml)`
+  background: ${(p) => p.noBackground ? 'transparent' : p.theme.getGradient};
 `;
 
 const Project = ({
@@ -99,10 +86,8 @@ const Project = ({
   images,
   date,
   colorType,
-  canvas,
   html: hasHtml,
 }) => {
-  const pixelRatio = window.devicePixelRatio;
 
   return (
     <StyledProject>
@@ -123,7 +108,7 @@ const Project = ({
               )}
             </Description>
           )}
-          {hasHtml && <ProjectHtml slug={slug} colorType={colorType} />}
+          {hasHtml && <StyledProjectHtml slug={slug} colorType={colorType} noBackground={hasHtml.noBackground} />}
         </WrapTexte>
         {images && (
           <ImagesList>
@@ -141,14 +126,6 @@ const Project = ({
                 ))}
             </Images>
           </ImagesList>
-        )}
-        {canvas && (
-          <StyledCanvas
-            colorType={colorType}
-            slug={slug}
-            width={1024 * pixelRatio}
-            height={1024 * pixelRatio}
-          />
         )}
         <ButtonBack colorType={colorType} />
       </WrapContent>

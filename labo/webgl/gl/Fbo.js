@@ -1,4 +1,5 @@
-import { TextureFbo, TextureDepth } from "../textures";
+import TextureFbo from "../textures/TextureFbo";
+import TextureDepth from "../textures/TextureDepth";
 
 export default class {
   constructor(

@@ -243,7 +243,9 @@ const Cv = ({ formation, isTouchDevice, chart, jobs, skills, hobbies }) => {
               return (
                 <TwoCol noMarginTop isTouch={isTouchDevice} key={item.text}>
                   <Line>
-                    {about ? (<StyledLink to={about}><Text>{text}</Text></StyledLink>) : <Text>{text}</Text>}
+                    {about ?
+                      (<StyledLink to={about}><Text>{text}</Text></StyledLink>)
+                      : <Text>{text}</Text>}
                   </Line>
                 </TwoCol>
             ); })}

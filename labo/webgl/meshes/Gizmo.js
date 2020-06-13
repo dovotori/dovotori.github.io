@@ -1,4 +1,4 @@
-import { Program } from "../gl";
+import Program from "../gl/Program";
 import glsl from "../constants/shaders/albedo";
 import ObjetVbo from "../gl/ObjetVbo";
 

@@ -2,15 +2,8 @@ import Scene from "Labo/scenes/labo";
 import config from "Labo/configs/labo";
 import App from "Labo/webgl/App";
 
-export default async () => {
+export default async ({ div = null }) => {
   const app = new App();
-  await app.setup(Scene, config);
-  const container = document.querySelector('#labo');
-  if (container) {
-    container.appendChild(app.getCanvas());
-    const loader = document.querySelector('.loaderlabo');
-    if (loader) {
-      loader.style.display = "none";
-    }
-  }
+  await app.setup(Scene, { ...config, mouse: { ...config.mouse, div } });
+  return app.getCanvas();
 }

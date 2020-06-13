@@ -97,7 +97,9 @@ class AnimationMarker {
       inverse = true;
     }
 
-    const isPlane = this.points[this.step].label === undefined || this.points[this.step + 1].label === undefined;
+    const previousHasNoLabel = this.points[this.step].label === undefined;
+    const nextHasLabel = this.points[this.step].label === undefined;
+    const isPlane = previousHasNoLabel || nextHasLabel;
 
     if (isPlane) {
       this.geoMarker.setStyle(

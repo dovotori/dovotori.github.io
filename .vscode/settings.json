@@ -7,8 +7,7 @@
   "search.exclude": {
     "**/.git": true,
     "**/node_modules": true,
-    "**/build": true,
-    "**/public": true
+    "**/build": true
   },
   "files.exclude": {
     "**/node_modules": true

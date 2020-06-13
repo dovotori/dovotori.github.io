@@ -6,7 +6,7 @@ const Wrap = styled.div`
   min-height: 100vh;
 `;
 
-const Bloc = ({ className, children }) => {
+const Bloc = ({ className, children }) =>  {
   const onScrollTop = useCallback((d) => {
     if (d === null) {
       window.scrollTo(0, 0);

@@ -57,10 +57,6 @@ const StyledHtml = styled(ProjectHtml)`
   width: 100%;
   height: 60vh;
   max-height: 512px;
-
-  canvas {
-    
-  }
 `;
 
 // const StyledSumo = styled(Sumo)`
@@ -131,7 +127,7 @@ const SpikeBalloon = styled(Balloon)`
 
 const StyledTitle = styled(Title)`
   font-size: 1.6em;
-  margin: 0;
+  margin: 0 0 0.4em;
 `;
 
 const Description = styled.p`
@@ -182,7 +178,7 @@ const Signature = ({ className, hello }) => (
               <TypingMessage message={text} />
               {' '}
             </Fragment>
-))}
+        ))}
         </StyledTitle>
         <Description>
           {hello.text}

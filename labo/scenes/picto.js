@@ -1,4 +1,4 @@
-import { Scene } from "../webgl";
+import Scene from "../webgl/scenes/Scene";
 
 export default class extends Scene {
   constructor(gl, config, assets, width = 512, height = 512) {

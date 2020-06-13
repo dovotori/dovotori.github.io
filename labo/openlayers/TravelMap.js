@@ -196,13 +196,13 @@ const replacer = (key, value) => {
       type = 'MultiPoint';
       if (geometry.length === 1) {
         type = 'Point';
-        geometry = geometry[0];
+        geometry[0] = geometry;
       }
     } else if (rawType === 2) {
       type = 'MultiLineString';
       if (geometry.length === 1) {
         type = 'LineString';
-        geometry = geometry[0];
+        geometry[0] = geometry;
       }
     } else if (rawType === 3) {
       type = 'Polygon';
@@ -271,7 +271,9 @@ const getVectorMap = (json, highlightIso) => {
 const createTooltip = (map, point) => {
   const { label, coor, offsetY } = point;
   const tooltipElement = document.createElement('div');
-  tooltipElement.className = `ol-tooltip ol-tooltip-measure ${offsetY ? 'bottom' : 'top'} ${label.toLowerCase()}`;
+  const classDirection = offsetY ? 'bottom' : 'top';
+  const className =`ol-tooltip ol-tooltip-measure ${classDirection} ${label.toLowerCase()}`;
+  tooltipElement.className = className;
   tooltipElement.innerHTML = label;
   const tooltip = new Overlay({
     element: tooltipElement,
@@ -282,7 +284,7 @@ const createTooltip = (map, point) => {
   map.addOverlay(tooltip);
 }
 
-export default (points, geojson, icon, highlightIso, defaultZoom = 6) => {
+export default (div, points, geojson, icon, highlightIso, defaultZoom = 6) => {
   const formatPoints = points.map(point => ({ ...point, coor: getCoor(point.coor) }));
   const labelPoints = formatPoints.filter(point => point.label);
   const view = getView(labelPoints, defaultZoom);
@@ -316,7 +318,7 @@ export default (points, geojson, icon, highlightIso, defaultZoom = 6) => {
         units: 'metric'
       }),
     ]),
-    target: 'map',
+    target: div,
     layers,
     view
   });

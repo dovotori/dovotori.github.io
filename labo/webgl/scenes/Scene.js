@@ -1,9 +1,7 @@
-import {
-  ManagerTextures,
-  ManagerObjets,
-  ManagerPrograms,
-  ManagerGltfs,
-} from "../managers";
+import ManagerTextures from "../managers/ManagerTextures";
+import ManagerObjets from "../managers/ManagerObjets";
+import ManagerPrograms from "../managers/ManagerPrograms";
+import ManagerGltfs from "../managers/ManagerGltfs";
 import PostProcess from "../gl/PostProcess";
 
 export default class {

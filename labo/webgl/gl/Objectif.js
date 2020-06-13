@@ -1,4 +1,5 @@
-import { Vec3, Mat4 } from "../maths";
+import Vec3 from "../maths/Vec3";
+import Mat4 from "../maths/Mat4";
 
 export default class {
   constructor(config) {

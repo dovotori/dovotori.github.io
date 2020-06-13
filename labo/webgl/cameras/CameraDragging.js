@@ -1,5 +1,5 @@
+import Spring from "../maths/Spring";
 import Camera from "./Camera";
-import { Spring } from "../maths";
 
 export default class extends Camera {
   constructor(options) {

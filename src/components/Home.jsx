@@ -1,10 +1,10 @@
-import React, { memo } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import Bloc from "./Bloc";
 import SignatureContainer from "../containers/SignatureContainer";
 import TeasersListContainer from "../containers/TeasersListContainer";
-import CategoriesSelectorContainer from "../containers/CategoriesSelectorContainer";
+import CategoriesFiltersContainer from "../containers/CategoriesFiltersContainer";
 
 const StyledHome = styled(Bloc)`
   margin: 20vh auto;
@@ -13,12 +13,12 @@ const StyledHome = styled(Bloc)`
   }
 `;
 
-const Home = memo(() => (
+const Home = () => (
   <StyledHome>
     <SignatureContainer />
-    <CategoriesSelectorContainer />
+    <CategoriesFiltersContainer />
     <TeasersListContainer />
   </StyledHome>
-));
+);
 
 export default Home;

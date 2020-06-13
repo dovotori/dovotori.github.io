@@ -1,4 +1,5 @@
-import { Mat4, Vec3 } from "../maths";
+import Vec3 from "../maths/Vec3";
+import Mat4 from "../maths/Mat4";
 import Objectif from "../gl/Objectif";
 
 export default class extends Objectif {

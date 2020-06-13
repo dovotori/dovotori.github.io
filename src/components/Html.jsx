@@ -1,41 +1,60 @@
-import React, { useLayoutEffect } from "react";
-import styled from "styled-components";
+import React, { useEffect, useRef, useMemo } from "react";
 
 import useFetchHtml from "../hooks/useFetchHtml";
 import useFetchJs from "../hooks/useFetchJs";
-// import useFetchAssets from "../hooks/useFetchAssets";
-import { getHtmlPath } from "../utils";
+import { getHtmlPath } from '../utils';
 
-const Balise = styled.div`
-`;
-
-const Html = ({ className, slug }) => {
+const Html = ({ className, slug, onLoad = null }) => {
+  const div = useRef(null);
    const { pending: pendingHtml, value: html, error: errorHtml } = useFetchHtml(
     getHtmlPath(slug)
   );
 
   const { pending: pendingJs, value: js, error: errorJs } = useFetchJs(slug);
 
-  useLayoutEffect(() => {
-    if (
-      !pendingHtml &&
-      !errorHtml &&
-      !pendingJs &&
-      !errorJs &&
-      js
-    ) {
-      js.default();
+  const isHtmlLoaded = useMemo(
+    () => !pendingHtml && !errorHtml && !!html, [pendingHtml, errorHtml, html]
+  );
+  const isJsLoaded = useMemo(
+    () => !pendingJs && !errorJs && !!js, [pendingJs, errorJs, js]
+  );
+  const isNoJs = useMemo(
+    () => !pendingJs && js === null, [pendingJs, errorJs, js]
+  );
+
+  useEffect(() => {
+    if (isHtmlLoaded && isNoJs) {
+      if (onLoad) {
+        onLoad();
+      }
     }
-  }, [
-    pendingHtml,
-    errorHtml,
-    pendingJs,
-    js,
-    errorJs,
-  ]);
+  }, [isHtmlLoaded, isNoJs, onLoad]);
+
+  useEffect(() => {
+    if (isHtmlLoaded && isJsLoaded) {
+      const runJs = async () => {
+        try {
+          const content = await js.default({ div: div.current });
+          if (content) {
+            div.current.appendChild(content);
+          }
+          if (onLoad) {
+            onLoad();
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      };
+      runJs();
+    }
+  }, [isHtmlLoaded, isJsLoaded]);
 
   return (
-    <Balise className={className} dangerouslySetInnerHTML={{ __html: html }} />
+    <div className={className}>
+      {/* eslint-disable-next-line react/no-danger */}
+      <div dangerouslySetInnerHTML={{ __html: html }} />
+      <div ref={div}  />
+    </div>
   );
 };
 

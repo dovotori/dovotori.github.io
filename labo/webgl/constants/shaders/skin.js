@@ -33,8 +33,8 @@ void main() {
 `;
 
 const getExtraLocations = () => {
-  let locations = [];
-  for (var i = 0; i < MAX_JOINT_MAT; i++) {
+  const locations = [];
+  for (let i = 0; i < MAX_JOINT_MAT; i++) {
     locations.push(`jointMat[${i}]`);
   }
   return locations;

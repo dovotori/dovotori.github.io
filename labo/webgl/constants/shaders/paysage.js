@@ -1,4 +1,4 @@
-import { attributeColors, varyingColors } from './utils/';
+import { attributeColors, varyingColors } from "./utils";
 
 import {
   uniformLights,

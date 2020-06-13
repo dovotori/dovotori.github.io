@@ -74,7 +74,7 @@ const initialState = {
             "Co-gérant de l’entreprise de Web design Pix 21, responsable du design et du développement web",
           tasks: [
             "développement et déploiement de sites internet",
-            "conception / mise en page / gestion d’impression de documents de communication et templates",
+            "conception / mise en page / gestion d’impression de documents de communication",
             "conception de chartes graphiques",
             "gestion et suivi de projet",
           ],

@@ -1,5 +1,6 @@
-import { ObjetPrimitive as Objet, Program } from "../gl";
-import { Mat4 } from "../maths";
+import Program from "../gl/Program";
+import Objet from "../gl/ObjetPrimitive";
+import Mat4 from "../maths/Mat4";
 import glsl from "../constants/shaders/basique3d";
 import primitive from "../constants/primitives/cube";
 

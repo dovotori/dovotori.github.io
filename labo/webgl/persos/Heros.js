@@ -1,5 +1,5 @@
 import PersoCollision from "./PersoCollision";
-import { Vec3 } from "../maths";
+import Vec3 from "../maths/Vec3";
 import Behavior from "../behaviors/BehaviorInteraction";
 
 export default class extends PersoCollision {

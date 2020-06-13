@@ -10,9 +10,6 @@ export const getSelectedCategory = (categories, category) => {
   return null;
 };
 
-export const shouldNotReload = (pathname) =>
-  pathname === "/" || pathname.indexOf("/category/") !== -1 ? "home" : pathname;
-
 export const isTouchDevice = () =>
   "ontouchstart" in window ||
   navigator.MaxTouchPoints > 0 ||

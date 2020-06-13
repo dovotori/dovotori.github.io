@@ -11,7 +11,8 @@ const host = process.env.HOST || '0.0.0.0';
 const name = process.env.NAME || "labo";
 
 const configPromise = async () => {
-  const html = await utils.readFile(path.resolve(__dirname, `../assets/html/${name}.html`), 'utf8');
+  const htmlPath = path.resolve(__dirname, `../assets/html/${name}.html`);
+  const html = await utils.readFile(htmlPath, 'utf8') || '';
   return {
     mode: 'development',
     entry: [

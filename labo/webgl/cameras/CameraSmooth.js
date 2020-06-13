@@ -1,5 +1,5 @@
 import Camera from "./CameraCoordinatesConversion";
-import { Target } from "../maths";
+import Target from "../maths/Target";
 
 export default class extends Camera {
   constructor(options) {

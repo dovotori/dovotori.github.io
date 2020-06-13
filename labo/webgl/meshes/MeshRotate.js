@@ -1,4 +1,5 @@
-import { Spring, Target } from "../maths";
+import Spring from "../maths/Spring";
+import Target from "../maths/Target";
 import Mesh from "./Mesh";
 
 export default class extends Mesh {

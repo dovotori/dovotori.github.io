@@ -1,5 +1,5 @@
 import Scene from "./Scene";
-import { CameraSmooth as Camera } from "../cameras";
+import Camera from "../cameras/CameraSmooth";
 
 export default class extends Scene {
   constructor(gl, config, assets) {

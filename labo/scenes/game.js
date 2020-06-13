@@ -1,30 +1,23 @@
-import {
-  SceneLampe as Scene,
-  Background,
-  Tilemap,
-  Target,
-  Heros,
-  Monster,
-  Bullets,
-  Fxs,
-  CollisionSweepPrune,
-  // mapFromRange,
-} from "../webgl";
+import Scene from '../webgl/scenes/SceneLampe';
+import Background from '../webgl/environment/Background';
+import Tilemap from '../webgl/environment/Tilemap';
+import Target from '../webgl/maths/Target';
+import Heros from '../webgl/persos/Heros';
+import Monster from '../webgl/persos/Monster';
+import Bullets from '../webgl/environment/Bullets';
+import Fxs from '../webgl/environment/Fxs';
+import CollisionSweepPrune from '../webgl/collisions/CollisionSweepPrune';
 
-import {
-  spriteHeros,
-  spriteBullet,
-  spriteFx,
-  spriteMonster,
-  spriteTiles,
-} from "../webgl/constants/sprites";
+import spriteHeros from '../webgl/constants/sprites/heros';
+import spriteBullet from '../webgl/constants/sprites/bullet';
+import spriteFx from '../webgl/constants/sprites/fx';
+import spriteMonster from '../webgl/constants/sprites/monster';
+import spriteTiles from '../webgl/constants/sprites/tiles';
 
-import {
-  heros as herosConstants,
-  bullet as bulletConstants,
-  fx as fxConstants,
-  monster as monsterConstants,
-} from "../webgl/constants/persos";
+import herosConstants from '../webgl/constants/persos/heros';
+import bulletConstants from '../webgl/constants/persos/bullet';
+import fxConstants from '../webgl/constants/persos/fx';
+import monsterConstants from '../webgl/constants/persos/monster';
 
 const isCollide = (pair, id1, id2) => {
   if (pair[0] === id1 && pair[1] === id2) {

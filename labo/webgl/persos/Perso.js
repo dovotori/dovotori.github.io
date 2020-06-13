@@ -1,6 +1,6 @@
 import StateSprite from "../logic/StateSprite";
 import MeshSprite from "../meshes/MeshSprite";
-import { Vec3 } from "../maths";
+import Vec3 from "../maths/Vec3";
 
 export default class extends MeshSprite {
   constructor({ constants, sprites, viewBox }) {

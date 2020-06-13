@@ -1,14 +1,12 @@
-import {
-  SceneLampe as Scene,
-  TexturePerlinNoise,
-  Mat4,
-  Spring,
-  Target,
-  DualQuaternion,
-  Gizmo,
-  Bloom,
-  degToRad,
-} from "../webgl";
+import Scene from '../webgl/scenes/SceneLampe';
+import TexturePerlinNoise from '../webgl/textures/TexturePerlinNoise';
+import Mat4 from '../webgl/maths/Mat4';
+import Spring from '../webgl/maths/Spring';
+import Target from '../webgl/maths/Target';
+import DualQuaternion from '../webgl/maths/DualQuaternion';
+import Gizmo from '../webgl/meshes/Gizmo';
+import Bloom from '../webgl/gl/Bloom';
+import { degToRad } from "../webgl/utils/numbers";
 
 export default class extends Scene {
   constructor(gl, config, assets, width = 512, height = 512) {

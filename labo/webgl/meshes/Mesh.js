@@ -1,4 +1,4 @@
-import { Mat4 } from "../maths";
+import Mat4 from "../maths/Mat4";
 
 export default class {
   constructor() {

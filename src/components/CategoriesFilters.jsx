@@ -32,7 +32,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const CategoriesSelector = ({ selected, className, categories }) => (
+const CategoriesFilters = ({ selected, className, categories }) => (
   <Wrap className={className}>
     {Object.keys(categories).map((categoryId) => {
       const isLinkSelected = selected === parseInt(categoryId, 10);
@@ -50,4 +50,4 @@ const CategoriesSelector = ({ selected, className, categories }) => (
   </Wrap>
 );
 
-export default CategoriesSelector;
+export default CategoriesFilters;

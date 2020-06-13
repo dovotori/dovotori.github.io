@@ -1,7 +1,7 @@
 import Objectif from "./Objectif";
 import Fbo from "./Fbo";
-import { MeshRepere } from "../meshes";
-import { Vec3 } from "../maths";
+import MeshRepere from "../meshes/MeshRepere";
+import Vec3 from "../maths/Vec3";
 
 export default class extends Objectif {
   constructor(gl, config, width = 1024, height = 1024) {

@@ -1,4 +1,9 @@
-import { Loop, ManagerAssets, Canvas, Keyboard, Mouse, capitalize, getEnvPath } from ".";
+import Loop from "./logic/Loop";
+import ManagerAssets from "./managers/ManagerAssets";
+import Canvas from "./gl/Canvas";
+import Keyboard from "./io/Keyboard";
+import Mouse from "./io/Mouse";
+import { capitalize, getEnvPath } from "./utils";
 
 export default class {
   constructor() {
@@ -33,7 +38,7 @@ export default class {
         this.keyboard = new Keyboard(config.keyboard);
       }
       if (config.mouse) {
-        const { events, domId } = config.mouse;
+        const { events, domId, div } = config.mouse;
         const callbacks = events.reduce(
           (acc, cur) => ({
             ...acc,
@@ -41,7 +46,7 @@ export default class {
           }),
           {}
         );
-        const container = domId ? document.querySelector(`#${domId}`) : document.body;
+        const container = div ||(domId ? document.querySelector(`#${domId}`) : document.body);
         this.mouse = new Mouse(container, callbacks);
       }
     }

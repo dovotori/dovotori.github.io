@@ -1,5 +1,5 @@
 import Perso from "./Perso";
-import { CollisionBox } from "../collisions";
+import CollisionBox from "../collisions/CollisionBox";
 
 export default class extends Perso {
   constructor({ id, constants, sprites, viewBox }) {

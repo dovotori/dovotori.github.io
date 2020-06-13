@@ -1,5 +1,5 @@
-import { MeshColor as Mesh } from "../meshes";
-import { mapFromRange } from "../utils";
+import Mesh from "../meshes/MeshColor";
+import { mapFromRange } from "../utils/numbers";
 
 export default class {
   constructor(viewBox, levelSize) {
