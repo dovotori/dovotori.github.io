@@ -15,32 +15,8 @@ uniform float time;
 varying vec3 fragPosition;
 varying vec3 fragNormale;
 
-// float turbulence( vec3 p ) {
-//   float w = 100.0;
-//   float t = -.5;
-//   for (float f = 1.0 ; f <= 10.0 ; f++ ) {
-//     float power = pow( 2.0, f );
-//     t += abs( pnoise( vec3( power * p ), vec3( 10.0, 10.0, 10.0 ) ) / power );
-//   }
-//   return t;
-// }
-
-// vec3 deformAlongNormale(vec3 position, vec3 normale, float time) {
-//   // // get a turbulent 3d noise using the normal, normal to high freq
-//   // noise = 10.0 *  -.10 * turbulence( .5 * normale );
-//   // // get a 3d noise using the position, low frequency
-//   // float b = 5.0 * pnoise( 0.05 * position, vec3( 100.0 ) );
-//   // // compose both noises
-//   // float displacement = - 10. * noise + b;
-//   float displacement = 1.0 + cos(time * 0.1);
-
-//   // move the position along the normal and transform it
-//   return position + normale * displacement;
-// }
-
 void main()
 {
-  // float displacement = cos(time * 0.1) + sin(time * 0.5);
   float displacement = 0.0;
   vec3 newPosition = position + normale * displacement;
   

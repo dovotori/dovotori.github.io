@@ -4,7 +4,7 @@ export default {
   MAIN_PROG,
   MAIN_OBJ,
   programs: ["basique3d", "bone", MAIN_PROG],
-  assets: [`/objets/${MAIN_OBJ}.gltf`],
+  assets: [`/gltf/${MAIN_OBJ}.gltf`],
   positions: {
     plot: [
       { x: -0.74175, z: -0.889829, y: 0.03561 },

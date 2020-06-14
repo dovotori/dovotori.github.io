@@ -9,6 +9,8 @@ import availablesLang from "../constants/locales";
 export const defaultLang =
   getLocationHash() || storage.getItem("lang") || availablesLang[0].id;
 
+document.documentElement.setAttribute("lang", defaultLang);
+
 const storedDarkMode = storage.getItem("dark");
 
 const initialState = {

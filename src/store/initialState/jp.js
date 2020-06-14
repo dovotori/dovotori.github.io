@@ -1,6 +1,7 @@
 import { CAT_DESIGN, CAT_CODE, CAT_BLOG } from "../../constants/categories";
 import { Locales } from "../../constants/locales";
 import getLocalPosts from "./getLocalPosts";
+import chart from "./chart";
 
 const initialState = {
   categories: {
@@ -11,12 +12,12 @@ const initialState = {
   entries: getLocalPosts(Locales.JP),
   hello: {
     title: "Dorian Ratovo",
-    text: "グラフィックデザイナーでした其れから,ウェブプログラマーを成る事にした",
+    text: "グラフィックデザイナーでした 其れ から,ウェブプログラマーを成る事にした",
     contact: "お問い合わせ",
     about: "はじめまして!",
     description: [
       "グラフィック設計 を 勉強しました。其の後 ウェブ開発 に 趣味 が ありました ので 自分 で 養成 しました。",
-      "javascript は 一番 好きなITツール に 成りました。 経験 を する ために Javascript を 使います。 例えば api canvas で 2D / 3D 画像 を 作りました。",
+      "javascript は 一番 好きなツール に 成りました。 経験 を する ために Javascript を 使います。 例えば api canvas で 2D / 3D 画像 を 作りました。",
       "沢山 の 可能性 が　ありました から 此の 知識 を 職場 で 適用して, 今 勉強を続けます。"
     ],
   },
@@ -47,7 +48,7 @@ const initialState = {
         {
           date: 2009,
           text:
-            "グラフィックデザイン の 卒業証書/ LISAA Parisの応用芸術の高等研究所でのマルチメディア",
+            "グラフィックデザイン の 卒業証書/ LISAA Paris の 応用芸術の高等研究所でのマルチメディア",
         },
         {
           date: 2006,
@@ -122,7 +123,7 @@ const initialState = {
           ],
         },
         {
-          text: "イメージ & édition",
+          text: "イメージ & 編集",
           items: [
             { text: "Photoshop", level: "" },
             { text: "Illustrator", level: "" },
@@ -153,96 +154,13 @@ const initialState = {
         },
       ],
     },
-    chart: {
-      name: "skills",
-      value: 100,
-      children: [
-        {
-          name: "dev",
-          value: 50,
-          children: [
-            {
-              name: "php",
-              value: 10,
-            },
-            {
-              name: "js",
-              value: 70,
-              children: [
-                {
-                  name: "node",
-                  value: 10,
-                },
-                {
-                  name: "react",
-                  value: 20,
-                },
-                {
-                  name: "redux",
-                  value: 20,
-                },
-                {
-                  name: "webgl",
-                  value: 10,
-                },
-                {
-                  name: "d3",
-                  value: 10,
-                },
-                {
-                  name: "env",
-                  value: 30,
-                  children: [
-                    {
-                      name: "flow",
-                      value: 30,
-                    },
-                    {
-                      name: "jest",
-                      value: 30,
-                    },
-                    {
-                      name: "webpack",
-                      value: 20,
-                    },
-                    {
-                      name: "gitlab",
-                      value: 20,
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              name: "html",
-              value: 10,
-            },
-            {
-              name: "css",
-              value: 10,
-            },
-          ],
-        },
-        {
-          name: "design",
-          value: 50,
-          children: [
-            {
-              name: "blender",
-              value: 50,
-            },
-            {
-              name: "inkscape",
-              value: 50,
-            },
-          ],
-        },
-      ],
-    },
+    chart
   },
   back: "バック",
   darkMode: "暗い",
   lightMode: "明るい",
+  next: "次",
+  previous: "前"
 };
 
 export default initialState;
