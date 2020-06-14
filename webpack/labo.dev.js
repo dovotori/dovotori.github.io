@@ -12,7 +12,12 @@ const name = process.env.NAME || "labo";
 
 const configPromise = async () => {
   const htmlPath = path.resolve(__dirname, `../assets/html/${name}.html`);
-  const html = await utils.readFile(htmlPath, 'utf8') || '';
+  let html = '';
+  try {
+  html = await utils.readFile(htmlPath, 'utf8') || '';
+  } catch(e) {
+    console.log('no html find to be inject in template');
+  }
   return {
     mode: 'development',
     entry: [
