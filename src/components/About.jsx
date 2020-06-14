@@ -63,6 +63,7 @@ const StyledTypingMessage = styled(TypingMessage)`
 
 const StyledTitle = styled(Title)`
   position: relative;
+  margin-bottom: 1em;
 `;
 
 const Quote = styled.div`
@@ -96,7 +97,7 @@ const About = ({ hello, isTouchDevice }) => (
           <StyledTypingMessage message={hello.about} />
         </StyledTitle>
         {hello.description.map((text) => (
-          <Description>{text}</Description>
+          <Description key={text}>{text}</Description>
         ))}
       </MarginLeft>
       <CvContainer />
@@ -112,7 +113,7 @@ const About = ({ hello, isTouchDevice }) => (
       </MarginLeft>
       <MarginLeft isTouch={isTouchDevice}>
         <StyledButton
-          to={`mailto:${process.env.MAIL}`}
+          href={`mailto:${process.env.MAIL}`}
           colorType
           isTouch={isTouchDevice}
           text={hello.contact}

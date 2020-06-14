@@ -9,8 +9,7 @@ import { getProjectImagePath } from "../utils";
 const StyledLazyImage = styled(LazyImage)`
   margin: 0 auto 10vh;
   min-height: 100px;
-  background: ${(p) =>
-    p.colorType === 0 ? p.theme.primaryGradient : p.theme.secondaryGradient};
+  background: ${(p) => p.theme.getGradient};
   box-shadow: 0 0 1em ${(p) => p.theme.backgroundHighlight};
   opacity: ${(p) => (p.isVisible ? 1 : 0)};
   transform: ${(p) => (p.isVisible ? "none" : "translateY(20%)")};

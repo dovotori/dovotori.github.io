@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
 
-const useFetchJs = (url) => {
-  const [pending, setPending] = useState(false);
+const useFetchJs = (name) => {
+  const [pending, setPending] = useState(true);
   const [value, setValue] = useState(null);
   const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       setError(false);
-      setPending(true);
       try {
-        const js = await import(`Assets/js/${url}.js`);
+        const js = await import(`Assets/js/${name}.js`);
         setValue(js);
       } catch (e) {
+        console.error(e);
         setError(true);
       }
       setPending(false);
     };
     fetchData();
-  }, [url]);
+  }, [name]);
 
   return { pending, value, error };
 };

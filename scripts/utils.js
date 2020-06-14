@@ -1,8 +1,10 @@
 const { promisify } = require('util');
+const path = require('path');
 const fs = require('fs');
 const csv = require('csv-parser');
 
 const writeFile = promisify(fs.writeFile);
+const readdir = promisify(fs.readdir);
 
 exports.readFile = promisify(fs.readFile);
 
@@ -21,7 +23,7 @@ exports.saveHtml = (url, data) => {
   });
 };
 
-exports.removeFile = (file) => {
+const removeFile = (file) => {
   try {
     if (fs.existsSync(file)) {
       fs.unlink(file, (e) => {
@@ -33,6 +35,8 @@ exports.removeFile = (file) => {
   }
 };
 
+exports.removeFile = removeFile;
+
 exports.readCsv = (url) => new Promise((resolve, reject) => {
   const data = [];
   fs.createReadStream(url)
@@ -43,3 +47,19 @@ exports.readCsv = (url) => new Promise((resolve, reject) => {
     })
     .on('end', () => { resolve(data); });
 });
+
+const deleteFolderRecursive = (folderPath) => {
+  if (fs.existsSync(folderPath)) {
+    fs.readdirSync(folderPath).forEach((file) => {
+      const curPath = path.join(folderPath, file);
+      if (fs.lstatSync(curPath).isDirectory()) { // recurse
+        deleteFolderRecursive(curPath);
+      } else { // delete file
+        fs.unlinkSync(curPath);
+      }
+    });
+    fs.rmdirSync(folderPath);
+  }
+};
+
+exports.clean = deleteFolderRecursive;

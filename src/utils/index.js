@@ -1,4 +1,4 @@
-import availablesLang from "../constants/lang";
+import availablesLang from "../constants/locales";
 
 export const getSelectedCategory = (categories, category) => {
   if (category) {
@@ -9,9 +9,6 @@ export const getSelectedCategory = (categories, category) => {
   }
   return null;
 };
-
-export const shouldNotReload = (pathname) =>
-  pathname === "/" || pathname.indexOf("/category/") !== -1 ? "home" : pathname;
 
 export const isTouchDevice = () =>
   "ontouchstart" in window ||
@@ -101,3 +98,8 @@ export const storage = {
     return item !== null && item !== undefined ? JSON.parse(item) : null;
   },
 };
+
+export const chunkArray = (arr, size) =>
+Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+  arr.slice(i * size, i * size + size)
+);

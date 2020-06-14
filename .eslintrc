@@ -22,12 +22,13 @@
   },
   "env": {
     "es6": true,
-    "node": false,
+    "node": true,
     "browser": true,
     "jest": true
   },
   "ignorePatterns": [
-    "src/game/constants/shaders/",
+    "labo/webgl/constants/shaders/",
+    "labo/lib/",
     "src/store/"
   ],
   "rules": {
@@ -44,5 +45,12 @@
       "error",
       100
     ]
+  },
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "./webpack/prod.js"
+      }
+    }
   }
 }

@@ -30,6 +30,7 @@ const useFetchAssets = (sources) => {
           assets.reduce((acc, curr) => ({ ...acc, [curr.name]: curr.data }), {})
         );
       } catch (e) {
+        console.error(e);
         setError(true);
       }
       setPending(false);

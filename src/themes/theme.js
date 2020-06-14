@@ -28,7 +28,6 @@ const common = {
   primaryGradient: "linear-gradient(to right, #006666, #66ffcc)",
   secondaryGradient: "linear-gradient(to right, #660000, #ffb366)",
   tertiaryGradient: "linear-gradient(to right, #330033,  #990066)",
-  testGradient: "linear-gradient(to bottom, #310000,  #000031)",
   media: {
     mobile: (...args) => css`
       @media (max-width: 570px) {

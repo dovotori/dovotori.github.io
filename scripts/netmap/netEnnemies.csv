@@ -1,0 +1,29 @@
+iso,nom,name,nbInstitution,institutionsFR,institutionsEN,exactions,baroNetPrison,baroNetTue,baroJournalistePrison,baroJournalisteTue,index2014,capitaleFR,latitudeCapitale,longitudeCapitale
+PRK,Corée du Nord,DPRK,3,"Agence centrale de l'Information _Scientifique et Technologique _(CSTIA), “Groupe 109”, Département 27","""Central Scientific _and Technological Information _Agency (CSTIA)"", ""Group 109"", ""Department 27""","""Censure"", ""Surveillance, ""Désinformation"", ""Prison""",1,,,,179,Pyongyang,39.2N,125.45E
+ETH,Ethiopie,Ethiopia,1,"""Agence de sécurité _des réseaux d'information _(INSA)""","""The Information Network _Security Agency _(INSA)""","""Surveillance"", ""Censure"", ""Prison""",,,5,,143,Addis Ababa,09.02N,38.42E
+ARE,Emirats arabes unis,United Arab Emirates,2,"""Autorité de régulation _des télécommunications _(TRA)"", ""Unités de lutte contre _la cybercriminalité""","""Telecommunications Regulatory _Authority (TRA)"", ""Anti-Electronic _Crimes Unit""","""Surveillance"", ""Censure"", ""Prison""",2,0,0,,118,Abu Dhabi,24.28N,54.22E
+PAK,Pakistan,Pakistan,1,"""Autorité des Télécommunications _du Pakistan (PTA)""","""Pakistan Telecommunication _Authority (PTA)""","""Censure""",,,1,,158,Islamabad,33.40N,73.10E
+IND,Inde,India,1,"""Centre de développement _des télématiques _(C-DOT)""","""Center for Development _of Telematics _(C-DOT)""","""Surveillance""",,,2,,140,New Delhi,28.37N,77.13E
+UZB,Ouzbékistan,Uzbekistan,1,"""Commission d’experts _sur l’information et les communications _de masse""","""Expert Commission _on Information and _Mass Communications""","""Censure"", ""Surveillance"", ""Prison""",,,9,,166,Tashkent,41.20N,69.10E
+SAU,Arabie saoudite,Saudi Arabia,2,"""Commission en charge des communications _et des technologies de l’information _CITC"", ""Unité des services d’Internet (ISU)""","""Communication and Information _Technology Commission _(CITC)"", ""Internet Services _Unit (ISU)""","""Censure"", ""Surveillance"", ""Prison""",1,,1,,164,Riyadh,24.41N,46.42E
+IRN,Iran,Islamic Republic of Iran,3,"""Gardiens de la révolution"", ""_Conseil suprême du cyberespace"", ""_Groupe de travail de détermination de contenus criminels""","""Revolutionary Guards"", ""Supreme Council _for Cyberspace"", "" Working Group to Determine _Instances of Criminal Content""","""Censure"", ""Prison""",21,,20,,173,Teheran,35.4029N,51.2520E
+GBR,Royaume-Uni,United Kingdom,1,"""Government _Communications Headquarters _(GCHQ)""","""Government _Communications Headquarters _(GCHQ)""","""Surveillance""",,,,,33,London,51.36N,00.05W
+BHR,Bahreïn,Bahrain,2,"""Le ministère de l’intérieur"", ""L'appareil de sécurité _intérieur (NSA)"" ","""Ministry of interior"", ""National security _apparatus (NSA)"" ","""Surveillance"", ""Censure"", ""Prison""",2,,4,,163,Manama,26.10N,50.30E
+ZAF,Afrique du Sud,South Africa,,"""ISS World""","""ISS World""","""Surveillance""",0,0,0,0,42,Pretoria,25.44S,28.12E
+BRA,Brésil,Brazil,,"""ISS World""","""ISS World""","""Surveillance""",0,0,0,0,111,Brasilia,15.47S,47.55W
+ARE,Emirats arabes unis,United Arab Emirates,,"""ISS World""","""ISS World""","""Surveillance""",2,0,0,0,118,Abu Dhabi,24.28N,54.22E
+USA,Etats-Unis,United States,,"""ISS World""","""ISS World""","""Surveillance""",1,0,1,0,46,Washington,38.53N,77.02W
+MYS,Malaisie,Malaysia,,"""ISS World""","""ISS World""","""Surveillance""",0,0,0,0,147,Kuala Lumpur,03.09N,101.41E
+CZE,République tchèque,Czech Republic,,"""ISS World""","""ISS World""","""Surveillance""",0,0,0,0,13,Prague,50.05N,14.22E
+CHN,Chine,China,1,"""Le Bureau d'Etat _de l'information sur Internet _(SIIO)""","""State Internet _Information Office (SIIO)""","""Censure"", ""Surveillance"", ""Prison""",70,,30,,175,Beijing,39.55N,116.20E
+BLR,Bélarus,Belarus,1,"""Le Centre Analytique _des Opérations (OAC)""","""Operations _and Analysis Centre _(OAC)""","""Censure"", ""Surveillance"", ""Prison""",,,,,157,Minsk,53.52N,27.30E
+CUB,Cuba,Cuba,1,"""Le ministère de l’Informatique _et des Communications ""","""Ministry of Informatics _and Communications""","""Censure"", ""Surveillance"", ""Prison""",1,,1,,170,Havana,23.08N,82.22W
+QAT,Qatar,Qatar,,"""Milipol""","""Milipol""","""Surveillance""",0,0,0,0,113,Doha,25.15N,51.35E
+FRA,France,France,,"""Milipol"",""TAC""","""Milipol"",""TAC""","""Surveillance""",0,0,0,0,39,Paris,48.50N,02.20E
+VNM,Vietnam,Vietnam,1,"""Ministère de l’Information _et des Communications _(MIC)""","""Ministry of Information _and Communications _(MIC)""","""Surveillance"", ""Censure"", ""Prison""",34,,2,,174,Hanoï,21.2N,105.51E
+USA,Etats-Unis,United States,1,"""National Security _Agency (NSA)""","""National Security _Agency (NSA)""","""Surveillance"", ""Prison""",1,,1,,46,Washington,38.53N,77.02W
+RUS,Russie,Russian Federation,1,"""Service fédéral _de sécurité de la Fédération _de Russie (FSB)""","""Federal Security Service _of the Russian Federation _(FSB)""","""Surveillance"", ""Censure"", ""Prison""",,,2,,148,Moscou,55.45N,37.42E
+SDN,Soudan,Sudan,3,"""Service national de la sûreté _et du renseignement _(NISS)"", ""Unité de cyber-jihad"", ""_Société nationale _des télécommunications (NTC)""","""National Intelligence _and Security Service _(NISS)"", ""Cyber-Jihadist Unit"", ""National Telecommunication _Corporation (NTC)""
+","""Surveillance"", ""Censure"", ""Prison""",,,1,,172,Khartoum,15.31N,32.35E
+SYR,Syrie,Syrian Arab Republic,2,"""Syrian Telecommunications _Establishment (STE)"", ""_Syrian Computer Society (SCS)""","""Syrian Telecommunications _Establishment (STE)"", ""Syrian Computer _Society (SCS)""","""Surveillance"", ""Censure"", ""Prison""",22,3,19,,177,Damas,33.3132N,36.1852E
+TKM,Turkménistan,Turkmenistan,1,TurkmenTelekom,TurkmenTelekom,"""Censure"", ""Prison""",,,,,178,Ashgabat,38.00N,57.50E

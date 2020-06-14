@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import * as icons from "Assets/svg/cv";
@@ -24,6 +25,15 @@ const styledIcons = Object.keys(icons).reduce(
 
 const Bloc = styled.div`
   margin-top: 3em;
+`;
+
+const StyledLink = styled(Link)`
+  span {
+    color: ${p => p.theme.text};
+    &:hover {
+      color: ${p => p.theme.primary};
+    }
+  }
 `;
 
 const Category = styled.h3`
@@ -137,7 +147,7 @@ const Cv = ({ formation, isTouchDevice, chart, jobs, skills, hobbies }) => {
           ))}
         </Bloc>
       ) : null,
-    []
+    [formation]
   );
 
   const renderJobs = useCallback(
@@ -147,32 +157,35 @@ const Cv = ({ formation, isTouchDevice, chart, jobs, skills, hobbies }) => {
           <MarginLeft isTouch={isTouchDevice}>
             <Category>{jobs.text}</Category>
           </MarginLeft>
-          {jobs.items.map((item) => (
-            <BlocJob key={item.text}>
-              <Line noMarginBottom>
-                <Clear isTouch={isTouchDevice}>
-                  <FloatLeft isTouch={isTouchDevice}>
-                    <Date isTouch={isTouchDevice}>
-                      {renderDate(item.start_date, item.end_date)}
-                    </Date>
-                  </FloatLeft>
-                  <FloatRight isTouch={isTouchDevice}>
-                    <Text>{item.text}</Text>
-                  </FloatRight>
-                </Clear>
-              </Line>
-              <MarginLeft isTouch={isTouchDevice}>
-                {item.tasks.map((task) => (
-                  <Line key={task}>
-                    <SubText>{task}</SubText>
-                  </Line>
+          {jobs.items.map((item) => {
+            const { startDate, endDate, text ,tasks } = item;
+            return (
+              <BlocJob key={item.text}>
+                <Line noMarginBottom>
+                  <Clear isTouch={isTouchDevice}>
+                    <FloatLeft isTouch={isTouchDevice}>
+                      <Date isTouch={isTouchDevice}>
+                        {renderDate(startDate, endDate)}
+                      </Date>
+                    </FloatLeft>
+                    <FloatRight isTouch={isTouchDevice}>
+                      <Text>{text}</Text>
+                    </FloatRight>
+                  </Clear>
+                </Line>
+                <MarginLeft isTouch={isTouchDevice}>
+                  {tasks.map((task) => (
+                    <Line key={task}>
+                      <SubText>{task}</SubText>
+                    </Line>
                 ))}
-              </MarginLeft>
-            </BlocJob>
-          ))}
+                </MarginLeft>
+              </BlocJob>
+          );
+          })}
         </Bloc>
       ) : null,
-    []
+    [jobs]
   );
 
   const renderSkills = useCallback(
@@ -216,7 +229,7 @@ const Cv = ({ formation, isTouchDevice, chart, jobs, skills, hobbies }) => {
           ))}
         </Bloc>
       ) : null,
-    []
+    [skills]
   );
 
   const renderHobbies = useCallback(
@@ -225,17 +238,21 @@ const Cv = ({ formation, isTouchDevice, chart, jobs, skills, hobbies }) => {
         <Bloc>
           <MarginLeft isTouch={isTouchDevice}>
             <Category>{hobbies.text}</Category>
-            {hobbies.items.map((item) => (
-              <TwoCol noMarginTop isTouch={isTouchDevice} key={item.text}>
-                <Line>
-                  <Text>{item.text}</Text>
-                </Line>
-              </TwoCol>
-            ))}
+            {hobbies.items.map((item) => {
+              const {text, about} = item;
+              return (
+                <TwoCol noMarginTop isTouch={isTouchDevice} key={item.text}>
+                  <Line>
+                    {about ?
+                      (<StyledLink to={about}><Text>{text}</Text></StyledLink>)
+                      : <Text>{text}</Text>}
+                  </Line>
+                </TwoCol>
+            ); })}
           </MarginLeft>
         </Bloc>
       ) : null,
-    []
+    [hobbies]
   );
 
   return (

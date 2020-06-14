@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import ButtonBack from "./ButtonBack";
@@ -6,11 +6,7 @@ import Bloc from "./Bloc";
 import TypingMessage from "./TypingMessage";
 import ProjectImage from "./ProjectImage";
 import { Title } from "../themes/styled";
-import Canvas from "./Canvas";
-import useFetchHtml from "../hooks/useFetchHtml";
-import useFetchJs from "../hooks/useFetchJs";
-import useFetchAssets from "../hooks/useFetchAssets";
-import { getHtmlPath } from "../utils";
+import ProjectHtml from "./ProjectHtml";
 
 const TEXT_WIDTH = 400;
 
@@ -35,21 +31,6 @@ const Description = styled.div`
   ${(p) => p.theme.media.tablet`
     width: 100%;
   `};
-`;
-
-const Html = styled.div`
-  text-align: left;
-  color: ${(p) => p.theme.light};
-  margin: 4em auto;
-  max-width: none;
-  width: calc(100% - 20px);
-
-  img {
-    width: 100%;
-    height: auto;
-    margin: 1em auto;
-    box-shadow: 0 0 1em ${(p) => p.theme.backgroundHighlight};
-  }
 `;
 
 const Text = styled.p`
@@ -89,25 +70,13 @@ const Date = styled.p`
   ${(p) => p.theme.monospace}
 `;
 
-const StyledCanvas = styled(Canvas)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  margin: 0 auto;
-
-  canvas {
-    margin: 0 auto;
-    width: 100%;
-    height: 100%;
-    max-width: ${(p) => p.width}px;
-    max-height: ${(p) => p.height}px;
-  }
-`;
-
 const StyledTitle = styled(Title)`
   margin: 1em 0;
   padding: 0 10px;
+`;
+
+const StyledProjectHtml = styled(ProjectHtml)`
+  background: ${(p) => p.noBackground ? 'transparent' : p.theme.getGradient};
 `;
 
 const Project = ({
@@ -117,47 +86,8 @@ const Project = ({
   images,
   date,
   colorType,
-  canvas,
-  sources,
   html: hasHtml,
 }) => {
-  const pixelRatio = window.devicePixelRatio;
-
-  const { pending: pendingHtml, value: html, error: errorHtml } = useFetchHtml(
-    getHtmlPath(slug),
-    hasHtml
-  );
-
-  const { pending: pendingJs, value: js, error: errorJs } = useFetchJs(slug);
-
-  const {
-    pending: pendingAssets,
-    value: assets,
-    error: errorAssets,
-  } = useFetchAssets(sources);
-
-  useLayoutEffect(() => {
-    if (
-      !pendingAssets &&
-      !errorAssets &&
-      !pendingHtml &&
-      !errorHtml &&
-      !pendingJs &&
-      !errorJs &&
-      js
-    ) {
-      js.default(assets);
-    }
-  }, [
-    pendingAssets,
-    errorAssets,
-    assets,
-    pendingHtml,
-    errorHtml,
-    pendingJs,
-    js,
-    errorJs,
-  ]);
 
   return (
     <StyledProject>
@@ -178,7 +108,7 @@ const Project = ({
               )}
             </Description>
           )}
-          {html && <Html dangerouslySetInnerHTML={{ __html: html }} />}
+          {hasHtml && <StyledProjectHtml slug={slug} colorType={colorType} noBackground={hasHtml.noBackground} />}
         </WrapTexte>
         {images && (
           <ImagesList>
@@ -196,14 +126,6 @@ const Project = ({
                 ))}
             </Images>
           </ImagesList>
-        )}
-        {canvas && (
-          <StyledCanvas
-            colorType={colorType}
-            slug={slug}
-            width={1024 * pixelRatio}
-            height={1024 * pixelRatio}
-          />
         )}
         <ButtonBack colorType={colorType} />
       </WrapContent>
