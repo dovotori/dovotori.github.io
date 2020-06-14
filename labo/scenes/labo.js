@@ -1,62 +1,121 @@
-import Scene from "../webgl/scenes/Scene";
+import Scene from '../webgl/scenes/SceneLampe';
+import TexturePerlinNoise from '../webgl/textures/TexturePerlinNoise';
+import Mat4 from '../webgl/maths/Mat4';
+import Spring from '../webgl/maths/Spring';
+import Target from '../webgl/maths/Target';
+import DualQuaternion from '../webgl/maths/DualQuaternion';
+import { mapFromRange, degToRad } from "../webgl/utils/numbers";
 
 export default class extends Scene {
   constructor(gl, config, assets, width = 512, height = 512) {
     super(gl, config, assets, width, height);
-    this.setGlitch = this.setGlitch.bind(this);
-    this.onMouseMove = this.onMouseMove.bind(this);
-    this.req = null;
-    this.value = 0;
-    this.target = 0;
-    this.centerWave = [Math.random(), Math.random()];
-    this.req = setTimeout(this.setGlitch, 1000);
-  }
 
-  setGlitch() {
-    this.value = 0;
-    this.centerWave = [Math.random(), Math.random()];
-    this.target = this.centerWave > 0.5 ? Math.PI : -Math.PI;
-    clearTimeout(this.req);
-    this.req = setTimeout(this.setGlitch, 2000 + Math.random() * 5000);
+    this.MAIN_PROG = config.MAIN_PROG;
+    this.MAIN_OBJ = config.MAIN_OBJ;
+
+    this.onMouseMove = this.onMouseMove.bind(this);
+    this.renderToBuffer = this.renderToBuffer.bind(this);
+
+    this.texture = new TexturePerlinNoise(gl, 256, 256);
+    this.model = new Mat4();
+    this.model.identity();
+    this.targetX = new Target(0, 0.2);
+    this.targetY = new Target(0, 0.2);
+    this.target = new Spring(0, 0.2);
+    this.mouseCanvasPosition = {
+      x: 0,
+      y: 0,
+    };
   }
 
   update() {
     super.update();
-    this.value += (this.target - this.value) * 0.04;
+
+    this.targetX.update();
+    this.targetY.update();
+    this.target.update();
+
+    this.model.identity();
+
+    const angle =
+      degToRad(this.targetX.get()) + Math.sin(this.time * 0.06) * 0.1;
+    const angle2 =
+      degToRad(this.targetY.get()) - Math.abs(Math.cos(this.time * 0.06) * 0.1);
+
+    const quat = new DualQuaternion();
+    quat.rotateY(angle);
+    quat.rotateX(angle2);
+    this.model.multiply(quat.toMatrix4());
+
+    const program = this.mngProg.get(this.MAIN_PROG);
+    program.setVector("resolution", [
+      this.containerSize.width,
+      this.containerSize.height,
+    ]);
+    program.setFloat('time', this.time);
+    this.setLampeInfos(program);
   }
 
-  onMouseMove(mouse) {
-    const newPos = [
-      mouse.relScroll.x / mouse.size.width,
-      1 - mouse.relScroll.y / mouse.size.height,
-    ];
-    const velocity = [
-      this.centerWave[0] - newPos[0],
-      this.centerWave[1] - newPos[1],
-    ];
-    this.centerWave = newPos;
-    this.target = (velocity[0] + velocity[1]) * 100;
+  effects() {
+    const delta = Math.cos(this.time * 0.01) * 0.04;
+    if (delta > 0) {
+      this.postProcess.setGlitch(
+        this.time * 0.07 + this.target.get(),
+        delta,
+        delta
+      );
+    }
+    this.postProcess.setWave(0.05, delta, [
+      this.mouseCanvasPosition.x,
+      this.mouseCanvasPosition.y,
+    ]);
+    this.postProcess.setFXAA();
+  }
+
+  mainRender(program) {
+    this.mngGltf.get(this.MAIN_OBJ).render(program, this.model);
+  }
+
+  renderToBuffer(program) {
+    this.mainRender(program);
+  }
+
+  renderBasiqueForShadow() {
+    const program = this.mngProg.get("basique3d");
+    program.setMatrix("projection", this.camera.getProjection().get());
+    program.setMatrix("view", this.getLampeViewMatrix(0).get());
+    program.setMatrix("model", this.model.get());
+    this.renderToBuffer(program);
   }
 
   render() {
     super.render();
+    const program = this.mngProg.get("bone");
+    program.setMatrix("projection", this.camera.getProjection().get());
+    program.setMatrix("view", this.camera.getView().get());
+    this.mngGltf.get(this.MAIN_OBJ).setBoneProgram(program);
 
-    const delta = Math.sin(this.value) * 0.1;
-    const time = this.time * 0.04;
-    this.postProcess.setWatercolorMoving(
-      this.time * 0.2,
-      [this.value, this.value],
-      4.0,
-      this.mngTex.get("signature").get()
-    );
-    this.postProcess.setGlitch(time, delta, delta);
-    this.postProcess.setWave(time, delta, this.centerWave);
-    // this.postProcess.setRGB(
-    //   delta * 100.0,
-    //   delta * 100.0,
-    //   this.centerWave[0],
-    //   this.centerWave[1]
-    // );
+    this.postProcess.start();
+    this.mainRender(this.mngProg.get(this.MAIN_PROG));
+    this.postProcess.end();
+
+    // this.effects();
     this.postProcess.render();
+
+    // DEBUG
+    // this.postProcess.render(this.getLampeDepthTexture(0).get());
+    // this.postProcess.render(this.buffers.getShadowTexture().get());
+  }
+
+  onMouseMove(mouse) {
+    const x = mapFromRange(mouse.pos.x, 0, mouse.size.width, -32, 32);
+    const y = mapFromRange(mouse.pos.y, 0, mouse.size.height, -32, 32);
+    this.targetX.set(x);
+    this.targetY.set(y);
+    this.target.set(mouse.relPrevious.x);
+    this.mouseCanvasPosition = {
+      x: mapFromRange(mouse.pos.x, 0, mouse.size.width, 0, 1),
+      y: mapFromRange(mouse.pos.y, 0, mouse.size.height, 1, 0),
+    };
   }
 }

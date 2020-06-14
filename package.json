@@ -10,7 +10,7 @@
   "license": "CC-BY-4.0",
   "scripts": {
     "start": "webpack-dev-server --config webpack/dev.js",
-    "build": "node scripts/cleanBuild.js && webpack --config webpack/prod.js",
+    "build": "webpack --config webpack/prod.js",
     "labo": "webpack-dev-server --config webpack/labo.dev.js",
     "labo:build": "node scripts/cleanBuild.js && webpack --config webpack/labo.prod.js",
     "lint": "eslint --fix --config .eslintrc --ext .jsx,.js src/ labo/",

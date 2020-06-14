@@ -16,7 +16,12 @@ const BUILD_ASSET_PATH = process.env.ASSET_PATH || '.';
 
 const configPromise = async () => {
   const htmlPath = path.resolve(__dirname, `../assets/html/${name}.html`);
-  const html = await utils.readFile(htmlPath, 'utf8') || '';
+  let html = '';
+  try {
+  html = await utils.readFile(htmlPath, 'utf8') || '';
+  } catch(e) {
+    console.log('no html find to be inject in template');
+  }
   return {
     mode: 'production',
     entry: path.resolve(__dirname, `../labo/index.js`),
