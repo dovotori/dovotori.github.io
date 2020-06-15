@@ -4,7 +4,7 @@ export default {
   MAIN_PROG,
   MAIN_OBJ,
   programs: ["basique3d", "bone", MAIN_PROG],
-  assets: [`/objets/${MAIN_OBJ}.gltf`],
+  assets: [`/obj/${MAIN_OBJ}.obj`],
   positions: {
     plot: [
       { x: -0.74175, z: -0.889829, y: 0.03561 },
@@ -18,7 +18,7 @@ export default {
     panel: [{ x: 0, y: 0, z: 0 }],
   },
   camera: {
-    position: { x: 0, y: 0, z: 30 },
+    position: { x: 0, y: 0, z: 20 },
     target: { x: 0, y: 0, z: 0 },
     near: 1,
     far: 40,
@@ -54,7 +54,7 @@ export default {
     //   direction: [0, 0, 1]
     // }
   ],
-  mouse: { domId: "signature", events: ["move"] },
+  mouse: { domId: "signature", events: ["drag", "wheel"] },
   postprocess: {
     effects: ["glitch", "wave", "watercolorMoving", "fxaa"],
     useDepth: true,

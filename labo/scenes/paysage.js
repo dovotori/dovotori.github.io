@@ -15,10 +15,6 @@ export default class extends Scene {
     this.MAIN_PROG = config.MAIN_PROG;
     this.MAIN_OBJ = config.MAIN_OBJ;
 
-    this.onMouseDrag = this.onMouseDrag.bind(this);
-    this.onMouseWheel = this.onMouseWheel.bind(this);
-    this.renderToBuffer = this.renderToBuffer.bind(this);
-
     this.texture = new TexturePerlinNoise(gl, 256, 256);
     this.model = new Mat4();
     this.model.identity();
@@ -40,11 +36,11 @@ export default class extends Scene {
     this.model.scale(this.targetZ.get());
 
     const angle = degToRad(this.targetX.get());
-    const angle2 = degToRad(this.targetY.get());
+    // const angle2 = degToRad(this.targetY.get());
 
     const quat = new DualQuaternion();
     quat.rotateY(-angle);
-    quat.rotateX(-angle2);
+    // quat.rotateX(-angle2);
     this.model.multiply(quat.toMatrix4());
 
     const program = this.mngProg.get(this.MAIN_PROG);
@@ -67,7 +63,7 @@ export default class extends Scene {
     this.mngGltf.get(this.MAIN_OBJ).render(program, this.model);
   }
 
-  renderToBuffer(program) {
+  renderToBuffer = (program) => {
     this.mainRender(program);
   }
 
@@ -107,12 +103,12 @@ export default class extends Scene {
     // this.postProcess.render(this.bloom.getTexture().get());
   }
 
-  onMouseDrag(mouse) {
+  onMouseDrag = (mouse) => {
     this.targetX.set(mouse.relPrevious.x * 0.1);
     this.targetY.set(mouse.relPrevious.y * 0.1);
   }
 
-  onMouseWheel(mouse) {
+  onMouseWheel = (mouse) => {
     let target = -mouse.deltaY;
     target = Math.min(target, 2);
     target = Math.max(target, 1);

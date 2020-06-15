@@ -7,6 +7,7 @@ attribute vec3 position;
 attribute vec3 normale;
 attribute vec4 tangent;
 uniform mat4 projection;
+uniform sampler2D noiseMap;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat3 normalmatrix;
@@ -40,7 +41,7 @@ varying vec3 fragNormale;
 
 void main()
 {
-  float displacement = cos(time * 0.1) + sin(time * 0.5);
+  float displacement = 1.0 + cos(time * 0.1) + sin(time * 0.01);
   vec3 newPosition = position + normale * displacement;
   
   fragPosition = normalize((view * model * vec4(newPosition, 1.0)).xyz);
@@ -63,8 +64,7 @@ ${funcLightsColor}
 
 void main() {
   vec3 phong = funcLightsColor(color.xyz, vec3(1.0,1.0,1.0), vec3(1.0,1.0,1.0), fragNormale, fragPosition);
-  gl_FragColor = vec4(phong, 1.0);
-  // gl_FragColor = vec4(fragNormale, 1.0);
+  gl_FragColor = vec4(fragNormale, 1.0);
 }
 `;
 
@@ -77,6 +77,7 @@ export default {
     'model',
     'view',
     'normalmatrix',
+    'noiseMap',
     'color',
     'rough',
     'metal',

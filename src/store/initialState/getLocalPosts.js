@@ -176,23 +176,23 @@ const rawPosts = [
   {
     id: 15,
     slug: "japon",
-    title: { [Locales.FR]: "Japon", [Locales.EN]: "Japan", [Locales.JP]: "" },
+    title: { [Locales.FR]: "Japon", [Locales.EN]: "Japan", [Locales.JP]: "日本" },
     category: CAT_BLOG,
     tags: [],
     date: 2017,
-    description: { [Locales.FR]:  "Quelques souvenirs du Japon.", [Locales.EN]: "Some memories of Japan.", [Locales.JP]: "" },
+    description: { [Locales.FR]:  "Quelques souvenirs du Japon.", [Locales.EN]: "Some memories of Japan.", [Locales.JP]: "日本 の 思い出。" },
     html: true,
     images: 16
   },
   {
     id: 16,
     slug: "norway",
-    title: { [Locales.FR]: "Norvege", [Locales.EN]: "Norway", [Locales.JP]: "" },
+    title: { [Locales.FR]: "Norvege", [Locales.EN]: "Norway", [Locales.JP]: "ノルウェー" },
     category: CAT_BLOG,
     tags: [],
     date: 2018,
     description: { [Locales.FR]:  
-    "Quelques souvenirs de Norvège.", [Locales.EN]: "Some memories of Norway.", [Locales.JP]: "" },
+    "Quelques souvenirs de Norvège.", [Locales.EN]: "Some memories of Norway.", [Locales.JP]: "ノルウェー の 思い出。" },
     sources: "",
     html: true,
     images: 18
@@ -200,24 +200,24 @@ const rawPosts = [
   {
     id: 17,
     slug: "hongkong",
-    title: { [Locales.FR]: "Hong Kong", [Locales.EN]: "Hong Kong", [Locales.JP]: "" },
+    title: { [Locales.FR]: "Hong Kong", [Locales.EN]: "Hong Kong", [Locales.JP]: "香港" },
     category: CAT_BLOG,
     tags: [],
     date: 2019,
     description: { [Locales.FR]:  
-    "Quelques souvenirs de Hong Kong.", [Locales.EN]: "Some memories of Hong Kong.", [Locales.JP]: "" },
+    "Quelques souvenirs de Hong Kong.", [Locales.EN]: "Some memories of Hong Kong.", [Locales.JP]: "香港 の 思い出。" },
     sources: "",
     images: 20
   },
   {
     id: 18,
     slug: "budapest",
-    title: { [Locales.FR]: "Budapest", [Locales.EN]: "Budapest", [Locales.JP]: "" },
+    title: { [Locales.FR]: "Budapest", [Locales.EN]: "Budapest", [Locales.JP]: "ブダペスト" },
     category: CAT_BLOG,
     tags: [],
     date: 2019,
     description: { [Locales.FR]:  
-    "Quelques souvenirs de Budapest.", [Locales.EN]: "Some memories of Budapest.", [Locales.JP]: "" },
+    "Quelques souvenirs de Budapest.", [Locales.EN]: "Some memories of Budapest.", [Locales.JP]: "ブダペスト の 思い出。" },
     sources: "",
     images: 13
   }

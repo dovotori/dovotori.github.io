@@ -36,6 +36,10 @@ body, button {
   font-family: 'lato', Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
+html:lang(jp) body, button {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 body {
   line-height: 1.4;
   background-color: #222;

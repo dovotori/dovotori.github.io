@@ -46,7 +46,9 @@ const mapStateToProps = (state, props) => {
     prevEntry,
     colorType,
     isTouchDevice: state.device.isTouch,
-    labelBack: state.content.back
+    labelBack: state.content.back,
+    labelPrevious: state.content.previous,
+    labelNext: state.content.next
   };
 };
 
