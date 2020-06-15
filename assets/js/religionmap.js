@@ -1,6 +1,4 @@
-// const CROSS_SHAPE = 'M24.869 -17.798 L17.798 -24.869 L0 -7.071 L-17.797 -24.869 L-24.869 -17.798 L-7.071 0 L-24.869 17.798 L-17.798 24.869 L0 7.071 L17.798 24.869 L24.869 17.798 L7.071 0Z';
-
-import { mapFromRange } from '../../src/game/utils/numbers';
+import { mapFromRange } from '../../src/utils';
 
 export default () => {
   const carte = document.querySelector('#worldmap');
@@ -65,12 +63,12 @@ export default () => {
     const scale = Math.min(Math.floor(Math.min(scaleX, scaleY)), 8);
     const x = mapFromRange(centroid.x, 0, boxMap[2], (width / 2) * scale, -(width / 2) * scale);
     const y = mapFromRange(centroid.y, 0, boxMap[3], (height / 2) * scale, -(height / 2) * scale);
-    carte.setAttribute('transform', `translate(${x} ${y}) scale(${scale})`);
+    carte.setAttribute('style', `transform: translate3d(${x}px, ${y}px, 0px) scale(${scale})`);
     updateLegend(path.getAttribute('data-data'));
   };
 
   const handleClickMap = () => {
-    carte.setAttribute('transform', 'translate(0,0) scale(1)');
+    carte.setAttribute('style', 'transform: scale(1)');
     resetSelected();
   };
 

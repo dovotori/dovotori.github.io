@@ -1,26 +1,45 @@
 import React, {
   useRef,
   useCallback,
-  useState,
   useEffect,
-  useLayoutEffect,
 } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
+
+const Wrap = styled.span`
+  position: relative;
+  display: inline-block;
+`;
+
+const Hidden = styled.span`
+  visibility: ${p => p.isVisible ? 'visible': 'hidden'};
+`;
+
+const Anim = styled.span`
+  position: absolute;
+  /* white-space: nowrap; */
+  display: inline-block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  white-space: nowrap;
+`;
 
 const ANIM_DURATION_RANGE = 30;
 const ANIM_FPS = 3000 / 60;
+const CHARS = "!<>-_\\/[]{}—=+*^?#________";
 
-const TypingMessage = ({ className, message }) => {
+const TypingMessage = ({ message, isTouchDevice, isLoop = false }) => {
   const ref = useRef(null);
   const wrapRef = useRef(null);
   const queue = useRef([]);
   const count = useRef(0);
   const lastFrame = useRef(new Date().getTime());
   const req = useRef(null);
-  const [text, setText] = useState(message);
 
   const randomChar = useCallback(() => {
-    const chars = "!<>-_\\/[]{}—=+*^?#________";
-    return chars[Math.floor(Math.random() * chars.length)];
+    return CHARS[Math.floor(Math.random() * CHARS.length)];
   }, []);
 
   const update = useCallback(() => {
@@ -47,54 +66,44 @@ const TypingMessage = ({ className, message }) => {
         }
       }
       if (ref.current && output.length > 0) {
-        setText(output);
+        ref.current.innerHTML = output;
       }
       lastFrame.current = now;
     }
     if (complete !== queue.current.length) {
-      req.current = requestAnimationFrame(update);
       count.current += 1;
+      req.current = requestAnimationFrame(update);
+    } else if (isLoop) {
+      count.current = 0;
+      req.current = requestAnimationFrame(update);
     }
   }, []);
 
   useEffect(() => {
-    const oldText = ref.current.innerText;
-    const length = Math.max(oldText.length, message.length);
-    queue.current = [];
-    for (let i = 0; i < length; i += 1) {
-      const from = oldText[i] || "";
-      const to = message[i] || "";
-      const start = Math.floor(Math.random() * ANIM_DURATION_RANGE);
-      const end = start + Math.floor(Math.random() * ANIM_DURATION_RANGE);
-      queue.current.push({
-        from,
-        to,
-        start,
-        end,
-      });
+    if (!isTouchDevice) {
+      const oldText = message;
+      const length = Math.max(oldText.length, message.length);
+      queue.current = [];
+      for (let i = 0; i < length; i += 1) {
+        const from = oldText[i] || "";
+        const to = message[i] || "";
+        const start = Math.floor(Math.random() * ANIM_DURATION_RANGE);
+        const end = start + Math.floor(Math.random() * ANIM_DURATION_RANGE);
+        queue.current.push({
+          from,
+          to,
+          start,
+          end,
+        });
+      }
+      cancelAnimationFrame(req.current);
+      count.current = 0;
+      lastFrame.current = new Date().getTime();
+      req.current = requestAnimationFrame(update);
     }
-    cancelAnimationFrame(req.current);
-    count.current = 0;
-    lastFrame.current = new Date().getTime();
-    req.current = requestAnimationFrame(update);
-
     return () => {
       if (req.current) {
         cancelAnimationFrame(req.current);
-      }
-    };
-  }, [message]);
-
-  useLayoutEffect(() => {
-    wrapRef.current.style.display = "inline-block";
-    wrapRef.current.style.height = `${ref.current.offsetHeight}px`;
-    ref.current.style.whiteSpace = "no-wrap";
-    ref.current.style.position = "absolute";
-
-    return () => {
-      if (ref.current) {
-        ref.current.style.whiteSpace = "auto";
-        ref.current.style.position = "inline";
       }
     };
   }, [message]);
@@ -109,12 +118,16 @@ const TypingMessage = ({ className, message }) => {
   );
 
   return (
-    <span ref={wrapRef}>
-      <span ref={ref} className={className}>
-        {text}
-      </span>
-    </span>
+    <Wrap ref={wrapRef}>
+      <Hidden isVisible={isTouchDevice}>{message}</Hidden>
+      <Anim ref={ref} />
+    </Wrap>
   );
 };
 
-export default TypingMessage;
+const mapStateToProps = state => ({
+    isTouchDevice: state.device.isTouch,
+});
+
+export default connect(mapStateToProps)(TypingMessage);
+

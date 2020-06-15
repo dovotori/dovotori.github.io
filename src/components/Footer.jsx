@@ -4,7 +4,7 @@ import styled from "styled-components";
 import license from "Assets/img/cclicense80x15.png";
 import { ReactComponent as Mail } from "Assets/svg/mail.svg";
 import Toggle from "./Toggle";
-import availablesLang from "../constants/lang";
+import availablesLang from "../constants/locales";
 
 const Wrap = styled.div`
   padding: 2em 4%;

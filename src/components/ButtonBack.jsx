@@ -9,7 +9,7 @@ import useHover from "../hooks/useHover";
 const LINK = styled(Link)`
   position: relative;
   display: flex;
-  width: calc(100% - 20px);
+  width: 100%;
   margin: 2em auto;
   padding: 1em 10px;
   border: solid 1px ${(p) => p.theme.getColor};

@@ -1,4 +1,6 @@
 import { CAT_DESIGN, CAT_CODE, CAT_BLOG } from "../../constants/categories";
+import { Locales } from "../../constants/locales";
+import getLocalPosts from "./getLocalPosts";
 
 const initialState = {
   categories: {
@@ -6,301 +8,107 @@ const initialState = {
     [CAT_CODE]: "コード",
     [CAT_BLOG]: "ブログ",
   },
-  tags: {
-    0: "javascript",
-    1: "d3.js",
-    2: "OpenCV",
-    3: "processing",
-    4: "openNI",
-    5: "Kinect",
-    6: "WebGL",
-  },
-  entries: [
-    // {
-    //   id: 0,
-    //   slug: 'netmap',
-    //   title: 'Net Map',
-    //   category: CAT_CODE,
-    //   tags: [],
-    //   date: 2014,
-    //   description:
-    //     'Datavisualisation désignant les différentes institutions
-    // ennemies d\'Internet" à travers le monde. Projet réalisé au sein de
-    // l\'association Reporters sans frontières sous la direction artistique
-    // de Pierre-Alain Leboucher.',
-    //   sources: '',
-    //   context: '',
-    //   images: 1,
-    // },
-    // {
-    //   id: 1,
-    //   slug: 'religionmap',
-    //   title: 'Religion Map',
-    //   category: CAT_DESIGN,
-    //   tags: [],
-    //   date: 2014,
-    //   description:
-    //     'Datavisualisation désignant les pays qui utilisent la religion comme moyen de censure.',
-    //   sources: '',
-    //   context: '',
-    // },
-    {
-      id: 2,
-      slug: "barason",
-      title: "Barason",
-      category: CAT_CODE,
-      tags: [],
-      date: 2013,
-      description:
-        "Transformation d'un comptoir de bar en séquenceur musicale, dont les sons sont déclenchés par les verres posés sur sa surface.",
-      sources: "",
-      context: "",
-      images: 2,
-    },
-    {
-      id: 3,
-      slug: "camouflage",
-      title: "Camouflage",
-      category: CAT_DESIGN,
-      tags: [],
-      date: 2009,
-      description:
-        "Proposition pour l'identité d'une exposition fictive sur les arts de rue et le graffiti.",
-      sources: "",
-      context: "",
-      images: 4,
-    },
-    {
-      id: 4,
-      slug: "identite",
-      title: "Identité",
-      category: CAT_DESIGN,
-      tags: [],
-      date: 2014,
-      description: "Identités visuelles pour différentes marques.",
-      sources: "",
-      context: "",
-      images: 14,
-    },
-    // {
-    //   id: 5,
-    //   slug: 'electro',
-    //   title: 'Electro',
-    //   category: CAT_DESIGN,
-    //   tags: [],
-    //   date: 2013,
-    //   description: "Site de l'artiste audiovisuel Alex Augier.",
-    //   sources: '',
-    //   context: '',
-    // },
-    {
-      id: 6,
-      slug: "soap",
-      title: "Soap",
-      category: CAT_DESIGN,
-      tags: [],
-      date: 2009,
-      description:
-        "Recherche pour l'identité d'une exposition au sein de la Soap Factory, musée d'art contemporain à Mineapolis.",
-      sources: "",
-      context: "",
-      images: 3,
-    },
-    {
-      id: 7,
-      slug: "weiwei",
-      title: "Wei Wei",
-      category: CAT_DESIGN,
-      tags: [],
-      date: 2014,
-      description:
-        "Animation promotionnelle installée dans les gares parisiennes de l'album de Reporters sans frontières, 100 photos de Ai Weiwei pour la liberté de la presse.",
-      sources: "",
-      context: "",
-      images: 2,
-    },
-    {
-      id: 8,
-      slug: "presse",
-      title: "Presse",
-      category: CAT_DESIGN,
-      tags: [],
-      date: 2014,
-      description:
-        "Différents projets réalisés au sein de l'association Reporters sans frontières.",
-      sources: "",
-      context: "",
-      images: 6,
-    },
-    {
-      id: 9,
-      slug: "distraction",
-      title: "Distraction",
-      category: CAT_CODE,
-      tags: [],
-      date: 2013,
-      description:
-        "Dispositif de jeu qui a pour ambition d'intégrer n'importe quel objet du quotidien pour influencer un espace virtuel.",
-      sources: "",
-      context: "",
-      images: 9,
-    },
-    {
-      id: 10,
-      slug: "havre",
-      title: "ルアーブル",
-      category: CAT_DESIGN,
-      tags: [],
-      date: 2009,
-      description:
-        "Élaboration d'une identité visuelle pour la biennale d'art contemporain de la ville du Havre.",
-      sources: "",
-      context: "",
-      images: 11,
-    },
-    {
-      id: 11,
-      slug: "depardon",
-      title: "Depardon",
-      category: CAT_DESIGN,
-      tags: [],
-      date: 2009,
-      description:
-        "Recherche graphique pour un coffret de reportages de Raymond Depardon, la série sur le monde paysan, destin fragile des travailleurs de la terre.",
-      sources: "",
-      context: "",
-      images: 4,
-    },
-
-    {
-      id: 12,
-      slug: "games",
-      title: "ゲーム",
-      category: CAT_CODE,
-      tags: [],
-      date: 2016,
-      description: "Conception d'un simple platformer en webgl",
-      sources: "",
-      context: "",
-      canvas: true,
-    },
-    {
-      id: 13,
-      slug: "paysage",
-      title: "Paysage",
-      category: CAT_CODE,
-      tags: [],
-      date: 2016,
-      description: "Parser et visualisation d'un objet 3d au format obj",
-      sources: "",
-      context: "",
-      canvas: true,
-    },
-    // {
-    //   id: 12,
-    //   slug: 'amour',
-    //   title: 'Amour',
-    //   category: CAT_CODE,
-    //   tags: [],
-    //   date: 1,
-    //   description: 'Site HappyLovers',
-    //   sources: '',
-    //   context: '',
-    // },
-  ],
+  entries: getLocalPosts(Locales.JP),
   hello: {
-    title: "今日は",
-    text: "私は　ドリアンです，デヴェロップ　と　グラフィックデザイナーです",
+    title: "Dorian Ratovo",
+    text: "グラフィックデザイナーでした其れから,ウェブプログラマーを成る事にした",
+    contact: "お問い合わせ",
+    about: "はじめまして!",
+    description: [
+      "グラフィック設計 を 勉強しました。其の後 ウェブ開発 に 趣味 が ありました ので 自分 で 養成 しました。",
+      "javascript は 一番 好きなITツール に 成りました。 経験 を する ために Javascript を 使います。 例えば api canvas で 2D / 3D 画像 を 作りました。",
+      "沢山 の 可能性 が　ありました から 此の 知識 を 職場 で 適用して, 今 勉強を続けます。"
+    ],
   },
   cv: {
     formation: {
-      text: "Formation",
+      text: "学習",
       items: [
         {
           date: 2013,
           text:
-            "Diplôme national d’expression plastique avec félicitations du jury  à l’école supérieure d’art et design de Saint-Étienne section design ",
+            "サンティティエンヌの芸術とデザインの大学院でのプラスチック表現の国立ディプロマ",
         },
         {
           date: 2013,
           text:
-            "Exposition lors de la biennale internationale du design  de Saint-Étienne avec le projet Barasson au Fil ",
+            "サンテティエンヌのデザインの国際隔年で、バラソンプロジェクトで展示 バラソンプロジェクト",
         },
         {
           date: 2012,
           text:
-            "Semestre dans le département Multimedia / Réalité virtuelle  de l’école d’art Burg Giebichenstein à Halle en Allemagne ",
+            "マルチメディア部門 / バーチャルリアリティ Burg Giebichenstein の 美術学校 に Halle, ドイツ",
         },
         {
           date: 2011,
           text:
-            "Diplôme national d’arts plastiques avec mention à l’école supérieure d’art et design de Saint-Étienne section design ",
+            "サンテティエンヌ の 芸術とデザイン の 優れた学校 の 造形芸術 の 国立ディプロマ デザインセクション",
         },
         {
           date: 2009,
           text:
-            "Diplôme de graphisme / multimédia à LISAA Paris l’institut supérieur des arts appliqués",
+            "グラフィックデザイン の 卒業証書/ LISAA Parisの応用芸術の高等研究所でのマルチメディア",
         },
         {
           date: 2006,
-          text: "Baccalauréat général série scientifique",
+          text: "一般科学バカロレア",
         },
       ],
     },
     jobs: {
-      text: "Parcours",
+      text: "実務経験",
       items: [
         {
-          start_date: 0,
-          end_date: 0,
-          text: "Développeur Front-end au sein de Winamax",
+          startDate: 0,
+          endDate: 0,
+          text: "Winamax の フロントエンド の 開発者",
           tasks: [""],
         },
         {
-          start_date: 2014,
-          end_date: 2016,
+          startDate: 2014,
+          endDate: 2016,
           text:
-            "Co-gérant de l’entreprise de Web design Pix 21, responsable du design et du développement web",
+            "Pix 21 の ウェブデザイン の 会社 の 共同マネージャー, グラフィックデザイン と ウェブ開発 の 責任者",
           tasks: [
-            "développement et déploiement de sites internet",
-            "conception / mise en page / gestion d’impression de documents de communication et templates",
-            "conception de chartes graphiques",
-            "gestion et suivi de projet",
+            "ウェブサイト の 開発 と 展開",
+            "創生 / ページ組み / コミュニケーション文書 と テンプレート の 印刷管理 ",
+            "グラフィックチャート の 創生",
+            "プロジェクト管理 と モニタリング"
           ],
         },
         {
-          start_date: 2013,
-          end_date: 2014,
-          text: "Graphiste au sein de l’association Reporters sans frontières",
+          startDate: 2013,
+          endDate: 2014,
+          text: "Reporters sans frontières協会 の グラフィックデザイナー",
           tasks: [
-            "réalisation de cartes intéractives en ligne",
-            "conception / mise en page de rapports et de documents de communication",
+            "オンライン で インタラクティブマップ の 作成",
+            "創生 / レポート と コミュニケーション文書 の ページ組み"
           ],
         },
         {
-          start_date: 2012,
-          end_date: 2012,
+          startDate: 2012,
+          endDate: 2012,
           text:
-            "Semestre au laboratoire de recherche Ideas Lab au CEA de Grenoble",
+            "グルノーブル に 研究所 の Ideas Lab au CEA 学期をしました",
           tasks: [
-            "recherche et prototypages autour de technologies innovantes",
-            "travail collaboratif avec des ingénieurs",
+            "革新的な技術 の 研究 と プロトタイピング",
+            "エンジニアとチームワークをしました."
           ],
         },
         {
-          start_date: 2009,
-          end_date: 2009,
+          startDate: 2009,
+          endDate: 2009,
           text:
-            "Stage puis missions au sein de l’atelier des Giboulées, agence  de conseil et création graphique",
+            "コンサルティングおよびグラフィックデザインエージェンシー の atelier des Giboulées の 会社 で ビジネスインターンシップ を しました",
           tasks: [
-            "conception / mise en page / suivi d’impression de documents de communication",
-            "participation à l'élaboration du cahiers des charges avec le client",
+            "創生  / ページ組み / コミュニケーション文書とテンプレートの印刷管理",
+            "仕様開発への参加"
           ],
         },
       ],
     },
     skills: {
-      text: "Aptitudes",
+      text: "手並み",
       items: [
         {
           text: "dev",
@@ -314,7 +122,7 @@ const initialState = {
           ],
         },
         {
-          text: "image & édition",
+          text: "イメージ & édition",
           items: [
             { text: "Photoshop", level: "" },
             { text: "Illustrator", level: "" },
@@ -327,21 +135,107 @@ const initialState = {
         {
           text: "語",
           items: [
-            { text: "フランス語", level: "" },
-            { text: "英語", level: "lu et parlé" },
-            { text: "日本語", level: "en apprentissage" },
+            { text: "フランス語", level: "読んで話しました" },
+            { text: "英語", level: "読んで話しました" },
+            { text: "日本語", level: "勉強しています" },
           ],
         },
       ],
     },
     hobbies: {
-      text: "Intérêts",
+      text: "趣味",
       items: [
         {
           text: "ビデオゲームの作成",
         },
         {
           text: "日本の文化",
+        },
+      ],
+    },
+    chart: {
+      name: "skills",
+      value: 100,
+      children: [
+        {
+          name: "dev",
+          value: 50,
+          children: [
+            {
+              name: "php",
+              value: 10,
+            },
+            {
+              name: "js",
+              value: 70,
+              children: [
+                {
+                  name: "node",
+                  value: 10,
+                },
+                {
+                  name: "react",
+                  value: 20,
+                },
+                {
+                  name: "redux",
+                  value: 20,
+                },
+                {
+                  name: "webgl",
+                  value: 10,
+                },
+                {
+                  name: "d3",
+                  value: 10,
+                },
+                {
+                  name: "env",
+                  value: 30,
+                  children: [
+                    {
+                      name: "flow",
+                      value: 30,
+                    },
+                    {
+                      name: "jest",
+                      value: 30,
+                    },
+                    {
+                      name: "webpack",
+                      value: 20,
+                    },
+                    {
+                      name: "gitlab",
+                      value: 20,
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              name: "html",
+              value: 10,
+            },
+            {
+              name: "css",
+              value: 10,
+            },
+          ],
+        },
+        {
+          name: "design",
+          value: 50,
+          children: [
+            {
+              name: "blender",
+              value: 50,
+            },
+            {
+              name: "inkscape",
+              value: 50,
+            },
+          ],
         },
       ],
     },
