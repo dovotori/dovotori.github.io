@@ -17,7 +17,12 @@ class Context {
 
   constructor(canvas) {
     this.gl = Context.checkWebGl(canvas);
+    this.support = {
+      webgl: false,
+      depthTexture: false
+    };
     if (this.gl) {
+      this.support.webgl = true;
       this.gl.enable(this.gl.DEPTH_TEST);
       this.gl.clearDepth(1.0);
       this.gl.depthFunc(this.gl.LESS);
@@ -27,14 +32,17 @@ class Context {
       this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
       this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
 
-      this.gl.getExtension("WEBGL_depth_texture");
-    } else {
-      console.debug("context not found");
+      this.support.depthTexture = !!this.gl.getExtension("WEBGL_depth_texture");
     }
+    console.debug('Webgl support info', this.support);
   }
 
   get() {
     return this.gl;
+  }
+
+  getSupport () {
+    return this.support;
   }
 }
 
