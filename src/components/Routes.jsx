@@ -1,13 +1,13 @@
 import React from "react";
 import { Route, Router, Switch, Redirect } from "react-router-dom";
-import { createBrowserHistory } from "history";
+import { createHashHistory } from "history"; // bettr for reload on SPA than createBrowserHistory
 
 import TransitionRoute from "./TransitionRoute";
 import FooterContainer from "../containers/FooterContainer";
 import ProjectNavigationContainer from "../containers/ProjectNavigationContainer";
 import routes from "../constants/routes";
 
-const history = createBrowserHistory();
+const history = createHashHistory();
 
 const renderRoute = (route) => (
   <Route

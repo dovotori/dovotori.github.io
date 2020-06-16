@@ -140,7 +140,7 @@ const rawPosts = [
   {
     id: 12,
     slug: "game",
-    title: { [Locales.FR]: "Débuts de jeu", [Locales.EN]: "Work in progress game", [Locales.JP]: "ゲーム" },
+    title: { [Locales.FR]: "Jeu", [Locales.EN]: "Game", [Locales.JP]: "ゲーム" },
     category: CAT_CODE,
     tags: [],
     date: 2016,
@@ -207,7 +207,7 @@ const rawPosts = [
     description: { [Locales.FR]:  
     "Quelques souvenirs de Hong Kong.", [Locales.EN]: "Some memories of Hong Kong.", [Locales.JP]: "香港 の 思い出。" },
     sources: "",
-    images: 20
+    images: 19
   },
   {
     id: 18,

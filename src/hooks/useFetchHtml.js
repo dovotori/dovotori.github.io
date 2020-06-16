@@ -6,6 +6,9 @@ const useFetchHtml = (url) => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    setPending(true);
+    setError(false);
+    setValue(null);
     const fetchData = async () => {
       setError(false);
       try {
