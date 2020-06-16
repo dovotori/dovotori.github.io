@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useState, useEffect} from "react";
 import styled from "styled-components";
 
 import Html from "./Html";
@@ -34,6 +34,10 @@ const ProjectHtml = (props) => {
   const { colorType, className, slug } = props;
   const [isLoaded, setIsLoaded] = useState(false);
   const onHtmlLoad = useCallback(() => {setIsLoaded(true);}, [setIsLoaded]);
+
+  useEffect(() => {
+    setIsLoaded(false);
+  },[slug]);
 
   return (
     <Wrap className={className}>

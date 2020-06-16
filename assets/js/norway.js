@@ -4,7 +4,6 @@ import car from 'Assets/svg/doublecar.svg';
 
 export default ({ div, height = '400px' } = {}) => {
   const domItem = div;
-  domItem.setAttribute("id", "map");
   domItem.style.width = "100%";
   domItem.style.height = height;
 
