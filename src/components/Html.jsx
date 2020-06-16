@@ -36,7 +36,6 @@ const Html = ({ className, slug, onLoad = null }) => {
 
   useEffect(() => {
     if (isHtmlLoaded && isJsLoaded) {
-      console.log(slug, 'LOADED');
       const runJs = async () => {
         try {
           const content = await js.default({ div: div.current });
