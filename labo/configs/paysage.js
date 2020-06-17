@@ -3,7 +3,7 @@ const MAIN_OBJ = "paysage";
 export default {
   MAIN_PROG,
   MAIN_OBJ,
-  programs: ["basique3d", "bone", MAIN_PROG],
+  programs: ["basique3d", MAIN_PROG],
   assets: [`/gltf/${MAIN_OBJ}.gltf`],
   positions: {
     plot: [
@@ -18,7 +18,7 @@ export default {
     panel: [{ x: 0, y: 0, z: 0 }],
   },
   camera: {
-    position: { x: -4, y: 2, z: 4 },
+    position: { x: -2, y: 1, z: 2 },
     target: { x: 0, y: 0, z: 0 },
     near: 1,
     far: 40,
@@ -53,17 +53,10 @@ export default {
   },
   postprocess: {
     effects: [
-      "glitch",
-      "kuwahara",
       "fxaa",
-      "blur",
-      "gamma",
-      "dof",
-      "bloom",
-      "compose",
-    ],
-    useDepth: true,
+    ], 
   },
+  useDepthTexture: true,
   canvas: {
     width: 1024,
     height: 1024,

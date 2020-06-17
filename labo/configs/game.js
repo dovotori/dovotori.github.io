@@ -76,8 +76,8 @@ export default {
       "sketch",
       "oil",
     ],
-    useDepth: true,
   },
+  useDepthTexture: false,
   splashscreen: false,
   canvas: {
     width: 1024,

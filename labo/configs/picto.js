@@ -3,8 +3,8 @@ export default {
   mouse: { events: ["move"] },
   postprocess: {
     effects: ["glitch", "wave", "rgb", "watercolorMoving"],
-    useDepth: false,
   },
+  useDepthTexture: false,
   canvas: {
     width: 512,
     height: 512,
