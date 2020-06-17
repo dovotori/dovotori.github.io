@@ -57,8 +57,8 @@ export default {
   mouse: { domId: "signature", events: ["move"] },
   postprocess: {
     effects: ["glitch", "wave", "watercolorMoving", "fxaa"],
-    useDepth: true,
   },
+  useDepthTexture: true,
   canvas: {
     width: 512,
     height: 512,

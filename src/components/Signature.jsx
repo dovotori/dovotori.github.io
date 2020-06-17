@@ -45,7 +45,8 @@ const Infos = styled.div`
     transform: none;
     width: 100%;
     left: 0;
-    top: 50%;
+    top: auto;
+    bottom: 0;
     max-width: none;
     opacity: 0.9;
   }

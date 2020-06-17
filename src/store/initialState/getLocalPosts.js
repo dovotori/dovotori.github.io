@@ -196,31 +196,31 @@ const rawPosts = [
     sources: "",
     html: true,
     images: 18
-  },
-  {
-    id: 17,
-    slug: "hongkong",
-    title: { [Locales.FR]: "Hong Kong", [Locales.EN]: "Hong Kong", [Locales.JP]: "香港" },
-    category: CAT_BLOG,
-    tags: [],
-    date: 2019,
-    description: { [Locales.FR]:  
-    "Quelques souvenirs de Hong Kong.", [Locales.EN]: "Some memories of Hong Kong.", [Locales.JP]: "香港 の 思い出。" },
-    sources: "",
-    images: 19
-  },
-  {
-    id: 18,
-    slug: "budapest",
-    title: { [Locales.FR]: "Budapest", [Locales.EN]: "Budapest", [Locales.JP]: "ブダペスト" },
-    category: CAT_BLOG,
-    tags: [],
-    date: 2019,
-    description: { [Locales.FR]:  
-    "Quelques souvenirs de Budapest.", [Locales.EN]: "Some memories of Budapest.", [Locales.JP]: "ブダペスト の 思い出。" },
-    sources: "",
-    images: 13
   }
+  // {
+  //   id: 17,
+  //   slug: "hongkong",
+  //   title: { [Locales.FR]: "Hong Kong", [Locales.EN]: "Hong Kong", [Locales.JP]: "香港" },
+  //   category: CAT_BLOG,
+  //   tags: [],
+  //   date: 2019,
+  //   description: { [Locales.FR]:  
+  //   "Quelques souvenirs de Hong Kong.", [Locales.EN]: "Some memories of Hong Kong.", [Locales.JP]: "香港 の 思い出。" },
+  //   sources: "",
+  //   images: 19
+  // },
+  // {
+  //   id: 18,
+  //   slug: "budapest",
+  //   title: { [Locales.FR]: "Budapest", [Locales.EN]: "Budapest", [Locales.JP]: "ブダペスト" },
+  //   category: CAT_BLOG,
+  //   tags: [],
+  //   date: 2019,
+  //   description: { [Locales.FR]:  
+  //   "Quelques souvenirs de Budapest.", [Locales.EN]: "Some memories of Budapest.", [Locales.JP]: "ブダペスト の 思い出。" },
+  //   sources: "",
+  //   images: 13
+  // }
 ];
 
 export default locale => {

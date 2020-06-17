@@ -11,7 +11,7 @@ const Wrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: ${p => p.isTouchDevice ? 0 : '4em'} auto;
+  margin: 4em auto;
   padding-left: 0.4em;
 `;
 
@@ -32,8 +32,8 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const CategoriesFilters = ({ selected, className, categories, isTouchDevice }) => (
-  <Wrap className={className} isTouchDevice={isTouchDevice}>
+const CategoriesFilters = ({ selected, className, categories }) => (
+  <Wrap className={className}>
     {Object.keys(categories).map((categoryId) => {
       const isLinkSelected = selected === parseInt(categoryId, 10);
       return (

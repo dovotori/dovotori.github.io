@@ -56,8 +56,9 @@ const main = () => {
     .projection(projection);
 
   const svg = document.querySelector("#worldmap");
-  const WIDTH = parseFloat(svg.getAttribute("width"), 10);
-  const HEIGHT = parseFloat(svg.getAttribute("height"), 10);
+  const viewBoxAttr = svg.getAttribute("viewBox").split(' ');
+  const WIDTH = parseFloat(viewBoxAttr[2], 10);
+  const HEIGHT = parseFloat(viewBoxAttr[3], 10);
   let OFFSET_X = 0;
   let OFFSET_Y = 0;
 

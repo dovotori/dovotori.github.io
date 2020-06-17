@@ -42,7 +42,7 @@ const generateSvg = async (showBrowser) => {
 const generateHtml = async (showBrowser) => {
   const map = await generateSvg(showBrowser);
   const css = await utils.readFile(path.resolve(__dirname, './style.css'), 'utf8');
-  return `<style>${css}</style><div style="position: relative;text-align: center;">${map}</div>`;
+  return `<style>${css}</style>${map}`;
 };
 
 const main = async () => {
