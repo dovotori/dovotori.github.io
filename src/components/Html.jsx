@@ -54,7 +54,7 @@ const Html = ({ className, slug, onLoad = null }) => {
   }, [isHtmlLoaded, isJsLoaded]);
 
   return (
-    <div className={className}>
+    <div className={className} id={slug}>
       {/* eslint-disable-next-line react/no-danger */}
       <div dangerouslySetInnerHTML={{ __html: html }} />
       <div ref={div}  />

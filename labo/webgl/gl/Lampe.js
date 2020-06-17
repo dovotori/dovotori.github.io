@@ -4,10 +4,10 @@ import MeshRepere from "../meshes/MeshRepere";
 import Vec3 from "../maths/Vec3";
 
 export default class extends Objectif {
-  constructor(gl, config, width = 1024, height = 1024) {
+  constructor(gl, config, width = 1024, height = 1024, useDepth = false) {
     super(config);
     this.gl = gl;
-    this.fbo = new Fbo(this.gl, width, height, true);
+    this.fbo = new Fbo(this.gl, width, height, useDepth);
     this.sizeRepere = new Vec3(0.05, 0.05, 0.05);
     this.repere = new MeshRepere(this.gl);
     this.repere.update(this.position, this.sizeRepere);

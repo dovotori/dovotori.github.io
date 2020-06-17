@@ -1,14 +1,11 @@
 import { CAT_DESIGN, CAT_CODE, CAT_BLOG } from "../../constants/categories";
 import { Locales } from "../../constants/locales";
 import getLocalPosts from "./getLocalPosts";
+import getLocalCategories from "./getLocalCategories";
 import chart from "./chart";
 
 const initialState = {
-  categories: {
-    [CAT_DESIGN]: "設計",
-    [CAT_CODE]: "コード",
-    [CAT_BLOG]: "ブログ",
-  },
+  categories: getLocalCategories(Locales.JP),
   entries: getLocalPosts(Locales.JP),
   hello: {
     title: "Dorian Ratovo",

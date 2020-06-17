@@ -32,6 +32,7 @@ export default {
       diffuse: [0.8, 0.6, 0.5],
       specular: [1, 0.8, 0.7],
       brillance: 1,
+      strength: 2
       // direction: [0, 0, 1]
     },
     {
@@ -43,6 +44,7 @@ export default {
       brillance: 100,
       radius: 10,
       direction: [0, 0, 1],
+      strength: 2
     },
   ],
   mouse: {

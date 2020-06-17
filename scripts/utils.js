@@ -4,7 +4,6 @@ const fs = require('fs');
 const csv = require('csv-parser');
 
 const writeFile = promisify(fs.writeFile);
-const readdir = promisify(fs.readdir);
 
 exports.readFile = promisify(fs.readFile);
 

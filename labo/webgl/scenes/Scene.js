@@ -18,13 +18,14 @@ export default class {
       this.mngProg = new ManagerPrograms(this.gl, config.programs);
     }
 
-    if (this.config.postprocess) {
+    if (config.postprocess) {
+      const { effects } = config.postprocess;
       this.postProcess = new PostProcess(
         this.gl,
-        this.config.postprocess.effects,
         width,
         height,
-        this.config.postprocess.useDepth
+        this.canUseDepth(),
+        effects
       );
     }
 
@@ -39,6 +40,10 @@ export default class {
     if (assets.gltfs) {
       this.mngGltf = new ManagerGltfs(this.gl, assets.gltfs);
     }
+  }
+
+  canUseDepth() {
+    return this.config.useDepth && this.config.support.depthTexture && false;
   }
 
   resize(box) {

@@ -3,21 +3,21 @@ import PostProcess from "./PostProcess";
 import Screen from "./Screen";
 
 export default class {
-  constructor(gl, width = 1024, height = 1024) {
+  constructor(gl, width = 1024, height = 1024, useDepth = false) {
     this.gl = gl;
-    this.fboColorDepth = new Fbo(gl, width, height, true);
-    this.fboNormal = new Fbo(gl, width, height, true);
-    this.fboPosition = new Fbo(gl, width, height, true);
-    this.fboAlbedo = new Fbo(gl, width, height, true);
-    this.fboDiffuse = new Fbo(gl, width, height, true);
-    this.fboShadow = new Fbo(gl, width, height, true);
+    this.fboColorDepth = new Fbo(gl, width, height, useDepth);
+    this.fboNormal = new Fbo(gl, width, height, useDepth);
+    this.fboPosition = new Fbo(gl, width, height, useDepth);
+    this.fboAlbedo = new Fbo(gl, width, height, useDepth);
+    this.fboDiffuse = new Fbo(gl, width, height, useDepth);
+    this.fboShadow = new Fbo(gl, width, height, useDepth);
     this.screen = new Screen(this.gl);
     this.postProcess = new PostProcess(
       this.gl,
-      ["ssao", "blurDirection"],
       width,
       height,
-      false
+      useDepth,
+      ["ssao", "blurDirection"]
     );
     this.width = width;
     this.height = height;

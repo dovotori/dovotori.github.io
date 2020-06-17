@@ -51,7 +51,7 @@ const Toggle = ({ onClick, checked, className }) => (
     <CheckBox
       id="checkbox"
       type="checkbox"
-      onClick={onClick}
+      onChange={onClick}
       checked={checked}
     />
     <CheckBoxLabel htmlFor="checkbox" />

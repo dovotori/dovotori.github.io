@@ -6,6 +6,7 @@ import { toggleTheme, setLang } from "../actions/device";
 
 const mapStateToProps = (state) => ({
   isDarkMode: state.device.isDarkMode,
+  lang: state.device.lang,
   texts: {
     darkMode: state.content.darkMode,
     lightMode: state.content.lightMode,
