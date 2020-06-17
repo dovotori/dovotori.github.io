@@ -22,7 +22,7 @@ export default class extends Scene {
     this.targetY = new Spring(0);
     this.targetZ = new Target(1, 0.05);
     this.gizmo = new Gizmo(gl);
-    this.bloom = new Bloom(gl, width, height);
+    this.bloom = new Bloom(gl, width, height, this.canUseDepth());
   }
 
   update() {
@@ -48,7 +48,9 @@ export default class extends Scene {
       this.containerSize.width,
       this.containerSize.height,
     ]);
-    program.setTexture(2, this.getLampeDepthTexture(0).get(), "shadowMap");
+    if (this.canUseDepth()) {
+      program.setTexture(2, this.getLampeDepthTexture(0).get(), "shadowMap");
+    }
     program.setMatrix("shadowview", this.getLampeViewMatrix(0).get());
     const invModel = new Mat4();
     invModel.equal(this.camera.getView());
@@ -75,15 +77,15 @@ export default class extends Scene {
     this.renderToBuffer(program);
   }
 
-  effects() {
-    this.bloom.compute(
-      this.renderToBuffer,
-      this.camera.getProjection().get(),
-      this.camera.getView().get()
-    );
+  // effects() {
+    // this.bloom.compute(
+    //   this.renderToBuffer,
+    //   this.camera.getProjection().get(),
+    //   this.camera.getView().get()
+    // );
     // this.postProcess.setKuwahara();
     // this.postProcess.setBloom(this.bloom.getTexture(), 0.5, 0.5);
-  }
+  // }
 
   render() {
     super.render();
@@ -93,11 +95,15 @@ export default class extends Scene {
     // program.setMatrix('view', this.camera.getView().get());
     // this.mngGltf.get(this.MAIN_OBJ).setBoneProgram(program);
 
-    this.postProcess.start();
-    this.mainRender(this.mngProg.get(this.MAIN_PROG));
-    this.postProcess.end();
-    this.effects();
-    this.postProcess.render();
+    // if (this.config.support.useDepth) {
+    //   this.postProcess.start();
+    //   this.mainRender(this.mngProg.get(this.MAIN_PROG));
+    //   this.postProcess.end();
+    //   this.effects();
+    //   this.postProcess.render();
+    // } else {
+      this.mainRender(this.mngProg.get(this.MAIN_PROG));
+    // }
 
     // DEBUG
     // this.postProcess.render(this.bloom.getTexture().get());

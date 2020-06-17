@@ -4,8 +4,8 @@ import { emissive } from "../constants/shaders";
 import { blurDirection } from "../constants/shaders/screen";
 
 export default class extends ProcessBase {
-  constructor(gl, effects, width = 1024, height = 1024) {
-    super(gl, effects, width, height, true);
+  constructor(gl, width = 1024, height = 1024, useDepth = false) {
+    super(gl, width, height, useDepth);
     const glsl = { emissive, blurDirection };
 
     this.programs = {};

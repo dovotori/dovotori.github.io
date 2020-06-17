@@ -2,10 +2,8 @@ import availablesLang from "../constants/locales";
 
 export const getSelectedCategory = (categories, category) => {
   if (category) {
-    return parseInt(
-      Object.keys(categories).filter((id) => category === categories[id])[0],
-      10
-    );
+    const match = Object.keys(categories).filter((id) => category === categories[id].slug)[0];
+    return match ? parseInt(match, 10) : null;
   }
   return null;
 };
@@ -85,7 +83,7 @@ export const storage = {
         sessionStorage.setItem(key, JSON.stringify(value));
       }
     } catch (e) {
-      console.debug("can't access session storage");
+      console.debug("Can't access session storage");
     }
   },
   getItem: (key) => {
@@ -93,7 +91,7 @@ export const storage = {
     try {
       item = sessionStorage.getItem(key);
     } catch (e) {
-      console.debug("can't access session storage");
+      console.debug("Can't access session storage");
     }
     return item !== null && item !== undefined ? JSON.parse(item) : null;
   },

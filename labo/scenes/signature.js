@@ -93,15 +93,18 @@ export default class extends Scene {
     const program = this.mngProg.get("bone");
     program.setMatrix("projection", this.camera.getProjection().get());
     program.setMatrix("view", this.camera.getView().get());
-    this.mngGltf.get(this.MAIN_OBJ).setBoneProgram(program);
 
-    this.postProcess.start();
-    this.mainRender(this.mngProg.get(this.MAIN_PROG));
-    this.postProcess.end();
+    if (this.config.support.useDepth) {
+      this.postProcess.start();
+      this.mainRender(this.mngProg.get(this.MAIN_PROG));
+      this.postProcess.end();
 
-    this.effects();
-    this.postProcess.render();
-
+      this.effects();
+      this.postProcess.render();
+    } else {
+      this.mainRender(this.mngProg.get(this.MAIN_PROG));
+    }
+    
     // DEBUG
     // this.postProcess.render(this.getLampeDepthTexture(0).get());
     // this.postProcess.render(this.buffers.getShadowTexture().get());

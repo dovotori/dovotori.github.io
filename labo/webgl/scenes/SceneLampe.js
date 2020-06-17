@@ -4,14 +4,14 @@ import Lampe from "../gl/Lampe";
 export default class extends Scene {
   constructor(gl, config, assets) {
     super(gl, config, assets);
-
     this.lampes = [];
     for (let i = 0; i < this.config.lampes.length; i += 1) {
       this.lampes[i] = new Lampe(
         this.gl,
         this.config.lampes[i],
         config.canvas.width,
-        config.canvas.height
+        config.canvas.height,
+        this.canUseDepth()
       );
     }
   }
@@ -74,7 +74,10 @@ export default class extends Scene {
   }
 
   getLampeDepthTexture(i) {
-    return this.lampes[i].getDepthTexture();
+    if (this.canUseDepth()) {
+      return this.lampes[i].getDepthTexture();
+    }
+    return null;
   }
 
   getLampeViewMatrix(i) {

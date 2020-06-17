@@ -1,14 +1,11 @@
 import { CAT_DESIGN, CAT_CODE, CAT_BLOG } from "../../constants/categories";
 import { Locales } from "../../constants/locales";
 import getLocalPosts from "./getLocalPosts";
+import getLocalCategories from "./getLocalCategories";
 import chart from "./chart";
 
 const initialState = {
-  categories: {
-    [CAT_DESIGN]: "design",
-    [CAT_CODE]: "code",
-    [CAT_BLOG]: "blog",
-  },
+  categories: getLocalCategories(Locales.EN),
   tags: {
     0: "javascript",
     1: "d3.js",

@@ -19,7 +19,7 @@ export default class {
     this.setup(useDepth, extension, attachmentIdx);
   }
 
-  setup(useDepth, extension = null, attachmentIdx) {
+  setup(useDepth = false, extension = null, attachmentIdx = 0) {
     this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.buffer);
 
     const attachement =
@@ -42,6 +42,7 @@ export default class {
     );
 
     if (useDepth) {
+      console.log("+++ ERROR LOAD DEPTH", useDepth, attachmentIdx);
       this.depthTexture = new TextureDepth(
         this.gl,
         this.buffer.width,
