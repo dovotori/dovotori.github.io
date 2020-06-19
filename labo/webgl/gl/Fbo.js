@@ -42,7 +42,6 @@ export default class {
     );
 
     if (useDepth) {
-      console.log("+++ ERROR LOAD DEPTH", useDepth, attachmentIdx);
       this.depthTexture = new TextureDepth(
         this.gl,
         this.buffer.width,

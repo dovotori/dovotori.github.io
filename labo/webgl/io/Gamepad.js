@@ -21,4 +21,9 @@ export default class {
       e.gamepad.id
     );
   }
+
+  detroy() {
+    window.removeEventListener("gamepadconnected", this.onConnect, false);
+    window.removeEventListener("gamepaddisconnected", this.onDisconnect, false);
+  }
 }

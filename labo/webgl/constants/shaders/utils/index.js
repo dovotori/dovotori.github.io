@@ -1,5 +1,5 @@
 export const PI = `
-const float PI = 3.14159265359;
+#define PI 3.14159265359
 `;
 
 export const attributeColors = `
@@ -23,6 +23,17 @@ float funcMap(float valeur, float minRef, float maxRef, float minDest, float max
   float result = minDest + (valeur - minRef) * (maxDest - minDest) / (maxRef - minRef);
   if(result > maxDest){ result = maxDest; } else if(result < minDest){ result = minDest; }
   return result;
+}
+`;
+
+export const funcRandom = `
+// between 0 - 1
+float rand( vec2 n ) {
+  return fract(sin(dot(n.xy, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+float randomRange(vec2 seed, float min, float max) {
+	return min + rand(seed) * (max - min);
 }
 `;
 

@@ -2,6 +2,7 @@ import ManagerTextures from "../managers/ManagerTextures";
 import ManagerObjets from "../managers/ManagerObjets";
 import ManagerPrograms from "../managers/ManagerPrograms";
 import ManagerGltfs from "../managers/ManagerGltfs";
+import ManagerSounds from "../managers/ManagerSounds";
 import PostProcess from "../gl/PostProcess";
 
 export default class {
@@ -39,6 +40,10 @@ export default class {
 
     if (assets.gltfs) {
       this.mngGltf = new ManagerGltfs(this.gl, assets.gltfs);
+    }
+
+    if (assets.sounds) {
+      this.mngSound = new ManagerSounds(assets.sounds);
     }
   }
 
