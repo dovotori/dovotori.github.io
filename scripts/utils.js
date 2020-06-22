@@ -5,6 +5,8 @@ const csv = require('csv-parser');
 
 const writeFile = promisify(fs.writeFile);
 
+exports.copyFile = promisify(fs.copyFile);
+
 exports.readFile = promisify(fs.readFile);
 
 exports.saveFile = (url, data) => {

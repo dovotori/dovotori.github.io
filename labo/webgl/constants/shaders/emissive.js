@@ -6,8 +6,7 @@ uniform mat4 model;
 uniform mat4 view;
 varying vec3 fragEmissive;
 
-void main()
-{
+void main() {
   fragEmissive = emissive;
   gl_Position = projection * view * model * vec4(position, 1.0);
 }

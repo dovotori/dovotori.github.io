@@ -1,10 +1,10 @@
 const MAIN_PROG = "deform";
-const MAIN_OBJ = "sphere3";
+const MAIN_OBJ = "sphere4";
 export default {
   MAIN_PROG,
   MAIN_OBJ,
-  programs: ["basique3d", "frequencyCircle", MAIN_PROG],
-  assets: [`/obj/${MAIN_OBJ}.obj`, "/textures/earth.png", '/sound/hover.mp3'],
+  programs: ["basique3d", "frequencyCircle", "frequencyGrid", MAIN_PROG],
+  assets: [`/obj/${MAIN_OBJ}.obj`, "/textures/earth.png", '/sound/akira.mp3'],
   positions: {
     plot: [
       { x: -0.74175, z: -0.889829, y: 0.03561 },
@@ -54,8 +54,8 @@ export default {
     //   direction: [0, 0, 1]
     // }
   ],
-  mouse: { domId: "labo", events: ["drag", "wheel", "click"] },
-  fullscreen: { domId: "labo" },
+  mouse: { domId: "deform", events: ["drag", "wheel", "click"] },
+  controls: { fullscreen: { domId: "deform", buttonId: "fullscreen-toggle-btn" }, volume: { domId: 'volume' }, playbackRate: { domId: 'playbackRate' } },
   postprocess: {
     effects: ["glitch", "wave", "watercolorMoving", "fxaa"],
   },

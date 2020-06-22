@@ -28,13 +28,65 @@ export default class extends Scene {
       x: 0,
       y: 0,
     };
-    const frequencyLength = this.mngSound.get('hover').getFrequencyLength();
+    const frequencyLength = this.mngSound.get('akira').getFrequencyLength();
     this.uVbo = new UpdateVbo(this.gl, frequencyLength);
     let indexes = new Array(frequencyLength);
     indexes.fill(0);
     indexes = indexes.map((_, index) => index);
     this.fVbo = new FixVbo(this.gl, indexes);
+
+    this.mngObj.get(this.MAIN_OBJ).setModeDessin(this.gl.POINTS);
+
+    this.setupControls();
   }
+
+  setupControls = () => {
+    this.button = document.querySelector('.play-button');
+    this.sound = this.mngSound.get('akira');
+    if (this.button) {
+      this.button.addEventListener('click', this.togglePlay, false);
+      this.button.removeAttribute('style');
+    }
+
+    if (this.config.controls) {
+      const controls = document.querySelector('#controls');
+
+      if (controls) {
+        const { volume, playbackRate } = this.config.controls;
+
+        this.volumeRange = document.querySelector(`#${volume.domId}`);
+        if (this.volumeRange) {
+          this.volumeRange.addEventListener('change', this.onChangeVolume, false);
+        }
+
+        this.playbackRange = document.querySelector(`#${playbackRate.domId}`);
+        if (this.playbackRange) {
+          this.playbackRange.addEventListener('change', this.onChangePlaybackRate, false);
+        }
+
+        controls.removeAttribute('style');
+      }
+    }
+  }
+
+  togglePlay = () => {
+    if (this.sound && this.button) {
+      this.sound.togglePause();
+      if (!this.sound.getIsPause()) {
+        this.button.setAttribute('data-play', true);
+      } else {
+        this.button.removeAttribute('data-play');
+      }
+    }
+  };
+
+  onChangeVolume = (e) => {
+    this.sound.setVolume(e.target.value * 0.01);
+  };
+
+  onChangePlaybackRate = (e) => {
+    this.sound.setPlaybackRate(e.target.value * 0.02);
+  };
 
   update() {
     super.update();
@@ -109,7 +161,7 @@ export default class extends Scene {
   render() {
     super.render();
 
-    const amplitudes = this.mngSound.get('hover').getAmplitudes();
+    const amplitudes = this.mngSound.get('akira').getAmplitudes();
     const texData = new TextureData(this.gl, amplitudes);
 
     // this.postProcess.start();
@@ -119,15 +171,26 @@ export default class extends Scene {
     // // this.effects();
     // this.postProcess.render();
 
-    const progLine = this.mngProg.get("frequencyCircle");
-    progLine.setMatrix("projection", this.camera.getProjection().get());
-    progLine.setMatrix("view", this.camera.getView().get());
-    progLine.setMatrix("model", this.model.get());
-    progLine.setInt("length", this.fVbo.getCount());
-    progLine.setInt("maxfrequency", 256.0);
-    this.uVbo.start(progLine.get(), "value", amplitudes);
-    this.fVbo.start(progLine.get(), "index");
+    const progCircle = this.mngProg.get("frequencyCircle");
+    progCircle.setMatrix("projection", this.camera.getProjection().get());
+    progCircle.setMatrix("view", this.camera.getView().get());
+    progCircle.setMatrix("model", this.model.get());
+    progCircle.setInt("length", this.fVbo.getCount());
+    progCircle.setInt("maxfrequency", 256.0);
+    this.uVbo.start(progCircle.get(), "value", amplitudes);
+    this.fVbo.start(progCircle.get(), "index");
     this.gl.drawArrays(this.gl.LINE_LOOP, 0, this.fVbo.getCount());
+    this.uVbo.end();
+
+    const progGrid = this.mngProg.get("frequencyGrid");
+    progGrid.setMatrix("projection", this.camera.getProjection().get());
+    progGrid.setMatrix("view", this.camera.getView().get());
+    progGrid.setMatrix("model", this.model.get());
+    progGrid.setInt("length", this.fVbo.getCount());
+    progGrid.setInt("maxfrequency", 256.0);
+    this.uVbo.start(progGrid.get(), "value", amplitudes);
+    this.fVbo.start(progGrid.get(), "index");
+    // this.gl.drawArrays(this.gl.POINTS, 0, this.fVbo.getCount());
     this.uVbo.end();
 
     // DEBUG
@@ -147,7 +210,24 @@ export default class extends Scene {
   }
 
   onMouseClick = () => {
-    this.mngSound.get('hover').play();
     this.pulse.set(1000);
+  }
+
+  destroy() {
+    if (this.button) {
+      this.button.addEventListener('click', this.togglePlay, false);
+    }
+
+    if (this.volumeRange) {
+      this.volumeRange.removeEventListener('change', this.onChangeVolume, false);
+    }
+
+    if (this.playbackRange) {
+      this.playbackRange.removeEventListener('change', this.onChangePlaybackRate, false);
+    }
+
+    if (this.sound) {
+      this.sound.stop();
+    }
   }
 }

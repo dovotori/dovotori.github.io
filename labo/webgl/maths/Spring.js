@@ -8,6 +8,15 @@ export default class {
   update() {
     this.value += this.speed;
     this.speed *= this.sampling;
+
+    // const tensionForce = -tension * (currentPosition - toPosition)
+    // const dampingForce = -config.friction * velocity
+    // const acceleration = (tensionForce + dampingForce) / mass
+    // velocity = velocity + acceleration
+    // position = position + velocity  
+    // if (Math.abs(position - to.progress) > precision {    
+    //   window.requestAnimationFrame(update)
+    // }
   }
 
   get() {

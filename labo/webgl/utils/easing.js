@@ -1,5 +1,19 @@
-export const lerp = (t, a, b) => (1 - t) * a + t * b; // t time, a start, b end
-// t: current time, b: begInnIng value, c: change In value, d: duration
+/*
+t -> elapsedTime: The number of milliseconds the animation has been running
+b -> startValue: the value to start at (or the value when the percent complete is 0%)
+c -> endValue: the value to end at (or the value when the percent complete is 100%)
+d -> totalDuration: The total desired length of the animation in milliseconds
+
+return value lerp between startValue and endValue
+*/
+
+
+/*
+t: current time
+b: begInnIng value
+c: change In value
+d: duration
+*/
 export const linearTween = (t, b, c, d) => (c * t) / d + b;
 export const easeInQuad = (t, b, c, d) => {
   const tt = t / d;
@@ -202,3 +216,5 @@ export const easeOutBounce = (t, b, c, d) => {
   tt -= 2.625 / 2.75;
   return c * (7.5625 * tt * tt + 0.984375) + b;
 };
+
+export const lerp = (t, b, c) => (1 - t) * b + t * c; // t time, a start, b end

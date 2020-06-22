@@ -3,49 +3,61 @@ import { mapFromRange } from "../utils/numbers";
 class Mouse {
   constructor(
     div,
-    { callbackDrag, callbackDown, callbackMove, callbackWheel }
+    { callbackDrag, callbackDown, callbackMove, callbackWheel, callbackClick }
   ) {
     this.div = div;
     this.callbackDrag = callbackDrag || null;
     this.callbackDown = callbackDown || null;
     this.callbackMove = callbackMove || null;
     this.callbackWheel = callbackWheel || null;
+    this.callbackClick = callbackClick || null;
     this.isDragging = false;
     this.startDraggingMousePos = { x: 0, y: 0 };
     this.oldPos = { x: 0, y: 0 };
+
+    this.options = {
+      capture: false,
+      passive: true
+    };
 
     this.setup();
   }
 
   setup() {
+    if (this.callbackClick) {
+      this.div.addEventListener("click", this.onClick, false);
+    }
     if (this.callbackDrag || this.callbackMove) {
-      this.div.addEventListener("mousemove", this.onMove, false);
-      this.div.addEventListener("touchmove", this.onMove, false);
+      this.div.addEventListener("mousemove", this.onMove, this.options);
+      this.div.addEventListener("touchmove", this.onMove, this.options);
     }
     if (this.callbackDrag) {
-      window.addEventListener("mouseup", this.onUp, false);
-      this.div.addEventListener("mousedown", this.onDown, false);
-      this.div.addEventListener("touchstart", this.onDown, false);
-      this.div.addEventListener("touchend", this.onUp, false);
+      window.addEventListener("mouseup", this.onUp, this.options);
+      this.div.addEventListener("mousedown", this.onDown, this.options);
+      this.div.addEventListener("touchstart", this.onDown, this.options);
+      this.div.addEventListener("touchend", this.onUp, this.options);
     }
     if (this.callbackWheel) {
-      this.div.addEventListener("wheel", this.onWheel, false);
+      this.div.addEventListener("wheel", this.onWheel, this.options);
     }
   }
 
   cancel() {
+    if (this.callbackClick) {
+      this.div.removeEventListener("click", this.onClick, false);
+    }
     if (this.callbackDrag || this.callbackMove) {
-      this.div.removeEventListener("mousemove", this.onMove, false);
-      this.div.removeEventListener("touchmove", this.onMove, false);
+      this.div.removeEventListener("mousemove", this.onMove, this.options);
+      this.div.removeEventListener("touchmove", this.onMove, this.options);
     }
     if (this.callbackDrag) {
-      window.removeEventListener("mouseup", this.onUp, false);
-      this.div.removeEventListener("mousedown", this.onDown, false);
-      this.div.removeEventListener("touchstart", this.onDown, false);
-      this.div.removeEventListener("touchend", this.onUp, false);
+      window.removeEventListener("mouseup", this.onUp, this.options);
+      this.div.removeEventListener("mousedown", this.onDown, this.options);
+      this.div.removeEventListener("touchstart", this.onDown, this.options);
+      this.div.removeEventListener("touchend", this.onUp, this.options);
     }
     if (this.callbackWheel) {
-      this.div.removeEventListener("wheel", this.onWheel, false);
+      this.div.removeEventListener("wheel", this.onWheel, this.options);
     }
   }
 
@@ -109,9 +121,12 @@ class Mouse {
   };
 
   onWheel = (e) => {
-    e.preventDefault();
     const { deltaY } = e;
     if (this.callbackWheel !== null) this.callbackWheel({ deltaY });
+  };
+
+  onClick = (e) => {
+    if (this.callbackClick !== null) this.callbackClick(this.computeInfos(e));
   };
 
   get() {

@@ -2,6 +2,7 @@ import Loop from "./logic/Loop";
 import ManagerAssets from "./managers/ManagerAssets";
 import Canvas from "./gl/Canvas";
 import Keyboard from "./io/Keyboard";
+import Fullscreen from "./io/Fullscreen";
 import Mouse from "./io/Mouse";
 import { capitalize, getEnvPath } from "./utils";
 
@@ -49,6 +50,15 @@ export default class {
         const container = div ||(domId ? document.querySelector(`#${domId}`) : document.body);
         this.mouse = new Mouse(container, callbacks);
       }
+      if (config.controls) {
+        const {fullscreen} = config.controls;
+        if (fullscreen) {
+          const { div, domId, buttonId, button } = fullscreen;
+          const containerElem = div ||(domId ? document.querySelector(`#${domId}`) : document.body);
+          const buttonElem = button || (buttonId ? document.querySelector(`#${buttonId}`) : null);
+          this.fullscreen = new Fullscreen(containerElem, buttonElem);
+        }
+      }
     }
 
     this.loop = new Loop();
@@ -76,5 +86,11 @@ export default class {
 
   getCanvas() {
     return this.canvas && this.canvas.get();
+  }
+
+  destroy() {
+    if (this.scene && this.scene.destroy) {
+      this.scene.destroy();
+    }
   }
 }

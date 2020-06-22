@@ -1,32 +1,17 @@
+
 export default class {
-  constructor(gl, width = 64, height = 64) {
+  constructor(gl, uint8data) {
     this.gl = gl;
-    this.size = { width, height };
+    const size = Math.sqrt(uint8data.length); // power of 2
+    this.size = { width: size, height: size };
     this.texture = gl.createTexture();
     this.filter = gl.NEAREST;
     // ou LINEAR affinage quand on scale par rapport à nearest mais des fois lignes blanches
-    this.setup();
+    this.setup(uint8data);
   }
-
-  setup() {
+  
+  setup(data) {
     this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
-    this.create();
-    this.setFilters();
-    this.gl.bindTexture(this.gl.TEXTURE_2D, null);
-  }
-
-  create() {
-    const buffer = new ArrayBuffer(this.size.width * this.size.height);
-    const pixels = new Uint8Array(buffer);
-    let cpt = 0;
-
-    for (let y = 0; y < this.size.height; y += 1) {
-      for (let x = 0; x < this.size.width; x += 1) {
-        pixels[cpt] = Math.random() * 255;
-        cpt += 1;
-      }
-    }
-
     this.gl.texImage2D(
       this.gl.TEXTURE_2D,
       0,
@@ -36,8 +21,10 @@ export default class {
       0,
       this.gl.ALPHA,
       this.gl.UNSIGNED_BYTE,
-      pixels
+      data
     );
+    this.setFilters();
+    this.gl.bindTexture(this.gl.TEXTURE_2D, null);
   }
 
   setFilters() {
@@ -65,9 +52,5 @@ export default class {
 
   get() {
     return this.texture;
-  }
-
-  setFiltre(valeur) {
-    this.filter = valeur;
   }
 }

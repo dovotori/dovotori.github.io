@@ -48,13 +48,19 @@ const Html = ({ className, slug, onLoad = null }) => {
         } catch (e) {
           console.error(e);
         }
+        return js;
       };
       runJs();
+    }
+    return () => {
+      if (js && js.destroy && typeof js.destroy === 'function') {
+        js.destroy();
+      }
     }
   }, [isHtmlLoaded, isJsLoaded]);
 
   return (
-    <div className={className} id={slug}>
+    <div key={slug} className={className} id={slug}>
       {/* eslint-disable-next-line react/no-danger */}
       <div dangerouslySetInnerHTML={{ __html: html }} />
       <div ref={div}  />

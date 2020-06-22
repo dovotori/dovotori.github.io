@@ -21,3 +21,7 @@ export { default as gltf } from './gltf';
 export { default as paysage2 } from './paysage2';
 export { default as signature } from './signature';
 export { default as deform } from './deform';
+export { default as update } from './update';
+export { default as frequency } from './frequency';
+export { default as frequencyCircle } from './frequencyCircle';
+export { default as frequencyGrid } from './frequencyGrid';
