@@ -182,7 +182,7 @@ const rawPosts = [
     date: 2017,
     description: { [Locales.FR]:  "Quelques souvenirs du Japon.", [Locales.EN]: "Some memories of Japan.", [Locales.JP]: "日本 の 思い出。" },
     html: true,
-    images: 16
+    images: 15
   },
   {
     id: 16,
@@ -194,7 +194,7 @@ const rawPosts = [
     description: { [Locales.FR]:  
     "Quelques souvenirs de Norvège.", [Locales.EN]: "Some memories of Norway.", [Locales.JP]: "ノルウェー の 思い出。" },
     html: true,
-    images: 18
+    images: 16
   },
   // {
   //   id: 17,
