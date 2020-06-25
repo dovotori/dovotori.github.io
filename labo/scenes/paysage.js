@@ -1,5 +1,4 @@
 import Scene from '../webgl/scenes/SceneLampe';
-import TexturePerlinNoise from '../webgl/textures/TexturePerlinNoise';
 import Mat4 from '../webgl/maths/Mat4';
 import Spring from '../webgl/maths/Spring';
 import Target from '../webgl/maths/Target';
@@ -15,7 +14,6 @@ export default class extends Scene {
     this.MAIN_PROG = config.MAIN_PROG;
     this.MAIN_OBJ = config.MAIN_OBJ;
 
-    this.texture = new TexturePerlinNoise(gl, 256, 256);
     this.model = new Mat4();
     this.model.identity();
     this.targetX = new Spring(0);

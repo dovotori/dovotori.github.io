@@ -3,7 +3,12 @@ export default class {
     this.domItem = domItem;
     this.button = button;
     this.isFullscreen = false;
-    this.support = !!(document.exitFullscreen || document.msExitFullscreen || document.mozCancelFullScreen || document.webkitExitFullscreen);
+    this.support = !!(
+      document.exitFullscreen ||
+      document.msExitFullscreen ||
+      document.mozCancelFullScreen ||
+      document.webkitExitFullscreen
+    );
 
     if (this.button) {
       this.button.addEventListener('click', this.toggle, false);
@@ -21,10 +26,10 @@ export default class {
       } else if (this.domItem.webkitRequestFullscreen) {
         this.domItem.webkitRequestFullscreen();
       }
-      this.domItem.setAttribute("data-fullscreen", true);
+      this.domItem.setAttribute('data-fullscreen', true);
       this.isFullscreen = true;
     }
-  }
+  };
 
   exit = () => {
     if (this.support) {
@@ -37,10 +42,10 @@ export default class {
       } else if (document.webkitExitFullscreen) {
         document.webkitExitFullscreen();
       }
-      this.domItem.removeAttribute("data-fullscreen");
+      this.domItem.removeAttribute('data-fullscreen');
       this.isFullscreen = false;
     }
-  }
+  };
 
   toggle = () => {
     if (this.isFullscreen) {

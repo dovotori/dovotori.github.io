@@ -16,45 +16,25 @@ export default class {
   setIndices(indices) {
     this.objet.indice = { count: indices.length, vbo: this.gl.createBuffer() };
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.objet.indice.vbo);
-    this.gl.bufferData(
-      this.gl.ELEMENT_ARRAY_BUFFER,
-      new Uint16Array(indices),
-      this.modeCalcul
-    );
+    this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), this.modeCalcul);
   }
 
   setPoints(points = [0, 0, 0, 0, 1, 0, 1, 0, 0], type) {
     this.objet[type] = { count: points.length, vbo: this.gl.createBuffer() };
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.objet[type].vbo);
-    this.gl.bufferData(
-      this.gl.ARRAY_BUFFER,
-      new Float32Array(points),
-      this.modeCalcul
-    );
+    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(points), this.modeCalcul);
   }
 
   enable(program, type, nbPoint) {
     this.gl.useProgram(program);
     this.gl.enableVertexAttribArray(program.locations[type]);
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.objet[type].vbo);
-    this.gl.vertexAttribPointer(
-      program.locations[type],
-      nbPoint,
-      this.gl.FLOAT,
-      false,
-      0,
-      0
-    );
+    this.gl.vertexAttribPointer(program.locations[type], nbPoint, this.gl.FLOAT, false, 0, 0);
   }
 
   render() {
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.objet.indice.vbo);
-    this.gl.drawElements(
-      this.modeDessin,
-      this.objet.indice.count,
-      this.gl.UNSIGNED_SHORT,
-      0
-    );
+    this.gl.drawElements(this.modeDessin, this.objet.indice.count, this.gl.UNSIGNED_SHORT, 0);
     this.end();
   }
 

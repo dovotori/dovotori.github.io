@@ -115,22 +115,6 @@ export default class extends Scene {
     this.setLampeInfos(program);
   }
 
-  effects() {
-    const delta = Math.cos(this.time * 0.01) * 0.04;
-    if (delta > 0) {
-      this.postProcess.setGlitch(
-        this.time * 0.07 + this.target.get(),
-        delta,
-        delta
-      );
-    }
-    this.postProcess.setWave(0.05, delta, [
-      this.mouseCanvasPosition.x,
-      this.mouseCanvasPosition.y,
-    ]);
-    this.postProcess.setFXAA();
-  }
-
   mainRender = (program, texData = null) => {
     // this.mngGltf.get(this.MAIN_OBJ).render(program, this.model);
     program.setMatrix("model", this.model.get());
@@ -164,12 +148,7 @@ export default class extends Scene {
     const amplitudes = this.mngSound.get('akira').getAmplitudes();
     const texData = new TextureData(this.gl, amplitudes);
 
-    // this.postProcess.start();
     this.mainRender(this.mngProg.get(this.MAIN_PROG), texData);
-    // this.postProcess.end();
-
-    // // this.effects();
-    // this.postProcess.render();
 
     const progCircle = this.mngProg.get("frequencyCircle");
     progCircle.setMatrix("projection", this.camera.getProjection().get());

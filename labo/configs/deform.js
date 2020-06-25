@@ -1,22 +1,10 @@
-const MAIN_PROG = "deform";
-const MAIN_OBJ = "sphere4";
+const MAIN_PROG = 'deform';
+const MAIN_OBJ = 'sphere4';
 export default {
   MAIN_PROG,
   MAIN_OBJ,
-  programs: ["basique3d", "frequencyCircle", "frequencyGrid", MAIN_PROG],
-  assets: [`/obj/${MAIN_OBJ}.obj`, "/textures/earth.png", '/sound/akira.mp3'],
-  positions: {
-    plot: [
-      { x: -0.74175, z: -0.889829, y: 0.03561 },
-      { x: -0.57378, z: -0.91103, y: 0.03561 },
-      { x: -0.363515, z: -0.8868, y: 0.03561 },
-    ],
-    road: [{ x: 0, y: -0.2, z: 0 }],
-    electric: [{ x: -0.5, y: 0, z: -0.4 }],
-    mailbox: [{ x: -0.2, y: 0, z: -0.4 }],
-    bench: [{ x: -0.2, y: 0, z: -0.4 }],
-    panel: [{ x: 0, y: 0, z: 0 }],
-  },
+  programs: ['basique3d', 'frequencyCircle', 'frequencyGrid', MAIN_PROG],
+  assets: [`/obj/${MAIN_OBJ}.obj`, '/textures/earth.png', '/sound/akira.mp3'],
   camera: {
     position: { x: 0, y: 0, z: 20 },
     target: { x: 0, y: 0, z: 0 },
@@ -32,7 +20,6 @@ export default {
       diffuse: [102 / 102, 255 / 255, 255 / 255],
       specular: [255 / 255, 255 / 255, 255 / 255],
       brillance: 1,
-      // direction: [0, 0, 1]
     },
     {
       type: 0,
@@ -41,23 +28,16 @@ export default {
       diffuse: [255 / 255, 179 / 255, 255 / 255],
       specular: [255 / 255, 255 / 255, 255 / 255],
       brillance: 1,
-      // direction: [0, 0, 1]
     },
-    // {
-    //   type: 0,
-    //   position: { x: -40, y: 40, z: 40 },
-    //   ambiant: [0.6, 0.6, 1],
-    //   diffuse: [0.5, 0.5, 0.8],
-    //   specular: [0.7, 0.7, 1],
-    //   brillance: 100,
-    //   radius: 10,
-    //   direction: [0, 0, 1]
-    // }
   ],
-  mouse: { domId: "deform", events: ["drag", "wheel", "click"] },
-  controls: { fullscreen: { domId: "deform", buttonId: "fullscreen-toggle-btn" }, volume: { domId: 'volume' }, playbackRate: { domId: 'playbackRate' } },
+  mouse: { domId: 'deform', events: ['drag', 'wheel', 'click'] },
+  controls: {
+    fullscreen: { domId: 'deform', buttonId: 'fullscreen-toggle-btn' },
+    volume: { domId: 'volume' },
+    playbackRate: { domId: 'playbackRate' },
+  },
   postprocess: {
-    effects: ["glitch", "wave", "watercolorMoving", "fxaa"],
+    effects: [],
   },
   useDepthTexture: true,
   canvas: {
