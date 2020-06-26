@@ -1,9 +1,9 @@
-const MAIN_PROG = "paysage2";
-const MAIN_OBJ = "paysage";
+const MAIN_PROG = 'paysage2';
+const MAIN_OBJ = 'paysage';
 export default {
   MAIN_PROG,
   MAIN_OBJ,
-  programs: ["basique3d", MAIN_PROG],
+  programs: ['basique3d', 'color', MAIN_PROG],
   assets: [`/gltf/${MAIN_OBJ}.gltf`],
   positions: {
     plot: [
@@ -32,7 +32,7 @@ export default {
       diffuse: [0.8, 0.6, 0.5],
       specular: [1, 0.8, 0.7],
       brillance: 1,
-      strength: 2
+      strength: 2,
       // direction: [0, 0, 1]
     },
     {
@@ -44,17 +44,15 @@ export default {
       brillance: 100,
       radius: 10,
       direction: [0, 0, 1],
-      strength: 2
+      strength: 2,
     },
   ],
   mouse: {
-    domId: "paysage", 
-    events: ["drag", "wheel"]
+    domId: 'paysage',
+    events: ['drag', 'wheel'],
   },
   postprocess: {
-    effects: [
-      "fxaa",
-    ], 
+    effects: ['fxaa'],
   },
   useDepthTexture: true,
   canvas: {

@@ -4,17 +4,16 @@ export default class {
   constructor(gl, config) {
     this.gl = gl;
     this.program = this.gl.createProgram();
-
     this.setup(config);
   }
 
   setup(config) {
-    this.creerShader("vertex", config.vertex);
-    this.creerShader("fragment", config.fragment);
+    this.creerShader('vertex', config.vertex);
+    this.creerShader('fragment', config.fragment);
     this.gl.linkProgram(this.program);
     this.gl.useProgram(this.program);
     if (!this.gl.getProgramParameter(this.program, this.gl.LINK_STATUS)) {
-      console.error("Erreur: ne peux pas lier le shader au program");
+      console.error('Erreur: ne peux pas lier le shader au program');
       this.gl.deleteProgram(this.program);
       return;
     }
@@ -24,15 +23,13 @@ export default class {
 
   creerShader(type, source) {
     const shader = this.gl.createShader(
-      type === "vertex" ? this.gl.VERTEX_SHADER : this.gl.FRAGMENT_SHADER
+      type === 'vertex' ? this.gl.VERTEX_SHADER : this.gl.FRAGMENT_SHADER
     );
     this.gl.shaderSource(shader, source);
     this.gl.compileShader(shader);
 
     if (!this.gl.getShaderParameter(shader, this.gl.COMPILE_STATUS)) {
-      console.error(
-        `Peux pas compiler ${type} shader: ${this.gl.getShaderInfoLog(shader)}`
-      );
+      console.error(`Peux pas compiler ${type} shader: ${this.gl.getShaderInfoLog(shader)}`);
       this.gl.deleteShader(shader);
       return;
     }
@@ -43,16 +40,10 @@ export default class {
   createLocations(config) {
     this.program.locations = {};
     config.uniforms.forEach((uniform) => {
-      this.program.locations[uniform] = this.gl.getUniformLocation(
-        this.program,
-        uniform
-      );
+      this.program.locations[uniform] = this.gl.getUniformLocation(this.program, uniform);
     });
     config.attributes.forEach((attribute) => {
-      this.program.locations[attribute] = this.gl.getAttribLocation(
-        this.program,
-        attribute
-      );
+      this.program.locations[attribute] = this.gl.getAttribLocation(this.program, attribute);
     });
   }
 
