@@ -6,9 +6,9 @@ import Pulse from '../webgl/maths/Pulse';
 import Spring from '../webgl/maths/Spring';
 import Target from '../webgl/maths/Target';
 import DualQuaternion from '../webgl/maths/DualQuaternion';
-import { degToRad } from "../webgl/utils/numbers";
-import UpdateVbo from "../webgl/gl/UpdateVbo";
-import FixVbo from "../webgl/gl/FixVbo";
+import { degToRad } from '../webgl/utils/numbers';
+import UpdateVbo from '../webgl/gl/UpdateVbo';
+import FixVbo from '../webgl/gl/FixVbo';
 
 export default class extends Scene {
   constructor(gl, config, assets, width = 512, height = 512) {
@@ -45,7 +45,6 @@ export default class extends Scene {
     this.sound = this.mngSound.get('akira');
     if (this.button) {
       this.button.addEventListener('click', this.togglePlay, false);
-      this.button.removeAttribute('style');
     }
 
     if (this.config.controls) {
@@ -63,11 +62,9 @@ export default class extends Scene {
         if (this.playbackRange) {
           this.playbackRange.addEventListener('change', this.onChangePlaybackRate, false);
         }
-
-        controls.removeAttribute('style');
       }
     }
-  }
+  };
 
   togglePlay = () => {
     if (this.sound && this.button) {
@@ -98,7 +95,7 @@ export default class extends Scene {
 
     this.model.identity();
 
-    const angle = degToRad(this.targetX.get()) + (this.time * 0.01);
+    const angle = degToRad(this.targetX.get()) + this.time * 0.01;
     const angle2 = 0.5; // degToRad(this.targetY.get()) + (this.time * 0.001);
 
     const quat = new DualQuaternion();
@@ -107,38 +104,35 @@ export default class extends Scene {
     this.model.multiply(quat.toMatrix4());
 
     const program = this.mngProg.get(this.MAIN_PROG);
-    program.setVector("resolution", [
-      this.containerSize.width,
-      this.containerSize.height,
-    ]);
+    program.setVector('resolution', [this.containerSize.width, this.containerSize.height]);
     program.setFloat('time', this.pulse.get());
     this.setLampeInfos(program);
   }
 
   mainRender = (program, texData = null) => {
     // this.mngGltf.get(this.MAIN_OBJ).render(program, this.model);
-    program.setMatrix("model", this.model.get());
+    program.setMatrix('model', this.model.get());
     const normalmatrix = this.model.getMatrice3x3();
     normalmatrix.inverse();
-    program.setMatrix("normalmatrix", normalmatrix.transpose());
-    program.setTexture(2, this.texture.get(), "noiseMap");
-    program.setTexture(3, this.mngTex.get("earth").get(), "colorMap");
+    program.setMatrix('normalmatrix', normalmatrix.transpose());
+    program.setTexture(2, this.texture.get(), 'noiseMap');
+    program.setTexture(3, this.mngTex.get('earth').get(), 'colorMap');
 
     if (texData) {
-      program.setTexture(5, texData.get(), "displacementMap");
+      program.setTexture(5, texData.get(), 'displacementMap');
     }
-    this.mngObj.get(this.MAIN_OBJ).render(program.get());  
-  }
+    this.mngObj.get(this.MAIN_OBJ).render(program.get());
+  };
 
   renderToBuffer = (program) => {
     this.mainRender(program);
-  }
+  };
 
   renderBasiqueForShadow() {
-    const program = this.mngProg.get("basique3d");
-    program.setMatrix("projection", this.camera.getProjection().get());
-    program.setMatrix("view", this.getLampeViewMatrix(0).get());
-    program.setMatrix("model", this.model.get());
+    const program = this.mngProg.get('basique3d');
+    program.setMatrix('projection', this.camera.getProjection().get());
+    program.setMatrix('view', this.getLampeViewMatrix(0).get());
+    program.setMatrix('model', this.model.get());
     this.renderToBuffer(program);
   }
 
@@ -150,25 +144,25 @@ export default class extends Scene {
 
     this.mainRender(this.mngProg.get(this.MAIN_PROG), texData);
 
-    const progCircle = this.mngProg.get("frequencyCircle");
-    progCircle.setMatrix("projection", this.camera.getProjection().get());
-    progCircle.setMatrix("view", this.camera.getView().get());
-    progCircle.setMatrix("model", this.model.get());
-    progCircle.setInt("length", this.fVbo.getCount());
-    progCircle.setInt("maxfrequency", 256.0);
-    this.uVbo.start(progCircle.get(), "value", amplitudes);
-    this.fVbo.start(progCircle.get(), "index");
+    const progCircle = this.mngProg.get('frequencyCircle');
+    progCircle.setMatrix('projection', this.camera.getProjection().get());
+    progCircle.setMatrix('view', this.camera.getView().get());
+    progCircle.setMatrix('model', this.model.get());
+    progCircle.setInt('length', this.fVbo.getCount());
+    progCircle.setInt('maxfrequency', 256.0);
+    this.uVbo.start(progCircle.get(), 'value', amplitudes);
+    this.fVbo.start(progCircle.get(), 'index');
     this.gl.drawArrays(this.gl.LINE_LOOP, 0, this.fVbo.getCount());
     this.uVbo.end();
 
-    const progGrid = this.mngProg.get("frequencyGrid");
-    progGrid.setMatrix("projection", this.camera.getProjection().get());
-    progGrid.setMatrix("view", this.camera.getView().get());
-    progGrid.setMatrix("model", this.model.get());
-    progGrid.setInt("length", this.fVbo.getCount());
-    progGrid.setInt("maxfrequency", 256.0);
-    this.uVbo.start(progGrid.get(), "value", amplitudes);
-    this.fVbo.start(progGrid.get(), "index");
+    const progGrid = this.mngProg.get('frequencyGrid');
+    progGrid.setMatrix('projection', this.camera.getProjection().get());
+    progGrid.setMatrix('view', this.camera.getView().get());
+    progGrid.setMatrix('model', this.model.get());
+    progGrid.setInt('length', this.fVbo.getCount());
+    progGrid.setInt('maxfrequency', 256.0);
+    this.uVbo.start(progGrid.get(), 'value', amplitudes);
+    this.fVbo.start(progGrid.get(), 'index');
     // this.gl.drawArrays(this.gl.POINTS, 0, this.fVbo.getCount());
     this.uVbo.end();
 
@@ -179,18 +173,18 @@ export default class extends Scene {
   onMouseDrag = (mouse) => {
     this.targetX.set(mouse.relPrevious.x * 0.1);
     this.targetY.set(mouse.relPrevious.y * 0.1);
-  }
+  };
 
   onMouseWheel = (mouse) => {
     let target = -mouse.deltaY;
     target = Math.min(target, 2);
     target = Math.max(target, 1);
     this.targetZ.set(target);
-  }
+  };
 
   onMouseClick = () => {
     this.pulse.set(1000);
-  }
+  };
 
   destroy() {
     if (this.button) {

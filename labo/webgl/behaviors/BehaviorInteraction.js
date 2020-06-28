@@ -1,6 +1,6 @@
-import Behavior from "./BehaviorGravity";
-import { mapFromRange } from "../utils/numbers";
-import Vec3 from "../maths/Vec3";
+import Behavior from './BehaviorGravity';
+import { mapFromRange } from '../utils/numbers';
+import Vec3 from '../maths/Vec3';
 
 export default class extends Behavior {
   constructor(constants, updateState, tileSize) {
@@ -45,22 +45,15 @@ export default class extends Behavior {
   }
 
   setInteraction(keyboard) {
-    const { keys, physics, states } = this.constants;
+    const { physics, states } = this.constants;
+    const { keys } = keyboard;
     const { DASH, AIM, SLASH, JUMP_UP } = states;
 
     if (this.status === states.AIM) {
-      this.aimingStrength = mapFromRange(
-        keyboard.getCharge(keys.W),
-        0,
-        40,
-        0.2,
-        1
-      );
+      this.aimingStrength = mapFromRange(keyboard.getCharge(keys.W), 0, 40, 0.2, 1);
     }
 
-    const directionSpeed = this.isCollision.bottom
-      ? physics.run
-      : physics.aircontrol;
+    const directionSpeed = this.isCollision.bottom ? physics.run : physics.aircontrol;
 
     if (!this.isCollision.right && keyboard.isPressed(keys.RIGHT)) {
       this.speed.addX(directionSpeed);
@@ -107,7 +100,8 @@ export default class extends Behavior {
   }
 
   resetValues(keyboard) {
-    const { keys, states } = this.constants;
+    const { states } = this.constants;
+    const { keys } = keyboard;
     const { STAND, AIM } = states;
 
     if (this.status === AIM) {

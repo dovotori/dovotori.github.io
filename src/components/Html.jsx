@@ -1,26 +1,22 @@
-import React, { useEffect, useRef, useMemo } from "react";
+import React, { useEffect, useRef, useMemo } from 'react';
 
-import useFetchHtml from "../hooks/useFetchHtml";
-import useFetchJs from "../hooks/useFetchJs";
+import useFetchHtml from '../hooks/useFetchHtml';
+import useFetchJs from '../hooks/useFetchJs';
 import { getHtmlPath } from '../utils';
 
 const Html = ({ className, slug, onLoad = null }) => {
   const div = useRef(null);
-   const { pending: pendingHtml, value: html, error: errorHtml } = useFetchHtml(
-    getHtmlPath(slug)
-  );
+  const { pending: pendingHtml, value: html, error: errorHtml } = useFetchHtml(getHtmlPath(slug));
 
   const { pending: pendingJs, value: js, error: errorJs } = useFetchJs(slug);
 
-  const isHtmlLoaded = useMemo(
-    () => !pendingHtml && !errorHtml && !!html, [pendingHtml, errorHtml, html]
-  );
-  const isJsLoaded = useMemo(
-    () => !pendingJs && !errorJs && !!js, [pendingJs, errorJs, js]
-  );
-  const isNoJs = useMemo(
-    () => !pendingJs && js === null, [pendingJs, errorJs, js]
-  );
+  const isHtmlLoaded = useMemo(() => !pendingHtml && !errorHtml && !!html, [
+    pendingHtml,
+    errorHtml,
+    html,
+  ]);
+  const isJsLoaded = useMemo(() => !pendingJs && !errorJs && !!js, [pendingJs, errorJs, js]);
+  const isNoJs = useMemo(() => !pendingJs && js === null, [pendingJs, errorJs, js]);
 
   useEffect(() => {
     div.current.innerHTML = '';
@@ -38,7 +34,7 @@ const Html = ({ className, slug, onLoad = null }) => {
     if (isHtmlLoaded && isJsLoaded) {
       const runJs = async () => {
         try {
-          const content = await js.default({ div: div.current });
+          const content = await js.default({ div: div.current, slug });
           if (content) {
             div.current.appendChild(content);
           }
@@ -56,14 +52,14 @@ const Html = ({ className, slug, onLoad = null }) => {
       if (js && js.destroy && typeof js.destroy === 'function') {
         js.destroy();
       }
-    }
+    };
   }, [isHtmlLoaded, isJsLoaded]);
 
   return (
     <div key={slug} className={className} id={slug}>
       {/* eslint-disable-next-line react/no-danger */}
       <div dangerouslySetInnerHTML={{ __html: html }} />
-      <div ref={div}  />
+      <div ref={div} />
     </div>
   );
 };

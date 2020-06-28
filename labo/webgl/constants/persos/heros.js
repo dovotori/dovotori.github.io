@@ -1,34 +1,25 @@
-export const UP = "UP";
-export const DOWN = "DOWN";
-export const LEFT = "LEFT";
-export const RIGHT = "RIGHT";
-export const SPACE = "SPACE";
-export const SHIFT = "SHIFT";
-export const X = "X";
-export const W = "W";
-export const ENTER = "ENTER";
-export const ECHAP = "ECHAP";
+import { X } from '../keyboard';
 
-const STAND = "STAND";
-const RUN = "RUN";
-const JUMP_UP = "JUMP_UP";
-const JUMP_DOWN = "JUMP_DOWN";
-const DASH = "DASH";
-const AIM = "AIM";
-const RUN_JUMP_UP = "RUN_JUMP_UP";
-const RUN_JUMP_DOWN = "RUN_JUMP_DOWN";
-const DIE = "DIE";
-const SLASH = "SLASH";
-const SLASH_2 = "SLASH_2";
-const SLASH_3 = "SLASH_3";
-const SLOW_DOWN = "SLOW_DOWN";
-const JUMP_LOAD = "JUMP_LOAD";
-const WALL = "WALL";
-const WALL_UP = "WALL_UP";
-const LAND = "LAND";
+const STAND = 'STAND';
+const RUN = 'RUN';
+const JUMP_UP = 'JUMP_UP';
+const JUMP_DOWN = 'JUMP_DOWN';
+const DASH = 'DASH';
+const AIM = 'AIM';
+const RUN_JUMP_UP = 'RUN_JUMP_UP';
+const RUN_JUMP_DOWN = 'RUN_JUMP_DOWN';
+const DIE = 'DIE';
+const SLASH = 'SLASH';
+const SLASH_2 = 'SLASH_2';
+const SLASH_3 = 'SLASH_3';
+const SLOW_DOWN = 'SLOW_DOWN';
+const JUMP_LOAD = 'JUMP_LOAD';
+const WALL = 'WALL';
+const WALL_UP = 'WALL_UP';
+const LAND = 'LAND';
 
 export default {
-  id: "heros",
+  id: 'heros',
   x: 4,
   y: 5,
   z: 0.1,
@@ -63,31 +54,21 @@ export default {
     LAND,
   },
   lockStates: [AIM, SLASH, DASH, JUMP_LOAD],
-  keys: {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
-    SPACE,
-    SHIFT,
-    X,
-    W,
-  },
   combos: {
     attack: [
       {
         key: X,
         cancel: false,
         threshold: 1000,
-        sprite: "up",
+        sprite: 'up',
       },
       {
         key: X,
         cancel: false,
         threshold: 1000,
-        sprite: "down",
+        sprite: 'down',
       },
-      { key: X, cancel: false, sprite: "run" },
+      { key: X, cancel: false, sprite: 'run' },
     ],
   },
 };

@@ -1,0 +1,10 @@
+export const UP = 38;
+export const DOWN = 40;
+export const LEFT = 37;
+export const RIGHT = 39;
+export const SPACE = 32;
+export const SHIFT = 16;
+export const X = 88;
+export const W = 87;
+export const ENTER = 13;
+export const ECHAP = 27;

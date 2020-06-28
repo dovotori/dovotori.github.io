@@ -60,6 +60,7 @@ export default class {
           this.fullscreen = new Fullscreen(containerElem, buttonElem);
         }
       }
+      this.revealAfterLoaded(config.slug);
     }
 
     this.loop = new Loop();
@@ -94,4 +95,12 @@ export default class {
       this.scene.destroy();
     }
   }
+
+  revealAfterLoaded = (slug) => {
+    const container = document.querySelector(`#${slug || process.env.NAME}`) || null;
+    if (container) {
+      const itemsToReveal = container.querySelectorAll('[style="opacity: 0;"]');
+      itemsToReveal.forEach((item) => item.removeAttribute('style'));
+    }
+  };
 }
