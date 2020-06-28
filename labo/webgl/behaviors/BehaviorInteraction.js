@@ -47,9 +47,13 @@ export default class extends Behavior {
   setInteraction(keyboard) {
     const { physics, states } = this.constants;
     const { keys } = keyboard;
-    const { DASH, AIM, SLASH, JUMP_UP } = states;
+    const { DASH, AIM, SLASH, JUMP_UP, DIE } = states;
 
-    if (this.status === states.AIM) {
+    if (this.status === DIE) {
+      return;
+    }
+
+    if (this.status === AIM) {
       this.aimingStrength = mapFromRange(keyboard.getCharge(keys.W), 0, 40, 0.2, 1);
     }
 
@@ -119,7 +123,7 @@ export default class extends Behavior {
     return this.jumpPosition;
   }
 
-  getAiming() {
+  isAiming() {
     return this.aimingStrength;
   }
 

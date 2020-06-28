@@ -51,6 +51,7 @@ precision mediump float;
 varying vec2 fragTexture;
 uniform vec3 tint;
 uniform int inverseColor;
+uniform float damage;
 uniform sampler2D textureMap;
 void main() {
   
@@ -73,6 +74,7 @@ void main() {
 	  color.y = 1.0 - color.y; 
 	  color.z = 1.0 - color.z; 
   }
+  color.xyz += vec3(damage) * vec3(1.0,0.0,0.0);
   gl_FragColor = color;
 }
 `;
@@ -94,5 +96,6 @@ export default {
     'inverseX',
     'tint',
     'inverseColor',
+    'damage',
   ],
 };

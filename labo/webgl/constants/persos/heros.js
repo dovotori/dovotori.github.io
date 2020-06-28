@@ -25,6 +25,8 @@ export default {
   z: 0.1,
   w: 0.5,
   h: 1,
+  life: 100,
+  displayLife: true,
   physics: {
     run: 0.1,
     jump: 0.6,

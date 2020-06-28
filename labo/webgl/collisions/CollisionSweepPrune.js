@@ -165,6 +165,12 @@ class CollisionSweepPrune {
   removeBox(id) {
     this.listeAxe = this.listeAxe.map((list) => list.filter((point) => point.ownerId !== id));
   }
+
+  clear() {
+    this.listeAxe[0] = [];
+    this.listeAxe[1] = [];
+    this.listeAxe[2] = [];
+  }
 }
 
 export default CollisionSweepPrune;

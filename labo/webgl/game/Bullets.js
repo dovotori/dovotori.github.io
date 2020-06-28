@@ -38,7 +38,7 @@ export default class {
   createNewOne(startPos, goLeft, tileSize) {
     this.bullets.push(
       new Bullet({
-        id: this.constants.id + this.numero,
+        id: `${this.constants.id}${this.numero}`,
         constants: this.constants,
         sprites: this.sprites,
         viewBox: this.viewBox,

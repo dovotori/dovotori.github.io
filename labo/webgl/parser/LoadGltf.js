@@ -274,7 +274,7 @@ export default class {
     if (nodes) this.data.nodes = nodes.filter((node) => node.mesh !== undefined);
     if (newSkins) this.data.skins = newSkins;
     if (newMaterials) this.data.materials = newMaterials;
-    console.log('CUSTOM', this.data);
+    // console.log('CUSTOM', this.data);
   }
 
   get() {

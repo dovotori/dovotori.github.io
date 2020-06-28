@@ -94,6 +94,9 @@ export default class {
     if (this.scene && this.scene.destroy) {
       this.scene.destroy();
     }
+    if (this.fullscreen) {
+      this.fullscreen.destroy();
+    }
   }
 
   revealAfterLoaded = (slug) => {

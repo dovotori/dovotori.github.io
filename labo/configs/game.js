@@ -55,6 +55,9 @@ export default {
       brillance: 200,
     },
   ],
+  controls: {
+    fullscreen: { domId: 'game', buttonId: 'fullscreen-toggle-btn' },
+  },
   keyboard: {
     UP,
     DOWN,

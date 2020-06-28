@@ -4,7 +4,7 @@ export default class {
     this.support = !!AudioContext;
     try {
       this.audioContext = new AudioContext();
-    } catch(e) {
+    } catch (e) {
       this.support = false;
     }
 
@@ -37,16 +37,16 @@ export default class {
       // this.analyserNode.fftSize = this.sampleSize;
       this.amplitudeArray = new Uint8Array(this.analyserNode.frequencyBinCount);
     } else {
-      console.debug("No audio api support")
+      console.debug('No audio api support');
     }
   }
 
   saveData = (audioData) => {
     this.audioData = audioData;
-  }
+  };
 
   play() {
-    if(this.audioData) {
+    if (this.audioData) {
       if (!this.playMultiple && this.isPlaying) {
         this.stop();
       }
@@ -56,12 +56,12 @@ export default class {
       this.sourceNode.playbackRate.value = this.playbackRate;
       this.sourceNode.buffer = this.audioData;
       this.sourceNode.loop = this.isLoop;
-      
+
       this.sourceNode.connect(this.gainNode);
-    
+
       this.setupAnalyse();
 
-      this.sourceNode.addEventListener("ended", this.stop, false);
+      this.sourceNode.addEventListener('ended', this.stop, false);
       this.sourceNode.start(0);
       this.isPlaying = true;
     }
@@ -78,15 +78,17 @@ export default class {
       this.audioContext.suspend();
       this.isPause = true;
     }
-  }
+  };
 
   stop = () => {
     this.clearAnalyse();
-    this.sourceNode.removeEventListener("ended", this.stop, false);
-    this.sourceNode.disconnect();
-    this.sourceNode.stop(0);
+    if (this.sourceNode) {
+      this.sourceNode.removeEventListener('ended', this.stop, false);
+      this.sourceNode.disconnect();
+      this.sourceNode.stop(0);
+    }
     this.isPlaying = false;
-  }
+  };
 
   toggle = () => {
     if (this.isPlaying) {
@@ -94,13 +96,13 @@ export default class {
     } else {
       this.play();
     }
-  }
+  };
 
   setupAnalyse() {
     this.sourceNode.connect(this.analyserNode);
     this.analyserNode.connect(this.javascriptNode);
     this.javascriptNode.connect(this.audioContext.destination);
-    this.javascriptNode.addEventListener("audioprocess",  this.onAnalyse, false);
+    this.javascriptNode.addEventListener('audioprocess', this.onAnalyse, false);
   }
 
   clearAnalyse = () => {
@@ -108,14 +110,14 @@ export default class {
     if (this.javascriptNode) {
       this.analyserNode.disconnect();
       this.javascriptNode.disconnect();
-      this.javascriptNode.removeEventListener("audioprocess",  this.onAnalyse, false);
+      this.javascriptNode.removeEventListener('audioprocess', this.onAnalyse, false);
     }
-  }
+  };
 
   onAnalyse = () => {
     // this.analyserNode.getByteTimeDomainData(this.amplitudeArray);
     this.analyserNode.getByteFrequencyData(this.amplitudeArray);
-  }
+  };
 
   // onStateChange = () => {
   //   console.log(this.audioContext.state);
@@ -123,29 +125,29 @@ export default class {
 
   onError = (e) => {
     console.log('Error load audio', e);
-  }
+  };
 
   setPlaybackRate = (value) => {
     this.playbackRate = value;
     if (this.sourceNode) {
       this.sourceNode.playbackRate.value = this.playbackRate;
     }
-  }
+  };
 
   setVolume = (value) => {
     this.volume = value;
     if (this.gainNode) {
       this.gainNode.gain.value = this.volume;
     }
-  }
+  };
 
   getAmplitudes = () => {
     return this.amplitudeArray;
-  }
+  };
 
   getFrequencyLength = () => {
     return this.analyserNode.frequencyBinCount;
-  }
+  };
 
   getSupport() {
     return this.support;

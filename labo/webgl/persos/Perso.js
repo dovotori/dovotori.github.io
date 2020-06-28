@@ -7,12 +7,11 @@ export default class extends MeshSprite {
     super();
     this.inverseX = false;
     this.stateSprite = new StateSprite(sprites, this.setEndOfAnimation);
-    this.stateSprite.set(constants.states[Object.keys(constants.states)[0]]);
     this.viewBox = viewBox;
     this.constants = constants;
     this.sprites = sprites;
-    this.setSprite(this.stateSprite.get());
     this.worldPos = new Vec3();
+    this.reset();
   }
 
   update(map, tileSize) {
@@ -49,8 +48,13 @@ export default class extends MeshSprite {
     this.behavior.addToSpeed(new Vec3(x, y, z));
   }
 
-  setEndOfAnimation = (state) => {
-    this.behavior.setEndOfAnimation(state);
+  setEndOfAnimation = (currentState, nextState) => {
+    if (nextState) {
+      this.behavior.setEndOfAnimation(nextState);
+    }
+    if (currentState === this.constants.states.DIE && this.callbackDeath) {
+      this.callbackDeath();
+    }
   };
 
   getX() {
@@ -83,12 +87,13 @@ export default class extends MeshSprite {
     return this.behavior.isStatusChanged();
   }
 
-  getCollisionInfos() {
-    const { w, h } = this.constants;
-    return [...this.getPosition(), w, h];
-  }
-
   getConstants() {
     return this.constants;
+  }
+
+  reset() {
+    this.stateSprite.reset();
+    this.stateSprite.set(this.constants.states[Object.keys(this.constants.states)[0]]);
+    this.setSprite(this.stateSprite.get());
   }
 }

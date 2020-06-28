@@ -1,48 +1,52 @@
 import CollisionSweepPrune from './CollisionSweepPrune';
 
 class Collisions {
-  static isCollide = (pair, id1, id2) => {
-    if (pair[0] === id1 && pair[1] === id2) {
-      return pair;
-    }
-    if (pair[0] === id2 && pair[1] === id1) {
-      return [pair[1], pair[0]];
-    }
-    return null;
-  };
-
-  static isCollideGroup = (pair, id1, groupId) => {
-    if (pair[0] === id1 && pair[1].indexOf(groupId) !== -1) {
-      return pair;
-    }
-    if (pair[0].indexOf(groupId) !== -1 && pair[1] === id1) {
-      return [pair[1], pair[0]];
-    }
-    return null;
-  };
-
   constructor(boxes) {
     this.collision = new CollisionSweepPrune();
     this.collision.addBoxes(boxes);
   }
 
-  update(heros, monster, bullets) {
-    this.collision.getPaires().forEach((pair) => {
-      if (Collisions.isCollide(pair, 'heros', 'monster')) {
-        heros.addToSpeed(monster.getX() < heros.getX() ? 1 : -1);
-      } else {
-        const newPair = Collisions.isCollideGroup(pair, 'monster', 'bullet');
-        if (newPair) {
-          monster.addToSpeed(monster.getX() < heros.getX() ? -1 : 1);
-          this.collision.removeBox(newPair[1]);
-          bullets.removeOne(newPair[1]);
-        }
+  get() {
+    return this.collision.getPaires().reduce((acc, pair) => {
+      let type = 'SIMPLE';
+      pair.sort();
+      let on = pair[0];
+      let from = pair[1];
+      let bulletId = null;
+
+      const onIsBullet = on.indexOf('bullet') !== -1;
+      const fromIsBullet = from.indexOf('bullet') !== -1;
+      if (onIsBullet && fromIsBullet) {
+        // 2 bullets we cancel collision
+        return acc;
       }
-    });
+
+      if (onIsBullet) {
+        type = 'SHOOT';
+        bulletId = on;
+        const newFrom = on.split('-')[0];
+        on = from;
+        from = newFrom;
+      } else if (fromIsBullet) {
+        type = 'SHOOT';
+        bulletId = from;
+        [from] = from.split('-');
+      }
+      if (type === 'SHOOT' && on === from) {
+        // friendly bullet, we cancel collision
+        return acc;
+      }
+
+      return [...acc, { type, from, on, bulletId }];
+    }, []);
   }
 
   addBoxes = (boxes) => {
     this.collision.addBoxes(boxes);
+  };
+
+  clear = () => {
+    this.collision.clear();
   };
 
   removeBox = (id) => {

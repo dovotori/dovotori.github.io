@@ -23,6 +23,19 @@ export default class {
     this.scale = 1;
   }
 
+  reset = () => {
+    this.sprite = {
+      uv: {
+        x: 0,
+        y: 0,
+        w: 1,
+        h: 1,
+      },
+      size: { w: 1, h: 1 },
+    };
+    this.step = 0;
+  };
+
   set(state) {
     if (state !== undefined && this.currentState !== state) {
       this.currentState = state;
@@ -70,13 +83,13 @@ export default class {
 
   endOfLoop() {
     if (this.iteration === 1) {
+      if (this.callbackEndOfAnimation) {
+        this.callbackEndOfAnimation(this.currentState, this.nextState);
+      }
       if (this.nextState !== null || this.nextState !== undefined) {
         this.set(this.nextState);
       } else {
         this.lastFrame = null;
-      }
-      if (this.callbackEndOfAnimation) {
-        this.callbackEndOfAnimation(this.nextState);
       }
     } else {
       this.step = 0;

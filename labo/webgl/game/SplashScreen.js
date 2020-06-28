@@ -1,6 +1,8 @@
 export default class {
   constructor() {
     this.div = document.querySelector('#splash');
+    this.instructions = this.div && this.div.querySelector('#instructions');
+    this.title = this.div && this.div.querySelector('#title');
   }
 
   show() {
@@ -15,20 +17,32 @@ export default class {
     }
   }
 
-  showTitle() {
-    if (this.div) {
-      const title = this.div.querySelector('#title');
-      if (title) {
-        title.style.opacity = 1;
-        title.style.transform = 'none';
-      }
+  showRestart = () => {
+    if (this.instructions) {
+      this.title.innerHTML = 'G a m e O v e r';
+      this.instructions.innerHTML = 'Pressed Enter to restart';
     }
+    this.show();
+  };
+
+  showVictory = () => {
+    if (this.instructions) {
+      this.title.innerHTML = 'V i c t o r y';
+      this.instructions.innerHTML = '';
+    }
+    this.show();
+  };
+
+  showPause() {
+    if (this.title) {
+      this.title.innerHTML = 'T h e G a m e';
+    }
+    this.show();
   }
 
-  showReady() {
-    if (this.div) {
-      const intro = this.div.querySelector('#instructions');
-      if (intro) intro.style.display = 'block';
+  showReady = () => {
+    if (this.instructions) {
+      if (this.instructions) this.instructions.style.display = 'block';
     }
-  }
+  };
 }

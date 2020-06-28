@@ -9,6 +9,7 @@ export default class extends Scene {
     const finalConfig = { ...restConfig, game: restGame };
     super(gl, finalConfig, restAssets, width, height);
     this.isSplashScreen = true;
+    this.needReset = false;
     this.splash = new SplashScreen();
     this.splash.showReady();
     this.currentLevel = 0;
@@ -16,9 +17,16 @@ export default class extends Scene {
     if (levels) {
       const level = levels[this.currentLevel];
       const asset = assetsLevels[level.tilemap.texture];
-      this.setupGameLevel(level, asset);
+      this.setupGameLevel(level, asset, this.callbackDeath);
     }
   }
+
+  callbackDeath = () => {
+    this.setPause(true);
+    this.isSplashScreen = true;
+    this.splash.showRestart();
+    this.resetGameLevel();
+  };
 
   setKeyboardInteraction(keyboard) {
     super.setKeyboardInteraction(keyboard);
@@ -31,7 +39,7 @@ export default class extends Scene {
       this.isSplashScreen = !this.isSplashScreen;
       this.setPause(this.isSplashScreen);
       if (this.isSplashScreen) {
-        this.splash.show();
+        this.splash.showPause();
       } else {
         this.splash.hide();
       }

@@ -1,4 +1,4 @@
-import heros from "../persos/heros";
+import heros from '../persos/heros';
 
 const {
   STAND,
@@ -225,12 +225,14 @@ export default {
         y: 34,
         w: 56,
         h: 40,
+        t: 1000,
       },
       {
         x: 0,
         y: 0,
         w: 84,
         h: 18,
+        t: 1000,
       },
     ],
     iteration: 1,

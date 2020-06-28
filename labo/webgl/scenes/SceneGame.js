@@ -1,8 +1,6 @@
 import Scene from './SceneLampe';
 import Background from '../game/Background';
 import Tilemap from '../game/Tilemap';
-import Bullets from '../game/Bullets';
-import Fxs from '../game/Fxs';
 
 import Target from '../maths/Target';
 
@@ -21,7 +19,6 @@ export default class extends Scene {
     this.oldAiming = false;
     this.isPause = true;
     this.interactives = {};
-    this.boxes = [];
     this.tilemap = null;
 
     this.setLampeInfos(this.mngProg.get('spritePhong'));
@@ -36,7 +33,7 @@ export default class extends Scene {
   //   }
   // }
 
-  setupGameLevel(level, spriteLevel) {
+  setupGameLevel(level, spriteLevel, callbackRestart) {
     if (this.config.game) {
       const { types } = this.config.game;
       const { tilemap, interactives } = level;
@@ -55,27 +52,24 @@ export default class extends Scene {
           switch (type) {
             case 'heros': {
               const { fxs, bullets } = configType;
-              this.interactives[id] = {
-                main: new Heros({
-                  constants,
-                  sprites,
-                  viewBox,
-                  tileSize,
-                }),
-                bullets: new Bullets(bullets.constants, bullets.sprites, viewBox),
-                fxs: new Fxs(fxs.constants, fxs.sprites, viewBox),
-              };
+              this.interactives[id] = new Heros({
+                constants,
+                sprites,
+                viewBox,
+                tileSize,
+                bullets,
+                fxs,
+              });
+              this.interactives[id].setCallbackDeath(callbackRestart);
               break;
             }
             case 'monster': {
-              this.interactives[id] = {
-                main: new Monster({
-                  constants,
-                  sprites,
-                  viewBox,
-                  tileSize,
-                }),
-              };
+              this.interactives[id] = new Monster({
+                constants,
+                sprites,
+                viewBox,
+                tileSize,
+              });
               break;
             }
             default:
@@ -84,21 +78,28 @@ export default class extends Scene {
         }
       });
 
-      if (this.interactives.heros) {
-        const { bullets } = this.interactives.heros;
-        bullets.setCallbackShoot(this.callbackBulletShoot);
-        bullets.setCallbackCollide(this.callbackBulletCollide);
-      }
-
-      this.boxes = Object.keys(this.interactives).map((id) => {
-        return this.interactives[id].main.getCollisionBox();
+      const boxes = Object.keys(this.interactives).map((id) => {
+        return this.interactives[id].getCollisionBox();
       });
 
-      this.collisions = new Collisions(this.boxes);
       this.background = new Background(viewBox, this.tilemap.getLevelSize());
-
-      console.log(this.interactives);
+      this.collisions = new Collisions(boxes);
+      const { addBoxes, removeBox } = this.collisions;
+      Object.keys(this.interactives).forEach((id) => {
+        this.interactives[id].setCallbacks({ addBoxes, removeBox });
+      });
     }
+  }
+
+  resetGameLevel() {
+    Object.keys(this.interactives).forEach((id) => {
+      this.interactives[id].reset();
+    });
+    this.collisions.clear();
+    const boxes = Object.keys(this.interactives).map((id) => {
+      return this.interactives[id].getCollisionBox();
+    });
+    this.collisions.addBoxes(boxes);
   }
 
   resize(box) {
@@ -109,12 +110,10 @@ export default class extends Scene {
   update() {
     super.update();
 
-    const { main: heros, bullets, fxs } = this.interactives.heros;
+    const { heros } = this.interactives;
 
     const herosWorldPos = heros.getWorldPosition();
     const herosPos = heros.getPosition();
-    const herosInvX = heros.getInverseX();
-    const herosIsAim = heros.getAiming();
     const map = this.tilemap.get();
 
     this.camera.followPosY(herosWorldPos[1]);
@@ -126,19 +125,50 @@ export default class extends Scene {
       const tileSize = this.tilemap.getTileSize();
 
       Object.keys(this.interactives).forEach((id) => {
-        this.interactives[id].main.update(map, tileSize);
+        this.interactives[id].update(map, tileSize);
       });
 
-      fxs.update();
-      bullets.update(map, tileSize, heros.getAimingPos(), herosIsAim, herosInvX);
       // if (this.mousePos !== null) {
       //   const pixel = this.getColorPixel(this.mousePos);
       //   this.perso.setSelected(pixel);
       // }
-
-      // this.collisions.update(this.interactives);
+      this.updateCollisionsInteractions();
     }
   }
+
+  updateCollisionsInteractions = () => {
+    const collisionsIdentifiers = this.collisions.get();
+    if (collisionsIdentifiers.length > 0) {
+      collisionsIdentifiers.forEach(({ type, on, from, bulletId }) => {
+        switch (type) {
+          case 'SIMPLE': {
+            const onElem = this.interactives[on];
+            const fromElem = this.interactives[from];
+            const isAttacking = onElem.getStatus() === 'SLASH';
+            if (isAttacking) {
+              fromElem.addToSpeed(fromElem.getX() < onElem.getX() ? -1 : 1);
+              fromElem.setDamage(30);
+            } else {
+              onElem.addToSpeed(fromElem.getX() < onElem.getX() ? 1 : -1);
+              onElem.setDamage(10);
+            }
+            break;
+          }
+          case 'SHOOT': {
+            const onElem = this.interactives[on];
+            const fromElem = this.interactives[from];
+            onElem.addToSpeed(fromElem.getX() < onElem.getX() ? 1 : -1);
+            onElem.setDamage(10);
+            this.collisions.removeBox(bulletId);
+            fromElem.removeBullet(bulletId);
+            break;
+          }
+          default:
+            break;
+        }
+      });
+    }
+  };
 
   renderPause() {
     super.render();
@@ -147,10 +177,10 @@ export default class extends Scene {
   }
 
   mainRender() {
-    // this.renderBackground();
+    this.renderBackground();
     this.renderTilemap();
     this.renderInteractives();
-    // this.renderForeground();
+    this.renderForeground();
   }
 
   renderTilemap() {
@@ -164,19 +194,23 @@ export default class extends Scene {
 
   renderInteractives() {
     Object.keys(this.interactives).forEach((id) => {
-      this.interactives[id].main.render(
+      this.interactives[id].render(
         this.mngProg.get('sprite'),
         this.mngTex.get('heros'),
         this.mngObj.get('tile')
       );
     });
-    const { bullets, fxs } = this.interactives.heros;
-    // fxs.render(this.mngProg.get('sprite'), this.mngTex.get('fx'), this.mngObj.get('tile'));
-    bullets.render(this.mngProg.get('sprite'), this.mngTex.get('bullet'), this.mngObj.get('tile'));
+    const { heros } = this.interactives;
+    heros.renderFxs(this.mngProg.get('sprite'), this.mngTex.get('fx'), this.mngObj.get('tile'));
+    heros.renderBullets(
+      this.mngProg.get('sprite'),
+      this.mngTex.get('bullet'),
+      this.mngObj.get('tile')
+    );
   }
 
   renderBackground() {
-    const { main: heros } = this.interactives.heros;
+    const { heros } = this.interactives;
     const herosPosX = heros.getX();
     this.background.renderMountains(this.mngObj.get('tile'), this.mngProg.get('color'));
     this.background.updateScreens(-0.15);
@@ -211,22 +245,10 @@ export default class extends Scene {
   }
 
   effects() {
-    const { main: heros, fxs } = this.interactives.heros;
-    const herosStatus = heros.getStatus();
+    const { heros } = this.interactives;
     const posHeros = heros.getAimingPosition();
     const herosInvX = heros.getInverseX();
-    const herosIsAim = heros.getAiming();
-    const { JUMP_UP, RUN_JUMP_UP } = heros.getConstants().states;
-    const { DUST } = fxs.getConstants().states;
-
-    // inside heros or perso
-    if (heros.isStatusChanged() && (herosStatus === JUMP_UP || herosStatus === RUN_JUMP_UP)) {
-      fxs.createNewOne(heros.getLastJumpingPosition(), DUST);
-    }
-    const lastRunningPosition = heros.getLastRunningPosition();
-    if (lastRunningPosition !== null) {
-      fxs.createNewOne(lastRunningPosition, DUST);
-    }
+    const herosIsAim = heros.isAiming();
 
     this.targetRGB.update();
     this.targetWave.update();
@@ -266,20 +288,10 @@ export default class extends Scene {
 
   setKeyboardInteraction(keyboard) {
     if (!this.isPause) {
-      const { main: heros } = this.interactives.heros;
+      const { heros } = this.interactives;
       heros.setInteraction(keyboard);
     }
   }
-
-  callbackBulletShoot = (id, collisionBox, recoil) => {
-    const { main: heros } = this.interactives.heros;
-    heros.setRecoil(recoil);
-    this.collisions.addBoxes([collisionBox]);
-  };
-
-  callbackBulletCollide = (id) => {
-    this.collisions.removeBox(id);
-  };
 
   setPause = (isPause) => {
     this.isPause = isPause;
