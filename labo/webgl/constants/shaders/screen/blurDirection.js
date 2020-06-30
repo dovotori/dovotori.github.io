@@ -14,8 +14,8 @@ float CalcGauss(float x, float sigma) {
   return (coeff*exp(expon));
 }
 
-void main() {
-  vec4 texCol = texture2D(textureMap, fragTexture);
+vec4 funcBlurDirection(sampler2D tex, vec2 uv, vec2 resolution, float direction, float size) {
+  vec4 texCol = texture2D(tex, uv);
   vec4 gaussCol = texCol;
   vec2 invSize = 1.0 / resolution;
   const int width = 4;
@@ -28,13 +28,20 @@ void main() {
     }
 
     float weight = CalcGauss(float(i) / float(width), size);
-    texCol = texture2D(textureMap, fragTexture + step);    
+    texCol = texture2D(tex, uv + step);    
     gaussCol += vec4( texCol.rgb * weight, weight);
-    texCol = texture2D(textureMap, fragTexture - step);
+    texCol = texture2D(tex, uv - step);
     gaussCol += vec4(texCol.rgb * weight, weight);
   }
   gaussCol.rgb /= gaussCol.w;
-  gl_FragColor = gaussCol;
+  return gaussCol;
+}
+
+void main() {
+  // vec3 blur = funcBlurDirection(textureMap, fragTexture, resolution, direction, size).xyz;
+  // float alpha = texture2D(textureMap, fragTexture).a;
+  // gl_FragColor = vec4(blur, alpha);
+  gl_FragColor = funcBlurDirection(textureMap, fragTexture, resolution, direction, size);
 }
 `;
 

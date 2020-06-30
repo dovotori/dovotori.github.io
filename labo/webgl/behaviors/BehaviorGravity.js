@@ -1,9 +1,12 @@
-import Behavior from "./BehaviorCollision";
+import Behavior from './BehaviorCollision';
 
 export default class extends Behavior {
   update(map, tileSize) {
-    super.update(map, tileSize);
-    this.updateSpeed();
+    const shouldContinue = super.update(map, tileSize);
+    if (shouldContinue) {
+      this.updateSpeed();
+    }
+    return shouldContinue;
   }
 
   updateSpeed() {

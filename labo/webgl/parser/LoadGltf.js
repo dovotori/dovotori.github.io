@@ -1,18 +1,14 @@
-import {
-  base64ToArrayBuffer,
-  dataViewToUint16,
-  dataViewToFloat32,
-} from "../utils/base64";
-import { chunkArray } from "../utils";
+import { base64ToArrayBuffer, dataViewToUint16, dataViewToFloat32 } from '../utils/base64';
+import { chunkArray } from '../utils';
 
 const acessorsTypes = {
-  SCALAR: "SCALAR",
-  VEC2: "VEC2",
-  VEC3: "VEC3",
-  VEC4: "VEC4",
-  MAT2: "MAT2",
-  MAT3: "MAT3",
-  MAT4: "MAT4",
+  SCALAR: 'SCALAR',
+  VEC2: 'VEC2',
+  VEC3: 'VEC3',
+  VEC4: 'VEC4',
+  MAT2: 'MAT2',
+  MAT3: 'MAT3',
+  MAT4: 'MAT4',
 };
 
 export const getNumComponentPerType = (type) => {
@@ -63,12 +59,9 @@ const getBufferDataFromAccessor = (buffers, bufferViews, accessor) => {
     type,
     byteOffset: accessorByteOffset = 0,
   } = accessor;
-  const {
-    buffer,
-    byteLength,
-    byteOffset: bufferViewByteOffset = 0,
-    byteStride,
-  } = bufferViews[bufferViewIndex];
+  const { buffer, byteLength, byteOffset: bufferViewByteOffset = 0, byteStride } = bufferViews[
+    bufferViewIndex
+  ];
   const dataView = new DataView(
     buffers[buffer],
     bufferViewByteOffset + accessorByteOffset,
@@ -77,27 +70,25 @@ const getBufferDataFromAccessor = (buffers, bufferViews, accessor) => {
   const numElement = getNumComponentPerType(type);
   const length = getLength(type, count);
   const converterMethod = getConvertMethod(componentType);
-  return converterMethod
-    ? converterMethod(dataView, length, count, numElement, byteStride)
-    : null;
+  return converterMethod ? converterMethod(dataView, length, count, numElement, byteStride) : null;
 };
 
 const getGlslProgramMappedName = (gltfName) => {
   switch (gltfName) {
-    case "normal":
-      return "normale";
-    case "texcoord_0":
-      return "texture";
-    case "baseColorFactor":
-      return "color";
-    case "metallicFactor":
-      return "metal";
-    case "roughnessFactor":
-      return "rough";
-    case "joints_0":
-      return "joint";
-    case "weights_0":
-      return "weight";
+    case 'normal':
+      return 'normale';
+    case 'texcoord_0':
+      return 'texture';
+    case 'baseColorFactor':
+      return 'color';
+    case 'metallicFactor':
+      return 'metal';
+    case 'roughnessFactor':
+      return 'rough';
+    case 'joints_0':
+      return 'joint';
+    case 'weights_0':
+      return 'weight';
     default:
       return gltfName;
   }
@@ -109,14 +100,7 @@ const formatMaterial = (gltfMaterial) =>
     return { ...acc, [name]: gltfMaterial[cur] };
   }, []);
 
-const VBO_ATTRIBUTES = [
-  "position",
-  "normale",
-  "texture",
-  "joint",
-  "weight",
-  "tangent",
-];
+const VBO_ATTRIBUTES = ['position', 'normale', 'texture', 'joint', 'weight', 'tangent'];
 
 const getMaterial = (material) => {
   const finalMaterial = material
@@ -190,39 +174,31 @@ const getSkins = (skins, nodes, accessors) => {
   if (skins) {
     const indexedNodes = nodes.map((node, index) => ({ ...node, id: index }));
     newSkins = skins
-      .map(
-        ({
-          inverseBindMatrices: matriceAccessorIndex,
-          joints: jointsNodesIndexes,
-        }) => {
-          let matrices = [];
-          if (matriceAccessorIndex) {
-            const rawMatrix = accessors[matriceAccessorIndex].values;
-            matrices = chunkArray(rawMatrix, 16);
-          }
-          if (jointsNodesIndexes) {
-            const joints = jointsNodesIndexes.map((nodeIndex, index) => ({
-              ...indexedNodes[nodeIndex],
-              invMatrix: matrices[index],
-            }));
-            const tmpArray = joints.slice();
-            const hierarchyJoints = [];
-            while (tmpArray.length !== 0) {
-              const currentJoint = tmpArray.shift();
-              if (currentJoint.children) {
-                currentJoint.children = processChildren(
-                  currentJoint.children,
-                  tmpArray
-                );
-              }
-              const { id, ...rest } = currentJoint;
-              hierarchyJoints.push(rest);
-            }
-            return { joints: hierarchyJoints };
-          }
-          return null;
+      .map(({ inverseBindMatrices: matriceAccessorIndex, joints: jointsNodesIndexes }) => {
+        let matrices = [];
+        if (matriceAccessorIndex) {
+          const rawMatrix = accessors[matriceAccessorIndex].values;
+          matrices = chunkArray(rawMatrix, 16);
         }
-      )
+        if (jointsNodesIndexes) {
+          const joints = jointsNodesIndexes.map((nodeIndex, index) => ({
+            ...indexedNodes[nodeIndex],
+            invMatrix: matrices[index],
+          }));
+          const tmpArray = joints.slice();
+          const hierarchyJoints = [];
+          while (tmpArray.length !== 0) {
+            const currentJoint = tmpArray.shift();
+            if (currentJoint.children) {
+              currentJoint.children = processChildren(currentJoint.children, tmpArray);
+            }
+            const { id, ...rest } = currentJoint;
+            hierarchyJoints.push(rest);
+          }
+          return { joints: hierarchyJoints };
+        }
+        return null;
+      })
       .filter((k) => k);
   }
   return newSkins;
@@ -241,10 +217,8 @@ export default class {
       meshes,
       materials,
     } = JsonData;
-    const newMaterials =
-      materials && materials.map((material) => getMaterial(material));
-    const newBuffers =
-      buffers && buffers.map((buffer) => base64ToArrayBuffer(buffer.uri));
+    const newMaterials = materials && materials.map((material) => getMaterial(material));
+    const newBuffers = buffers && buffers.map((buffer) => base64ToArrayBuffer(buffer.uri));
     const newAccessors =
       accessors &&
       accessors.map((accessor) => ({
@@ -270,7 +244,7 @@ export default class {
             chunkLength = node[path].length;
           } else if (node.mesh && meshes[node.mesh][path]) {
             chunkLength = meshes[node.mesh][path].length;
-          } else if (path === "scale") {
+          } else if (path === 'scale') {
             chunkLength = 3;
           }
 
@@ -283,9 +257,7 @@ export default class {
           };
           nodes[nodeIndex] = {
             ...node,
-            animations: node.animations
-              ? [...node.animations, newAnimItem]
-              : [newAnimItem],
+            animations: node.animations ? [...node.animations, newAnimItem] : [newAnimItem],
           };
         });
       });
@@ -299,11 +271,10 @@ export default class {
     });
     this.data = {};
     if (newMeshes) this.data.meshes = newMeshes;
-    if (nodes)
-      this.data.nodes = nodes.filter((node) => node.mesh !== undefined);
+    if (nodes) this.data.nodes = nodes.filter((node) => node.mesh !== undefined);
     if (newSkins) this.data.skins = newSkins;
     if (newMaterials) this.data.materials = newMaterials;
-    // console.log("CUSTOM", this.data);
+    // console.log('CUSTOM', this.data);
   }
 
   get() {

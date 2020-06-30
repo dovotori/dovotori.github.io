@@ -1,9 +1,9 @@
-import ManagerTextures from "../managers/ManagerTextures";
-import ManagerObjets from "../managers/ManagerObjets";
-import ManagerPrograms from "../managers/ManagerPrograms";
-import ManagerGltfs from "../managers/ManagerGltfs";
-import ManagerSounds from "../managers/ManagerSounds";
-import PostProcess from "../gl/PostProcess";
+import ManagerTextures from '../managers/ManagerTextures';
+import ManagerObjets from '../managers/ManagerObjets';
+import ManagerPrograms from '../managers/ManagerPrograms';
+import ManagerGltfs from '../managers/ManagerGltfs';
+import ManagerSounds from '../managers/ManagerSounds';
+import PostProcess from '../gl/PostProcess';
 
 export default class {
   constructor(gl, config, assets) {
@@ -21,30 +21,27 @@ export default class {
 
     if (config.postprocess) {
       const { effects } = config.postprocess;
-      this.postProcess = new PostProcess(
-        this.gl,
-        width,
-        height,
-        this.canUseDepth(),
-        effects
-      );
+      this.postProcess = new PostProcess(this.gl, width, height, this.canUseDepth(), effects);
     }
 
-    if (assets.textures) {
-      this.mngTex = new ManagerTextures(this.gl, assets.textures);
-    }
+    if (assets) {
+      if (assets.textures) {
+        this.mngTex = new ManagerTextures(this.gl, assets.textures);
+      }
 
-    if (assets.objets) {
-      this.mngObj = new ManagerObjets(this.gl, assets.objets, assets.materials);
-    }
+      if (assets.objets) {
+        this.mngObj = new ManagerObjets(this.gl, assets.objets, assets.materials);
+      }
 
-    if (assets.gltfs) {
-      this.mngGltf = new ManagerGltfs(this.gl, assets.gltfs);
-    }
+      if (assets.gltfs) {
+        this.mngGltf = new ManagerGltfs(this.gl, assets.gltfs);
+      }
 
-    if (assets.sounds) {
-      this.mngSound = new ManagerSounds(assets.sounds);
+      if (assets.sounds) {
+        this.mngSound = new ManagerSounds(assets.sounds);
+      }
     }
+    this.gl.viewport(0, 0, this.containerSize.width, this.containerSize.height);
   }
 
   canUseDepth() {
@@ -53,7 +50,6 @@ export default class {
 
   resize(box) {
     this.containerSize = box;
-
     this.gl.viewport(0, 0, this.containerSize.width, this.containerSize.height);
   }
 

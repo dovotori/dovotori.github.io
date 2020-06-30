@@ -1,5 +1,57 @@
-<div id="game"></div>
+<div id="gameinfos"></div>
+<div id="controls" style="opacity: 0;">
+  <button id="fullscreen-toggle-btn">
+    <svg viewbox="0 0 100 100">
+      <path d="M 0 40 L 0 0 L 40 0 L 40 10 L 10 10 L 10 40 Z"></path>
+      <path d="M 60 100 L 100 100 L 100 60 L 90 60 L 90 90 L 60 90 Z"></path>
+    </svg>
+  </button>
+</div>
+<div id="splash" style="opacity: 0;">
+  <h1 id="title">T h e G a m e</span></h1>
+  <p id="instructions">Pressed Enter</p>
+  <div class="commands">
+    <p class="command">
+      <span class="key">
+        space
+      </span>
+      <span class="desc">jump</span>
+    </p>
+    <p class="command">
+      <span class="key">
+        shift
+      </span>
+      <span class="desc">dash</span>
+    </p>
+    <p class="command">
+      <span class="key">
+        w
+      </span>
+      <span class="desc">shoot</span>
+    </p>
+    <p class="command">
+      <span class="key">
+        x
+      </span>
+      <span class="desc">slash</span>
+    </p>
+    <p class="command">
+      <span class="key twocol">
+        <svg viewBox="0 0 15 20">
+          <path d="M5 5 L0 10 L5 15 M5 10 L15 10" />
+        </svg>
+      </span>
+      <span class="key twocol">
+        <svg viewBox="0 0 15 20">
+          <path d="M10 5 L15 10 L10 15 M10 10 L0 10" />
+        </svg>
+      </span>
+      <span class="desc">move</span>
+    </p>
+  </div>
+</div>
 <style>
+  
   #game {
     text-align: center;
   }
@@ -11,5 +63,131 @@
     height: auto;
     max-height: 100vh;
     max-width: 100%;
+  }
+
+  #gameinfos {
+    position:absolute;
+    top:0;
+    left: 0;
+    padding: 4px;
+  }
+
+  #game[data-fullscreen] canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+  }
+
+  #controls {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    display: flex;
+    align-items: stretch;
+  }
+
+  #fullscreen-toggle-btn {
+    border-radius: 0;
+    margin: 0;
+    padding: 4px;
+  }
+
+  #fullscreen-toggle-btn:hover svg,
+  #fullscreen-toggle-btn:active svg {
+    transform: none;
+    opacity: 1;
+  }
+
+  #fullscreen-toggle-btn svg {
+    display: block;
+    width: 2em;
+    fill: #444;
+    opacity: 0.8;
+    transform: scale(0.6);
+    transition: opacity 300ms ease-out, transform 300ms ease-out;
+  }
+
+  #splash {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    color: #fff;
+    transition: opacity 500ms ease-out;
+    z-index: 1;
+  }
+
+  #title {
+    font-size: 4em;
+    font-weight: 100;
+    text-shadow: 1px 1px 0 #000;
+    margin: 0;
+  }
+
+  #instructions {
+    font-size: 1.6em;
+    display: none;
+    letter-spacing: 0.1em;
+    animation: blink 1s linear infinite;
+    margin: 1em 0;
+  }
+
+  .commands {
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 1em 0;
+  }
+
+  .command {
+    position: relative;
+    overflow: hidden;
+    font-size: 0.8em;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    margin: 10px 0;
+  }
+
+  .command .key {
+    border-radius: 4px;
+    margin: 0 4px;
+    text-align: center;
+    width: calc(50% - 8px);
+    background: #444;
+    float: left;
+  }
+
+  .command .key.twocol {
+    width: calc(25% - 8px);
+  }
+
+  .command .key svg {
+    width: 8px;
+    stroke: #fff;
+    stroke-width: 2;
+    fill: none;
+  }
+
+  .command .desc {
+    float: left;
+    width: 50%;
+  }
+
+  .command .key,
+  .command .desc {
+    padding: 0.4em;
+    text-shadow: 1px 1px 0 #000;
+  }
+
+  @keyframes blink {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
   }
 </style>

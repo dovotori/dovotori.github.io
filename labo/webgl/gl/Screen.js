@@ -1,5 +1,5 @@
-import ObjetPrimitive from "./ObjetPrimitive";
-import primitive from "../constants/primitives/plane";
+import ObjetPrimitive from './ObjetPrimitive';
+import primitive from '../constants/primitives/plane';
 
 export default class {
   constructor(gl) {
@@ -10,7 +10,7 @@ export default class {
 
   setupObjet() {
     Object.keys(primitive).forEach((key) => {
-      if (key === "indice") {
+      if (key === 'indice') {
         this.objet.setIndices(primitive.indice);
       } else {
         this.objet.setPoints(primitive[key], key);
@@ -19,10 +19,10 @@ export default class {
   }
 
   render(program) {
-    this.objet.enable(program, "position", 3);
-    this.objet.enable(program, "texture", 2);
+    this.objet.enable(program, 'position', 3);
+    this.objet.enable(program, 'texture', 2);
     this.gl.disable(this.gl.CULL_FACE);
-    this.objet.render(program);
+    this.objet.render();
     this.gl.enable(this.gl.CULL_FACE);
   }
 }

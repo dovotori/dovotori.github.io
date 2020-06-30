@@ -1,11 +1,11 @@
-import React, { Fragment } from "react";
-import styled, { keyframes } from "styled-components";
-import { Link } from "react-router-dom";
+import React from 'react';
+import styled, { keyframes, css } from 'styled-components';
+import { Link } from 'react-router-dom';
 
 // import { ReactComponent as Sumo } from 'Assets/svg/sumo.svg';
-import ProjectHtml from "./ProjectHtml";
-import TypingMessage from "./TypingMessage";
-import { Title } from "../themes/styled";
+import ProjectHtml from './ProjectHtml';
+import TypingMessage from './TypingMessage';
+import { Title } from '../themes/styled';
 
 const fadeUp = keyframes`
   0% { transform: scale(0.8); opacity: 0; }
@@ -33,7 +33,7 @@ const Infos = styled.div`
   position: absolute;
   width: 45%;
   left: 50%;
-  top: 0;
+  top: 10%;
   max-width: 200px;
   margin: 0 auto;
   transform: translate3d(50%, 0, 0);
@@ -41,15 +41,16 @@ const Infos = styled.div`
   padding: 1em;
   pointer-events: none;
 
-  @media (max-width: 570px) {
+  ${(p) => p.theme.media.mobile`
     transform: none;
     width: 100%;
-    left: 0;
+    left: auto;
     top: auto;
-    bottom: 0;
     max-width: none;
-    opacity: 0.9;
-  }
+    text-align:center;
+    position: relative;
+
+  `}
 `;
 
 const StyledHtml = styled(ProjectHtml)`
@@ -60,31 +61,10 @@ const StyledHtml = styled(ProjectHtml)`
   max-height: 512px;
 `;
 
-// const StyledSumo = styled(Sumo)`
-//   width: 200px;
-//   height: auto;
-//   stroke: none;
-//   margin: 0 auto;
-
-//   .body {
-//     fill: none; /* ${(p) => p.theme.text}; */
-//   }
-//   .face,
-//   .hair,
-//   .shadow {
-//     fill: ${(p) => p.theme.light};
-//   }
-//   .belt {
-//     fill: url(#linearGradient5006);
-//   }
-// `;
-
 const Balloon = styled.svg`
   position: absolute;
   fill: ${(p) => p.theme.text};
-  @media (max-width: 570px) {
-    display: none;
-  }
+  ${(p) => p.theme.media.mobile`display: none;`}
 `;
 
 const LeftBalloon = styled(Balloon)`
@@ -121,20 +101,14 @@ const SpikeBalloon = styled(Balloon)`
   height: 1em;
   width: 1em;
 
-  @media (max-width: 570px) {
-    transform: rotateY(-180deg);
-  }
-`;
-
-const StyledTitle = styled(Title)`
-  font-size: 1.6em;
-  margin: 0 0 0.4em;
+  ${(p) => p.theme.media.mobile`transform: rotateY(-180deg);`}
 `;
 
 const Description = styled.p`
   color: ${(p) => p.theme.backgroundHighlight};
   width: 100%;
   line-height: 1.4;
+  user-select: none;
 
   a {
     text-transform: lowercase;
@@ -147,46 +121,86 @@ const Description = styled.p`
   }
 `;
 
+const commonName = css`
+  position: absolute;
+  top: 50%;
+  font-size: 400%;
+  transform: translate3d(0, -50%, 0);
+  letter-spacing: 0;
+  pointer-events: none;
+  user-select: none;
+  ${(p) => p.theme.media.mobile`
+    text-align: center;
+    width: 100%;
+    position: relative;
+    top: auto;
+  `}
+`;
+
+const Name = styled(Title)`
+  ${commonName}
+  color:${(p) => p.theme.text};
+  right: 54%;
+  text-align: right;
+  font-size: 300%;
+  ${(p) => p.theme.media.mobile`
+    right: auto;
+  `}
+`;
+
+const Katakana = styled(Title)`
+  ${commonName}
+  left: 54%;
+  text-align: left;
+  font-family: 'nikkyou', monospace;
+  ${(p) => p.theme.media.mobile`
+    left: auto;
+  `}
+`;
+
+const CenterMobile = styled.div`
+  ${(p) => p.theme.media.mobile`
+  position: absolute;
+  top: 60%;
+  left: 0;
+  width: 100%;`}
+`;
+
 const Signature = ({ className, hello }) => (
   <Wrap>
     <Appear>
       <StyledLink to="/about" className={className}>
-        {/* <StyledSumo /> */}
         <StyledHtml slug="signature" colorType={0} />
       </StyledLink>
-      <Infos>
-        <LeftBalloon viewBox="0 0 100 100">
-          <path d="M 100 0 L 90 10 L 100 100 Z" />
-        </LeftBalloon>
-        <RightBalloon viewBox="0 0 100 100">
-          <path d="M 0 0 L 10 10 L 0 100 Z" />
-        </RightBalloon>
-        <BottomBalloon viewBox="0 0 100 100">
-          <path d="M 0 0 L 90 10 L 100 0 Z" />
-        </BottomBalloon>
-        <TopBalloon viewBox="0 0 100 100">
-          <path d="M 0 100 L 90 90 L 100 100 Z" />
-        </TopBalloon>
-        <TopBalloon viewBox="0 0 100 100">
-          <path d="M 0 100 L 90 90 L 100 100 Z" />
-        </TopBalloon>
-        <SpikeBalloon viewBox="0 0 100 100">
-          <path d="M 20 0 L 0 100 L 100 0 Z" />
-        </SpikeBalloon>
-        <StyledTitle>
-          {hello.title.split(' ').map(text => (
-            <Fragment key={text}>
-              <TypingMessage message={text} />
-              {' '}
-            </Fragment>
-        ))}
-        </StyledTitle>
-        <Description>
-          {hello.text}
-          {/* <br />
-          <a href={`mailto:${process.env.MAIL}`}>{hello.contact}</a> */}
-        </Description>
-      </Infos>
+      <CenterMobile>
+        <Katakana>
+          <TypingMessage message="ド リ ア ン" />
+        </Katakana>
+        <Name>
+          <TypingMessage message="D o r i a n" />
+        </Name>
+        <Infos>
+          <LeftBalloon viewBox="0 0 100 100">
+            <path d="M 100 0 L 90 10 L 100 100 Z" />
+          </LeftBalloon>
+          <RightBalloon viewBox="0 0 100 100">
+            <path d="M 0 0 L 10 10 L 0 100 Z" />
+          </RightBalloon>
+          <BottomBalloon viewBox="0 0 100 100">
+            <path d="M 0 0 L 90 10 L 100 0 Z" />
+          </BottomBalloon>
+          <TopBalloon viewBox="0 0 100 100">
+            <path d="M 0 100 L 90 90 L 100 100 Z" />
+          </TopBalloon>
+          <TopBalloon viewBox="0 0 100 100">
+            <path d="M 0 100 L 90 90 L 100 100 Z" />
+          </TopBalloon>
+          <SpikeBalloon viewBox="0 0 100 100">
+            <path d="M 20 0 L 0 100 L 100 0 Z" />
+          </SpikeBalloon>
+          <Description>{hello.text}</Description>
+        </Infos>
+      </CenterMobile>
     </Appear>
   </Wrap>
 );

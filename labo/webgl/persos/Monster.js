@@ -1,10 +1,9 @@
-import PersoCollision from "./PersoCollision";
-import Behavior from "../behaviors/BehaviorBackAndForth";
+import Perso from './PersoLife';
+import Behavior from '../behaviors/BehaviorBackAndForth';
 
-export default class extends PersoCollision {
-  constructor({ id, constants, sprites, viewBox, tileSize }) {
+export default class extends Perso {
+  constructor({ constants, sprites, viewBox, tileSize }) {
     super({
-      id,
       constants,
       sprites,
       viewBox,
@@ -12,4 +11,11 @@ export default class extends PersoCollision {
     this.behavior = new Behavior(constants, this.updateState, tileSize);
     this.setInverseColor(true);
   }
+
+  reset = () => {
+    super.reset();
+    if (this.behavior) {
+      this.behavior.reset();
+    }
+  };
 }

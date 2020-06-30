@@ -1,27 +1,38 @@
-import Vec3 from "../maths/Vec3";
+import Vec3 from '../maths/Vec3';
 
 export default class {
   constructor(constants, updateState) {
     this.constants = constants;
     this.updateState = updateState;
-    this.position = new Vec3(
-      constants.x || 0,
-      constants.y || 0,
-      constants.z || 0
-    );
-    this.status = constants.states[Object.keys(constants.states)[0]];
-    this.speed = new Vec3(0, 0, 0);
+    this.position = new Vec3();
+    this.status = null;
+    this.speed = new Vec3();
     this.size = new Vec3(constants.w || 1, constants.h || 1, 1);
     this.inverseSprite = false;
+    this.statusChanged = false;
+    this.reset();
   }
 
   update() {
-    this.statusChanged = false;
-    this.defineNextStatus();
-    if (this.updateState) {
-      this.updateState(this.status, this.inverseSprite);
+    const shouldContinue = this.shoudContinue();
+    if (shouldContinue) {
+      this.statusChanged = false;
+      const oldStatus = this.status;
+      this.defineNextStatus();
+      if (this.updateState) {
+        this.updateState(this.status, this.inverseSprite);
+      }
+      if (oldStatus !== this.status) {
+        this.statusChanged = true;
+      }
     }
+    return shouldContinue;
   }
+
+  shoudContinue = () => {
+    const { DIE } = this.constants.states;
+    return this.status !== DIE;
+  };
 
   isLock() {
     const { lockStates } = this.constants;
@@ -30,7 +41,6 @@ export default class {
 
   defineNextStatus() {
     const { JUMP_DOWN, RUN_JUMP_DOWN } = this.constants.states;
-
     if (!this.isLock()) {
       // fall
       if (this.speed.getY() < 0) {
@@ -43,7 +53,9 @@ export default class {
   }
 
   setEndOfAnimation = (nextState) => {
-    this.status = nextState;
+    if (nextState) {
+      this.status = nextState;
+    }
   };
 
   setPosition(x, y, z = 0) {
@@ -52,6 +64,10 @@ export default class {
 
   setSize(x, y, z = 1) {
     this.size.set(x, y, z);
+  }
+
+  setStatus(status) {
+    this.status = status;
   }
 
   getPosition() {
@@ -97,4 +113,11 @@ export default class {
   isStatusChanged() {
     return this.statusChanged;
   }
+
+  reset = () => {
+    const { x, y, z, states } = this.constants;
+    this.position.set(x || 0, y || 0, z || 0);
+    this.status = states[Object.keys(states)[0]];
+    this.speed.set(0, 0, 0);
+  };
 }

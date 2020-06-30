@@ -2,6 +2,10 @@ export const PI = `
 #define PI 3.14159265359
 `;
 
+export const TWO_PI = `
+#define TWO_PI 6.28318530718
+`;
+
 export const attributeColors = `
 attribute vec3 ambiant;
 attribute vec3 diffuse;
@@ -49,4 +53,3 @@ float funcToon(lambertCosinus) {
   return strength;
 }
 `;
-

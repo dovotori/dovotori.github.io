@@ -1,39 +1,33 @@
-import Scene from "./SceneCamera";
-import Lampe from "../gl/Lampe";
+import Scene from './SceneCamera';
+import Lampe from '../gl/Lampe';
 
 export default class extends Scene {
   constructor(gl, config, assets) {
     super(gl, config, assets);
     this.lampes = [];
-    for (let i = 0; i < this.config.lampes.length; i += 1) {
-      this.lampes[i] = new Lampe(
-        this.gl,
-        this.config.lampes[i],
-        config.canvas.width,
-        config.canvas.height,
-        this.canUseDepth()
-      );
-    }
+
+    const useDepth = this.canUseDepth();
+    this.lampes = config.lampes.map(
+      (lampe) => new Lampe(this.gl, lampe, config.canvas.width, config.canvas.height, useDepth)
+    );
   }
 
   renderReperes() {
-    for (let i = 0; i < this.config.lampes.length; i += 1) {
-      this.lampes[i].renderRepere(this.camera);
-    }
+    this.lampes.forEach((lampe) => lampe.renderRepere(this.camera));
   }
 
   randomLampesPositions(speed = 1.0, index = null) {
-    for (let i = 0; i < this.config.lampes.length; i += 1) {
+    this.lampes.forEach((lampe, i) => {
       if (index === null || (index !== null && i === index)) {
-        this.lampes[i].move(this.time * speed, i);
+        lampe.move(this.time * speed, i);
       }
-    }
+    });
   }
 
   setLampeInfos(program) {
-    program.setVector("posEye", this.camera.getPosition());
-    program.setInt("numLights", this.config.lampes.length);
-    for (let i = 0; i < this.config.lampes.length; i += 1) {
+    program.setVector('posEye', this.camera.getPosition());
+    program.setInt('numLights', this.lampes.length);
+    this.config.lampes.forEach((lampeConfig, i) => {
       const {
         type,
         ambiant,
@@ -43,7 +37,8 @@ export default class extends Scene {
         radius,
         direction,
         strength,
-      } = this.config.lampes[i];
+      } = lampeConfig;
+
       program.setInt(`lights[${i}].type`, type);
       program.setVector(`lights[${i}].position`, this.lampes[i].getPosition());
       program.setVector(`lights[${i}].ambiant`, ambiant);
@@ -59,12 +54,12 @@ export default class extends Scene {
         program.setVector(`lights[${i}].direction`, direction);
       }
       program.setFloat(`lights[${i}].strength`, strength || 1);
-    }
+    });
   }
 
   computeLampesDepthTexture() {
     // for (let i = 0; i < this.config.lampes.length; i += 1) {
-    if (typeof this.renderBasiqueForShadow === "function") {
+    if (typeof this.renderBasiqueForShadow === 'function') {
       for (let i = 0; i < 1; i += 1) {
         this.lampes[i].start();
         this.renderBasiqueForShadow();

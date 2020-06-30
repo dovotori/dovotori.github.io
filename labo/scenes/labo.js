@@ -1,14 +1,5 @@
-import Scene from '../webgl/scenes/SceneLampe';
-import TexturePerlinNoise from '../webgl/textures/TexturePerlinNoise';
-import TextureData from '../webgl/textures/TextureData';
-import Mat4 from '../webgl/maths/Mat4';
-import Pulse from '../webgl/maths/Pulse';
-import Spring from '../webgl/maths/Spring';
-import Target from '../webgl/maths/Target';
-import DualQuaternion from '../webgl/maths/DualQuaternion';
-import { degToRad } from "../webgl/utils/numbers";
-import UpdateVbo from "../webgl/gl/UpdateVbo";
-import FixVbo from "../webgl/gl/FixVbo";
+import Scene from '../webgl/scenes/Scene';
+import Screen from '../webgl/gl/Screen';
 
 export default class extends Scene {
   constructor(gl, config, assets, width = 512, height = 512) {
@@ -17,137 +8,20 @@ export default class extends Scene {
     this.MAIN_PROG = config.MAIN_PROG;
     this.MAIN_OBJ = config.MAIN_OBJ;
 
-    this.texture = new TexturePerlinNoise(gl, 256, 256);
-    this.model = new Mat4();
-    this.model.identity();
-    this.pulse = new Pulse(0);
-    this.targetX = new Spring(0);
-    this.targetY = new Spring(0);
-    this.targetZ = new Target(1, 0.05);
-    this.mouseCanvasPosition = {
-      x: 0,
-      y: 0,
-    };
-    const frequencyLength = this.mngSound.get('hover').getFrequencyLength();
-    this.uVbo = new UpdateVbo(this.gl, frequencyLength);
-    let indexes = new Array(frequencyLength);
-    indexes.fill(0);
-    indexes = indexes.map((_, index) => index);
-    this.fVbo = new FixVbo(this.gl, indexes);
+    this.screen = new Screen(this.gl);
   }
 
   update() {
     super.update();
-
-    this.targetX.update();
-    this.targetY.update();
-    this.targetZ.update();
-    this.pulse.update();
-
-    this.model.identity();
-
-    const angle = degToRad(this.targetX.get()) + (this.time * 0.01);
-    const angle2 = 0.5; // degToRad(this.targetY.get()) + (this.time * 0.001);
-
-    const quat = new DualQuaternion();
-    quat.rotateY(-angle);
-    quat.rotateX(-angle2);
-    this.model.multiply(quat.toMatrix4());
-
     const program = this.mngProg.get(this.MAIN_PROG);
-    program.setVector("resolution", [
-      this.containerSize.width,
-      this.containerSize.height,
-    ]);
-    program.setFloat('time', this.pulse.get());
-    this.setLampeInfos(program);
-  }
-
-  effects() {
-    const delta = Math.cos(this.time * 0.01) * 0.04;
-    if (delta > 0) {
-      this.postProcess.setGlitch(
-        this.time * 0.07 + this.target.get(),
-        delta,
-        delta
-      );
-    }
-    this.postProcess.setWave(0.05, delta, [
-      this.mouseCanvasPosition.x,
-      this.mouseCanvasPosition.y,
-    ]);
-    this.postProcess.setFXAA();
-  }
-
-  mainRender = (program, texData = null) => {
-    // this.mngGltf.get(this.MAIN_OBJ).render(program, this.model);
-    program.setMatrix("model", this.model.get());
-    const normalmatrix = this.model.getMatrice3x3();
-    normalmatrix.inverse();
-    program.setMatrix("normalmatrix", normalmatrix.transpose());
-    program.setTexture(2, this.texture.get(), "noiseMap");
-    program.setTexture(3, this.mngTex.get("earth").get(), "colorMap");
-
-    if (texData) {
-      program.setTexture(5, texData.get(), "displacementMap");
-    }
-    this.mngObj.get(this.MAIN_OBJ).render(program.get());  
-  }
-
-  renderToBuffer = (program) => {
-    this.mainRender(program);
-  }
-
-  renderBasiqueForShadow() {
-    const program = this.mngProg.get("basique3d");
-    program.setMatrix("projection", this.camera.getProjection().get());
-    program.setMatrix("view", this.getLampeViewMatrix(0).get());
-    program.setMatrix("model", this.model.get());
-    this.renderToBuffer(program);
+    // program.setVector('resolution', [this.containerSize.width, this.containerSize.height]);
+    program.setFloat('time', this.time);
   }
 
   render() {
     super.render();
-
-    const amplitudes = this.mngSound.get('hover').getAmplitudes();
-    const texData = new TextureData(this.gl, amplitudes);
-
-    // this.postProcess.start();
-    this.mainRender(this.mngProg.get(this.MAIN_PROG), texData);
-    // this.postProcess.end();
-
-    // // this.effects();
-    // this.postProcess.render();
-
-    const progLine = this.mngProg.get("frequencyCircle");
-    progLine.setMatrix("projection", this.camera.getProjection().get());
-    progLine.setMatrix("view", this.camera.getView().get());
-    progLine.setMatrix("model", this.model.get());
-    progLine.setInt("length", this.fVbo.getCount());
-    progLine.setInt("maxfrequency", 256.0);
-    this.uVbo.start(progLine.get(), "value", amplitudes);
-    this.fVbo.start(progLine.get(), "index");
-    this.gl.drawArrays(this.gl.LINE_LOOP, 0, this.fVbo.getCount());
-    this.uVbo.end();
-
+    this.screen.render(this.mngProg.get(this.MAIN_PROG).get());
     // DEBUG
     // this.postProcess.render(texData.get());
-  }
-
-  onMouseDrag = (mouse) => {
-    this.targetX.set(mouse.relPrevious.x * 0.1);
-    this.targetY.set(mouse.relPrevious.y * 0.1);
-  }
-
-  onMouseWheel = (mouse) => {
-    let target = -mouse.deltaY;
-    target = Math.min(target, 2);
-    target = Math.max(target, 1);
-    this.targetZ.set(target);
-  }
-
-  onMouseClick = () => {
-    this.mngSound.get('hover').play();
-    this.pulse.set(1000);
   }
 }

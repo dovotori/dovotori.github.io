@@ -1,4 +1,4 @@
-import Fx from "./Fx";
+import Fx from './Fx';
 
 export default class {
   constructor(constants, sprites, viewBox) {
@@ -40,5 +40,9 @@ export default class {
     Object.keys(this.fxs).forEach((fx) => {
       this.fxs[fx].render(program, texture, objet);
     });
+  }
+
+  getConstants() {
+    return this.constants;
   }
 }

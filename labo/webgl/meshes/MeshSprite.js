@@ -1,4 +1,4 @@
-import Mesh from "./Mesh";
+import Mesh from './Mesh';
 
 export default class extends Mesh {
   constructor() {
@@ -16,13 +16,13 @@ export default class extends Mesh {
   }
 
   setProgramSpecifics(program) {
-    program.setVector("spriteUV", [this.sprite.x, this.sprite.y]);
-    program.setVector("spriteGrid", [this.sprite.texW, this.sprite.texH]);
-    program.setVector("spriteSize", [this.sprite.w, this.sprite.h]);
-    program.setVector("spritePivot", [this.sprite.px, this.sprite.py]);
-    program.setFloat("spriteRefSize", this.sprite.refSize);
-    program.setVector("tint", this.tint);
-    program.setInt("inverseColor", this.inverseColor ? 1 : 0);
+    program.setVector('spriteUV', [this.sprite.x, this.sprite.y]);
+    program.setVector('spriteGrid', [this.sprite.texW, this.sprite.texH]);
+    program.setVector('spriteSize', [this.sprite.w, this.sprite.h]);
+    program.setVector('spritePivot', [this.sprite.px, this.sprite.py]);
+    program.setFloat('spriteRefSize', this.sprite.refSize);
+    program.setVector('tint', this.tint);
+    program.setInt('inverseColor', this.inverseColor ? 1 : 0);
   }
 
   setTint(r, g, b) {

@@ -12,6 +12,9 @@ uniform vec2 resolution;
 ${funcBlur2}
 
 void main() {
+  // vec3 blur = funcBlur(textureMap, fragTexture, resolution, direction);
+  // float alpha = texture2D(textureMap, fragTexture).a;
+  // gl_FragColor = vec4(blur, alpha);
   gl_FragColor = funcBlur(textureMap, fragTexture, resolution, direction);
 }
 `;

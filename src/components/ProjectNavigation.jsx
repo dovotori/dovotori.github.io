@@ -1,8 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { ReactComponent as BackArrow } from "Assets/svg/arrow.svg";
+import { ReactComponent as BackArrow } from 'Assets/svg/arrow.svg';
 
 const Wrap = styled.div`
   position: relative;
@@ -63,7 +63,14 @@ const Span = styled.span`
   `}
 `;
 
-const ProjectNavigation = ({ prevEntry, nextEntry, colorType, labelBack, labelPrevious, labelNext }) => (
+const ProjectNavigation = ({
+  prevEntry,
+  nextEntry,
+  colorType,
+  labelBack,
+  labelPrevious,
+  labelNext,
+}) => (
   <Wrap>
     <LINK colorType={colorType} to="/">
       <Arrow colorType={colorType} />
@@ -72,7 +79,7 @@ const ProjectNavigation = ({ prevEntry, nextEntry, colorType, labelBack, labelPr
     </LINK>
     <LINK colorType={colorType} to={`/project/${prevEntry.slug}`}>
       <Arrow colorType={colorType} />
-      <Span>{prevEntry.title !== '' ? prevEntry.title: labelPrevious}</Span>
+      <Span>{prevEntry.title !== '' ? prevEntry.title : labelPrevious}</Span>
     </LINK>
     <LINK colorType={colorType} to={`/project/${nextEntry.slug}`}>
       <NextArrow colorType={colorType} />

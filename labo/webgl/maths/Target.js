@@ -3,10 +3,15 @@ export default class {
     this.value = value;
     this.target = value;
     this.sampling = sampling;
+    this.threshold = 0.000001;
   }
 
   update() {
-    this.value += (this.target - this.value) * this.sampling;
+    if (Math.abs(this.value - this.target) > this.threshold) {
+      this.value += (this.target - this.value) * this.sampling;
+    } else {
+      this.value = this.target;
+    }
   }
 
   get() {

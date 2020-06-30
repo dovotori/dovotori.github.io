@@ -1,5 +1,5 @@
-import CollisionEndpoint from "./CollisionEndpoint";
-import CollisionPairManager from "./CollisionPairManager";
+import CollisionEndpoint from './CollisionEndpoint';
+import CollisionPairManager from './CollisionPairManager';
 
 class CollisionSweepPrune {
   static addEndpointDecroissant(liste, newMin, newMax) {
@@ -102,9 +102,7 @@ class CollisionSweepPrune {
 
   loopTri(axe, newEndPoints, i) {
     if (this.cptEndpointPlace < newEndPoints.length) {
-      const oldListe = this.listeAxe[axe][
-        i - (newEndPoints.length - this.cptEndpointPlace)
-      ];
+      const oldListe = this.listeAxe[axe][i - (newEndPoints.length - this.cptEndpointPlace)];
       if (oldListe) {
         if (this.endpointAplacer.get() > oldListe.get()) {
           this.listeAxe[axe][i] = this.endpointAplacer;
@@ -165,9 +163,13 @@ class CollisionSweepPrune {
   }
 
   removeBox(id) {
-    this.listeAxe = this.listeAxe.map((list) =>
-      list.filter((point) => point.ownerId !== id)
-    );
+    this.listeAxe = this.listeAxe.map((list) => list.filter((point) => point.ownerId !== id));
+  }
+
+  clear() {
+    this.listeAxe[0] = [];
+    this.listeAxe[1] = [];
+    this.listeAxe[2] = [];
   }
 }
 

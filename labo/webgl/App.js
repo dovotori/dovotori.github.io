@@ -1,10 +1,10 @@
-import Loop from "./logic/Loop";
-import ManagerAssets from "./managers/ManagerAssets";
-import Canvas from "./gl/Canvas";
-import Keyboard from "./io/Keyboard";
-import Fullscreen from "./io/Fullscreen";
-import Mouse from "./io/Mouse";
-import { capitalize, getEnvPath } from "./utils";
+import Loop from './logic/Loop';
+import ManagerAssets from './managers/ManagerAssets';
+import Canvas from './gl/Canvas';
+import Keyboard from './io/Keyboard';
+import Fullscreen from './io/Fullscreen';
+import Mouse from './io/Mouse';
+import { capitalize, getEnvPath } from './utils';
 
 export default class {
   constructor() {
@@ -16,11 +16,11 @@ export default class {
 
   async setup(Scene, config) {
     let width = document.body.offsetWidth;
-    let height = window.innerHeight; 
+    let height = window.innerHeight;
 
     let assets = null;
     if (config) {
-      width = config.canvas.width; 
+      width = config.canvas.width;
       height = config.canvas.height;
 
       if (config.assets) {
@@ -31,7 +31,7 @@ export default class {
 
     this.canvas = new Canvas();
     this.canvas.resize({ width, height });
-    const finalConfig = {...config, support: this.canvas.getSupport() };
+    const finalConfig = { ...config, support: this.canvas.getSupport() };
     this.scene = new Scene(this.canvas.getContext(), finalConfig, assets, width, height);
 
     if (config) {
@@ -47,18 +47,20 @@ export default class {
           }),
           {}
         );
-        const container = div ||(domId ? document.querySelector(`#${domId}`) : document.body);
+        const container = div || (domId ? document.querySelector(`#${domId}`) : document.body);
         this.mouse = new Mouse(container, callbacks);
       }
       if (config.controls) {
-        const {fullscreen} = config.controls;
+        const { fullscreen } = config.controls;
         if (fullscreen) {
           const { div, domId, buttonId, button } = fullscreen;
-          const containerElem = div ||(domId ? document.querySelector(`#${domId}`) : document.body);
+          const containerElem =
+            div || (domId ? document.querySelector(`#${domId}`) : document.body);
           const buttonElem = button || (buttonId ? document.querySelector(`#${buttonId}`) : null);
           this.fullscreen = new Fullscreen(containerElem, buttonElem);
         }
       }
+      this.revealAfterLoaded(config.slug);
     }
 
     this.loop = new Loop();
@@ -73,7 +75,7 @@ export default class {
     }
     this.scene.render();
     if (this.keyboard) this.keyboard.end();
-  }
+  };
 
   stop() {
     if (this.loop) {
@@ -92,5 +94,16 @@ export default class {
     if (this.scene && this.scene.destroy) {
       this.scene.destroy();
     }
+    if (this.fullscreen) {
+      this.fullscreen.destroy();
+    }
   }
+
+  revealAfterLoaded = (slug) => {
+    const container = document.querySelector(`#${slug || process.env.NAME}`) || null;
+    if (container) {
+      const itemsToReveal = container.querySelectorAll('[style="opacity: 0;"]');
+      itemsToReveal.forEach((item) => item.removeAttribute('style'));
+    }
+  };
 }

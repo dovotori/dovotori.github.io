@@ -1,6 +1,6 @@
 class Context {
   static checkWebGl(canvas) {
-    const contexts = ["webgl", "experimental-webgl", "webkit-3d", "moz-webgl"];
+    const contexts = ['webgl', 'experimental-webgl', 'webkit-3d', 'moz-webgl'];
     let gl;
     for (let i = 0; i < contexts.length; i += 1) {
       try {
@@ -19,7 +19,7 @@ class Context {
     this.gl = Context.checkWebGl(canvas);
     this.support = {
       webgl: false,
-      depthTexture: false
+      depthTexture: false,
     };
     if (this.gl) {
       this.support.webgl = true;
@@ -32,7 +32,7 @@ class Context {
       this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
       this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
 
-      this.support.depthTexture = !!this.gl.getExtension("WEBGL_depth_texture");
+      this.support.depthTexture = !!this.gl.getExtension('WEBGL_depth_texture');
     }
     console.debug('Webgl support info', this.support);
   }
@@ -41,7 +41,7 @@ class Context {
     return this.gl;
   }
 
-  getSupport () {
+  getSupport() {
     return this.support;
   }
 }

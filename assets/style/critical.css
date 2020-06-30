@@ -32,42 +32,6 @@ p {
   letter-spacing: 0.02em;
 }
 
-body, button {
-  font-family: 'lato', Helvetica Neue, Helvetica, Arial, sans-serif;
-}
-
-html:lang(jp) body, button {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-body {
-  line-height: 1.4;
-  background-color: #222;
-  overflow-x: hidden;
-  color: #fff;
-  transition: background-color 0.2s ease-out;
-}
-
-.bloc {
-  min-height: 100vh;
-}
-
-::-webkit-scrollbar {
-  width: 4px;
-  background-color: #222;
-}
-::-webkit-scrollbar-thumb {
-  background-color: #666;
-}
-::-moz-selection { background: #66ffcc; color: #fff; }
-::selection { background: #66ffcc; color: #fff; }
-
-@font-face {
-  font-family: 'Numbers';
-  src: url('../fonts/lintel-regular-webfont-subset-number.woff2');
-  /* 0030-0039 unicode range for numbers */
-}
-
 @font-face {
   font-family: 'lato';
   src: url('../fonts/lato-black.woff2') format('woff2');
@@ -110,6 +74,19 @@ body {
   font-style: italic;
 }
 
+/* nikkyou, -> pas de kanji :(  -> for title
+gata2 -> kanji -> for text
+kin-iro - > kanji but process
+koharuiro -> kanji sharp
+*/
+
+@font-face {
+  font-family: 'nikkyou';
+  src: url('../fonts/nikkyou.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
 @font-face {
   font-family: 'aero_matics';
   src: url('../fonts/whiterabbit.woff2') format('woff2');
@@ -117,58 +94,42 @@ body {
   font-style: normal;
 }
 
-@font-face {
-  font-family: 'josefin';
-  src: url('../fonts/josefin/josefinsans-black.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
+body,
+button {
+  font-family: 'lato', Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
-@font-face {
-  font-family: 'josefin';
-  src: url('../fonts/josefin/josefinsans-bold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
+h1 {
+  font-family: 'lato', monospace;
+}
+html:lang(jp) h1 {
+  font-family: 'nikkyou', monospace;
 }
 
-@font-face {
-  font-family: 'josefin';
-  src: url('../fonts/josefin/josefinsans-regular.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
+body {
+  line-height: 1.4;
+  background-color: #222;
+  overflow-x: hidden;
+  color: #fff;
+  transition: background-color 0.2s ease-out;
 }
 
-@font-face {
-  font-family: 'josefin';
-  src: url('../fonts/josefin/josefinsans-light.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
+.bloc {
+  min-height: 100vh;
 }
 
-@font-face {
-  font-family: 'josefin';
-  src: url('../fonts/josefin/josefinsans-hairline.woff2') format('woff2');
-  font-weight: 100;
-  font-style: normal;
+::-webkit-scrollbar {
+  width: 4px;
+  background-color: #222;
 }
-
-@font-face {
-  font-family: 'josefin';
-  src: url('../fonts/josefin/josefinsans-italic.woff2') format('woff2');
-  font-weight: 500;
-  font-style: italic;
+::-webkit-scrollbar-thumb {
+  background-color: #666;
 }
-
-@font-face {
-  font-family: 'matamata';
-  src: url('../fonts/matamata-regular.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
+::-moz-selection {
+  background: #66ffcc;
+  color: #fff;
 }
-
-@font-face {
-  font-family: 'matamata';
-  src: url('../fonts/matamata-bold.woff2') format('woff2');
-  font-weight: 800;
-  font-style: normal;
+::selection {
+  background: #66ffcc;
+  color: #fff;
 }
