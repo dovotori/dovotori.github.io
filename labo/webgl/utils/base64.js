@@ -1,5 +1,4 @@
-const chars =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 // Use a lookup table to find the index.
 const lookup = new Uint8Array(256);
@@ -8,7 +7,7 @@ for (let i = 0; i < chars.length; i++) {
 }
 
 export const base64ToArrayBuffer = (rawBase64) => {
-  const base64 = rawBase64.split(",")[1];
+  const base64 = rawBase64.split(',')[1];
   let bufferLength = base64.length * 0.75;
   const len = base64.length;
   let i;
@@ -18,9 +17,9 @@ export const base64ToArrayBuffer = (rawBase64) => {
   let encoded3;
   let encoded4;
 
-  if (base64[base64.length - 1] === "=") {
+  if (base64[base64.length - 1] === '=') {
     bufferLength--;
-    if (base64[base64.length - 2] === "=") {
+    if (base64[base64.length - 2] === '=') {
       bufferLength--;
     }
   }
@@ -42,13 +41,7 @@ export const base64ToArrayBuffer = (rawBase64) => {
   return arraybuffer;
 };
 
-export const dataViewToFloat32 = (
-  dataView,
-  length,
-  count,
-  numElement,
-  byteStride
-) => {
+export const dataViewToFloat32 = (dataView, length, count, numElement, byteStride) => {
   const result = new Float32Array(length); // Final Output at the correct size
   // for (let i = 0; i < length; i++) {
   //   result[i] = dataView.getFloat32(i * Float32Array.BYTES_PER_ELEMENT, true);
@@ -67,13 +60,7 @@ export const dataViewToFloat32 = (
   return result;
 };
 
-export const dataViewToUint16 = (
-  dataView,
-  length,
-  count,
-  numElement,
-  byteStride
-) => {
+export const dataViewToUint16 = (dataView, length, count, numElement, byteStride) => {
   const result = new Uint16Array(length); // Final Output at the correct size
   const stride = byteStride || Uint16Array.BYTES_PER_ELEMENT * numElement;
   let currentOffset = 0;
@@ -85,6 +72,14 @@ export const dataViewToUint16 = (
       cpt++;
     }
     currentOffset += stride;
+  }
+  return result;
+};
+
+export const dataViewToUint8 = (dataView, byteLength) => {
+  const result = new Uint8Array(byteLength);
+  for (let cpt = 0; cpt < byteLength; cpt++) {
+    result[cpt] = dataView.getUint8(cpt, true);
   }
   return result;
 };

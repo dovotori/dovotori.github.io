@@ -1,15 +1,15 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import { ReactComponent as Linkedin } from "Assets/svg/cv/linkedin.svg";
-import { ReactComponent as Gitlab } from "Assets/svg/cv/gitlab.svg";
-import { ReactComponent as QuoteIcon } from "Assets/svg/quote2.svg";
-import CvContainer from "../containers/CvContainer";
-import ButtonBack from "./ButtonBack";
-import Button from "./Button";
-import TypingMessage from "./TypingMessage";
-import Bloc from "./Bloc";
-import { Title } from "../themes/styled";
+import { ReactComponent as Linkedin } from 'Assets/svg/cv/linkedin.svg';
+import { ReactComponent as Gitlab } from 'Assets/svg/cv/gitlab.svg';
+import { ReactComponent as QuoteIcon } from 'Assets/svg/quote2.svg';
+import CvContainer from '../containers/CvContainer';
+import ButtonBack from './ButtonBack';
+import Button from './Button';
+import TypingMessage from './TypingMessage';
+import Bloc from './Bloc';
+import { Title } from '../themes/styled';
 
 const Links = styled.div`
   margin: 4em 0;
@@ -45,15 +45,15 @@ const Description = styled.p`
 `;
 
 const MarginLeft = styled.div`
-  margin: ${(p) => !p.isTouch && "0 0 0 20%"};
+  margin: ${(p) => !p.isTouch && '0 0 0 20%'};
 `;
 
 const StyledButtonBack = styled(ButtonBack)`
-  margin: ${(p) => (!p.isTouch ? "6em 0 2em" : "6em auto 2em")};
+  margin: ${(p) => (!p.isTouch ? '6em 0 2em' : '6em auto 2em')};
 `;
 
 const StyledButton = styled(Button)`
-  margin: ${(p) => (!p.isTouch ? "6em 0 2em" : "6em auto 2em")};
+  margin: ${(p) => (!p.isTouch ? '6em 0 2em' : '6em auto 2em')};
 `;
 
 const StyledTypingMessage = styled(TypingMessage)`

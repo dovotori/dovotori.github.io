@@ -1,57 +1,57 @@
-export default  {
-  name: "skills",
+export default {
+  name: 'skills',
   value: 100,
   children: [
     {
-      name: "dev",
-      value: 50,
+      name: 'dev',
+      value: 70,
       children: [
         {
-          name: "php",
+          name: 'php',
           value: 10,
         },
         {
-          name: "js",
+          name: 'js',
           value: 70,
           children: [
             {
-              name: "node",
+              name: 'node',
               value: 10,
             },
             {
-              name: "react",
+              name: 'react',
               value: 20,
             },
             {
-              name: "redux",
+              name: 'redux',
               value: 20,
             },
             {
-              name: "webgl",
+              name: 'webgl',
               value: 10,
             },
             {
-              name: "d3",
+              name: 'd3',
               value: 10,
             },
             {
-              name: "env",
+              name: 'env',
               value: 30,
               children: [
                 {
-                  name: "flow",
+                  name: 'flow',
                   value: 30,
                 },
                 {
-                  name: "jest",
+                  name: 'jest',
                   value: 30,
                 },
                 {
-                  name: "webpack",
+                  name: 'webpack',
                   value: 20,
                 },
                 {
-                  name: "gitlab",
+                  name: 'gitlab',
                   value: 20,
                 },
               ],
@@ -59,25 +59,25 @@ export default  {
           ],
         },
         {
-          name: "html",
+          name: 'html',
           value: 10,
         },
         {
-          name: "css",
+          name: 'css',
           value: 10,
         },
       ],
     },
     {
-      name: "design",
-      value: 50,
+      name: 'design',
+      value: 30,
       children: [
         {
-          name: "blender",
+          name: 'blender',
           value: 50,
         },
         {
-          name: "inkscape",
+          name: 'inkscape',
           value: 50,
         },
       ],

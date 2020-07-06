@@ -1,8 +1,8 @@
-import React, { useMemo } from "react";
-import styled from "styled-components";
+import React, { useMemo } from 'react';
+import styled from 'styled-components';
 
-import { polarToCartesian } from "../utils";
-import Arc from "./Arc";
+import { polarToCartesian } from '../utils';
+import Arc from './Arc';
 
 const Wrap = styled.g`
   cursor: pointer;
@@ -14,7 +14,7 @@ const Wrap = styled.g`
   }
 
   &:hover > path {
-    transform: ${(p) => (p.noHoverAnim ? "none" : "scale(1.05)")};
+    transform: ${(p) => (p.noHoverAnim ? 'none' : 'scale(1.05)')};
   }
 `;
 
@@ -43,10 +43,6 @@ const TextArc = styled.text`
   stroke: none;
 `;
 
-const Picto = styled.image`
-  filter: invert(${(p) => (p.theme.isLight ? 100 : 0)}%);
-`;
-
 const ArcWithItem = ({
   x,
   y,
@@ -54,7 +50,7 @@ const ArcWithItem = ({
   startAngle,
   className,
   name,
-  image,
+  Picto,
   depth,
   strokeWidth,
   children,
@@ -62,15 +58,16 @@ const ArcWithItem = ({
   angle,
   margin,
   noHoverAnim,
+  showIcon,
 }) => {
   const endAngle = startAngle + angle - margin;
   const imageWidth = strokeWidth * 0.7;
   const middleAngle = startAngle + angle / 2 - margin / 2;
   const imagePos = polarToCartesian(x, y, radius, middleAngle);
-  const visible = useMemo(
-    () => !((startAngle === 0 || startAngle === 360) && angle === 0),
-    [startAngle, angle]
-  );
+  const visible = useMemo(() => !((startAngle === 0 || startAngle === 360) && angle === 0), [
+    startAngle,
+    angle,
+  ]);
 
   return (
     <Wrap className={className} onClick={onClick} noHoverAnim={noHoverAnim}>
@@ -83,11 +80,11 @@ const ArcWithItem = ({
         depth={depth}
         visible={visible}
       />
-      {visible && depth <= 2 && (
+      {(showIcon || (visible && depth <= 2)) && (
         <G>
-          {image ? (
+          {Picto ? (
             <Picto
-              href={image}
+              className="picto"
               x={imagePos.x - imageWidth / 2}
               y={imagePos.y - imageWidth / 2}
               height={imageWidth}
