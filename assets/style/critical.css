@@ -1,37 +1,3 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html,
-body,
-#dovotori-app {
-  width: 100%;
-}
-
-button {
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-}
-
-a,
-a:focus,
-button:focus {
-  text-decoration: none;
-  outline: 0;
-  border-radius: 0;
-}
-
-a {
-  color: #66ffcc;
-}
-
-p {
-  letter-spacing: 0.02em;
-}
-
 @font-face {
   font-family: 'lato';
   src: url('../fonts/lato-black.woff2') format('woff2');
@@ -88,10 +54,37 @@ koharuiro -> kanji sharp
 }
 
 @font-face {
-  font-family: 'aero_matics';
+  font-family: 'whiterabbit';
   src: url('../fonts/whiterabbit.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
+}
+
+@font-face {
+  font-family: 'whiterabbit';
+  src: url('../fonts/whiterabbit.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#dovotori-app {
+  width: 100%;
+}
+
+body {
+  line-height: 1.4;
+  background-color: #222;
+  overflow-x: hidden;
+  color: #fff;
+  transition: background-color 0.2s ease-out;
 }
 
 body,
@@ -102,16 +95,31 @@ button {
 h1 {
   font-family: 'lato', monospace;
 }
+
 html:lang(jp) h1 {
   font-family: 'nikkyou', monospace;
 }
 
-body {
-  line-height: 1.4;
-  background-color: #222;
-  overflow-x: hidden;
-  color: #fff;
-  transition: background-color 0.2s ease-out;
+button {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+p {
+  letter-spacing: 0.02em;
+}
+
+a,
+a:focus,
+button:focus {
+  text-decoration: none;
+  outline: 0;
+  border-radius: 0;
+}
+
+a {
+  color: #66ffcc;
 }
 
 .bloc {

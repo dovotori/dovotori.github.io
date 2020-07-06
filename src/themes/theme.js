@@ -13,14 +13,14 @@ const common = {
   elastic1: 'cubic-bezier(0.860, 0.000, 0.070, 1.000)',
   elastic2: 'cubic-bezier(.75,-0.5,0,1.75)',
   breakpoint: {
-    mobile: 420,
     tablet: 1020,
+    mobile: 420,
   },
   monospace: css`
     font-size: 0.8em;
     line-height: 1.6em;
     letter-spacing: 0.4em;
-    font-family: 'aero_matics', monospace;
+    font-family: 'whiterabbit', monospace;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;

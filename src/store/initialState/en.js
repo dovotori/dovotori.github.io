@@ -1,4 +1,3 @@
-import { CAT_DESIGN, CAT_CODE, CAT_BLOG } from '../../constants/categories';
 import { Locales } from '../../constants/locales';
 import getLocalPosts from './getLocalPosts';
 import getLocalCategories from './getLocalCategories';
@@ -18,7 +17,7 @@ const initialState = {
   entries: getLocalPosts(Locales.EN),
   hello: {
     title: 'Dorian Ratovo',
-    text: 'graphic designer who became developer',
+    text: 'graphic designer who became front end developer',
     contact: 'Contact me',
     about: 'Nice to meet you!',
     description: [
@@ -29,7 +28,7 @@ const initialState = {
   },
   cv: {
     formation: {
-      text: 'Studies',
+      text: 'Education',
       items: [
         {
           date: 2013,
@@ -128,7 +127,7 @@ const initialState = {
         {
           text: 'languages',
           items: [
-            { text: 'English', level: 'reading, writing and speaking' },
+            { text: 'English', level: 'read and talked' },
             { text: 'Japanese', level: 'learning' },
           ],
         },

@@ -1,21 +1,9 @@
-import React, { useCallback, useState } from "react";
-import styled from "styled-components";
+import React, { useCallback, useState } from 'react';
+import styled from 'styled-components';
 
-import * as svgs from "Assets/svg/cv2";
-import { mapFromRange } from "../utils";
-import ArcWithItem from "./ArcWithItem";
-
-// .test {
-//       color: #3b4994;
-//       color: #8c62aa;
-//       color: #be64ac;
-//       color: #dfb0d6;
-//       color: #5698b9;
-//       color: #5ac8c8;
-//       color: #ace4e4;
-//       color: #a5add3;
-//       color: #e8e8e8;
-//     }
+import * as svgs from 'Assets/svg/cv2';
+import { mapFromRange } from '../utils';
+import ArcWithItem from './ArcWithItem';
 
 const STROKE_WIDTH = 30;
 const CENTER_WIDTH = 30;
@@ -25,6 +13,8 @@ const MARGIN = 1;
 const CONCENTRIC_MARGIN = 4;
 
 const Svg = styled.svg`
+  margin-top: -5em;
+
   .dev path {
     stroke: ${(p) => p.theme.text};
   }
@@ -32,28 +22,24 @@ const Svg = styled.svg`
   .design path {
     stroke: ${(p) => p.theme.primary};
   }
+  .picto path,
+  .picto polygon,
+  .picto circle {
+    stroke: none;
+    fill: ${(p) => p.theme.background};
+  }
+  text {
+    font-size: 0.7em;
+  }
 `;
-
-// const Text = styled.text`
-//   text-anchor: middle;
-//   fill: ${(p) => p.theme.text};
-// `;
 
 const StyledArcWithItem = styled(ArcWithItem)`
   stroke: #3b4994;
   stroke-width: ${STROKE_WIDTH};
 `;
 
-// const Back = styled.g``;
-
-// const BackArrow = styled.path`
-//   fill: ${(p) => p.theme.text};
-//   cursor: pointer;
-// `;
-
-const Chart = ({ data }) => {
+const Chart = ({ className, data, showAllIcons = false }) => {
   const [curretName, setCurrentName] = useState(data.name);
-  // const [text, setText] = useState(data.name);
 
   const handleClickArc = useCallback(
     (node, parent) => (e) => {
@@ -64,15 +50,9 @@ const Chart = ({ data }) => {
       } else if (node.children) {
         setCurrentName(node.name);
       }
-      // setText(goBack ? parent.text || parent.name : node.text || node.name);
     },
     [curretName]
   );
-
-  // const goBack = useCallback(() => {
-  //   setCurrentName(data.name);
-  //   setText(data.text || data.name);
-  // }, [data]);
 
   const drawNodes = useCallback(
     (current, x, y, node, depth = 1, parentStart = 0, parentAngle = 360) => {
@@ -89,12 +69,8 @@ const Chart = ({ data }) => {
         const childHasChildren = !!child.children;
         if (isActive) {
           const isFirst = current !== data.name && depth === 1;
-          angle = isFirst
-            ? parentAngle
-            : mapFromRange(value, 0, 100, 0, parentAngle);
-          newEnd = isFirst
-            ? parentAngle
-            : mapFromRange(value, 0, 100, 0, parentAngle);
+          angle = isFirst ? parentAngle : mapFromRange(value, 0, 100, 0, parentAngle);
+          newEnd = isFirst ? parentAngle : mapFromRange(value, 0, 100, 0, parentAngle);
           image = svgs[name] || null;
           newDepth = depth + 1;
           nextCurrent = data.name;
@@ -112,41 +88,25 @@ const Chart = ({ data }) => {
             radius={radius}
             startAngle={currentStartAngle}
             depth={depth}
-            image={image}
+            Picto={image}
             margin={MARGIN}
             name={name}
+            showIcon={showAllIcons}
           >
             {childHasChildren &&
-              drawNodes(
-                nextCurrent,
-                x,
-                y,
-                child,
-                newDepth,
-                currentStartAngle,
-                newEnd
-              )}
+              drawNodes(nextCurrent, x, y, child, newDepth, currentStartAngle, newEnd)}
           </StyledArcWithItem>
         );
         currentStartAngle += angle;
         return returnValue;
       });
     },
-    [handleClickArc]
+    [handleClickArc, showAllIcons]
   );
 
   return (
-    <Svg className="chart" viewBox={`0 0 ${WIDTH} ${WIDTH}`}>
+    <Svg className={`${className} chart`} viewBox={`0 0 ${WIDTH} ${WIDTH}`}>
       <g>{drawNodes(curretName, WIDTH / 2, WIDTH / 2, data)}</g>
-      {/* <Text x={WIDTH / 2} y={WIDTH / 2}>
-        {text}
-      </Text> */}
-      {/* {curretName !== data.name
-      && (
-      <Back transform={`translate(${WIDTH / 2}, ${WIDTH / 2 - STROKE_WIDTH})`}>
-        <BackArrow d="m0 5 5-5 1 1-3 4 3 4-1 1z" onClick={goBack} />
-      </Back>
-      )} */}
     </Svg>
   );
 };

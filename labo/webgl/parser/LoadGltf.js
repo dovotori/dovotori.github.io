@@ -1,4 +1,9 @@
-import { base64ToArrayBuffer, dataViewToUint16, dataViewToFloat32 } from '../utils/base64';
+import {
+  base64ToArrayBuffer,
+  dataViewToUint8,
+  dataViewToUint16,
+  dataViewToFloat32,
+} from '../utils/base64';
 import { chunkArray } from '../utils';
 
 const acessorsTypes = {
@@ -59,18 +64,27 @@ const getBufferDataFromAccessor = (buffers, bufferViews, accessor) => {
     type,
     byteOffset: accessorByteOffset = 0,
   } = accessor;
-  const { buffer, byteLength, byteOffset: bufferViewByteOffset = 0, byteStride } = bufferViews[
-    bufferViewIndex
-  ];
+  const {
+    buffer: bufferIndex,
+    byteLength: bufferViewByteLength,
+    byteOffset: bufferViewByteOffset = 0,
+    byteStride,
+  } = bufferViews[bufferViewIndex];
   const dataView = new DataView(
-    buffers[buffer],
+    buffers[bufferIndex],
     bufferViewByteOffset + accessorByteOffset,
-    byteLength - accessorByteOffset
+    bufferViewByteLength - accessorByteOffset
   );
   const numElement = getNumComponentPerType(type);
   const length = getLength(type, count);
   const converterMethod = getConvertMethod(componentType);
   return converterMethod ? converterMethod(dataView, length, count, numElement, byteStride) : null;
+};
+
+const getImageBufferData = (buffers, bufferView) => {
+  const { buffer: bufferIndex, byteOffset, byteLength } = bufferView;
+  const dataView = new DataView(buffers[bufferIndex], byteOffset, byteLength);
+  return dataViewToUint8(dataView, byteLength);
 };
 
 const getGlslProgramMappedName = (gltfName) => {
@@ -102,10 +116,17 @@ const formatMaterial = (gltfMaterial) =>
 
 const VBO_ATTRIBUTES = ['position', 'normale', 'texture', 'joint', 'weight', 'tangent'];
 
-const getMaterial = (material) => {
-  const finalMaterial = material
-    ? { ...formatMaterial(material.pbrMetallicRoughness), name: material.name }
-    : {};
+const getMaterial = (material, images) => {
+  let finalMaterial = {};
+  if (material) {
+    finalMaterial = { ...formatMaterial(material.pbrMetallicRoughness), name: material.name };
+
+    if (material.normalTexture) {
+      const normalMap = images[material.normalTexture.index];
+      finalMaterial.normalMap = normalMap || undefined;
+    }
+  }
+
   return Object.keys(finalMaterial).length > 0 ? finalMaterial : undefined;
 };
 
@@ -154,7 +175,7 @@ const getPrimitiveData = (primitives, accessors) =>
     const { attributes, indices, material, targets } = primitive;
     const vbos = getVbos(attributes, accessors, indices, targets);
     let primitiveData = { vbos };
-    if (material) primitiveData = { material, ...primitiveData };
+    if (material !== undefined) primitiveData = { material, ...primitiveData };
     return primitiveData;
   });
 
@@ -204,6 +225,55 @@ const getSkins = (skins, nodes, accessors) => {
   return newSkins;
 };
 
+const getAnimations = (animations, nodes, accessors, meshes) => {
+  const animationsPerNodes = {};
+  if (animations) {
+    animations.forEach(({ channels, samplers }) => {
+      channels.forEach(({ target, sampler: samplerIndex }) => {
+        const { input: inputAccessorIndex, output: outputAccessorIndex, interpolation } = samplers[
+          samplerIndex
+        ];
+        const input = accessors[inputAccessorIndex];
+        const output = accessors[outputAccessorIndex];
+        const { node: nodeIndex, path } = target;
+        const node = nodes[nodeIndex];
+
+        // define output chunk length
+        let chunkLength = getNumComponentPerType(output.type);
+        if (node[path]) {
+          chunkLength = node[path].length;
+        } else if (node.mesh && meshes[node.mesh][path]) {
+          chunkLength = meshes[node.mesh][path].length;
+        } else if (path === 'scale') {
+          chunkLength = 3;
+        }
+
+        const outputData = chunkArray(output.values, chunkLength);
+        const newAnimItem = {
+          path,
+          times: input.values,
+          output: outputData,
+          interpolation,
+        };
+        animationsPerNodes[nodeIndex] = animationsPerNodes[nodeIndex]
+          ? [...animationsPerNodes[nodeIndex], newAnimItem]
+          : [newAnimItem];
+      });
+    });
+  }
+  return animationsPerNodes;
+};
+
+const getImages = (images, accessors, buffers, bufferViews) => {
+  return images
+    ? images.map(({ bufferView: bufferViewIndex, mimeType, name }) => {
+        const bufferView = bufferViews[bufferViewIndex];
+        const data = getImageBufferData(buffers, bufferView);
+        return { mimeType, name, data };
+      })
+    : null;
+};
+
 export default class {
   constructor(rawText) {
     const JsonData = JSON.parse(rawText);
@@ -216,65 +286,44 @@ export default class {
       nodes,
       meshes,
       materials,
+      images,
     } = JsonData;
-    const newMaterials = materials && materials.map((material) => getMaterial(material));
+    console.log('+++ RAW', JsonData);
+
     const newBuffers = buffers && buffers.map((buffer) => base64ToArrayBuffer(buffer.uri));
+
     const newAccessors =
       accessors &&
       accessors.map((accessor) => ({
         ...accessor,
         values: getBufferDataFromAccessor(newBuffers, bufferViews, accessor),
       }));
-    if (animations) {
-      animations.forEach(({ channels, samplers }) => {
-        channels.forEach(({ target, sampler: samplerIndex }) => {
-          const {
-            input: inputAccessorIndex,
-            output: outputAccessorIndex,
-            interpolation,
-          } = samplers[samplerIndex];
-          const input = newAccessors[inputAccessorIndex];
-          const output = newAccessors[outputAccessorIndex];
-          const { node: nodeIndex, path } = target;
-          const node = nodes[nodeIndex];
 
-          // define output chunk length
-          let chunkLength = getNumComponentPerType(output.type);
-          if (node[path]) {
-            chunkLength = node[path].length;
-          } else if (node.mesh && meshes[node.mesh][path]) {
-            chunkLength = meshes[node.mesh][path].length;
-          } else if (path === 'scale') {
-            chunkLength = 3;
-          }
+    // add animations to nodes
+    const animationsPerNodes = getAnimations(animations, nodes, newAccessors, meshes);
+    Object.keys(animationsPerNodes).forEach((nodeIndex) => {
+      nodes[nodeIndex].animations = animationsPerNodes[nodeIndex];
+    });
 
-          const outputData = chunkArray(output.values, chunkLength);
-          const newAnimItem = {
-            path,
-            times: input.values,
-            output: outputData,
-            interpolation,
-          };
-          nodes[nodeIndex] = {
-            ...node,
-            animations: node.animations ? [...node.animations, newAnimItem] : [newAnimItem],
-          };
-        });
-      });
-    }
     const newSkins = getSkins(skins, nodes, newAccessors);
+
     const newMeshes = meshes.map(({ primitives, weights }) => {
       const newPrimitives = getPrimitiveData(primitives, newAccessors);
       let finalMesh = { primitives: newPrimitives };
       if (weights) finalMesh = { weights, ...finalMesh };
       return finalMesh;
     });
+
+    const newImages = getImages(images, newAccessors, newBuffers, bufferViews);
+
+    const newMaterials = materials && materials.map((material) => getMaterial(material, newImages));
+
     this.data = {};
     if (newMeshes) this.data.meshes = newMeshes;
     if (nodes) this.data.nodes = nodes.filter((node) => node.mesh !== undefined);
     if (newSkins) this.data.skins = newSkins;
     if (newMaterials) this.data.materials = newMaterials;
-    // console.log('CUSTOM', this.data);
+    console.log('CUSTOM', this.data);
   }
 
   get() {
