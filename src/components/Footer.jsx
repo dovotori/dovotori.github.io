@@ -58,15 +58,14 @@ const commonItem = css`
   margin: 0 1em;
   text-transform: uppercase;
   text-align: center;
-  min-width: 60px;
+  min-width: 70px;
   ${(p) => p.theme.monospace}
+  font-weight: normal;
 `;
 
 const Span = styled.span`
   ${commonItem}
   color: ${(p) => (p.isHighlight ? p.theme.primary : p.theme.light)};
-  ${(p) => p.theme.monospace}
-  font-weight: normal;
 `;
 
 const Button = styled.button`
@@ -93,10 +92,11 @@ const Line = styled.span`
   transform: ${(p) => (p.isHighlight ? 'none' : 'scale(0)')};
 `;
 
-const Label = styled.span`
+const SimpleSpan = styled.span`
   position: relative;
   z-index: 1;
-  background: ${(p) => p.theme.background};
+  transition: background-color 0.2s ease-out;
+  background-color: ${(p) => p.theme.background};
   padding: 0 0 0 0.4em;
 `;
 
@@ -106,12 +106,12 @@ const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => {
       availablesLang.map((availableLang) =>
         availableLang.id === lang ? (
           <Span key={availableLang.id} isHighlight>
-            <Label>{availableLang.short}</Label>
+            <SimpleSpan>{availableLang.short}</SimpleSpan>
             <Line isHighlight className="line" />
           </Span>
         ) : (
           <Button key={availableLang.id} onClick={() => setLang(availableLang.id)}>
-            <Label>{availableLang.short}</Label>
+            <SimpleSpan>{availableLang.short}</SimpleSpan>
             <Line className="line" />
           </Button>
         )
@@ -121,18 +121,18 @@ const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => {
   return (
     <Wrap className="footer">
       <Div>
-        <a href={`mailto:${process.env.MAIL}`}>
+        <a href={`mailto:${process.env.MAIL}`} title="contact">
           <StyledMail />
         </a>
       </Div>
       <Div>{renderLang()}</Div>
       <Div>
-        <a href="https://creativecommons.org/licenses/by/4.0/">
+        <a href="https://creativecommons.org/licenses/by/4.0/" title="license">
           <Img alt="license creative common" src={license} />
         </a>
       </Div>
       <Div>
-        <Toggle onClick={toggleTheme} checked={isDarkMode} />
+        <Toggle id="themeMode" onClick={toggleTheme} checked={isDarkMode} />
         <Span>{isDarkMode ? texts.lightMode : texts.darkMode}</Span>
       </Div>
     </Wrap>

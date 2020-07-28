@@ -1,5 +1,5 @@
-import device from "./device";
-import content from "./content";
+import device from './device';
+import content from './content';
 
 const rootReducer = (state = {}, action) => {
   const deviceState = device(state.device, action);

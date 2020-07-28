@@ -42,5 +42,3 @@ export default {
   attributes: ['position', 'texture'],
   uniforms: ['flipY', 'textureMap', 'delta', 'resolution'],
 };
-
-

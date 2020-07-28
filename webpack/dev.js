@@ -38,8 +38,8 @@ module.exports = {
             },
           },
           {
-            loader: 'url-loader'
-          }
+            loader: 'url-loader',
+          },
         ],
       },
       {

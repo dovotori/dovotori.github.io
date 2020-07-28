@@ -8,7 +8,7 @@ export default class {
   start = () => {
     const now = new Date().getTime();
     const milli = now - this.lastFrame;
-
+    if (this.callbackNoFps) this.callbackNoFps();
     if (milli > this.fps) {
       this.callback();
       this.lastFrame = now;
@@ -18,6 +18,10 @@ export default class {
 
   setCallback(callback) {
     this.callback = callback;
+  }
+
+  setCallbackNoFps(callback) {
+    this.callbackNoFps = callback;
   }
 
   setFps(fps) {

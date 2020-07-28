@@ -29,10 +29,8 @@ class CollisionPairManager {
     let already = false;
     for (let i = 0; i < this.listesAxe[axe].length; i += 1) {
       if (
-        (paire[0] === this.listesAxe[axe][i][0] &&
-          paire[1] === this.listesAxe[axe][i][1]) ||
-        (paire[1] === this.listesAxe[axe][i][0] &&
-          paire[0] === this.listesAxe[axe][i][1])
+        (paire[0] === this.listesAxe[axe][i][0] && paire[1] === this.listesAxe[axe][i][1]) ||
+        (paire[1] === this.listesAxe[axe][i][0] && paire[0] === this.listesAxe[axe][i][1])
       ) {
         already = true;
         break;
@@ -50,10 +48,7 @@ class CollisionPairManager {
       if (axeY) {
         paires = CollisionPairManager.compareListes(paires, this.listesAxe[1]);
         if (axeZ) {
-          paires = CollisionPairManager.compareListes(
-            paires,
-            this.listesAxe[2]
-          );
+          paires = CollisionPairManager.compareListes(paires, this.listesAxe[2]);
         }
       }
     }

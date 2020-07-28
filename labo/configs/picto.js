@@ -1,8 +1,8 @@
 export default {
-  assets: ["/img/signature.png"],
-  mouse: { events: ["move"] },
+  assets: ['/img/signature.png'],
+  mouse: { events: ['move'] },
   postprocess: {
-    effects: ["glitch", "wave", "rgb", "watercolorMoving"],
+    effects: ['glitch', 'wave', 'rgb', 'watercolorMoving'],
   },
   useDepthTexture: false,
   canvas: {

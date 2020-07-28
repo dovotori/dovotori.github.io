@@ -39,5 +39,13 @@ export default {
   vertex,
   fragment,
   attributes: ['position', 'texture'],
-  uniforms: ['flipY', 'textureMap', 'heightMap', 'gradientStep', 'advectStep', 'time', 'flipHeightMap'],
+  uniforms: [
+    'flipY',
+    'textureMap',
+    'heightMap',
+    'gradientStep',
+    'advectStep',
+    'time',
+    'flipHeightMap',
+  ],
 };

@@ -1,6 +1,6 @@
-import Program from "../gl/Program";
-import glsl from "../constants/shaders/albedo";
-import ObjetVbo from "../gl/ObjetVbo";
+import Program from '../gl/Program';
+import glsl from '../constants/shaders/albedo';
+import ObjetVbo from '../gl/ObjetVbo';
 
 export default class {
   constructor(gl) {
@@ -28,7 +28,7 @@ export default class {
         values: new Uint16Array(indices),
         count: indices.length,
         size: 1,
-        type: "SCALAR",
+        type: 'SCALAR',
         componentType: 5123,
       },
     };
@@ -40,9 +40,9 @@ export default class {
   render(camera, model) {
     model.push();
     model.scale(20);
-    this.program.setMatrix("model", model.get());
-    this.program.setMatrix("view", camera.getView().get());
-    this.program.setMatrix("projection", camera.getProjection().get());
+    this.program.setMatrix('model', model.get());
+    this.program.setMatrix('view', camera.getView().get());
+    this.program.setMatrix('projection', camera.getProjection().get());
     this.objet.render(this.program);
     model.pop();
   }

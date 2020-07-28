@@ -59,7 +59,5 @@ export default {
   vertex,
   fragment,
   attributes: ['position', 'texture'],
-  uniforms: ['flipY', 'depthMap', 'normalMap', 'positionMap'].concat(
-    addLightLocations(),
-  ),
+  uniforms: ['flipY', 'depthMap', 'normalMap', 'positionMap'].concat(addLightLocations()),
 };

@@ -1,5 +1,5 @@
-import Scene from "./Scene";
-import Camera from "../cameras/CameraSmooth";
+import Scene from './Scene';
+import Camera from '../cameras/CameraSmooth';
 
 export default class extends Scene {
   constructor(gl, config, assets) {
@@ -7,18 +7,12 @@ export default class extends Scene {
 
     this.camera = new Camera(config.camera);
 
-    this.camera.perspective(
-      this.containerSize.width,
-      this.containerSize.height
-    );
+    this.camera.perspective(this.containerSize.width, this.containerSize.height);
   }
 
   resize(box) {
     super.resize(box);
-    this.camera.perspective(
-      this.containerSize.width,
-      this.containerSize.height
-    );
+    this.camera.perspective(this.containerSize.width, this.containerSize.height);
   }
 
   update() {

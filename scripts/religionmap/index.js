@@ -6,17 +6,20 @@ const SAVE_HTML_FILE = path.resolve(__dirname, '../../assets/html/religionmap.ht
 const SAVE_SVG_FILE = path.resolve(__dirname, './religionmap.svg');
 
 const generateSvg = async (showBrowser) => {
-  const geoDataFile = await utils.readFile(path.resolve(__dirname, '../common/world-110m.v1.json'), 'utf8');
+  const geoDataFile = await utils.readFile(
+    path.resolve(__dirname, '../common/world-110m.v1.json'),
+    'utf8'
+  );
   const countriesDataFile = path.resolve(__dirname, '../common/worldCountries.csv');
   const blasphemeDataFile = path.resolve(__dirname, './blasphemeInfos.csv');
   const religionsDataFile = path.resolve(__dirname, './WRPstate2010.csv');
   const cowDataFile = path.resolve(__dirname, './COWstate.csv');
-  
+
   const countriesDataCsv = await utils.readCsv(countriesDataFile);
   const blasphemeDataCsv = await utils.readCsv(blasphemeDataFile);
   const religionsDataCsv = await utils.readCsv(religionsDataFile);
   const cowDataCsv = await utils.readCsv(cowDataFile);
-  
+
   const html = await utils.readFile(path.resolve(__dirname, './createSvg.html'), 'utf8');
   const css = await utils.readFile(path.resolve(__dirname, './createSvg.css'), 'utf8');
 
@@ -41,7 +44,7 @@ const generateSvg = async (showBrowser) => {
   const svgData = await page.$eval('svg#worldmap', (domItem) => domItem.outerHTML);
   await utils.removeFile(SAVE_SVG_FILE);
   await utils.saveHtml(SAVE_SVG_FILE, svgData);
-  if (!showBrowser){
+  if (!showBrowser) {
     await browser.close();
   }
   return svgData;

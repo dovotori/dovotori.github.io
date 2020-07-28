@@ -17,8 +17,7 @@ export default class {
 
   createVbo = (vboData) => {
     const { type, values, count, componentType, size } = vboData;
-    const bufferType =
-      type !== "SCALAR" ? this.gl.ARRAY_BUFFER : this.gl.ELEMENT_ARRAY_BUFFER;
+    const bufferType = type !== 'SCALAR' ? this.gl.ARRAY_BUFFER : this.gl.ELEMENT_ARRAY_BUFFER;
     const vbo = this.gl.createBuffer();
     this.gl.bindBuffer(bufferType, vbo);
     this.gl.bufferData(bufferType, values, this.modeCalcul);
@@ -36,21 +35,14 @@ export default class {
     this.gl.useProgram(program);
     Object.keys(this.vbos).forEach((key) => {
       const { vbo, componentType, size, bufferType } = this.vbos[key];
-      if (key === "indices") {
+      if (key === 'indices') {
         this.gl.bindBuffer(bufferType, vbo);
       } else {
         const location = program.locations[key];
         if (location !== undefined && location !== -1) {
           this.gl.bindBuffer(bufferType, vbo);
           this.gl.enableVertexAttribArray(location);
-          this.gl.vertexAttribPointer(
-            location,
-            size,
-            componentType,
-            false,
-            0,
-            0
-          );
+          this.gl.vertexAttribPointer(location, size, componentType, false, 0, 0);
         }
       }
     });
@@ -58,12 +50,7 @@ export default class {
 
   render(program) {
     this.enable(program.get());
-    this.gl.drawElements(
-      this.modeDessin,
-      this.vbos.indices.count,
-      this.gl.UNSIGNED_SHORT,
-      0
-    );
+    this.gl.drawElements(this.modeDessin, this.vbos.indices.count, this.gl.UNSIGNED_SHORT, 0);
     this.end();
   }
 

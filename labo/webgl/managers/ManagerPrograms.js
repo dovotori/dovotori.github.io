@@ -1,6 +1,6 @@
-import Program from "../gl/Program";
-import * as glsl from "../constants/shaders";
-import * as glslScreen from "../constants/shaders/screen";
+import Program from '../gl/Program';
+import * as glsl from '../constants/shaders';
+import * as glslScreen from '../constants/shaders/screen';
 
 export default class {
   constructor(gl, selection) {
@@ -18,8 +18,8 @@ export default class {
 
   setCameraMatrix(camera) {
     Object.keys(this.programs).forEach((name) => {
-      this.programs[name].setMatrix("view", camera.getView().get());
-      this.programs[name].setMatrix("projection", camera.getProjection().get());
+      this.programs[name].setMatrix('view', camera.getView().get());
+      this.programs[name].setMatrix('projection', camera.getProjection().get());
     });
   }
 

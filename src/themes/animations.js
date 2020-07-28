@@ -1,4 +1,4 @@
-import { keyframes } from "styled-components";
+import { keyframes } from 'styled-components';
 
 export const blink = keyframes`
   0%, 100% { opacity: 1; }

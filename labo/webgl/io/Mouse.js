@@ -1,10 +1,7 @@
-import { mapFromRange } from "../utils/numbers";
+import { mapFromRange } from '../utils/numbers';
 
 class Mouse {
-  constructor(
-    div,
-    { callbackDrag, callbackDown, callbackMove, callbackWheel, callbackClick }
-  ) {
+  constructor(div, { callbackDrag, callbackDown, callbackMove, callbackWheel, callbackClick }) {
     this.div = div;
     this.callbackDrag = callbackDrag || null;
     this.callbackDown = callbackDown || null;
@@ -17,7 +14,7 @@ class Mouse {
 
     this.options = {
       capture: false,
-      passive: true
+      passive: true,
     };
 
     this.setup();
@@ -25,39 +22,39 @@ class Mouse {
 
   setup() {
     if (this.callbackClick) {
-      this.div.addEventListener("click", this.onClick, false);
+      this.div.addEventListener('click', this.onClick, false);
     }
     if (this.callbackDrag || this.callbackMove) {
-      this.div.addEventListener("mousemove", this.onMove, this.options);
-      this.div.addEventListener("touchmove", this.onMove, this.options);
+      this.div.addEventListener('mousemove', this.onMove, this.options);
+      this.div.addEventListener('touchmove', this.onMove, this.options);
     }
     if (this.callbackDrag) {
-      window.addEventListener("mouseup", this.onUp, this.options);
-      this.div.addEventListener("mousedown", this.onDown, this.options);
-      this.div.addEventListener("touchstart", this.onDown, this.options);
-      this.div.addEventListener("touchend", this.onUp, this.options);
+      window.addEventListener('mouseup', this.onUp, this.options);
+      this.div.addEventListener('mousedown', this.onDown, this.options);
+      this.div.addEventListener('touchstart', this.onDown, this.options);
+      this.div.addEventListener('touchend', this.onUp, this.options);
     }
     if (this.callbackWheel) {
-      this.div.addEventListener("wheel", this.onWheel, this.options);
+      this.div.addEventListener('wheel', this.onWheel, this.options);
     }
   }
 
   cancel() {
     if (this.callbackClick) {
-      this.div.removeEventListener("click", this.onClick, false);
+      this.div.removeEventListener('click', this.onClick, false);
     }
     if (this.callbackDrag || this.callbackMove) {
-      this.div.removeEventListener("mousemove", this.onMove, this.options);
-      this.div.removeEventListener("touchmove", this.onMove, this.options);
+      this.div.removeEventListener('mousemove', this.onMove, this.options);
+      this.div.removeEventListener('touchmove', this.onMove, this.options);
     }
     if (this.callbackDrag) {
-      window.removeEventListener("mouseup", this.onUp, this.options);
-      this.div.removeEventListener("mousedown", this.onDown, this.options);
-      this.div.removeEventListener("touchstart", this.onDown, this.options);
-      this.div.removeEventListener("touchend", this.onUp, this.options);
+      window.removeEventListener('mouseup', this.onUp, this.options);
+      this.div.removeEventListener('mousedown', this.onDown, this.options);
+      this.div.removeEventListener('touchstart', this.onDown, this.options);
+      this.div.removeEventListener('touchend', this.onUp, this.options);
     }
     if (this.callbackWheel) {
-      this.div.removeEventListener("wheel", this.onWheel, this.options);
+      this.div.removeEventListener('wheel', this.onWheel, this.options);
     }
   }
 
@@ -78,6 +75,11 @@ class Mouse {
     const box = this.div.getBoundingClientRect();
     const x = pos.x - box.x;
     const y = pos.y - box.y;
+    console.log(this.oldPos.x, pos.x);
+    const relPrevious = {
+      x: this.oldPos.x - pos.x,
+      y: this.oldPos.y - pos.y,
+    };
     return {
       size: box,
       pos: { x, y },
@@ -93,30 +95,32 @@ class Mouse {
         x: this.startDraggingMousePos.x - pos.x,
         y: this.startDraggingMousePos.y - pos.y,
       },
-      relPrevious: {
-        x: this.oldPos.x - pos.x,
-        y: this.oldPos.y - pos.y,
-      },
+      relPrevious,
+      speed: Math.max(Math.abs(relPrevious.x), Math.abs(relPrevious.x)),
     };
   }
 
   onMove = (e) => {
     const infos = this.computeInfos(e);
+    this.oldPos = Mouse.getPos(e);
     if (this.callbackMove !== null) this.callbackMove(infos);
     if (this.isDragging) {
       if (this.callbackDrag !== null) this.callbackDrag(infos);
-      this.oldPos = Mouse.getPos(e);
     }
   };
 
   onDown = (e) => {
     this.isDragging = true;
     this.startDraggingMousePos = Mouse.getPos(e);
-    this.oldPos = Mouse.getPos(e);
-    if (this.callbackDown !== null) this.callbackDown(this.computeInfos(e));
+    if (this.callbackDown !== null) {
+      const infos = this.computeInfos(e);
+      this.callbackDown(infos);
+      this.oldPos = Mouse.getPos(e);
+    }
   };
 
-  onUp = () => {
+  onUp = (e) => {
+    this.onMove(e);
     this.isDragging = false;
   };
 

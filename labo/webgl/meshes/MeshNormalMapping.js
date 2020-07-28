@@ -1,4 +1,4 @@
-import MeshNormalMatrix from "./MeshNormalMatrix";
+import MeshNormalMatrix from './MeshNormalMatrix';
 
 export default class extends MeshNormalMatrix {
   constructor() {
@@ -7,14 +7,14 @@ export default class extends MeshNormalMatrix {
   }
 
   static setEyePos(program, camera) {
-    program.setVector("posEye", camera.getPosition().get());
+    program.setVector('posEye', camera.getPosition().get());
   }
 
   setProgramSpecifics(program) {
-    program.setVector("specular", [0.7, 0.7, 0.7]);
-    program.setFloat("brillance", 10);
+    program.setVector('specular', [0.7, 0.7, 0.7]);
+    program.setFloat('brillance', 10);
     if (this.lightPos !== null) {
-      program.setVector("posLum", this.lightPos.get());
+      program.setVector('posLum', this.lightPos.get());
     }
   }
 

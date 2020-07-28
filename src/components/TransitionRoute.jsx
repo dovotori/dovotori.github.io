@@ -1,11 +1,11 @@
-import React, { Suspense } from "react";
+import React, { Suspense } from 'react';
 // import styled, { keyframes } from "styled-components";
 // import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { Switch, withRouter } from "react-router-dom";
+import { Switch, withRouter } from 'react-router-dom';
 
 // import { shouldNotReload } from '../utils';
-import Bloc from "./Bloc";
-import Loader from "./Loader";
+import Bloc from './Bloc';
+import Loader from './Loader';
 
 // const TIME = 10000;
 

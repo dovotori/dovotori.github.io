@@ -5,8 +5,7 @@ export const radToDeg = (rad) => (180 * rad) / Math.PI;
 export const random = (min, max) => Math.random() * (max - min) + min;
 
 export const mapFromRange = (valeur, minRef, maxRef, minDest, maxDest) => {
-  let result =
-    minDest + ((valeur - minRef) * (maxDest - minDest)) / (maxRef - minRef);
+  let result = minDest + ((valeur - minRef) * (maxDest - minDest)) / (maxRef - minRef);
   if (result < Math.min(minDest, maxDest)) {
     result = Math.min(minDest, maxDest);
   }

@@ -1,6 +1,6 @@
-import Spring from "../maths/Spring";
-import Target from "../maths/Target";
-import Mesh from "./Mesh";
+import Spring from '../maths/Spring';
+import Target from '../maths/Target';
+import Mesh from './Mesh';
 
 export default class extends Mesh {
   constructor() {
@@ -12,11 +12,11 @@ export default class extends Mesh {
 
   setProgramSpecifics(program) {
     super.setProgramSpecifics(program);
-    program.setInt("selected", this.selected);
+    program.setInt('selected', this.selected);
   }
 
   renderColor(objet, program) {
-    program.setInt("selected", this.selected);
+    program.setInt('selected', this.selected);
     super.renderColor(objet, program);
   }
 

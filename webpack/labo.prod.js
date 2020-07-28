@@ -7,7 +7,7 @@ const utils = require('../scripts/utils');
 const config = require('../package.json');
 const { alias, optimization } = require('./common');
 
-const name = process.env.NAME || "labo";
+const name = process.env.NAME || 'labo';
 
 // const BUILD_PATH = path.resolve(__dirname, `../assets/js/${name}`);
 const BUILD_PATH = path.resolve(__dirname, '../build');
@@ -18,8 +18,8 @@ const configPromise = async () => {
   const htmlPath = path.resolve(__dirname, `../assets/html/${name}.html`);
   let html = '';
   try {
-  html = await utils.readFile(htmlPath, 'utf8') || '';
-  } catch(e) {
+    html = (await utils.readFile(htmlPath, 'utf8')) || '';
+  } catch (e) {
     console.log('no html find to be inject in template');
   }
   return {
@@ -28,7 +28,7 @@ const configPromise = async () => {
     output: {
       path: BUILD_PATH,
       publicPath: `${BUILD_ASSET_PATH}/`,
-      filename: `${name}.js`
+      filename: `${name}.js`,
     },
     module: {
       rules: [
@@ -47,8 +47,8 @@ const configPromise = async () => {
               },
             },
             {
-              loader: 'url-loader'
-            }
+              loader: 'url-loader',
+            },
           ],
         },
         {
@@ -105,8 +105,8 @@ const configPromise = async () => {
         filename: '[path].br[query]',
         threshold: 0,
         minRatio: 1,
-      })
-    ]
+      }),
+    ],
   };
 };
 

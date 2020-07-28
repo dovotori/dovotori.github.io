@@ -7,7 +7,6 @@ d -> totalDuration: The total desired length of the animation in milliseconds
 return value lerp between startValue and endValue
 */
 
-
 /*
 t: current time
 b: begInnIng value
@@ -79,16 +78,11 @@ export const easeInOutQuint = (t, b, c, d) => {
   return (c / 2) * (tt * tt * tt * tt * tt + 2) + b;
 };
 
-export const easeInSine = (t, b, c, d) =>
-  -c * Math.cos((t / d) * (Math.PI / 2)) + c + b;
-export const easeOutSine = (t, b, c, d) =>
-  c * Math.sin((t / d) * (Math.PI / 2)) + b;
-export const easeInOutSine = (t, b, c, d) =>
-  (-c / 2) * (Math.cos((Math.PI * t) / d) - 1) + b;
-export const easeInExpo = (t, b, c, d) =>
-  t === 0 ? b : c * 2 ** (10 * (t / d - 1)) + b;
-export const easeOutExpo = (t, b, c, d) =>
-  t === d ? b + c : c * (-(2 ** (-10 * t) / d) + 1) + b;
+export const easeInSine = (t, b, c, d) => -c * Math.cos((t / d) * (Math.PI / 2)) + c + b;
+export const easeOutSine = (t, b, c, d) => c * Math.sin((t / d) * (Math.PI / 2)) + b;
+export const easeInOutSine = (t, b, c, d) => (-c / 2) * (Math.cos((Math.PI * t) / d) - 1) + b;
+export const easeInExpo = (t, b, c, d) => (t === 0 ? b : c * 2 ** (10 * (t / d - 1)) + b);
+export const easeOutExpo = (t, b, c, d) => (t === d ? b + c : c * (-(2 ** (-10 * t) / d) + 1) + b);
 
 export const easeInOutExpo = (t, b, c, d) => {
   if (t === 0) return b;
@@ -129,8 +123,7 @@ export const easeInElastic = (t, b, c, d) => {
     s = p / 4;
   } else s = (p / (2 * Math.PI)) * Math.asin(c / a);
   const tf = t - 1;
-  const result =
-    -(a * (2 ** 10 * tf) * Math.sin(((t * d - s) * (2 * Math.PI)) / p)) + b;
+  const result = -(a * (2 ** 10 * tf) * Math.sin(((t * d - s) * (2 * Math.PI)) / p)) + b;
   return result;
 };
 
@@ -146,9 +139,7 @@ export const easeOutElastic = (t, b, c, d) => {
     a = c;
     s = p / 4;
   } else s = (p / (2 * Math.PI)) * Math.asin(c / a);
-  return (
-    a * 2 ** (-10 * tt) * Math.sin(((tt * d - s) * (2 * Math.PI)) / p) + c + b
-  );
+  return a * 2 ** (-10 * tt) * Math.sin(((tt * d - s) * (2 * Math.PI)) / p) + c + b;
 };
 
 export const easeInOutElastic = (t, b, c, d) => {
@@ -166,16 +157,10 @@ export const easeInOutElastic = (t, b, c, d) => {
   let result = 0;
   if (tt < 1) {
     tt -= 1;
-    result =
-      -0.5 *
-        (a * 2 ** (10 * tt) * Math.sin(((t * d - s) * (2 * Math.PI)) / p)) +
-      b;
+    result = -0.5 * (a * 2 ** (10 * tt) * Math.sin(((t * d - s) * (2 * Math.PI)) / p)) + b;
   } else {
     tt -= 1;
-    result =
-      a * 2 ** (-10 * tt) * Math.sin(((t * d - s) * (2 * Math.PI)) / p) * 0.5 +
-      c +
-      b;
+    result = a * 2 ** (-10 * tt) * Math.sin(((t * d - s) * (2 * Math.PI)) / p) * 0.5 + c + b;
   }
   return result;
 };

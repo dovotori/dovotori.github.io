@@ -8,14 +8,14 @@ const { alias } = require('./common');
 
 const port = process.env.PORT || 8081;
 const host = process.env.HOST || '0.0.0.0';
-const name = process.env.NAME || "labo";
+const name = process.env.NAME || 'labo';
 
 const configPromise = async () => {
   const htmlPath = path.resolve(__dirname, `../assets/html/${name}.html`);
   let html = '';
   try {
-  html = await utils.readFile(htmlPath, 'utf8') || '';
-  } catch(e) {
+    html = (await utils.readFile(htmlPath, 'utf8')) || '';
+  } catch (e) {
     console.log('no html find to be inject in template');
   }
   return {
@@ -47,8 +47,8 @@ const configPromise = async () => {
               },
             },
             {
-              loader: 'url-loader'
-            }
+              loader: 'url-loader',
+            },
           ],
         },
         {

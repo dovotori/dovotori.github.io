@@ -28,4 +28,5 @@ export { default as oil } from './oil';
 export { default as vortex } from './vortex';
 export { default as sketch } from './sketch';
 export { default as kuwahara } from './kuwahara';
-export { default as shapes } from './shapes';
+export { default as shader } from './shader';
+export { default as line } from './line';

@@ -85,7 +85,7 @@ export default {
     -1.0,
     1.0,
     1.0,
-    -1.0 // v4-v7-v6-v5 back
+    -1.0, // v4-v7-v6-v5 back
   ],
   indice: [
     0,
@@ -123,7 +123,7 @@ export default {
     22,
     20,
     22,
-    23 // back
+    23, // back
   ],
   texture: [
     1,
@@ -178,6 +178,6 @@ export default {
     1,
     1,
     0,
-    1 // v4-v7-v6-v5 back
-  ]
+    1, // v4-v7-v6-v5 back
+  ],
 };

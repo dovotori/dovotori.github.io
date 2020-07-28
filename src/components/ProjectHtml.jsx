@@ -1,8 +1,8 @@
-import React, {useCallback, useState, useEffect} from "react";
-import styled from "styled-components";
+import React, { useCallback, useState, useEffect } from 'react';
+import styled from 'styled-components';
 
-import Html from "./Html";
-import Loader from "./Loader";
+import Html from './Html';
+import Loader from './Loader';
 
 const Wrap = styled.div`
   position: relative;
@@ -33,11 +33,13 @@ const StyledHtml = styled(Html)`
 const ProjectHtml = (props) => {
   const { colorType, className, slug } = props;
   const [isLoaded, setIsLoaded] = useState(false);
-  const onHtmlLoad = useCallback(() => {setIsLoaded(true);}, [setIsLoaded]);
+  const onHtmlLoad = useCallback(() => {
+    setIsLoaded(true);
+  }, [setIsLoaded]);
 
   useEffect(() => {
     setIsLoaded(false);
-  },[slug]);
+  }, [slug]);
 
   return (
     <Wrap className={className}>

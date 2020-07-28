@@ -1,7 +1,5 @@
 const path = require('path');
 const favicons = require('favicons');
-const fs = require('fs');
-const { promisify } = require('util');
 const utils = require('./utils');
 
 const config = require('../package.json');

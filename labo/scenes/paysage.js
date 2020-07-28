@@ -7,7 +7,7 @@ import Gizmo from '../webgl/meshes/Gizmo';
 import Bloom from '../webgl/gl/Bloom';
 import { degToRad } from '../webgl/utils/numbers';
 import ObjetPrimitive from '../webgl/gl/ObjetPrimitive';
-import primitive from '../webgl/constants/primitives/plane';
+import primitive from '../webgl/primitives/plane';
 
 export default class extends Scene {
   constructor(gl, config, assets, width = 512, height = 512) {

@@ -123,59 +123,53 @@ const Description = styled.p`
 
 const commonName = css`
   position: absolute;
-  top: 50%;
-  font-size: 400%;
-  transform: translate3d(0, -50%, 0);
-  letter-spacing: 0;
+  width: 100%;
+  text-align: center;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
   pointer-events: none;
   user-select: none;
-  ${(p) => p.theme.media.mobile`
-    text-align: center;
-    width: 100%;
-    position: relative;
-    top: auto;
-  `}
 `;
 
 const Name = styled(Title)`
   ${commonName}
-  color:${(p) => p.theme.text};
-  right: 54%;
-  text-align: right;
+  color: ${(p) => p.theme.text};
+  letter-spacing: 0.5em;
   font-size: 300%;
+  top: 60%;
   ${(p) => p.theme.media.mobile`
-    right: auto;
+    font-size: 200%;
   `}
 `;
 
 const Katakana = styled(Title)`
   ${commonName}
-  left: 54%;
-  text-align: left;
+  top: 50%;
+  letter-spacing: 0.1em;
   font-family: 'nikkyou', monospace;
+  font-size: 1000%;
   ${(p) => p.theme.media.mobile`
-    left: auto;
+    font-size: 600%;
   `}
 `;
 
 const CenterMobile = styled.div`
   ${(p) => p.theme.media.mobile`
-  position: absolute;
-  top: 60%;
-  left: 0;
-  width: 100%;`}
+`}
 `;
 
 const Signature = ({ className, hello }) => (
   <Wrap>
     <Appear>
-      <StyledLink to="/about" className={className}>
-        <StyledHtml slug="signature" colorType={0} />
-      </StyledLink>
       <CenterMobile>
         <Katakana>
           <TypingMessage message="ド リ ア ン" />
         </Katakana>
+      </CenterMobile>
+      <StyledLink to="/about" className={className} title="about">
+        <StyledHtml slug="signature" colorType={0} />
+      </StyledLink>
+      <CenterMobile>
         <Name>
           <TypingMessage message="D o r i a n" />
         </Name>

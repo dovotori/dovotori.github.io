@@ -288,7 +288,6 @@ export default class {
       materials,
       images,
     } = JsonData;
-    console.log('+++ RAW', JsonData);
 
     const newBuffers = buffers && buffers.map((buffer) => base64ToArrayBuffer(buffer.uri));
 
@@ -323,7 +322,7 @@ export default class {
     if (nodes) this.data.nodes = nodes.filter((node) => node.mesh !== undefined);
     if (newSkins) this.data.skins = newSkins;
     if (newMaterials) this.data.materials = newMaterials;
-    console.log('CUSTOM', this.data);
+    // console.log('CUSTOM', this.data);
   }
 
   get() {

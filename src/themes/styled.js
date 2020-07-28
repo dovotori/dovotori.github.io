@@ -10,7 +10,7 @@ export const Title = styled.h1`
   color: ${(p) => p.theme.getColor};
   overflow-wrap: break-word;
   text-transform: uppercase;
-  text-shadow: 1px 1px 0 ${(p) => p.theme.backgroundHighlight};
+  text-shadow: 2px 2px 0 ${(p) => p.theme.backgroundHighlight};
 `;
 
 export const withHoverGlitch = css`

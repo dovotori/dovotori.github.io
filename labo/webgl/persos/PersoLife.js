@@ -20,6 +20,7 @@ export default class extends Perso {
   update(map, tileSize) {
     super.update(map, tileSize);
     this.collisionBox.update(...this.getCollisionInfos());
+    this.targetDamage.update();
   }
 
   setCallbackDeath = (callback) => {
@@ -48,11 +49,6 @@ export default class extends Perso {
       container.appendChild(this.bar);
     }
   };
-
-  update(map, tileSize) {
-    super.update(map, tileSize);
-    this.targetDamage.update();
-  }
 
   render(program, texture, objet) {
     program.setFloat('damage', this.targetDamage.get());

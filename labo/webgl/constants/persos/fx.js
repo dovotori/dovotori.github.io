@@ -1,7 +1,7 @@
-const DUST = "DUST";
+const DUST = 'DUST';
 
 export default {
-  id: "fx",
+  id: 'fx',
   states: {
     DUST,
   },

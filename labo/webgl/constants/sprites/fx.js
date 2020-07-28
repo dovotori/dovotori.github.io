@@ -1,4 +1,4 @@
-import fx from "../persos/fx";
+import fx from '../persos/fx';
 
 const { DUST } = fx.states;
 

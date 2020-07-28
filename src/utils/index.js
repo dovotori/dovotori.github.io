@@ -1,4 +1,4 @@
-import availablesLang from "../constants/locales";
+import availablesLang from '../constants/locales';
 
 export const getSelectedCategory = (categories, category) => {
   if (category) {
@@ -9,14 +9,11 @@ export const getSelectedCategory = (categories, category) => {
 };
 
 export const isTouchDevice = () =>
-  "ontouchstart" in window ||
-  navigator.MaxTouchPoints > 0 ||
-  navigator.msMaxTouchPoints > 0;
+  'ontouchstart' in window || navigator.MaxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
 
 export const getEnvPath = (path) => `${process.env.ASSET_PATH}${path}`;
 export const getTeaserPath = (slug) => getEnvPath(`/img/teasers/${slug}.png`);
-export const getProjectImagePath = (slug, idx) =>
-  getEnvPath(`/img/${slug}/${slug}-${idx}.jpg`);
+export const getProjectImagePath = (slug, idx) => getEnvPath(`/img/${slug}/${slug}-${idx}.jpg`);
 export const getHtmlPath = (slug) => getEnvPath(`/html/${slug}.html`);
 
 export const getColorType = (category) => {
@@ -31,25 +28,22 @@ export const getColorType = (category) => {
   }
 };
 
-export const capitalize = (string) =>
-  string.charAt(0).toUpperCase() + string.slice(1);
+export const capitalize = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
 export const getLocationHash = () => {
-  const locationHash = window.location.hash.replace("#", "").toLowerCase();
-  return availablesLang.map((l) => l.id).indexOf(locationHash) !== -1
-    ? locationHash
-    : null;
+  const locationHash = window.location.hash.replace('#', '').toLowerCase();
+  return availablesLang.map((l) => l.id).indexOf(locationHash) !== -1 ? locationHash : null;
 };
 
 export const parseCsv = (string) => {
-  const lines = string.split("\n");
-  const keys = lines.shift().split(",");
+  const lines = string.split('\n');
+  const keys = lines.shift().split(',');
   return lines.map((line) => {
-    const l = line.split(",");
+    const l = line.split(',');
     return keys.reduce(
       (acc, cur, index) => ({
         ...acc,
-        [cur]: l[index] !== "" ? l[index] : null,
+        [cur]: l[index] !== '' ? l[index] : null,
       }),
       {}
     );
@@ -57,8 +51,7 @@ export const parseCsv = (string) => {
 };
 
 export const mapFromRange = (valeur, minRef, maxRef, minDest, maxDest) => {
-  let result =
-    minDest + ((valeur - minRef) * (maxDest - minDest)) / (maxRef - minRef);
+  let result = minDest + ((valeur - minRef) * (maxDest - minDest)) / (maxRef - minRef);
   if (result < Math.min(minDest, maxDest)) {
     result = Math.min(minDest, maxDest);
   }
@@ -98,6 +91,6 @@ export const storage = {
 };
 
 export const chunkArray = (arr, size) =>
-Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
-  arr.slice(i * size, i * size + size)
-);
+  Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+    arr.slice(i * size, i * size + size)
+  );

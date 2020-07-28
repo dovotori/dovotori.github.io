@@ -1,6 +1,6 @@
-import LoadObj from "../parser/LoadObj";
-import LoadMat from "../parser/LoadMat";
-import LoadGltf from "../parser/LoadGltf";
+import LoadObj from '../parser/LoadObj';
+import LoadMat from '../parser/LoadMat';
+import LoadGltf from '../parser/LoadGltf';
 
 class ManagerAssets {
   constructor() {
@@ -10,14 +10,12 @@ class ManagerAssets {
       materials: {},
       levels: {},
       gltfs: {},
-      sounds: {}
+      sounds: {},
     };
   }
 
   static getAssetInfo(path) {
-    const parts = path
-      .substring(path.lastIndexOf("/") + 1, path.length)
-      .split(".");
+    const parts = path.substring(path.lastIndexOf('/') + 1, path.length).split('.');
     return { name: parts[0], ext: parts[1].toLowerCase() };
   }
 
@@ -68,18 +66,18 @@ class ManagerAssets {
     const promesses = await paths.map(async (path) => {
       const info = ManagerAssets.getAssetInfo(path);
       switch (info.ext) {
-        case "jpg":
-        case "jpeg":
-        case "png":
-        case "bmp":
+        case 'jpg':
+        case 'jpeg':
+        case 'png':
+        case 'bmp':
           return ManagerAssets.loadImage(path, info);
-        case "obj":
+        case 'obj':
           return ManagerAssets.load3dObj(path, info);
-        case "gltf":
+        case 'gltf':
           return ManagerAssets.load3dGltf(path, info);
-        case "mtl":
+        case 'mtl':
           return ManagerAssets.loadMaterial(path, info);
-        case "mp3":
+        case 'mp3':
           return ManagerAssets.loadSound(path, info);
         default:
           return null;
@@ -88,24 +86,24 @@ class ManagerAssets {
     return Promise.all(promesses).then((data) => {
       data.forEach((item) => {
         switch (item.info.ext) {
-          case "jpg":
-          case "jpeg":
-          case "png":
+          case 'jpg':
+          case 'jpeg':
+          case 'png':
             this.assets.textures[item.info.name] = item.data;
             break;
-          case "bmp":
+          case 'bmp':
             this.assets.levels[item.info.name] = item.data;
             break;
-          case "obj":
+          case 'obj':
             this.assets.objets[item.info.name] = item.data;
             break;
-          case "gltf":
+          case 'gltf':
             this.assets.gltfs[item.info.name] = item.data;
             break;
-          case "mtl":
+          case 'mtl':
             this.assets.materials[item.info.name] = item.data;
             break;
-          case "mp3":
+          case 'mp3':
             this.assets.sounds[item.info.name] = item.data;
             break;
           default:

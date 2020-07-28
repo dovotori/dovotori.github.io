@@ -1,6 +1,6 @@
-import { EPSILON } from "../constants/maths";
-import Quaternion from "./Quaternion";
-import Mat4 from "./Mat4";
+import { EPSILON } from '../constants/maths';
+import Quaternion from './Quaternion';
+import Mat4 from './Mat4';
 
 class DualQuaternion {
   constructor() {
@@ -89,41 +89,13 @@ class DualQuaternion {
     this.d[2] = az0 * bw0 + aw0 * bz0 + ax0 * by0 - ay0 * bx0;
     this.d[3] = aw0 * bw0 - ax0 * bx0 - ay0 * by0 - az0 * bz0;
     this.d[4] =
-      ax0 * bw1 +
-      aw0 * bx1 +
-      ay0 * bz1 -
-      az0 * by1 +
-      ax1 * bw0 +
-      aw1 * bx0 +
-      ay1 * bz0 -
-      az1 * by0;
+      ax0 * bw1 + aw0 * bx1 + ay0 * bz1 - az0 * by1 + ax1 * bw0 + aw1 * bx0 + ay1 * bz0 - az1 * by0;
     this.d[5] =
-      ay0 * bw1 +
-      aw0 * by1 +
-      az0 * bx1 -
-      ax0 * bz1 +
-      ay1 * bw0 +
-      aw1 * by0 +
-      az1 * bx0 -
-      ax1 * bz0;
+      ay0 * bw1 + aw0 * by1 + az0 * bx1 - ax0 * bz1 + ay1 * bw0 + aw1 * by0 + az1 * bx0 - ax1 * bz0;
     this.d[6] =
-      az0 * bw1 +
-      aw0 * bz1 +
-      ax0 * by1 -
-      ay0 * bx1 +
-      az1 * bw0 +
-      aw1 * bz0 +
-      ax1 * by0 -
-      ay1 * bx0;
+      az0 * bw1 + aw0 * bz1 + ax0 * by1 - ay0 * bx1 + az1 * bw0 + aw1 * bz0 + ax1 * by0 - ay1 * bx0;
     this.d[7] =
-      aw0 * bw1 -
-      ax0 * bx1 -
-      ay0 * by1 -
-      az0 * bz1 +
-      aw1 * bw0 -
-      ax1 * bx0 -
-      ay1 * by0 -
-      az1 * bz0;
+      aw0 * bw1 - ax0 * bx1 - ay0 * by1 - az0 * bz1 + aw1 * bw0 - ax1 * bx0 - ay1 * by0 - az1 * bz0;
     return this;
   }
 

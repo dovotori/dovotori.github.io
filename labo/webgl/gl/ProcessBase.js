@@ -1,5 +1,5 @@
-import PingPongBuffer from "./PingPongBuffer";
-import Screen from "./Screen";
+import PingPongBuffer from './PingPongBuffer';
+import Screen from './Screen';
 
 export default class {
   constructor(gl, width = 1024, height = 1024, useDepth = false) {
@@ -33,9 +33,9 @@ export default class {
      */
     const textureIdx = this.passCount + 1;
     const finalTexture = usePPB ? this.ppb.getTexture().get() : tex;
-    program.setTexture(textureIdx, finalTexture, "textureMap");
+    program.setTexture(textureIdx, finalTexture, 'textureMap');
     const flipYWay = this.passCount > 0 ? -1.0 : 1.0;
-    program.setFloat("flipY", flipYWay);
+    program.setFloat('flipY', flipYWay);
     return program;
   }
 
@@ -61,7 +61,7 @@ export default class {
   }
 
   renderSimple(program) {
-    program.setFloat("flipY", -1.0);
+    program.setFloat('flipY', -1.0);
     this.screen.render(program.get());
   }
 }

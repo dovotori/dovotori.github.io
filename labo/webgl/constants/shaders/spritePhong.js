@@ -1,6 +1,4 @@
-import {
-  uniformLights, addLightLocations, funcLightsColor,
-} from './utils/light';
+import { uniformLights, addLightLocations, funcLightsColor } from './utils/light';
 
 import { funcMap } from './utils';
 

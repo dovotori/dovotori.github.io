@@ -1,6 +1,6 @@
-import Vec3 from "../maths/Vec3";
-import Mat4 from "../maths/Mat4";
-import Objectif from "../gl/Objectif";
+import Vec3 from '../maths/Vec3';
+import Mat4 from '../maths/Mat4';
+import Objectif from '../gl/Objectif';
 
 export default class extends Objectif {
   constructor(config) {
@@ -26,9 +26,7 @@ export default class extends Objectif {
   }
 
   perspective(w, h) {
-    this.projection
-      .identity()
-      .perspective(this.angle, w / h, this.near, this.far);
+    this.projection.identity().perspective(this.angle, w / h, this.near, this.far);
     // .ortho(-1.0, 1.0, -1.0, 1.0, this.near, this.far);
   }
 

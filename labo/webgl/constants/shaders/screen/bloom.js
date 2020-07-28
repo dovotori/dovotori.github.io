@@ -25,12 +25,5 @@ export default {
   vertex,
   fragment,
   attributes: ['position', 'texture'],
-  uniforms: [
-    'flipY',
-    'textureMap',
-    'bloomMap',
-    'resolution',
-    'gamma',
-    'exposure',
-  ],
+  uniforms: ['flipY', 'textureMap', 'bloomMap', 'resolution', 'gamma', 'exposure'],
 };

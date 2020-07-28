@@ -1,4 +1,4 @@
-import monster from "../persos/monster";
+import monster from '../persos/monster';
 
 const { STAND, RUN, JUMP_DOWN, DIE } = monster.states;
 

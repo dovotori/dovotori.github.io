@@ -6,12 +6,15 @@ const SAVE_HTML_FILE = path.resolve(__dirname, '../../assets/html/netmap.html');
 const SAVE_SVG_FILE = path.resolve(__dirname, './netmap.svg');
 
 const generateSvg = async (showBrowser) => {
-  const geoDataFile = await utils.readFile(path.resolve(__dirname, '../common/world-110m.v1.json'), 'utf8');
+  const geoDataFile = await utils.readFile(
+    path.resolve(__dirname, '../common/world-110m.v1.json'),
+    'utf8'
+  );
   const countriesDataFile = path.resolve(__dirname, '../common/worldCountries.csv');
   const netDataFile = path.resolve(__dirname, './netEnnemies.csv');
   const countriesDataCsv = await utils.readCsv(countriesDataFile);
   const netDataCsv = await utils.readCsv(netDataFile);
-  
+
   const html = await utils.readFile(path.resolve(__dirname, './createSvg.html'), 'utf8');
   // const css = await utils.readFile(path.resolve(__dirname, './createSvg.css'), 'utf8');
   const extraScript = `
@@ -33,7 +36,7 @@ const generateSvg = async (showBrowser) => {
   const svgData = await page.$eval('svg#worldmap', (domItem) => domItem.outerHTML);
   await utils.removeFile(SAVE_SVG_FILE);
   await utils.saveHtml(SAVE_SVG_FILE, svgData);
-   if (!showBrowser){
+  if (!showBrowser) {
     await browser.close();
   }
   return svgData;

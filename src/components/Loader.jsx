@@ -1,10 +1,10 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import { loading, blink } from "../themes/animations";
+import { loading, blink } from '../themes/animations';
 
 const Wrap = styled.div.attrs({
-  className: "loader",
+  className: 'loader',
 })`
   position: absolute;
   width: 20px;
@@ -45,12 +45,7 @@ const Loader = ({ className, colorType }) => (
   <div className={className}>
     <Wrap>
       {[0, 1, 2, 3].map((idx) => (
-        <Bar
-          key={idx}
-          delay={idx * 100}
-          style={{ top: `${idx * 5}px` }}
-          colorType={colorType}
-        />
+        <Bar key={idx} delay={idx * 100} style={{ top: `${idx * 5}px` }} colorType={colorType} />
       ))}
     </Wrap>
     <Text>

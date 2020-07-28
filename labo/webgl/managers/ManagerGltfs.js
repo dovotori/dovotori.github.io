@@ -1,4 +1,4 @@
-import Objet from "../gl/ObjetGltf";
+import Objet from '../gl/ObjetGltf';
 
 export default class {
   constructor(gl, gltfs) {

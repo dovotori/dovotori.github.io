@@ -1,11 +1,11 @@
-import StateSprite from "../logic/StateSprite";
-import MeshSprite from "../meshes/MeshSprite";
+import StateSprite from '../logic/StateSprite';
+import MeshSprite from '../meshes/MeshSprite';
 
 export default class extends MeshSprite {
   constructor(sprite) {
     super();
     this.state = new StateSprite(sprite);
-    this.state.set("000");
+    this.state.set('000');
   }
 
   render(objet, program, texture) {

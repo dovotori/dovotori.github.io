@@ -19,18 +19,14 @@ export default class {
       currentTime = 0;
     }
 
-    while (
-      currentTime >= this.nextStep &&
-      this.currentIndex < this.times.length - 1
-    ) {
+    while (currentTime >= this.nextStep && this.currentIndex < this.times.length - 1) {
       this.currentIndex++;
       this.nextStep = this.times[this.currentIndex];
     }
 
     const nextTime = this.times[this.currentIndex];
     const previousTime = this.times[this.currentIndex - 1];
-    this.interpolationValue =
-      (currentTime - previousTime) / (nextTime - previousTime);
+    this.interpolationValue = (currentTime - previousTime) / (nextTime - previousTime);
   }
 
   getIndex() {

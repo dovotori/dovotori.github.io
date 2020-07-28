@@ -1,10 +1,6 @@
-import React, {
-  useRef,
-  useCallback,
-  useEffect,
-} from "react";
-import { connect } from "react-redux";
-import styled from "styled-components";
+import React, { useRef, useCallback, useEffect } from 'react';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
 
 const Wrap = styled.span`
   position: relative;
@@ -12,7 +8,7 @@ const Wrap = styled.span`
 `;
 
 const Hidden = styled.span`
-  visibility: ${p => p.isVisible ? 'visible': 'hidden'};
+  visibility: ${(p) => (p.isVisible ? 'visible' : 'hidden')};
 `;
 
 const Anim = styled.span`
@@ -28,7 +24,7 @@ const Anim = styled.span`
 
 const ANIM_DURATION_RANGE = 30;
 const ANIM_FPS = 3000 / 60;
-const CHARS = "!<>-_\\/[]{}—=+*^?#________";
+const CHARS = '!<>-_\\/[]{}—=+*^?#________';
 
 const TypingMessage = ({ message, isTouchDevice, isLoop = false }) => {
   const ref = useRef(null);
@@ -48,7 +44,7 @@ const TypingMessage = ({ message, isTouchDevice, isLoop = false }) => {
 
     let complete = 0;
     if (milli > ANIM_FPS) {
-      let output = "";
+      let output = '';
       for (let i = 0, n = queue.current.length; i < n; i += 1) {
         const { from, to, start, end } = queue.current[i];
         let { char } = queue.current[i];
@@ -85,8 +81,8 @@ const TypingMessage = ({ message, isTouchDevice, isLoop = false }) => {
       const length = Math.max(oldText.length, message.length);
       queue.current = [];
       for (let i = 0; i < length; i += 1) {
-        const from = oldText[i] || "";
-        const to = message[i] || "";
+        const from = oldText[i] || '';
+        const to = message[i] || '';
         const start = Math.floor(Math.random() * ANIM_DURATION_RANGE);
         const end = start + Math.floor(Math.random() * ANIM_DURATION_RANGE);
         queue.current.push({
@@ -125,9 +121,8 @@ const TypingMessage = ({ message, isTouchDevice, isLoop = false }) => {
   );
 };
 
-const mapStateToProps = state => ({
-    isTouchDevice: state.device.isTouch,
+const mapStateToProps = (state) => ({
+  isTouchDevice: state.device.isTouch,
 });
 
 export default connect(mapStateToProps)(TypingMessage);
-

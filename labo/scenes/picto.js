@@ -1,4 +1,4 @@
-import Scene from "../webgl/scenes/Scene";
+import Scene from '../webgl/scenes/Scene';
 
 export default class extends Scene {
   constructor(gl, config, assets, width = 512, height = 512) {
@@ -30,10 +30,7 @@ export default class extends Scene {
       mouse.relScroll.x / mouse.size.width,
       1 - mouse.relScroll.y / mouse.size.height,
     ];
-    const velocity = [
-      this.centerWave[0] - newPos[0],
-      this.centerWave[1] - newPos[1],
-    ];
+    const velocity = [this.centerWave[0] - newPos[0], this.centerWave[1] - newPos[1]];
     this.centerWave = newPos;
     this.target = (velocity[0] + velocity[1]) * 100;
   }
@@ -47,9 +44,9 @@ export default class extends Scene {
     //   this.time * 0.2,
     //   [this.value, this.value],
     //   4.0,
-      
+
     // );
-    this.postProcess.setGlitch(time, delta, delta, this.mngTex.get("signature").get());
+    this.postProcess.setGlitch(time, delta, delta, this.mngTex.get('signature').get());
     this.postProcess.setWave(time, delta, this.centerWave);
     // this.postProcess.setRGB(
     //   delta * 100.0,

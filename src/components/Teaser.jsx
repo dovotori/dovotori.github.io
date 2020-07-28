@@ -92,6 +92,7 @@ const Teaser = ({ entry, className, currentHover, setCurrentHover, isTouchDevice
       onMouseLeave={onLeave}
       levelOpacity={opacity}
       isVisible={inView}
+      title={slug}
     >
       <Infos colorType={colorType}>
         <StyledLazyImage

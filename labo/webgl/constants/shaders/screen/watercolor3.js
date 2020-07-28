@@ -105,12 +105,9 @@ void main() {
 	gl_FragColor = vec4(effect.xyz, color.a);
 }`;
 
-
 export default {
   vertex,
   fragment,
   attributes: ['position', 'texture'],
   uniforms: ['flipY', 'textureMap', 'noiseMap'],
 };
-
-

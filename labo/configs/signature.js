@@ -1,9 +1,9 @@
-const MAIN_PROG = "signature";
-const MAIN_OBJ = "head";
+const MAIN_PROG = 'signature';
+const MAIN_OBJ = 'head';
 export default {
   MAIN_PROG,
   MAIN_OBJ,
-  programs: ["basique3d", MAIN_PROG],
+  programs: ['basique3d', MAIN_PROG],
   assets: [`/gltf/${MAIN_OBJ}.gltf`],
   camera: {
     position: { x: 0, y: 0, z: 30 },
@@ -42,9 +42,9 @@ export default {
     //   direction: [0, 0, 1]
     // }
   ],
-  mouse: { domId: "signature", events: ["move"] },
+  mouse: { domId: 'signature', events: ['move'] },
   postprocess: {
-    effects: ["glitch", "wave", "watercolorMoving", "fxaa"],
+    effects: ['glitch', 'wave', 'watercolorMoving', 'fxaa'],
   },
   useDepthTexture: true,
   canvas: {

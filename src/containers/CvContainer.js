@@ -1,6 +1,6 @@
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 
-import Cv from "../components/Cv";
+import Cv from '../components/Cv';
 
 const mapStateToProps = (state) => ({
   jobs: state.content.cv.jobs,

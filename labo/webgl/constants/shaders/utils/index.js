@@ -53,3 +53,17 @@ float funcToon(lambertCosinus) {
   return strength;
 }
 `;
+
+export const funcGradiant = `
+vec4 gradiant(vec4 color1, vec4 color2, vec2 start, vec2 end, vec2 uv) {
+  float mixValue = funcMap(uv.x, start.x, end.x, 0.0, 1.0);
+  return mix(color1, color2, mixValue);
+}
+`;
+
+export const funcRand = `
+float rand(float n){ return fract(sin(n) * 43758.5453123); }
+float rand(vec2 n) {
+	return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
+}
+`;

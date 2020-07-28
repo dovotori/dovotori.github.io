@@ -1,10 +1,10 @@
 export default class {
-  constructor(gl) {
+  constructor(gl, isDynamic = false) {
     this.gl = gl;
     // gl.LINES // gl.TRIANGLES // gl.LINE_STRIP // gl.LINE_LOOP
     this.modeDessin = this.gl.TRIANGLES;
     // STATIC_DRAW -> change pas // DYNAMIC_DRAW -> repete // STREAM_DRAW -> une fois au moins
-    this.modeCalcul = this.gl.STATIC_DRAW;
+    this.modeCalcul = isDynamic ? this.gl.STREAM_DRAW : this.gl.STATIC_DRAW;
 
     this.objet = {
       position: { count: 0, vbo: null },

@@ -1,4 +1,3 @@
-
 export const funcShadow = `
 float compareShadow(sampler2D depthMap, vec2 shad, float compare, float epsilon) {
   float visibilite = 1.0;

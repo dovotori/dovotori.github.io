@@ -1,5 +1,5 @@
-import Spring from "../maths/Spring";
-import Camera from "./Camera";
+import Spring from '../maths/Spring';
+import Camera from './Camera';
 
 export default class extends Camera {
   constructor(options) {
@@ -12,8 +12,7 @@ export default class extends Camera {
     super.update();
     this.rotationX.update();
     this.position.set(
-      this.options.position.x +
-        Math.sin(this.rotationX.get() * 0.01) * this.options.position.z,
+      this.options.position.x + Math.sin(this.rotationX.get() * 0.01) * this.options.position.z,
       this.options.position.y,
       Math.cos(this.rotationX.get() * 0.01) * this.options.position.z
     );

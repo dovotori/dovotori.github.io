@@ -44,5 +44,5 @@ export default {
   vertex,
   fragment,
   attributes: ['position', 'joint', 'weight'],
-  uniforms: ['projection', 'model', 'view'].concat(getExtraLocations())
+  uniforms: ['projection', 'model', 'view'].concat(getExtraLocations()),
 };

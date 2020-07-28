@@ -1,6 +1,6 @@
-import StateSprite from "../logic/StateSprite";
-import MeshSprite from "../meshes/MeshSprite";
-import Vec3 from "../maths/Vec3";
+import StateSprite from '../logic/StateSprite';
+import MeshSprite from '../meshes/MeshSprite';
+import Vec3 from '../maths/Vec3';
 
 export default class extends MeshSprite {
   constructor(constants, sprites, viewBox, startPos, status, callback) {
@@ -38,7 +38,7 @@ export default class extends MeshSprite {
       this.position.getZ()
     );
     program.setTexture(0, texture.get());
-    program.setInt("inverseX", this.inverseX ? 1 : 0);
+    program.setInt('inverseX', this.inverseX ? 1 : 0);
     super.render(objet, program);
     this.setSprite(this.stateSprite.get());
   }

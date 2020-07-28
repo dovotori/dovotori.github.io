@@ -1,5 +1,5 @@
 import { addLightLocations, uniformLights } from './light';
-import { PI } from ".";
+import { PI } from '.';
 
 export const uniformPBR = `
 uniform vec4 color;

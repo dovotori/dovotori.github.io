@@ -1,8 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled, {css} from "styled-components";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 
-import useHover from "../hooks/useHover";
+import useHover from '../hooks/useHover';
 
 const common = css`
   position: relative;
@@ -37,7 +37,7 @@ const Fill = styled.div`
   background: ${(p) => p.theme.getGradient};
   transition: transform 300ms ${(p) => p.theme.elastic};
   transform-origin: 100% 0;
-  transform: ${(p) => (p.isFocus ? "none" : "scale(0, 1)")};
+  transform: ${(p) => (p.isFocus ? 'none' : 'scale(0, 1)')};
 `;
 
 const Span = styled.span`
@@ -55,7 +55,7 @@ const Button = ({ to, className, href, colorType, text }) => {
   return (
     <Component
       href={href}
-      to={to || "/"}
+      to={to || '/'}
       className={className}
       isFocus={isHovered}
       colorType={colorType}

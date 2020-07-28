@@ -331,6 +331,20 @@ const rawPosts = [
     },
     html: true,
   },
+  {
+    id: 20,
+    slug: 'shader',
+    title: { [Locales.FR]: 'Shader', [Locales.EN]: 'Shader', [Locales.JP]: 'Shader' },
+    category: CAT_BLOG,
+    tags: [],
+    date: 2020,
+    description: {
+      [Locales.FR]: [''],
+      [Locales.EN]: [''],
+      [Locales.JP]: [''],
+    },
+    html: true,
+  },
 ];
 
 export default (locale) => {

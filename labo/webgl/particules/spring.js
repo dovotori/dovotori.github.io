@@ -1,10 +1,10 @@
-import Vec3 from "../maths/Vec3";
+import Vec3 from '../maths/Vec3';
 
-export default class { 
+export default class {
   constructor() {
-    this.length = 10.0;   // distance avec le point d'origine
+    this.length = 10.0; // distance avec le point d'origine
     this.stiffness = 0.2; // rigidite entre 0 et 0.999999
-    this.damping = 0.9;   // amortissement entre 0 et 0.99999
+    this.damping = 0.9; // amortissement entre 0 et 0.99999
   }
 
   update = (origine, node) => {
@@ -12,22 +12,28 @@ export default class {
     let target = new Vec3(0, 0, 0);
     let force = new Vec3(0, 0, 0);
 
-    diff = origine.moins(node.position);
-    diff.normaliser();
-    diff = diff.multiplierValeur(-this.length);
+    diff = origine.minus(node.position);
+    diff.normalise();
+    diff = diff.multiplyNumber(-this.length);
 
-    target = origine.plus(diff);
+    target = origine.add(diff);
 
-    force = target.moins(node.position);
-    force = force.multiplierValeur(this.stiffness);
-    force = force.multiplierValeur(1 - this.damping);
+    force = target.minus(node.position);
+    force = force.multiplyNumber(this.stiffness);
+    force = force.multiplyNumber(1 - this.damping);
 
-    node.setSpeed(node.vitesse.plus(force));
-  }
+    node.setSpeed(node.vitesse.add(force));
+  };
 
-  setLength = (value) => { this.length = value; }
+  setLength = (value) => {
+    this.length = value;
+  };
 
-  setStiffness = (value) => { this.stiffness = value; }
+  setStiffness = (value) => {
+    this.stiffness = value;
+  };
 
-  setDamping = (value) => { this.damping = value; }
+  setDamping = (value) => {
+    this.damping = value;
+  };
 }

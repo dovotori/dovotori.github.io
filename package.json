@@ -13,7 +13,7 @@
     "build": "webpack --config webpack/prod.js",
     "labo": "webpack-dev-server --config webpack/labo.dev.js",
     "labo:build": "node scripts/cleanBuild.js && webpack --config webpack/labo.prod.js",
-    "lint": "eslint --fix --config .eslintrc --ext .jsx,.js src/ labo/",
+    "lint": "npx prettier --write \"{src,labo,webpack,scripts}/**/*.{js,jsx}\" && eslint --fix --config .eslintrc --ext .jsx,.js src/ labo/ webpack/ scripts/",
     "favicon": "node scripts/favicons.js",
     "test": "jest --config=jest.config.js",
     "docker:build:dev": "docker build --no-cache --target client_dev --tag dovotori_client_dev:latest .",
@@ -66,7 +66,7 @@
     "eslint": "6.8.0",
     "eslint-config-airbnb": "18.0.1",
     "eslint-config-prettier": "6.11.0",
-    "eslint-import-resolver-webpack": "^0.12.1",
+    "eslint-import-resolver-webpack": "0.12.1",
     "eslint-plugin-import": "2.20.1",
     "eslint-plugin-jest": "23.8.2",
     "eslint-plugin-jsx-a11y": "6.2.3",
@@ -77,9 +77,12 @@
     "jest": "25.1.0",
     "prettier": "2.0.5",
     "puppeteer": "3.3.0",
+    "simple-peer": "^9.7.2",
+    "socket.io-client": "^2.3.0",
     "standard-version": "7.1.0",
     "webpack-bundle-analyzer": "3.6.1",
-    "webpack-dev-server": "3.10.3"
+    "webpack-dev-server": "3.10.3",
+    "webrtc-adapter": "7.6.3"
   },
   "main": "src/index.js",
   "repository": {

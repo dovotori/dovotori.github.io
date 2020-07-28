@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 const useFetchJs = (name) => {
   const [pending, setPending] = useState(true);

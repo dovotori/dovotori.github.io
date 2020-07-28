@@ -18,14 +18,14 @@ const optimization = {
     cacheGroups: {
       defaultVendors: {
         test: /[\\/]node_modules[\\/]/,
-        priority: -10
+        priority: -10,
       },
       default: {
         minChunks: 2,
         priority: -20,
-        reuseExistingChunk: true
-      }
-    }
+        reuseExistingChunk: true,
+      },
+    },
   },
   minimize: true,
   minimizer: [
@@ -36,7 +36,10 @@ const optimization = {
         ecma: 6,
         warnings: false,
         sourceMap: false,
-        comments: false
+        comments: false,
+        compress: {
+          drop_console: true,
+        },
       },
     }),
   ],

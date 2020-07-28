@@ -1,7 +1,7 @@
-import Objectif from "./Objectif";
-import Fbo from "./Fbo";
-import MeshRepere from "../meshes/MeshRepere";
-import Vec3 from "../maths/Vec3";
+import Objectif from './Objectif';
+import Fbo from './Fbo';
+import MeshRepere from '../meshes/MeshRepere';
+import Vec3 from '../maths/Vec3';
 
 export default class extends Objectif {
   constructor(gl, config, width = 1024, height = 1024, useDepth = false) {
@@ -26,7 +26,7 @@ export default class extends Objectif {
     this.position.set(
       Math.cos(time * 0.002) * (4.0 + offset),
       this.position.getY(),
-      Math.sin(time * 0.002) * (4.0 + offset),
+      Math.sin(time * 0.002) * (4.0 + offset)
     );
     this.lookAt();
     this.repere.update(this.position, this.sizeRepere);

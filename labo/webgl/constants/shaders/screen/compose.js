@@ -31,12 +31,5 @@ export default {
   vertex,
   fragment,
   attributes: ['position', 'texture'],
-  uniforms: [
-    'flipY',
-    'textureMap',
-    'diffuseMap',
-    'ssaoMap',
-    'shadowMap',
-    'depthMap',
-  ],
+  uniforms: ['flipY', 'textureMap', 'diffuseMap', 'ssaoMap', 'shadowMap', 'depthMap'],
 };

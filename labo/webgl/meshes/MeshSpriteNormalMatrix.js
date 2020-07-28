@@ -1,4 +1,4 @@
-import Mesh from "./MeshNormalMatrix";
+import Mesh from './MeshNormalMatrix';
 
 export default class extends Mesh {
   constructor() {
@@ -14,10 +14,10 @@ export default class extends Mesh {
   }
 
   setProgramSpecifics(program) {
-    program.setVector("spriteUV", [this.sprite.x, this.sprite.y]);
-    program.setVector("spriteGrid", [this.sprite.texW, this.sprite.texH]);
-    program.setVector("spriteSize", [this.sprite.w, this.sprite.h]);
-    program.setFloat("spriteRefSize", this.sprite.refSize);
+    program.setVector('spriteUV', [this.sprite.x, this.sprite.y]);
+    program.setVector('spriteGrid', [this.sprite.texW, this.sprite.texH]);
+    program.setVector('spriteSize', [this.sprite.w, this.sprite.h]);
+    program.setFloat('spriteRefSize', this.sprite.refSize);
   }
 
   setSprite(values) {

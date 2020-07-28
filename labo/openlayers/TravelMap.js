@@ -61,7 +61,6 @@ const getCoor = (coor) => fromLonLat(coor, 'EPSG:3857');
 //   });
 // };
 
-
 // const getMarkerFeature = ({ coor }) => {
 //   const boxSize = [20000, 1000];
 //   const midSize = [boxSize[0] / 2, boxSize[1] / 2]
@@ -110,7 +109,6 @@ const getCoor = (coor) => fromLonLat(coor, 'EPSG:3857');
 //     features: (new GeoJSON()).readFeatures(geojsonObject)
 //   });
 
-
 //   return  new VectorLayer({
 //     source: vectorSource,
 //     style: styleFunction
@@ -123,36 +121,39 @@ const getView = (points, defaultZoom) => {
       minX: acc.minX ? Math.min(acc.minX, coor[0]) : coor[0],
       maxX: acc.maxX ? Math.max(acc.maxX, coor[0]) : coor[0],
       minY: acc.minY ? Math.min(acc.minY, coor[1]) : coor[1],
-      maxY: acc.maxY ? Math.max(acc.maxY, coor[1]) : coor[1]
+      maxY: acc.maxY ? Math.max(acc.maxY, coor[1]) : coor[1],
     };
-  }, {}); 
+  }, {});
 
-  const centerX = extremes.minX + ((extremes.maxX - extremes.minX) / 2);
-  const centerY = extremes.minY + ((extremes.maxY - extremes.minY) / 2);
+  const centerX = extremes.minX + (extremes.maxX - extremes.minX) / 2;
+  const centerY = extremes.minY + (extremes.maxY - extremes.minY) / 2;
 
   const center = [centerX, centerY];
   const boxSize = getCoor([30, 20]);
   const extent = [
-    center[0] - (boxSize[0] / 2), center[1] - (boxSize[1] / 2),
-    center[0] + (boxSize[0] / 2), center[1] + (boxSize[1] / 2)
+    center[0] - boxSize[0] / 2,
+    center[1] - boxSize[1] / 2,
+    center[0] + boxSize[0] / 2,
+    center[1] + boxSize[1] / 2,
   ];
 
   return new View({
     center,
     zoom: defaultZoom,
     maxZoom: 9,
-    extent
+    extent,
   });
 };
 
 const getMarkersLayer = (points) => {
-  const features = points.map(({ label, coor, offsetY }) => 
-    new Feature({
-      type: 'icon',
-      geometry: new Point(coor),
-      text: label,
-      offsetY
-    })
+  const features = points.map(
+    ({ label, coor, offsetY }) =>
+      new Feature({
+        type: 'icon',
+        geometry: new Point(coor),
+        text: label,
+        offsetY,
+      })
   );
 
   const style = new Style({
@@ -164,25 +165,25 @@ const getMarkersLayer = (points) => {
 
   return new VectorLayer({
     source: new VectorSource({ features }),
-    style
+    style,
   });
 };
 
 const getLineLayer = (points) => {
   const style = new Style({
-    stroke: new Stroke({ color: '#fff', width: 2, lineDash: [4, 4] })
+    stroke: new Stroke({ color: '#fff', width: 2, lineDash: [4, 4] }),
   });
 
   return new VectorLayer({
     source: new VectorSource({
       features: [
         new Feature({
-          geometry: new LineString(points.map(point => point.coor)),
-          style
-        })
-      ]
+          geometry: new LineString(points.map((point) => point.coor)),
+          style,
+        }),
+      ],
     }),
-    style
+    style,
   });
 };
 
@@ -213,58 +214,59 @@ const replacer = (key, value) => {
     }
 
     return {
-      'type': 'Feature',
-      'geometry': {
-        'type': type,
-        'coordinates': geometry
+      type: 'Feature',
+      geometry: {
+        type,
+        coordinates: geometry,
       },
-      'properties': value.tags
+      properties: value.tags,
     };
-  } 
-    return value;
-  
+  }
+  return value;
 };
 
 const getVectorMap = (json, highlightIso) => {
   const tileIndex = geojsonvt(json, {
     extent: 4096,
-    debug: 1
+    debug: 1,
   });
-  
+
   const vectorSource = new VectorTileSource({
     format: new GeoJSON({
       // Data returned from geojson-vt is in tile pixel units
       dataProjection: new Projection({
         code: 'TILE_PIXELS',
         units: 'tile-pixels',
-        extent: [0, 0, 4096, 4096]
-      })
+        extent: [0, 0, 4096, 4096],
+      }),
     }),
     tileUrlFunction(tileCoord) {
       const data = tileIndex.getTile(tileCoord[0], tileCoord[1], tileCoord[2]);
-      const geojsonData = JSON.stringify({
-        type: 'FeatureCollection',
-        features: data ? data.features : []
-      }, replacer);
+      const geojsonData = JSON.stringify(
+        {
+          type: 'FeatureCollection',
+          features: data ? data.features : [],
+        },
+        replacer
+      );
       return `data:application/json;charset=UTF-8,${geojsonData}`;
-    }
+    },
   });
 
   const style = (feature) => {
     if (feature.get('ISO_A3') === highlightIso) {
       return new Style({
-        fill: new Fill({ color: '#e666FF' })
+        fill: new Fill({ color: '#e666FF' }),
       });
     }
     return new Style({
-      fill: new Fill({ color: '#540054' })
+      fill: new Fill({ color: '#540054' }),
     });
   };
-    
 
   return new VectorTileLayer({
     source: vectorSource,
-    style
+    style,
   });
 };
 
@@ -272,21 +274,21 @@ const createTooltip = (map, point) => {
   const { label, coor, offsetY } = point;
   const tooltipElement = document.createElement('div');
   const classDirection = offsetY ? 'bottom' : 'top';
-  const className =`ol-tooltip ol-tooltip-measure ${classDirection} ${label.toLowerCase()}`;
+  const className = `ol-tooltip ol-tooltip-measure ${classDirection} ${label.toLowerCase()}`;
   tooltipElement.className = className;
   tooltipElement.innerHTML = label;
   const tooltip = new Overlay({
     element: tooltipElement,
     offset: [0, offsetY ? 40 : -40],
-    positioning: 'center-center'
+    positioning: 'center-center',
   });
   tooltip.setPosition(coor);
   map.addOverlay(tooltip);
-}
+};
 
 export default (div, points, geojson, icon, highlightIso, defaultZoom = 6) => {
-  const formatPoints = points.map(point => ({ ...point, coor: getCoor(point.coor) }));
-  const labelPoints = formatPoints.filter(point => point.label);
+  const formatPoints = points.map((point) => ({ ...point, coor: getCoor(point.coor) }));
+  const labelPoints = formatPoints.filter((point) => point.label);
   const view = getView(labelPoints, defaultZoom);
   const animMarker = new AnimationMarker(formatPoints, icon);
   const layers = [
@@ -306,24 +308,24 @@ export default (div, points, geojson, icon, highlightIso, defaultZoom = 6) => {
     getLineLayer(labelPoints),
     getMarkersLayer(labelPoints),
     // getMarkersBackgroundLayer(formatPoints),
-    animMarker.getVectorLayer()
+    animMarker.getVectorLayer(),
   ];
 
   const map = new Map({
     controls: defaultControls({
-      zoom : false,
-      rotate: false
+      zoom: false,
+      rotate: false,
     }).extend([
       new ScaleLine({
-        units: 'metric'
+        units: 'metric',
       }),
     ]),
     target: div,
     layers,
-    view
+    view,
   });
 
-  labelPoints.forEach(point => createTooltip(map, point));
+  labelPoints.forEach((point) => createTooltip(map, point));
 
   const start = () => {
     map.un('postrender', start);
@@ -332,5 +334,5 @@ export default (div, points, geojson, icon, highlightIso, defaultZoom = 6) => {
     animMarker.start(true);
   };
 
-  map.on("postrender", start);
+  map.on('postrender', start);
 };
