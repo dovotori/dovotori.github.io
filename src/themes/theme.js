@@ -16,6 +16,18 @@ const common = {
     tablet: 1020,
     mobile: 420,
   },
+  title: css`
+    font-family: 'arame', monospace;
+    text-align: left;
+    font-size: 3em;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    line-height: 1.1;
+    color: ${(p) => p.theme.getColor};
+    overflow-wrap: break-word;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 0 ${(p) => p.theme.backgroundHighlight};
+  `,
   monospace: css`
     font-size: 0.8em;
     line-height: 1.6em;

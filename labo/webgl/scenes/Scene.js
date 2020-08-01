@@ -41,7 +41,7 @@ export default class {
         this.mngSound = new ManagerSounds(assets.sounds);
       }
     }
-    this.gl.viewport(0, 0, this.containerSize.width, this.containerSize.height);
+    this.resizeViewport();
   }
 
   canUseDepth() {
@@ -50,7 +50,7 @@ export default class {
 
   resize(box) {
     this.containerSize = box;
-    this.gl.viewport(0, 0, this.containerSize.width, this.containerSize.height);
+    this.resizeViewport();
   }
 
   update() {
@@ -60,6 +60,10 @@ export default class {
   render() {
     this.update();
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+  }
+
+  resizeViewport() {
+    this.gl.viewport(0, 0, this.containerSize.width, this.containerSize.height);
   }
 
   getColorPixel(x, y) {

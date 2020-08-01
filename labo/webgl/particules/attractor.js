@@ -1,28 +1,17 @@
+import Node from './Node';
 import Vec3 from '../maths/Vec3';
 
-export default class {
-  constructor() {
-    this.position = new Vec3(0, 0, 0);
-    this.vitesse = new Vec3(1, 1, 1);
-    this.radius = 40.0; // rayon d'action
-    this.strength = -10.0; // positive attraction, negative repulsion
+export default class extends Node {
+  constructor(options = {}) {
+    super(options);
+    this.radius = 0.5; // rayon d'action
+    this.strength = 0.1; // positive attraction, negative repulsion
     this.ramp = 0.2; // force elastique entre 0 et 0.9999
   }
 
-  updatePong = (width = 600, height = 600) => {
-    if (this.position.x < 0 || this.position.x > width) {
-      this.vitesse.x *= -1;
-    }
-    if (this.position.y < 0 || this.position.y > height) {
-      this.vitesse.y *= -1;
-    }
-    this.position.x += this.vitesse.x;
-    this.position.y += this.vitesse.y;
-  };
-
   attract = (node) => {
-    let difference = this.position.minus(node.position);
-    const distance = difference.longueur();
+    let difference = new Vec3().equal(this.position).minus(node.getPosition());
+    const distance = difference.length();
 
     if (distance > 0 && distance < this.radius) {
       const s = distance / this.radius;
@@ -30,27 +19,19 @@ export default class {
       force = (this.strength * force) / this.radius;
 
       difference = difference.multiplyNumber(force);
-      node.setSpeed(node.vitesse.add(difference));
+      node.setSpeed(...node.speed.add(difference).get());
     }
-  };
-
-  setPosition = (x = 0, y = 0, z = 0) => {
-    this.position.set(x, y, z);
   };
 
   setRadius = (value) => {
     this.radius = value;
-  }; // rayon d'action
+  };
 
   setStrength = (value) => {
     this.strength = value;
-  }; // positive  attraction, negative repulsion
+  };
 
   setRamp = (value) => {
     this.ramp = value;
-  }; // force elastique entre 0 et 0.9999
-
-  getPosition = () => {
-    return this.position;
   };
 }

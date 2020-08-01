@@ -1,14 +1,21 @@
 import PingPongBuffer from './PingPongBuffer';
 import Screen from './Screen';
+import Program from './Program';
+import screen from '../constants/shaders/screen/screen';
+import debug from '../constants/shaders/screen/debug';
 
 export default class {
   constructor(gl, width = 1024, height = 1024, useDepth = false) {
     this.gl = gl;
-    this.ppb = new PingPongBuffer(this.gl, width, height, useDepth);
-    this.screen = new Screen(this.gl);
+    this.ppb = new PingPongBuffer(gl, width, height, useDepth);
+    this.screen = new Screen(gl);
     this.width = width;
     this.height = height;
     this.passCount = 0;
+    this.programs = {
+      screen: new Program(gl, screen),
+      debug: new Program(gl, debug),
+    };
   }
 
   start() {
@@ -24,7 +31,7 @@ export default class {
     this.ppb.resize(box);
   }
 
-  commonFirstTex(program, tex = null) {
+  applyTexToProg(program, tex = null) {
     const usePPB = tex === null;
     this.passCount = usePPB ? this.passCount + 1 : 0;
     /*
@@ -34,26 +41,22 @@ export default class {
     const textureIdx = this.passCount + 1;
     const finalTexture = usePPB ? this.ppb.getTexture().get() : tex;
     program.setTexture(textureIdx, finalTexture, 'textureMap');
-    const flipYWay = this.passCount > 0 ? -1.0 : 1.0;
-    program.setFloat('flipY', flipYWay);
+
+    const flipY = this.passCount > 0 ? -1.0 : 1.0;
+    program.setFloat('flipY', flipY);
     return program;
   }
 
-  commonRenderPass(program) {
+  renderToPingPong(program) {
     this.ppb.swap();
     this.ppb.start();
     this.screen.render(program.get());
     this.ppb.end();
   }
 
-  render(tex = null, debug = false) {
-    if (debug) {
-      const program = this.commonFirstTex(this.programs.debug, tex);
-      this.screen.render(program.get());
-    } else {
-      const program = this.commonFirstTex(this.programs.screen, tex);
-      this.screen.render(program.get());
-    }
+  render(tex = null, isDebug = false) {
+    const program = this.applyTexToProg(this.programs[isDebug ? 'debug' : 'screen'], tex);
+    this.screen.render(program.get());
   }
 
   getTexture() {

@@ -75,7 +75,6 @@ class Mouse {
     const box = this.div.getBoundingClientRect();
     const x = pos.x - box.x;
     const y = pos.y - box.y;
-    console.log(this.oldPos.x, pos.x);
     const relPrevious = {
       x: this.oldPos.x - pos.x,
       y: this.oldPos.y - pos.y,

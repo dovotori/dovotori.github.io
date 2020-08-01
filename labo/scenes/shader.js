@@ -1,8 +1,10 @@
-import Scene from '../webgl/scenes/Scene';
+import Scene from '../webgl/scenes/SceneCamera';
 import Screen from '../webgl/gl/Screen';
-import Line from '../webgl/gl/Line';
-import { hexToRgb } from '../webgl/utils/color';
-import Target from '../webgl/maths/Target';
+// import LinesTrail from '../webgl/gl/LinesTrail';
+// import Grid from '../webgl/particules/Grid';
+// import Migration from '../webgl/particules/Migration';
+// import SimpleVbo from '../webgl/vbos/SimpleVbo';
+import GpuParticules from '../webgl/gl/GpuParticules';
 
 export default class extends Scene {
   constructor(gl, config, assets, width = 512, height = 512) {
@@ -12,51 +14,47 @@ export default class extends Scene {
     this.MAIN_OBJ = config.MAIN_OBJ;
 
     this.screen = new Screen(this.gl);
-    this.colors = ['#e09f7d', '#ef5d60', '#ec4067', '#a01a7d', '#311847'].map((hex) => {
-      const { r, g, b } = hexToRgb(hex);
-      return [r / 255, g / 255, b / 255];
-    });
-    this.lines = this.colors.map((_, i) => {
-      return new Line(gl, 20, {
-        spring: 0.06 * i,
-        friction: 0.85 + i * 0.02,
-      });
-    });
-    this.mousePos = { x: 0, y: 0 };
-    this.weight = 0; // new Target(0, 0.01);
+    // this.linesTrail = new LinesTrail(this.gl);
+    // this.grid = new Grid(10);
+    // this.migration = new Migration(40);
+    // this.vbo = new SimpleVbo(gl, this.migration.getPositions(), true);
+    // this.vbo = new SimpleVbo(gl, this.grid.getPositions(), true);
+    // this.vbo.setModeDessin(this.gl.POINTS);
+    this.particules = new GpuParticules(gl);
   }
 
   update() {
     super.update();
     const program = this.mngProg.get(this.MAIN_PROG);
-    // program.setVector('resolution', [this.containerSize.width, this.containerSize.height]);
     program.setFloat('time', this.time);
-    this.lines.forEach((line) => line.update(this.mousePos));
+
+    // this.grid.update();
+    // this.migration.update();
+    // this.vbo.update(this.migration.getPositions());
+    // this.vbo.update(this.grid.getPositions());
   }
 
   render() {
     super.render();
     // this.screen.render(this.mngProg.get(this.MAIN_PROG).get());
-    const program = this.mngProg.get(this.MAIN_PROG);
-    // this.weight.update();
-    program.setFloat('weight', this.weight);
-    this.lines.forEach((line, i) => {
-      program.setVector('color', this.colors[i]);
-      line.render(program.get());
-    });
+    // const program = this.mngProg.get(this.MAIN_PROG);
+    // this.linesTrail.update(program);
+    // this.linesTrail.render(program);
+
+    // this.vbo.render(program.get());
+
     // DEBUG
     // this.postProcess.render(texData.get());
+    this.particules.compute(this.time);
+    this.resizeViewport();
+    this.particules.render(this.camera, this.time);
   }
 
   onMouseDrag = (mouse) => {
-    this.mousePos = mouse.rel;
-    console.log('+++', mouse.speed);
-    // this.weight.setDirect(mouse.speed * 0.01);
-    this.weight = mouse.speed * 0.01;
+    // this.linesTrail.onMouseDrag(mouse);
   };
 
   onMouseDown = (mouse) => {
-    this.mousePos = mouse.rel;
-    this.lines.forEach((line) => line.init([mouse.rel.x, mouse.rel.y, 0]));
+    // this.linesTrail.onMouseDown(mouse);
   };
 }

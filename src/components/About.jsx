@@ -9,7 +9,6 @@ import ButtonBack from './ButtonBack';
 import Button from './Button';
 import TypingMessage from './TypingMessage';
 import Bloc from './Bloc';
-import { Title } from '../themes/styled';
 
 const Links = styled.div`
   margin: 4em 0;
@@ -61,7 +60,8 @@ const StyledTypingMessage = styled(TypingMessage)`
   position: relative;
 `;
 
-const StyledTitle = styled(Title)`
+const StyledTitle = styled.h1`
+  ${(p) => p.theme.title}
   position: relative;
   margin-bottom: 1em;
 `;

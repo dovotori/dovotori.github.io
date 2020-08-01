@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 // import { ReactComponent as Sumo } from 'Assets/svg/sumo.svg';
 import ProjectHtml from './ProjectHtml';
 import TypingMessage from './TypingMessage';
-import { Title } from '../themes/styled';
 
 const fadeUp = keyframes`
   0% { transform: scale(0.8); opacity: 0; }
@@ -131,7 +130,8 @@ const commonName = css`
   user-select: none;
 `;
 
-const Name = styled(Title)`
+const Name = styled.h1`
+  ${(p) => p.theme.title}
   ${commonName}
   color: ${(p) => p.theme.text};
   letter-spacing: 0.5em;
@@ -142,12 +142,13 @@ const Name = styled(Title)`
   `}
 `;
 
-const Katakana = styled(Title)`
+const Katakana = styled.h1`
   ${commonName}
   top: 50%;
   letter-spacing: 0.1em;
   font-family: 'nikkyou', monospace;
   font-size: 1000%;
+  color: ${(p) => p.theme.primary};
   ${(p) => p.theme.media.mobile`
     font-size: 600%;
   `}

@@ -30,15 +30,15 @@ export default class extends ProcessBase {
 
   setBlurPass(size = 2.0, nbPass = 1, tex = null) {
     for (let i = 0; i < nbPass; i += 1) {
-      let program = this.commonFirstTex(this.programs.blurDirection, tex);
+      let program = this.applyTexToProg(this.programs.blurDirection, tex);
       program.setFloat('direction', 0.0);
       program.setFloat('size', size);
-      this.commonRenderPass(program);
+      this.renderToPingPong(program);
 
-      program = this.commonFirstTex(program, tex);
+      program = this.applyTexToProg(program, tex);
       program.setFloat('direction', 1.0);
       program.setFloat('size', size);
-      this.commonRenderPass(program);
+      this.renderToPingPong(program);
     }
   }
 }

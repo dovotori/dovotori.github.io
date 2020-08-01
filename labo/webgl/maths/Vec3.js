@@ -13,6 +13,7 @@ class Vec3 {
       this.d[1] /= length;
       this.d[2] /= length;
     }
+    return this;
   }
 
   get() {
@@ -127,7 +128,10 @@ class Vec3 {
   }
 
   directionVers(v) {
-    return new Vec3(v.d[0] - this.d[0], v.d[1] - this.d[1], v.d[2] - this.d[2]);
+    this.d[0] = v.d[0] - this.d[0];
+    this.d[1] = v.d[1] - this.d[1];
+    this.d[2] = v.d[2] - this.d[2];
+    return this;
   }
 
   equal(v) {

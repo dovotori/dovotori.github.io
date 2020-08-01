@@ -30,3 +30,4 @@ export { default as sketch } from './sketch';
 export { default as kuwahara } from './kuwahara';
 export { default as shader } from './shader';
 export { default as line } from './line';
+export { default as grid } from './grid';

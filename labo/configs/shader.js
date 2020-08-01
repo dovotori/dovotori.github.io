@@ -1,4 +1,4 @@
-const MAIN_PROG = 'line';
+const MAIN_PROG = 'grid';
 const MAIN_OBJ = '';
 
 export default {
@@ -12,5 +12,12 @@ export default {
   mouse: {
     domId: 'mouse',
     events: ['drag', 'down', 'move'],
+  },
+  camera: {
+    position: { x: 0, y: 0, z: 10 },
+    target: { x: 0, y: 0, z: 0 },
+    near: 1,
+    far: 100,
+    angle: 40,
   },
 };

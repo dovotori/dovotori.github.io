@@ -11,14 +11,11 @@ export default class extends ProcessBase {
   constructor(gl, width = 1024, height = 1024, useDepth = false, effects = []) {
     super(gl, width, height, useDepth);
     this.noiseTex = null;
-    this.passCount = 0;
     this.setupPrograms(effects);
   }
 
   setupPrograms = (effects) => {
-    this.programs = {};
-    const finalEffects = [...effects, 'screen', 'debug'];
-    finalEffects.forEach((effect) => {
+    effects.forEach((effect) => {
       this.programs[effect] = new Program(this.gl, glsl[effect]);
       // pass resolution for effect which need it
       if (glsl[effect].uniforms.indexOf('resolution') !== -1) {
@@ -60,182 +57,182 @@ export default class extends ProcessBase {
   }
 
   setDOF(range, blur, focusDistance, ppm, tex = null) {
-    const program = this.commonFirstTex(this.programs.dof, tex);
+    const program = this.applyTexToProg(this.programs.dof, tex);
     program.setFloat('focusDistance', focusDistance);
     program.setFloat('blur', blur);
     program.setFloat('ppm', ppm);
     program.setVector('range', range);
     program.setTexture(2, this.ppb.getDepthTexture().get(), 'depthMap');
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   setBloom(bloomTexture, gamma, exposure, tex = null) {
-    const program = this.commonFirstTex(this.programs.bloom, tex);
+    const program = this.applyTexToProg(this.programs.bloom, tex);
     program.setFloat('gamma', gamma);
     program.setFloat('exposure', exposure);
     program.setTexture(3, bloomTexture.get(), 'bloomMap');
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   setBlur(direction, tex = null) {
-    const program = this.commonFirstTex(this.programs.blur, tex);
+    const program = this.applyTexToProg(this.programs.blur, tex);
     program.setVector('direction', direction);
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   setKuwahara(tex = null) {
-    const program = this.commonFirstTex(this.programs.kuwahara, tex);
-    this.commonRenderPass(program);
+    const program = this.applyTexToProg(this.programs.kuwahara, tex);
+    this.renderToPingPong(program);
   }
 
   setWatercolor(tex = null) {
-    const program = this.commonFirstTex(this.programs.watercolor, tex);
-    this.commonRenderPass(program);
+    const program = this.applyTexToProg(this.programs.watercolor, tex);
+    this.renderToPingPong(program);
   }
 
   setWatercolor2(gradientStep, advectStep, flipHeightMap, time, tex = null) {
-    const program = this.commonFirstTex(this.programs.watercolor2, tex);
+    const program = this.applyTexToProg(this.programs.watercolor2, tex);
     program.setFloat('gradientStep', gradientStep);
     program.setFloat('advectStep', advectStep);
     program.setFloat('flipHeightMap', flipHeightMap);
     program.setFloat('time', time);
     program.setTexture(2, this.noiseTex.get(), 'heightMap');
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   setWatercolor3(tex = null) {
-    const program = this.commonFirstTex(this.programs.watercolor3, tex);
+    const program = this.applyTexToProg(this.programs.watercolor3, tex);
     program.setTexture(2, this.noiseTex.get(), 'noiseMap');
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   setWatercolorMoving(time, mouse, scale = 4.0, tex = null) {
-    const program = this.commonFirstTex(this.programs.watercolorMoving, tex);
+    const program = this.applyTexToProg(this.programs.watercolorMoving, tex);
     program.setFloat('time', time);
     program.setVector('mouse', mouse);
     program.setFloat('scale', scale);
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   setSobel(tex = null) {
-    const program = this.commonFirstTex(this.programs.sobel, tex);
-    this.commonRenderPass(program);
+    const program = this.applyTexToProg(this.programs.sobel, tex);
+    this.renderToPingPong(program);
   }
 
   setBlurPass(size = 2.0, nbPass = 1, tex = null) {
     for (let i = 0; i < nbPass; i += 1) {
-      let program = this.commonFirstTex(this.programs.blurDirection, tex);
+      let program = this.applyTexToProg(this.programs.blurDirection, tex);
       program.setFloat('direction', 0.0);
       program.setFloat('size', size);
-      this.commonRenderPass(program);
+      this.renderToPingPong(program);
 
-      program = this.commonFirstTex(program, tex);
+      program = this.applyTexToProg(program, tex);
       program.setFloat('direction', 1.0);
       program.setFloat('size', size);
-      this.commonRenderPass(program);
+      this.renderToPingPong(program);
     }
   }
 
   setFXAA(tex = null) {
-    const program = this.commonFirstTex(this.programs.fxaa, tex);
-    this.commonRenderPass(program);
+    const program = this.applyTexToProg(this.programs.fxaa, tex);
+    this.renderToPingPong(program);
   }
 
   setGamma(gamma, tex = null) {
-    const program = this.commonFirstTex(this.programs.gamma, tex);
+    const program = this.applyTexToProg(this.programs.gamma, tex);
     program.setFloat('gamma', gamma);
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   setRGB(deltaX, deltaY, centerX, centerY, tex = null) {
-    const program = this.commonFirstTex(this.programs.rgb, tex);
+    const program = this.applyTexToProg(this.programs.rgb, tex);
     program.setVector('center', [centerX, centerY]);
     program.setVector('delta', [deltaX, deltaY]);
 
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   setVortex(center, radius, angle, tex = null) {
-    const program = this.commonFirstTex(this.programs.vortex, tex);
+    const program = this.applyTexToProg(this.programs.vortex, tex);
     program.setVector('center', center);
     program.setFloat('radius', radius);
     program.setFloat('angle', angle);
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   setOil(radius, tex = null) {
-    const program = this.commonFirstTex(this.programs.oil, tex);
+    const program = this.applyTexToProg(this.programs.oil, tex);
     program.setFloat('radius', radius);
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   setSketch(delta, tex = null) {
-    const program = this.commonFirstTex(this.programs.sketch, tex);
+    const program = this.applyTexToProg(this.programs.sketch, tex);
     program.setFloat('delta', delta);
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   setPixel(deltaX, deltaY, tex = null) {
-    const program = this.commonFirstTex(this.programs.pixel, tex);
+    const program = this.applyTexToProg(this.programs.pixel, tex);
     program.setVector('delta', [deltaX, deltaY]);
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   setWave(time, radius, center, tex = null) {
-    const program = this.commonFirstTex(this.programs.wave, tex);
+    const program = this.applyTexToProg(this.programs.wave, tex);
     program.setFloat('time', time);
     program.setFloat('radius', radius);
     program.setVector('center', center);
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   setSepia(delta, tex = null) {
-    const program = this.commonFirstTex(this.programs.sepia, tex);
+    const program = this.applyTexToProg(this.programs.sepia, tex);
     program.setFloat('delta', delta);
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   setGlitch(time, delta, speed, tex = null) {
-    const program = this.commonFirstTex(this.programs.glitch, tex);
+    const program = this.applyTexToProg(this.programs.glitch, tex);
     program.setFloat('delta', delta);
     program.setFloat('time', time);
     program.setFloat('speed', speed);
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   setGlitch2(time, delta, speed, tex = null) {
-    const program = this.commonFirstTex(this.programs.glitch2, tex);
+    const program = this.applyTexToProg(this.programs.glitch2, tex);
     program.setFloat('delta', delta);
     program.setFloat('time', time);
     program.setFloat('speed', speed);
 
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   setGlitch3(time, delta, tex = null) {
-    const program = this.commonFirstTex(this.programs.glitch3, tex);
+    const program = this.applyTexToProg(this.programs.glitch3, tex);
     program.setFloat('delta', delta);
     program.setFloat('time', time);
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   setGlitch4(time, delta, rate, tex = null) {
-    const program = this.commonFirstTex(this.programs.glitch4, tex);
+    const program = this.applyTexToProg(this.programs.glitch4, tex);
     program.setFloat('delta', delta);
     program.setFloat('time', time);
     program.setFloat('rate', rate);
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   setSignature(time, delta, tex = null) {
-    const program = this.commonFirstTex(this.programs.signature, tex);
+    const program = this.applyTexToProg(this.programs.signature, tex);
     program.setFloat('delta', delta);
     program.setFloat('time', time);
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   setSSAO(projection, view, position, normal, depth, radius, tex = null) {
-    const program = this.commonFirstTex(this.programs.ssao, tex);
+    const program = this.applyTexToProg(this.programs.ssao, tex);
     const invViewProj = new Mat4();
     invViewProj.equal(view).multiply(projection);
     invViewProj.inverse();
@@ -248,7 +245,7 @@ export default class extends ProcessBase {
     program.setTexture(4, depth, 'depthMap');
     program.setTexture(5, this.noiseTex.get(), 'noiseMap');
     program.setFloat('radius', radius);
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 
   compose(albedoMap, diffuseMap, ssaoMap, depthMap, shadowMap) {
@@ -260,6 +257,6 @@ export default class extends ProcessBase {
     program.setTexture(2, ssaoMap, 'ssaoMap');
     program.setTexture(3, depthMap, 'depthMap');
     program.setTexture(4, shadowMap, 'shadowMap');
-    this.commonRenderPass(program);
+    this.renderToPingPong(program);
   }
 }

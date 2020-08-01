@@ -33,6 +33,11 @@ class Context {
       this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
 
       this.support.depthTexture = !!this.gl.getExtension('WEBGL_depth_texture');
+
+      this.support.drawBuffers =
+        !!this.gl.getExtension('WEBGL_draw_buffers') ||
+        !!this.gl.getExtension('GL_EXT_draw_buffers') ||
+        !!this.gl.getExtension('EXT_draw_buffers');
     }
     console.debug('Webgl support info', this.support);
   }

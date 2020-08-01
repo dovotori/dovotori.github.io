@@ -7,8 +7,8 @@ import Spring from '../webgl/maths/Spring';
 import Target from '../webgl/maths/Target';
 import DualQuaternion from '../webgl/maths/DualQuaternion';
 import { degToRad } from '../webgl/utils/numbers';
-import UpdateVbo from '../webgl/gl/UpdateVbo';
-import FixVbo from '../webgl/gl/FixVbo';
+import UpdateVbo from '../webgl/vbos/UpdateVbo';
+import FixVbo from '../webgl/vbos/FixVbo';
 
 export default class extends Scene {
   constructor(gl, config, assets, width = 512, height = 512) {

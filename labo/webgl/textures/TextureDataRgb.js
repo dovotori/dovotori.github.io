@@ -1,9 +1,8 @@
 export default class {
   constructor(gl, uint8data) {
     this.gl = gl;
-    const size = Math.sqrt(uint8data.length); // power of 2
+    const size = Math.sqrt(uint8data.length / 4); // power of 2
     this.size = { width: size, height: size };
-    console.log(uint8data.length, size);
     this.texture = gl.createTexture();
     this.filter = gl.NEAREST;
     // ou LINEAR affinage quand on scale par rapport à nearest mais des fois lignes blanches
@@ -15,11 +14,11 @@ export default class {
     this.gl.texImage2D(
       this.gl.TEXTURE_2D,
       0,
-      this.gl.RGB,
+      this.gl.RGBA,
       this.size.width,
       this.size.height,
       0,
-      this.gl.RGB,
+      this.gl.RGBA,
       this.gl.UNSIGNED_BYTE,
       data
     );

@@ -1,38 +1,40 @@
+import { mapFromRange } from '../utils/numbers';
 import Attractor from './Attractor';
+import Node from './Node';
 
 export default class {
-  constructor() {
-    this.nbNodes = 30;
-    this.distanceInterval = 10;
-    this.nodes = new Array(this.nbNodes * this.nbNodes);
+  constructor(nbRows = 3, nbColumns) {
+    this.nbRows = nbRows;
+    this.nbColumns = nbColumns || nbRows;
+    this.nodes = new Array(this.nbRows * this.nbColumns)
+      .fill()
+      .map((_) => new Node({ withRebond: true, withSlowDown: false }));
     this.attractor = new Attractor();
-  }
-
-  setup = (width, height) => {
-    this.reset();
     this.attractor.setPosition(0, 0, 0);
-    Node.setBox(0, 0, 0, width, height, 1000);
-  };
+    this.placeNodes();
+  }
 
   update = () => {
     this.attractor.update();
-    for (let i = 0; i < this.nbNodes * this.nbNodes; i++) {
-      this.attractor.attract(this.nodes[i]);
-      this.nodes[i].update(false, false, true);
-    }
+    this.nodes.forEach((node) => {
+      this.attractor.attract(node);
+      node.update();
+    });
   };
 
-  reset = () => {
+  placeNodes = () => {
     let cpt = 0;
-    for (let y = 0; y < this.nbNodes; y++) {
-      for (let x = 0; x < this.nbNodes; x++) {
-        const posX = x * this.distanceInterval;
-        const posY = y * this.distanceInterval;
-        this.nodes[cpt] = null;
-        this.nodes[cpt] = new Node();
+    for (let y = 0; y < this.nbColumns; y++) {
+      for (let x = 0; x < this.nbRows; x++) {
+        const posX = mapFromRange(x, 0, this.nbRows - 1, -1, 1);
+        const posY = mapFromRange(y, 0, this.nbColumns - 1, -1, 1);
         this.nodes[cpt].setPosition(posX, posY, 0);
         cpt++;
       }
     }
   };
+
+  getPositions() {
+    return this.nodes.reduce((acc, node) => [...node.getPosition().get(), ...acc], []);
+  }
 }

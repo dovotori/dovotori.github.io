@@ -61,10 +61,32 @@ koharuiro -> kanji sharp
 }
 
 @font-face {
-  font-family: 'whiterabbit';
-  src: url('../fonts/whiterabbit.woff2') format('woff2');
+  font-family: 'staatliches';
+  src: url('../fonts/staatliches.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
+}
+
+@font-face {
+  font-family: 'arame';
+  font-weight: 500;
+  src: url('../fonts/arame/regular/arame.eot');
+  src: url('../fonts/arame/regular/arame.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/arame/regular/arame.woff2') format('woff2'),
+    url('../fonts/arame/regular/arame.woff') format('woff'),
+    url('../fonts/arame/regular/arame.ttf') format('truetype'),
+    url('../fonts/arame/regular/arame.svg#Arame') format('svg');
+}
+
+@font-face {
+  font-family: 'arame';
+  font-weight: 100;
+  src: url('../fonts/arame/thin/arame.eot');
+  src: url('../fonts/arame/thin/arame.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/arame/thin/arame.woff2') format('woff2'),
+    url('../fonts/arame/thin/arame.woff') format('woff'),
+    url('../fonts/arame/thin/arame.ttf') format('truetype'),
+    url('../fonts/arame/thin/arame.svg#Arame') format('svg');
 }
 
 * {

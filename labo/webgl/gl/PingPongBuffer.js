@@ -5,9 +5,6 @@ export default class {
     this.fbos = [];
     this.currentFbo = 0;
     const extension = null;
-    // gl.getExtension("WEBGL_draw_buffers") ||
-    // gl.getExtension("GL_EXT_draw_buffers") ||
-    // gl.getExtension("EXT_draw_buffers");
     this.fbos[0] = new Fbo(gl, width, height, useDepth, extension, 0);
     this.fbos[1] = new Fbo(gl, width, height, useDepth, extension, 1);
   }

@@ -5,7 +5,6 @@ import ButtonBack from './ButtonBack';
 import Bloc from './Bloc';
 import TypingMessage from './TypingMessage';
 import ProjectImage from './ProjectImage';
-import { Title } from '../themes/styled';
 import ProjectHtml from './ProjectHtml';
 
 const TEXT_WIDTH = 400;
@@ -70,7 +69,8 @@ const Date = styled.p`
   ${(p) => p.theme.monospace}
 `;
 
-const StyledTitle = styled(Title)`
+const StyledTitle = styled.h1`
+  ${(p) => p.theme.title}
   margin: 1em 0;
   padding: 0 10px;
 `;
