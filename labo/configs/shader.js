@@ -1,10 +1,5 @@
-const MAIN_PROG = 'grid';
-const MAIN_OBJ = '';
-
 export default {
-  MAIN_PROG,
-  MAIN_OBJ,
-  programs: [MAIN_PROG, 'pass1Morph', 'pass2Camera'],
+  programs: ['line', 'grid', 'pass1Morph', 'pass2Camera', 'basique3d'],
   canvas: {
     width: 512,
     height: 512,
@@ -19,5 +14,8 @@ export default {
     near: 1,
     far: 100,
     angle: 40,
+  },
+  controls: {
+    modes: [1, 2, 3],
   },
 };

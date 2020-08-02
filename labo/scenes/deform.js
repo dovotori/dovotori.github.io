@@ -14,9 +14,6 @@ export default class extends Scene {
   constructor(gl, config, assets, width = 512, height = 512) {
     super(gl, config, assets, width, height);
 
-    this.MAIN_PROG = config.MAIN_PROG;
-    this.MAIN_OBJ = config.MAIN_OBJ;
-
     this.texture = new TexturePerlinNoise(gl, 256, 256);
     this.model = new Mat4();
     this.model.identity();
@@ -35,7 +32,7 @@ export default class extends Scene {
     indexes = indexes.map((_, index) => index);
     this.fVbo = new FixVbo(this.gl, indexes);
 
-    this.mngObj.get(this.MAIN_OBJ).setModeDessin(this.gl.POINTS);
+    this.mngObj.get(this.config.MAIN_OBJ).setModeDessin(this.gl.POINTS);
 
     this.setupControls();
   }
@@ -103,14 +100,14 @@ export default class extends Scene {
     quat.rotateX(-angle2);
     this.model.multiply(quat.toMatrix4());
 
-    const program = this.mngProg.get(this.MAIN_PROG);
+    const program = this.mngProg.get(this.config.MAIN_PROG);
     program.setVector('resolution', [this.containerSize.width, this.containerSize.height]);
     program.setFloat('time', this.pulse.get());
     this.setLampeInfos(program);
   }
 
   mainRender = (program, texData = null) => {
-    // this.mngGltf.get(this.MAIN_OBJ).render(program, this.model);
+    // this.mngGltf.get(this.config.MAIN_OBJ).render(program, this.model);
     program.setMatrix('model', this.model.get());
     const normalmatrix = this.model.getMatrice3x3();
     normalmatrix.inverse();
@@ -121,7 +118,7 @@ export default class extends Scene {
     if (texData) {
       program.setTexture(5, texData.get(), 'displacementMap');
     }
-    this.mngObj.get(this.MAIN_OBJ).render(program.get());
+    this.mngObj.get(this.config.MAIN_OBJ).render(program.get());
   };
 
   renderToBuffer = (program) => {
@@ -142,7 +139,7 @@ export default class extends Scene {
     const amplitudes = this.mngSound.get('akira').getAmplitudes();
     const texData = new TextureData(this.gl, amplitudes);
 
-    this.mainRender(this.mngProg.get(this.MAIN_PROG), texData);
+    this.mainRender(this.mngProg.get(this.config.MAIN_PROG), texData);
 
     const progCircle = this.mngProg.get('frequencyCircle');
     progCircle.setMatrix('projection', this.camera.getProjection().get());

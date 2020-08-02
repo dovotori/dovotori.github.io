@@ -9,9 +9,6 @@ export default class extends Scene {
   constructor(gl, config, assets, width = 512, height = 512) {
     super(gl, config, assets, width, height);
 
-    this.MAIN_PROG = config.MAIN_PROG;
-    this.MAIN_OBJ = config.MAIN_OBJ;
-
     this.onMouseMove = this.onMouseMove.bind(this);
     this.renderToBuffer = this.renderToBuffer.bind(this);
 
@@ -43,7 +40,7 @@ export default class extends Scene {
     quat.rotateX(angle2);
     this.model.multiply(quat.toMatrix4());
 
-    const program = this.mngProg.get(this.MAIN_PROG);
+    const program = this.mngProg.get(this.config.MAIN_PROG);
     program.setVector('resolution', [this.containerSize.width, this.containerSize.height]);
     program.setFloat('time', this.time);
     this.setLampeInfos(program);
@@ -59,7 +56,7 @@ export default class extends Scene {
   }
 
   mainRender(program) {
-    this.mngGltf.get(this.MAIN_OBJ).render(program, this.model);
+    this.mngGltf.get(this.config.MAIN_OBJ).render(program, this.model);
   }
 
   renderToBuffer(program) {
@@ -79,13 +76,13 @@ export default class extends Scene {
 
     if (this.config.support.useDepth) {
       this.postProcess.start();
-      this.mainRender(this.mngProg.get(this.MAIN_PROG));
+      this.mainRender(this.mngProg.get(this.config.MAIN_PROG));
       this.postProcess.end();
 
       this.effects();
       this.postProcess.render();
     } else {
-      this.mainRender(this.mngProg.get(this.MAIN_PROG));
+      this.mainRender(this.mngProg.get(this.config.MAIN_PROG));
     }
 
     // DEBUG

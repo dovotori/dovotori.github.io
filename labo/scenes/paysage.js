@@ -13,8 +13,8 @@ export default class extends Scene {
   constructor(gl, config, assets, width = 512, height = 512) {
     super(gl, config, assets, width, height);
 
-    this.MAIN_PROG = config.MAIN_PROG;
-    this.MAIN_OBJ = config.MAIN_OBJ;
+    this.config.MAIN_PROG = config.MAIN_PROG;
+    this.config.MAIN_OBJ = config.MAIN_OBJ;
 
     this.model = new Mat4();
     this.model.identity();
@@ -52,7 +52,7 @@ export default class extends Scene {
     // quat.rotateX(-angle2);
     this.model.multiply(quat.toMatrix4());
 
-    const program = this.mngProg.get(this.MAIN_PROG);
+    const program = this.mngProg.get(this.config.MAIN_PROG);
     program.setVector('resolution', [this.containerSize.width, this.containerSize.height]);
     if (this.canUseDepth()) {
       program.setTexture(2, this.getLampeDepthTexture(0).get(), 'shadowMap');
@@ -70,7 +70,7 @@ export default class extends Scene {
     this.renderFakeShadow();
 
     // this.gizmo.render(this.camera, this.model);
-    this.mngGltf.get(this.MAIN_OBJ).render(program, this.model);
+    this.mngGltf.get(this.config.MAIN_OBJ).render(program, this.model);
   }
 
   renderToBuffer = (program) => {
@@ -101,16 +101,16 @@ export default class extends Scene {
     // const program = this.mngProg.get('bone');
     // program.setMatrix('projection', this.camera.getProjection().get());
     // program.setMatrix('view', this.camera.getView().get());
-    // this.mngGltf.get(this.MAIN_OBJ).setBoneProgram(program);
+    // this.mngGltf.get(this.config.MAIN_OBJ).setBoneProgram(program);
 
     if (this.config.support.useDepth) {
       this.postProcess.start();
-      this.mainRender(this.mngProg.get(this.MAIN_PROG));
+      this.mainRender(this.mngProg.get(this.config.MAIN_PROG));
       this.postProcess.end();
       this.effects();
       this.postProcess.render();
     } else {
-      this.mainRender(this.mngProg.get(this.MAIN_PROG));
+      this.mainRender(this.mngProg.get(this.config.MAIN_PROG));
     }
 
     // DEBUG

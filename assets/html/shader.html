@@ -9,4 +9,40 @@
     margin: 0 auto;
     width: 100%;
   }
+
+  #shader #controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    margin: 1em 0;
+  }
+  #shader #controls button {
+    width: 3em;
+    height: 3em;
+    margin: 0 0.5em;
+    padding: 1em 0;
+    border-radius: 50%;
+    background-color: #fff;
+    opacity: 0.5;
+    text-align: center;
+    transition: opacity 300ms ease-out, transform 300ms ease-out;
+    transform: scale(0.9);
+  }
+  #shader #controls button[data-current],
+  #shader #controls button:hover {
+    opacity: 1;
+    transform: none;
+  }
+  #shader #controls button:active {
+    transform: scale(0.7);
+  }
 </style>
+<div id="controls" style="opacity: 0;">
+  <button class="mode" data-current>1</button>
+  <button class="mode">2</button>
+  <button class="mode">3</button>
+  <button class="mode">4</button>
+  <button class="mode">5</button>
+</div>
