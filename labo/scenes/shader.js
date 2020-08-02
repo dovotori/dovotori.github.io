@@ -4,7 +4,7 @@ import Screen from '../webgl/gl/Screen';
 // import Grid from '../webgl/particules/Grid';
 // import Migration from '../webgl/particules/Migration';
 // import SimpleVbo from '../webgl/vbos/SimpleVbo';
-import GpuParticules from '../webgl/gl/GpuParticules';
+import GpuParticules from '../webgl/particules/GpuParticules';
 
 export default class extends Scene {
   constructor(gl, config, assets, width = 512, height = 512) {
@@ -45,9 +45,9 @@ export default class extends Scene {
 
     // DEBUG
     // this.postProcess.render(texData.get());
-    this.particules.compute(this.time);
+    this.particules.compute(this.mngProg.get('pass1Morph'), this.time);
     this.resizeViewport();
-    this.particules.render(this.camera, this.time);
+    this.particules.render(this.camera, this.mngProg.get('pass2Camera'), this.time);
   }
 
   onMouseDrag = (mouse) => {

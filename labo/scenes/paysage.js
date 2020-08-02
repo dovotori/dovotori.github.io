@@ -4,7 +4,7 @@ import Spring from '../webgl/maths/Spring';
 import Target from '../webgl/maths/Target';
 import DualQuaternion from '../webgl/maths/DualQuaternion';
 import Gizmo from '../webgl/meshes/Gizmo';
-import Bloom from '../webgl/gl/Bloom';
+import Bloom from '../webgl/postprocess/Bloom';
 import { degToRad } from '../webgl/utils/numbers';
 import ObjetPrimitive from '../webgl/gl/ObjetPrimitive';
 import primitive from '../webgl/primitives/plane';

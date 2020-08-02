@@ -1,6 +1,7 @@
 import Program from '../gl/Program';
-import * as glsl from '../constants/shaders';
-import * as glslScreen from '../constants/shaders/screen';
+import * as glsl from '../shaders';
+import * as glslScreen from '../shaders/screen';
+import * as glslParticules from '../shaders/particules';
 
 export default class {
   constructor(gl, selection) {
@@ -11,6 +12,9 @@ export default class {
         this.programs[name] = new Program(gl, shader);
       } else if (glslScreen[name]) {
         const shader = glslScreen[name];
+        this.programs[name] = new Program(gl, shader);
+      } else if (glslParticules[name]) {
+        const shader = glslParticules[name];
         this.programs[name] = new Program(gl, shader);
       }
     });

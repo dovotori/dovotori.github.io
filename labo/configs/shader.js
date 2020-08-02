@@ -4,7 +4,7 @@ const MAIN_OBJ = '';
 export default {
   MAIN_PROG,
   MAIN_OBJ,
-  programs: [MAIN_PROG],
+  programs: [MAIN_PROG, 'pass1Morph', 'pass2Camera'],
   canvas: {
     width: 512,
     height: 512,

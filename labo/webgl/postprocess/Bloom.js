@@ -1,7 +1,7 @@
 import ProcessBase from './ProcessBase';
-import Program from './Program';
-import { emissive } from '../constants/shaders';
-import { blurDirection } from '../constants/shaders/screen';
+import Program from '../gl/Program';
+import { emissive } from '../shaders';
+import { blurDirection } from '../shaders/screen';
 
 export default class extends ProcessBase {
   constructor(gl, width = 1024, height = 1024, useDepth = false) {

@@ -3,7 +3,7 @@ import ManagerObjets from '../managers/ManagerObjets';
 import ManagerPrograms from '../managers/ManagerPrograms';
 import ManagerGltfs from '../managers/ManagerGltfs';
 import ManagerSounds from '../managers/ManagerSounds';
-import PostProcess from '../gl/PostProcess';
+import PostProcess from '../postprocess/PostProcess';
 
 export default class {
   constructor(gl, config, assets) {

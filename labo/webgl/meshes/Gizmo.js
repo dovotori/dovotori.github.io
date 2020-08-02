@@ -1,5 +1,5 @@
 import Program from '../gl/Program';
-import glsl from '../constants/shaders/albedo';
+import glsl from '../shaders/albedo';
 import ObjetVbo from '../gl/ObjetVbo';
 
 export default class {

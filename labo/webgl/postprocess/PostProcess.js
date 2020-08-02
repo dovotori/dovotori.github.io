@@ -2,10 +2,10 @@ import ProcessBase from './ProcessBase';
 import TextureNoise from '../textures/TextureNoise';
 import Vec3 from '../maths/Vec3';
 import Mat4 from '../maths/Mat4';
-import * as glsl from '../constants/shaders/screen';
+import * as glsl from '../shaders/screen';
 import { lerp } from '../utils/easing';
 import { random } from '../utils/numbers';
-import Program from './Program';
+import Program from '../gl/Program';
 
 export default class extends ProcessBase {
   constructor(gl, width = 1024, height = 1024, useDepth = false, effects = []) {

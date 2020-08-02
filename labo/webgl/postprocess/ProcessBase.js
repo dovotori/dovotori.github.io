@@ -1,8 +1,8 @@
 import PingPongBuffer from './PingPongBuffer';
-import Screen from './Screen';
-import Program from './Program';
-import screen from '../constants/shaders/screen/screen';
-import debug from '../constants/shaders/screen/debug';
+import Screen from '../gl/Screen';
+import Program from '../gl/Program';
+import screen from '../shaders/screen/screen';
+import debug from '../shaders/screen/debug';
 
 export default class {
   constructor(gl, width = 1024, height = 1024, useDepth = false) {

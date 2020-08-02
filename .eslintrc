@@ -1,15 +1,6 @@
 {
-  "extends": [
-    "airbnb",
-    "prettier",
-    "eslint:recommended"
-  ],
-  "plugins": [
-    "react",
-    "jsx-a11y",
-    "import",
-    "jest"
-  ],
+  "extends": ["airbnb", "prettier", "eslint:recommended"],
+  "plugins": ["react", "jsx-a11y", "import", "jest"],
   "parser": "babel-eslint",
   "parserOptions": {
     "sourceType": "module",
@@ -26,11 +17,7 @@
     "browser": true,
     "jest": true
   },
-  "ignorePatterns": [
-    "labo/webgl/constants/shaders/",
-    "labo/lib/",
-    "src/store/"
-  ],
+  "ignorePatterns": ["labo/webgl/shaders/", "labo/lib/", "src/store/"],
   "rules": {
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
@@ -41,10 +28,7 @@
     "no-plusplus": 0,
     "comma-dangle": 0,
     "import/prefer-default-export": 0,
-    "max-len": [
-      "error",
-      100
-    ]
+    "max-len": ["error", 100]
   },
   "settings": {
     "import/resolver": {

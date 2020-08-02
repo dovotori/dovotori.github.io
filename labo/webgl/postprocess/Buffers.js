@@ -1,6 +1,6 @@
-import Fbo from './Fbo';
 import PostProcess from './PostProcess';
-import Screen from './Screen';
+import Fbo from '../gl/Fbo';
+import Screen from '../gl/Screen';
 
 export default class {
   constructor(gl, width = 1024, height = 1024, useDepth = false) {

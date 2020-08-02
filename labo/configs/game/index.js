@@ -9,18 +9,18 @@ import {
   W,
   ENTER,
   ECHAP,
-} from '../webgl/constants/keyboard';
+} from '../../webgl/constants/keyboard';
 
-import spriteHeros from '../webgl/constants/sprites/heros';
-import spriteBullet from '../webgl/constants/sprites/bullet';
-import spriteFx from '../webgl/constants/sprites/fx';
-import spriteMonster from '../webgl/constants/sprites/monster';
-import spriteTiles from '../webgl/constants/sprites/tiles';
+import spriteHeros from './sprites/heros';
+import spriteBullet from './sprites/bullet';
+import spriteFx from './sprites/fx';
+import spriteMonster from './sprites/monster';
+import spriteTiles from './sprites/tiles';
 
-import herosConstants from '../webgl/constants/persos/heros';
-import bulletConstants from '../webgl/constants/persos/bullet';
-import fxConstants from '../webgl/constants/persos/fx';
-import monsterConstants from '../webgl/constants/persos/monster';
+import herosConstants from './persos/heros';
+import bulletConstants from './persos/bullet';
+import fxConstants from './persos/fx';
+import monsterConstants from './persos/monster';
 
 export default {
   assets: [
