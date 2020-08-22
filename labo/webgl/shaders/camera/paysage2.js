@@ -1,6 +1,6 @@
-import { funcLightsColor } from './utils/light';
-import { uniformPBR, funcPBR, PBRLocations } from './utils/pbr';
-import { funcShadow } from './utils/shadow';
+import { funcLightsColor } from '../utils/light';
+import { uniformPBR, funcPBR, PBRLocations } from '../utils/pbr';
+import { funcShadow } from '../utils/shadow';
 
 const vertex = `
 attribute vec3 position;

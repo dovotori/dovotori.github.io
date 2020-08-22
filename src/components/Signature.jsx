@@ -131,26 +131,30 @@ const commonName = css`
 `;
 
 const Name = styled.h1`
-  ${(p) => p.theme.title}
   ${commonName}
+  font-family: 'bebas', sans-serif;
   color: ${(p) => p.theme.text};
-  letter-spacing: 0.5em;
-  font-size: 300%;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke-width: 0.01em;
+  -webkit-text-stroke-color: ${(p) => p.theme.text};
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 1000%;
   top: 60%;
   ${(p) => p.theme.media.mobile`
-    font-size: 200%;
+    font-size: 500%;
   `}
 `;
 
 const Katakana = styled.h1`
   ${commonName}
-  top: 50%;
+  top: 70%;
   letter-spacing: 0.1em;
   font-family: 'nikkyou', monospace;
-  font-size: 1000%;
+  font-size: 400%;
   color: ${(p) => p.theme.primary};
   ${(p) => p.theme.media.mobile`
-    font-size: 600%;
+    font-size: 200%;
   `}
 `;
 
@@ -162,15 +166,13 @@ const CenterMobile = styled.div`
 const Signature = ({ className, hello }) => (
   <Wrap>
     <Appear>
-      <CenterMobile>
-        <Katakana>
-          <TypingMessage message="ド リ ア ン" />
-        </Katakana>
-      </CenterMobile>
       <StyledLink to="/about" className={className} title="about">
         <StyledHtml slug="signature" colorType={0} />
       </StyledLink>
       <CenterMobile>
+        <Katakana>
+          <TypingMessage message="ド リ ア ン" />
+        </Katakana>
         <Name>
           <TypingMessage message="D o r i a n" />
         </Name>

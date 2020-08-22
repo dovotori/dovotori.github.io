@@ -345,6 +345,20 @@ const rawPosts = [
     },
     html: true,
   },
+  {
+    id: 21,
+    slug: 'race',
+    title: { [Locales.FR]: 'Course', [Locales.EN]: 'Race', [Locales.JP]: 'Race' },
+    category: CAT_BLOG,
+    tags: [],
+    date: 2020,
+    description: {
+      [Locales.FR]: [''],
+      [Locales.EN]: [''],
+      [Locales.JP]: [''],
+    },
+    html: true,
+  },
 ];
 
 export default (locale) => {

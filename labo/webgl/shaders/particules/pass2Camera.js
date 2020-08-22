@@ -10,7 +10,7 @@ varying vec3 color;
 
 void main() {
   vec3 particulePos = texture2D(textureMap, texture).xyz;
-  vec3 position = (particulePos * vec3(2.0)) - vec3(1.0);
+  vec3 position = (particulePos * vec3(4.0)) - vec3(2.0);
   
   // gl_PointSize = 10.0; 	
   gl_PointSize = 2.0 + step(1.0 - (1.0 / 64.0), position.x);

@@ -36,7 +36,7 @@ export default class {
     return this.position;
   }
 
-  getCible() {
+  getTarget() {
     return this.target.get();
   }
 
@@ -49,7 +49,7 @@ export default class {
     this.lookAt();
   }
 
-  setPosition(x, y, z) {
+  setPosition(x = null, y = null, z = null) {
     const newX = x !== null ? x : this.position.getX();
     const newY = y !== null ? y : this.position.getY();
     const newZ = z !== null ? z : this.position.getZ();
@@ -57,11 +57,11 @@ export default class {
     this.lookAt();
   }
 
-  setCible(x, y, z) {
+  setTarget(x, y, z) {
     this.target.set(x, y, z);
   }
 
-  setCibleVec3(v) {
+  setTargetVec3(v) {
     this.target.equal(v);
   }
 }

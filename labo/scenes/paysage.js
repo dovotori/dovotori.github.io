@@ -85,16 +85,6 @@ export default class extends Scene {
     this.renderToBuffer(program);
   }
 
-  // effects() {
-  // this.bloom.compute(
-  //   this.renderToBuffer,
-  //   this.camera.getProjection().get(),
-  //   this.camera.getView().get()
-  // );
-  // this.postProcess.setKuwahara();
-  // this.postProcess.setBloom(this.bloom.getTexture(), 0.5, 0.5);
-  // }
-
   render() {
     super.render();
 

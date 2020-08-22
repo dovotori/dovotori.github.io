@@ -1,5 +1,5 @@
-import { uniformLights, addLightLocations, funcLightsColor } from './utils/light';
-import { funcMap, PI } from './utils';
+import { uniformLights, addLightLocations, funcLightsColor } from '../utils/light';
+import { funcMap, PI } from '../utils';
 
 const vertex = `
 attribute vec3 position;

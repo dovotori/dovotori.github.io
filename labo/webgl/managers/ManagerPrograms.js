@@ -1,20 +1,17 @@
 import Program from '../gl/Program';
-import * as glsl from '../shaders';
-import * as glslScreen from '../shaders/screen';
-import * as glslParticules from '../shaders/particules';
+import glslGroup from '../shaders';
 
 export default class {
   constructor(gl, selection) {
     this.programs = {};
+
+    const glsl = Object.keys(glslGroup).reduce((result, groupId) => {
+      return { ...glslGroup[groupId], ...result };
+    }, {});
+
     selection.forEach((name) => {
       if (glsl[name]) {
         const shader = glsl[name];
-        this.programs[name] = new Program(gl, shader);
-      } else if (glslScreen[name]) {
-        const shader = glslScreen[name];
-        this.programs[name] = new Program(gl, shader);
-      } else if (glslParticules[name]) {
-        const shader = glslParticules[name];
         this.programs[name] = new Program(gl, shader);
       }
     });

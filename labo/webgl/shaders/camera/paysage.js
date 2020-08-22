@@ -1,8 +1,8 @@
-import { attributeColors, varyingColors } from './utils';
+import { attributeColors, varyingColors } from '../utils';
 
-import { uniformLights, addLightLocations, funcLightsColor } from './utils/light';
+import { uniformLights, addLightLocations, funcLightsColor } from '../utils/light';
 
-import { funcShadow } from './utils/shadow';
+import { funcShadow } from '../utils/shadow';
 
 const vertex = `
 attribute vec3 position;

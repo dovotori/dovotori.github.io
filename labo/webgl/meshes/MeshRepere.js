@@ -1,7 +1,7 @@
 import Program from '../gl/Program';
 import Objet from '../gl/ObjetPrimitive';
 import Mat4 from '../maths/Mat4';
-import glsl from '../shaders/basique3d';
+import glsl from '../shaders/camera/basique3d';
 import primitive from '../primitives/cube';
 
 export default class {

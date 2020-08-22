@@ -1,6 +1,10 @@
 export default class {
   constructor(gl, points, indices) {
     this.gl = gl;
+
+    // POINTS // LINES // TRIANGLES // LINE_STRIP // LINE_LOOP // TRIANGLE_STRIP // TRIANGLE_FAN
+    this.modeDessin = this.gl.LINE_LOOP;
+
     this.vboPoints = this.gl.createBuffer();
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vboPoints);
     this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(points), this.gl.STATIC_DRAW);
@@ -12,6 +16,10 @@ export default class {
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, null);
 
     this.count = indices.length;
+  }
+
+  setModeDessin(mode) {
+    this.modeDessin = mode;
   }
 
   enable(program) {
@@ -27,7 +35,7 @@ export default class {
   render(program) {
     this.enable(program);
 
-    this.gl.drawElements(this.gl.LINE_LOOP, this.count, this.gl.UNSIGNED_SHORT, 0);
+    this.gl.drawElements(this.modeDessin, this.count, this.gl.UNSIGNED_SHORT, 0);
 
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, null);
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);

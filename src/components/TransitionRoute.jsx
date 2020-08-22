@@ -1,44 +1,36 @@
 import React, { Suspense } from 'react';
-// import styled, { keyframes } from "styled-components";
-// import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import styled, { keyframes } from 'styled-components';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { Switch, withRouter } from 'react-router-dom';
 
-// import { shouldNotReload } from '../utils';
 import Bloc from './Bloc';
 import Loader from './Loader';
 
-// const TIME = 10000;
+const TIME = 300;
 
-// const In = keyframes`
-//   0% { opacity: 0; }
-//   50% { opacity: 0; }
-//   100% { opacity: 1; }
-// `;
+const Out = keyframes`
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 0;  }
+`;
 
-// const Out = keyframes`
-//   0% { opacity: 1; }
-//   50% { opacity: 0; }
-//   100% { opacity: 0;  }
-// `;
-
-// const StyledTransitionGroup = styled(TransitionGroup)`
-//   .route-enter,
-//   .route-exit {
-//     pointer-events: none;
-//   }
-//   .route-enter {
-//     position: fixed;
-//     overflow: hidden;
-//     width: 100%;
-//     max-height: 100vh;
-//     top: 0;
-//     left: 0;
-//     animation: ${In} ${TIME}ms linear forwards;
-//   }
-//   .route-exit {
-//     animation: ${Out} ${TIME}ms linear forwards;
-//   }
-// `;
+const StyledTransitionGroup = styled(TransitionGroup)`
+  .route-enter,
+  .route-exit {
+    pointer-events: none;
+  }
+  .route-enter {
+    position: fixed;
+    opacity: 0;
+  }
+  .route-enter-done {
+    position: relative;
+    opacity: 1;
+  }
+  .route-exit {
+    animation: ${Out} ${TIME}ms linear forwards;
+  }
+`;
 
 const renderLoader = () => (
   <Bloc>
@@ -46,29 +38,30 @@ const renderLoader = () => (
   </Bloc>
 );
 
-const TransitionRoute = ({
-  location,
-  children, // isTouchDevice,names,
-}) => (
+const shouldAnimRouteTransition = (location) => {
+  if (location.pathname.indexOf('/project/') === 0 || location.pathname === '/about') {
+    return location.pathname;
+  }
+  return 'notransition';
+};
+
+const RenderSwitch = ({ location, children }) => (
   <Suspense fallback={renderLoader()}>
     <Switch location={location}>{children}</Switch>
   </Suspense>
 );
 
-// if (isTouchDevice) { (
-// }
-// return (
-//   <StyledTransitionGroup names={names}>
-//     <CSSTransition
-//       key={shouldNotReload(location.pathname)}
-//       timeout={TIME}
-//       classNames="route"
-//     >
-//       <Suspense fallback={renderLoader()}}>
-//         <Switch location={location}>{children}</Switch>
-//       </Suspense>
-//     </CSSTransition>
-//   </StyledTransitionGroup>
-// );
+const TransitionRoute = ({ location, children, isTouchDevice }) => {
+  if (isTouchDevice) {
+    return <RenderSwitch location={location}>{children}</RenderSwitch>;
+  }
+  return (
+    <StyledTransitionGroup>
+      <CSSTransition key={shouldAnimRouteTransition(location)} timeout={TIME} classNames="route">
+        <RenderSwitch location={location}>{children}</RenderSwitch>
+      </CSSTransition>
+    </StyledTransitionGroup>
+  );
+};
 
 export default withRouter(TransitionRoute);

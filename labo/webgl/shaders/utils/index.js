@@ -41,6 +41,13 @@ float randomRange(vec2 seed, float min, float max) {
 }
 `;
 
+export const funcGrain = `
+vec4 funcGrain(vec2 uv, float time, float strength) {
+  float x = (uv.x + 4.0 ) * (uv.y + 4.0 ) * (time * 10.0);
+  return vec4(mod((mod(x, 13.0) + 1.0) * (mod(x, 123.0) + 1.0), 0.01)-0.005) * strength;
+}
+`;
+
 export const funcToon = `
 float funcToon(lambertCosinus) {
   float strength = 0.0;
@@ -55,8 +62,9 @@ float funcToon(lambertCosinus) {
 `;
 
 export const funcGradiant = `
-vec4 gradiant(vec4 color1, vec4 color2, vec2 start, vec2 end, vec2 uv) {
-  float mixValue = funcMap(uv.x, start.x, end.x, 0.0, 1.0);
+${funcMap}
+vec4 funcGradiant(vec4 color1, vec4 color2, float start, float end, float uvAxe) {
+  float mixValue = funcMap(uvAxe, start, end, 0.0, 1.0);
   return mix(color1, color2, mixValue);
 }
 `;

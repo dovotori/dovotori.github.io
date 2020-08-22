@@ -1,4 +1,4 @@
-import { funcShadow } from './utils/shadow';
+import { funcShadow } from '../utils/shadow';
 
 const vertex = `
 attribute vec3 position;

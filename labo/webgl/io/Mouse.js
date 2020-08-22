@@ -1,10 +1,14 @@
 import { mapFromRange } from '../utils/numbers';
 
 class Mouse {
-  constructor(div, { callbackDrag, callbackDown, callbackMove, callbackWheel, callbackClick }) {
+  constructor(
+    div,
+    { callbackDrag, callbackDown, callbackUp, callbackMove, callbackWheel, callbackClick }
+  ) {
     this.div = div;
     this.callbackDrag = callbackDrag || null;
     this.callbackDown = callbackDown || null;
+    this.callbackUp = callbackUp || null;
     this.callbackMove = callbackMove || null;
     this.callbackWheel = callbackWheel || null;
     this.callbackClick = callbackClick || null;
@@ -121,6 +125,10 @@ class Mouse {
   onUp = (e) => {
     this.onMove(e);
     this.isDragging = false;
+    if (this.callbackUp !== null) {
+      const infos = this.computeInfos(e);
+      this.callbackUp(infos);
+    }
   };
 
   onWheel = (e) => {

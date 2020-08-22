@@ -89,6 +89,16 @@ koharuiro -> kanji sharp
     url('../fonts/arame/thin/arame.svg#Arame') format('svg');
 }
 
+@font-face {
+  font-family: 'bebas';
+  src: url('../fonts/bebas/bebas-regular.eot');
+  src: url('../fonts/bebas/bebas-regular.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/bebas/bebas-regular.woff2') format('woff2'),
+    url('../fonts/bebas/bebas-regular.woff') format('woff'),
+    url('../fonts/bebas/bebas-regular.ttf') format('truetype'),
+    url('../fonts/bebas/bebas-regular.svg#Arame') format('svg');
+}
+
 * {
   margin: 0;
   padding: 0;

@@ -66,20 +66,20 @@ void main() {
   // color = vec3(dfield1);
   float polar1 = polar(fragTexture, vec2(0.6, 0.2), 10.0);
   // color = vec3(polar1);
-  // float polygon1 = polygon(fragTexture, 3);
+  // float polygon1 = polygon(fragTexture, 3, 1.0);
   // if (polygon1 != 0.0) {
-    // color = gradiant(vec4(1.0,1.0,0.0,1.0), vec4(1.0,0.0,0.0,0.0), vec2(0.2,0.0), vec2(0.8,1.0), fragTexture);
+    // color = funcGradiant(vec4(1.0,1.0,0.0,1.0), vec4(1.0,0.0,0.0,0.0), 0.2, 0.8, fragTexture);
   // }
 
   // float distance = 10.0;
   // float step = cos(time * 0.01) * 100.0;
   // float circles = concentricCircles(fragTexture, distance, step);
   // if (circles != 0.0) {
-  //   color = gradiant(vec4(1.0,1.0,0.0,1.0), vec4(1.0,0.0,0.0,0.0), vec2(0.0), vec2(1.0), fragTexture);
+  //   color = funcGradiant(vec4(1.0,1.0,0.0,1.0), vec4(1.0,0.0,0.0,0.0), 0.0, 1.0, fragTexture);
   // }
 
   // vec4 fluid1 = fluid(fragTexture, vec2(20.0), time * 0.1);
-  // vec4 gradiant1 = gradiant(vec4(1.0,1.0,0.0,1.0), vec4(1.0,0.0,0.0,0.0), vec2(0.0), vec2(1.0), fragTexture);
+  // vec4 gradiant1 = funcGradiant(vec4(1.0,1.0,0.0,1.0), vec4(1.0,0.0,0.0,0.0), 0.0, 1.0, fragTexture);
   // color = fluid1 * gradiant1;
 
   color = planet(fragTexture, 0.7 + (cos(time * 0.1) * 0.2), vec2(time * 0.01));

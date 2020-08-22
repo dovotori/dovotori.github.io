@@ -49,7 +49,7 @@ float polar(vec2 uv, vec2 center, float size) {
 export const polygon = `
 ${PI}${TWO_PI}
 
-float polygon(vec2 uv, int nb) {
+float polygon(vec2 uv, int nb, float size) {
   float d = 0.0;
 
   // Remap the space to -1. to 1.
@@ -63,7 +63,7 @@ float polygon(vec2 uv, int nb) {
   float r = TWO_PI / float(N);
 
   // Shaping function that modulate the distance
-  d = cos(floor(0.5 + a / r) * r - a) * length(st);
+  d = cos(floor(0.5 + a / r) * r - a) * length(st) * (1.0 / size);
 
   return 1.0 - smoothstep(0.4, 0.41, d);
 }`;

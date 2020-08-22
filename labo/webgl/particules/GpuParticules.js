@@ -3,26 +3,32 @@ import { mapFromRange } from '../utils/numbers';
 import ParticulesVbo from '../vbos/ParticulesVbo';
 import Fbo from '../gl/Fbo';
 import Screen from '../gl/Screen';
-import { getGridPerlinPoints, getGridPoints } from '../primitives/particules';
 
 export default class {
   constructor(gl, width = 32, height = 32) {
-    const points = getGridPerlinPoints(width, height);
-    const points2 = getGridPoints(width, height);
-
+    this.gl = gl;
     this.screen = new Screen(gl);
     this.vbo = new ParticulesVbo(gl, width, height);
-    this.texMap = new TextureData(gl, new Uint8Array(points));
-    this.morphMap = new TextureData(gl, new Uint8Array(points2));
     this.fbo = new Fbo(gl, width, height);
+    this.textures = {};
   }
 
+  addDataTexture = (location, points) => {
+    this.textures = {
+      ...this.textures,
+      [location]: new TextureData(this.gl, new Uint8Array(points)),
+    };
+  };
+
   compute(progPass1, time = 0) {
+    Object.keys(this.textures).forEach((location, index) => {
+      progPass1.setTexture(index, this.textures[location].get(), location);
+    });
+
     const t = mapFromRange(Math.cos(time * 0.05), -1, 1, 0, 1);
-    this.fbo.start();
-    progPass1.setTexture(1, this.texMap.get(), 'textureMap');
-    progPass1.setTexture(2, this.morphMap.get(), 'morphMap');
     progPass1.setFloat('time', t);
+
+    this.fbo.start();
     this.screen.render(progPass1.get());
     this.fbo.end();
   }

@@ -1,16 +1,18 @@
-import { funcPhong } from './utils/light';
+import { uniformLights, addLightLocations, funcLightsColor } from '../utils/light';
 
 const vertex = `
 attribute vec3 position;
 attribute vec3 normale;
+attribute vec4 tangent;
 uniform mat4 projection;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat3 normalmatrix;
+
 varying vec3 fragPosition;
 varying vec3 fragNormale;
-void main()
-{
+
+void main() {
   fragPosition = normalize((view * model * vec4(position, 1.0)).xyz);
   fragNormale = normalmatrix * normalize(normale);
   gl_Position = projection * view * model * vec4(position, 1.0);
@@ -22,34 +24,33 @@ precision mediump float;
 varying vec3 fragPosition;
 varying vec3 fragNormale;
 
-uniform vec3 ambiant;
-uniform vec3 diffuse;
-uniform vec3 specular;
-uniform float brillance; // de 0 à infini
-uniform vec3 posLum;
-uniform vec3 posEye;
+uniform vec4 color;
+uniform float rough; 
+uniform float metal;
 
-${funcPhong}
+${uniformLights}
+${funcLightsColor}
 
 void main() {
-  gl_FragColor = vec4(phong(), 1.0);
+  vec3 phong = funcLightsColor(color.xyz, vec3(1.0,1.0,1.0), vec3(1.0,1.0,1.0), fragNormale, fragPosition);
+  // gl_FragColor = vec4(phong, 1.0);
+  gl_FragColor = color;
 }
 `;
 
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'normale'],
+  attributes: ['position', 'normale', 'tangent'],
   uniforms: [
     'projection',
     'model',
     'view',
     'normalmatrix',
-    'ambiant',
-    'diffuse',
-    'specular',
-    'brillance',
+    'color',
+    'rough',
+    'metal',
     'posLum',
     'posEye',
-  ],
+  ].concat(addLightLocations()),
 };

@@ -47,6 +47,11 @@ export default class {
     });
   }
 
+  setProjectionView(camera) {
+    this.setMatrix('projection', camera.getProjection().get());
+    this.setMatrix('view', camera.getView().get());
+  }
+
   setMatrix(location, matrix) {
     this.gl.useProgram(this.program);
     if (matrix.length === 16) {

@@ -1,4 +1,4 @@
-import { funcMap, PI } from './utils';
+import { funcMap, PI } from '../utils';
 
 const vertex = `
 attribute float value;
