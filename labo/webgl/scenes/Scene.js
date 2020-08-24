@@ -4,6 +4,7 @@ import ManagerPrograms from '../managers/ManagerPrograms';
 import ManagerGltfs from '../managers/ManagerGltfs';
 import ManagerSounds from '../managers/ManagerSounds';
 import PostProcess from '../postprocess/PostProcess';
+import Bloom from '../postprocess/Bloom';
 
 export default class {
   constructor(gl, config, assets) {
@@ -15,18 +16,28 @@ export default class {
       width,
       height,
     };
-    if (config.programs) {
-      this.mngProg = new ManagerPrograms(this.gl, config.programs);
-    }
-
-    if (config.postprocess) {
-      const { effects } = config.postprocess;
-      this.postProcess = new PostProcess(this.gl, width, height, this.canUseDepth(), effects);
-    }
 
     if (assets) {
+      if (assets.shaders) {
+        this.mngProg = new ManagerPrograms(this.gl, assets.shaders, config.canvas);
+
+        if (config.postprocess) {
+          this.postProcess = new PostProcess(
+            this.gl,
+            width,
+            height,
+            this.canUseDepth(),
+            this.mngProg.getAll()
+          );
+        }
+
+        if (config.bloom) {
+          this.bloom = new Bloom(this.gl, width, height, this.canUseDepth(), this.mngProg.getAll());
+        }
+      }
+
       if (assets.textures) {
-        this.mngTex = new ManagerTextures(this.gl, assets.textures);
+        this.mngTex = new ManagerTextures(this.gl, assets.textures, config.textures);
       }
 
       if (assets.objets) {

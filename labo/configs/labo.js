@@ -4,7 +4,7 @@ const MAIN_OBJ = '';
 export default {
   MAIN_PROG,
   MAIN_OBJ,
-  programs: [MAIN_PROG],
+  shaders: [`/utils/${MAIN_PROG}.js`],
   canvas: {
     width: 512,
     height: 512,

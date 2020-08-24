@@ -3,7 +3,12 @@ const MAIN_OBJ = 'paysage';
 export default {
   MAIN_PROG,
   MAIN_OBJ,
-  programs: ['basique3d', 'color', MAIN_PROG],
+  shaders: [
+    '/camera/basique3d.js',
+    '/camera/color.js',
+    `/camera/${MAIN_PROG}.js`,
+    '/screen/fxaa.js',
+  ],
   assets: [`/gltf/${MAIN_OBJ}.gltf`],
   positions: {
     plot: [
@@ -51,9 +56,7 @@ export default {
     domId: 'paysage',
     events: ['drag', 'wheel'],
   },
-  postprocess: {
-    effects: ['fxaa'],
-  },
+  postprocess: true,
   useDepthTexture: true,
   canvas: {
     width: 1024,

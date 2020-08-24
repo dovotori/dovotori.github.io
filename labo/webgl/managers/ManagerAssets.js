@@ -14,7 +14,7 @@ class ManagerAssets {
     };
   }
 
-  static getAssetInfo(path) {
+  static getInfo(path) {
     const parts = path.substring(path.lastIndexOf('/') + 1, path.length).split('.');
     return { name: parts[0], ext: parts[1].toLowerCase() };
   }
@@ -62,9 +62,9 @@ class ManagerAssets {
       });
   }
 
-  async get(paths) {
-    const promesses = await paths.map(async (path) => {
-      const info = ManagerAssets.getAssetInfo(path);
+  get(paths) {
+    const promesses = paths.map((path) => {
+      const info = ManagerAssets.getInfo(path);
       switch (info.ext) {
         case 'jpg':
         case 'jpeg':

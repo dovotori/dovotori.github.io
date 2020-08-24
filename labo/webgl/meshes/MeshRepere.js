@@ -1,13 +1,10 @@
-import Program from '../gl/Program';
 import Objet from '../gl/ObjetPrimitive';
 import Mat4 from '../maths/Mat4';
-import glsl from '../shaders/camera/basique3d';
 import primitive from '../primitives/cube';
 
 export default class {
   constructor(gl) {
     this.gl = gl;
-    this.program = new Program(this.gl, glsl);
     this.objet = new Objet(this.gl);
     this.objet.setIndices(primitive.indice);
     this.objet.setPoints(primitive.position, 'position');
@@ -16,12 +13,12 @@ export default class {
     this.model.identity();
   }
 
-  render(camera) {
-    this.program.setMatrix('model', this.model.get());
-    this.program.setMatrix('view', camera.getView().get());
-    this.program.setMatrix('projection', camera.getProjection().get());
-    this.objet.enable(this.program.get(), 'position', 3);
-    this.objet.render(this.program.get());
+  render(camera, program) {
+    program.setMatrix('model', this.model.get());
+    program.setMatrix('view', camera.getView().get());
+    program.setMatrix('projection', camera.getProjection().get());
+    this.objet.enable(program.get(), 'position', 3);
+    this.objet.render(program.get());
   }
 
   update(pos, size) {

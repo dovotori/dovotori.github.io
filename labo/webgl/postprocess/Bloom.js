@@ -1,19 +1,8 @@
 import ProcessBase from './ProcessBase';
-import Program from '../gl/Program';
-import { blurBloomOnePass } from '../shaders/screen';
 
 export default class extends ProcessBase {
-  constructor(gl, width = 1024, height = 1024, useDepth = false) {
-    super(gl, width, height, useDepth);
-    const glsl = { blurBloomOnePass };
-
-    Object.keys(glsl).forEach((effect) => {
-      this.programs[effect] = new Program(this.gl, glsl[effect]);
-      // pass resolution for effect which need it
-      if (glsl[effect].uniforms.indexOf('resolution') !== -1) {
-        this.programs[effect].setVector('resolution', [this.width, this.height]);
-      }
-    });
+  constructor(gl, width = 1024, height = 1024, useDepth = false, programs = {}) {
+    super(gl, width, height, useDepth, programs);
 
     this.blurSize = 0.6;
     this.blurNbPass = 0.6;

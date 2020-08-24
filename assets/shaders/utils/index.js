@@ -30,17 +30,6 @@ float funcMap(float valeur, float minRef, float maxRef, float minDest, float max
 }
 `;
 
-export const funcRandom = `
-// between 0 - 1
-float rand( vec2 n ) {
-  return fract(sin(dot(n.xy, vec2(12.9898, 78.233))) * 43758.5453);
-}
-
-float randomRange(vec2 seed, float min, float max) {
-	return min + rand(seed) * (max - min);
-}
-`;
-
 export const funcGrain = `
 vec4 funcGrain(vec2 uv, float time, float strength) {
   float x = (uv.x + 4.0 ) * (uv.y + 4.0 ) * (time * 10.0);
@@ -66,12 +55,5 @@ ${funcMap}
 vec4 funcGradiant(vec4 color1, vec4 color2, float start, float end, float uvAxe) {
   float mixValue = funcMap(uvAxe, start, end, 0.0, 1.0);
   return mix(color1, color2, mixValue);
-}
-`;
-
-export const funcRand = `
-float rand(float n){ return fract(sin(n) * 43758.5453123); }
-float rand(vec2 n) {
-	return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
 }
 `;

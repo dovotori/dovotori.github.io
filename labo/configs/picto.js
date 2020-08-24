@@ -1,9 +1,13 @@
 export default {
   assets: ['/img/signature.png'],
   mouse: { events: ['move'] },
-  postprocess: {
-    effects: ['glitch', 'wave', 'rgb', 'watercolorMoving'],
-  },
+  shaders: [
+    '/screen/glitch.js',
+    '/screen/wave.js',
+    '/screen/rgb.js',
+    '/screen/watercolorMoving.js',
+  ],
+  postprocess: true,
   useDepthTexture: false,
   canvas: {
     width: 512,

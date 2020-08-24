@@ -11,7 +11,6 @@ import Mat4 from '../webgl/maths/Mat4';
 import Vec3 from '../webgl/maths/Vec3';
 import { getGridPerlinPoints, getGridPoints } from '../webgl/primitives/particules';
 import { getPoints, getIndices } from '../webgl/primitives/grid';
-import Bloom from '../webgl/postprocess/Bloom';
 
 const nsin = (val) => {
   return Math.sin(val) * 0.5 + 0.5;
@@ -54,7 +53,7 @@ export default class extends Scene {
     const indices = Delaunay.triangulate(points);
     const points3d = points.reduce((acc, cur) => [...acc, cur[0], cur[1], 0], []);
     this.vboDelaunay = new VboPointsIndices(gl, points3d, indices);
-    this.bloom = new Bloom(gl, width, height, this.canUseDepth());
+
     this.bloom.setSize(0.4);
     this.bloom.setNbPass(4);
     this.bloom.setIntensity(1.1);

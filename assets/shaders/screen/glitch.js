@@ -1,5 +1,5 @@
 import vertex from './basicVertex';
-import { funcRandom } from '../utils';
+import { funcRandRange } from '../utils/random';
 
 const fragment = `
 precision mediump float;
@@ -10,7 +10,7 @@ uniform float delta; // 0 - 1 glitch amount
 uniform float speed; // 0 - 1 speed
 varying vec2 fragTexture;
 
-${funcRandom}
+${funcRandRange}
 
 // return 1 if v inside 1d range
 float insideRange(float v, float bottom, float top) {

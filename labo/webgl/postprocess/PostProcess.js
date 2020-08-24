@@ -2,26 +2,14 @@ import ProcessBase from './ProcessBase';
 import TextureNoise from '../textures/TextureNoise';
 import Vec3 from '../maths/Vec3';
 import Mat4 from '../maths/Mat4';
-import * as glsl from '../shaders/screen';
 import { lerp } from '../utils/easing';
 import { random } from '../utils/numbers';
-import Program from '../gl/Program';
 
 export default class extends ProcessBase {
-  constructor(gl, width = 1024, height = 1024, useDepth = false, effects = []) {
-    super(gl, width, height, useDepth);
+  constructor(gl, width = 1024, height = 1024, useDepth = false, programs = {}) {
+    super(gl, width, height, useDepth, programs);
     this.noiseTex = null;
-    this.setupPrograms(effects);
-  }
-
-  setupPrograms = (effects) => {
-    effects.forEach((effect) => {
-      this.programs[effect] = new Program(this.gl, glsl[effect]);
-      // pass resolution for effect which need it
-      if (glsl[effect].uniforms.indexOf('resolution') !== -1) {
-        this.programs[effect].setVector('resolution', [this.width, this.height]);
-      }
-
+    Object.keys(this.programs).forEach((effect) => {
       switch (effect) {
         case 'ssao':
           this.noiseTex = new TextureNoise(this.gl, 4, 4);
@@ -36,7 +24,7 @@ export default class extends ProcessBase {
           break;
       }
     });
-  };
+  }
 
   generateSsaoSamples(name) {
     const KERNEL_SIZE = 32;

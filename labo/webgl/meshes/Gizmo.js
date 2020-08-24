@@ -1,11 +1,8 @@
-import Program from '../gl/Program';
-import glsl from '../shaders/camera/albedo';
 import ObjetVbo from '../gl/ObjetVbo';
 
 export default class {
   constructor(gl) {
     this.gl = gl;
-    this.program = new Program(this.gl, glsl);
 
     const points = [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1];
     const colors = [1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1];
@@ -37,13 +34,13 @@ export default class {
     this.objet.setModeDessin(this.gl.LINES);
   }
 
-  render(camera, model) {
+  render(camera, model, program) {
     model.push();
     model.scale(20);
-    this.program.setMatrix('model', model.get());
-    this.program.setMatrix('view', camera.getView().get());
-    this.program.setMatrix('projection', camera.getProjection().get());
-    this.objet.render(this.program);
+    program.setMatrix('model', model.get());
+    program.setMatrix('view', camera.getView().get());
+    program.setMatrix('projection', camera.getProjection().get());
+    this.objet.render(program);
     model.pop();
   }
 

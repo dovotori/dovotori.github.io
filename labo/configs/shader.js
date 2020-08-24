@@ -1,5 +1,17 @@
 export default {
-  programs: ['road3', 'line', 'point', 'pass1Morph', 'pass2Camera', 'basique3d', 'landscape'],
+  shaders: [
+    '/camera/road3.js',
+    '/screen/line.js',
+    '/screen/point.js',
+    '/particules/pass1Morph.js',
+    '/particules/pass2Camera.js',
+    '/camera/basique3d.js',
+    '/screen/landscape.js',
+    '/screen/blurBloomOnePass.js',
+    '/screen/screen.js',
+    '/screen/debug.js',
+  ],
+  bloom: true,
   canvas: {
     width: 512,
     height: 512,

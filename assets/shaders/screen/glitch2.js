@@ -1,5 +1,5 @@
 import vertex from './basicVertex';
-import { funcRandom } from '../utils';
+import { funcRandRange } from '../utils/random';
 
 const fragment = `
 precision mediump float;
@@ -9,7 +9,7 @@ uniform float time;
 uniform float delta;
 varying vec2 fragTexture;
 
-${funcRandom}
+${funcRandRange}
 
 float sat( float t ) {
 	return clamp( t, 0.0, 1.0 );
@@ -52,13 +52,12 @@ vec2 mytrunc( vec2 x, float num_levels )
 
 /* GLITCH */
 
-vec4 applyGlitch(sampler2D tex, vec2 st, float speed, float AMT, float time) {
+vec4 applyGlitch(sampler2D tex, vec2 uv, float speed, float AMT, float time) {
   float t = floor(time * speed * 60.0);    
-	vec2 uv = st.xy;
   vec4 outCol = texture2D(tex, uv);
     
   float maxOffset = AMT / 2.0;
-  const float LIMIT =  2.0;
+  const float LIMIT =  10.0;
   for (float i = 0.0; i < LIMIT; i += 1.0) {
     float sliceY = rand(vec2(t , 2345.0 + float(i)));
     float sliceH = rand(vec2(t , 9035.0 + float(i))) * 0.25;
@@ -88,9 +87,8 @@ vec4 applyGlitch(sampler2D tex, vec2 st, float speed, float AMT, float time) {
 
 /* GLITCH 3 */
 
-vec4 applyGlitch3(sampler2D tex, vec2 fragCoord, float GLITCH, float time)
+vec4 applyGlitch3(sampler2D tex, vec2 uv, float GLITCH, float time)
 {
-	vec2 uv = fragCoord;
 	float newtime = mod(time * 100.0, 32.0)/110.0; // + modelmat[0].x + modelmat[0].z;
 	
 	float gnm = sat( GLITCH );
@@ -133,25 +131,10 @@ vec4 applyGlitch3(sampler2D tex, vec2 fragCoord, float GLITCH, float time)
 	return sum;
 }
 
-/* RGB */
-
-vec4 applyRgb(sampler2D tex, vec2 fragCoord, vec2 delta) {
-  vec2 dir = fragCoord - vec2(.5);
-  vec2 value = dir * delta;
-	vec4 c1 = texture2D(tex, fragCoord - value);
-	vec4 c2 = texture2D(tex, fragCoord);
-	vec4 c3 = texture2D(tex, fragCoord + value);
-  return vec4(c1.r, c2.g, c3.b, c1.a + c2.a + c3.b);
-}
-
 void main() {
-   vec4 color1 = applyGlitch3(textureMap, fragTexture, delta, time);
-   vec4 color2 = applyGlitch(textureMap, fragTexture, delta, delta, time);
-   vec4 color3 = applyRgb(textureMap, fragTexture, vec2(delta));
-
-   vec4 finalColor = mix(color1, color2, vec4(0.5));
-   finalColor = mix(finalColor, color3, vec4(0.5));
-   gl_FragColor = finalColor;
+  vec4 color1 = applyGlitch3(textureMap, fragTexture, delta, time);
+  vec4 color2 = applyGlitch(textureMap, fragTexture, delta, delta, time);
+  gl_FragColor = mix(color1, color2, vec4(0.5));
 }
 `;
 

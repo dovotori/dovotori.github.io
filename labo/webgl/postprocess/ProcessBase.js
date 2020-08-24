@@ -1,21 +1,15 @@
 import PingPongBuffer from './PingPongBuffer';
 import Screen from '../gl/Screen';
-import Program from '../gl/Program';
-import screen from '../shaders/screen/screen';
-import debug from '../shaders/screen/debug';
 
 export default class {
-  constructor(gl, width = 1024, height = 1024, useDepth = false) {
+  constructor(gl, width = 1024, height = 1024, useDepth = false, programs) {
     this.gl = gl;
     this.ppb = new PingPongBuffer(gl, width, height, useDepth);
     this.screen = new Screen(gl);
     this.width = width;
     this.height = height;
     this.passCount = 0;
-    this.programs = {
-      screen: new Program(gl, screen),
-      debug: new Program(gl, debug),
-    };
+    this.programs = programs;
   }
 
   start() {

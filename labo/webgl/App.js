@@ -1,5 +1,6 @@
 import Loop from './logic/Loop';
 import ManagerAssets from './managers/ManagerAssets';
+import ManagerShaders from './managers/ManagerShaders';
 import Canvas from './gl/Canvas';
 import Keyboard from './io/Keyboard';
 import Fullscreen from './io/Fullscreen';
@@ -18,7 +19,7 @@ export default class {
     let width = document.body.offsetWidth;
     let height = window.innerHeight;
 
-    let assets = null;
+    let assets = {};
     if (config) {
       width = config.canvas.width;
       height = config.canvas.height;
@@ -26,6 +27,11 @@ export default class {
       if (config.assets) {
         const am = new ManagerAssets();
         assets = await am.get(config.assets.map((path) => getEnvPath(path)));
+      }
+
+      if (config.shaders) {
+        const as = new ManagerShaders();
+        assets.shaders = await as.get(config.shaders);
       }
     }
 

@@ -1,4 +1,5 @@
-import { PI, funcRand } from './index';
+import { funcRand } from './random';
+import { PI } from './';
 
 // export const funcNoise = `
 // ${funcRand}
@@ -25,6 +26,7 @@ float noise(vec2 n) {
 
 export const funcPnoise = `
 ${PI}
+${funcRand}
 float noise(vec2 p, float freq) {
 	float unit = freq;
 	vec2 ij = floor(p/unit);

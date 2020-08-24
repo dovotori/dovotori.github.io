@@ -3,7 +3,17 @@ const MAIN_OBJ = 'head';
 export default {
   MAIN_PROG,
   MAIN_OBJ,
-  programs: ['basique3d', MAIN_PROG],
+  shaders: [
+    '/camera/basique3d.js',
+    `/camera/${MAIN_PROG}.js`,
+    '/screen/glitch.js',
+    '/screen/wave.js',
+    '/screen/watercolorMoving.js',
+    '/screen/fxaa.js',
+    '/screen/screen.js',
+    '/screen/debug.js',
+  ],
+  postprocess: true,
   assets: [`/gltf/${MAIN_OBJ}.gltf`],
   camera: {
     position: { x: 0, y: 0, z: 30 },
@@ -43,9 +53,6 @@ export default {
     // }
   ],
   mouse: { domId: 'signature', events: ['move'] },
-  postprocess: {
-    effects: ['glitch', 'wave', 'watercolorMoving', 'fxaa'],
-  },
   useDepthTexture: true,
   canvas: {
     width: 512,

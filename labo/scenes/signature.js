@@ -74,7 +74,7 @@ export default class extends Scene {
   render() {
     super.render();
 
-    if (this.config.support.useDepth) {
+    if (this.canUseDepth()) {
       this.postProcess.start();
       this.mainRender(this.mngProg.get(this.config.MAIN_PROG));
       this.postProcess.end();

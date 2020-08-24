@@ -1,18 +1,14 @@
 import Program from '../gl/Program';
-import glslGroup from '../shaders';
 
 export default class {
-  constructor(gl, selection) {
+  constructor(gl, shaders, resolution) {
     this.programs = {};
 
-    const glsl = Object.keys(glslGroup).reduce((result, groupId) => {
-      return { ...glslGroup[groupId], ...result };
-    }, {});
-
-    selection.forEach((name) => {
-      if (glsl[name]) {
-        const shader = glsl[name];
-        this.programs[name] = new Program(gl, shader);
+    Object.keys(shaders).forEach((name) => {
+      const shader = shaders[name];
+      this.programs[name] = new Program(gl, shader);
+      if (shader.uniforms.indexOf('resolution') !== -1) {
+        this.programs[name].setVector('resolution', [resolution.width, resolution.height]);
       }
     });
   }
@@ -27,4 +23,6 @@ export default class {
   get(id) {
     return this.programs[id];
   }
+
+  getAll = () => this.programs;
 }

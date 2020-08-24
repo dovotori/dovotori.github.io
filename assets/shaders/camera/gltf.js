@@ -33,8 +33,8 @@ ${funcLightsColor}
 
 void main() {
   vec3 phong = funcLightsColor(color.xyz, vec3(1.0,1.0,1.0), vec3(1.0,1.0,1.0), fragNormale, fragPosition);
-  // gl_FragColor = vec4(phong, 1.0);
-  gl_FragColor = color;
+  gl_FragColor = vec4(phong, 1.0);
+  // gl_FragColor = color;
 }
 `;
 
