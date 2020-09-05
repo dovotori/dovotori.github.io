@@ -10,7 +10,7 @@
     width: 100%;
   }
 
-  #controls {
+  #modes {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -18,7 +18,7 @@
     text-align: center;
     margin: 1em 0;
   }
-  #controls button {
+  #modes button {
     width: 3em;
     height: 3em;
     margin: 0 0.5em;
@@ -30,43 +30,8 @@
     transition: opacity 300ms ease-out, transform 300ms ease-out;
     transform: scale(0.9);
   }
-  #controls button[data-current],
-  #controls button:hover {
-    opacity: 1;
-    transform: none;
-  }
-  #controls button:active {
-    transform: scale(0.7);
-  }
-
-  #fullscreen-toggle-btn {
-    background-color: #fff;
-    opacity: 0.5;
-    position: absolute;
-    top: 0;
-    right: 0;
-    border-radius: 0;
-    margin: 0;
-    padding: 4px;
-    border-left: solid 1px rgba(0, 0, 0, 0.8);
-  }
-
-  #fullscreen-toggle-btn:hover svg,
-  #fullscreen-toggle-btn:active svg {
-    transform: none;
-    opacity: 1;
-  }
-
-  #fullscreen-toggle-btn svg {
-    display: block;
-    width: 2em;
-    fill: var(--bg-color);
-    opacity: 0.8;
-    transform: scale(0.6);
-    transition: opacity 300ms ease-out, transform 300ms ease-out;
-  }
 </style>
-<div id="controls" style="opacity: 0;">
+<div id="modes" style="opacity: 0;">
   <button class="mode" data-current>1</button>
   <button class="mode">2</button>
   <button class="mode">3</button>
@@ -75,9 +40,5 @@
   <button class="mode">6</button>
   <button class="mode">7</button>
 </div>
-<button id="fullscreen-toggle-btn">
-  <svg viewbox="0 0 100 100">
-    <path d="M 0 40 L 0 0 L 40 0 L 40 10 L 10 10 L 10 40 Z"></path>
-    <path d="M 60 100 L 100 100 L 100 60 L 90 60 L 90 90 L 60 90 Z"></path>
-  </svg>
-</button>
+<link rel="stylesheet" href="Assets/style/controls.css" />
+<link rel="stylesheet" href="Assets/style/fullscreen-btn.css" />

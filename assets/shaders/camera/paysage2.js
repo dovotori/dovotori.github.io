@@ -1,5 +1,5 @@
 import { funcLightsColor } from '../utils/light';
-import { uniformPBR, funcPBR, PBRLocations } from '../utils/pbr';
+import { funcPBR, PBRLocations } from '../utils/pbr';
 import { funcShadow } from '../utils/shadow';
 
 const vertex = `

@@ -31,8 +31,15 @@ export default class {
           );
         }
 
-        if (config.bloom) {
-          this.bloom = new Bloom(this.gl, width, height, this.canUseDepth(), this.mngProg.getAll());
+        if (config.postprocess.bloom) {
+          this.bloom = new Bloom(
+            this.gl,
+            width,
+            height,
+            this.canUseDepth(),
+            this.mngProg.getAll(),
+            config.postprocess.bloom
+          );
         }
       }
 

@@ -119,17 +119,17 @@ body {
   transition: background-color 0.2s ease-out;
 }
 
+body[theme='light'] {
+  background-color: #fff;
+}
+
 body,
 button {
   font-family: 'lato', Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 h1 {
-  font-family: 'lato', monospace;
-}
-
-html:lang(jp) h1 {
-  font-family: 'nikkyou', monospace;
+  font-family: 'arame', monospace;
 }
 
 button {

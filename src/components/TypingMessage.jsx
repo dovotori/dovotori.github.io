@@ -1,38 +1,58 @@
 import React, { useRef, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import usePrevious from '../hooks/usePrevious';
 
 const Wrap = styled.span`
   position: relative;
   display: inline-block;
+  overflow: hidden;
 `;
 
 const Hidden = styled.span`
+  display: flex;
+  flex-wrap: wrap;
   visibility: ${(p) => (p.isVisible ? 'visible' : 'hidden')};
 `;
 
 const Anim = styled.span`
   position: absolute;
-  /* white-space: nowrap; */
   display: inline-block;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  white-space: nowrap;
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const Letter = styled.span`
+  display: inline-block;
+  width: ${(p) => p.width};
+  min-width: 0.2em;
 `;
 
 const ANIM_DURATION_RANGE = 30;
 const ANIM_FPS = 3000 / 60;
-const CHARS = '!<>-_\\/[]{}—=+*^?#________';
+const CHARS = '!<>-_\\/[]{}—=+*^?#';
 
-const TypingMessage = ({ message, isTouchDevice, isLoop = false }) => {
-  const ref = useRef(null);
-  const wrapRef = useRef(null);
+const TypingMessage = ({
+  message,
+  isTouchDevice,
+  firstMessage = '',
+  className,
+  isLoop = false,
+  width = 'auto',
+  delay = 100, // en ms
+}) => {
+  const animRef = useRef(null);
   const queue = useRef([]);
   const count = useRef(0);
   const lastFrame = useRef(new Date().getTime());
   const req = useRef(null);
+  const timeout = useRef(null);
+  const oldMessage = usePrevious(message);
+  const fromMessage = useRef(firstMessage);
 
   const randomChar = useCallback(() => {
     return CHARS[Math.floor(Math.random() * CHARS.length)];
@@ -45,7 +65,7 @@ const TypingMessage = ({ message, isTouchDevice, isLoop = false }) => {
     let complete = 0;
     if (milli > ANIM_FPS) {
       let output = '';
-      for (let i = 0, n = queue.current.length; i < n; i += 1) {
+      for (let i = 0, n = queue.current.length; i < n; i++) {
         const { from, to, start, end } = queue.current[i];
         let { char } = queue.current[i];
         if (count.current >= end) {
@@ -61,8 +81,14 @@ const TypingMessage = ({ message, isTouchDevice, isLoop = false }) => {
           output += from;
         }
       }
-      if (ref.current && output.length > 0) {
-        ref.current.innerHTML = output;
+      if (animRef.current && output.length > 0) {
+        animRef.current.innerHTML = output
+          .split('')
+          .map(
+            (letter) =>
+              `<span className="${className} letter" style="display:inline-block; width:${width}; min-width: 0.2em;">${letter}</span>`
+          )
+          .join('');
       }
       lastFrame.current = now;
     }
@@ -71,18 +97,26 @@ const TypingMessage = ({ message, isTouchDevice, isLoop = false }) => {
       req.current = requestAnimationFrame(update);
     } else if (isLoop) {
       count.current = 0;
-      req.current = requestAnimationFrame(update);
+      fromMessage.current = message;
+      timeout.current = setTimeout(() => {
+        req.current = requestAnimationFrame(update);
+      }, delay);
     }
+    return () => {
+      if (timeout.current) {
+        clearTimeout(timeout.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
     if (!isTouchDevice) {
-      const oldText = message;
-      const length = Math.max(oldText.length, message.length);
+      const old = oldMessage || fromMessage.current;
+      const length = Math.max(old.length, message.length);
       queue.current = [];
       for (let i = 0; i < length; i += 1) {
-        const from = oldText[i] || '';
-        const to = message[i] || '';
+        const from = old.charAt(i) || '';
+        const to = message.charAt(i) || '';
         const start = Math.floor(Math.random() * ANIM_DURATION_RANGE);
         const end = start + Math.floor(Math.random() * ANIM_DURATION_RANGE);
         queue.current.push({
@@ -114,9 +148,15 @@ const TypingMessage = ({ message, isTouchDevice, isLoop = false }) => {
   );
 
   return (
-    <Wrap ref={wrapRef}>
-      <Hidden isVisible={isTouchDevice}>{message}</Hidden>
-      <Anim ref={ref} />
+    <Wrap className={className}>
+      <Hidden isVisible={isTouchDevice}>
+        {message.split('').map((letter, idx) => (
+          <Letter width={width} className="letter" key={`${message}${letter}${idx}`}>
+            {letter}
+          </Letter>
+        ))}
+      </Hidden>
+      <Anim ref={animRef} />
     </Wrap>
   );
 };

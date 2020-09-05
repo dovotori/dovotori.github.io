@@ -3,7 +3,6 @@ import Screen from '../webgl/gl/Screen';
 import VboPointsIndices from '../webgl/vbos/VboPointsIndices';
 import Mat4 from '../webgl/maths/Mat4';
 import { getPoints, getIndices } from '../webgl/primitives/grid';
-import Bloom from '../webgl/postprocess/Bloom';
 import Target from '../webgl/maths/Target';
 
 const nsin = (val) => {
@@ -27,11 +26,6 @@ export default class extends Scene {
     super(gl, config, assets, width, height);
 
     this.screen = new Screen(this.gl);
-
-    this.bloom = new Bloom(gl, width, height, this.canUseDepth());
-    this.bloom.setSize(0.4);
-    this.bloom.setNbPass(4);
-    this.bloom.setIntensity(1.1);
 
     this.model = new Mat4();
     this.timeCloud = 0;
@@ -68,6 +62,9 @@ export default class extends Scene {
 
     this.setLampeInfos(this.mngProg.get('gltf'));
     this.mngProg.get('roadSky').setTexture(1, this.mngTex.get('noisergb').get(), 'textureMap');
+
+    this.mngGltf.get('raceship').setAnimationSpeed('aile1', 'rotation', 10);
+    this.mngGltf.get('raceship').setAnimationSpeed('aile2', 'rotation', 10);
   }
 
   renderLandscape() {
@@ -135,25 +132,42 @@ export default class extends Scene {
     const { roadAmplitude, roadLength, roadFrequence } = this.config;
     const shipZ = 2;
     const shipPos = getDistortion(shipZ / roadLength, roadFrequence, roadAmplitude, this.posShipY);
+
     const programShip = this.mngProg.get('gltf');
+
     this.setLampeInfos(programShip);
     programShip.setProjectionView(this.camera);
-    this.model.translate(this.target.get() + shipPos[0], 0.2 + shipPos[1], shipZ);
-    this.mngGltf.get('raceship').render(programShip, this.model);
+    this.model.translate(this.target.get() + shipPos[0], 0.3 + shipPos[1], shipZ);
+
+    const raceship = this.mngGltf.get('raceship');
+
+    raceship.setAnimationStep('trail1', 'scale', this.speedY * 10);
+    raceship.setAnimationStep('trail2', 'scale', this.speedY * 10);
+
+    raceship.render(programShip, this.model);
   };
 
   render() {
     super.render();
     this.model.identity();
-    this.renderLandscape();
+    this.postProcess.start();
+    // this.renderLandscape();
     this.updateCamera();
     this.renderMountain();
     this.renderRoad();
     this.renderShip();
+    this.postProcess.end();
 
-    // this.bloom.start();
-    // this.bloom.end();
-    // this.bloom.render();
+    this.bloom.start();
+    const programShip = this.mngProg.get('gltf');
+    const raceship = this.mngGltf.get('raceship');
+    raceship.renderNode('trail1', programShip, this.model);
+    raceship.renderNode('trail2', programShip, this.model);
+    this.bloom.end();
+
+    this.postProcess.setBloom(this.bloom.getTexture(), 1.5, 2.2);
+    this.postProcess.setFXAA();
+    this.postProcess.render();
   }
 
   onMouseDrag = (mouse) => {

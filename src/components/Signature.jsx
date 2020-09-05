@@ -2,13 +2,19 @@ import React from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { Link } from 'react-router-dom';
 
-// import { ReactComponent as Sumo } from 'Assets/svg/sumo.svg';
 import ProjectHtml from './ProjectHtml';
 import TypingMessage from './TypingMessage';
 
 const fadeUp = keyframes`
   0% { transform: scale(0.8); opacity: 0; }
   100% { transform: none; opacity: 1; }
+`;
+
+const StyledTypingMessage = styled(TypingMessage)`
+  span {
+    justify-content: center;
+  }
+  line-height: 0.9;
 `;
 
 const StyledLink = styled(Link)`
@@ -137,7 +143,6 @@ const Name = styled.h1`
   -webkit-text-fill-color: transparent;
   -webkit-text-stroke-width: 0.01em;
   -webkit-text-stroke-color: ${(p) => p.theme.text};
-  letter-spacing: 0.1em;
   text-transform: uppercase;
   font-size: 1000%;
   top: 60%;
@@ -167,15 +172,21 @@ const Signature = ({ className, hello }) => (
   <Wrap>
     <Appear>
       <StyledLink to="/about" className={className} title="about">
-        <StyledHtml slug="signature" colorType={0} />
+        <StyledHtml slug="signature" colorType={0} noBackground />
       </StyledLink>
       <CenterMobile>
-        <Katakana>
-          <TypingMessage message="ド リ ア ン" />
-        </Katakana>
         <Name>
-          <TypingMessage message="D o r i a n" />
+          <StyledTypingMessage
+            message="Dorian"
+            firstMessage="Hello"
+            width="1em"
+            isLoop
+            delay={5000}
+          />
         </Name>
+        <Katakana>
+          <StyledTypingMessage message="ドリアン" width="2em" isLoop delay={5000} />
+        </Katakana>
         <Infos>
           <LeftBalloon viewBox="0 0 100 100">
             <path d="M 100 0 L 90 10 L 100 100 Z" />

@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 import license from 'Assets/img/cclicense80x15.png';
 import { ReactComponent as Mail } from 'Assets/svg/mail.svg';
-import Toggle from './Toggle';
+import ToggleMode from './ToggleMode';
 import availablesLang from '../constants/locales';
 
 const Wrap = styled.div`
@@ -132,8 +132,7 @@ const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => {
         </a>
       </Div>
       <Div>
-        <Toggle id="themeMode" onClick={toggleTheme} checked={isDarkMode} />
-        <Span>{isDarkMode ? texts.lightMode : texts.darkMode}</Span>
+        <ToggleMode isDarkMode={isDarkMode} texts={texts} toggleTheme={toggleTheme} />
       </Div>
     </Wrap>
   );

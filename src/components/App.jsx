@@ -16,14 +16,13 @@ if (process.env.NODE_ENV !== 'production') {
 
 const App = ({ isDarkMode }) => {
   useEffect(() => {
-    document.body.style.background = isDarkMode ? dark.background : light.background;
     document.body.setAttribute('theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
   return (
     <>
-      <GlobalStyle />
       <ThemeProvider theme={isDarkMode ? dark : light}>
+        <GlobalStyle isDarkMode={isDarkMode} />
         <RoutesContainer />
       </ThemeProvider>
     </>

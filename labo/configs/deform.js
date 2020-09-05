@@ -38,13 +38,15 @@ export default {
   mouse: { domId: 'deform', events: ['drag', 'wheel', 'click'] },
   controls: {
     fullscreen: { domId: 'deform', buttonId: 'fullscreen-toggle-btn' },
-    volume: { domId: 'volume' },
-    playbackRate: { domId: 'playbackRate' },
+    ranges: {
+      volume: { min: 0, max: 100, value: 50 },
+      playbackRate: { min: 0, max: 100, value: 50 },
+    },
   },
   postprocess: true,
   useDepthTexture: true,
   canvas: {
-    width: 512,
-    height: 512,
+    width: 1024,
+    height: 1024,
   },
 };

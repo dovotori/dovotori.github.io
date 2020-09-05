@@ -19,7 +19,7 @@ const common = {
   title: css`
     font-family: 'arame', monospace;
     text-align: left;
-    font-size: 3em;
+    font-size: 8em;
     font-weight: 500;
     letter-spacing: 0.2em;
     line-height: 1.1;
@@ -27,6 +27,12 @@ const common = {
     overflow-wrap: break-word;
     text-transform: uppercase;
     text-shadow: 2px 2px 0 ${(p) => p.theme.backgroundHighlight};
+    @media (max-width: 1020px) {
+      font-size: 6em;
+    }
+    @media (max-width: 570px) {
+      font-size: 4em;
+    }
   `,
   monospace: css`
     font-size: 0.8em;
@@ -88,7 +94,7 @@ export const dark = {
   tertiary: `hsl(${hue.tertiary}, 100%, 70%)`,
   tertiaryDark: `hsl(${hue.tertiary}, 100%, 60%)`,
   background: '#222',
-  backgroundHighlight: '#111',
+  backgroundHighlight: '#000',
   midl: '#666',
   light: '#bbb',
   text: '#fff',
@@ -105,7 +111,7 @@ export const light = {
   tertiary: `hsl(${hue.tertiary}, 80%, 50%)`,
   tertiaryDark: `hsl(${hue.tertiary}, 100%, 60%)`,
   background: '#fff',
-  backgroundHighlight: '#eee',
+  backgroundHighlight: '#ddd',
   midl: '#888',
   light: '#222',
   text: '#000',

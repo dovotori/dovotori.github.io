@@ -5,6 +5,7 @@ import Quaternion from '../maths/Quaternion';
 import Mat4 from '../maths/Mat4';
 import Sample from '../maths/Sample';
 import { lerp } from '../utils/easing';
+import { mapFromRange } from '../utils/numbers';
 
 export default class {
   constructor(gl, data) {
@@ -16,17 +17,17 @@ export default class {
         }
         return primitive;
       });
+      const formatPrimitives = this.formatPrimitives(gl, primitivesData);
       return {
         name,
-        primitives: this.formatPrimitives(gl, primitivesData),
+        primitives: formatPrimitives,
         weights,
       };
     });
     this.nodes = nodes.reduce((acc, node) => {
       const newNode = this.addAnimations(node);
-      acc.push(newNode);
-      return acc;
-    }, []);
+      return { ...acc, [node.name]: newNode };
+    }, {});
     if (skins) {
       this.skins = skins.map(({ joints }) => {
         const newJoints = this.enhancedJoints(joints);
@@ -35,6 +36,7 @@ export default class {
     }
     this.bone = new Bone(gl);
     this.boneProg = null;
+    this.customTransform = {};
   }
 
   enhancedJoints = (joints) =>
@@ -53,6 +55,7 @@ export default class {
         newNode[`${path}Animation`] = {
           output,
           sample: new Sample(times, interpolation),
+          custom: null,
         };
       });
     }
@@ -67,19 +70,27 @@ export default class {
 
   render(program, model) {
     Object.keys(this.nodes).forEach((key) => {
-      const node = this.nodes[key];
-      const { mesh: meshIndex, skin: skinIndex } = node;
-      const { primitives } = this.meshes[meshIndex];
-      this.handleWeights(node, program);
-      this.handleSkin(skinIndex, program, model);
-      const localMatrix = this.handleLocalTransform(node);
-      localMatrix.multiply(model);
-      program.setMatrix('model', localMatrix.get());
-      const normalmatrix = localMatrix.getMatrice3x3();
-      normalmatrix.inverse();
-      program.setMatrix('normalmatrix', normalmatrix.transpose());
-      primitives.forEach((primitive) => primitive.render(program));
+      this.renderNode(key, program, model);
     });
+  }
+
+  renderNode(key, program, model) {
+    const node = this.nodes[key];
+    const { mesh: meshIndex, skin: skinIndex } = node;
+
+    this.handleWeights(node, program);
+    this.handleSkin(skinIndex, program, model);
+
+    const localMatrix = this.handleLocalTransform(node);
+    localMatrix.multiply(model);
+    program.setMatrix('model', localMatrix.get());
+
+    const normalmatrix = localMatrix.getMatrice3x3();
+    normalmatrix.inverse();
+    program.setMatrix('normalmatrix', normalmatrix.transpose());
+
+    const { primitives } = this.meshes[meshIndex];
+    primitives.forEach((primitive) => primitive.render(program));
   }
 
   handleWeights = (node, program) => {
@@ -113,13 +124,13 @@ export default class {
     } = node;
     const localMatrix = new Mat4();
     localMatrix.identity();
-    if (scale) {
+    if (scale || scaleAnimation) {
       localMatrix.scale(...this.getVector(scale, scaleAnimation));
     }
-    if (rotation) {
+    if (rotation || rotationAnimation) {
       localMatrix.multiply(this.getRotationMat4(rotation, rotationAnimation));
     }
-    if (translation) {
+    if (translation || translationAnimation) {
       localMatrix.translate(...this.getVector(translation, translationAnimation));
     }
 
@@ -160,10 +171,25 @@ export default class {
       }
     });
 
-  getVector = (vector, vectorAnimation) => {
+  setAnimationStep = (nodeName, transformType, step) => {
+    const animation = this.nodes[nodeName][`${transformType}Animation`];
+    const nbAnimations = animation.output.length;
+    const value = mapFromRange(step, 0, 1, 0, nbAnimations - 1);
+    animation.custom = Math.round(value);
+  };
+
+  setAnimationSpeed = (nodeName, transformType, millis) => {
+    const animation = this.nodes[nodeName][`${transformType}Animation`];
+    animation.sample.setSpeed(millis);
+  };
+
+  getVector = (vector = [0, 0, 0], vectorAnimation) => {
     let newVector = vector;
     if (vectorAnimation) {
-      const { sample, output } = vectorAnimation;
+      const { sample, output, custom = null } = vectorAnimation;
+      if (custom !== null) {
+        return output[custom];
+      }
       sample.update();
       const index = sample.getIndex();
       if (index > 0) {
@@ -175,10 +201,13 @@ export default class {
     return newVector;
   };
 
-  getRotationMat4 = (rotation, rotationAnimation) => {
-    const quat = new Quaternion(rotation[0], rotation[1], rotation[2], rotation[3]);
+  getRotationMat4 = (rotation = [0, 0, 0, 1], rotationAnimation) => {
+    const quat = new Quaternion(...rotation);
     if (rotationAnimation) {
-      const { sample, output } = rotationAnimation;
+      const { sample, output, custom = null } = rotationAnimation;
+      if (custom !== null) {
+        return new Quaternion(...output[custom]).toMatrix4();
+      }
       sample.update();
       const index = sample.getIndex();
       if (index > 0) {

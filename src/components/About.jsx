@@ -32,7 +32,7 @@ const Wrap = styled(Bloc)`
 const WrapContent = styled.div`
   margin: 0 auto;
   padding: 0 10px;
-  max-width: 500px;
+  max-width: 700px;
 `;
 
 const Description = styled.p`
@@ -81,6 +81,8 @@ const Quote = styled.div`
 
 const StyledQuoteIcon = styled(QuoteIcon)`
   margin-right: 0.1em;
+  width: 100%;
+  height: 100%;
 `;
 
 const About = ({ hello, isTouchDevice }) => (
@@ -94,7 +96,7 @@ const About = ({ hello, isTouchDevice }) => (
               <StyledQuoteIcon />
             </Quote>
           </a>
-          <StyledTypingMessage message={hello.about} />
+          <StyledTypingMessage message={hello.about} firstMessage="はじめまして" />
         </StyledTitle>
         {hello.description.map((text) => (
           <Description key={text}>{text}</Description>

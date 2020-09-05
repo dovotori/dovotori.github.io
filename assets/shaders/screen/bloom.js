@@ -10,14 +10,13 @@ uniform float gamma;
 uniform float exposure;
 
 void main() {
-  vec4 color;
-  vec4 hdr = texture2D(textureMap, fragTexture);      
-  vec4 bloom = texture2D(bloomMap, fragTexture);
-  float bloomOpacity = (bloom.x + bloom.y + bloom.z) * 1.0;
-  color = hdr + vec4(bloom.xyz, bloomOpacity);
-  vec4 result = vec4(1.0) - exp(-color * exposure);
-  result = pow(result, vec4(1.0 / gamma));
-  gl_FragColor = color;
+  vec3 color;
+  vec3 hdr = texture2D(textureMap, fragTexture).xyz;      
+  vec3 bloom = texture2D(bloomMap, fragTexture).xyz;
+  color = hdr + bloom;
+  vec3 result = vec3(1.0) - exp(-color * exposure);
+  result = pow(result, vec3(1.0 / gamma));
+  gl_FragColor = vec4(result, 1.0);
 }
 `;
 

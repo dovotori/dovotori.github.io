@@ -20,7 +20,7 @@ export default class extends Scene {
     this.pulse = new Pulse(0);
     this.targetX = new Spring(0);
     this.targetY = new Spring(0);
-    this.targetZ = new Target(1, 0.05);
+    this.targetZ = new Target(0, 0.05);
     this.mouseCanvasPosition = {
       x: 0,
       y: 0,
@@ -33,33 +33,21 @@ export default class extends Scene {
     this.fVbo = new FixVbo(this.gl, indexes);
 
     this.mngObj.get(this.config.MAIN_OBJ).setModeDessin(this.gl.POINTS);
-
-    this.setupControls();
+    this.targetZ.set(1);
   }
 
-  setupControls = () => {
+  setupControls = ({ ranges }) => {
     this.button = document.querySelector('.play-button');
     this.sound = this.mngSound.get('akira');
     if (this.button) {
       this.button.addEventListener('click', this.togglePlay, false);
     }
 
+    this.ranges = ranges;
     if (this.config.controls) {
-      const controls = document.querySelector('#controls');
-
-      if (controls) {
-        const { volume, playbackRate } = this.config.controls;
-
-        this.volumeRange = document.querySelector(`#${volume.domId}`);
-        if (this.volumeRange) {
-          this.volumeRange.addEventListener('change', this.onChangeVolume, false);
-        }
-
-        this.playbackRange = document.querySelector(`#${playbackRate.domId}`);
-        if (this.playbackRange) {
-          this.playbackRange.addEventListener('change', this.onChangePlaybackRate, false);
-        }
-      }
+      const { volume, playbackRate } = this.ranges;
+      volume.dom.addEventListener('change', this.onChangeVolume, false);
+      playbackRate.dom.addEventListener('change', this.onChangePlaybackRate, false);
     }
   };
 
@@ -99,6 +87,8 @@ export default class extends Scene {
     quat.rotateY(-angle);
     quat.rotateX(-angle2);
     this.model.multiply(quat.toMatrix4());
+
+    this.model.scale(this.targetZ.get());
 
     const program = this.mngProg.get(this.config.MAIN_PROG);
     program.setVector('resolution', [this.containerSize.width, this.containerSize.height]);
@@ -188,12 +178,10 @@ export default class extends Scene {
       this.button.addEventListener('click', this.togglePlay, false);
     }
 
-    if (this.volumeRange) {
-      this.volumeRange.removeEventListener('change', this.onChangeVolume, false);
-    }
-
-    if (this.playbackRange) {
-      this.playbackRange.removeEventListener('change', this.onChangePlaybackRate, false);
+    if (this.ranges) {
+      const { volume, playbackRate } = this.ranges;
+      volume.dom.removeEventListener('change', this.onChangeVolume, false);
+      playbackRate.dom.removeEventListener('change', this.onChangePlaybackRate, false);
     }
 
     if (this.sound) {

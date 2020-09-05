@@ -54,7 +54,7 @@ export default class extends ProcessBase {
     this.renderToPingPong(program);
   }
 
-  setBloom(bloomTexture, gamma, exposure, tex = null) {
+  setBloom(bloomTexture, gamma = 1.0, exposure = 1.0, tex = null) {
     const program = this.applyTexToProg(this.programs.bloom, tex);
     program.setFloat('gamma', gamma);
     program.setFloat('exposure', exposure);

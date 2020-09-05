@@ -52,16 +52,16 @@ const RenderSwitch = ({ location, children }) => (
 );
 
 const TransitionRoute = ({ location, children, isTouchDevice }) => {
-  if (isTouchDevice) {
-    return <RenderSwitch location={location}>{children}</RenderSwitch>;
-  }
-  return (
-    <StyledTransitionGroup>
-      <CSSTransition key={shouldAnimRouteTransition(location)} timeout={TIME} classNames="route">
-        <RenderSwitch location={location}>{children}</RenderSwitch>
-      </CSSTransition>
-    </StyledTransitionGroup>
-  );
+  // if (isTouchDevice) {
+  return <RenderSwitch location={location}>{children}</RenderSwitch>;
+  // }
+  // return (
+  //   <StyledTransitionGroup>
+  //     <CSSTransition key={shouldAnimRouteTransition(location)} timeout={TIME} classNames="route">
+  //       <RenderSwitch location={location}>{children}</RenderSwitch>
+  //     </CSSTransition>
+  //   </StyledTransitionGroup>
+  // );
 };
 
 export default withRouter(TransitionRoute);

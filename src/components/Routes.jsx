@@ -4,7 +4,7 @@ import { createHashHistory } from 'history'; // bettr for reload on SPA than cre
 
 import TransitionRoute from './TransitionRoute';
 import FooterContainer from '../containers/FooterContainer';
-import ProjectNavigationContainer from '../containers/ProjectNavigationContainer';
+import ProjectCommonContainer from '../containers/ProjectCommonContainer';
 import routes from '../constants/routes';
 
 const history = createHashHistory();
@@ -16,11 +16,9 @@ const renderRoute = (route) => (
 const Routes = ({ isTouchDevice }) => (
   <Router history={history}>
     <>
-      {/* Navigation top */}
       <Switch>
-        <Route path="/project/:slug" exact component={ProjectNavigationContainer} />
+        <Route path="/project/:slug" exact component={ProjectCommonContainer} />
       </Switch>
-      {/* Main routes */}
       <TransitionRoute isTouchDevice={isTouchDevice}>
         {routes.map(renderRoute)}
         <Route path="*" render={() => <Redirect to="/" />} />

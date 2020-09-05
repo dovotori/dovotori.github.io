@@ -14,7 +14,7 @@ varying vec3 fragNormale;
 
 void main() {
   fragPosition = normalize((view * model * vec4(position, 1.0)).xyz);
-  fragNormale = normalmatrix * normalize(normale);
+  fragNormale = normalize(normale);
   gl_Position = projection * view * model * vec4(position, 1.0);
 }
 `;
@@ -34,7 +34,7 @@ ${funcLightsColor}
 void main() {
   vec3 phong = funcLightsColor(color.xyz, vec3(1.0,1.0,1.0), vec3(1.0,1.0,1.0), fragNormale, fragPosition);
   gl_FragColor = vec4(phong, 1.0);
-  // gl_FragColor = color;
+  // gl_FragColor = vec4(fragNormale, 1.0);
 }
 `;
 

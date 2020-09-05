@@ -9,6 +9,7 @@ const Wrap = styled.div`
   margin: 0 auto;
   max-width: 800px;
   z-index: 1;
+  overflow: hidden;
 `;
 
 const LINK = styled(Link)`

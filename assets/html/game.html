@@ -1,12 +1,4 @@
 <div id="gameinfos"></div>
-<div id="controls" style="opacity: 0;">
-  <button id="fullscreen-toggle-btn">
-    <svg viewbox="0 0 100 100">
-      <path d="M 0 40 L 0 0 L 40 0 L 40 10 L 10 10 L 10 40 Z"></path>
-      <path d="M 60 100 L 100 100 L 100 60 L 90 60 L 90 90 L 60 90 Z"></path>
-    </svg>
-  </button>
-</div>
 <div id="splash" style="opacity: 0;">
   <h1 id="title">T h e G a m e</span></h1>
   <p id="instructions">Pressed Enter</p>
@@ -51,7 +43,6 @@
   </div>
 </div>
 <style>
-  
   #game {
     text-align: center;
   }
@@ -77,35 +68,6 @@
     top: 50%;
     left: 50%;
     transform: translate3d(-50%, -50%, 0);
-  }
-
-  #controls {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    display: flex;
-    align-items: stretch;
-  }
-
-  #fullscreen-toggle-btn {
-    border-radius: 0;
-    margin: 0;
-    padding: 4px;
-  }
-
-  #fullscreen-toggle-btn:hover svg,
-  #fullscreen-toggle-btn:active svg {
-    transform: none;
-    opacity: 1;
-  }
-
-  #fullscreen-toggle-btn svg {
-    display: block;
-    width: 2em;
-    fill: #444;
-    opacity: 0.8;
-    transform: scale(0.6);
-    transition: opacity 300ms ease-out, transform 300ms ease-out;
   }
 
   #splash {
@@ -191,3 +153,5 @@
     }
   }
 </style>
+<link rel="stylesheet" href="Assets/style/controls.css" />
+<link rel="stylesheet" href="Assets/style/fullscreen-btn.css" />

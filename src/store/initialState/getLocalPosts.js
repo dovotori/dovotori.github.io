@@ -331,42 +331,44 @@ const rawPosts = [
     },
     html: true,
   },
-  {
-    id: 20,
-    slug: 'shader',
-    title: { [Locales.FR]: 'Shader', [Locales.EN]: 'Shader', [Locales.JP]: 'Shader' },
-    category: CAT_BLOG,
-    tags: [],
-    date: 2020,
-    description: {
-      [Locales.FR]: [''],
-      [Locales.EN]: [''],
-      [Locales.JP]: [''],
-    },
-    html: true,
-  },
+  // {
+  //   id: 20,
+  //   slug: 'shader',
+  //   title: { [Locales.FR]: 'Shader', [Locales.EN]: 'Shader', [Locales.JP]: 'Shader' },
+  //   category: CAT_BLOG,
+  //   tags: [],
+  //   date: 2020,
+  //   description: {
+  //     [Locales.FR]: [''],
+  //     [Locales.EN]: [''],
+  //     [Locales.JP]: [''],
+  //   },
+  //   html: true,
+  // },
   {
     id: 21,
     slug: 'race',
-    title: { [Locales.FR]: 'Course', [Locales.EN]: 'Race', [Locales.JP]: 'Race' },
+    title: { [Locales.FR]: 'Course', [Locales.EN]: 'Race', [Locales.JP]: '人種' },
     category: CAT_BLOG,
     tags: [],
     date: 2020,
-    description: {
-      [Locales.FR]: [''],
-      [Locales.EN]: [''],
-      [Locales.JP]: [''],
-    },
     html: true,
   },
 ];
 
 export default (locale) => {
   return rawPosts.map((post) => {
+    const description = post.description && post.description[locale];
+    if (description) {
+      return {
+        ...post,
+        title: post.title[locale],
+        description,
+      };
+    }
     return {
       ...post,
       title: post.title[locale],
-      description: post.description[locale],
     };
   });
 };

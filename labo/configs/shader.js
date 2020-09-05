@@ -11,10 +11,12 @@ export default {
     '/screen/screen.js',
     '/screen/debug.js',
   ],
-  bloom: true,
+  postprocess: {
+    bloom: true,
+  },
   canvas: {
-    width: 512,
-    height: 512,
+    width: 1024,
+    height: 1024,
   },
   mouse: {
     domId: 'mouse',

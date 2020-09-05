@@ -1,7 +1,6 @@
 export default class {
-  constructor(domItem, button) {
-    this.domItem = domItem;
-    this.button = button;
+  constructor(domScene, domControls) {
+    this.domItem = domScene;
     this.isFullscreen = false;
     this.support = !!(
       document.exitFullscreen ||
@@ -10,9 +9,16 @@ export default class {
       document.webkitExitFullscreen
     );
 
-    if (this.button) {
-      this.button.addEventListener('click', this.toggle, false);
-    }
+    this.button = document.createElement('button');
+    this.button.id = 'fullscreen-toggle-btn';
+    this.button.innerHTML = `
+<svg viewbox="0 0 100 100">
+  <path d="M 0 40 L 0 0 L 40 0 L 40 10 L 10 10 L 10 40 Z"></path>
+  <path d="M 60 100 L 100 100 L 100 60 L 90 60 L 90 90 L 60 90 Z"></path>
+</svg>
+    `;
+    domControls.appendChild(this.button);
+    this.button.addEventListener('click', this.toggle, false);
 
     this.listen();
   }

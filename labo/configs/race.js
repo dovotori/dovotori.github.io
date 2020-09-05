@@ -7,12 +7,23 @@ export default {
     '/camera/basique3d.js',
     '/sky/roadSky.js',
     '/camera/gltf.js',
+    '/screen/screen.js',
+    '/screen/debug.js',
+    '/screen/blurBloomOnePass.js',
+    '/screen/bloom.js',
+    '/screen/fxaa.js',
   ],
+  useDepthTexture: true,
+  postprocess: {
+    bloom: {
+      intensity: 1,
+    },
+  },
   textures: {
     noisergb: 'LINEAR',
   },
   canvas: {
-    width: 512,
+    width: 1024,
     height: 512,
   },
   mouse: {
@@ -20,7 +31,7 @@ export default {
     events: ['drag', 'down', 'move', 'up'],
   },
   camera: {
-    position: { x: 0, y: 1.2, z: 0 },
+    position: { x: 0, y: 1.3, z: 0 },
     target: { x: 0, y: 0, z: 128 },
     near: 1,
     far: 200,

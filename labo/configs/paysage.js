@@ -9,6 +9,8 @@ export default {
     `/camera/${MAIN_PROG}.js`,
     '/screen/fxaa.js',
   ],
+  postprocess: true,
+  useDepthTexture: true,
   assets: [`/gltf/${MAIN_OBJ}.gltf`],
   positions: {
     plot: [
@@ -56,8 +58,6 @@ export default {
     domId: 'paysage',
     events: ['drag', 'wheel'],
   },
-  postprocess: true,
-  useDepthTexture: true,
   canvas: {
     width: 1024,
     height: 1024,

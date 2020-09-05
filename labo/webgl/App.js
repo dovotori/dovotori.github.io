@@ -3,7 +3,7 @@ import ManagerAssets from './managers/ManagerAssets';
 import ManagerShaders from './managers/ManagerShaders';
 import Canvas from './gl/Canvas';
 import Keyboard from './io/Keyboard';
-import Fullscreen from './io/Fullscreen';
+import Controls from './io/Controls';
 import Mouse from './io/Mouse';
 import { capitalize, getEnvPath } from './utils';
 
@@ -57,13 +57,10 @@ export default class {
         this.mouse = new Mouse(container, callbacks);
       }
       if (config.controls) {
-        const { fullscreen } = config.controls;
-        if (fullscreen) {
-          const { div, domId, buttonId, button } = fullscreen;
-          const containerElem =
-            div || (domId ? document.querySelector(`#${domId}`) : document.body);
-          const buttonElem = button || (buttonId ? document.querySelector(`#${buttonId}`) : null);
-          this.fullscreen = new Fullscreen(containerElem, buttonElem);
+        const container = document.querySelector(`#${config.slug}`);
+        this.controls = new Controls(container, config.controls);
+        if (config.controls.ranges && this.scene.setupControls) {
+          this.scene.setupControls({ ranges: this.controls.getRanges() });
         }
       }
       this.revealAfterLoaded(config.slug);
@@ -100,8 +97,8 @@ export default class {
     if (this.scene && this.scene.destroy) {
       this.scene.destroy();
     }
-    if (this.fullscreen) {
-      this.fullscreen.destroy();
+    if (this.controls) {
+      this.controls.destroy();
     }
   }
 

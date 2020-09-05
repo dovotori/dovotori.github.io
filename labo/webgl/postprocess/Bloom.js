@@ -1,22 +1,27 @@
 import ProcessBase from './ProcessBase';
 
 export default class extends ProcessBase {
-  constructor(gl, width = 1024, height = 1024, useDepth = false, programs = {}) {
+  constructor(gl, width = 1024, height = 1024, useDepth = false, programs = {}, config = {}) {
     super(gl, width, height, useDepth, programs);
 
-    this.blurSize = 0.6;
-    this.blurNbPass = 0.6;
-    this.blurIntensity = 1.0;
+    this.blurSize = config.size !== undefined ? config.size : 0.6;
+    this.blurIntensity = config.intensity !== undefined ? config.intensity : 1.0;
   }
 
   render(tex = null, isDebug = false) {
-    this.setBlurPass();
     super.render(tex, isDebug);
+  }
+
+  end() {
+    this.setBlurPass();
+    this.ppb.end();
   }
 
   setBlurPass(tex = null) {
     // ONE PASS
     const program = this.applyTexToProg(this.programs.blurBloomOnePass, tex);
+    program.setFloat('size', this.blurSize);
+    program.setFloat('intensity', this.blurIntensity);
     this.renderToPingPong(program);
 
     // MULTIPASS

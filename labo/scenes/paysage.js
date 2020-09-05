@@ -20,7 +20,7 @@ export default class extends Scene {
     this.model.identity();
     this.targetX = new Spring(0);
     this.targetY = new Spring(0);
-    this.targetZ = new Target(1, 0.05);
+    this.targetZ = new Target(0, 0.05);
     this.gizmo = new Gizmo(gl);
     this.bloom = new Bloom(gl, width, height, this.canUseDepth());
 
@@ -32,6 +32,7 @@ export default class extends Scene {
         this.objet.setPoints(primitive[key], key);
       }
     });
+    this.targetZ.set(1);
   }
 
   update() {

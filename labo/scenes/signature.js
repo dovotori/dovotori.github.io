@@ -16,11 +16,13 @@ export default class extends Scene {
     this.model.identity();
     this.targetX = new Target(0, 0.2);
     this.targetY = new Target(0, 0.2);
+    this.targetScale = new Target(0, 0.1);
     this.target = new Spring(0, 0.2);
     this.mouseCanvasPosition = {
       x: 0,
       y: 0,
     };
+    this.targetScale.set(1);
   }
 
   update() {
@@ -29,11 +31,14 @@ export default class extends Scene {
     this.targetX.update();
     this.targetY.update();
     this.target.update();
+    this.targetScale.update();
 
     this.model.identity();
 
-    const angle = degToRad(this.targetX.get()) + Math.sin(this.time * 0.06) * 0.1;
-    const angle2 = degToRad(this.targetY.get()) - Math.abs(Math.cos(this.time * 0.06) * 0.1);
+    const angle = degToRad(this.targetX.get()) + Math.sin(this.time * 0.1) * 0.1;
+    const angle2 = degToRad(this.targetY.get()) - Math.abs(Math.cos(this.time * 0.1) * 0.1);
+
+    this.model.scale(this.targetScale.get());
 
     const quat = new DualQuaternion();
     quat.rotateY(angle);
