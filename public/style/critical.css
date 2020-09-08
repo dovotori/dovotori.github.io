@@ -1,0 +1,123 @@
+@font-face {
+  font-family: 'lato';
+  src: url('../fonts/lato-black.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'lato';
+  src: url('../fonts/lato-bold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'lato';
+  src: url('../fonts/lato-regular.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'lato';
+  src: url('../fonts/lato-light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'lato';
+  src: url('../fonts/lato-hairline.woff2') format('woff2');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'lato';
+  src: url('../fonts/lato-italic.woff2') format('woff2');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'nikkyou';
+  src: url('../fonts/nikkyou.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#dovotori-app {
+  width: 100%;
+}
+
+body {
+  line-height: 1.4;
+  background-color: #222;
+  overflow-x: hidden;
+  color: #fff;
+  transition: background-color 0.2s ease-out;
+}
+
+body[theme='light'] {
+  background-color: #fff;
+}
+
+body,
+button {
+  font-family: 'lato', Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+button {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+h1 {
+  font-family: 'lato', monospace;
+}
+
+p {
+  letter-spacing: 0.02em;
+}
+
+a,
+a:focus,
+button:focus {
+  text-decoration: none;
+  outline: 0;
+  border-radius: 0;
+}
+
+a {
+  color: #66ffcc;
+}
+
+.bloc {
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  background-color: #222;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #666;
+}
+::-moz-selection {
+  background: #66ffcc;
+  color: #fff;
+}
+::selection {
+  background: #66ffcc;
+  color: #fff;
+}

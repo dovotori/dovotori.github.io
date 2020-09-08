@@ -2,7 +2,7 @@ const path = require('path');
 const puppeteer = require('puppeteer');
 const utils = require('../utils');
 
-const SAVE_HTML_FILE = path.resolve(__dirname, '../../assets/html/religionmap.html');
+const SAVE_HTML_FILE = path.resolve(__dirname, '../../public/html/religionmap.html');
 const SAVE_SVG_FILE = path.resolve(__dirname, './religionmap.svg');
 
 const generateSvg = async (showBrowser) => {

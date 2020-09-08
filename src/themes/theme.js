@@ -17,12 +17,11 @@ const common = {
     mobile: 420,
   },
   title: css`
-    font-family: 'arame', monospace;
     text-align: left;
     font-size: 8em;
-    font-weight: 500;
     letter-spacing: 0.2em;
     line-height: 1.1;
+    font-weight: 100;
     color: ${(p) => p.theme.getColor};
     overflow-wrap: break-word;
     text-transform: uppercase;

@@ -4,49 +4,26 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const config = require('../package.json');
-const { alias } = require('./common');
+const { alias, rules } = require('./common');
 
 const port = process.env.PORT || 8080;
 const host = process.env.HOST || '0.0.0.0';
 
 module.exports = {
   mode: 'development',
-  entry: [
-    'webpack/hot/only-dev-server',
-    `webpack-dev-server/client?http://${host}:${port}`,
-    './src/index',
-  ],
+  entry: {
+    polyfill: '@babel/polyfill',
+    hot: 'webpack/hot/only-dev-server',
+    devserver: `webpack-dev-server/client?http://${host}:${port}`,
+    main: './src/index',
+  },
   output: {
-    filename: `${config.name}.js`,
     publicPath: '/',
+    filename: '[name].js',
   },
   devtool: 'inline-source-map',
   module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-      },
-      {
-        test: /\.svg$/,
-        use: [
-          {
-            loader: '@svgr/webpack',
-            options: {
-              svgo: false,
-            },
-          },
-          {
-            loader: 'url-loader',
-          },
-        ],
-      },
-      {
-        test: /\.(jpe?g|png|gif)$/i,
-        loader: 'url-loader?name=/img/[name].[ext]?[hash]?limit=100000',
-      },
-    ],
+    rules,
   },
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -59,7 +36,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('developement'),
-        ASSET_PATH: JSON.stringify('/assets'),
+        ASSET_PATH: JSON.stringify('/public'),
         NAME: JSON.stringify(config.name),
         MAIL: JSON.stringify(config.author.email),
       },
@@ -68,7 +45,8 @@ module.exports = {
       title: config.name,
       filename: 'index.html',
       inject: 'body',
-      base: '/assets',
+      base: '/public',
+      chunks: ['polyfill', 'hot', 'devserver', 'main'],
       template: path.resolve(__dirname, './templates/index.ejs'),
     }),
   ],

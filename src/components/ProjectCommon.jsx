@@ -5,7 +5,7 @@ import ProjectNavigationContainer from '../containers/ProjectNavigationContainer
 
 const ProjectCommon = (props) => {
   const { slug, title, description, date, colorType } = props;
-  const descriptions = description && Array.isArray(description) ? description : [description];
+  const descriptions = description && (Array.isArray(description) ? description : [description]);
   return (
     <>
       <ProjectNavigationContainer slug={slug} />

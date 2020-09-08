@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import ProjectHtml from './ProjectHtml';
+import ProjectLabo from './ProjectLabo';
 import TypingMessage from './TypingMessage';
 
 const fadeUp = keyframes`
@@ -58,7 +58,7 @@ const Infos = styled.div`
   `}
 `;
 
-const StyledHtml = styled(ProjectHtml)`
+const StyledLabo = styled(ProjectLabo)`
   text-align: center;
   margin: 0 auto;
   width: 100%;
@@ -138,17 +138,10 @@ const commonName = css`
 
 const Name = styled.h1`
   ${commonName}
-  font-family: 'bebas', sans-serif;
-  color: ${(p) => p.theme.text};
-  -webkit-text-fill-color: transparent;
-  -webkit-text-stroke-width: 0.01em;
-  -webkit-text-stroke-color: ${(p) => p.theme.text};
-  text-transform: uppercase;
-  font-size: 1000%;
+  ${(p) => p.theme.title}
+  text-align: center;
   top: 60%;
-  ${(p) => p.theme.media.mobile`
-    font-size: 500%;
-  `}
+  color: ${(p) => p.theme.text};
 `;
 
 const Katakana = styled.h1`
@@ -172,7 +165,7 @@ const Signature = ({ className, hello }) => (
   <Wrap>
     <Appear>
       <StyledLink to="/about" className={className} title="about">
-        <StyledHtml slug="signature" colorType={0} noBackground />
+        <StyledLabo slug="signature" colorType={0} noBackground hasJs />
       </StyledLink>
       <CenterMobile>
         <Name>

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import ButtonBack from './ButtonBack';
 import ProjectImage from './ProjectImage';
-import ProjectHtml from './ProjectHtml';
+import ProjectLabo from './ProjectLabo';
 
 const WrapContent = styled.div`
   margin: 0 auto;
@@ -33,19 +33,21 @@ const Images = styled.div`
   margin: 0 auto;
 `;
 
-const StyledProjectHtml = styled(ProjectHtml)`
+const StyledProjectLabo = styled(ProjectLabo)`
   background: ${(p) => (p.noBackground ? 'transparent' : p.theme.getGradient)};
   --project-color: ${(p) => p.theme.getColor};
 `;
 
-const Project = ({ slug, images, colorType, html: hasHtml }) => {
+const Project = ({ slug, images, colorType, labo }) => {
   return (
     <>
-      {hasHtml && (
-        <StyledProjectHtml
+      {!!labo && (
+        <StyledProjectLabo
           slug={slug}
           colorType={colorType}
-          noBackground={!!hasHtml.noBackground}
+          noBackground={!!labo.noBackground}
+          hasHtml={!!labo.hasHtml}
+          hasJs={!!labo.hasJs}
         />
       )}
       <WrapContent>
