@@ -4,7 +4,7 @@
   "description": "React version of my portfolio website",
   "author": {
     "name": "Dorian Ratovo",
-    "email": "dratovo@gmail.com",
+    "email": "dovotori@protonmail.com",
     "url": "https://dovotori.gitlab.io"
   },
   "license": "CC-BY-4.0",
@@ -104,7 +104,7 @@
   ],
   "bugs": {
     "url": "https://gitlab.com/dovotori/dovotori.gitlab.io/issues",
-    "email": "dratovo@gmail.com"
+    "email": "dovotori@protonmail.com"
   },
   "homepage": "https://gitlab.com/dovotori/dovotori.gitlab.io#readme"
 }
