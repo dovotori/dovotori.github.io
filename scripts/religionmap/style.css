@@ -63,7 +63,7 @@
   left: 50%;
   bottom: 50%;
   width: 50%;
-  background: rgba(255,255,255,0.8);
+  background: rgba(255, 255, 255, 0.8);
   padding: 1em;
   text-align: left;
   transition: transform 500ms ease-out;
@@ -108,30 +108,102 @@
 #legend .legendText {
   font-size: 0.8em;
   margin-left: 0.5em;
-  font-family: sans-serif;
   color: #000;
 }
 
 .infosSource {
   font-size: 0.7em;
-  font-family: sans-serif;
   fill: #fff;
   cursor: pointer;
 }
 
-circle.chrstcatpct { stroke: #7199F0; }
-.chrstcatpct .legendBloc { background-color: #7199F0; } circle.chrstprotpct { stroke: #AAD1E3; }
-.chrstprotpct .legendBloc { background-color: #AAD1E3; } circle.chrstorthpct { stroke: #A7A7D8; }
-.chrstorthpct .legendBloc { background-color: #A7A7D8; } circle.chrstangpct { stroke: #AB89F1; }
-.chrstangpct .legendBloc { background-color: #AB89F1; } circle.chrstothrpct { stroke: #5D65C2; }
-.chrstothrpct .legendBloc { background-color: #5D65C2; } circle.islmsunpct { stroke: #82C7A1; }
-.islmsunpct .legendBloc { background-color: #82C7A1; } circle.islmshipct { stroke: #9DE47A; }
-.islmshipct .legendBloc { background-color: #9DE47A; } circle.judgenpct { stroke: #F08686; }
-.judgenpct .legendBloc { background-color: #F08686; } circle.anmgenpct { stroke: #EECC5C; }
-.anmgenpct .legendBloc { background-color: #EECC5C; } circle.budgenpct { stroke: #DFB561; }
-.budgenpct .legendBloc { background-color: #DFB561; } circle.taogenpct { stroke: #D69773; }
-.taogenpct .legendBloc { background-color: #D69773; } circle.hindgenpct { stroke: #EC7F4E; }
-.hindgenpct .legendBloc { background-color: #EC7F4E; } circle.confgenpct { stroke: #C37FA6; }
-.confgenpct .legendBloc { background-color: #C37FA6; } circle.syncgenpct { stroke: #C35D5C; }
-.syncgenpct .legendBloc { background-color: #C35D5C; } circle.nonreligpct { stroke: #999; }
-.nonreligpct .legendBloc { background-color: #999; }
+circle.chrstcatpct {
+  stroke: #7199f0;
+}
+.chrstcatpct .legendBloc {
+  background-color: #7199f0;
+}
+circle.chrstprotpct {
+  stroke: #aad1e3;
+}
+.chrstprotpct .legendBloc {
+  background-color: #aad1e3;
+}
+circle.chrstorthpct {
+  stroke: #a7a7d8;
+}
+.chrstorthpct .legendBloc {
+  background-color: #a7a7d8;
+}
+circle.chrstangpct {
+  stroke: #ab89f1;
+}
+.chrstangpct .legendBloc {
+  background-color: #ab89f1;
+}
+circle.chrstothrpct {
+  stroke: #5d65c2;
+}
+.chrstothrpct .legendBloc {
+  background-color: #5d65c2;
+}
+circle.islmsunpct {
+  stroke: #82c7a1;
+}
+.islmsunpct .legendBloc {
+  background-color: #82c7a1;
+}
+circle.islmshipct {
+  stroke: #9de47a;
+}
+.islmshipct .legendBloc {
+  background-color: #9de47a;
+}
+circle.judgenpct {
+  stroke: #f08686;
+}
+.judgenpct .legendBloc {
+  background-color: #f08686;
+}
+circle.anmgenpct {
+  stroke: #eecc5c;
+}
+.anmgenpct .legendBloc {
+  background-color: #eecc5c;
+}
+circle.budgenpct {
+  stroke: #dfb561;
+}
+.budgenpct .legendBloc {
+  background-color: #dfb561;
+}
+circle.taogenpct {
+  stroke: #d69773;
+}
+.taogenpct .legendBloc {
+  background-color: #d69773;
+}
+circle.hindgenpct {
+  stroke: #ec7f4e;
+}
+.hindgenpct .legendBloc {
+  background-color: #ec7f4e;
+}
+circle.confgenpct {
+  stroke: #c37fa6;
+}
+.confgenpct .legendBloc {
+  background-color: #c37fa6;
+}
+circle.syncgenpct {
+  stroke: #c35d5c;
+}
+.syncgenpct .legendBloc {
+  background-color: #c35d5c;
+}
+circle.nonreligpct {
+  stroke: #999;
+}
+.nonreligpct .legendBloc {
+  background-color: #999;
+}

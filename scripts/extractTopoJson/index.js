@@ -1,7 +1,7 @@
 const path = require('path');
 const utils = require('../utils');
 
-const SAVE_FILE = path.resolve(__dirname, '../../assets/json');
+const SAVE_FILE = path.resolve(__dirname, '../../public/json');
 
 const generateContent = async (selection) => {
   const geoDataFile = await utils.readFile(

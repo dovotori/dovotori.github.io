@@ -26,7 +26,7 @@ const Links = styled.div`
 `;
 
 const Wrap = styled(Bloc)`
-  padding: 10% 0;
+  padding: 20% 0 10%;
 `;
 
 const WrapContent = styled.div`

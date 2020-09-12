@@ -14,7 +14,6 @@ export const isTouchDevice = () =>
 export const getEnvPath = (path) => `${process.env.ASSET_PATH}${path}`;
 export const getTeaserPath = (slug) => getEnvPath(`/img/teasers/${slug}.png`);
 export const getProjectImagePath = (slug, idx) => getEnvPath(`/img/${slug}/${slug}-${idx}.jpg`);
-export const getHtmlPath = (slug) => getEnvPath(`/html/${slug}.html`);
 
 export const getColorType = (category) => {
   switch (category) {

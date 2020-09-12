@@ -21,7 +21,10 @@ const rawPosts = [
         'この プロジェクトは Reporters sans frontières 協会 で 作りました。',
       ],
     },
-    html: { noBackground: true },
+    labo: {
+      hasHtml: true,
+      noBackground: true,
+    },
   },
   {
     id: 1,
@@ -37,7 +40,11 @@ const rawPosts = [
         'Datavisualization showing countries across the world which use religion as censorship.',
       [Locales.JP]: '見せた国 は 宗教を検閲として使用しています。',
     },
-    html: { noBackground: true },
+    labo: {
+      hasJs: true,
+      hasHtml: true,
+      noBackground: true,
+    },
   },
   {
     id: 2,
@@ -220,7 +227,10 @@ const rawPosts = [
       ],
       [Locales.JP]: ['プラットフォーマー を webglで 作りました。'],
     },
-    html: true,
+    labo: {
+      hasJs: true,
+      hasHtml: true,
+    },
   },
   {
     id: 13,
@@ -237,7 +247,9 @@ const rawPosts = [
       [Locales.JP]:
         'gltf 2.0 の フォーマット 3Dビュー の ローディング と 視覚化 を webgl で 作る。',
     },
-    html: true,
+    labo: {
+      hasJs: true,
+    },
   },
   {
     id: 14,
@@ -266,7 +278,9 @@ const rawPosts = [
       [Locales.EN]: 'Some memories of Japan.',
       [Locales.JP]: '日本 の 思い出。',
     },
-    html: true,
+    labo: {
+      hasJs: true,
+    },
     images: 15,
   },
   {
@@ -281,7 +295,9 @@ const rawPosts = [
       [Locales.EN]: 'Some memories of Norway.',
       [Locales.JP]: 'ノルウェー の 思い出。',
     },
-    html: true,
+    labo: {
+      hasJs: true,
+    },
     images: 16,
   },
   // {
@@ -329,7 +345,10 @@ const rawPosts = [
         '世界 を 歪曲 できる ため に クリック して 下さい。',
       ],
     },
-    html: true,
+    labo: {
+      hasJs: true,
+      hasHtml: true,
+    },
   },
   // {
   //   id: 20,
@@ -352,7 +371,9 @@ const rawPosts = [
     category: CAT_BLOG,
     tags: [],
     date: 2020,
-    html: true,
+    labo: {
+      hasJs: true,
+    },
   },
 ];
 

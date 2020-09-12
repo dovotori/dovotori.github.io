@@ -4,8 +4,8 @@ const utils = require('./utils');
 
 const config = require('../package.json');
 
-const SOURCE = path.resolve(__dirname, '../assets/img/source.png');
-const DEST = path.resolve(__dirname, '../assets/app');
+const SOURCE = path.resolve(__dirname, '../public/img/source.png');
+const DEST = path.resolve(__dirname, '../public/app');
 
 const BACKGROUND_COLOR = '#222';
 
@@ -18,7 +18,7 @@ const options = {
 };
 
 const configuration = {
-  path: '/assets/app/', // Path for overriding default icons path.
+  path: '/public/app/', // Path for overriding default icons path.
   appName: config.name,
   appShortName: config.name,
   appDescription: 'portfolio de Dorian Ratovo',

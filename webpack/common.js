@@ -1,8 +1,10 @@
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 
+const utils = require('../scripts/utils');
+
 const alias = {
-  Assets: path.resolve(__dirname, '../assets/'),
+  Assets: path.resolve(__dirname, '../public/'),
   Labo: path.resolve(__dirname, '../labo/'),
 };
 
@@ -10,7 +12,7 @@ const optimization = {
   splitChunks: {
     chunks: 'async',
     minSize: 30000,
-    maxSize: 0,
+    maxSize: 240000,
     minChunks: 1,
     maxAsyncRequests: 6,
     maxInitialRequests: 4,
@@ -45,4 +47,77 @@ const optimization = {
   ],
 };
 
-module.exports = { alias, optimization };
+const rules = [
+  {
+    test: /\.(js|jsx)$/i,
+    exclude: /node_modules/,
+    loader: 'babel-loader',
+  },
+  {
+    test: /\.svg$/i,
+    use: [
+      {
+        loader: '@svgr/webpack',
+        options: {
+          svgo: false,
+        },
+      },
+      {
+        loader: 'url-loader',
+      },
+    ],
+  },
+  {
+    test: /\.css$/i,
+    use: ['style-loader', 'css-loader'],
+  },
+  {
+    test: /\.html$/i,
+    loader: 'html-loader',
+  },
+  {
+    test: /\.(jpe?g|png|gif)$/i,
+    loader: 'url-loader?name=/img/[name].[ext]?[hash]?limit=100000',
+  },
+];
+
+const minify = {
+  collapseWhitespace: true,
+  preserveLineBreaks: false,
+  removeComments: true,
+  removeRedundantAttributes: true,
+  removeScriptTypeAttributes: true,
+  removeStyleLinkTypeAttributes: true,
+  minifyCSS: true,
+};
+
+const getHtml = async (name) => {
+  const htmlPath = path.resolve(__dirname, `../labo/${name}/inject.html`);
+  console.log(htmlPath);
+  let html = '';
+  try {
+    html = (await utils.readFile(htmlPath, 'utf8')) || '';
+  } catch (e) {
+    console.log('no html find to be inject in template');
+  }
+  return html;
+};
+
+const NAMES = [
+  'deform',
+  'game',
+  'paysage',
+  'game',
+  'japon',
+  'norway',
+  'race',
+  'religionmap',
+  'signature',
+];
+
+const laboEntries = NAMES.reduce(
+  (acc, name) => ({ ...acc, [name]: path.resolve(__dirname, `../labo/${name}/index.js`) }),
+  {}
+);
+
+module.exports = { alias, optimization, rules, minify, getHtml, laboEntries };
