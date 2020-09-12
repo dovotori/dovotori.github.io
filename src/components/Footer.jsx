@@ -1,10 +1,10 @@
-import React, { useCallback } from "react";
-import styled from "styled-components";
+import React, { useCallback } from 'react';
+import styled, { css } from 'styled-components';
 
-import license from "Assets/img/cclicense80x15.png";
-import { ReactComponent as Mail } from "Assets/svg/mail.svg";
-import Toggle from "./Toggle";
-import availablesLang from "../constants/locales";
+import license from 'Assets/img/cclicense80x15.png';
+import { ReactComponent as Mail } from 'Assets/svg/mail.svg';
+import Toggle from './Toggle';
+import availablesLang from '../constants/locales';
 
 const Wrap = styled.div`
   padding: 2em 4%;
@@ -12,7 +12,7 @@ const Wrap = styled.div`
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  font-size: 0.7em;
+  font-size: 0.9em;
   color: ${(p) => p.theme.text};
 `;
 
@@ -22,6 +22,7 @@ const Div = styled.div`
   margin: 1em;
 
   a {
+    cursor: pointer;
     opacity: 0.8;
     transition: opacity 300ms ease-out;
   }
@@ -35,10 +36,13 @@ const StyledMail = styled(Mail)`
   height: 20px;
   margin-top: -5px;
   .toOpen {
-    transition: transform 300ms ease-out;
+    transition: transform 300ms ease-out, color 300ms ease-out;
   }
   &:hover .toOpen {
     transform: rotate3d(1, 0, 0, 170deg);
+  }
+  &:hover {
+    color: ${(p) => p.theme.primary};
   }
 `;
 
@@ -48,34 +52,71 @@ const Img = styled.img`
   height: 14px;
 `;
 
-const Span = styled.span`
+const commonItem = css`
+  position: relative;
   padding: 0.4em;
-  margin-left: 0.8em;
-  color: ${(p) => p.theme.light};
+  margin: 0 1em;
   text-transform: uppercase;
+  text-align: center;
+  min-width: 60px;
   ${(p) => p.theme.monospace}
+`;
+
+const Span = styled.span`
+  ${commonItem}
+  color: ${(p) => (p.isHighlight ? p.theme.primary : p.theme.light)};
+  ${(p) => p.theme.monospace}
+  font-weight: normal;
 `;
 
 const Button = styled.button`
-  ${(p) => p.theme.monospace}
-  margin: 0 1em;
-  padding: 0.4em;
+  ${commonItem}
   color: ${(p) => p.theme.light};
-  text-transform: uppercase;
   &:hover {
     color: ${(p) => p.theme.text};
+    .line {
+      transform: none;
+    }
   }
 `;
 
-const Footer = ({ toggleTheme, isDarkMode, setLang, texts }) => {
+const Line = styled.span`
+  display: inline-block;
+  position: absolute;
+  bottom: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: ${(p) => p.theme.primary};
+  z-index: 0;
+  transition: transform 300ms ease-out;
+  transform: ${(p) => (p.isHighlight ? 'none' : 'scale(0)')};
+`;
+
+const Label = styled.span`
+  position: relative;
+  z-index: 1;
+  background: ${(p) => p.theme.background};
+  padding: 0 0 0 0.4em;
+`;
+
+const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => {
   const renderLang = useCallback(
     () =>
-      availablesLang.map((lang) => (
-        <Button key={lang.id} onClick={() => setLang(lang.id)}>
-          {lang.short}
-        </Button>
-      )),
-    [availablesLang]
+      availablesLang.map((availableLang) =>
+        availableLang.id === lang ? (
+          <Span key={availableLang.id} isHighlight>
+            <Label>{availableLang.short}</Label>
+            <Line isHighlight className="line" />
+          </Span>
+        ) : (
+          <Button key={availableLang.id} onClick={() => setLang(availableLang.id)}>
+            <Label>{availableLang.short}</Label>
+            <Line className="line" />
+          </Button>
+        )
+      ),
+    [availablesLang, lang]
   );
   return (
     <Wrap className="footer">

@@ -1,10 +1,10 @@
-const MAIN_PROG = "paysage2";
-const MAIN_OBJ = "paysage";
+const MAIN_PROG = 'paysage2';
+const MAIN_OBJ = 'paysage';
 export default {
   MAIN_PROG,
   MAIN_OBJ,
-  programs: ["basique3d", "bone", MAIN_PROG],
-  assets: [`/objets/${MAIN_OBJ}.gltf`],
+  programs: ['basique3d', 'color', MAIN_PROG],
+  assets: [`/gltf/${MAIN_OBJ}.gltf`],
   positions: {
     plot: [
       { x: -0.74175, z: -0.889829, y: 0.03561 },
@@ -18,7 +18,7 @@ export default {
     panel: [{ x: 0, y: 0, z: 0 }],
   },
   camera: {
-    position: { x: -4, y: 2, z: 4 },
+    position: { x: -2, y: 1, z: 2 },
     target: { x: 0, y: 0, z: 0 },
     near: 1,
     far: 40,
@@ -32,6 +32,7 @@ export default {
       diffuse: [0.8, 0.6, 0.5],
       specular: [1, 0.8, 0.7],
       brillance: 1,
+      strength: 2,
       // direction: [0, 0, 1]
     },
     {
@@ -43,25 +44,17 @@ export default {
       brillance: 100,
       radius: 10,
       direction: [0, 0, 1],
+      strength: 2,
     },
   ],
   mouse: {
-    domId: "paysage", 
-    events: ["drag", "wheel"]
+    domId: 'paysage',
+    events: ['drag', 'wheel'],
   },
   postprocess: {
-    effects: [
-      "glitch",
-      "kuwahara",
-      "fxaa",
-      "blur",
-      "gamma",
-      "dof",
-      "bloom",
-      "compose",
-    ],
-    useDepth: true,
+    effects: ['fxaa'],
   },
+  useDepthTexture: true,
   canvas: {
     width: 1024,
     height: 1024,

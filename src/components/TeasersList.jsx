@@ -3,6 +3,10 @@ import styled from "styled-components";
 
 import Teaser from "./Teaser";
 
+const StyledTeaser = styled(Teaser)`
+  transition-delay: ${p => p.index * 10}ms;
+`;
+
 const Wrap = styled.div.attrs({
   className: "teasers-list",
 })`
@@ -22,10 +26,11 @@ const TeasersList = ({ entries, isTouchDevice, className }) => {
   );
   return (
     <Wrap className={className} isTouchDevice={isTouchDevice}>
-      {sortEntries.map((item) => (
-        <Teaser
+      {sortEntries.map((item, index) => (
+        <StyledTeaser
           key={item.id}
           entry={item}
+          index={index}
           currentHover={currentHover}
           setCurrentHover={setCurrentHover}
           isTouchDevice={isTouchDevice}

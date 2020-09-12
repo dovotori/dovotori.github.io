@@ -8,7 +8,7 @@ import { random } from "../utils/numbers";
 import Program from "./Program";
 
 export default class extends ProcessBase {
-  constructor(gl, effects = [], width = 1024, height = 1024, useDepth = false) {
+  constructor(gl, width = 1024, height = 1024, useDepth = false, effects = []) {
     super(gl, width, height, useDepth);
     this.noiseTex = null;
     this.passCount = 0;

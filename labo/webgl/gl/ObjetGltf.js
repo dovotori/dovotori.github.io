@@ -1,17 +1,17 @@
-import ObjetGltfPrimitive from "./ObjetGltfPrimitive";
-import Bone from "./Bone";
-import Bones from "./Bones";
-import Quaternion from "../maths/Quaternion";
-import Mat4 from "../maths/Mat4";
-import Sample from "../maths/Sample";
-import { lerp } from "../utils/easing";
+import ObjetGltfPrimitive from './ObjetGltfPrimitive';
+import Bone from './Bone';
+import Bones from './Bones';
+import Quaternion from '../maths/Quaternion';
+import Mat4 from '../maths/Mat4';
+import Sample from '../maths/Sample';
+import { lerp } from '../utils/easing';
 
 export default class {
   constructor(gl, data) {
     const { nodes, meshes, skins, materials } = data;
-    this.meshes = meshes.map(({ primitives, name = "", weights }) => {
+    this.meshes = meshes.map(({ primitives, name = '', weights }) => {
       const primitivesData = primitives.map((primitive) => {
-        if (primitive.material) {
+        if (primitive.material !== undefined) {
           return { ...primitive, material: materials[primitive.material] };
         }
         return primitive;
@@ -74,10 +74,10 @@ export default class {
       this.handleSkin(skinIndex, program, model);
       const localMatrix = this.handleLocalTransform(node);
       localMatrix.multiply(model);
-      program.setMatrix("model", localMatrix.get());
+      program.setMatrix('model', localMatrix.get());
       const normalmatrix = localMatrix.getMatrice3x3();
       normalmatrix.inverse();
-      program.setMatrix("normalmatrix", normalmatrix.transpose());
+      program.setMatrix('normalmatrix', normalmatrix.transpose());
       primitives.forEach((primitive) => primitive.render(program));
     });
   }
@@ -93,9 +93,7 @@ export default class {
         const index = sample.getIndex();
         const previous = output[index - 1];
         const next = output[index];
-        newWeight = weights.map((_, i) =>
-          lerp(sample.get(), previous[i], next[i])
-        );
+        newWeight = weights.map((_, i) => lerp(sample.get(), previous[i], next[i]));
       }
       newWeight.forEach((weight, index) => {
         program.setFloat(`weights[${index}]`, weight);
@@ -122,9 +120,7 @@ export default class {
       localMatrix.multiply(this.getRotationMat4(rotation, rotationAnimation));
     }
     if (translation) {
-      localMatrix.translate(
-        ...this.getVector(translation, translationAnimation)
-      );
+      localMatrix.translate(...this.getVector(translation, translationAnimation));
     }
 
     if (matrix) {
@@ -155,7 +151,7 @@ export default class {
       program.setMatrix(`jointMat[${depth}]`, finalMatrix.get());
 
       if (this.boneProg) {
-        this.boneProg.setMatrix("model", localMatrix.get());
+        this.boneProg.setMatrix('model', localMatrix.get());
         this.bone.render(this.boneProg);
       }
 
@@ -173,21 +169,14 @@ export default class {
       if (index > 0) {
         const previous = output[index - 1];
         const next = output[index];
-        newVector = previous.map((value, i) =>
-          lerp(sample.get(), previous[i], next[i])
-        );
+        newVector = previous.map((value, i) => lerp(sample.get(), previous[i], next[i]));
       }
     }
     return newVector;
   };
 
   getRotationMat4 = (rotation, rotationAnimation) => {
-    const quat = new Quaternion(
-      rotation[0],
-      rotation[1],
-      rotation[2],
-      rotation[3]
-    );
+    const quat = new Quaternion(rotation[0], rotation[1], rotation[2], rotation[3]);
     if (rotationAnimation) {
       const { sample, output } = rotationAnimation;
       sample.update();

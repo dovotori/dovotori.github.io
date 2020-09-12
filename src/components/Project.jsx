@@ -1,12 +1,12 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import ButtonBack from "./ButtonBack";
-import Bloc from "./Bloc";
-import TypingMessage from "./TypingMessage";
-import ProjectImage from "./ProjectImage";
-import { Title } from "../themes/styled";
-import ProjectHtml from "./ProjectHtml";
+import ButtonBack from './ButtonBack';
+import Bloc from './Bloc';
+import TypingMessage from './TypingMessage';
+import ProjectImage from './ProjectImage';
+import { Title } from '../themes/styled';
+import ProjectHtml from './ProjectHtml';
 
 const TEXT_WIDTH = 400;
 
@@ -76,19 +76,10 @@ const StyledTitle = styled(Title)`
 `;
 
 const StyledProjectHtml = styled(ProjectHtml)`
-  background: ${(p) => p.noBackground ? 'transparent' : p.theme.getGradient};
+  background: ${(p) => (p.noBackground ? 'transparent' : p.theme.getGradient)};
 `;
 
-const Project = ({
-  slug,
-  title,
-  description,
-  images,
-  date,
-  colorType,
-  html: hasHtml,
-}) => {
-
+const Project = ({ slug, title, description, images, date, colorType, html: hasHtml }) => {
   return (
     <StyledProject>
       <WrapContent>
@@ -108,7 +99,13 @@ const Project = ({
               )}
             </Description>
           )}
-          {hasHtml && <StyledProjectHtml slug={slug} colorType={colorType} noBackground={hasHtml.noBackground} />}
+          {hasHtml && (
+            <StyledProjectHtml
+              slug={slug}
+              colorType={colorType}
+              noBackground={hasHtml.noBackground}
+            />
+          )}
         </WrapTexte>
         {images && (
           <ImagesList>

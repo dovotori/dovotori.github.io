@@ -3,20 +3,8 @@ const MAIN_OBJ = "head";
 export default {
   MAIN_PROG,
   MAIN_OBJ,
-  programs: ["basique3d", "bone", MAIN_PROG],
-  assets: [`/objets/${MAIN_OBJ}.gltf`],
-  positions: {
-    plot: [
-      { x: -0.74175, z: -0.889829, y: 0.03561 },
-      { x: -0.57378, z: -0.91103, y: 0.03561 },
-      { x: -0.363515, z: -0.8868, y: 0.03561 },
-    ],
-    road: [{ x: 0, y: -0.2, z: 0 }],
-    electric: [{ x: -0.5, y: 0, z: -0.4 }],
-    mailbox: [{ x: -0.2, y: 0, z: -0.4 }],
-    bench: [{ x: -0.2, y: 0, z: -0.4 }],
-    panel: [{ x: 0, y: 0, z: 0 }],
-  },
+  programs: ["basique3d", MAIN_PROG],
+  assets: [`/gltf/${MAIN_OBJ}.gltf`],
   camera: {
     position: { x: 0, y: 0, z: 30 },
     target: { x: 0, y: 0, z: 0 },
@@ -57,8 +45,8 @@ export default {
   mouse: { domId: "signature", events: ["move"] },
   postprocess: {
     effects: ["glitch", "wave", "watercolorMoving", "fxaa"],
-    useDepth: true,
   },
+  useDepthTexture: true,
   canvas: {
     width: 512,
     height: 512,

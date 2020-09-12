@@ -16,8 +16,7 @@ const mapStateToProps = (state, props) => {
   );
   return {
     selected: getSelectedCategory(categories, props.match.params.slug),
-    categories: filterCategories,
-    isTouchDevice: state.device.isTouch,
+    categories: filterCategories
   };
 };
 

@@ -1,12 +1,12 @@
-import Perso from "./Perso";
-import CollisionBox from "../collisions/CollisionBox";
+import Perso from './Perso';
+import CollisionBox from '../collisions/CollisionBox';
 
 export default class extends Perso {
-  constructor({ id, constants, sprites, viewBox }) {
+  constructor({ constants, sprites, viewBox }) {
     super({ constants, sprites, viewBox });
-    this.id = id || constants.id;
     this.collisionBox = new CollisionBox();
-    this.collisionBox.setup(this.id);
+    this.collisionBox.setup(constants.id);
+    this.collisionCallback = null;
   }
 
   update(map, tileSize) {
@@ -18,7 +18,16 @@ export default class extends Perso {
     return this.collisionBox;
   }
 
+  getCollisionInfos() {
+    const { w, h } = this.constants;
+    return [...this.getPosition(), w, h];
+  }
+
   getId() {
-    return this.id;
+    return this.constants.id;
+  }
+
+  setCallbacks({ addBoxes, removeBox }) {
+    this.collisionCallback = { addBoxes, removeBox };
   }
 }

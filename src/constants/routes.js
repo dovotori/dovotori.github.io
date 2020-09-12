@@ -1,25 +1,31 @@
-import { lazy } from "react";
+import { lazy } from 'react';
 
-const About = lazy(() => import("../containers/AboutContainer"));
-const Project = lazy(() => import("../containers/ProjectContainer"));
-const Home = lazy(() => import("../components/Home"));
+const About = lazy(() => import('../containers/AboutContainer'));
+const Project = lazy(() => import('../containers/ProjectContainer'));
+const Home = lazy(() => import('../components/Home'));
+const LangRedirect = lazy(() => import('../containers/LangRedirectContainer'));
 
 const routes = [
   {
-    path: "/about",
+    path: ['/en', '/jp'],
+    component: LangRedirect,
+    exact: true,
+  },
+  {
+    path: '/about',
     component: About,
     exact: true,
   },
   {
-    path: "/project/:slug",
+    path: '/project/:slug',
     component: Project,
     exact: true,
   },
   {
-    path: ["/", "/category/:slug"],
+    path: ['/', '/category/:slug'],
     component: Home,
     exact: true,
-  }
+  },
 ];
 
 export default routes;

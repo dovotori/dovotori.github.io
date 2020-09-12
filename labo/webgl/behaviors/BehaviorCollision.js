@@ -1,4 +1,4 @@
-import Behavior from "./Behavior";
+import Behavior from './Behavior';
 
 // for collision, remove a little space to check if perso is not yet on next tile
 const SPACE_CHECK = 0.000001;
@@ -16,9 +16,7 @@ class BehaviorCollision extends Behavior {
   static isCollisionTile(map, x, y) {
     const pixel = map.getImageData(Math.floor(x), Math.floor(y), 1, 1);
     return (
-      pixel.data[0] !== 255 &&
-      pixel.data[0] === pixel.data[1] &&
-      pixel.data[1] === pixel.data[2]
+      pixel.data[0] !== 255 && pixel.data[0] === pixel.data[1] && pixel.data[1] === pixel.data[2]
     );
   }
 
@@ -46,14 +44,8 @@ class BehaviorCollision extends Behavior {
 
   determineTestPoints(tileSize) {
     const { w, h } = this.constants;
-    const { value: sizeW, step: stepW } = BehaviorCollision.determineStep(
-      w,
-      tileSize.w
-    );
-    const { value: sizeH, step: stepH } = BehaviorCollision.determineStep(
-      h,
-      tileSize.h
-    );
+    const { value: sizeW, step: stepW } = BehaviorCollision.determineStep(w, tileSize.w);
+    const { value: sizeH, step: stepH } = BehaviorCollision.determineStep(h, tileSize.h);
 
     const bottom = [];
     bottom.push({ x: SPACE_CHECK, y: -SPACE_CHECK }); // first
@@ -97,8 +89,11 @@ class BehaviorCollision extends Behavior {
   }
 
   update(map, tileSize) {
-    super.update();
-    this.setCollision(map, tileSize);
+    const shouldContinue = super.update();
+    if (shouldContinue) {
+      this.setCollision(map, tileSize);
+    }
+    return shouldContinue;
   }
 
   defineNextStatus() {
@@ -130,18 +125,18 @@ class BehaviorCollision extends Behavior {
 
   setDirectionCollision(map, direction, tileSize) {
     let isMovingOnDirection = false;
-    const isAxeX = direction === "left" || direction === "right";
+    const isAxeX = direction === 'left' || direction === 'right';
     switch (direction) {
-      case "bottom":
+      case 'bottom':
         isMovingOnDirection = this.speed.getY() < 0;
         break;
-      case "top":
+      case 'top':
         isMovingOnDirection = this.speed.getY() > 0;
         break;
-      case "left":
+      case 'left':
         isMovingOnDirection = this.speed.getX() < 0;
         break;
-      case "right":
+      case 'right':
         isMovingOnDirection = this.speed.getX() > 0;
         break;
       default:
@@ -170,24 +165,21 @@ class BehaviorCollision extends Behavior {
       }
 
       // update position
-      const collisionPoint = BehaviorCollision.getNearCollisionPoint(
-        map,
-        points
-      );
+      const collisionPoint = BehaviorCollision.getNearCollisionPoint(map, points);
       if (collisionPoint) {
         // collision
         const { w, h } = this.constants;
         switch (direction) {
-          case "bottom":
+          case 'bottom':
             this.position.setY(Math.ceil(collisionPoint.y));
             break;
-          case "top":
+          case 'top':
             this.position.setY(Math.floor(collisionPoint.y) - h);
             break;
-          case "left":
+          case 'left':
             this.position.setX(Math.ceil(collisionPoint.x));
             break;
-          case "right":
+          case 'right':
             this.position.setX(Math.floor(collisionPoint.x) - w);
             break;
           default:

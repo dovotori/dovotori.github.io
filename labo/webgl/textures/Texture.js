@@ -16,8 +16,8 @@ export default class {
   }
 
   create() {
-    const b = new ArrayBuffer(this.size.width * this.size.height);
-    const pixels = new Uint8Array(b);
+    const buffer = new ArrayBuffer(this.size.width * this.size.height);
+    const pixels = new Uint8Array(buffer);
     let cpt = 0;
 
     for (let y = 0; y < this.size.height; y += 1) {

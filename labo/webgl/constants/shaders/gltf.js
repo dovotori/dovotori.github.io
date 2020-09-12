@@ -14,8 +14,7 @@ uniform mat3 normalmatrix;
 varying vec3 fragPosition;
 varying vec3 fragNormale;
 
-void main()
-{
+void main() {
   fragPosition = normalize((view * model * vec4(position, 1.0)).xyz);
   fragNormale = normalmatrix * normalize(normale);
   gl_Position = projection * view * model * vec4(position, 1.0);

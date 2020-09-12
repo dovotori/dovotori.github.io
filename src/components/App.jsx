@@ -11,7 +11,7 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 if (process.env.NODE_ENV !== "production") {
-  console.log(
+  console.debug(
     "%c Hello JS Coders! ",
     `background: ${dark.primary}; color: #000`
   );

@@ -1,9 +1,9 @@
-import Scene from "Labo/scenes/game";
-import config from "Labo/configs/game";
-import App from "Labo/webgl/App";
+import Scene from 'Labo/scenes/game';
+import config from 'Labo/configs/game';
+import App from 'Labo/webgl/App';
 
-export default async () => {
+export default async ({ div = null, slug = null }) => {
   const app = new App();
-  await app.setup(Scene, config);
+  await app.setup(Scene, { ...config, div, slug });
   return app.getCanvas();
-}
+};

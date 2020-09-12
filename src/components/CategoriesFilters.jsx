@@ -38,12 +38,12 @@ const CategoriesFilters = ({ selected, className, categories }) => (
       const isLinkSelected = selected === parseInt(categoryId, 10);
       return (
         <StyledLink
-          key={categories[categoryId]}
-          to={isLinkSelected ? "/" : `/category/${categories[categoryId]}`}
+          key={categories[categoryId].slug}
+          to={isLinkSelected ? "/" : `/category/${categories[categoryId].slug}`}
           selected={isLinkSelected}
           colorType={getColorType(parseInt(categoryId, 10))}
         >
-          {categories[categoryId]}
+          {categories[categoryId].label}
         </StyledLink>
       );
     })}

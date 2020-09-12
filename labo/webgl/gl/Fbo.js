@@ -19,7 +19,7 @@ export default class {
     this.setup(useDepth, extension, attachmentIdx);
   }
 
-  setup(useDepth, extension = null, attachmentIdx) {
+  setup(useDepth = false, extension = null, attachmentIdx = 0) {
     this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.buffer);
 
     const attachement =

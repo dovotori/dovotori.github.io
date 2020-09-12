@@ -10,6 +10,7 @@ class ManagerAssets {
       materials: {},
       levels: {},
       gltfs: {},
+      sounds: {}
     };
   }
 
@@ -55,6 +56,14 @@ class ManagerAssets {
     });
   }
 
+  static loadSound(path, info) {
+    return fetch(path)
+      .then((response) => response.arrayBuffer())
+      .then((response) => {
+        return { data: response, info };
+      });
+  }
+
   async get(paths) {
     const promesses = await paths.map(async (path) => {
       const info = ManagerAssets.getAssetInfo(path);
@@ -70,6 +79,8 @@ class ManagerAssets {
           return ManagerAssets.load3dGltf(path, info);
         case "mtl":
           return ManagerAssets.loadMaterial(path, info);
+        case "mp3":
+          return ManagerAssets.loadSound(path, info);
         default:
           return null;
       }
@@ -93,6 +104,9 @@ class ManagerAssets {
             break;
           case "mtl":
             this.assets.materials[item.info.name] = item.data;
+            break;
+          case "mp3":
+            this.assets.sounds[item.info.name] = item.data;
             break;
           default:
             break;

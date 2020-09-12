@@ -1,4 +1,4 @@
-import Bullet from "../persos/Bullet";
+import Bullet from '../persos/Bullet';
 
 export default class {
   constructor(constants, sprites, viewBox) {
@@ -29,9 +29,7 @@ export default class {
     });
 
     if (toDelete.length > 0) {
-      this.bullets = this.bullets.filter(
-        (bullet, idx) => toDelete.indexOf(idx) === -1
-      );
+      this.bullets = this.bullets.filter((bullet, idx) => toDelete.indexOf(idx) === -1);
     }
 
     this.isAiming = isAiming;
@@ -40,7 +38,7 @@ export default class {
   createNewOne(startPos, goLeft, tileSize) {
     this.bullets.push(
       new Bullet({
-        id: this.constants.id + this.numero,
+        id: `${this.constants.id}${this.numero}`,
         constants: this.constants,
         sprites: this.sprites,
         viewBox: this.viewBox,
@@ -57,11 +55,7 @@ export default class {
       const lastBullet = this.bullets[this.bullets.length - 1];
       lastBullet.shoot(this.constants.states.BULLET);
       if (this.callbackShoot) {
-        this.callbackShoot(
-          lastBullet.getId(),
-          lastBullet.getCollisionBox(),
-          this.recoil
-        );
+        this.callbackShoot(lastBullet.getId(), lastBullet.getCollisionBox(), this.recoil);
       }
     }
   }
@@ -86,5 +80,9 @@ export default class {
 
   get() {
     return this.bullets.map((bullet) => bullet.getPosition());
+  }
+
+  getConstants() {
+    return this.constants;
   }
 }

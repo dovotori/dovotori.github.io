@@ -1,22 +1,23 @@
-import styled, { css } from "styled-components";
-import { glitchy } from "./animations";
+import styled, { css } from 'styled-components';
+import { glitchy } from './animations';
 
 export const Title = styled.h1`
   text-align: left;
   font-size: 3em;
-  font-family: "matamata", monospace;
-  font-weight: 500;
+  font-weight: 800;
   letter-spacing: 0.2em;
   line-height: 1.1;
   color: ${(p) => p.theme.getColor};
   overflow-wrap: break-word;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 0 ${(p) => p.theme.backgroundHighlight};
 `;
 
 export const withHoverGlitch = css`
   &:hover {
     &:before,
     &:after {
-      content: "";
+      content: '';
     }
 
     &:before {

@@ -1,10 +1,9 @@
 import Scene from '../webgl/scenes/SceneLampe';
-import TexturePerlinNoise from '../webgl/textures/TexturePerlinNoise';
 import Mat4 from '../webgl/maths/Mat4';
 import Spring from '../webgl/maths/Spring';
 import Target from '../webgl/maths/Target';
 import DualQuaternion from '../webgl/maths/DualQuaternion';
-import { mapFromRange, degToRad } from "../webgl/utils/numbers";
+import { mapFromRange, degToRad } from '../webgl/utils/numbers';
 
 export default class extends Scene {
   constructor(gl, config, assets, width = 512, height = 512) {
@@ -16,7 +15,6 @@ export default class extends Scene {
     this.onMouseMove = this.onMouseMove.bind(this);
     this.renderToBuffer = this.renderToBuffer.bind(this);
 
-    this.texture = new TexturePerlinNoise(gl, 256, 256);
     this.model = new Mat4();
     this.model.identity();
     this.targetX = new Target(0, 0.2);
@@ -37,10 +35,8 @@ export default class extends Scene {
 
     this.model.identity();
 
-    const angle =
-      degToRad(this.targetX.get()) + Math.sin(this.time * 0.06) * 0.1;
-    const angle2 =
-      degToRad(this.targetY.get()) - Math.abs(Math.cos(this.time * 0.06) * 0.1);
+    const angle = degToRad(this.targetX.get()) + Math.sin(this.time * 0.06) * 0.1;
+    const angle2 = degToRad(this.targetY.get()) - Math.abs(Math.cos(this.time * 0.06) * 0.1);
 
     const quat = new DualQuaternion();
     quat.rotateY(angle);
@@ -48,10 +44,7 @@ export default class extends Scene {
     this.model.multiply(quat.toMatrix4());
 
     const program = this.mngProg.get(this.MAIN_PROG);
-    program.setVector("resolution", [
-      this.containerSize.width,
-      this.containerSize.height,
-    ]);
+    program.setVector('resolution', [this.containerSize.width, this.containerSize.height]);
     program.setFloat('time', this.time);
     this.setLampeInfos(program);
   }
@@ -59,16 +52,9 @@ export default class extends Scene {
   effects() {
     const delta = Math.cos(this.time * 0.01) * 0.04;
     if (delta > 0) {
-      this.postProcess.setGlitch(
-        this.time * 0.07 + this.target.get(),
-        delta,
-        delta
-      );
+      this.postProcess.setGlitch(this.time * 0.07 + this.target.get(), delta, delta);
     }
-    this.postProcess.setWave(0.05, delta, [
-      this.mouseCanvasPosition.x,
-      this.mouseCanvasPosition.y,
-    ]);
+    this.postProcess.setWave(0.05, delta, [this.mouseCanvasPosition.x, this.mouseCanvasPosition.y]);
     this.postProcess.setFXAA();
   }
 
@@ -81,26 +67,26 @@ export default class extends Scene {
   }
 
   renderBasiqueForShadow() {
-    const program = this.mngProg.get("basique3d");
-    program.setMatrix("projection", this.camera.getProjection().get());
-    program.setMatrix("view", this.getLampeViewMatrix(0).get());
-    program.setMatrix("model", this.model.get());
+    const program = this.mngProg.get('basique3d');
+    program.setMatrix('projection', this.camera.getProjection().get());
+    program.setMatrix('view', this.getLampeViewMatrix(0).get());
+    program.setMatrix('model', this.model.get());
     this.renderToBuffer(program);
   }
 
   render() {
     super.render();
-    const program = this.mngProg.get("bone");
-    program.setMatrix("projection", this.camera.getProjection().get());
-    program.setMatrix("view", this.camera.getView().get());
-    this.mngGltf.get(this.MAIN_OBJ).setBoneProgram(program);
 
-    this.postProcess.start();
-    this.mainRender(this.mngProg.get(this.MAIN_PROG));
-    this.postProcess.end();
+    if (this.config.support.useDepth) {
+      this.postProcess.start();
+      this.mainRender(this.mngProg.get(this.MAIN_PROG));
+      this.postProcess.end();
 
-    this.effects();
-    this.postProcess.render();
+      this.effects();
+      this.postProcess.render();
+    } else {
+      this.mainRender(this.mngProg.get(this.MAIN_PROG));
+    }
 
     // DEBUG
     // this.postProcess.render(this.getLampeDepthTexture(0).get());

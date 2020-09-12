@@ -1,15 +1,16 @@
-const STAND = "STAND";
-const RUN = "RUN";
-const JUMP_DOWN = "JUMP_DOWN";
-const DIE = "DIE";
+const STAND = 'STAND';
+const RUN = 'RUN';
+const JUMP_DOWN = 'JUMP_DOWN';
+const DIE = 'DIE';
 
 export default {
-  id: "monster",
+  id: 'monster',
   x: 10,
   y: 4,
   z: 0.2,
   w: 0.5,
   h: 1,
+  life: 100,
   physics: {
     run: 0.1,
     jump: 0,

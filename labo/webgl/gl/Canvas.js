@@ -18,4 +18,8 @@ export default class {
   getContext() {
     return this.context.get();
   }
+
+  getSupport() {
+    return this.context.getSupport();
+  }
 }

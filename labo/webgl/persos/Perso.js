@@ -1,18 +1,17 @@
-import StateSprite from "../logic/StateSprite";
-import MeshSprite from "../meshes/MeshSprite";
-import Vec3 from "../maths/Vec3";
+import StateSprite from '../logic/StateSprite';
+import MeshSprite from '../meshes/MeshSprite';
+import Vec3 from '../maths/Vec3';
 
 export default class extends MeshSprite {
   constructor({ constants, sprites, viewBox }) {
     super();
     this.inverseX = false;
     this.stateSprite = new StateSprite(sprites, this.setEndOfAnimation);
-    this.stateSprite.set(constants.states[Object.keys(constants.states)[0]]);
     this.viewBox = viewBox;
     this.constants = constants;
     this.sprites = sprites;
-    this.setSprite(this.stateSprite.get());
     this.worldPos = new Vec3();
+    this.reset();
   }
 
   update(map, tileSize) {
@@ -34,7 +33,7 @@ export default class extends MeshSprite {
       this.behavior.getZ()
     );
     program.setTexture(0, texture.get());
-    program.setInt("inverseX", this.inverseX ? 1 : 0);
+    program.setInt('inverseX', this.inverseX ? 1 : 0);
     super.render(objet, program);
     this.setSprite(this.stateSprite.get());
   }
@@ -49,8 +48,13 @@ export default class extends MeshSprite {
     this.behavior.addToSpeed(new Vec3(x, y, z));
   }
 
-  setEndOfAnimation = (state) => {
-    this.behavior.setEndOfAnimation(state);
+  setEndOfAnimation = (currentState, nextState) => {
+    if (nextState) {
+      this.behavior.setEndOfAnimation(nextState);
+    }
+    if (currentState === this.constants.states.DIE && this.callbackDeath) {
+      this.callbackDeath();
+    }
   };
 
   getX() {
@@ -83,8 +87,13 @@ export default class extends MeshSprite {
     return this.behavior.isStatusChanged();
   }
 
-  getCollisionInfos() {
-    const { w, h } = this.constants;
-    return [...this.getPosition(), w, h];
+  getConstants() {
+    return this.constants;
+  }
+
+  reset() {
+    this.stateSprite.reset();
+    this.stateSprite.set(this.constants.states[Object.keys(this.constants.states)[0]]);
+    this.setSprite(this.stateSprite.get());
   }
 }

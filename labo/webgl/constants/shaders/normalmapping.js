@@ -16,8 +16,7 @@ varying vec3 fragPosLum;
 varying vec3 fragPosEye;
 varying vec3 fragHalfVec;
 
-void main()
-{
+void main() {
   fragTexture = texture;
 
   // ESPACE TANGENT
@@ -79,8 +78,7 @@ uniform sampler2D tex1;
 uniform float brillance;
 uniform vec3 specular;
 
-vec3 bump()
-{
+vec3 bump() {
   vec3 color = texture2D(textureMap, fragTexture).rgb * 0.5;
 
   vec3 normal = 2.0 * texture2D(tex1, fragTexture).rgb - 1.0;
@@ -99,8 +97,7 @@ vec3 bump()
 	return color;
 }
 
-void main()
-{
+void main() {
 	gl_FragColor = vec4(bump(), 1.0);
 }
 `;

@@ -1,4 +1,5 @@
 import vertex from './basicVertex';
+import { funcRandom } from '../utils';
 
 const fragment = `
 precision mediump float;
@@ -7,6 +8,8 @@ uniform sampler2D textureMap;
 uniform float time;
 uniform float delta;
 varying vec2 fragTexture;
+
+${funcRandom}
 
 float sat( float t ) {
 	return clamp( t, 0.0, 1.0 );
@@ -32,14 +35,6 @@ vec3 spectrum_offset( float t ) {
 	float neg_w = 1.0-w;
 	ret = vec3(lo,1.0,hi) * vec3(neg_w, w, neg_w);
 	return pow( ret, vec3(1.0/2.2) );
-}
-
-float rand( vec2 n ) {
-  return fract(sin(dot(n.xy, vec2(12.9898, 78.233)))* 43758.5453);
-}
-
-float randomRange (vec2 seed, float min, float max) {
-	return min + rand(seed) * (max - min);
 }
 
 float insideRange(float v, float bottom, float top) {

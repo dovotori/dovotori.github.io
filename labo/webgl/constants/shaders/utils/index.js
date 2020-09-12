@@ -1,5 +1,9 @@
 export const PI = `
-const float PI = 3.14159265359;
+#define PI 3.14159265359
+`;
+
+export const TWO_PI = `
+#define TWO_PI 6.28318530718
 `;
 
 export const attributeColors = `
@@ -26,6 +30,17 @@ float funcMap(float valeur, float minRef, float maxRef, float minDest, float max
 }
 `;
 
+export const funcRandom = `
+// between 0 - 1
+float rand( vec2 n ) {
+  return fract(sin(dot(n.xy, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+float randomRange(vec2 seed, float min, float max) {
+	return min + rand(seed) * (max - min);
+}
+`;
+
 export const funcToon = `
 float funcToon(lambertCosinus) {
   float strength = 0.0;
@@ -38,4 +53,3 @@ float funcToon(lambertCosinus) {
   return strength;
 }
 `;
-
