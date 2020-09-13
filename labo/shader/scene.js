@@ -29,8 +29,8 @@ const getDistortion = (progress, frequence, amplitude, time) => {
 };
 
 export default class extends Scene {
-  constructor(gl, config, assets, width = 512, height = 512) {
-    super(gl, config, assets, width, height);
+  constructor(gl, config, assets) {
+    super(gl, config, assets);
 
     this.screen = new Screen(this.gl);
     this.linesTrail = new LinesTrail(this.gl);

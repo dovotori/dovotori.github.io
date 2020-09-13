@@ -36,6 +36,20 @@ class Mat3 {
     return this;
   }
 
+  setFromArray(values) {
+    return this.set(
+      values[0],
+      values[1],
+      values[2],
+      values[3],
+      values[4],
+      values[5],
+      values[6],
+      values[7],
+      values[8]
+    );
+  }
+
   setOneValue(valeur) {
     for (let i = 0; i < 9; i += 1) {
       this.d[i] = valeur[i];
@@ -106,13 +120,18 @@ class Mat3 {
   }
 
   transpose() {
+    return this.setFromArray(Mat3.transpose(this.d));
+  }
+
+  static transpose(array) {
     const ordre = new Float32Array(9);
+    let cpt = 0;
     for (let j = 0; j < 3; j += 1) {
       for (let i = 0; i < 3; i += 1) {
-        ordre[3 * i + j] = this.d[3 * j + i];
+        ordre[cpt] = array[i * 3 + j];
+        cpt += 1;
       }
     }
-
     return ordre;
   }
 

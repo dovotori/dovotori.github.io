@@ -6,11 +6,8 @@ import DualQuaternion from '../lib/webgl/maths/DualQuaternion';
 import { mapFromRange, degToRad } from '../lib/webgl/utils/numbers';
 
 export default class extends Scene {
-  constructor(gl, config, assets, width = 512, height = 512) {
-    super(gl, config, assets, width, height);
-
-    this.onMouseMove = this.onMouseMove.bind(this);
-    this.renderToBuffer = this.renderToBuffer.bind(this);
+  constructor(gl, config, assets) {
+    super(gl, config, assets);
 
     this.model = new Mat4();
     this.model.identity();
@@ -64,9 +61,9 @@ export default class extends Scene {
     this.mngGltf.get(this.config.MAIN_OBJ).render(program, this.model);
   }
 
-  renderToBuffer(program) {
+  renderToBuffer = (program) => {
     this.mainRender(program);
-  }
+  };
 
   renderBasiqueForShadow() {
     const program = this.mngProg.get('basique3d');
@@ -95,7 +92,7 @@ export default class extends Scene {
     // this.postProcess.render(this.buffers.getShadowTexture().get());
   }
 
-  onMouseMove(mouse) {
+  onMouseMove = (mouse) => {
     const x = mapFromRange(mouse.pos.x, 0, mouse.size.width, -32, 32);
     const y = mapFromRange(mouse.pos.y, 0, mouse.size.height, -32, 32);
     this.targetX.set(x);
@@ -105,5 +102,5 @@ export default class extends Scene {
       x: mapFromRange(mouse.pos.x, 0, mouse.size.width, 0, 1),
       y: mapFromRange(mouse.pos.y, 0, mouse.size.height, 1, 0),
     };
-  }
+  };
 }

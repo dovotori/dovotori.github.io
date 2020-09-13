@@ -45,7 +45,6 @@ const StyledTitle = styled.h1`
 `;
 
 const ProjectHeader = ({ title, description, date, colorType }) => {
-  console.log(description);
   return (
     <WrapContent>
       <WrapTexte>

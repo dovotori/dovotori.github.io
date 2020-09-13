@@ -53,7 +53,7 @@ export default {
     //   direction: [0, 0, 1]
     // }
   ],
-  mouse: { domId: 'signature', events: ['move'] },
+  mouse: { events: ['move'] },
   useDepthTexture: true,
   canvas: {
     width: 512,

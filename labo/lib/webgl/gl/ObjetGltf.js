@@ -1,6 +1,4 @@
 import ObjetGltfPrimitive from './ObjetGltfPrimitive';
-import Bone from './Bone';
-import Bones from './Bones';
 import Quaternion from '../maths/Quaternion';
 import Mat4 from '../maths/Mat4';
 import Sample from '../maths/Sample';
@@ -8,7 +6,7 @@ import { lerp } from '../utils/easing';
 import { mapFromRange } from '../utils/numbers';
 
 export default class {
-  constructor(gl, data) {
+  constructor(gl, data, forceStep = null) {
     const { nodes, meshes, skins, materials } = data;
     this.meshes = meshes.map(({ primitives, name = '', weights }) => {
       const primitivesData = primitives.map((primitive) => {
@@ -28,25 +26,8 @@ export default class {
       const newNode = this.addAnimations(node);
       return { ...acc, [node.name]: newNode };
     }, {});
-    if (skins) {
-      this.skins = skins.map(({ joints }) => {
-        const newJoints = this.enhancedJoints(joints);
-        return { joints: newJoints, bones: new Bones(gl, skins) };
-      });
-    }
-    this.bone = new Bone(gl);
-    this.boneProg = null;
-    this.customTransform = {};
+    this.forceStep = forceStep;
   }
-
-  enhancedJoints = (joints) =>
-    joints.map((joint) => {
-      const enhancedJoint = this.addAnimations(joint);
-      if (enhancedJoint.children) {
-        enhancedJoint.children = this.enhancedJoints(enhancedJoint.children);
-      }
-      return enhancedJoint;
-    });
 
   addAnimations = (node) => {
     const { animations, ...newNode } = node;
@@ -54,8 +35,8 @@ export default class {
       animations.forEach(({ path, times, output, interpolation }) => {
         newNode[`${path}Animation`] = {
           output,
-          sample: new Sample(times, interpolation),
-          custom: null,
+          sample: new Sample(times, interpolation, 2000),
+          custom: this.forceStep,
         };
       });
     }
@@ -76,10 +57,7 @@ export default class {
 
   renderNode(key, program, model) {
     const node = this.nodes[key];
-    const { mesh: meshIndex, skin: skinIndex } = node;
-
-    this.handleWeights(node, program);
-    this.handleSkin(skinIndex, program, model);
+    const { mesh: meshIndex } = node;
 
     const localMatrix = this.handleLocalTransform(node);
     localMatrix.multiply(model);
@@ -87,32 +65,14 @@ export default class {
 
     const normalmatrix = localMatrix.getMatrice3x3();
     normalmatrix.inverse();
-    program.setMatrix('normalmatrix', normalmatrix.transpose());
+    normalmatrix.transpose();
+    program.setMatrix('normalmatrix', normalmatrix.get());
 
     const { primitives } = this.meshes[meshIndex];
     primitives.forEach((primitive) => primitive.render(program));
   }
 
-  handleWeights = (node, program) => {
-    const { mesh: meshIndex, weightsAnimation } = node;
-    const { weights } = this.meshes[meshIndex];
-    if (weights) {
-      let newWeight = weights;
-      if (weightsAnimation) {
-        const { sample, output } = weightsAnimation;
-        sample.update();
-        const index = sample.getIndex();
-        const previous = output[index - 1];
-        const next = output[index];
-        newWeight = weights.map((_, i) => lerp(sample.get(), previous[i], next[i]));
-      }
-      newWeight.forEach((weight, index) => {
-        program.setFloat(`weights[${index}]`, weight);
-      });
-    }
-  };
-
-  handleLocalTransform = (node) => {
+  handleLocalTransform = (node, invMatrix = null) => {
     const {
       translation,
       translationAnimation,
@@ -122,8 +82,11 @@ export default class {
       scaleAnimation,
       matrix,
     } = node;
+
     const localMatrix = new Mat4();
     localMatrix.identity();
+
+    // inverse T * R * S
     if (scale || scaleAnimation) {
       localMatrix.scale(...this.getVector(scale, scaleAnimation));
     }
@@ -139,37 +102,6 @@ export default class {
     }
     return localMatrix;
   };
-
-  handleSkin = (skinIndex, program, model) => {
-    if (skinIndex !== undefined) {
-      const jointMatrix = new Mat4();
-      jointMatrix.identity();
-      jointMatrix.multiply(model);
-      const { joints } = this.skins[skinIndex];
-      this.handleJoints(joints, program, jointMatrix);
-    }
-  };
-
-  handleJoints = (joints, program, parentMatrix, depth = 0) =>
-    joints.forEach((joint) => {
-      const { invMatrix, children } = joint;
-
-      const localMatrix = this.handleLocalTransform(joint);
-
-      const finalMatrix = new Mat4();
-      finalMatrix.setFromArray(invMatrix);
-      finalMatrix.multiply(localMatrix);
-      program.setMatrix(`jointMat[${depth}]`, finalMatrix.get());
-
-      if (this.boneProg) {
-        this.boneProg.setMatrix('model', localMatrix.get());
-        this.bone.render(this.boneProg);
-      }
-
-      if (children) {
-        this.handleJoints(children, program, localMatrix, depth + 1);
-      }
-    });
 
   setAnimationStep = (nodeName, transformType, step) => {
     const animation = this.nodes[nodeName][`${transformType}Animation`];
@@ -196,7 +128,9 @@ export default class {
         const previous = output[index - 1];
         const next = output[index];
         newVector = previous.map((value, i) => lerp(sample.get(), previous[i], next[i]));
+        return newVector;
       }
+      return output[0];
     }
     return newVector;
   };
@@ -214,12 +148,10 @@ export default class {
         const previous = output[index - 1];
         const next = output[index];
         quat.slerpArray(previous, next, sample.get());
+        return quat.toMatrix4();
       }
+      return new Quaternion(...output[0]).toMatrix4();
     }
     return quat.toMatrix4();
-  };
-
-  setBoneProgram = (program) => {
-    this.boneProg = program;
   };
 }

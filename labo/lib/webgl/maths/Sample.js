@@ -1,43 +1,42 @@
 export default class {
-  constructor(times) {
-    this.speed = 1000; // en ms
-    this.times = times.map((time) => time * this.speed); // 1s per step
-    this.lastFrame = new Date().getTime();
-    this.currentIndex = 0;
-    this.nextStep = this.times[this.currentIndex];
-    this.interpolationValue = 0;
+  constructor(times, interpolationType = 'LINEAR', speed = 1000) {
+    this.times = times;
+    this.setTimes(speed);
   }
 
   update() {
     const now = new Date().getTime();
     let currentTime = now - this.lastFrame;
-    const lastTimeIndex = this.times.length - 1;
-    const duration = this.times[lastTimeIndex];
 
-    if (currentTime > duration) {
+    if (currentTime > this.completeDuration) {
       this.lastFrame = now;
       this.currentIndex = 0;
-      this.nextStep = this.times[this.currentIndex];
+      this.nextStep = this.timeSteps[this.currentIndex];
       currentTime = 0;
     }
 
-    while (currentTime >= this.nextStep && this.currentIndex < lastTimeIndex) {
+    while (currentTime >= this.nextStep && this.currentIndex < this.lastTimeIndex) {
       this.currentIndex++;
-      this.nextStep = this.times[this.currentIndex];
+      this.nextStep = this.timeSteps[this.currentIndex];
     }
 
-    const nextTime = this.times[this.currentIndex];
-    const previousTime = this.times[this.currentIndex - 1];
+    const nextTime = this.timeSteps[this.currentIndex];
+    const previousTime = this.currentIndex === 0 ? 0 : this.timeSteps[this.currentIndex - 1];
     this.interpolationValue = (currentTime - previousTime) / (nextTime - previousTime);
   }
 
   setSpeed(millis) {
-    this.speed = millis;
-    this.setTimes();
+    this.setTimes(millis);
   }
 
-  setTimes = () => {
-    this.times = this.times.map((time) => time * this.speed);
+  setTimes = (speed) => {
+    this.timeSteps = this.times.map((time) => time * speed);
+    this.currentIndex = 0;
+    this.nextStep = this.timeSteps[this.currentIndex];
+    this.interpolationValue = 0;
+    this.lastFrame = new Date().getTime();
+    this.lastTimeIndex = this.times.length - 1;
+    this.completeDuration = this.timeSteps[this.lastTimeIndex];
   };
 
   getIndex() {

@@ -7,9 +7,11 @@ export default class extends Scene {
     this.lampes = [];
 
     const useDepth = this.canUseDepth();
-    this.lampes = config.lampes.map(
-      (lampe) => new Lampe(this.gl, lampe, config.canvas.width, config.canvas.height, useDepth)
-    );
+    this.lampes =
+      config.lampes &&
+      config.lampes.map(
+        (lampe) => new Lampe(this.gl, lampe, config.canvas.width, config.canvas.height, useDepth)
+      );
   }
 
   renderReperes() {

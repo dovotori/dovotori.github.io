@@ -164,6 +164,13 @@ class Mat4 {
     return this;
   }
 
+  resetScale() {
+    this.d[0] = 1;
+    this.d[5] = 1;
+    this.d[10] = 1;
+    return this;
+  }
+
   rotate(angle, x, y, z) {
     const rotation = new Mat4();
     const angleInRadians = angle * (Math.PI / 180);
@@ -379,15 +386,7 @@ class Mat4 {
   // }
 
   transpose() {
-    const ordre = new Float32Array(16);
-    let cpt = 0;
-    for (let j = 0; j < 4; j += 1) {
-      for (let i = 0; i < 4; i += 1) {
-        ordre[cpt] = this.d[i * 4 + j];
-        cpt += 1;
-      }
-    }
-    return ordre;
+    return this.setFromArray(Mat4.transpose(this.d));
   }
 
   static transpose(array) {

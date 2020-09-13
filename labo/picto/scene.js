@@ -1,8 +1,8 @@
 import Scene from '../lib/webgl/scenes/Scene';
 
 export default class extends Scene {
-  constructor(gl, config, assets, width = 512, height = 512) {
-    super(gl, config, assets, width, height);
+  constructor(gl, config, assets) {
+    super(gl, config, assets);
     this.setGlitch = this.setGlitch.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.req = null;

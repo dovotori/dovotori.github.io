@@ -11,8 +11,8 @@ import UpdateVbo from '../lib/webgl/vbos/UpdateVbo';
 import FixVbo from '../lib/webgl/vbos/FixVbo';
 
 export default class extends Scene {
-  constructor(gl, config, assets, width = 512, height = 512) {
-    super(gl, config, assets, width, height);
+  constructor(gl, config, assets) {
+    super(gl, config, assets);
 
     this.texture = new TexturePerlinNoise(gl, 256, 256);
     this.model = new Mat4();
@@ -101,7 +101,8 @@ export default class extends Scene {
     program.setMatrix('model', this.model.get());
     const normalmatrix = this.model.getMatrice3x3();
     normalmatrix.inverse();
-    program.setMatrix('normalmatrix', normalmatrix.transpose());
+    normalmatrix.transpose();
+    program.setMatrix('normalmatrix', normalmatrix.get());
     program.setTexture(2, this.texture.get(), 'noiseMap');
     program.setTexture(3, this.mngTex.get('earth').get(), 'colorMap');
 

@@ -22,8 +22,8 @@ const getDistortion = (progress, frequence, amplitude, time) => {
 };
 
 export default class extends Scene {
-  constructor(gl, config, assets, width = 512, height = 512) {
-    super(gl, config, assets, width, height);
+  constructor(gl, config, assets) {
+    super(gl, config, assets);
 
     this.screen = new Screen(this.gl);
 
@@ -63,8 +63,8 @@ export default class extends Scene {
     this.setLampeInfos(this.mngProg.get('gltf'));
     this.mngProg.get('roadSky').setTexture(1, this.mngTex.get('noisergb').get(), 'textureMap');
 
-    this.mngGltf.get('raceship').setAnimationSpeed('aile1', 'rotation', 10);
-    this.mngGltf.get('raceship').setAnimationSpeed('aile2', 'rotation', 10);
+    this.mngGltf.get('raceship').setAnimationSpeed('aile1', 'rotation', 4000);
+    this.mngGltf.get('raceship').setAnimationSpeed('aile2', 'rotation', 4000);
   }
 
   renderLandscape() {

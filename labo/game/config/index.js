@@ -71,7 +71,7 @@ export default {
     },
   ],
   controls: {
-    fullscreen: { domId: 'game', buttonId: 'fullscreen-toggle-btn' },
+    fullscreen: { buttonId: 'fullscreen-toggle-btn' },
   },
   keyboard: {
     UP,

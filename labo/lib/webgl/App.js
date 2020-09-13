@@ -38,7 +38,7 @@ export default class {
     this.canvas = new Canvas();
     this.canvas.resize({ width, height });
     const finalConfig = { ...config, support: this.canvas.getSupport() };
-    this.scene = new Scene(this.canvas.getContext(), finalConfig, assets, width, height);
+    this.scene = new Scene(this.canvas.getContext(), finalConfig, assets);
     const container = document.querySelector(`#${config.slug}`);
 
     if (config) {

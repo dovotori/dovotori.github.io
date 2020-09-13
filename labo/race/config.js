@@ -50,7 +50,7 @@ export default {
     },
   ],
   controls: {
-    fullscreen: { domId: 'race', buttonId: 'fullscreen-toggle-btn' },
+    fullscreen: { buttonId: 'fullscreen-toggle-btn' },
   },
   roadFrequence: [2, 0, 2],
   roadAmplitude: [10, 0, 4],

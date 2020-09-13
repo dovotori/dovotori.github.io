@@ -3,6 +3,8 @@ import createStream from 'Labo/lib/webrtc/createStream';
 import Socket from 'Labo/lib/webrtc/Socket';
 import Peer from 'Labo/lib/webrtc/Peer';
 
+import './style.css';
+
 const button = document.querySelector('#btn');
 // const status = document.querySelector('#status');
 

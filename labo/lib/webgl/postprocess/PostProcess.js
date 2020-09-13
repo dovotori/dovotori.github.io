@@ -222,12 +222,11 @@ export default class extends ProcessBase {
   setSSAO(projection, view, position, normal, depth, radius, tex = null) {
     const program = this.applyTexToProg(this.programs.ssao, tex);
     const invViewProj = new Mat4();
-    invViewProj.equal(view).multiply(projection);
-    invViewProj.inverse();
-    program.setMatrix('inverseProjection', invViewProj.transpose());
+    invViewProj.equal(view).multiply(projection).inverse().transpose();
+    program.setMatrix('inverseProjection', invViewProj.get());
     const viewProj = new Mat4();
-    viewProj.equal(view).multiply(projection);
-    program.setMatrix('projection', viewProj.transpose());
+    viewProj.equal(view).multiply(projection).transpose();
+    program.setMatrix('projection', viewProj.get());
     program.setTexture(2, position, 'positionMap');
     program.setTexture(3, normal, 'normalMap');
     program.setTexture(4, depth, 'depthMap');

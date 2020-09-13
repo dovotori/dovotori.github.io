@@ -10,8 +10,8 @@ import ObjetPrimitive from '../lib/webgl/gl/ObjetPrimitive';
 import primitive from '../lib/webgl/primitives/plane';
 
 export default class extends Scene {
-  constructor(gl, config, assets, width = 512, height = 512) {
-    super(gl, config, assets, width, height);
+  constructor(gl, config, assets) {
+    super(gl, config, assets);
 
     this.config.MAIN_PROG = config.MAIN_PROG;
     this.config.MAIN_OBJ = config.MAIN_OBJ;
@@ -22,7 +22,7 @@ export default class extends Scene {
     this.targetY = new Spring(0);
     this.targetZ = new Target(0, 0.05);
     this.gizmo = new Gizmo(gl);
-    this.bloom = new Bloom(gl, width, height, this.canUseDepth());
+    this.bloom = new Bloom(gl, config.width, config.height, this.canUseDepth());
 
     this.objet = new ObjetPrimitive(this.gl);
     Object.keys(primitive).forEach((key) => {
