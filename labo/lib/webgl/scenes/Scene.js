@@ -71,12 +71,11 @@ export default class {
     this.resizeViewport();
   }
 
-  update() {
-    this.time += 1;
+  update(time) {
+    this.time = time;
   }
 
   render() {
-    this.update();
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
   }
 

@@ -72,11 +72,12 @@ export default class {
     this.loop.start();
   }
 
-  render = () => {
+  render = (time) => {
     if (this.keyboard) {
       this.keyboard.start();
       this.scene.setKeyboardInteraction(this.keyboard);
     }
+    this.scene.update(time);
     this.scene.render();
     if (this.keyboard) this.keyboard.end();
   };

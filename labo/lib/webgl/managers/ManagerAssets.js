@@ -41,7 +41,6 @@ class ManagerAssets {
       .then((response) => response.text())
       .then((response) => {
         const gltf = new LoadGltf(response);
-        // console.log('+++ gtlf', gltf.get());
         return { data: gltf.get(), info };
       });
 

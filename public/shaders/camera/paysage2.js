@@ -52,7 +52,9 @@ ${funcLightsColor}
 ${funcShadow}
 
 void main() {
-  if (fragTransformPosition.z < -3.11 || fragTransformPosition.z > -0.99
+  if (
+    fragTransformPosition.z < -10.0 || fragTransformPosition.z > 8.0 ||
+    fragTransformPosition.x > 10.0 || fragTransformPosition.x < -8.0
   ) {
     gl_FragColor = vec4(0.0);
   } else {
@@ -62,6 +64,7 @@ void main() {
     float shadow = funcShadow(shadowMap, fragShadow, resolution, epsilon);
     gl_FragColor = vec4(phong * shadow, 1.0);
   }
+  // gl_FragColor = vec4(fragNormale, 1.0);
 }
 `;
 

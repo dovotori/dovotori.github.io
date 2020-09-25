@@ -1,5 +1,5 @@
 const MAIN_PROG = 'paysage2';
-const MAIN_OBJ = 'paysage';
+const MAIN_OBJ = 'paysage2';
 export default {
   slug: 'paysage',
   MAIN_PROG,
@@ -26,7 +26,7 @@ export default {
     panel: [{ x: 0, y: 0, z: 0 }],
   },
   camera: {
-    position: { x: -2, y: 1, z: 2 },
+    position: { x: -14, y: 8, z: 14 },
     target: { x: 0, y: 0, z: 0 },
     near: 1,
     far: 40,
@@ -35,7 +35,7 @@ export default {
   lampes: [
     {
       type: 0,
-      position: { x: 4, y: 4, z: 4 },
+      position: { x: 14, y: 20, z: 14 },
       ambiant: [1, 0.8, 0.6],
       diffuse: [0.8, 0.6, 0.5],
       specular: [1, 0.8, 0.7],
@@ -45,14 +45,14 @@ export default {
     },
     {
       type: 0,
-      position: { x: -4, y: 4, z: 4 },
+      position: { x: -14, y: 20, z: -14 },
       ambiant: [0.8, 0.6, 1],
       diffuse: [0.6, 0.5, 0.8],
       specular: [0.8, 0.7, 1],
-      brillance: 100,
+      brillance: 10,
       radius: 10,
       direction: [0, 0, 1],
-      strength: 2,
+      strength: 3,
     },
   ],
   mouse: {

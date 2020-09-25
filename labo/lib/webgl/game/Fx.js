@@ -20,8 +20,8 @@ export default class extends MeshSprite {
     this.stateSprite.reload(status);
   }
 
-  update() {
-    super.update();
+  update(time) {
+    super.update(time);
     this.stateSprite.update();
   }
 

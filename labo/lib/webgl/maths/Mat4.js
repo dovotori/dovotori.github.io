@@ -165,9 +165,17 @@ class Mat4 {
   }
 
   resetScale() {
+    // work if no rotation
     this.d[0] = 1;
     this.d[5] = 1;
     this.d[10] = 1;
+    return this;
+  }
+
+  resetTranslate() {
+    this.d[12] = 0;
+    this.d[13] = 0;
+    this.d[14] = 0;
     return this;
   }
 

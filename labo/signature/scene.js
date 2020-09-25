@@ -22,8 +22,8 @@ export default class extends Scene {
     this.targetScale.set(1);
   }
 
-  update() {
-    super.update();
+  update(time) {
+    super.update(time);
 
     this.targetX.update();
     this.targetY.update();
@@ -32,8 +32,8 @@ export default class extends Scene {
 
     this.model.identity();
 
-    const angle = degToRad(this.targetX.get()) + Math.sin(this.time * 0.1) * 0.1;
-    const angle2 = degToRad(this.targetY.get()) - Math.abs(Math.cos(this.time * 0.1) * 0.1);
+    const angle = degToRad(this.targetX.get()) + Math.sin(this.time * 0.005) * 0.1;
+    const angle2 = degToRad(this.targetY.get()) - Math.abs(Math.cos(this.time * 0.005) * 0.1);
 
     this.model.scale(this.targetScale.get());
 
@@ -49,7 +49,7 @@ export default class extends Scene {
   }
 
   effects() {
-    const delta = Math.cos(this.time * 0.01) * 0.04;
+    const delta = Math.cos(this.time * 0.001) * 0.04;
     if (delta > 0) {
       this.postProcess.setGlitch(this.time * 0.07 + this.target.get(), delta, delta);
     }

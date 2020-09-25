@@ -70,8 +70,8 @@ export default class extends Scene {
     this.sound.setPlaybackRate(e.target.value * 0.02);
   };
 
-  update() {
-    super.update();
+  update(time) {
+    super.update(time);
 
     this.targetX.update();
     this.targetY.update();

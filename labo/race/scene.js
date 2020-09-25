@@ -63,8 +63,8 @@ export default class extends Scene {
     this.setLampeInfos(this.mngProg.get('gltf'));
     this.mngProg.get('roadSky').setTexture(1, this.mngTex.get('noisergb').get(), 'textureMap');
 
-    this.mngGltf.get('raceship').setAnimationSpeed('aile1', 'rotation', 4000);
-    this.mngGltf.get('raceship').setAnimationSpeed('aile2', 'rotation', 4000);
+    // this.mngGltf.get('raceship').setAnimationSpeed('aile1', 'rotation', 4000);
+    // this.mngGltf.get('raceship').setAnimationSpeed('aile2', 'rotation', 4000);
   }
 
   renderLandscape() {
@@ -75,6 +75,11 @@ export default class extends Scene {
     program.setVector('wind', [0.1, 0.2]);
     this.screen.render(program.get());
     this.gl.enable(this.gl.DEPTH_TEST);
+  }
+
+  update(time) {
+    super.update(time);
+    this.mngGltf.get('raceship').update(time);
   }
 
   updateCamera = () => {

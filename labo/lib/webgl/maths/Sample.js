@@ -4,26 +4,32 @@ export default class {
     this.setTimes(speed);
   }
 
-  update() {
-    const now = new Date().getTime();
-    let currentTime = now - this.lastFrame;
-
-    if (currentTime > this.completeDuration) {
-      this.lastFrame = now;
-      this.currentIndex = 0;
-      this.nextStep = this.timeSteps[this.currentIndex];
-      currentTime = 0;
+  update(timeInAnimation) {
+    this.findIndex(timeInAnimation);
+    if (this.index === 0) {
+      this.interpolationValue = 0;
+    } else if (this.index === this.times.length) {
+      this.interpolationValue = this.timeSteps[this.times.length - 1];
+    } else {
+      const nextTime = this.timeSteps[this.index];
+      const previousTime = this.timeSteps[this.index - 1];
+      this.interpolationValue = (timeInAnimation - previousTime) / (nextTime - previousTime);
     }
-
-    while (currentTime >= this.nextStep && this.currentIndex < this.lastTimeIndex) {
-      this.currentIndex++;
-      this.nextStep = this.timeSteps[this.currentIndex];
-    }
-
-    const nextTime = this.timeSteps[this.currentIndex];
-    const previousTime = this.currentIndex === 0 ? 0 : this.timeSteps[this.currentIndex - 1];
-    this.interpolationValue = (currentTime - previousTime) / (nextTime - previousTime);
   }
+
+  findIndex = (timeInAnimation) => {
+    let i = 0;
+    let timeStep = this.timeSteps[i];
+    if (timeStep === 0) {
+      i++;
+      timeStep = this.timeSteps[i];
+    }
+    while (timeStep && timeInAnimation > timeStep) {
+      i++;
+      timeStep = this.timeSteps[i];
+    }
+    this.index = i;
+  };
 
   setSpeed(millis) {
     this.setTimes(millis);
@@ -31,16 +37,12 @@ export default class {
 
   setTimes = (speed) => {
     this.timeSteps = this.times.map((time) => time * speed);
-    this.currentIndex = 0;
-    this.nextStep = this.timeSteps[this.currentIndex];
+    this.index = 0;
     this.interpolationValue = 0;
-    this.lastFrame = new Date().getTime();
-    this.lastTimeIndex = this.times.length - 1;
-    this.completeDuration = this.timeSteps[this.lastTimeIndex];
   };
 
   getIndex() {
-    return this.currentIndex;
+    return this.index;
   }
 
   get() {

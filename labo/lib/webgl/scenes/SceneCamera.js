@@ -15,8 +15,8 @@ export default class extends Scene {
     this.camera.perspective(this.containerSize.width, this.containerSize.height);
   }
 
-  update() {
-    super.update();
+  update(time) {
+    super.update(time);
     this.camera.update();
     this.mngProg.setCameraMatrix(this.camera);
   }

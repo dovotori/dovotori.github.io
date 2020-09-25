@@ -1,12 +1,9 @@
 import ObjetGltfPrimitive from './ObjetGltfPrimitive';
 import Quaternion from '../maths/Quaternion';
 import Mat4 from '../maths/Mat4';
-import Sample from '../maths/Sample';
-import { lerp } from '../utils/easing';
-import { mapFromRange } from '../utils/numbers';
 
 export default class {
-  constructor(gl, data, forceStep = null) {
+  constructor(gl, data) {
     const { nodes, meshes, skins, materials } = data;
     this.meshes = meshes.map(({ primitives, name = '', weights }) => {
       const primitivesData = primitives.map((primitive) => {
@@ -22,26 +19,8 @@ export default class {
         weights,
       };
     });
-    this.nodes = nodes.reduce((acc, node) => {
-      const newNode = this.addAnimations(node);
-      return { ...acc, [node.name]: newNode };
-    }, {});
-    this.forceStep = forceStep;
+    this.nodes = nodes;
   }
-
-  addAnimations = (node) => {
-    const { animations, ...newNode } = node;
-    if (animations) {
-      animations.forEach(({ path, times, output, interpolation }) => {
-        newNode[`${path}Animation`] = {
-          output,
-          sample: new Sample(times, interpolation, 2000),
-          custom: this.forceStep,
-        };
-      });
-    }
-    return newNode;
-  };
 
   formatPrimitives = (gl, primitives) =>
     primitives.map((primitive) => {
@@ -63,6 +42,8 @@ export default class {
     localMatrix.multiply(model);
     program.setMatrix('model', localMatrix.get());
 
+    localMatrix.resetScale();
+    localMatrix.resetTranslate();
     const normalmatrix = localMatrix.getMatrice3x3();
     normalmatrix.inverse();
     normalmatrix.transpose();
@@ -73,85 +54,25 @@ export default class {
   }
 
   handleLocalTransform = (node, invMatrix = null) => {
-    const {
-      translation,
-      translationAnimation,
-      rotation,
-      rotationAnimation,
-      scale,
-      scaleAnimation,
-      matrix,
-    } = node;
+    const { translation, rotation, scale, matrix, name } = node;
 
     const localMatrix = new Mat4();
     localMatrix.identity();
 
     // inverse T * R * S
-    if (scale || scaleAnimation) {
-      localMatrix.scale(...this.getVector(scale, scaleAnimation));
+    if (scale) {
+      localMatrix.scale(...scale);
     }
-    if (rotation || rotationAnimation) {
-      localMatrix.multiply(this.getRotationMat4(rotation, rotationAnimation));
+    if (rotation) {
+      localMatrix.multiply(new Quaternion(...rotation).toMatrix4());
     }
-    if (translation || translationAnimation) {
-      localMatrix.translate(...this.getVector(translation, translationAnimation));
+    if (translation) {
+      localMatrix.translate(...translation);
     }
 
     if (matrix) {
       localMatrix.multiplyArray(matrix);
     }
     return localMatrix;
-  };
-
-  setAnimationStep = (nodeName, transformType, step) => {
-    const animation = this.nodes[nodeName][`${transformType}Animation`];
-    const nbAnimations = animation.output.length;
-    const value = mapFromRange(step, 0, 1, 0, nbAnimations - 1);
-    animation.custom = Math.round(value);
-  };
-
-  setAnimationSpeed = (nodeName, transformType, millis) => {
-    const animation = this.nodes[nodeName][`${transformType}Animation`];
-    animation.sample.setSpeed(millis);
-  };
-
-  getVector = (vector = [0, 0, 0], vectorAnimation) => {
-    let newVector = vector;
-    if (vectorAnimation) {
-      const { sample, output, custom = null } = vectorAnimation;
-      if (custom !== null) {
-        return output[custom];
-      }
-      sample.update();
-      const index = sample.getIndex();
-      if (index > 0) {
-        const previous = output[index - 1];
-        const next = output[index];
-        newVector = previous.map((value, i) => lerp(sample.get(), previous[i], next[i]));
-        return newVector;
-      }
-      return output[0];
-    }
-    return newVector;
-  };
-
-  getRotationMat4 = (rotation = [0, 0, 0, 1], rotationAnimation) => {
-    const quat = new Quaternion(...rotation);
-    if (rotationAnimation) {
-      const { sample, output, custom = null } = rotationAnimation;
-      if (custom !== null) {
-        return new Quaternion(...output[custom]).toMatrix4();
-      }
-      sample.update();
-      const index = sample.getIndex();
-      if (index > 0) {
-        const previous = output[index - 1];
-        const next = output[index];
-        quat.slerpArray(previous, next, sample.get());
-        return quat.toMatrix4();
-      }
-      return new Quaternion(...output[0]).toMatrix4();
-    }
-    return quat.toMatrix4();
   };
 }

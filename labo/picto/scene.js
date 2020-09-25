@@ -20,8 +20,8 @@ export default class extends Scene {
     this.req = setTimeout(this.setGlitch, 2000 + Math.random() * 5000);
   }
 
-  update() {
-    super.update();
+  update(time) {
+    super.update(time);
     this.value += (this.target - this.value) * 0.04;
   }
 

@@ -1,31 +1,44 @@
-import ObjetGltf from './ObjetGltf';
+import ObjetGltfAnim from './ObjetGltfAnim';
 import Bone from './Bone';
 import Bones from './Bones';
 import Mat4 from '../maths/Mat4';
 import { lerp } from '../utils/easing';
 
-export default class extends ObjetGltf {
-  constructor(gl, data) {
+export default class extends ObjetGltfAnim {
+  constructor(gl, data, forceStep = null) {
     super(gl, data);
     const { skins } = data;
     if (skins) {
+      skins.forEach(({ joints }) => {
+        this.addJointsAnimations(joints, forceStep);
+      });
       this.skins = skins.map(({ joints }) => {
-        const newJoints = this.enhancedJoints(joints);
-        return { joints: newJoints, bones: new Bones(gl, skins) };
+        const newJoints = this.removeAnimations(joints);
+        return { joints: newJoints };
       });
     }
-    this.bone = new Bone(gl);
-    this.boneProg = null;
   }
 
-  enhancedJoints = (joints) =>
-    joints.map((joint) => {
-      const enhancedJoint = this.addAnimations(joint);
-      if (enhancedJoint.children) {
-        enhancedJoint.children = this.enhancedJoints(enhancedJoint.children);
+  removeAnimations = (joints) => {
+    return joints.map((joint) => {
+      if (joint.children) {
+        joint.children = this.removeAnimations(joint.children);
       }
-      return enhancedJoint;
+      return this.removeAnim(joint);
     });
+  };
+
+  addJointsAnimations = (joints, forceStep) => {
+    joints.forEach((joint) => {
+      const { animations, name, children } = joint;
+      if (animations) {
+        this.animations[name] = this.addAnimations(animations, forceStep);
+      }
+      if (children) {
+        this.addJointsAnimations(children, forceStep);
+      }
+    });
+  };
 
   renderNode(key, program, model) {
     const node = this.nodes[key];
@@ -65,18 +78,9 @@ export default class extends ObjetGltf {
 
       program.setMatrix(`jointMat[${depth}]`, finalMatrix.get());
 
-      // if (this.boneProg) {
-      //   this.boneProg.setMatrix('model', localMatrix.get());
-      //   this.bone.render(this.boneProg);
-      // }
-
       if (children) {
         this.setProgramJoints(children, program, localMatrix, depth + 1);
       }
     });
-  };
-
-  setBoneProgram = (program) => {
-    this.boneProg = program;
   };
 }

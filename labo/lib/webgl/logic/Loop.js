@@ -10,7 +10,7 @@ export default class {
     const milli = now - this.lastFrame;
     if (this.callbackNoFps) this.callbackNoFps();
     if (milli > this.fps) {
-      this.callback();
+      this.callback(now);
       this.lastFrame = now;
     }
     this.ref = window.requestAnimationFrame(this.start);

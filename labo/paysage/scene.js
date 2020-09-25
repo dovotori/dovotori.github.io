@@ -32,11 +32,11 @@ export default class extends Scene {
         this.objet.setPoints(primitive[key], key);
       }
     });
-    this.targetZ.set(1);
+    this.targetZ.set(1.2);
   }
 
-  update() {
-    super.update();
+  update(time) {
+    super.update(time);
 
     this.targetX.update();
     this.targetY.update();
@@ -65,6 +65,8 @@ export default class extends Scene {
     invModel.inverse();
     program.setMatrix('inverseModel', invModel.get());
     this.setLampeInfos(program);
+
+    this.mngGltf.get(this.config.MAIN_OBJ).update(time);
   }
 
   mainRender(program) {
@@ -116,8 +118,8 @@ export default class extends Scene {
     const model = new Mat4();
     model.identity();
     model.rotate(-90, 1, 0, 0);
-    model.translate(0, -0.8, 0);
-    model.scale(1.1, 1, 0.8);
+    model.translate(0, -1.0, 0);
+    model.scale(7.1, 7.0, 6.0);
     model.multiply(this.model);
     program.setMatrix('model', model.get());
     program.setVector('color', [0.0, 0.0, 0.0, 0.4]);
@@ -132,8 +134,8 @@ export default class extends Scene {
 
   onMouseWheel = (mouse) => {
     let target = -mouse.deltaY;
-    target = Math.min(target, 2);
-    target = Math.max(target, 1);
+    target = Math.min(target, 1.2);
+    target = Math.max(target, 0.8);
     this.targetZ.set(target);
   };
 }

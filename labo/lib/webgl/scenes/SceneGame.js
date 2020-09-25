@@ -107,8 +107,8 @@ export default class extends Scene {
     this.postProcess.resize(box);
   }
 
-  update() {
-    super.update();
+  update(time) {
+    super.update(time);
 
     const { heros } = this.interactives;
 

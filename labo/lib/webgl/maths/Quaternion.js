@@ -186,10 +186,11 @@ class Quaternion {
     return this;
   }
 
-  slerpArray(a, b, step) {
+  static slerpArray(a, b, step) {
     const qa = new Quaternion(a[0], a[1], a[2], a[3]);
     const qb = new Quaternion(b[0], b[1], b[2], b[3]);
-    this.slerp(qa, qb, step);
+    const q = new Quaternion(0, 0, 0, 1);
+    return q.slerp(qa, qb, step);
   }
 
   // slerp(a, b, step) {
