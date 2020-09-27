@@ -51,9 +51,23 @@ float funcShadow(sampler2D depthMap, vec4 fragShadow, vec2 texelSize, float epsi
   ) {
 		visibility = 1.0;
 	} else {
-	  vec2 texelSize = vec2(1.0 / texelSize.x, 1.0 / texelSize.y); // taille de la texture
-		visibility = softShadowPCR(depthMap, shad.xy, shad.z, texelSize, epsilon);
+	  vec2 texSize = vec2(1.0 / texelSize); // taille de la texture
+		visibility = softShadowPCR(depthMap, shad.xy, shad.z, texSize, epsilon);
 	}
   return visibility;
 }
 `;
+
+export const uniformShadow = `
+uniform mat4 shadowview;
+uniform mat4 shadowprojection;
+
+const mat4 bias = mat4(
+  0.5, 0.0, 0.0, 0.0,
+  0.0, 0.5, 0.0, 0.0,
+  0.0, 0.0, 0.5, 0.0,
+  0.5, 0.5, 0.5, 1.0
+);
+`;
+
+export const shadowLocations = ['shadowview', 'shadowprojection', 'shadowMap'];

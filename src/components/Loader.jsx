@@ -41,11 +41,11 @@ const Blink = styled.span`
   animation: ${blink} 1s linear infinite;
 `;
 
-const Loader = ({ className, colorType }) => (
+const Loader = ({ className, $colorType }) => (
   <div className={className}>
     <Wrap>
       {[0, 1, 2, 3].map((idx) => (
-        <Bar key={idx} delay={idx * 100} style={{ top: `${idx * 5}px` }} colorType={colorType} />
+        <Bar key={idx} delay={idx * 100} style={{ top: `${idx * 5}px` }} $colorType={$colorType} />
       ))}
     </Wrap>
     <Text>

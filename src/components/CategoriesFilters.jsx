@@ -51,7 +51,7 @@ const CategoriesFilters = ({ selected, className, categories }) => (
           <StyledLink
             to={isLinkSelected ? '/' : `/category/${categories[categoryId].slug}`}
             selected={isLinkSelected}
-            colorType={getColorType(parseInt(categoryId, 10))}
+            $colorType={getColorType(parseInt(categoryId, 10))}
           >
             {categories[categoryId].label}
           </StyledLink>

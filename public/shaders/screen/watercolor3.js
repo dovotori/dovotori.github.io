@@ -85,7 +85,9 @@ void main() {
   // float mountain_line = 0.5+0.04*(sin(uv.x*18.0+2.0)+sin(sin(uv.x*2.0)*7.0))-uv.y;
   // float s = clamp(2.0-10.0*abs(mountain_line),0.0,1.0);
   // vec2 uv2 = uv + vec2(0.04*s*noise2d(uv * vec2(0.1)));
-  // float mountains = brush_effect(0.5+0.04*(sin(uv2.x*18.0+2.0)+sin(sin(uv2.x*2.0)*7.0))-uv2.y, 0.2, 0.1);
+  // float mountains = brush_effect(
+  //   0.5 + 0.04 * (sin(uv2.x * 18.0 + 2.0) + sin(sin(uv2.x * 2.0) * 7.0)) - uv2.y, 0.2, 0.1
+  // );
   // mountains *= 0.85+0.15*noise2d(uv*vec2(0.2));
   // r1 = KMrefl(K_HookersGreen, S_HookersGreen, mountains);
   // t1 = KMtrans(K_HookersGreen, S_HookersGreen, mountains);

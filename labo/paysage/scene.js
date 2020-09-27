@@ -45,7 +45,7 @@ export default class extends Scene {
     this.model.identity();
     this.model.scale(this.targetZ.get());
 
-    const angle = degToRad(this.targetX.get());
+    const angle = degToRad(this.targetX.get()) + time * 0.0001;
     // const angle2 = degToRad(this.targetY.get());
 
     const quat = new DualQuaternion();
@@ -56,37 +56,29 @@ export default class extends Scene {
     const program = this.mngProg.get(this.config.MAIN_PROG);
     program.setVector('resolution', [this.containerSize.width, this.containerSize.height]);
     if (this.canUseDepth()) {
-      program.setTexture(2, this.getLampeDepthTexture(0).get(), 'shadowMap');
+      program.setTexture(2, this.getLampe(0).getDepthTexture().get(), 'shadowMap');
     }
-    program.setMatrix('shadowview', this.getLampeViewMatrix(0).get());
-    const invModel = new Mat4();
-    invModel.equal(this.camera.getView());
-    invModel.multiply(this.model);
-    invModel.inverse();
-    program.setMatrix('inverseModel', invModel.get());
+    program.setMatrix('shadowview', this.getLampe(0).getView().get());
+    program.setMatrix('shadowprojection', this.getLampe(0).getOrtho().get());
+
     this.setLampeInfos(program);
+
+    // pour faire disparaite les objet qui sorte de la scene
+    const invModel = new Mat4();
+    invModel.equal(this.camera.getView()).multiply(this.model).inverse();
+    program.setMatrix('inverseModel', invModel.get());
 
     this.mngGltf.get(this.config.MAIN_OBJ).update(time);
   }
 
   mainRender(program) {
-    this.renderFakeShadow();
-
     // this.gizmo.render(this.camera, this.model);
     this.mngGltf.get(this.config.MAIN_OBJ).render(program, this.model);
   }
 
-  renderToBuffer = (program) => {
+  renderBasiqueForShadow = (program) => {
     this.mainRender(program);
   };
-
-  renderBasiqueForShadow() {
-    const program = this.mngProg.get('basique3d');
-    program.setMatrix('projection', this.camera.getProjection().get());
-    program.setMatrix('view', this.getLampeViewMatrix(0).get());
-    program.setMatrix('model', this.model.get());
-    this.renderToBuffer(program);
-  }
 
   render() {
     super.render();
@@ -97,17 +89,19 @@ export default class extends Scene {
     // this.mngGltf.get(this.config.MAIN_OBJ).setBoneProgram(program);
 
     if (this.config.support.useDepth) {
-      this.postProcess.start();
+      // this.postProcess.start();
+      // this.renderFakeShadow();
       this.mainRender(this.mngProg.get(this.config.MAIN_PROG));
-      this.postProcess.end();
-      this.effects();
-      this.postProcess.render();
+      // this.postProcess.end();
+      // this.effects();
+      // this.postProcess.render();
     } else {
       this.mainRender(this.mngProg.get(this.config.MAIN_PROG));
     }
 
     // DEBUG
     // this.postProcess.render(this.bloom.getTexture().get());
+    // this.postProcess.render(this.getLampe(0).getDepthTexture(0).get());
   }
 
   renderFakeShadow() {

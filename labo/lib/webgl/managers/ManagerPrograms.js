@@ -13,10 +13,11 @@ export default class {
     });
   }
 
-  setCameraMatrix(camera) {
+  setCameraMatrix(camera, isOrtho = false) {
     Object.keys(this.programs).forEach((name) => {
       this.programs[name].setMatrix('view', camera.getView().get());
-      this.programs[name].setMatrix('projection', camera.getProjection().get());
+      const proj = isOrtho ? camera.getOrtho() : camera.getProjection();
+      this.programs[name].setMatrix('projection', proj.get());
     });
   }
 

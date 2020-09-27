@@ -10,7 +10,7 @@ export default class extends Mesh {
   setNormalMatrix(program) {
     this.normalMatrix.equal(this.model.getMatrice3x3());
     this.normalMatrix.inverse();
-    normalmatrix.transpose();
+    this.normalMatrix.transpose();
     program.setMatrix('normalmatrix', this.normalMatrix.get());
   }
 }

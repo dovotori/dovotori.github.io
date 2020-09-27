@@ -1,8 +1,7 @@
 import ObjetGltfAnim from './ObjetGltfAnim';
-import Bone from './Bone';
-import Bones from './Bones';
+// import Bone from './Bone';
+// import Bones from './Bones';
 import Mat4 from '../maths/Mat4';
-import { lerp } from '../utils/easing';
 
 export default class extends ObjetGltfAnim {
   constructor(gl, data, forceStep = null) {
@@ -21,10 +20,11 @@ export default class extends ObjetGltfAnim {
 
   removeAnimations = (joints) => {
     return joints.map((joint) => {
-      if (joint.children) {
-        joint.children = this.removeAnimations(joint.children);
+      const newJoint = joint;
+      if (newJoint.children) {
+        newJoint.children = this.removeAnimations(newJoint.children);
       }
-      return this.removeAnim(joint);
+      return this.removeAnim(newJoint);
     });
   };
 
@@ -44,23 +44,22 @@ export default class extends ObjetGltfAnim {
     const node = this.nodes[key];
     const { skin: skinIndex } = node;
     if (skinIndex !== undefined) {
-      this.setProgramSkin(skinIndex, program, model);
+      this.setProgramSkin(skinIndex, program);
     }
     super.renderNode(key, program, model);
   }
 
-  setProgramSkin = (skinIndex, program, model) => {
+  setProgramSkin = (skinIndex, program) => {
     if (skinIndex !== undefined) {
       const jointMatrix = new Mat4();
       jointMatrix.identity();
-      // jointMatrix.multiply(model);
       const { joints } = this.skins[skinIndex];
       this.setProgramJoints(joints, program, jointMatrix);
     }
   };
 
   setProgramJoints = (joints, program, parentMatrix, depth = 0) => {
-    joints.forEach((joint, index) => {
+    joints.forEach((joint) => {
       const { invMatrix, children } = joint;
 
       const localMatrix = this.handleLocalTransform(joint);

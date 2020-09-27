@@ -63,6 +63,8 @@ export default class extends Scene {
     this.setLampeInfos(this.mngProg.get('gltf'));
     this.mngProg.get('roadSky').setTexture(1, this.mngTex.get('noisergb').get(), 'textureMap');
 
+    this.bloom.setIntensity(2.0);
+
     // this.mngGltf.get('raceship').setAnimationSpeed('aile1', 'rotation', 4000);
     // this.mngGltf.get('raceship').setAnimationSpeed('aile2', 'rotation', 4000);
   }
@@ -170,7 +172,7 @@ export default class extends Scene {
     raceship.renderNode('trail2', programShip, this.model);
     this.bloom.end();
 
-    this.postProcess.setBloom(this.bloom.getTexture(), 1.5, 2.2);
+    this.postProcess.mergeBloom(this.bloom.getTexture(), 1.5, 2.2);
     this.postProcess.setFXAA();
     this.postProcess.render();
   }
@@ -181,11 +183,11 @@ export default class extends Scene {
     this.target.set(-mouse.rel.x * this.config.roadWidth * 0.5);
   };
 
-  onMouseDown = (mouse) => {
+  onMouseDown = () => {
     this.isDown = true;
   };
 
-  onMouseUp = (mouse) => {
+  onMouseUp = () => {
     this.isDown = false;
   };
 }

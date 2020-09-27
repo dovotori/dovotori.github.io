@@ -36,12 +36,12 @@ const getEntryNav = (entries, slug) => {
 const mapStateToProps = (state, props) => {
   const slug = props.slug || null;
   const { category, nextEntry, prevEntry } = getEntryNav(state.content.entries, slug);
-  const colorType = getColorType(category);
+  const $colorType = getColorType(category);
   return {
     slug,
     nextEntry,
     prevEntry,
-    colorType,
+    $colorType,
     isTouchDevice: state.device.isTouch,
     labelBack: state.content.back,
     labelPrevious: state.content.previous,

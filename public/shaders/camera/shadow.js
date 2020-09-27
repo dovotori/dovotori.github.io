@@ -74,7 +74,7 @@ void main() {
 	float visibilite = 1.0;
 	vec4 shad = fragShadow / fragShadow.w;
 	vec2 texelSize = vec2(1.0/ 1000.0, 1.0 / 600.0); // taille de la texture
-	float epsilon = 0.001; //enleve les traits du shadow acne // à regler si l'ombre est trop loin de l'objet
+	float epsilon = 0.001; 
 
 	if (fragShadow.w <= 0.0) {
     // behind light, ignore

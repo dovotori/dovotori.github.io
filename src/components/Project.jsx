@@ -44,6 +44,7 @@ const Project = ({ slug, images, colorType, labo }) => {
       {!!labo && (
         <StyledProjectLabo
           slug={slug}
+          $colorType={colorType}
           colorType={colorType}
           noBackground={!!labo.noBackground}
           hasHtml={!!labo.hasHtml}
@@ -62,13 +63,13 @@ const Project = ({ slug, images, colorType, labo }) => {
                     key={`image-${slug}-${idx}`}
                     idx={idx}
                     slug={slug}
-                    colorType={colorType}
+                    $colorType={colorType}
                   />
                 ))}
             </Images>
           </ImagesList>
         )}
-        <ButtonBack colorType={colorType} />
+        <ButtonBack $colorType={colorType} />
       </WrapContent>
     </>
   );

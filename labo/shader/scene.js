@@ -47,9 +47,10 @@ export default class extends Scene {
     this.particules.addDataTexture('textureMap', getGridPerlinPoints(32, 32));
     this.particules.addDataTexture('morphMap', getGridPoints(32, 32));
 
-    const points = new Array(40)
-      .fill()
-      .map((_) => [Math.random() * 2.0 - 1.0, Math.random() * 2.0 - 1.0]);
+    const points = Array.from({ length: 40 }, () => [
+      Math.random() * 2.0 - 1.0,
+      Math.random() * 2.0 - 1.0,
+    ]);
     const indices = Delaunay.triangulate(points);
     const points3d = points.reduce((acc, cur) => [...acc, cur[0], cur[1], 0], []);
     this.vboDelaunay = new VboPointsIndices(gl, points3d, indices);
@@ -127,7 +128,7 @@ export default class extends Scene {
         break;
       }
       case 0: {
-        this.model.rotate(this.time, 0, 1, 0);
+        this.model.rotate(this.time * 0.01, 0, 1, 0);
         this.mngProg.get('basique3d').setMatrix('model', this.model.get());
         this.bloom.start();
         this.vboDelaunay.render(this.mngProg.get('basique3d').get());
@@ -136,8 +137,8 @@ export default class extends Scene {
         break;
       }
       case 1: {
-        this.model.rotate(this.time, 0, 1, 0);
-        this.particules.compute(this.mngProg.get('pass1Morph'), this.time);
+        this.model.rotate(this.time * 0.001, 0, 1, 0);
+        this.particules.compute(this.mngProg.get('pass1Morph'), this.time * 0.01);
         this.resizeViewport();
         this.mngProg.get('pass2Camera').setMatrix('model', this.model.get());
         this.particules.render(this.mngProg.get('pass2Camera'));
@@ -150,7 +151,7 @@ export default class extends Scene {
         break;
       }
       case 4: {
-        const time = this.time * 0.05;
+        const time = this.time * 0.005;
 
         const cameraPos = getDistortion(0.0, this.roadFrequence, this.roadAmplitude, time);
         const cameraTarget = getDistortion(0.2, this.roadFrequence, this.roadAmplitude, time);
@@ -178,7 +179,7 @@ export default class extends Scene {
       case 6: {
         const program = this.mngProg.get('landscape');
         program.setFloat('flipY', 1);
-        program.setFloat('time', this.time * 0.05);
+        program.setFloat('time', this.time * 0.001);
         this.screen.render(program.get());
         break;
       }

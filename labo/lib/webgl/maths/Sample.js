@@ -2,6 +2,7 @@ export default class {
   constructor(times, interpolationType = 'LINEAR', speed = 1000) {
     this.times = times;
     this.setTimes(speed);
+    this.interpolationType = interpolationType;
   }
 
   update(timeInAnimation) {

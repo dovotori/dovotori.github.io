@@ -27,7 +27,8 @@ vec3 sky(vec2 uv, vec2 resolution) {
 	// Camera ray
 	vec3 dir = normalize(vec3(v.x, horizonY, 1.5));
 	
-  vec3 colorFloor = vec3(0.0, 0.0, 0.1); // vec3(checker(dir.xz / dir.y * 0.5 + vec2(0.0, -time * 2.0)));
+  vec3 colorFloor = vec3(0.0, 0.0, 0.1);
+  // vec3 colorFloor = vec3(checker(dir.xz / dir.y * 0.5 + vec2(0.0, -time * 2.0)));
   // vec3 colorReflect = getSunSky(reflect(dir, vec3(0.0, 1.0, 0.0)));
 
   vec3 colorSky = getSunSky(uv);

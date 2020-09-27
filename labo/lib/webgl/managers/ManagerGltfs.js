@@ -1,6 +1,6 @@
-import Objet from '../gl/ObjetGltf';
-import ObjetAnim from '../gl/ObjetGltfAnim';
-import ObjetSkin from '../gl/ObjetGltfSkin';
+import Objet from '../gltf/ObjetGltf';
+import ObjetAnim from '../gltf/ObjetGltfAnim';
+import ObjetSkin from '../gltf/ObjetGltfSkin';
 
 export default class {
   constructor(gl, gltfs) {

@@ -5,8 +5,6 @@ import useFetchLabo from '../hooks/useFetchLabo';
 const Labo = ({ className, slug, hasHtml = false, hasJs = false, onLoad = null }) => {
   const { js, html, isLoaded } = useFetchLabo(slug, hasHtml, hasJs);
 
-  useEffect(() => {}, [isLoaded]);
-
   useEffect(() => {
     if (isLoaded) {
       const runJs = async () => {

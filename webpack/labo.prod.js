@@ -1,10 +1,9 @@
 const webpack = require('webpack');
 const path = require('path');
-const CompressionPlugin = require('compression-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const { alias, optimization, rules, minify, getHtml } = require('./common');
+const { alias, optimization, rules, minify, getHtml, compression } = require('./common');
 
 const BUILD_ASSET_PATH = process.env.ASSET_PATH || '/public';
 const SRC_ASSET_PATH = path.resolve(__dirname, '../public');
@@ -38,13 +37,18 @@ const configPromise = async (name = process.env.NAME || 'labo') => {
         template: path.resolve(__dirname, './templates/labo.ejs'),
         minify,
       }),
-      new CopyWebpackPlugin([
-        {
-          from: SRC_ASSET_PATH,
-          to: `${BUILD_PATH}${BUILD_ASSET_PATH}`,
-          ignore: [`${SRC_ASSET_PATH}/app/`],
-        },
-      ]),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: SRC_ASSET_PATH,
+            to: `${BUILD_PATH}${BUILD_ASSET_PATH}`,
+            globOptions: {
+              dot: true,
+              ignore: [`${SRC_ASSET_PATH}/app/`],
+            },
+          },
+        ],
+      }),
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify('production'),
@@ -52,22 +56,7 @@ const configPromise = async (name = process.env.NAME || 'labo') => {
           NAME: JSON.stringify(name),
         },
       }),
-      new CompressionPlugin({
-        test: /\.(js|css|svg|jpg|png|html)$/,
-        algorithm: 'gzip',
-        deleteOriginalAssets: false,
-        filename: '[path].gz[query]',
-        threshold: 0,
-        minRatio: 1,
-      }),
-      new CompressionPlugin({
-        test: /\.(js|css|svg|jpg|png|html)$/,
-        algorithm: 'brotliCompress',
-        deleteOriginalAssets: false,
-        filename: '[path].br[query]',
-        threshold: 0,
-        minRatio: 1,
-      }),
+      ...compression,
     ],
   };
 };

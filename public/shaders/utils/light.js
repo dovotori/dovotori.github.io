@@ -77,7 +77,15 @@ float funcLightAttenuation(vec3 posLum, float radius, vec3 normale, vec3 positio
 `;
 
 export const funcPhong = `
-vec3 funcPhong(vec3 position, vec3 normale, vec3 ambiant, vec3 diffuse, vec3 specular, vec3 posLum, float brillance) {
+vec3 funcPhong(
+  vec3 position,
+  vec3 normale,
+  vec3 ambiant,
+  vec3 diffuse,
+  vec3 specular,
+  vec3 posLum,
+  float brillance
+  ) {
   vec3 N = normalize(normale);
   vec3 L = normalize(posLum - position);
 

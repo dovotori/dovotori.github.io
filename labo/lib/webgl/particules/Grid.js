@@ -6,9 +6,10 @@ export default class {
   constructor(nbRows = 3, nbColumns) {
     this.nbRows = nbRows;
     this.nbColumns = nbColumns || nbRows;
-    this.nodes = new Array(this.nbRows * this.nbColumns)
-      .fill()
-      .map((_) => new Node({ withRebond: true, withSlowDown: false }));
+    this.nodes = Array.from(
+      { length: this.nbRows * this.nbColumns },
+      () => new Node({ withRebond: true, withSlowDown: false })
+    );
     this.attractor = new Attractor();
     this.attractor.setPosition(0, 0, 0);
     this.placeNodes();

@@ -15,9 +15,9 @@ ${uniformPBR}
 
 float DistributionGGX(vec3 N, vec3 H, float roughness) {
   float a      = roughness * roughness;
-  float a2     = a*a;
+  float a2     = a * a;
   float NdotH  = max(dot(N, H), 0.0);
-  float NdotH2 = NdotH*NdotH;
+  float NdotH2 = NdotH * NdotH;
   float num   = a2;
   float denom = (NdotH2 * (a2 - 1.0) + 1.0);
   denom = PI * denom * denom;
@@ -26,7 +26,7 @@ float DistributionGGX(vec3 N, vec3 H, float roughness) {
 
 float GeometrySchlickGGX(float NdotV, float roughness) {
   float r = (roughness + 1.0);
-  float k = (r*r) / 8.0;
+  float k = (r * r) / 8.0;
   float num   = NdotV;
   float denom = NdotV * (1.0 - k) + k;
   return num / denom;
@@ -48,17 +48,19 @@ vec3 funcPBR(vec3 position, vec3 normale, vec3 posEye) {
   vec3 N = normalize(normale);
   vec3 V = normalize(posEye - position);
 
-  vec3 F0 = mix(vec3(0.04), color.xyz, metal);
+  vec3 F0 = vec3(0.04); 
+  F0 = mix(F0, color.xyz, metal);
 
   // reflectance equation
   vec3 Lo = vec3(0.0);
+  
   for (int i = 0; i < MAX_LIGHTS; ++i) {
     if (i < numLights) {
       // calculate per-light radiance
       vec3 L = normalize(lights[i].position - position);
       vec3 H = normalize(V + L);
       float distance    = length(lights[i].position - position);
-      float attenuation = 1.0 / (distance * distance);
+      float attenuation = lights[i].strength / (distance * distance);
       vec3 radiance     = lights[i].ambiant * attenuation;        
       
       // cook-torrance brdf
@@ -78,13 +80,12 @@ vec3 funcPBR(vec3 position, vec3 normale, vec3 posEye) {
       float NdotL = max(dot(N, L), 0.0);                
       Lo += (kD * color.xyz / PI + specular) * radiance * NdotL; 
     }
-  }   
+  }
 
   vec3 ambient = vec3(0.03) * color.xyz * ao;
   vec3 finalColor = ambient + Lo;
-
   finalColor = finalColor / (finalColor + vec3(1.0));
-  finalColor = pow(finalColor, vec3(1.0/2.2));  
+  finalColor = pow(finalColor, vec3(1.0 / 2.2));  
   return finalColor;
 }
 `;

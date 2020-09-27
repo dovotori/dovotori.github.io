@@ -63,31 +63,27 @@ export default class extends Scene {
     // for (let i = 0; i < this.config.lampes.length; i += 1) {
     if (typeof this.renderBasiqueForShadow === 'function') {
       for (let i = 0; i < 1; i += 1) {
-        this.lampes[i].start();
-        this.renderBasiqueForShadow();
-        this.lampes[i].end();
+        const lampe = this.getLampe(i);
+        lampe.start();
+        const program = this.mngProg.get('basique3d');
+        program.setMatrix('projection', lampe.getOrtho().get());
+        program.setMatrix('view', lampe.getView().get());
+        this.renderBasiqueForShadow(program);
+        lampe.end();
       }
     }
-  }
-
-  getLampeDepthTexture(i) {
-    if (this.canUseDepth()) {
-      return this.lampes[i].getDepthTexture();
-    }
-    return null;
-  }
-
-  getLampeViewMatrix(i) {
-    return this.lampes[i].getView();
-  }
-
-  getLampeModelMatrix(i) {
-    return this.lampes[i].getModel();
   }
 
   render() {
     super.render();
     this.computeLampesDepthTexture();
+  }
+
+  getLampe(i) {
+    if (this.lampes[i]) {
+      return this.lampes[i];
+    }
+    return null;
   }
 
   // getTestPoint() {

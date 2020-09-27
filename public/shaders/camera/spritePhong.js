@@ -29,7 +29,13 @@ void main() {
 
   vec2 relPos = spriteUV / spriteGrid;
   vec2 relSize = spriteSize / spriteGrid;
-  float texX = funcMap(texture.x, 0.0 + float(inverseX), 1.0 - float(inverseX), relPos.x, relPos.x + relSize.x);
+  float texX = funcMap(
+    texture.x,
+    0.0 + float(inverseX),
+    1.0 - float(inverseX),
+    relPos.x,
+    relPos.x + relSize.x
+  );
 	float texY = funcMap(texture.y, 1.0, 0.0, relPos.y,  relPos.y + relSize.y);
   fragTexture = vec2(texX, texY);
   
@@ -61,8 +67,13 @@ uniform sampler2D textureMap;
 void main() {
   vec4 ambiant = texture2D(textureMap, fragTexture);
 
-  vec3 color = funcLightsColor(ambiant.xyz, vec3(1.0,1.0,1.0), vec3(1.0,1.0,1.0), fragNormale, fragPosition);
-
+  vec3 color = funcLightsColor(
+    ambiant.xyz,
+    vec3(1.0,1.0,1.0),
+    vec3(1.0,1.0,1.0),
+    fragNormale,
+    fragPosition
+  );
 
 	gl_FragColor = vec4(color, ambiant.w);
 	// gl_FragColor = vec4(1.0,0.0,0.0,1.0);

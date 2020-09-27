@@ -89,7 +89,7 @@ const About = ({ hello, isTouchDevice }) => (
   <Wrap>
     <WrapContent>
       <MarginLeft isTouch={isTouchDevice}>
-        <StyledTitle colorType>
+        <StyledTitle $colorType>
           <a href={`mailto:${process.env.MAIL}`}>
             <Quote>
               <StyledQuoteIcon />
@@ -116,11 +116,11 @@ const About = ({ hello, isTouchDevice }) => (
       <MarginLeft isTouch={isTouchDevice}>
         <StyledButton
           href={`mailto:${process.env.MAIL}`}
-          colorType
+          $colorType
           isTouch={isTouchDevice}
           text={hello.contact}
         />
-        <StyledButtonBack colorType isTouch={isTouchDevice} />
+        <StyledButtonBack $colorType isTouch={isTouchDevice} />
       </MarginLeft>
     </WrapContent>
   </Wrap>

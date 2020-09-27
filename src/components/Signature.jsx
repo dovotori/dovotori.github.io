@@ -165,7 +165,7 @@ const Signature = ({ className, hello }) => (
   <Wrap>
     <Appear>
       <StyledLink to="/about" className={className} title="about">
-        <StyledLabo slug="signature" colorType={0} noBackground hasJs />
+        <StyledLabo slug="signature" $colorType={0} noBackground hasJs />
       </StyledLink>
       <CenterMobile>
         <Name>

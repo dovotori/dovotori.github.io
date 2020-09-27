@@ -26,10 +26,14 @@ vec4 applyFXAA(sampler2D tex, vec2 st, vec2 resolution) {
 	vec2 dir;
 	dir.x = -((lumaTL + lumaTR) - (lumaBL + lumaBR));
 	dir.y = ((lumaTL + lumaBL) - (lumaTR + lumaBR));
-	float dirReduce = max((lumaTL + lumaTR + lumaBL + lumaBR) * (FXAA_REDUCE_MUL * 0.25), FXAA_REDUCE_MIN);
+	float dirReduce = max(
+		(lumaTL + lumaTR + lumaBL + lumaBR) * (FXAA_REDUCE_MUL * 0.25), FXAA_REDUCE_MIN
+	);
 	float inverseDirAdjustment = 1.0/(min(abs(dir.x), abs(dir.y)) + dirReduce);
 	dir = min(vec2(FXAA_SPAN_MAX, FXAA_SPAN_MAX),
-		max(vec2(-FXAA_SPAN_MAX, -FXAA_SPAN_MAX), dir * inverseDirAdjustment)) * inverseViewportSize;
+		max(
+			vec2(-FXAA_SPAN_MAX, -FXAA_SPAN_MAX), dir * inverseDirAdjustment)
+		) * inverseViewportSize;
 
 	// BLUR
 	vec4 result1 = (1.0 / 2.0) * (

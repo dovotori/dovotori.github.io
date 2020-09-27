@@ -110,14 +110,14 @@ const main = () => {
           const node = path.node();
           if (node && blasphem.mort === 'oui') {
             const { x, y, width, height } = node.getBBox();
+            let d = `M24.869 -17.798 L17.798 -24.869 L0 -7.071 L-17.797 -24.869 `;
+            d += `L-24.869 -17.798 L-7.071 0 L-24.869 17.798 L-17.798 24.869 `;
+            d += `L0 7.071 L17.798 24.869 L24.869 17.798 L7.071 0Z`;
             groupDead
               .append('svg')
               .attr('class', 'deadPicto')
               .append('path')
-              .attr(
-                'd',
-                'M24.869 -17.798 L17.798 -24.869 L0 -7.071 L-17.797 -24.869 L-24.869 -17.798 L-7.071 0 L-24.869 17.798 L-17.798 24.869 L0 7.071 L17.798 24.869 L24.869 17.798 L7.071 0Z'
-              )
+              .attr('d', d)
               .attr('transform', `translate(${x + width / 2}, ${y + height / 2}) scale(0.15)`);
           }
         }
@@ -149,13 +149,14 @@ const main = () => {
         }
       });
 
-    let css = `#infos svg circle{\nstroke-dashoffset: ${PATH_LENGTH};\nstroke-dasharray: ${PATH_LENGTH}; }\n`;
+    let css = `#infos svg circle{\nstroke-dashoffset: `;
+    css += `${PATH_LENGTH};\nstroke-dasharray: ${PATH_LENGTH}; }\n`;
     let html = '';
     let svgStr = '';
     Object.keys(RELIGION_INFOS).forEach((key) => {
       const { fr, color } = RELIGION_INFOS[key];
-      html += `<p class="${key}"><span class="legendBloc"></span><span class="legendText">${fr}</span>
-    </p>`;
+      html += `<p class="${key}"><span class="legendBloc"></span>`;
+      html += `<span class="legendText">${fr}</span></p>`;
       css += ` circle.${key} { stroke: ${color}; }\n
       .${key} .legendBloc { background-color: ${color}; }\n`;
       svgStr += `<circle cx="10" cy="10" r="7" class="${key}"></circle>`;
@@ -169,3 +170,5 @@ const main = () => {
   };
   setup();
 };
+
+main();

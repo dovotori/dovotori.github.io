@@ -9,6 +9,7 @@ export default {
     '/camera/color.js',
     `/camera/${MAIN_PROG}.js`,
     '/screen/fxaa.js',
+    '/screen/screen.js',
   ],
   postprocess: true,
   useDepthTexture: true,
@@ -27,10 +28,11 @@ export default {
   },
   camera: {
     position: { x: -14, y: 8, z: 14 },
-    target: { x: 0, y: 0, z: 0 },
+    target: { x: 0, y: -2, z: 0 },
     near: 1,
     far: 40,
     angle: 90,
+    // ortho: { left: -20, right: 20, bottom: -10, top: 10 },
   },
   lampes: [
     {
@@ -40,7 +42,10 @@ export default {
       diffuse: [0.8, 0.6, 0.5],
       specular: [1, 0.8, 0.7],
       brillance: 1,
-      strength: 2,
+      strength: 2000,
+      ortho: { left: -20, right: 20, bottom: -10, top: 10 },
+      near: 1,
+      far: 40,
       // direction: [0, 0, 1]
     },
     {
@@ -52,7 +57,7 @@ export default {
       brillance: 10,
       radius: 10,
       direction: [0, 0, 1],
-      strength: 3,
+      strength: 2000,
     },
   ],
   mouse: {

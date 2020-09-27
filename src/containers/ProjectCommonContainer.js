@@ -14,7 +14,7 @@ const mapStateToProps = (state, props) => {
   return {
     slug,
     ...entry,
-    colorType: getColorType(entry.category),
+    $colorType: getColorType(entry.category),
   };
 };
 

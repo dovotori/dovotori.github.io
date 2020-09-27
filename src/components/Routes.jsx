@@ -9,9 +9,11 @@ import routes from '../constants/routes';
 
 const history = createHashHistory();
 
-const renderRoute = (route) => (
-  <Route key={route.path} path={route.path} exact={route.exact} component={route.component} />
-);
+const renderRoute = (route) => {
+  return (
+    <Route key={route.path} path={route.path} exact={route.exact} component={route.component} />
+  );
+};
 
 const Routes = ({ isTouchDevice }) => (
   <Router history={history}>
@@ -19,7 +21,7 @@ const Routes = ({ isTouchDevice }) => (
       <Switch>
         <Route path="/project/:slug" exact component={ProjectCommonContainer} />
       </Switch>
-      <TransitionRoute isTouchDevice={isTouchDevice}>
+      <TransitionRoute $isTouchDevice={isTouchDevice}>
         {routes.map(renderRoute)}
         <Route path="*" render={() => <Redirect to="/" />} />
       </TransitionRoute>

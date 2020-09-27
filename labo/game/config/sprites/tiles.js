@@ -53,7 +53,7 @@ export default {
       z: -0.5,
     },
     '01000': { pattern: TREE4, objType: FLAT },
-    '10000': { pattern: DOOR1, scale: { x: 4, y: 4 }, objType: FLAT },
+    10000: { pattern: DOOR1, scale: { x: 4, y: 4 }, objType: FLAT },
   },
   [DOOR1]: { uv: [{ x: 166, y: 26, w: 52, h: 52 }] },
   [GRASS1]: { uv: [{ x: 57, y: 0, w: 52, h: 26 }] },

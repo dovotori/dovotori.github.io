@@ -63,7 +63,13 @@ ${funcLightsColor}
 
 void main() {
   vec3 texColor = texture2D(colorMap, fragTexture).xyz;
-  vec3 phong = funcLightsColor(texColor, vec3(1.0,1.0,1.0), vec3(1.0,1.0,1.0), fragNormale, fragPosition);
+  vec3 phong = funcLightsColor(
+    texColor,
+    vec3(1.0,1.0,1.0),
+    vec3(1.0,1.0,1.0),
+    fragNormale,
+    fragPosition
+  );
   gl_FragColor = vec4(phong * vec3(3.0), 1.0);
 }
 `;

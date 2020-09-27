@@ -37,7 +37,7 @@ const Fill = styled.div`
   transition: transform 300ms ${(p) => p.theme.elastic};
   background: ${(p) => p.theme.backgroundHighlight};
   transform-origin: 100% 0;
-  transform: ${(p) => (p.isFocus ? 'none' : 'scale(0, 1)')};
+  transform: ${(p) => (p.$isFocus ? 'none' : 'scale(0, 1)')};
 `;
 
 const Span = styled.span`
@@ -51,19 +51,19 @@ const Span = styled.span`
   ${(p) => p.theme.monospace}
 `;
 
-const ButtonBack = ({ to, className, colorType, text }) => {
+const ButtonBack = ({ to, className, $colorType, text }) => {
   const [hoverRef, isHovered] = useHover();
   return (
     <LINK
       to={to || '/'}
       className={className}
-      isFocus={isHovered}
-      colorType={colorType}
+      $isFocus={isHovered}
+      $colorType={$colorType}
       ref={hoverRef}
     >
-      <Fill isFocus={isHovered} />
-      <StyledBackArrow colorType={colorType} />
-      <Span colorType={colorType}>{text}</Span>
+      <Fill $isFocus={isHovered} />
+      <StyledBackArrow $colorType={$colorType} />
+      <Span $colorType={$colorType}>{text}</Span>
     </LINK>
   );
 };

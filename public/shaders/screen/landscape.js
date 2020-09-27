@@ -62,11 +62,15 @@ void main() {
 
   for (int j = 0; j < 2; j++)  {
     for (int i = 0; i < 3; i++)  {
-      color = drawClouds(color, 0.3 + (float(i) * 0.02), 0.1, vec2(float(j) * 0.5, 0.2 + float(j) * 0.2 + (float(i) * 0.02)));
+      color = drawClouds(
+        color, 0.3 + (float(i) * 0.02),
+        0.1,
+        vec2(float(j) * 0.5, 0.2 + float(j) * 0.2 + (float(i) * 0.02))
+      );
     }
   }
 
-  vec4 grain = funcGrain(fragTexture, 10.0 + time * 0.01, 8.0);
+  vec4 grain = funcGrain(fragTexture, 10.0 + time * 0.00004, 8.0);
 
   gl_FragColor = color + grain;
 }

@@ -66,8 +66,8 @@ const ProjecLabo = (props) => {
   return (
     <Wrap className={className}>
       <StyledLabo slug={slug} onLoad={onLoad} hasHtml={hasHtml} hasJs={hasJs} />
-      {!noBackground && <LoadedTransition colorType={colorType} isLoaded={isLoaded} />}
-      {!isLoaded && <Loader colorType={colorType} />}
+      {!noBackground && <LoadedTransition $colorType={colorType} isLoaded={isLoaded} />}
+      {!isLoaded && <Loader $colorType={colorType} />}
     </Wrap>
   );
 };

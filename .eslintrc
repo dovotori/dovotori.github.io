@@ -17,7 +17,7 @@
     "browser": true,
     "jest": true
   },
-  "ignorePatterns": ["labo/webgl/shaders/", "labo/lib/", "src/store/"],
+  "ignorePatterns": ["labo/lib/geojson-vt-dev.js", "src/store/initialState/"],
   "rules": {
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
@@ -32,6 +32,7 @@
   },
   "settings": {
     "import/resolver": {
+      "node": {},
       "webpack": {
         "config": "./webpack/prod.js"
       }

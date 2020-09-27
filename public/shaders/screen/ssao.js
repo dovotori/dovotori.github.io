@@ -4,8 +4,10 @@ const fragment = `
 precision mediump float;
 
 #define KERNEL_SIZE 32
-#define CAP_MIN_DISTANCE 0.005 // removes artifacts caused by neighbour fragments with minimal depth difference.
-#define CAP_MAX_DISTANCE 0.05 // avoids the influence of fragments, which are too far away.
+// removes artifacts caused by neighbour fragments with minimal depth difference.
+#define CAP_MIN_DISTANCE 0.005
+// avoids the influence of fragments, which are too far away.
+#define CAP_MAX_DISTANCE 0.05 
 #define CAP_MAX_DEPTH 0.99 // limit to compute ssao
 
 uniform sampler2D textureMap;
@@ -32,7 +34,17 @@ vec4 getViewPos(vec2 uv, sampler2D depthMap, mat4 inverseProjection) {
 	return posView;
 }
 
-vec4 funcSsao(float radius, sampler2D noiseMap, sampler2D depthMap, sampler2D normalMap, vec2 resolution, vec2 uv, mat4 inverseProjection, mat4 projection, vec3 samples[KERNEL_SIZE]) {
+vec4 funcSsao(
+	float radius,
+	sampler2D noiseMap,
+	sampler2D depthMap,
+	sampler2D normalMap,
+	vec2 resolution,
+	vec2 uv,
+	mat4 inverseProjection,
+	mat4 projection,
+	vec3 samples[KERNEL_SIZE]
+) {
 	float fragDepth = texture2D(depthMap, fragTexture).r * 2.0 - 1.0;
 	if (fragDepth > CAP_MAX_DEPTH) { return vec4(0.0); } // if too far
 
@@ -92,7 +104,17 @@ vec4 funcSsao(float radius, sampler2D noiseMap, sampler2D depthMap, sampler2D no
 }
 
 void main(void) {
-	gl_FragColor = funcSsao(radius, noiseMap, depthMap, normalMap, resolution, fragTexture, inverseProjection, projection, sampleKernel);
+	gl_FragColor = funcSsao(
+		radius,
+		noiseMap,
+		depthMap,
+		normalMap,
+		resolution,
+		fragTexture,
+		inverseProjection,
+		projection,
+		sampleKernel
+	);
 }`;
 
 const addSamplesLocations = () => {

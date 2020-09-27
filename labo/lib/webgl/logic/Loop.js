@@ -1,7 +1,8 @@
 export default class {
   constructor() {
     this.fps = 1000 / 40;
-    this.lastFrame = new Date().getTime();
+    this.firstFrame = new Date().getTime();
+    this.lastFrame = this.firstFrame;
     this.ref = null;
   }
 
@@ -10,7 +11,7 @@ export default class {
     const milli = now - this.lastFrame;
     if (this.callbackNoFps) this.callbackNoFps();
     if (milli > this.fps) {
-      this.callback(now);
+      this.callback(now - this.firstFrame);
       this.lastFrame = now;
     }
     this.ref = window.requestAnimationFrame(this.start);

@@ -6,7 +6,6 @@ export default class extends Scene {
     super(gl, config, assets);
 
     this.camera = new Camera(config.camera);
-
     this.camera.perspective(this.containerSize.width, this.containerSize.height);
   }
 
@@ -18,7 +17,7 @@ export default class extends Scene {
   update(time) {
     super.update(time);
     this.camera.update();
-    this.mngProg.setCameraMatrix(this.camera);
+    this.mngProg.setCameraMatrix(this.camera, !!this.config.camera.ortho);
   }
 
   // getTestPoint() {

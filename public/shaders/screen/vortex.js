@@ -27,7 +27,10 @@ void main() {
   
   
   // repere
-  // if (fragTexture.y < center.y + 0.005 && fragTexture.y > center.y - 0.005 && fragTexture.x < center.x + 0.005 && fragTexture.x > center.x - 0.005){
+  // if (
+  //   fragTexture.y < center.y + 0.005 && fragTexture.y > center.y - 0.005 && 
+  //   fragTexture.x < center.x + 0.005 && fragTexture.x > center.x - 0.005
+  // ) {
 	//   gl_FragColor = vec4(1.0,0.0,0.0,1.0);
   // } else {
 	//   gl_FragColor = texture2D(textureMap, fragTexture);

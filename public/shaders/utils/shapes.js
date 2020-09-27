@@ -13,7 +13,9 @@ float rect(vec2 uv, vec2 start, vec2 size) {
 export const circle = `
 float circle(vec2 uv , vec2 center, float radius){
   vec2 dist = uv - center;
-	return 1.0 - smoothstep(radius - (radius * 0.01), radius + (radius * 0.01), dot(dist, dist) * 4.0);
+	return 1.0 - smoothstep(
+    radius - (radius * 0.01), radius + (radius * 0.01), dot(dist, dist) * 4.0
+  );
 }`;
 
 export const distanceField = `
@@ -133,10 +135,18 @@ vec4 planet(vec2 uv, float size, vec2 rotation) {
   
   // green
   vec3 terrainColor = vec3(76.0 / 255.0, 147.0 / 255.0, 65.0 / 255.0); 
-  terrainColor = mix(vec3(131.0 / 255.0, 111.0 / 255.0, 39.0 / 255.0), terrainColor, smoothstep(0.2, .7, 1.0 - n));
+  terrainColor = mix(
+    vec3(131.0 / 255.0, 111.0 / 255.0, 39.0 / 255.0),
+    terrainColor,
+    smoothstep(0.2, .7, 1.0 - n)
+  );
   
   //mix in brown edge
-  terrainColor = mix(vec3(94.0 / 255.0, 67.0 / 255.0, 31.0 / 255.0), terrainColor, smoothstep(0.0, 0.18, n));
+  terrainColor = mix(
+    vec3(94.0 / 255.0, 67.0 / 255.0, 31.0 / 255.0), 
+    terrainColor, 
+    smoothstep(0.0, 0.18, n)
+  );
   terrainColor += n * 0.3;
   
   // water

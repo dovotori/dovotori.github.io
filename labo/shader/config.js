@@ -20,7 +20,6 @@ export default {
     height: 1024,
   },
   mouse: {
-    domId: 'mouse',
     events: ['drag', 'down', 'move'],
   },
   camera: {
@@ -32,6 +31,6 @@ export default {
   },
   controls: {
     modes: [1, 2, 3],
-    fullscreen: { domId: 'shader', buttonId: 'fullscreen-toggle-btn' },
+    fullscreen: { buttonId: 'fullscreen-toggle-btn' },
   },
 };

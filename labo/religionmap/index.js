@@ -24,7 +24,7 @@ export default () => {
       infos.querySelector('h3').innerHTML = fr;
       let newOffset = circlePathStartOffset;
       legend.querySelectorAll('p').forEach((p) => {
-        p.style.display = 'none';
+        p.removeAttribute('style');
       });
       camembert.querySelectorAll('circle').forEach((circle) => {
         circle.setAttribute('stroke-dasharray', PATH_LENGTH);
@@ -52,11 +52,14 @@ export default () => {
     const path = e.target;
     path.setAttribute('data-selected', '');
     const boxCountry = path.getBBox();
-    const boxMap = carte.getAttribute('viewBox').split(' ').map((k) => parseFloat(k, 10));
+    const boxMap = carte
+      .getAttribute('viewBox')
+      .split(' ')
+      .map((k) => parseFloat(k, 10));
     const { width, height } = carte.parentNode.getBoundingClientRect();
     const centroid = {
-      x: boxCountry.x + (boxCountry.width / 2),
-      y: boxCountry.y + (boxCountry.height / 2)
+      x: boxCountry.x + boxCountry.width / 2,
+      y: boxCountry.y + boxCountry.height / 2,
     };
     const scaleX = boxMap[2] / boxCountry.width;
     const scaleY = boxMap[3] / boxCountry.height;

@@ -6,6 +6,12 @@ export default class {
     this.position = new Vec3(config.position.x, config.position.y, config.position.z);
     this.target = new Vec3(0.0, 0.0, 0.0);
     this.view = new Mat4();
+    if (config.ortho) {
+      const { left, right, bottom, top } = config.ortho;
+      const { near, far } = config;
+      this.ortho = new Mat4();
+      this.ortho.ortho(left, right, bottom, top, near, far);
+    }
   }
 
   lookAt() {
@@ -42,6 +48,10 @@ export default class {
 
   getModel() {
     return this.repere.getModel();
+  }
+
+  getOrtho() {
+    return this.ortho;
   }
 
   addToPosition(x, y, z) {

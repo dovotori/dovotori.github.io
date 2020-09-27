@@ -222,17 +222,16 @@ const main = () => {
         const tanCountryX = countryX + (countryX > instiX ? -tanLength : tanLength);
         const tanCountryY = countryY + (countryY > instiY ? -tanLength : tanLength);
 
-        const line = groupLine
-          .append('path')
-          .attr(
-            'd',
-            `M ${instiX} ${instiY} C ${tanX} ${tanY} ${tanCountryX} ${tanCountryY} ${countryX} ${countryY}`
-          );
+        let d = `M ${instiX} ${instiY} `;
+        d += `C ${tanX} ${tanY} ${tanCountryX} ${tanCountryY} ${countryX} ${countryY}`;
+        const line = groupLine.append('path').attr('d', d);
 
         const pathLength = line.node().getTotalLength();
-        css += `#worldmap .lines path:nth-child(${
-          cptCss + 1
-        }) {\nstroke-dasharray: ${pathLength};\nstroke-dashoffset: ${pathLength};\nanimation-delay: calc(1s + (var(--timing-line) * ${cptCss}));\n}\n\n`;
+        let animCss = `{\n`;
+        animCss += `stroke-dasharray: ${pathLength};\n`;
+        animCss += `stroke-dashoffset: ${pathLength};\n`;
+        animCss += `animation-delay: calc(1s + (var(--timing-line) * ${cptCss}));\n}`;
+        css += `#worldmap .lines path:nth-child(${cptCss + 1}) ${animCss}\n\n`;
         cptCss++;
       });
     });
@@ -242,3 +241,5 @@ const main = () => {
   };
   setup();
 };
+
+main();

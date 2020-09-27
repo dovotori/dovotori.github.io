@@ -119,7 +119,10 @@ const VBO_ATTRIBUTES = ['position', 'normale', 'texture', 'joint', 'weight', 'ta
 const getMaterial = (material, images) => {
   let finalMaterial = {};
   if (material) {
-    finalMaterial = { ...formatMaterial(material.pbrMetallicRoughness), name: material.name };
+    finalMaterial = {
+      ...formatMaterial(material.pbrMetallicRoughness),
+      name: material.name,
+    };
 
     if (material.normalTexture) {
       const normalMap = images[material.normalTexture.index];

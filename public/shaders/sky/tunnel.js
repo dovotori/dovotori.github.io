@@ -9,7 +9,10 @@ uniform float time;
 varying vec2 fragTexture;
 
 mat2 rot(in float a){float c = cos(a), s = sin(a);return mat2(c,s,-s,c);}
-const mat3 m3 = mat3(0.33338, 0.56034, -0.71817, -0.87887, 0.32651, -0.15323, 0.15162, 0.69596, 0.61339)*1.93;
+const mat3 m3 = mat3(
+  0.33338, 0.56034, -0.71817,
+  -0.87887, 0.32651, -0.15323,
+  0.15162, 0.69596, 0.61339) * 1.93;
 float mag2(vec2 p){return dot(p,p);}
 float linstep(in float mn, in float mx, in float x){ return clamp((x - mn)/(mx - mn), 0., 1.); }
 float prm1 = 0.;

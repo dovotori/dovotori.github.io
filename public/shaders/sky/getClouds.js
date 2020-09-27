@@ -42,7 +42,15 @@ float density(sampler2D tex, vec3 pos, float time, vec2 wind) {
   return den;
 }
 
-vec3 raymarching(sampler2D tex, vec3 ro, vec3 rd, float t, vec3 backColor, float time, vec2 wind) {   
+vec3 raymarching(
+  sampler2D tex,
+  vec3 ro,
+  vec3 rd,
+  float t,
+  vec3 backColor,
+  float time,
+  vec2 wind
+) {   
   vec4 sum = vec4(0.0);
   vec3 pos = ro + rd * t;
 

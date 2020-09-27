@@ -49,9 +49,9 @@ export default class extends Scene {
   }
 
   effects() {
-    const delta = Math.cos(this.time * 0.001) * 0.04;
+    const delta = Math.cos(this.time * 0.001) * 0.05;
     if (delta > 0) {
-      this.postProcess.setGlitch(this.time * 0.07 + this.target.get(), delta, delta);
+      this.postProcess.setGlitch(this.time * 0.07 + this.target.get(), delta, -delta);
     }
     this.postProcess.setWave(0.05, delta, [this.mouseCanvasPosition.x, this.mouseCanvasPosition.y]);
     this.postProcess.setFXAA();
@@ -59,18 +59,6 @@ export default class extends Scene {
 
   mainRender(program) {
     this.mngGltf.get(this.config.MAIN_OBJ).render(program, this.model);
-  }
-
-  renderToBuffer = (program) => {
-    this.mainRender(program);
-  };
-
-  renderBasiqueForShadow() {
-    const program = this.mngProg.get('basique3d');
-    program.setMatrix('projection', this.camera.getProjection().get());
-    program.setMatrix('view', this.getLampeViewMatrix(0).get());
-    program.setMatrix('model', this.model.get());
-    this.renderToBuffer(program);
   }
 
   render() {

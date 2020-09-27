@@ -3,6 +3,14 @@ import { css } from 'styled-components';
 import stripes from 'Assets/img/stripes.png';
 import stripesWhite from 'Assets/img/stripesWhite.png';
 
+const getType = (p) => {
+  const { colorType, $colorType } = p;
+  if ($colorType !== undefined) {
+    return $colorType;
+  }
+  return colorType;
+};
+
 const hue = {
   primary: 160, // hsl(160, 100%, 70%) // rgb(102, 255, 204) // #66ffcc
   secondary: 30, // hsl(30, 100%, 70%) // rgb(255, 179, 102) // #ffb366
@@ -58,19 +66,21 @@ const common = {
     `,
   },
   getColor: (p) => {
-    if (p.colorType === 1) {
+    const type = getType(p);
+    if (type === 1) {
       return p.theme.secondary;
     }
-    if (p.colorType === 2) {
+    if (type === 2) {
       return p.theme.tertiary;
     }
     return p.theme.primary;
   },
   getGradient: (p) => {
-    if (p.colorType === 1) {
+    const type = getType(p);
+    if (type === 1) {
       return p.theme.secondaryGradient;
     }
-    if (p.colorType === 2) {
+    if (type === 2) {
       return p.theme.tertiaryGradient;
     }
     return p.theme.primaryGradient;

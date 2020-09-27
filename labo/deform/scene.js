@@ -80,7 +80,7 @@ export default class extends Scene {
 
     this.model.identity();
 
-    const angle = degToRad(this.targetX.get()) + this.time * 0.01;
+    const angle = degToRad(this.targetX.get()) + this.time * 0.0005;
     const angle2 = 0.5; // degToRad(this.targetY.get()) + (this.time * 0.001);
 
     const quat = new DualQuaternion();
@@ -111,18 +111,6 @@ export default class extends Scene {
     }
     this.mngObj.get(this.config.MAIN_OBJ).render(program.get());
   };
-
-  renderToBuffer = (program) => {
-    this.mainRender(program);
-  };
-
-  renderBasiqueForShadow() {
-    const program = this.mngProg.get('basique3d');
-    program.setMatrix('projection', this.camera.getProjection().get());
-    program.setMatrix('view', this.getLampeViewMatrix(0).get());
-    program.setMatrix('model', this.model.get());
-    this.renderToBuffer(program);
-  }
 
   render() {
     super.render();

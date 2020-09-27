@@ -44,16 +44,16 @@ const StyledTitle = styled.h1`
   padding: 0 10px;
 `;
 
-const ProjectHeader = ({ title, description, date, colorType }) => {
+const ProjectHeader = ({ title, description, date, $colorType }) => {
   return (
     <WrapContent>
       <WrapTexte>
         {title && (
-          <StyledTitle colorType={colorType}>
+          <StyledTitle $colorType={$colorType}>
             <TypingMessage message={title} />
           </StyledTitle>
         )}
-        {date && <Date colorType={colorType}>{date}</Date>}
+        {date && <Date $colorType={$colorType}>{date}</Date>}
         {description && (
           <Description>
             {description.map((text) => (

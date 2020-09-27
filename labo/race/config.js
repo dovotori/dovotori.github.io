@@ -41,11 +41,11 @@ export default {
     {
       type: 0,
       position: { x: 0, y: 3, z: 3 },
-      ambiant: [1, 0.8, 0.6],
+      ambiant: [1, 1, 1],
       diffuse: [0.8, 0.6, 0.5],
       specular: [1, 0.8, 0.7],
       brillance: 1,
-      strength: 4,
+      strength: 2000,
       // direction: [0, 0, 1]
     },
   ],

@@ -79,7 +79,13 @@ void main() {
   // }
 
   // vec4 fluid1 = fluid(fragTexture, vec2(20.0), time * 0.1);
-  // vec4 gradiant1 = funcGradiant(vec4(1.0,1.0,0.0,1.0), vec4(1.0,0.0,0.0,0.0), 0.0, 1.0, fragTexture);
+  // vec4 gradiant1 = funcGradiant(
+  //   vec4(1.0,1.0,0.0,1.0), 
+  //   vec4(1.0,0.0,0.0,0.0), 
+  //   0.0, 
+  //   1.0, 
+  //   fragTexture
+  // );
   // color = fluid1 * gradiant1;
 
   color = planet(fragTexture, 0.7 + (cos(time * 0.1) * 0.2), vec2(time * 0.01));

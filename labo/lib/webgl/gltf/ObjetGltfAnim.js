@@ -22,7 +22,7 @@ export default class extends ObjetGltf {
       acc[node.name] = this.removeAnim(node);
       return acc;
     }, {});
-    this.lastFrame = new Date().getTime();
+    this.lastFrame = 0;
   }
 
   removeAnim = (node) => {
@@ -65,10 +65,10 @@ export default class extends ObjetGltf {
     return [0, max];
   };
 
-  update = (now) => {
-    let currentTime = now - this.lastFrame;
+  update = (time) => {
+    const currentTime = time - this.lastFrame;
     if (currentTime > this.animationInterval[1] * this.speedAnimation) {
-      this.lastFrame = now;
+      this.lastFrame = time;
     }
     this.updateAnimations(currentTime);
   };
@@ -78,59 +78,63 @@ export default class extends ObjetGltf {
       const nodeAnimations = this.animations[nodeName];
       Object.keys(nodeAnimations).forEach((path) => {
         if (path === 'rotation') {
-          this.updateQuat(nodeAnimations[path], time);
+          nodeAnimations[path] = this.updateQuat(nodeAnimations[path], time);
         } else {
-          this.updateVector(nodeAnimations[path], time);
+          nodeAnimations[path] = this.updateVector(nodeAnimations[path], time);
         }
       });
     });
   };
 
   updateVector = (animation, time) => {
-    const { sample, customStep, output } = animation;
+    const newAnimation = animation;
+    const { sample, customStep, output } = newAnimation;
 
     if (customStep === null) {
       sample.update(time);
       const index = sample.getIndex();
       if (index === 0) {
-        animation.value = output[0];
+        [newAnimation.value] = output;
       } else if (index > output.length - 1) {
-        animation.value = output[output.length - 1];
+        newAnimation.value = output[output.length - 1];
       } else {
         const previous = output[index - 1];
         const next = output[index];
         const interpolationValue = sample.get();
-        animation.value = previous.map((previousValue, i) =>
+        newAnimation.value = previous.map((previousValue, i) =>
           lerp(interpolationValue, previousValue, next[i])
         );
       }
     } else {
-      animation.value = output[customStep];
+      newAnimation.value = output[customStep];
     }
+    return newAnimation;
   };
 
   updateQuat = (animation, time) => {
-    const { sample, customStep, output } = animation;
+    const newAnimation = animation;
+    const { sample, customStep, output } = newAnimation;
 
     if (customStep === null) {
       sample.update(time);
       const index = sample.getIndex();
       if (index === 0) {
-        animation.value = new Quaternion(...output[0]).toMatrix4();
+        newAnimation.value = new Quaternion(...output[0]).toMatrix4();
       } else if (index > output.length - 1) {
-        animation.value = new Quaternion(...output[output.length - 1]).toMatrix4();
+        newAnimation.value = new Quaternion(...output[output.length - 1]).toMatrix4();
       } else {
         const previous = output[index - 1];
         const next = output[index];
         const interpolationValue = sample.get();
-        animation.value = Quaternion.slerpArray(previous, next, interpolationValue).toMatrix4();
+        newAnimation.value = Quaternion.slerpArray(previous, next, interpolationValue).toMatrix4();
       }
     } else {
-      animation.value = new Quaternion(...output[customStep]).toMatrix4();
+      newAnimation.value = new Quaternion(...output[customStep]).toMatrix4();
     }
+    return newAnimation;
   };
 
-  handleLocalTransform = (node, invMatrix = null) => {
+  handleLocalTransform = (node) => {
     const { translation, rotation, scale, matrix, name } = node;
     const animations = this.animations[name];
     const rotationAnimation = (animations && animations.rotation) || null;

@@ -1,5 +1,5 @@
-const MAIN_PROG = 'skinMat';
-const MAIN_OBJ = 'hajime';
+const MAIN_PROG = 'gltf';
+const MAIN_OBJ = 'sphereMat';
 export default {
   slug: 'skin',
   MAIN_PROG,
@@ -7,7 +7,7 @@ export default {
   shaders: ['/camera/basique3d.js', `/camera/${MAIN_PROG}.js`],
   assets: [`/gltf/${MAIN_OBJ}.gltf`],
   camera: {
-    position: { x: 0, y: 0, z: 100 },
+    position: { x: 0, y: 0, z: 20 },
     target: { x: 0, y: 0, z: 0 },
     near: 1,
     far: 200,
@@ -16,19 +16,19 @@ export default {
   lampes: [
     {
       type: 0,
-      position: { x: 40, y: 40, z: 40 },
+      position: { x: 10, y: 10, z: 0 },
       ambiant: [1, 1, 1],
-      diffuse: [102 / 255, 255 / 255, 204 / 255],
+      diffuse: [255 / 255, 255 / 255, 255 / 255],
       specular: [255 / 255, 255 / 255, 255 / 255],
-      brillance: 1,
+      strength: 100,
     },
     {
       type: 0,
-      position: { x: -40, y: -40, z: 40 },
+      position: { x: -10, y: -10, z: 0 },
       ambiant: [1, 1, 1],
-      diffuse: [255 / 255, 179 / 255, 102 / 255],
+      diffuse: [255 / 255, 255 / 255, 255 / 255],
       specular: [255 / 255, 255 / 255, 255 / 255],
-      brillance: 1,
+      strength: 10,
     },
   ],
   useDepthTexture: true,

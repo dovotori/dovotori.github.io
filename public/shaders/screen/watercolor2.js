@@ -15,10 +15,14 @@ varying vec2 fragTexture;
 
 void main() {
   vec4 advectMatrix = vec4(0.1);
-  vec4 cxp = texture2D(heightMap, vec2(fragTexture.x + gradientStep, flipHeightMap * fragTexture.y));
-  vec4 cxn = texture2D(heightMap, vec2(fragTexture.x - gradientStep, flipHeightMap * fragTexture.y));
-  vec4 cyp = texture2D(heightMap, vec2(fragTexture.x, flipHeightMap*(fragTexture.y + gradientStep)));
-  vec4 cyn = texture2D(heightMap, vec2(fragTexture.x, flipHeightMap*(fragTexture.y - gradientStep)));
+  vec4 cxp = texture2D(
+    heightMap, vec2(fragTexture.x + gradientStep, flipHeightMap * fragTexture.y));
+  vec4 cxn = texture2D(
+    heightMap, vec2(fragTexture.x - gradientStep, flipHeightMap * fragTexture.y));
+  vec4 cyp = texture2D(
+    heightMap, vec2(fragTexture.x, flipHeightMap*(fragTexture.y + gradientStep)));
+  vec4 cyn = texture2D(
+    heightMap, vec2(fragTexture.x, flipHeightMap*(fragTexture.y - gradientStep)));
 
   vec3 grey = vec3(.3, .59, .11);
   float axp = dot(grey, cxp.xyz);

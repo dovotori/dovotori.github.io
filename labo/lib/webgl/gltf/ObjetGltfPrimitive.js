@@ -1,4 +1,4 @@
-import ObjetVbo from './ObjetVbo';
+import ObjetVbo from '../gl/ObjetVbo';
 import TextureData from '../textures/TextureDataRgb';
 
 export default class {
@@ -16,7 +16,7 @@ export default class {
     program.setVector('color', color || [1, 1, 1, 1]);
     program.setFloat('metal', metal !== undefined ? metal : 0.0);
     program.setFloat('rough', rough !== undefined ? rough : 0.5);
-    program.setFloat('ao', ao !== undefined ? ao : 0.1);
+    program.setFloat('ao', ao !== undefined ? ao : 1.0);
     // if (this.normalMap) {
     //   program.setTexture(0, this.normalMap.get(), 'normalMap');
     // }

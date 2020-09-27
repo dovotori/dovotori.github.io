@@ -104,8 +104,19 @@ float snoise(vec3 v) {
   return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3) ) );
 }
 
-vec4 applyGlitch4(sampler2D tex, vec2 uv, vec2 resolution, float glitchRate, float glitchInterval, float time) {
-  float strength = smoothstep(glitchInterval * glitchRate, glitchInterval, glitchInterval - mod(time, glitchInterval));
+vec4 applyGlitch4(
+  sampler2D tex,
+  vec2 uv,
+  vec2 resolution,
+  float glitchRate,
+  float glitchInterval,
+  float time
+) {
+  float strength = smoothstep(
+    glitchInterval * glitchRate,
+    glitchInterval,
+    glitchInterval - mod(time, glitchInterval)
+  );
   vec2 shake = vec2(strength * 8.0 + 0.5) * vec2(
     random(vec2(time)) * 2.0 - 1.0,
     random(vec2(time * 2.0)) * 2.0 - 1.0
@@ -150,7 +161,8 @@ vec4 applyGlitch4(sampler2D tex, vec2 uv, vec2 resolution, float glitchRate, flo
 
   float waveNoise = (sin(uv.y * 1200.0) + 1.0) / 2.0 * (0.15 + strength * 0.2);
 
-  return vec4(r, g, b, alpha) * (1.0 - bnMask - bnMask2) + (whiteNoise + blockNoise + blockNoise2 - waveNoise);
+  return vec4(r, g, b, alpha) * (1.0 - bnMask - bnMask2) 
+    + (whiteNoise + blockNoise + blockNoise2 - waveNoise);
 }
 
 void main() {

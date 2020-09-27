@@ -4,7 +4,7 @@ import Mat4 from '../maths/Mat4';
 
 export default class {
   constructor(gl, data) {
-    const { nodes, meshes, skins, materials } = data;
+    const { nodes, meshes, materials } = data;
     this.meshes = meshes.map(({ primitives, name = '', weights }) => {
       const primitivesData = primitives.map((primitive) => {
         if (primitive.material !== undefined) {
@@ -42,10 +42,9 @@ export default class {
     localMatrix.multiply(model);
     program.setMatrix('model', localMatrix.get());
 
-    localMatrix.resetScale();
     localMatrix.resetTranslate();
     const normalmatrix = localMatrix.getMatrice3x3();
-    normalmatrix.inverse();
+    normalmatrix.inverse(); // erreur quand scale a 0
     normalmatrix.transpose();
     program.setMatrix('normalmatrix', normalmatrix.get());
 
@@ -53,8 +52,8 @@ export default class {
     primitives.forEach((primitive) => primitive.render(program));
   }
 
-  handleLocalTransform = (node, invMatrix = null) => {
-    const { translation, rotation, scale, matrix, name } = node;
+  handleLocalTransform = (node) => {
+    const { translation, rotation, scale, matrix } = node;
 
     const localMatrix = new Mat4();
     localMatrix.identity();

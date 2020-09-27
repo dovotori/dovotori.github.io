@@ -1,6 +1,6 @@
 import Line from './Line';
 import { hexToRgb } from '../utils/color';
-import Target from '../maths/Target';
+// import Target from '../maths/Target';
 
 export default class {
   constructor(gl) {

@@ -1,5 +1,6 @@
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 const utils = require('../scripts/utils');
 
@@ -120,4 +121,23 @@ const laboEntries = NAMES.reduce(
   {}
 );
 
-module.exports = { alias, optimization, rules, minify, getHtml, laboEntries };
+const compression = [
+  new CompressionPlugin({
+    test: /\.(js|css|svg|jpg|png|html)$/,
+    algorithm: 'gzip',
+    deleteOriginalAssets: false,
+    filename: '[path][base].gz[query]',
+    threshold: 0,
+    minRatio: 1,
+  }),
+  new CompressionPlugin({
+    test: /\.(js|css|svg|jpg|png|html)$/,
+    algorithm: 'brotliCompress',
+    deleteOriginalAssets: false,
+    filename: '[path][base].br[query]',
+    threshold: 0,
+    minRatio: 1,
+  }),
+];
+
+module.exports = { alias, optimization, rules, minify, getHtml, laboEntries, compression };

@@ -17,8 +17,12 @@ void main() {
   float wave = slope * radius;
   vec2 uv = fragTexture + normalize(vec2(w, h)) * wave;
 	vec4 color = texture2D(textureMap, uv);
+  
   // repere
-  // if (fragTexture.y < center.y + 0.005 && fragTexture.y > center.y - 0.005 && fragTexture.x < center.x + 0.005 && fragTexture.x > center.x - 0.005){
+  // if (
+  //   fragTexture.y < center.y + 0.005 && fragTexture.y > center.y - 0.005 && 
+  //   fragTexture.x < center.x + 0.005 && fragTexture.x > center.x - 0.005
+  // ) {
 	//   gl_FragColor = vec4(1.0,0.0,0.0,1.0);
   // } else {
 	  gl_FragColor = color;

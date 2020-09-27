@@ -12,7 +12,7 @@ const Wrap = styled.span`
 const Hidden = styled.span`
   display: flex;
   flex-wrap: wrap;
-  visibility: ${(p) => (p.isVisible ? 'visible' : 'hidden')};
+  visibility: ${(p) => (p.$isVisible ? 'visible' : 'hidden')};
 `;
 
 const Anim = styled.span`
@@ -84,10 +84,12 @@ const TypingMessage = ({
       if (animRef.current && output.length > 0) {
         animRef.current.innerHTML = output
           .split('')
-          .map(
-            (letter) =>
-              `<span className="${className} letter" style="display:inline-block; width:${width}; min-width: 0.2em;">${letter}</span>`
-          )
+          .map((letter) => {
+            let span = `<span className="${className} letter" `;
+            span += `style="display:inline-block; width:${width}; min-width: 0.2em;">`;
+            span += `${letter}</span>`;
+            return span;
+          })
           .join('');
       }
       lastFrame.current = now;
@@ -149,12 +151,15 @@ const TypingMessage = ({
 
   return (
     <Wrap className={className}>
-      <Hidden isVisible={isTouchDevice}>
-        {message.split('').map((letter, idx) => (
-          <Letter width={width} className="letter" key={`${message}${letter}${idx}`}>
-            {letter}
-          </Letter>
-        ))}
+      <Hidden $isVisible={isTouchDevice}>
+        {message.split('').map((letter, index) => {
+          const key = `${message}${letter}${index}`;
+          return (
+            <Letter width={width} key={key}>
+              {letter}
+            </Letter>
+          );
+        })}
       </Hidden>
       <Anim ref={animRef} />
     </Wrap>

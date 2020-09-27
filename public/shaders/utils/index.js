@@ -37,19 +37,6 @@ vec4 funcGrain(vec2 uv, float time, float strength) {
 }
 `;
 
-export const funcToon = `
-float funcToon(lambertCosinus) {
-  float strength = 0.0;
-  if (lambertCosinus > 0.7)
-    strength = 0.8;
-  else if (lambertCosinus > 0.3)
-    strength = 0.5;
-  else
-    strength = 0.3;
-  return strength;
-}
-`;
-
 export const funcGradiant = `
 ${funcMap}
 vec4 funcGradiant(vec4 color1, vec4 color2, float start, float end, float uvAxe) {

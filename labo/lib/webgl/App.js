@@ -96,6 +96,7 @@ export default class {
   }
 
   destroy() {
+    this.stop();
     if (this.scene && this.scene.destroy) {
       this.scene.destroy();
     }

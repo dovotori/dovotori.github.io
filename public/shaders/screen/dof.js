@@ -23,7 +23,8 @@ void main() {
   float deltaDepth = abs(focusDistance - depth) * 0.6;
   
   // Blur more quickly in the foreground.
-  float xdd = depth < focusDistance ? abs(focusDistance - deltaDepth) : abs(focusDistance + deltaDepth);
+  float xdd = depth < focusDistance
+    ? abs(focusDistance - deltaDepth) : abs(focusDistance + deltaDepth);
   float blurRadius = min(floor(blur * (deltaDepth / xdd) * ppm), MAX_BLUR);
   
   vec4 color = vec4(0.0);

@@ -1,4 +1,6 @@
-import { uniformLights, addLightLocations, funcLightsColor } from '../utils/light';
+import { uniformLights } from '../utils/light';
+import { /* funcPBR, */ PBRLocations, uniformPBR } from '../utils/pbr';
+import { funcLightsToon } from '../utils/toon';
 
 const vertex = `
 attribute vec3 position;
@@ -25,18 +27,23 @@ precision mediump float;
 varying vec3 fragPosition;
 varying vec3 fragNormale;
 
-uniform vec4 color;
-uniform float rough; 
-uniform float metal;
+uniform vec3 posEye;
 
 ${uniformLights}
-${funcLightsColor}
+${uniformPBR}
+${funcLightsToon}
 
 void main() {
-  vec3 phong = funcLightsColor(
-    color.xyz, vec3(1.0,1.0,1.0), vec3(1.0,1.0,1.0), fragNormale, fragPosition
-  );
-  gl_FragColor = vec4(phong, 1.0);
+  // vec3 phong = funcLightsColor(
+  //   color.xyz, vec3(1.0,1.0,1.0), vec3(1.0,1.0,1.0), fragNormale, fragPosition
+  // );
+  // gl_FragColor = vec4(phong, 1.0);
+
+  // vec3 colorPbr = funcPBR(fragPosition, fragNormale, posEye);
+  // gl_FragColor = vec4(colorPbr, 1.0);
+  
+  vec3 colorToon = funcLightsToon(color.xyz, fragPosition, fragNormale);
+  gl_FragColor = vec4(colorToon, 1.0);
 }
 `;
 
@@ -44,15 +51,5 @@ export default {
   vertex,
   fragment,
   attributes: ['position', 'normale', 'tangent'],
-  uniforms: [
-    'projection',
-    'model',
-    'view',
-    'normalmatrix',
-    'color',
-    'rough',
-    'metal',
-    'posLum',
-    'posEye',
-  ].concat(addLightLocations()),
+  uniforms: ['projection', 'model', 'view', 'normalmatrix', 'posEye'].concat(PBRLocations),
 };

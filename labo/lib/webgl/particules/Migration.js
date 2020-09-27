@@ -2,9 +2,7 @@ import Bird from './Bird';
 
 export default class {
   constructor(count = 10) {
-    this.birds = Array(count)
-      .fill()
-      .map((_) => new Bird({ withRespawn: true }));
+    this.birds = Array.from({ length: count }, () => new Bird({ withRespawn: true }));
   }
 
   update = () => {

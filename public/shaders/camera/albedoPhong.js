@@ -37,7 +37,13 @@ ${uniformLights}
 ${funcLightsColor}
 
 void main() {
-  vec3 color = funcLightsColor(fragAmbiant, fragDiffuse, vec3(1.0,1.0,1.0), fragNormale, fragPosition);
+  vec3 color = funcLightsColor(
+    fragAmbiant,
+    fragDiffuse,
+    vec3(1.0,1.0,1.0),
+    fragNormale,
+    fragPosition
+  );
   gl_FragColor = vec4(color, 1.0);
   // gl_FragColor = vec4(lights[0].position, 1.0);
   // gl_FragColor = vec4(normalize(fragNormale), 1.0);
