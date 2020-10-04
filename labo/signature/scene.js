@@ -43,7 +43,6 @@ export default class extends Scene {
     this.model.multiply(quat.toMatrix4());
 
     const program = this.mngProg.get(this.config.MAIN_PROG);
-    program.setVector('resolution', [this.containerSize.width, this.containerSize.height]);
     program.setFloat('time', this.time);
     this.setLampeInfos(program);
   }

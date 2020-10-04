@@ -59,8 +59,8 @@ float funcShadow(sampler2D depthMap, vec4 fragShadow, vec2 texelSize, float epsi
 `;
 
 export const uniformShadow = `
-uniform mat4 shadowview;
-uniform mat4 shadowprojection;
+uniform mat4 shadowView;
+uniform mat4 shadowProjection;
 
 const mat4 bias = mat4(
   0.5, 0.0, 0.0, 0.0,
@@ -70,4 +70,4 @@ const mat4 bias = mat4(
 );
 `;
 
-export const shadowLocations = ['shadowview', 'shadowprojection', 'shadowMap'];
+export const shadowLocations = ['shadowView', 'shadowProjection', 'shadowMap'];

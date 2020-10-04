@@ -12,7 +12,7 @@ uniform mat4 projection;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 jointMat[${MAX_JOINT_MAT}];
-uniform mat3 normalmatrix;
+uniform mat3 normalMatrix;
 
 varying vec3 fragPosition;
 varying vec3 fragNormale;
@@ -25,7 +25,7 @@ void main() {
     weight.w * jointMat[int(joint.w)];
   vec4 VMpos = view * model * skinMat * vec4(position, 1.0);
   fragPosition = normalize(VMpos.xyz);
-  fragNormale = normalize(normalmatrix * normale);
+  fragNormale = normalize(normalMatrix * normale);
   gl_Position = projection * VMpos;
 }
 `;
@@ -67,7 +67,7 @@ export default {
     'projection',
     'model',
     'view',
-    'normalmatrix',
+    'normalMatrix',
     'color',
     'rough',
     'metal',

@@ -6,13 +6,13 @@ attribute vec3 normale;
 uniform mat4 projection;
 uniform mat4 model;
 uniform mat4 view;
-uniform mat3 normalmatrix;
+uniform mat3 normalMatrix;
 varying vec3 fragPosition;
 varying vec3 fragNormale;
 void main()
 {
   fragPosition = normalize((view * model * vec4(position, 1.0)).xyz);
-  fragNormale = normalmatrix * normalize(normale);
+  fragNormale = normalMatrix * normalize(normale);
   gl_Position = projection * view * model * vec4(position, 1.0);
 }
 `;
@@ -44,7 +44,7 @@ export default {
     'projection',
     'model',
     'view',
-    'normalmatrix',
+    'normalMatrix',
     'ambiant',
     'diffuse',
     'specular',

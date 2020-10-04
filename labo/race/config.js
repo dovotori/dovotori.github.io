@@ -10,7 +10,7 @@ export default {
     '/camera/gltf.js',
     '/screen/screen.js',
     '/screen/debug.js',
-    '/screen/blurBloomOnePass.js',
+    '/screen/blurOnePass.js',
     '/screen/bloom.js',
     '/screen/fxaa.js',
   ],

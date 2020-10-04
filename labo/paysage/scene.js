@@ -4,9 +4,9 @@ import Spring from '../lib/webgl/maths/Spring';
 import Target from '../lib/webgl/maths/Target';
 import DualQuaternion from '../lib/webgl/maths/DualQuaternion';
 import Gizmo from '../lib/webgl/meshes/Gizmo';
-import Bloom from '../lib/webgl/postprocess/Bloom';
 import { degToRad } from '../lib/webgl/utils/numbers';
 import ObjetPrimitive from '../lib/webgl/gl/ObjetPrimitive';
+import Buffers from '../lib/webgl/postprocess/Buffers';
 import primitive from '../lib/webgl/primitives/plane';
 
 export default class extends Scene {
@@ -22,7 +22,6 @@ export default class extends Scene {
     this.targetY = new Spring(0);
     this.targetZ = new Target(0, 0.05);
     this.gizmo = new Gizmo(gl);
-    this.bloom = new Bloom(gl, config.width, config.height, this.canUseDepth());
 
     this.objet = new ObjetPrimitive(this.gl);
     Object.keys(primitive).forEach((key) => {
@@ -33,6 +32,8 @@ export default class extends Scene {
       }
     });
     this.targetZ.set(1.2);
+
+    this.buffers = new Buffers(this.gl, config.width, config.height, this.canUseDepth());
   }
 
   update(time) {
@@ -54,14 +55,15 @@ export default class extends Scene {
     this.model.multiply(quat.toMatrix4());
 
     const program = this.mngProg.get(this.config.MAIN_PROG);
-    program.setVector('resolution', [this.containerSize.width, this.containerSize.height]);
-    if (this.canUseDepth()) {
-      program.setTexture(2, this.getLampe(0).getDepthTexture().get(), 'shadowMap');
-    }
-    program.setMatrix('shadowview', this.getLampe(0).getView().get());
-    program.setMatrix('shadowprojection', this.getLampe(0).getOrtho().get());
-
     this.setLampeInfos(program);
+    if (this.canUseDepth()) {
+      this.buffers.generateTextures(this.mainRender, this.mngProg.get('buffers'));
+
+      const lampe = this.getLampe(0);
+      program.setTexture(2, lampe.getDepthTexture().get(), 'shadowMap');
+      program.setMatrix('shadowView', lampe.getView().get());
+      program.setMatrix('shadowProjection', lampe.getOrtho().get());
+    }
 
     // pour faire disparaite les objet qui sorte de la scene
     const invModel = new Mat4();
@@ -71,10 +73,10 @@ export default class extends Scene {
     this.mngGltf.get(this.config.MAIN_OBJ).update(time);
   }
 
-  mainRender(program) {
+  mainRender = (program) => {
     // this.gizmo.render(this.camera, this.model);
     this.mngGltf.get(this.config.MAIN_OBJ).render(program, this.model);
-  }
+  };
 
   renderBasiqueForShadow = (program) => {
     this.mainRender(program);
@@ -88,20 +90,23 @@ export default class extends Scene {
     // program.setMatrix('view', this.camera.getView().get());
     // this.mngGltf.get(this.config.MAIN_OBJ).setBoneProgram(program);
 
-    if (this.config.support.useDepth) {
+    if (this.canUseDepth()) {
+      this.ssao.compute(this.buffers.getDepthTexture().get());
       // this.postProcess.start();
       // this.renderFakeShadow();
-      this.mainRender(this.mngProg.get(this.config.MAIN_PROG));
+      // this.mainRender(this.mngProg.get(this.config.MAIN_PROG));
       // this.postProcess.end();
-      // this.effects();
       // this.postProcess.render();
+      // this.postProcess.computeSimpleSsao(0.01, this.buffers.getNormalTexture().get());
     } else {
       this.mainRender(this.mngProg.get(this.config.MAIN_PROG));
     }
 
     // DEBUG
     // this.postProcess.render(this.bloom.getTexture().get());
-    // this.postProcess.render(this.getLampe(0).getDepthTexture(0).get());
+    // this.postProcess.render(this.getLampe(0).getDepthTexture().get());
+    // this.postProcess.render(this.buffers.getNormalTexture().get());
+    this.postProcess.render(this.ssao.getTexture().get());
   }
 
   renderFakeShadow() {

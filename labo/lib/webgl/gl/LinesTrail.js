@@ -19,7 +19,6 @@ export default class {
   }
 
   update(program) {
-    // program.setVector('resolution', [this.containerSize.width, this.containerSize.height]);
     program.setFloat('time', this.time);
     this.lines.forEach((line) => line.update(this.mousePos));
   }

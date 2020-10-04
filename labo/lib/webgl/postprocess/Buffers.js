@@ -1,6 +1,4 @@
-import PostProcess from './PostProcess';
 import Fbo from '../gl/Fbo';
-import Screen from '../gl/Screen';
 
 export default class {
   constructor(gl, width = 1024, height = 1024, useDepth = false) {
@@ -8,62 +6,36 @@ export default class {
     this.fboColorDepth = new Fbo(gl, width, height, useDepth);
     this.fboNormal = new Fbo(gl, width, height, useDepth);
     this.fboPosition = new Fbo(gl, width, height, useDepth);
-    this.fboAlbedo = new Fbo(gl, width, height, useDepth);
-    this.fboDiffuse = new Fbo(gl, width, height, useDepth);
     this.fboShadow = new Fbo(gl, width, height, useDepth);
-    this.screen = new Screen(this.gl);
-    this.postProcess = new PostProcess(this.gl, width, height, useDepth, ['ssao', 'blurDirection']);
     this.width = width;
     this.height = height;
   }
 
-  render(renderScene, camera, program, programAlbedo, programDiffuse, lampeDepthTex, lampeMatrix) {
-    this.fboColorDepth.start();
+  generateTextures(renderScene, program) {
     program.setInt('type', 0);
+    this.fboColorDepth.start();
     renderScene(program);
     this.fboColorDepth.end();
 
-    this.fboNormal.start();
     program.setInt('type', 1);
+    this.fboNormal.start();
     renderScene(program);
     this.fboNormal.end();
 
-    this.fboPosition.start();
     program.setInt('type', 2);
+    this.fboPosition.start();
     renderScene(program);
     this.fboPosition.end();
+  }
 
-    this.fboShadow.start();
+  generateShadow(renderScene, program, lampe) {
     program.setInt('type', 3);
-    program.setTexture(0, lampeDepthTex, 'shadowMap');
-    program.setMatrix('shadowview', lampeMatrix);
-    program.setVector('resolution', [this.width, this.height]);
+    program.setTexture(3, lampe.getDepthTexture().get(), 'shadowMap');
+    program.setMatrix('shadowView', lampe.getView().get());
+    program.setMatrix('shadowProjection', lampe.getOrtho().get());
+    this.fboShadow.start();
     renderScene(program);
     this.fboShadow.end();
-
-    this.fboAlbedo.start();
-    renderScene(programAlbedo);
-    this.fboAlbedo.end();
-
-    programDiffuse.setTexture(0, this.getNormalTexture().get(), 'normalMap');
-    programDiffuse.setTexture(1, this.getDepthTexture().get(), 'depthMap');
-    programDiffuse.setTexture(2, this.getPositionTexture().get(), 'positionMap');
-    this.fboDiffuse.start();
-    this.postProcess.renderSimple(programDiffuse);
-    this.fboDiffuse.end();
-
-    this.postProcess.start();
-    renderScene(program); // pass inutile
-    this.postProcess.end();
-    this.postProcess.setSSAO(
-      camera.getProjection(),
-      camera.getView(),
-      this.getPositionTexture().get(),
-      this.getNormalTexture().get(),
-      this.getDepthTexture().get(),
-      0.02
-    );
-    this.postProcess.setBlurPass(0.02, 2);
   }
 
   getColorTexture() {
@@ -80,18 +52,6 @@ export default class {
 
   getPositionTexture() {
     return this.fboPosition.getTexture();
-  }
-
-  getAlbedoTexture() {
-    return this.fboAlbedo.getTexture();
-  }
-
-  getDiffuseTexture() {
-    return this.fboDiffuse.getTexture();
-  }
-
-  getSsaoTexture() {
-    return this.postProcess.getTexture();
   }
 
   getShadowTexture() {

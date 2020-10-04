@@ -1,47 +1,21 @@
 import ProcessBase from './ProcessBase';
 import TextureNoise from '../textures/TextureNoise';
-import Vec3 from '../maths/Vec3';
-import Mat4 from '../maths/Mat4';
-import { lerp } from '../utils/easing';
-import { random } from '../utils/numbers';
 
 export default class extends ProcessBase {
-  constructor(gl, width = 1024, height = 1024, useDepth = false, programs = {}) {
-    super(gl, width, height, useDepth, programs);
-    this.noiseTex = null;
+  constructor(gl, config, programs = {}) {
+    super(gl, config, programs);
+
+    this.textures = {};
     Object.keys(this.programs).forEach((effect) => {
       switch (effect) {
-        case 'ssao':
-          this.noiseTex = new TextureNoise(this.gl, 4, 4);
-          this.generateSsaoSamples(effect);
-          break;
         case 'watercolor2':
         case 'watercolor3':
-          this.noiseTex = new TextureNoise(this.gl, 512, 512);
-          this.generateSsaoSamples(effect);
+          this.textures[effect] = new TextureNoise(this.gl, 512, 512);
           break;
         default:
           break;
       }
     });
-  }
-
-  generateSsaoSamples(name) {
-    const KERNEL_SIZE = 32;
-    const tmpSamples = [KERNEL_SIZE];
-
-    for (let i = 0; i < KERNEL_SIZE; i += 1) {
-      tmpSamples[i] = new Vec3(random(-1.0, 1.0), random(-1.0, 1.0), random(-1.0, 1.0));
-      tmpSamples[i].normalise();
-      tmpSamples[i].multiplyNumber(random(0.0, 1.0));
-
-      let scale = i / KERNEL_SIZE;
-      scale = lerp(scale * scale, 0.1, 1.0);
-      tmpSamples[i].multiplyNumber(scale);
-    }
-    for (let i = 0; i < KERNEL_SIZE; i += 1) {
-      this.programs[name].setVector(`sampleKernel[${i}]`, tmpSamples[i].get());
-    }
   }
 
   setDOF(range, blur, focusDistance, ppm, tex = null) {
@@ -84,13 +58,13 @@ export default class extends ProcessBase {
     program.setFloat('advectStep', advectStep);
     program.setFloat('flipHeightMap', flipHeightMap);
     program.setFloat('time', time);
-    program.setTexture(2, this.noiseTex.get(), 'heightMap');
+    program.setTexture(2, this.textures.watercolor2.get(), 'heightMap');
     this.renderToPingPong(program);
   }
 
   setWatercolor3(tex = null) {
     const program = this.applyTexToProg(this.programs.watercolor3, tex);
-    program.setTexture(2, this.noiseTex.get(), 'noiseMap');
+    program.setTexture(2, this.textures.watercolor3.get(), 'noiseMap');
     this.renderToPingPong(program);
   }
 
@@ -219,31 +193,12 @@ export default class extends ProcessBase {
     this.renderToPingPong(program);
   }
 
-  setSSAO(projection, view, position, normal, depth, radius, tex = null) {
-    const program = this.applyTexToProg(this.programs.ssao, tex);
-    const invViewProj = new Mat4();
-    invViewProj.equal(view).multiply(projection).inverse().transpose();
-    program.setMatrix('inverseProjection', invViewProj.get());
-    const viewProj = new Mat4();
-    viewProj.equal(view).multiply(projection).transpose();
-    program.setMatrix('projection', viewProj.get());
-    program.setTexture(2, position, 'positionMap');
-    program.setTexture(3, normal, 'normalMap');
-    program.setTexture(4, depth, 'depthMap');
-    program.setTexture(5, this.noiseTex.get(), 'noiseMap');
-    program.setFloat('radius', radius);
-    this.renderToPingPong(program);
-  }
-
-  compose(albedoMap, diffuseMap, ssaoMap, depthMap, shadowMap) {
-    this.passCount = 0;
+  compose(albedoMap, ssaoMap, depthMap, shadowMap) {
     const program = this.programs.compose;
-    program.setFloat('flipY', -1.0);
-    program.setTexture(0, albedoMap, 'albedoMap');
-    program.setTexture(1, diffuseMap, 'diffuseMap');
-    program.setTexture(2, ssaoMap, 'ssaoMap');
-    program.setTexture(3, depthMap, 'depthMap');
-    program.setTexture(4, shadowMap, 'shadowMap');
+    program.setTexture(2, albedoMap, 'albedoMap');
+    program.setTexture(3, ssaoMap, 'ssaoMap');
+    program.setTexture(4, depthMap, 'depthMap');
+    program.setTexture(5, shadowMap, 'shadowMap');
     this.renderToPingPong(program);
   }
 }

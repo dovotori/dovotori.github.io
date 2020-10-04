@@ -8,7 +8,7 @@ export default {
     '/particules/pass2Camera.js',
     '/camera/basique3d.js',
     '/screen/landscape.js',
-    '/screen/blurBloomOnePass.js',
+    '/screen/blurOnePass.js',
     '/screen/screen.js',
     '/screen/debug.js',
   ],

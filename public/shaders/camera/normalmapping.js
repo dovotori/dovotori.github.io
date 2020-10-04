@@ -6,7 +6,7 @@ attribute vec2 texture;
 uniform mat4 projection;
 uniform mat4 model;
 uniform mat4 view;
-uniform mat3 normalmatrix;
+uniform mat3 normalMatrix;
 uniform vec3 posLum;
 
 varying vec3 fragNormale;
@@ -33,8 +33,8 @@ void main() {
     tangent = c2;
   }
 
-  normal = normalize(normalmatrix * normale);
-  tangent = normalize(normalmatrix * tangent);
+  normal = normalize(normalMatrix * normale);
+  tangent = normalize(normalMatrix * tangent);
   binormal = cross(normal, tangent);
   binormal = normalize(binormal);
 
@@ -110,7 +110,7 @@ export default {
     'projection',
     'model',
     'view',
-    'normalmatrix',
+    'normalMatrix',
     'posLum',
     'textureMap',
     'tex1',

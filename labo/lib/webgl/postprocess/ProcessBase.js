@@ -2,8 +2,9 @@ import PingPongBuffer from './PingPongBuffer';
 import Screen from '../gl/Screen';
 
 export default class {
-  constructor(gl, width = 1024, height = 1024, useDepth = false, programs) {
+  constructor(gl, config = {}, programs) {
     this.gl = gl;
+    const { width = 1024, height = 1024, useDepth = false } = config;
     this.ppb = new PingPongBuffer(gl, width, height, useDepth);
     this.screen = new Screen(gl);
     this.width = width;

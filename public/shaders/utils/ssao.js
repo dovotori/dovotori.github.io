@@ -1,4 +1,4 @@
-import { PI } from '../utils';
+import { PI } from './index';
 
 const vertex = `
 attribute vec3 position;
@@ -104,9 +104,9 @@ float calAO(float depth,float dw, float dh) {
   return temp;
 }
 
-void main(void) {
-  vec2 noise = rand(fragTexture);
-  float depth = readDepth(fragTexture);
+float funcSsao(vec2 uv) {
+  vec2 noise = rand(uv);
+  float depth = readDepth(uv);
 
   float w = (1.0 / width)/clamp(depth,aoclamp,1.0)+(noise.x*(1.0-noise.x));
   float h = (1.0 / height)/clamp(depth,aoclamp,1.0)+(noise.y*(1.0-noise.y));
@@ -135,8 +135,7 @@ void main(void) {
   ao *= strength;
   ao = 1.0 - ao;
 
-  vec3 final = vec3(ao);
-  gl_FragColor = vec4(final,1.0);
+  return ao;
 }
 `;
 

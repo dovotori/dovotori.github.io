@@ -10,7 +10,7 @@ attribute vec2 texture;
 uniform mat4 projection;
 uniform mat4 model;
 uniform mat4 view;
-uniform mat3 normalmatrix;
+uniform mat3 normalMatrix;
 uniform float inverseX;
 uniform float spriteRefSize;
 uniform vec2 spriteUV;
@@ -25,7 +25,7 @@ ${funcMap}
 
 void main() {
   fragPosition = normalize((view * model * vec4(position, 1.0)).xyz);
-  fragNormale = normalmatrix * normalize(normale);
+  fragNormale = normalMatrix * normalize(normale);
 
   vec2 relPos = spriteUV / spriteGrid;
   vec2 relSize = spriteSize / spriteGrid;
@@ -88,7 +88,7 @@ export default {
     'projection',
     'model',
     'view',
-    'normalmatrix',
+    'normalMatrix',
     'textureMap',
     'spriteUV',
     'spriteGrid',

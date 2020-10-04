@@ -10,7 +10,7 @@ attribute vec2 texture;
 uniform mat4 projection;
 uniform mat4 model;
 uniform mat4 view;
-uniform mat3 normalmatrix;
+uniform mat3 normalMatrix;
 uniform float time;
 uniform sampler2D noiseMap;
 uniform sampler2D displacementMap;
@@ -40,7 +40,7 @@ void main() {
   }
   
   fragPosition = normalize((view * model * vec4(newPosition, 1.0)).xyz);
-  fragNormale = normalmatrix * normalize(normale * displacement);
+  fragNormale = normalMatrix * normalize(normale * displacement);
   fragTexture = texture;
 
   gl_Position = projection * view * model * vec4(newPosition, 1.0);
@@ -82,7 +82,7 @@ export default {
     'projection',
     'model',
     'view',
-    'normalmatrix',
+    'normalMatrix',
     'noiseMap',
     'colorMap',
     'displacementMap',

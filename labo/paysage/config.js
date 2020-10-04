@@ -1,5 +1,5 @@
-const MAIN_PROG = 'paysage2';
-const MAIN_OBJ = 'paysage2';
+const MAIN_PROG = 'paysage';
+const MAIN_OBJ = 'paysage';
 export default {
   slug: 'paysage',
   MAIN_PROG,
@@ -10,8 +10,21 @@ export default {
     `/camera/${MAIN_PROG}.js`,
     '/screen/fxaa.js',
     '/screen/screen.js',
+    '/camera/buffers.js',
+    '/screen/ssao.js',
+    '/screen/blurOnePass.js',
+    '/screen/compose.js',
   ],
-  postprocess: true,
+  postprocess: {
+    ssao: {
+      radius: 2.0,
+      strength: 0.5,
+      blur: {
+        size: 0.000001,
+        intensity: 0.6,
+      },
+    },
+  },
   useDepthTexture: true,
   assets: [`/gltf/${MAIN_OBJ}.gltf`],
   positions: {

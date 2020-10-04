@@ -7,7 +7,7 @@ attribute vec4 tangent;
 uniform mat4 projection;
 uniform mat4 model;
 uniform mat4 view;
-uniform mat3 normalmatrix;
+uniform mat3 normalMatrix;
 uniform float time;
 
 varying vec3 fragPosition;
@@ -19,7 +19,7 @@ void main()
   vec3 newPosition = position + normale * displacement;
   
   fragPosition = normalize((view * model * vec4(newPosition, 1.0)).xyz);
-  fragNormale = normalmatrix * normalize(normale);
+  fragNormale = normalMatrix * normalize(normale);
   gl_Position = projection * view * model * vec4(newPosition, 1.0);
 }
 `;
@@ -57,7 +57,7 @@ export default {
     'projection',
     'model',
     'view',
-    'normalmatrix',
+    'normalMatrix',
     'color',
     'rough',
     'metal',

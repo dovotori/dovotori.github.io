@@ -5,6 +5,7 @@ import ManagerGltfs from '../managers/ManagerGltfs';
 import ManagerSounds from '../managers/ManagerSounds';
 import PostProcess from '../postprocess/PostProcess';
 import Bloom from '../postprocess/Bloom';
+import Ssao from '../postprocess/Ssao';
 
 export default class {
   constructor(gl, config, assets) {
@@ -22,22 +23,30 @@ export default class {
         this.mngProg = new ManagerPrograms(this.gl, assets.shaders, config.canvas);
 
         if (config.postprocess) {
-          this.postProcess = new PostProcess(
-            this.gl,
-            width,
-            height,
-            this.canUseDepth(),
-            this.mngProg.getAll()
-          );
+          const useDepth = this.canUseDepth();
+          const processConfig = { width, height, useDepth };
+          const programs = this.mngProg.getAll();
+
+          this.postProcess = new PostProcess(this.gl, processConfig, programs);
 
           if (config.postprocess.bloom) {
             this.bloom = new Bloom(
               this.gl,
-              width,
-              height,
-              this.canUseDepth(),
-              this.mngProg.getAll(),
-              config.postprocess.bloom
+              { ...processConfig, ...config.postprocess.bloom },
+              programs
+            );
+          }
+
+          if (config.postprocess.ssao) {
+            this.ssao = new Ssao(
+              this.gl,
+              {
+                ...processConfig,
+                ...config.postprocess.ssao,
+                near: config.camera.near,
+                far: config.camera.far,
+              },
+              programs
             );
           }
         }

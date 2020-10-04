@@ -9,7 +9,7 @@ attribute vec4 tangent;
 uniform mat4 projection;
 uniform mat4 model;
 uniform mat4 view;
-uniform mat3 normalmatrix;
+uniform mat3 normalMatrix;
 
 varying vec3 fragPosition;
 varying vec3 fragNormale;
@@ -17,7 +17,7 @@ varying vec3 fragNormale;
 void main() {
   vec4 VMpos = view * model * vec4(position, 1.0);
   fragPosition = normalize(VMpos.xyz);
-  fragNormale = normalize(normalmatrix * normale);
+  fragNormale = normalize(normalMatrix * normale);
   gl_Position = projection * VMpos;
 }
 `;
@@ -51,5 +51,5 @@ export default {
   vertex,
   fragment,
   attributes: ['position', 'normale', 'tangent'],
-  uniforms: ['projection', 'model', 'view', 'normalmatrix', 'posEye'].concat(PBRLocations),
+  uniforms: ['projection', 'model', 'view', 'normalMatrix', 'posEye'].concat(PBRLocations),
 };

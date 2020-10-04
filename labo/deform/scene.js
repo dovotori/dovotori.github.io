@@ -91,7 +91,6 @@ export default class extends Scene {
     this.model.scale(this.targetZ.get());
 
     const program = this.mngProg.get(this.config.MAIN_PROG);
-    program.setVector('resolution', [this.containerSize.width, this.containerSize.height]);
     program.setFloat('time', this.pulse.get());
     this.setLampeInfos(program);
   }
@@ -99,10 +98,10 @@ export default class extends Scene {
   mainRender = (program, texData = null) => {
     // this.mngGltf.get(this.config.MAIN_OBJ).render(program, this.model);
     program.setMatrix('model', this.model.get());
-    const normalmatrix = this.model.getMatrice3x3();
-    normalmatrix.inverse();
-    normalmatrix.transpose();
-    program.setMatrix('normalmatrix', normalmatrix.get());
+    const normalMatrix = this.model.getMatrice3x3();
+    normalMatrix.inverse();
+    normalMatrix.transpose();
+    program.setMatrix('normalMatrix', normalMatrix.get());
     program.setTexture(2, this.texture.get(), 'noiseMap');
     program.setTexture(3, this.mngTex.get('earth').get(), 'colorMap');
 

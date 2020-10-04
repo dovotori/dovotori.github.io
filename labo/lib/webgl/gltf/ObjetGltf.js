@@ -43,10 +43,10 @@ export default class {
     program.setMatrix('model', localMatrix.get());
 
     localMatrix.resetTranslate();
-    const normalmatrix = localMatrix.getMatrice3x3();
-    normalmatrix.inverse(); // erreur quand scale a 0
-    normalmatrix.transpose();
-    program.setMatrix('normalmatrix', normalmatrix.get());
+    const normalMatrix = localMatrix.getMatrice3x3();
+    normalMatrix.inverse(); // erreur quand scale a 0
+    normalMatrix.transpose();
+    program.setMatrix('normalMatrix', normalMatrix.get());
 
     const { primitives } = this.meshes[meshIndex];
     primitives.forEach((primitive) => primitive.render(program));
