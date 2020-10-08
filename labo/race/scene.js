@@ -2,6 +2,7 @@ import Scene from '../lib/webgl/scenes/SceneLampe';
 import Screen from '../lib/webgl/gl/Screen';
 import VboPointsIndices from '../lib/webgl/vbos/VboPointsIndices';
 import Mat4 from '../lib/webgl/maths/Mat4';
+import Vec3 from '../lib/webgl/maths/Vec3';
 import { getPoints, getIndices } from '../lib/webgl/primitives/grid';
 import Target from '../lib/webgl/maths/Target';
 
@@ -26,12 +27,10 @@ export default class extends Scene {
     super(gl, config, assets);
 
     this.screen = new Screen(this.gl);
-
     this.model = new Mat4();
-    this.timeCloud = 0;
 
     // this.road = new GpuParticules(gl, 16, 128);
-    const { roadLength, roadWidth } = config;
+    const { roadLength, roadWidth, shipPosition } = config;
 
     const pointsRoads = getPoints(2, roadLength, {
       startX: -roadWidth,
@@ -55,19 +54,86 @@ export default class extends Scene {
     this.mountainVbo = new VboPointsIndices(gl, pointsMountains, indicesMountains);
     this.mountainVbo.setModeDessin(gl.TRIANGLES);
 
-    this.speedY = 0.0;
-    this.posShipY = 0.0;
-    this.isDown = false;
-    this.target = new Target(0, 0.1);
+    this.shipPos = new Vec3(...shipPosition);
+    this.currentShipPos = new Vec3(0.0);
+    this.targetPosX = new Target(0, 0.1);
+    this.targetSpeed = new Target(0, 0.1);
+    this.posTime = 0.0;
 
     this.setLampeInfos(this.mngProg.get('gltf'));
     this.mngProg.get('roadSky').setTexture(1, this.mngTex.get('noisergb').get(), 'textureMap');
 
-    this.bloom.setIntensity(2.0);
+    // this.bloom.setIntensity(2.0);
 
     // this.mngGltf.get('raceship').setAnimationSpeed('aile1', 'rotation', 4000);
     // this.mngGltf.get('raceship').setAnimationSpeed('aile2', 'rotation', 4000);
   }
+
+  update(time) {
+    super.update(time);
+    this.model.identity();
+    this.moveShip();
+    this.updateTrails();
+    this.updateCamera();
+    this.mngGltf.get('raceship').update(time);
+  }
+
+  getDistPos = (posZ) => {
+    const { roadAmplitude, roadLength, roadFrequence } = this.config;
+    return new Vec3(
+      ...getDistortion(posZ / roadLength, roadFrequence, roadAmplitude, this.posTime)
+    );
+  };
+
+  updateCamera = () => {
+    const { roadLength, camera } = this.config;
+    const cameraTarget = this.getDistPos(100);
+    const cameraPos = this.getDistPos(0);
+    this.camera.setTarget(cameraTarget.getX(), camera.position.y + cameraTarget.getY(), roadLength);
+    this.camera.setPosition(cameraPos.getX(), camera.position.y + cameraPos.getY(), 0);
+  };
+
+  moveShip = () => {
+    this.targetPosX.update();
+    this.targetSpeed.update();
+    this.posTime += this.targetSpeed.get();
+    const distPos = this.getDistPos(this.shipPos.getZ());
+    this.currentShipPos.equal(distPos).add(this.shipPos).addX(this.targetPosX.get());
+  };
+
+  updateTrails() {
+    const programShip = this.mngProg.get('gltf');
+    const raceship = this.mngGltf.get('raceship');
+    programShip.setProjectionView(this.camera);
+    raceship.setAnimationStep('trail1', 'scale', this.targetSpeed.get() * 10);
+    raceship.setAnimationStep('trail2', 'scale', this.targetSpeed.get() * 10);
+  }
+
+  renderMountain = () => {
+    const { roadAmplitude, roadLength, roadWidth, roadFrequence } = this.config;
+    const program = this.mngProg.get('roadmountain');
+    program.setProjectionView(this.camera);
+    program.setMatrix('model', this.model.get());
+    program.setFloat('time', this.posTime);
+    program.setVector('frequence', roadFrequence);
+    program.setVector('amplitude', roadAmplitude);
+    program.setFloat('roadWidth', roadWidth);
+    program.setFloat('roadLength', roadLength);
+    this.mountainVbo.render(program.get());
+  };
+
+  renderRoad = () => {
+    const { roadAmplitude, roadLength, roadWidth, roadFrequence } = this.config;
+    const program = this.mngProg.get('road');
+    program.setProjectionView(this.camera);
+    program.setMatrix('model', this.model.get());
+    program.setFloat('time', this.posTime);
+    program.setVector('frequence', roadFrequence);
+    program.setVector('amplitude', roadAmplitude);
+    program.setFloat('roadWidth', roadWidth);
+    program.setFloat('roadLength', roadLength);
+    this.roadVbo.render(program.get());
+  };
 
   renderLandscape() {
     this.gl.disable(this.gl.DEPTH_TEST);
@@ -79,115 +145,62 @@ export default class extends Scene {
     this.gl.enable(this.gl.DEPTH_TEST);
   }
 
-  update(time) {
-    super.update(time);
-    this.mngGltf.get('raceship').update(time);
-  }
-
-  updateCamera = () => {
-    const { roadAmplitude, roadLength, roadFrequence, camera } = this.config;
-
-    const cameraTarget = getDistortion(0.2, roadFrequence, roadAmplitude, this.posShipY);
-    const cameraPos = getDistortion(0.0, roadFrequence, roadAmplitude, this.posShipY);
-
-    this.camera.setTarget(cameraTarget[0], camera.position.y + cameraTarget[1], roadLength);
-    this.camera.setPosition(cameraPos[0], camera.position.y + cameraPos[1], 0);
-  };
-
-  renderMountain = () => {
-    const { roadAmplitude, roadLength, roadFrequence } = this.config;
-    const program = this.mngProg.get('roadmountain');
-    program.setProjectionView(this.camera);
-    program.setMatrix('model', this.model.get());
-    program.setFloat('time', this.posShipY);
-
-    program.setVector('frequence', roadFrequence);
-    program.setVector('amplitude', roadAmplitude);
-
-    program.setFloat('roadLength', roadLength);
-    this.mountainVbo.render(program.get());
-  };
-
-  renderRoad = () => {
-    const { roadAmplitude, roadLength, roadFrequence } = this.config;
-    const program = this.mngProg.get('road3');
-    program.setProjectionView(this.camera);
-    program.setMatrix('model', this.model.get());
-    program.setFloat('time', this.posShipY);
-
-    program.setVector('frequence', roadFrequence);
-    program.setVector('amplitude', roadAmplitude);
-
-    program.setFloat('roadLength', roadLength);
-    this.roadVbo.render(program.get());
-  };
-
   renderShip = () => {
-    this.target.update();
-    if (this.isDown) {
-      this.speedY += 0.01;
-    }
-
-    if (this.speedY < 0.0001) {
-      this.speedY = 0.0;
-    } else if (this.speedY > 0.1) {
-      this.speedY = 0.1;
-    } else {
-      this.speedY *= 0.9;
-    }
-    this.posShipY += this.speedY;
-    const { roadAmplitude, roadLength, roadFrequence } = this.config;
-    const shipZ = 2;
-    const shipPos = getDistortion(shipZ / roadLength, roadFrequence, roadAmplitude, this.posShipY);
-
     const programShip = this.mngProg.get('gltf');
-
-    this.setLampeInfos(programShip);
-    programShip.setProjectionView(this.camera);
-    this.model.translate(this.target.get() + shipPos[0], 0.3 + shipPos[1], shipZ);
-
     const raceship = this.mngGltf.get('raceship');
-
-    raceship.setAnimationStep('trail1', 'scale', this.speedY * 10);
-    raceship.setAnimationStep('trail2', 'scale', this.speedY * 10);
-
+    this.model.push();
+    this.model.translate(...this.currentShipPos.get());
     raceship.render(programShip, this.model);
+    this.model.pop();
+  };
+
+  renderShipTrails = () => {
+    const programShip = this.mngProg.get('gltf');
+    const raceship = this.mngGltf.get('raceship');
+    this.model.push();
+    this.model.translate(...this.currentShipPos.get());
+    raceship.renderNode('trail1', programShip, this.model);
+    raceship.renderNode('trail2', programShip, this.model);
+    this.model.pop();
   };
 
   render() {
     super.render();
-    this.model.identity();
+
     this.postProcess.start();
-    // this.renderLandscape();
-    this.updateCamera();
+    // // this.renderLandscape();
     this.renderMountain();
     this.renderRoad();
     this.renderShip();
     this.postProcess.end();
 
     this.bloom.start();
-    const programShip = this.mngProg.get('gltf');
-    const raceship = this.mngGltf.get('raceship');
-    raceship.renderNode('trail1', programShip, this.model);
-    raceship.renderNode('trail2', programShip, this.model);
+    this.renderShipTrails();
     this.bloom.end();
+    this.bloom.setBloom(1.0, 0.1);
 
     this.postProcess.mergeBloom(this.bloom.getTexture(), 1.5, 2.2);
-    this.postProcess.setFXAA();
+    this.postProcess.setFXAA2();
     this.postProcess.render();
+
+    // this.postProcess.render(this.bloom.getTexture().get());
   }
 
-  onMouseDrag = (mouse) => {
-    this.speedX += mouse.rel.x * this.config.roadWidth;
-    this.posShipX = -mouse.rel.x * this.config.roadWidth * 0.5;
-    this.target.set(-mouse.rel.x * this.config.roadWidth * 0.5);
+  interactShip = (mouse) => {
+    const { roadWidth } = this.config;
+    this.targetSpeed.set(0.1);
+    this.targetPosX.set(-mouse.rel.x * roadWidth * 0.6);
   };
 
-  onMouseDown = () => {
-    this.isDown = true;
+  onMouseDrag = (mouse) => {
+    this.interactShip(mouse);
+  };
+
+  onMouseDown = (mouse) => {
+    this.interactShip(mouse);
   };
 
   onMouseUp = () => {
-    this.isDown = false;
+    this.targetSpeed.set(0);
   };
 }

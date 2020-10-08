@@ -4,14 +4,21 @@ import Lampe from '../gl/Lampe';
 export default class extends Scene {
   constructor(gl, config, assets) {
     super(gl, config, assets);
-    this.lampes = [];
 
     const useDepth = this.canUseDepth();
+    const { width, height } = config.canvas;
     this.lampes =
-      config.lampes &&
-      config.lampes.map(
-        (lampe) => new Lampe(this.gl, lampe, config.canvas.width, config.canvas.height, useDepth)
-      );
+      (config.lampes &&
+        config.lampes.map((lampe) => new Lampe(this.gl, lampe, width, height, useDepth))) ||
+      [];
+
+    const programs = this.mngProg.getAll();
+    Object.keys(programs).forEach((progKey) => {
+      const program = programs[progKey];
+      if (program.getLocations().numLights) {
+        this.setLampeInfos(program);
+      }
+    });
   }
 
   renderReperes() {
@@ -77,6 +84,7 @@ export default class extends Scene {
   render() {
     super.render();
     this.computeLampesDepthTexture();
+    this.mngProg.setCameraMatrix(this.camera, !!this.config.camera.ortho);
   }
 
   getLampe(i) {

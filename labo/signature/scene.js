@@ -44,7 +44,6 @@ export default class extends Scene {
 
     const program = this.mngProg.get(this.config.MAIN_PROG);
     program.setFloat('time', this.time);
-    this.setLampeInfos(program);
   }
 
   effects() {

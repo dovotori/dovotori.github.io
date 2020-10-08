@@ -92,7 +92,6 @@ export default class extends Scene {
 
     const program = this.mngProg.get(this.config.MAIN_PROG);
     program.setFloat('time', this.pulse.get());
-    this.setLampeInfos(program);
   }
 
   mainRender = (program, texData = null) => {
@@ -131,8 +130,6 @@ export default class extends Scene {
     this.uVbo.end();
 
     const progGrid = this.mngProg.get('frequencyGrid');
-    progGrid.setMatrix('projection', this.camera.getProjection().get());
-    progGrid.setMatrix('view', this.camera.getView().get());
     progGrid.setMatrix('model', this.model.get());
     progGrid.setInt('length', this.fVbo.getCount());
     progGrid.setInt('maxfrequency', 256.0);

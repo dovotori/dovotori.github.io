@@ -1,31 +1,23 @@
-import ProcessBase from './ProcessBase';
+import WithBlur from './WithBlur';
 import Vec3 from '../maths/Vec3';
 import { lerp } from '../utils/easing';
 import { random } from '../utils/numbers';
 
-export default class extends ProcessBase {
+export default class extends WithBlur {
   constructor(gl, config, programs = {}) {
     super(gl, config, programs);
-
-    const configBlur = config.blur || {};
-    this.blurSize = configBlur.size !== undefined ? configBlur.size : 0.6;
-    this.blurIntensity = configBlur.intensity !== undefined ? configBlur.intensity : 1.0;
 
     this.near = config.near || 1.0;
     this.far = config.far || 100.0;
     this.radius = config.radius || 5.0;
     this.strength = config.strength || 1.0;
 
-    this.setStaticValues();
-  }
-
-  setStaticValues = () => {
     const program = this.programs.ssao;
     program.setFloat('radius', this.radius);
     program.setFloat('near', this.near);
     program.setFloat('far', this.far);
     program.setFloat('strength', this.strength);
-  };
+  }
 
   generateSsaoSamples(effect, nbSamples) {
     // not used anymore
@@ -74,20 +66,4 @@ export default class extends ProcessBase {
   //   this.screen.render(program.get());
   //   this.fboSsao.end();
   // }
-
-  setBlurPass(tex = null) {
-    // ONE PASS
-    const program = this.applyTexToProg(this.programs.blurOnePass, tex);
-    program.setFloat('size', this.blurSize);
-    program.setFloat('intensity', this.blurIntensity);
-    this.renderToPingPong(program);
-  }
-
-  setBlurIntensity = (value) => {
-    this.blurIntensity = value;
-  };
-
-  setBlurSize = (value) => {
-    this.blurSize = value;
-  };
 }

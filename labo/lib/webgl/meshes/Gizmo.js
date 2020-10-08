@@ -34,12 +34,10 @@ export default class {
     this.objet.setModeDessin(this.gl.LINES);
   }
 
-  render(camera, model, program) {
+  render(model, program) {
     model.push();
     model.scale(20);
     program.setMatrix('model', model.get());
-    program.setMatrix('view', camera.getView().get());
-    program.setMatrix('projection', camera.getProjection().get());
     this.objet.render(program);
     model.pop();
   }

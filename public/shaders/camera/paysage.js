@@ -1,6 +1,6 @@
 import { funcLightsColor } from '../utils/light';
 import { funcPBR, PBRLocations } from '../utils/pbr';
-import { uniformShadow, funcShadow, shadowLocations } from '../utils/shadow';
+import { uniformVertShadow, uniformFragShadow, funcShadow, shadowLocations } from '../utils/shadow';
 import { funcLightsToon } from '../utils/toon';
 
 const vertex = `
@@ -18,7 +18,7 @@ varying vec3 fragNormale;
 varying vec4 fragShadow;
 varying vec3 fragTransformPosition;
 
-${uniformShadow}
+${uniformVertShadow}
 
 void main()
 {
@@ -34,8 +34,9 @@ const fragment = `
 precision mediump float;
 
 uniform vec2 resolution;
-uniform sampler2D shadowMap;
 uniform vec3 posEye;
+
+${uniformFragShadow}
 
 varying vec3 fragPosition;
 varying vec3 fragNormale;
@@ -61,9 +62,8 @@ void main() {
     //   fragPosition
     // );
     vec3 pbr = funcPBR(fragPosition, fragNormale, posEye);
-    float epsilon = 0.005; // Fix shadow acne
-    float shadow = funcShadow(shadowMap, fragShadow, resolution, epsilon);
-    gl_FragColor = vec4(pbr * shadow, 1.0);
+    // float shadow = funcShadow(fragShadow, resolution, lambertCosinus);
+    gl_FragColor = vec4(pbr, 1.0);
     // gl_FragColor = vec4(vec3(shadow), 1.0);
 
     // vec3 colorToon = funcLightsToon(color.xyz, fragPosition, fragNormale);
@@ -83,8 +83,8 @@ export default {
     'inverseModel',
     'normalMatrix',
     'resolution',
-    'posEye',
     'ambiantMap',
+    'posEye',
   ]
     .concat(PBRLocations)
     .concat(shadowLocations),

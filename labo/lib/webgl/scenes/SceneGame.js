@@ -20,9 +20,6 @@ export default class extends Scene {
     this.isPause = true;
     this.interactives = {};
     this.tilemap = null;
-
-    this.setLampeInfos(this.mngProg.get('spritePhong'));
-    this.setLampeInfos(this.mngProg.get('albedoPhong'));
   }
 
   // renderBeforeProcess() {

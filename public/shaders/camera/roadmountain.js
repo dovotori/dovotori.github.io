@@ -1,4 +1,5 @@
 import { PI, funcMap } from '../utils';
+import funcRoadDistortion from '../utils/roadDistortion';
 
 const vertex = `
 attribute vec3 position;
@@ -8,7 +9,7 @@ uniform mat4 view;
 
 uniform float time;
 uniform float roadLength;
-
+uniform float roadWidth;
 uniform vec3 amplitude;
 uniform vec3 frequence;
 
@@ -17,21 +18,7 @@ varying float depth;
 
 ${PI}
 ${funcMap}
-
-float nsin(float val) {
-  return sin(val) * 0.5 + 0.5;
-}
-
-vec3 getDistortion(float progress, vec3 frequence, vec3 amplitude, float time) {
-  float movementProgressFix = 0.02;
-  float X = cos(progress * PI * frequence.x + time)
-    * amplitude.x - cos(movementProgressFix * PI * frequence.x + time) * amplitude.x;
-  float Y = nsin(progress * PI * frequence.y + time)
-    * amplitude.y - nsin(movementProgressFix * PI * frequence.y + time)* amplitude.y;
-  float Z = nsin(progress * PI * frequence.z + time)
-    * amplitude.z - nsin(movementProgressFix * PI * frequence.z + time)* amplitude.z;
-  return vec3(X, Y, Z);
-}
+${funcRoadDistortion}
 
 void main() {
   vec3 transformed = position.xyz;
@@ -46,7 +33,7 @@ void main() {
   transformed.y -= 0.01; // place a little lower than road
 
   float high = 0.0;
-  float gapLength = 10.0;
+  float gapLength = roadWidth + 4.0;
   if (position.x > gapLength) {
     high += funcMap(position.x, 5.0, 120.0, 1.0, 2.0);
   } else if (position.x < -gapLength) {
@@ -85,5 +72,14 @@ export default {
   vertex,
   fragment,
   attributes: ['position'],
-  uniforms: ['projection', 'model', 'view', 'time', 'roadLength', 'frequence', 'amplitude'],
+  uniforms: [
+    'projection',
+    'model',
+    'view',
+    'time',
+    'roadLength',
+    'roadWidth',
+    'frequence',
+    'amplitude',
+  ],
 };

@@ -13,7 +13,6 @@ export default class extends Scene {
     super.update(time);
     this.model.identity();
     this.model.rotate(this.time * 0.05, 0, 1, 0);
-    this.setLampeInfos(this.mngProg.get(this.config.MAIN_PROG));
     // this.mngGltf.get(this.config.MAIN_OBJ).update(time);
   }
 

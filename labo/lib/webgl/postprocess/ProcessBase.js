@@ -42,6 +42,30 @@ export default class {
     return program;
   }
 
+  setBrightContrast(bright, contrast, tex = null) {
+    const program = this.applyTexToProg(this.programs.brightcontrast, tex);
+    program.setFloat('brightness', bright);
+    program.setFloat('contrast', contrast);
+    this.renderToPingPong(program);
+  }
+
+  setFXAA(tex = null) {
+    const program = this.applyTexToProg(this.programs.fxaa, tex);
+    this.renderToPingPong(program);
+  }
+
+  setBloom(scale = 1.0, threshold = 1.0, tex = null) {
+    const program = this.applyTexToProg(this.programs.bloom, tex);
+    program.setFloat('scale', scale);
+    program.setFloat('threshold', threshold);
+    this.renderToPingPong(program);
+  }
+
+  setFXAA2(tex = null) {
+    const program = this.applyTexToProg(this.programs.fxaa2, tex);
+    this.renderToPingPong(program);
+  }
+
   renderToPingPong(program) {
     this.ppb.swap();
     this.ppb.start();
@@ -54,12 +78,18 @@ export default class {
     this.screen.render(program.get());
   }
 
-  getTexture() {
-    return this.ppb.getTexture();
-  }
-
   renderSimple(program) {
     program.setFloat('flipY', -1.0);
     this.screen.render(program.get());
+  }
+
+  renderFlip(flipY, tex = null, isDebug = false) {
+    const program = this.applyTexToProg(this.programs[isDebug ? 'debug' : 'screen'], tex);
+    program.setFloat('flipY', flipY);
+    this.screen.render(program.get());
+  }
+
+  getTexture() {
+    return this.ppb.getTexture();
   }
 }

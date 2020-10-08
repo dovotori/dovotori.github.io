@@ -115,4 +115,8 @@ export default class {
   get() {
     return this.program;
   }
+
+  getLocations() {
+    return this.program.locations;
+  }
 }

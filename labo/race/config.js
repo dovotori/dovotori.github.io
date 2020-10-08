@@ -2,7 +2,7 @@ export default {
   slug: 'race',
   assets: ['/textures/noisergb.png', '/gltf/raceship.gltf'],
   shaders: [
-    '/camera/road3.js',
+    '/camera/road.js',
     '/camera/gltf.js',
     '/camera/roadmountain.js',
     '/camera/basique3d.js',
@@ -12,7 +12,9 @@ export default {
     '/screen/debug.js',
     '/screen/blurOnePass.js',
     '/screen/bloom.js',
+    '/screen/mergeBloom.js',
     '/screen/fxaa.js',
+    '/screen/fxaa2.js',
   ],
   useDepthTexture: true,
   postprocess: {
@@ -28,10 +30,10 @@ export default {
     height: 512,
   },
   mouse: {
-    events: ['drag', 'down', 'move', 'up'],
+    events: ['down', 'up', 'drag'],
   },
   camera: {
-    position: { x: 0, y: 1.3, z: 0 },
+    position: { x: 0, y: 4, z: 0 },
     target: { x: 0, y: 0, z: 128 },
     near: 1,
     far: 200,
@@ -45,7 +47,7 @@ export default {
       diffuse: [0.8, 0.6, 0.5],
       specular: [1, 0.8, 0.7],
       brillance: 1,
-      strength: 2000,
+      strength: 100,
       // direction: [0, 0, 1]
     },
   ],
@@ -55,5 +57,6 @@ export default {
   roadFrequence: [2, 0, 2],
   roadAmplitude: [10, 0, 4],
   roadLength: 128,
-  roadWidth: 4,
+  roadWidth: 8,
+  shipPosition: [0, 2, 3],
 };

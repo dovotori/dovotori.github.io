@@ -16,9 +16,11 @@ export default class extends Objectif {
 
   start() {
     this.fbo.start();
+    // this.gl.cullFace(this.gl.FRONT);
   }
 
   end() {
+    // this.gl.cullFace(this.gl.BACK);
     this.fbo.end();
   }
 

@@ -3,7 +3,6 @@ import Mat4 from '../lib/webgl/maths/Mat4';
 import Spring from '../lib/webgl/maths/Spring';
 import Target from '../lib/webgl/maths/Target';
 import DualQuaternion from '../lib/webgl/maths/DualQuaternion';
-import Gizmo from '../lib/webgl/meshes/Gizmo';
 import { degToRad } from '../lib/webgl/utils/numbers';
 import ObjetPrimitive from '../lib/webgl/gl/ObjetPrimitive';
 import Buffers from '../lib/webgl/postprocess/Buffers';
@@ -19,9 +18,7 @@ export default class extends Scene {
     this.model = new Mat4();
     this.model.identity();
     this.targetX = new Spring(0);
-    this.targetY = new Spring(0);
     this.targetZ = new Target(0, 0.05);
-    this.gizmo = new Gizmo(gl);
 
     this.objet = new ObjetPrimitive(this.gl);
     Object.keys(primitive).forEach((key) => {
@@ -40,30 +37,17 @@ export default class extends Scene {
     super.update(time);
 
     this.targetX.update();
-    this.targetY.update();
     this.targetZ.update();
 
     this.model.identity();
     this.model.scale(this.targetZ.get());
 
     const angle = degToRad(this.targetX.get()) + time * 0.0001;
-    // const angle2 = degToRad(this.targetY.get());
-
     const quat = new DualQuaternion();
     quat.rotateY(-angle);
-    // quat.rotateX(-angle2);
     this.model.multiply(quat.toMatrix4());
 
     const program = this.mngProg.get(this.config.MAIN_PROG);
-    this.setLampeInfos(program);
-    if (this.canUseDepth()) {
-      this.buffers.generateTextures(this.mainRender, this.mngProg.get('buffers'));
-
-      const lampe = this.getLampe(0);
-      program.setTexture(2, lampe.getDepthTexture().get(), 'shadowMap');
-      program.setMatrix('shadowView', lampe.getView().get());
-      program.setMatrix('shadowProjection', lampe.getOrtho().get());
-    }
 
     // pour faire disparaite les objet qui sorte de la scene
     const invModel = new Mat4();
@@ -91,13 +75,21 @@ export default class extends Scene {
     // this.mngGltf.get(this.config.MAIN_OBJ).setBoneProgram(program);
 
     if (this.canUseDepth()) {
-      this.ssao.compute(this.buffers.getDepthTexture().get());
-      // this.postProcess.start();
-      // this.renderFakeShadow();
-      // this.mainRender(this.mngProg.get(this.config.MAIN_PROG));
-      // this.postProcess.end();
-      // this.postProcess.render();
-      // this.postProcess.computeSimpleSsao(0.01, this.buffers.getNormalTexture().get());
+      // const progBuffers = this.mngProg.get('buffers');
+      // this.buffers.generateTextures(this.mainRender, progBuffers);
+      // this.ssao.compute(this.buffers.getDepthTexture().get());
+      // const lampe = this.getLampe(0);
+      // this.shadow.compute(this.mainRender, lampe);
+      // this.shadow.setBrightContrast(0.0, 4.0);
+
+      this.postProcess.start();
+      this.renderFakeShadow();
+      this.mainRender(this.mngProg.get(this.config.MAIN_PROG));
+      this.postProcess.end();
+
+      this.postProcess.setCompose(this.ssao.getTexture().get(), this.shadow.getTexture().get());
+      // this.postProcess.setFXAA2();
+      this.postProcess.render();
     } else {
       this.mainRender(this.mngProg.get(this.config.MAIN_PROG));
     }
@@ -105,15 +97,13 @@ export default class extends Scene {
     // DEBUG
     // this.postProcess.render(this.bloom.getTexture().get());
     // this.postProcess.render(this.getLampe(0).getDepthTexture().get());
-    // this.postProcess.render(this.buffers.getNormalTexture().get());
-    this.postProcess.render(this.ssao.getTexture().get());
+    // this.postProcess.render(this.buffers.getShadowTexture().get());
+    // this.postProcess.render(this.ssao.getTexture().get());
+    // this.postProcess.renderFlip(-1.0, this.shadow.getTexture().get());
   }
 
   renderFakeShadow() {
     const program = this.mngProg.get('color');
-    program.setMatrix('projection', this.camera.getProjection().get());
-    program.setMatrix('view', this.camera.getView().get());
-
     const model = new Mat4();
     model.identity();
     model.rotate(-90, 1, 0, 0);
@@ -128,7 +118,6 @@ export default class extends Scene {
 
   onMouseDrag = (mouse) => {
     this.targetX.set(mouse.relPrevious.x * 0.1);
-    this.targetY.set(mouse.relPrevious.y * 0.1);
   };
 
   onMouseWheel = (mouse) => {

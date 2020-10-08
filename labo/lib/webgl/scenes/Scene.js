@@ -6,6 +6,7 @@ import ManagerSounds from '../managers/ManagerSounds';
 import PostProcess from '../postprocess/PostProcess';
 import Bloom from '../postprocess/Bloom';
 import Ssao from '../postprocess/Ssao';
+import Shadow from '../postprocess/Shadow';
 
 export default class {
   constructor(gl, config, assets) {
@@ -45,6 +46,17 @@ export default class {
                 ...config.postprocess.ssao,
                 near: config.camera.near,
                 far: config.camera.far,
+              },
+              programs
+            );
+          }
+
+          if (config.postprocess.shadow) {
+            this.shadow = new Shadow(
+              this.gl,
+              {
+                ...processConfig,
+                ...config.postprocess.shadow,
               },
               programs
             );

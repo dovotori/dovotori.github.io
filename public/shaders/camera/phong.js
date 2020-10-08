@@ -7,8 +7,10 @@ uniform mat4 projection;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat3 normalMatrix;
+
 varying vec3 fragPosition;
 varying vec3 fragNormale;
+
 void main()
 {
   fragPosition = normalize((view * model * vec4(position, 1.0)).xyz);

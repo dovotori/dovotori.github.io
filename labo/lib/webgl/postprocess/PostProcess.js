@@ -29,7 +29,7 @@ export default class extends ProcessBase {
   }
 
   mergeBloom(bloomTexture, gamma = 1.0, exposure = 1.0, tex = null) {
-    const program = this.applyTexToProg(this.programs.bloom, tex);
+    const program = this.applyTexToProg(this.programs.mergeBloom, tex);
     program.setFloat('gamma', gamma);
     program.setFloat('exposure', exposure);
     program.setTexture(3, bloomTexture.get(), 'bloomMap');
@@ -93,11 +93,6 @@ export default class extends ProcessBase {
       program.setFloat('size', size);
       this.renderToPingPong(program);
     }
-  }
-
-  setFXAA(tex = null) {
-    const program = this.applyTexToProg(this.programs.fxaa, tex);
-    this.renderToPingPong(program);
   }
 
   setGamma(gamma, tex = null) {
@@ -193,12 +188,12 @@ export default class extends ProcessBase {
     this.renderToPingPong(program);
   }
 
-  compose(albedoMap, ssaoMap, depthMap, shadowMap) {
-    const program = this.programs.compose;
-    program.setTexture(2, albedoMap, 'albedoMap');
-    program.setTexture(3, ssaoMap, 'ssaoMap');
-    program.setTexture(4, depthMap, 'depthMap');
-    program.setTexture(5, shadowMap, 'shadowMap');
+  setCompose(ssaoMap, shadowMap, tex = null) {
+    const program = this.applyTexToProg(this.programs.compose, tex);
+    program.setTexture(6, ssaoMap, 'ssaoMap');
+    program.setTexture(7, shadowMap, 'shadowMap');
+    // program.setTexture(4, depthMap, 'depthMap');
+    // program.setTexture(2, albedoMap, 'albedoMap');
     this.renderToPingPong(program);
   }
 }

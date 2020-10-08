@@ -2,21 +2,45 @@ import vertex from './basicVertex';
 
 const fragment = `
 precision mediump float;
+
 varying vec2 fragTexture;
+
 uniform sampler2D textureMap;
-uniform sampler2D bloomMap;
-uniform vec2 resolution;
-uniform float gamma;
-uniform float exposure;
+uniform float scale;
+uniform float threshold;
+
+float kernel = .005;
 
 void main() {
-  vec3 color;
-  vec3 hdr = texture2D(textureMap, fragTexture).xyz;      
-  vec3 bloom = texture2D(bloomMap, fragTexture).xyz;
-  color = hdr + bloom;
-  vec3 result = vec3(1.0) - exp(-color * exposure);
-  result = pow(result, vec3(1.0 / gamma));
-  gl_FragColor = vec4(result, 1.0);
+  vec4 sum = vec4(0.0);
+
+  // mess of for loops due to gpu compiler/hardware limitations
+  int j=-2;
+  for( int i=-2; i<=2; i++) sum+=texture2D(textureMap, fragTexture + vec2(i,j) * kernel);
+  j=-1;
+  for( int i=-2; i<=2; i++) sum+=texture2D(textureMap, fragTexture + vec2(i,j) * kernel);
+  j=0;
+  for( int i=-2; i<=2; i++) sum+=texture2D(textureMap, fragTexture + vec2(i,j) * kernel);
+  j=1;
+  for( int i=-2; i<=2; i++) sum+=texture2D(textureMap, fragTexture + vec2(i,j) * kernel);
+  j=2;
+  for( int i=-2; i<=2; i++) sum+=texture2D(textureMap, fragTexture + vec2(i,j) * kernel);
+  sum /= 25.0;
+
+
+  // WITH ALPHA
+  // vec4 s = texture2D(textureMap, fragTexture);
+  // gl_FragColor = s;
+  // // use the blurred colour if it's bright enough
+  // if (length(sum) > threshold) {
+  //   gl_FragColor += sum * scale;
+  // }
+
+  vec3 color = texture2D(textureMap, fragTexture).xyz;
+  if (length(sum) > threshold) {
+    color += sum.xyz * scale;
+  }
+  gl_FragColor = vec4(color, 1.0);
 }
 `;
 
@@ -24,5 +48,5 @@ export default {
   vertex,
   fragment,
   attributes: ['position', 'texture'],
-  uniforms: ['flipY', 'textureMap', 'bloomMap', 'resolution', 'gamma', 'exposure'],
+  uniforms: ['flipY', 'textureMap', 'scale', 'threshold'],
 };

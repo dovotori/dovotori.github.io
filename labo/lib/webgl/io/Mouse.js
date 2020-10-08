@@ -20,7 +20,6 @@ class Mouse {
       capture: false,
       passive: true,
     };
-
     this.setup();
   }
 
@@ -32,7 +31,7 @@ class Mouse {
       this.div.addEventListener('mousemove', this.onMove, this.options);
       this.div.addEventListener('touchmove', this.onMove, this.options);
     }
-    if (this.callbackDrag) {
+    if (this.callbackDrag || this.callbackDown || this.callbackUp) {
       window.addEventListener('mouseup', this.onUp, this.options);
       this.div.addEventListener('mousedown', this.onDown, this.options);
       this.div.addEventListener('touchstart', this.onDown, this.options);
