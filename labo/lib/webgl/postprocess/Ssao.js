@@ -34,8 +34,8 @@ export default class extends WithBlur {
 
   compute(depthTex) {
     const program = this.applyTexToProg(this.programs.ssao, depthTex);
+    program.setFloat('flipY', -1.0);
     this.renderToPingPong(program);
-    // this.setBlurPass();
   }
 
   // for old version ssao chapman / not working :(

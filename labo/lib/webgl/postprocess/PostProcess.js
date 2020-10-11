@@ -36,12 +36,6 @@ export default class extends ProcessBase {
     this.renderToPingPong(program);
   }
 
-  setBlur(direction, tex = null) {
-    const program = this.applyTexToProg(this.programs.blur, tex);
-    program.setVector('direction', direction);
-    this.renderToPingPong(program);
-  }
-
   setKuwahara(tex = null) {
     const program = this.applyTexToProg(this.programs.kuwahara, tex);
     this.renderToPingPong(program);
@@ -79,20 +73,6 @@ export default class extends ProcessBase {
   setSobel(tex = null) {
     const program = this.applyTexToProg(this.programs.sobel, tex);
     this.renderToPingPong(program);
-  }
-
-  setBlurPass(size = 2.0, nbPass = 1, tex = null) {
-    for (let i = 0; i < nbPass; i += 1) {
-      let program = this.applyTexToProg(this.programs.blurDirection, tex);
-      program.setFloat('direction', 0.0);
-      program.setFloat('size', size);
-      this.renderToPingPong(program);
-
-      program = this.applyTexToProg(program, tex);
-      program.setFloat('direction', 1.0);
-      program.setFloat('size', size);
-      this.renderToPingPong(program);
-    }
   }
 
   setGamma(gamma, tex = null) {
@@ -188,11 +168,11 @@ export default class extends ProcessBase {
     this.renderToPingPong(program);
   }
 
-  setCompose(ssaoMap, shadowMap, tex = null) {
+  setCompose(ssaoMap, shadowMap, depthMap, tex = null) {
     const program = this.applyTexToProg(this.programs.compose, tex);
     program.setTexture(6, ssaoMap, 'ssaoMap');
     program.setTexture(7, shadowMap, 'shadowMap');
-    // program.setTexture(4, depthMap, 'depthMap');
+    program.setTexture(4, depthMap, 'depthMap');
     // program.setTexture(2, albedoMap, 'albedoMap');
     this.renderToPingPong(program);
   }

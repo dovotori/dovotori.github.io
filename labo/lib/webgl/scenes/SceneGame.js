@@ -209,31 +209,17 @@ export default class extends Scene {
   renderBackground() {
     const { heros } = this.interactives;
     const herosPosX = heros.getX();
+    const program = this.mngProg.get('background');
     this.background.renderMountains(this.mngObj.get('tile'), this.mngProg.get('color'));
     this.background.updateScreens(-0.15);
-    this.mngProg.get('background').setTexture(0, this.mngTex.get('clouds').get(), 'textureMap');
-    this.background.renderScreen(
-      this.mngObj.get('tile'),
-      this.mngProg.get('background'),
-      herosPosX,
-      0.0005
-    );
+    program.setTexture(0, this.mngTex.get('clouds').get(), 'textureMap');
+    this.background.renderScreen(this.mngObj.get('tile'), program, herosPosX, 0.0005);
     this.background.updateScreens(-0.1);
-    this.mngProg.get('background').setTexture(0, this.mngTex.get('rocks').get(), 'textureMap');
-    this.background.renderScreen(
-      this.mngObj.get('tile'),
-      this.mngProg.get('background'),
-      herosPosX,
-      0.001
-    );
+    program.setTexture(0, this.mngTex.get('rocks').get(), 'textureMap');
+    this.background.renderScreen(this.mngObj.get('tile'), program, herosPosX, 0.001);
     this.background.updateScreens(-0.05);
-    this.mngProg.get('background').setTexture(0, this.mngTex.get('ground').get(), 'textureMap');
-    this.background.renderScreen(
-      this.mngObj.get('tile'),
-      this.mngProg.get('background'),
-      herosPosX,
-      0.005
-    );
+    program.setTexture(0, this.mngTex.get('ground').get(), 'textureMap');
+    this.background.renderScreen(this.mngObj.get('tile'), program, herosPosX, 0.005);
     this.background.renderCloudsBack(this.mngObj.get('tile'), this.mngProg.get('color'));
   }
 
@@ -268,7 +254,7 @@ export default class extends Scene {
     this.postProcess.setRGB(delta, delta, posHeros.getX(), posHeros.getY());
     this.postProcess.setWave(this.time * 0.1, this.targetWave.get(), center);
     // this.postProcess.setSketch(0.2);
-    // this.postProcess.setFXAA();
+    // this.postProcess.setFxaa();
 
     // this.postProcess.setGlitch4(this.time, delta, 0.4);
     // this.postProcess.setOil(1);

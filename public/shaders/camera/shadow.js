@@ -46,12 +46,7 @@ void main() {
   float lambertCosinus = max(dot(N, L), 0.0);
   
   float shadow = funcShadow(fragShadow, resolution, lambertCosinus);
-  gl_FragColor = vec4(vec3(shadow * lambertCosinus), 1.0);
-  
-  // gl_FragColor = texture2D(shadowMap, fragTexture);
-  // gl_FragColor = vec4(vec3(lambertCosinus), 1.0);
-  // gl_FragColor = vec4(fragPosition, 1.0);
-  // gl_FragColor = vec4(resolution, 0.0, 1.0);
+  gl_FragColor = vec4(vec3(shadow), 1.0);
 }
 `;
 

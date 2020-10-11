@@ -20,9 +20,7 @@ const Wrap = styled.div.attrs({
 
 const TeasersList = ({ entries, isTouchDevice, className }) => {
   const [currentHover, setCurrentHover] = useState('');
-  const sortEntries = useMemo(() => entries.sort((a, b) => (a.date > b.date ? -1 : 1)), [
-    entries.length,
-  ]);
+  const sortEntries = useMemo(() => entries.sort((a, b) => (a.date > b.date ? -1 : 1)), [entries]);
   return (
     <Wrap className={className} $isTouchDevice={isTouchDevice}>
       {sortEntries.map((item, index) => (

@@ -1,18 +1,7 @@
 // https://john-chapman-graphics.blogspot.com/2013/01/ssao-tutorial.html
 // not working for me :(
 
-// import vertex from './basicVertex';
-
-const vertex = `
-attribute vec3 position;
-attribute vec2 texture;
-varying vec2 fragTexture;
-
-void main() {
-  fragTexture = texture;
-  gl_Position = vec4(position, 1.0);
-}
-`;
+import vertex from './basicVertex';
 
 export const NUM_SAMPLES = 64;
 export const NUM_NOISE = 4; // tex size
@@ -108,6 +97,7 @@ export default {
   fragment,
   attributes: ['position', 'texture'],
   uniforms: [
+    'flipY',
     'positionMap',
     'normalMap',
     'depthMap',

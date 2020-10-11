@@ -16,7 +16,7 @@ const StyledLink = styled(Link).attrs({
   display: inline-block;
   margin: 1em;
   width: 400px;
-  height: 150px;
+  height: 100px;
   opacity: ${(p) => p.$levelOpacity};
   box-shadow: 0 0 1em ${(p) => p.theme.backgroundHighlight};
   transform: ${(p) => {
@@ -29,7 +29,7 @@ const StyledLink = styled(Link).attrs({
   transition: opacity 1s ${(p) => p.theme.elastic}, transform 1s ${(p) => p.theme.elastic};
 
   ${(p) => p.theme.active}
-  ${(p) => p.theme.media.mobile`margin: 1em auto; width: 100%; height: auto;`}
+  ${(p) => p.theme.media.mobile`margin: 5px auto; width: 100%; height: auto;`}
 `;
 
 const StyledLazyImage = styled(LazyImage)`
@@ -41,7 +41,8 @@ const StyledLazyImage = styled(LazyImage)`
     width: 100%;
     height: auto;
     display: block;
-    opacity: 0.8;
+    margin-top: -25px;
+    opacity: ${(p) => (p.$isFocus ? 0.7 : 0.8)};
   }
 `;
 
@@ -59,7 +60,8 @@ const Plus = styled(PlusIcon)`
   height: 50%;
   fill: ${(p) => p.theme.getColor};
   opacity: ${(p) => (p.$isFocus ? 1 : 0)};
-  transition: opacity 1000ms ${(p) => p.theme.elastic};
+  transition: opacity 1000ms ${(p) => p.theme.elastic}, transform 1000ms ${(p) => p.theme.elastic};
+  transform: ${(p) => (p.$isFocus ? 'none' : 'scale(0) rotate(45deg)')};
 `;
 
 const WrapLoader = styled.div`

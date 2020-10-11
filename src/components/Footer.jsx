@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import license from 'Assets/img/cclicense80x15.png';
 import { ReactComponent as Mail } from 'Assets/svg/mail.svg';
@@ -34,7 +34,6 @@ const Div = styled.div`
 const StyledMail = styled(Mail)`
   color: ${(p) => p.theme.light};
   height: 20px;
-  margin-top: -5px;
   .toOpen {
     transition: transform 300ms ease-out, color 300ms ease-out;
   }
@@ -50,26 +49,18 @@ const Img = styled.img`
   display: block;
   width: 80px;
   height: 14px;
-`;
-
-const commonItem = css`
-  position: relative;
-  padding: 0.4em;
-  margin: 0 1em;
-  text-transform: uppercase;
-  text-align: center;
-  min-width: 70px;
-  ${(p) => p.theme.monospace}
-  font-weight: normal;
-`;
-
-const Span = styled.span`
-  ${commonItem}
-  color: ${(p) => (p.isHighlight ? p.theme.primary : p.theme.light)};
+  margin: 0 0.4em;
 `;
 
 const Button = styled.button`
-  ${commonItem}
+  position: relative;
+  padding: 0.4em;
+  margin: 0 0.4em;
+  text-transform: uppercase;
+  text-align: center;
+  min-width: 120px;
+  ${(p) => p.theme.monospace}
+  font-weight: normal;
   color: ${(p) => p.theme.light};
   &:hover {
     color: ${(p) => p.theme.text};
@@ -89,7 +80,7 @@ const Line = styled.span`
   background: ${(p) => p.theme.primary};
   z-index: 0;
   transition: transform 300ms ease-out;
-  transform: ${(p) => (p.isHighlight ? 'none' : 'scale(0)')};
+  transform: ${(p) => (p.isHighlight ? 'none' : 'scale(0.01)')};
 `;
 
 const SimpleSpan = styled.span`
@@ -103,19 +94,12 @@ const SimpleSpan = styled.span`
 const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => {
   const renderLang = useCallback(
     () =>
-      availablesLang.map((availableLang) =>
-        availableLang.id === lang ? (
-          <Span key={availableLang.id} isHighlight>
-            <SimpleSpan>{availableLang.short}</SimpleSpan>
-            <Line isHighlight className="line" />
-          </Span>
-        ) : (
-          <Button key={availableLang.id} onClick={() => setLang(availableLang.id)}>
-            <SimpleSpan>{availableLang.short}</SimpleSpan>
-            <Line className="line" />
-          </Button>
-        )
-      ),
+      availablesLang.map((availableLang) => (
+        <Button key={availableLang.id} onClick={() => setLang(availableLang.id)}>
+          <SimpleSpan>{availableLang.short}</SimpleSpan>
+          <Line isHighlight={availableLang.id === lang} className="line" />
+        </Button>
+      )),
     [availablesLang, lang]
   );
   return (

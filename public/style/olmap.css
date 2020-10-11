@@ -1,5 +1,7 @@
 body .ol-layers .ol-layer {
-  background: #bd4949a3;
+  /* background: #bd4949a3; */
+  background: #ffffca;
+  /* #7dcdbb */
 }
 
 body .ol-layers .ol-layer canvas {
@@ -54,7 +56,6 @@ body .ol-layers .ol-layer canvas {
   white-space: nowrap;
   font-size: 16px;
   letter-spacing: 1px;
-  font-family: 'matamata', monospace;
   transform: scale(0);
   transform-origin: center bottom;
   transition: transform 600ms cubic-bezier(0.75, -0.5, 0, 1.75);

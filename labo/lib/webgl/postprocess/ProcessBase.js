@@ -27,18 +27,18 @@ export default class {
   }
 
   applyTexToProg(program, tex = null) {
-    const usePPB = tex === null;
-    this.passCount = usePPB ? this.passCount + 1 : 0;
+    const usePPBtex = tex === null;
+    this.passCount = usePPBtex ? this.passCount + 1 : 0;
     /*
      * texture index ne peux pas etre 0 car 0 est utilisé
      * pour écrire la texture -> gl.COLOR_ATTACHMENT0
      */
     const textureIdx = this.passCount + 1;
-    const finalTexture = usePPB ? this.ppb.getTexture().get() : tex;
+    const finalTexture = usePPBtex ? this.ppb.getTexture().get() : tex;
     program.setTexture(textureIdx, finalTexture, 'textureMap');
-
-    const flipY = this.passCount > 0 ? -1.0 : 1.0;
-    program.setFloat('flipY', flipY);
+    // const flipY = this.passCount % 2 === 0 ? -1.0 : 1.0;
+    // program.setFloat('flipY', flipY);
+    program.setFloat('flipY', -1.0);
     return program;
   }
 
@@ -49,7 +49,7 @@ export default class {
     this.renderToPingPong(program);
   }
 
-  setFXAA(tex = null) {
+  setFxaa(tex = null) {
     const program = this.applyTexToProg(this.programs.fxaa, tex);
     this.renderToPingPong(program);
   }
@@ -61,7 +61,7 @@ export default class {
     this.renderToPingPong(program);
   }
 
-  setFXAA2(tex = null) {
+  setFxaa2(tex = null) {
     const program = this.applyTexToProg(this.programs.fxaa2, tex);
     this.renderToPingPong(program);
   }
@@ -78,14 +78,9 @@ export default class {
     this.screen.render(program.get());
   }
 
-  renderSimple(program) {
-    program.setFloat('flipY', -1.0);
-    this.screen.render(program.get());
-  }
-
-  renderFlip(flipY, tex = null, isDebug = false) {
+  renderInverse(tex = null, isDebug = false) {
     const program = this.applyTexToProg(this.programs[isDebug ? 'debug' : 'screen'], tex);
-    program.setFloat('flipY', flipY);
+    program.setFloat('flipY', 1.0);
     this.screen.render(program.get());
   }
 

@@ -52,7 +52,7 @@ export default class extends Scene {
       this.postProcess.setGlitch(this.time * 0.07 + this.target.get(), delta, -delta);
     }
     this.postProcess.setWave(0.05, delta, [this.mouseCanvasPosition.x, this.mouseCanvasPosition.y]);
-    this.postProcess.setFXAA();
+    this.postProcess.setFxaa();
   }
 
   mainRender(program) {

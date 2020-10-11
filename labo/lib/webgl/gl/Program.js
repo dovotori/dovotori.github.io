@@ -1,11 +1,17 @@
 // this.gl.getParameter(this.gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS); // Max Texture nb
 
+// let distribTexIndex = 0;
+
 export default class {
   constructor(gl, config) {
     this.gl = gl;
     this.program = this.gl.createProgram();
     this.setup(config);
   }
+
+  // static resetTexIndex = () => {
+  //   distribTexIndex = 0;
+  // };
 
   setup(config) {
     this.creerShader('vertex', config.vertex);
@@ -69,16 +75,12 @@ export default class {
   }
 
   setTexture(idx, texture, location) {
-    // console.log(
-    //   idx,
-    //   this.gl.getParameter(this.gl.ACTIVE_TEXTURE),
-    //   this.gl.TEXTURE0 + idx
-    // );
     this.gl.useProgram(this.program);
     this.gl.activeTexture(this.gl.TEXTURE0 + idx);
     this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
     this.gl.uniform1i(this.program.locations[location], idx);
     this.gl.useProgram(null);
+    // distribTexIndex++;
   }
 
   setFloat(location, value) {

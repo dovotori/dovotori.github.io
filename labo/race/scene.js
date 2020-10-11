@@ -180,7 +180,7 @@ export default class extends Scene {
     this.bloom.setBloom(1.0, 0.1);
 
     this.postProcess.mergeBloom(this.bloom.getTexture(), 1.5, 2.2);
-    this.postProcess.setFXAA2();
+    this.postProcess.setFxaa2();
     this.postProcess.render();
 
     // this.postProcess.render(this.bloom.getTexture().get());

@@ -11,7 +11,6 @@ const IMG = styled.img`
   opacity: ${(p) => (p.loaded ? 1 : 0)};
   visibility: ${(p) => (p.loaded ? 'visible' : 'hidden')};
   transition: opacity 300ms ease-out;
-  line-height: 1.1;
   text-transform: lowercase;
   letter-spacing: 0.1em;
 `;

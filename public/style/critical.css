@@ -1,49 +1,7 @@
 @font-face {
-  font-family: 'lato';
-  src: url('../fonts/lato-black.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'lato';
-  src: url('../fonts/lato-bold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'lato';
-  src: url('../fonts/lato-regular.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'lato';
-  src: url('../fonts/lato-light.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'lato';
-  src: url('../fonts/lato-hairline.woff2') format('woff2');
-  font-weight: 100;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'lato';
-  src: url('../fonts/lato-italic.woff2') format('woff2');
-  font-weight: 500;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'nikkyou';
-  src: url('../fonts/nikkyou.woff2') format('woff2');
-  font-weight: 500;
+  font-family: 'typo';
+  src: url('../fonts/raleway.woff2') format('woff2');
+  font-weight: 400;
   font-style: normal;
 }
 
@@ -60,11 +18,11 @@ body,
 }
 
 body {
-  line-height: 1.4;
+  line-height: 1.6;
   background-color: #222;
   overflow-x: hidden;
   color: #fff;
-  transition: background-color 0.2s ease-out;
+  font-size: 14px;
 }
 
 body[theme='light'] {
@@ -72,8 +30,10 @@ body[theme='light'] {
 }
 
 body,
-button {
-  font-family: 'lato', Helvetica Neue, Helvetica, Arial, sans-serif;
+button,
+a,
+h1 {
+  font-family: 'typo', 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, FreeSans, sans-serif;
 }
 
 button {
@@ -83,7 +43,14 @@ button {
 }
 
 h1 {
-  font-family: 'lato', monospace;
+  line-height: 1;
+}
+
+html:lang(jp) body,
+html:lang(jp) h1,
+html:lang(jp) button,
+html:lang(jp) a {
+  font-family: 'typo', 'メイリオ', Meiryo, Osaka, 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
 }
 
 p {

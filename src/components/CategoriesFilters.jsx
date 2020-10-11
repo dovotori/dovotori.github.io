@@ -18,8 +18,8 @@ const Wrap = styled.div`
 const StyledLink = styled(Link)`
   position: relative;
   padding: 1em 2em;
-  margin: 1em 0;
   opacity: ${(p) => (p.selected ? 1 : 0.5)};
+  font-weight: ${(p) => (p.selected ? 800 : 400)};
   transition: color 100ms ease-out, background-color 100ms ease-out, box-shadow 100ms ease-out;
   color: ${(p) => p.theme.text};
   text-transform: uppercase;
@@ -33,6 +33,7 @@ const StyledLink = styled(Link)`
 const Cross = styled.svg`
   width: 0.5em;
   height: 0.5em;
+  min-width: 0.5em;
   stroke: ${(p) => p.theme.getColor};
   fill: none;
 `;

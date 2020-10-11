@@ -7,11 +7,10 @@ uniform sampler2D textureMap;
 uniform vec2 resolution;
 varying vec2 fragTexture;
 
-void main() {
+vec3 funcFxaa() {
   // The inverse of the texture dimensions along X and Y
   vec2 texcoordOffset = 1. / resolution;
 
-  // varying vec4 vertColor;
   vec4 vertTexcoord = vec4(fragTexture, 1., 1.);
 
   // The parameters are hardcoded for now, but could be
@@ -58,13 +57,20 @@ void main() {
               texture2D(textureMap, vertTexcoord.xy + dir * (3.0/3.0 - 0.5)).xyz);
   float lumaB = dot(rgbB, luma);
 
+  vec3 color;
   if((lumaB < lumaMin) || (lumaB > lumaMax)) {
-    gl_FragColor.xyz = rgbA;
+    color = rgbA;
   } else {
-    gl_FragColor.xyz = rgbB;
+    color = rgbB;
   }
-  gl_FragColor.a = 1.0; 
-  //gl_FragColor *= vertColor;
+  return color;
+}
+
+
+void main() {
+  vec3 color = funcFxaa();
+  float alpha = texture2D(textureMap, fragTexture).a;
+  gl_FragColor = vec4(color, alpha); 
 }
 `;
 

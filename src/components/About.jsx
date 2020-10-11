@@ -38,7 +38,6 @@ const WrapContent = styled.div`
 const Description = styled.p`
   color: ${(p) => p.theme.light};
   width: 100%;
-  line-height: 1.4;
   font-style: italic;
   margin-bottom: 1em;
 `;

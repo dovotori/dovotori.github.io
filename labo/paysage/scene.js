@@ -20,12 +20,12 @@ export default class extends Scene {
     this.targetX = new Spring(0);
     this.targetZ = new Target(0, 0.05);
 
-    this.objet = new ObjetPrimitive(this.gl);
+    this.fakeShadow = new ObjetPrimitive(this.gl);
     Object.keys(primitive).forEach((key) => {
       if (key === 'indice') {
-        this.objet.setIndices(primitive.indice);
+        this.fakeShadow.setIndices(primitive.indice);
       } else {
-        this.objet.setPoints(primitive[key], key);
+        this.fakeShadow.setPoints(primitive[key], key);
       }
     });
     this.targetZ.set(1.2);
@@ -69,37 +69,32 @@ export default class extends Scene {
   render() {
     super.render();
 
-    // const program = this.mngProg.get('bone');
-    // program.setMatrix('projection', this.camera.getProjection().get());
-    // program.setMatrix('view', this.camera.getView().get());
-    // this.mngGltf.get(this.config.MAIN_OBJ).setBoneProgram(program);
-
     if (this.canUseDepth()) {
-      // const progBuffers = this.mngProg.get('buffers');
-      // this.buffers.generateTextures(this.mainRender, progBuffers);
-      // this.ssao.compute(this.buffers.getDepthTexture().get());
-      // const lampe = this.getLampe(0);
-      // this.shadow.compute(this.mainRender, lampe);
-      // this.shadow.setBrightContrast(0.0, 4.0);
+      const progBuffers = this.mngProg.get('buffers');
+      this.buffers.generateTextures(this.mainRender, progBuffers);
+      this.ssao.compute(this.buffers.getDepthTexture().get());
+      const lampe = this.getLampe(0);
+      this.shadow.start(lampe);
+      this.mainRender(this.shadow.getProgram());
+      this.shadow.end();
+      this.shadow.setBrightContrast(0.0, 4.0);
+      this.shadow.setBlur();
 
       this.postProcess.start();
       this.renderFakeShadow();
       this.mainRender(this.mngProg.get(this.config.MAIN_PROG));
       this.postProcess.end();
 
-      this.postProcess.setCompose(this.ssao.getTexture().get(), this.shadow.getTexture().get());
-      // this.postProcess.setFXAA2();
+      this.postProcess.setCompose(
+        this.ssao.getTexture().get(),
+        this.shadow.getTexture().get(),
+        this.buffers.getDepthTexture().get()
+      );
+      this.postProcess.setFxaa2();
       this.postProcess.render();
     } else {
       this.mainRender(this.mngProg.get(this.config.MAIN_PROG));
     }
-
-    // DEBUG
-    // this.postProcess.render(this.bloom.getTexture().get());
-    // this.postProcess.render(this.getLampe(0).getDepthTexture().get());
-    // this.postProcess.render(this.buffers.getShadowTexture().get());
-    // this.postProcess.render(this.ssao.getTexture().get());
-    // this.postProcess.renderFlip(-1.0, this.shadow.getTexture().get());
   }
 
   renderFakeShadow() {
@@ -112,8 +107,8 @@ export default class extends Scene {
     model.multiply(this.model);
     program.setMatrix('model', model.get());
     program.setVector('color', [0.0, 0.0, 0.0, 0.4]);
-    this.objet.enable(program.get(), 'position', 3);
-    this.objet.render();
+    this.fakeShadow.enable(program.get(), 'position', 3);
+    this.fakeShadow.render();
   }
 
   onMouseDrag = (mouse) => {

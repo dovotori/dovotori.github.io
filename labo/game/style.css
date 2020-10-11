@@ -16,6 +16,13 @@
   top: 0;
   left: 0;
   padding: 4px;
+  width: 100%;
+  text-align: left;
+}
+
+meter {
+  width: 100px;
+  height: 1.2em;
 }
 
 #game[data-fullscreen] canvas {
@@ -36,7 +43,7 @@
 }
 
 #title {
-  font-size: 4em;
+  font-size: 6em;
   font-weight: 100;
   text-shadow: 1px 1px 0 #000;
   margin: 0;
@@ -60,7 +67,6 @@
   position: relative;
   overflow: hidden;
   font-size: 0.8em;
-  line-height: 1;
   letter-spacing: 0.1em;
   margin: 10px 0;
 }

@@ -21,8 +21,10 @@ export default {
   ],
   postprocess: {
     ssao: {
+      // radius: 2.0,
+      // strength: 0.5,
       radius: 2.0,
-      strength: 0.5,
+      strength: 1.0,
       blur: {
         size: 0.000001,
         intensity: 0.6,
@@ -30,9 +32,10 @@ export default {
     },
     shadow: {
       epsilon: 0.0001,
+      lighten: 0.1, // entre 0.0 et 0.5 ajoute à la couleur de l'ombre
       blur: {
-        size: 10.0,
-        intensity: 10.0,
+        size: 0.1,
+        intensity: 1.0,
       },
     },
   },

@@ -45,7 +45,6 @@ const Circle = styled.div`
   left: 50%;
   width: 250vh;
   height: 250vh;
-  border-radius: 50%;
   background-color: ${(p) => p.theme.background};
   transform-origin: center center;
   ${animationLoad}

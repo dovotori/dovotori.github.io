@@ -5,16 +5,19 @@ export default class extends WithBlur {
     super(gl, config, programs);
     const program = this.programs.shadow;
     program.setFloat('shadowEpsilon', config.epsilon || 0.01);
+    program.setFloat('lighten', config.lighten || 0.0);
   }
 
-  compute(renderScene, lampe) {
+  start(lampe) {
+    super.start();
     const program = this.programs.shadow;
     program.setTexture(2, lampe.getDepthTexture().get(), 'shadowMap');
     program.setMatrix('shadowView', lampe.getView().get());
     program.setMatrix('shadowProjection', lampe.getOrtho().get());
     program.setVector('posLum', lampe.getPosition());
-    this.start();
-    renderScene(program);
-    this.end();
   }
+
+  getProgram = () => {
+    return this.programs.shadow;
+  };
 }

@@ -7,6 +7,7 @@ export default {
     '/screen/wave.js',
     '/screen/rgb.js',
     '/screen/watercolorMoving.js',
+    '/screen/screen.js',
   ],
   postprocess: true,
   useDepthTexture: false,

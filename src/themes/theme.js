@@ -11,10 +11,12 @@ const getType = (p) => {
   return colorType;
 };
 
+// 186 / 247 / 236;
+
 const hue = {
   primary: 160, // hsl(160, 100%, 70%) // rgb(102, 255, 204) // #66ffcc
-  secondary: 30, // hsl(30, 100%, 70%) // rgb(255, 179, 102) // #ffb366
-  tertiary: 290, // hsl(290, 100%, 70%) // rgb(230, 102, 255) // #e666FF
+  secondary: 290, // hsl(30, 100%, 70%) // rgb(255, 179, 102) // #ffb366
+  tertiary: 247, // hsl(290, 100%, 70%) // rgb(230, 102, 255) // #e666FF
 };
 
 const common = {
@@ -26,10 +28,8 @@ const common = {
   },
   title: css`
     text-align: left;
-    font-size: 8em;
+    font-size: 6em;
     letter-spacing: 0.2em;
-    line-height: 1.1;
-    font-weight: 100;
     color: ${(p) => p.theme.getColor};
     overflow-wrap: break-word;
     text-transform: uppercase;
@@ -42,17 +42,22 @@ const common = {
     }
   `,
   monospace: css`
-    font-size: 0.8em;
-    line-height: 1.6em;
     letter-spacing: 0.4em;
-    font-family: 'whiterabbit', monospace;
+    /* font-family: Consolas, 'Andale Mono', monospace; */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   `,
   primaryGradient: 'linear-gradient(to right, #006666, #a5ffd4)',
-  secondaryGradient: 'linear-gradient(to right, #660000, #ffb366)',
-  tertiaryGradient: 'linear-gradient(to right, #cc0099,  #8d66d4)',
+  tertiaryGradient: 'linear-gradient(to right, #514799, #4531d5)',
+  secondaryGradient: 'linear-gradient(to right, #cc0099,  #8d66d4)',
+
+  // #5ba8c2
+  // #8b9fcb
+  // #514799
+  // #997869
+  // #ffffca
+  // #c6eab2
   media: {
     mobile: (...args) => css`
       @media (max-width: 570px) {
@@ -61,6 +66,11 @@ const common = {
     `,
     tablet: (...args) => css`
       @media (max-width: 1020px) {
+        ${css(...args)};
+      }
+    `,
+    desktop: (...args) => css`
+      @media (min-width: 1020px) {
         ${css(...args)};
       }
     `,

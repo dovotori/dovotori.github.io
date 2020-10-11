@@ -19,7 +19,8 @@ float funcShadow(
       shadow += (depth + bias) < pos.z ? 0.0 : 1.0;
     } 
   }
-  return shadow / 9.0;
+  shadow /= 9.0;
+  return (shadow * lambertCosinus) + lighten;
 }
 `;
 
@@ -38,13 +39,8 @@ const mat4 bias = mat4(
 export const uniformFragShadow = `
 uniform sampler2D shadowMap;
 uniform float shadowEpsilon;
+uniform float lighten;
 uniform vec3 posLum;
 `;
 
-export const shadowLocations = [
-  'shadowView',
-  'shadowProjection',
-  'shadowMap',
-  'shadowEpsilon',
-  'posLum',
-];
+export const shadowLocations = ['shadowView', 'shadowProjection', 'shadowMap', 'lighten', 'posLum'];

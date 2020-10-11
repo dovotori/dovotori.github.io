@@ -257,11 +257,11 @@ const getVectorMap = (json, highlightIso) => {
   const style = (feature) => {
     if (feature.get('ISO_A3') === highlightIso) {
       return new Style({
-        fill: new Fill({ color: '#e666FF' }),
+        fill: new Fill({ color: '#4531d5' }),
       });
     }
     return new Style({
-      fill: new Fill({ color: '#540054' }),
+      fill: new Fill({ color: '#514799' }),
     });
   };
 

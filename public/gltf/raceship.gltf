@@ -397,7 +397,7 @@
                         "TEXCOORD_0" : 22
                     },
                     "indices" : 23,
-                    "material" : 4
+                    "material" : 1
                 }
             ]
         },
@@ -411,7 +411,7 @@
                         "TEXCOORD_0" : 26
                     },
                     "indices" : 27,
-                    "material" : 4
+                    "material" : 0
                 }
             ]
         },
@@ -425,7 +425,7 @@
                         "TEXCOORD_0" : 30
                     },
                     "indices" : 27,
-                    "material" : 4
+                    "material" : 0
                 }
             ]
         },
