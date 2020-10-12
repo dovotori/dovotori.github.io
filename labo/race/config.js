@@ -47,7 +47,7 @@ export default {
       diffuse: [0.8, 0.6, 0.5],
       specular: [1, 0.8, 0.7],
       brillance: 1,
-      strength: 30,
+      strength: 40,
       // direction: [0, 0, 1]
     },
   ],

@@ -226,7 +226,7 @@ const replacer = (key, value) => {
   return value;
 };
 
-const getVectorMap = (json, highlightIso) => {
+const getVectorMap = (json, highlightIso, colors) => {
   const tileIndex = geojsonvt(json, {
     extent: 4096,
     debug: 1,
@@ -257,11 +257,11 @@ const getVectorMap = (json, highlightIso) => {
   const style = (feature) => {
     if (feature.get('ISO_A3') === highlightIso) {
       return new Style({
-        fill: new Fill({ color: '#4531d5' }),
+        fill: new Fill({ color: colors.highlight }),
       });
     }
     return new Style({
-      fill: new Fill({ color: '#514799' }),
+      fill: new Fill({ color: colors.land }),
     });
   };
 
@@ -287,7 +287,15 @@ const createTooltip = (map, point) => {
   map.addOverlay(tooltip);
 };
 
-export default (div, points, geojson, icon, highlightIso, defaultZoom = 6) => {
+export default ({
+  div,
+  points,
+  geojson,
+  icon,
+  highlightIso,
+  defaultZoom = 6,
+  colors = { highlight: '#4531d5', land: '#514799' },
+}) => {
   const formatPoints = points.map((point) => ({ ...point, coor: getCoor(point.coor) }));
   const labelPoints = formatPoints.filter((point) => point.label);
   const view = getView(labelPoints, defaultZoom);
@@ -304,7 +312,7 @@ export default (div, points, geojson, icon, highlightIso, defaultZoom = 6) => {
     //     layer: 'terrain-labels'
     //   })
     // }),
-    getVectorMap(geojson, highlightIso),
+    getVectorMap(geojson, highlightIso, colors),
     // getVectorMap2(topojson),
     getLineLayer(labelPoints),
     getMarkersLayer(labelPoints),

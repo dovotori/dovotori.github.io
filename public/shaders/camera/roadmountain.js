@@ -23,7 +23,7 @@ ${funcRoadDistortion}
 void main() {
   vec3 transformed = position.xyz;
   
-  depth = 1.0 - (transformed.z / roadLength);
+  depth = 1.0 - (transformed.z * 0.2 / roadLength);
 
   vec3 distortion  = getDistortion(transformed.z / roadLength, frequence, amplitude, time);
 

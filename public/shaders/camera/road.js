@@ -22,7 +22,7 @@ void main() {
   vec3 transformed = position.xyz;
   
   fragPosition = position;
-  depth = 1.0 - (transformed.z / roadLength);
+  depth = 1.0 - (transformed.z * 0.2 / roadLength);
 
   vec3 distortion = getDistortion(transformed.z / roadLength, frequence, amplitude, time);
   // vec3 distortion = vec3(0.0);
