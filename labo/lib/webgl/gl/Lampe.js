@@ -34,8 +34,8 @@ export default class extends Objectif {
     this.repere.update(this.position, this.sizeRepere);
   }
 
-  renderRepere(camera) {
-    this.repere.render(camera);
+  renderRepere(program) {
+    this.repere.render(program);
   }
 
   getDepthTexture() {

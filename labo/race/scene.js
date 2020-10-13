@@ -5,6 +5,8 @@ import Mat4 from '../lib/webgl/maths/Mat4';
 import Vec3 from '../lib/webgl/maths/Vec3';
 import { getPoints, getIndices } from '../lib/webgl/primitives/grid';
 import Target from '../lib/webgl/maths/Target';
+import ObjetPrimitive from '../lib/webgl/gl/ObjetPrimitive';
+import primitive from '../lib/webgl/primitives/cube';
 
 const nsin = (val) => {
   return Math.sin(val) * 0.5 + 0.5;
@@ -63,10 +65,9 @@ export default class extends Scene {
     this.setLampeInfos(this.mngProg.get('gltf'));
     this.mngProg.get('roadSky').setTexture(1, this.mngTex.get('noisergb').get(), 'textureMap');
 
-    // this.bloom.setIntensity(2.0);
-
-    // this.mngGltf.get('raceship').setAnimationSpeed('aile1', 'rotation', 4000);
-    // this.mngGltf.get('raceship').setAnimationSpeed('aile2', 'rotation', 4000);
+    this.bonus = new ObjetPrimitive(this.gl);
+    this.bonus.setIndices(primitive.indice);
+    this.bonus.setPoints(primitive.position, 'position');
   }
 
   update(time) {
@@ -172,6 +173,9 @@ export default class extends Scene {
     this.renderMountain();
     this.renderRoad();
     this.renderShip();
+
+    const program = this.mngProg.get('basique3d');
+    this.bonus.render();
     this.postProcess.end();
 
     this.bloom.start();

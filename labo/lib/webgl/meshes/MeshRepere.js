@@ -13,10 +13,8 @@ export default class {
     this.model.identity();
   }
 
-  render(camera, program) {
+  render(program) {
     program.setMatrix('model', this.model.get());
-    program.setMatrix('view', camera.getView().get());
-    program.setMatrix('projection', camera.getProjection().get());
     this.objet.enable(program.get(), 'position', 3);
     this.objet.render(program.get());
   }
