@@ -1,4 +1,4 @@
-import Primitive from './Primitive';
+import Primitive from '../gl/Primitive';
 import SpringVec3 from '../maths/SpringVec3';
 import Vec3 from '../maths/Vec3';
 
@@ -10,15 +10,15 @@ import {
   lineShaderWithAdjacents,
 } from '../primitives/line';
 
-export default class extends Primitive {
+export default class {
   constructor(gl, count, { spring, friction }) {
     const points = getPoints(count);
     const { position, next, previous } = lineShaderWithAdjacents(points);
-    const indice = getIndices(count);
+    const indices = getIndices(count);
     const side = getSide(count);
     const texture = getTexture(count);
-    const primitive = { position, next, previous, indice, side, texture };
-    super(gl, primitive, true);
+    const primitive = { position, next, previous, indices, side, texture };
+    this.vbo = new Primitive(gl, primitive, true);
     this.spring = new SpringVec3({ spring, friction });
     this.points = points;
   }
@@ -35,14 +35,11 @@ export default class extends Primitive {
       return vec.get();
     });
     const primitive = lineShaderWithAdjacents(this.points);
-    super.update(primitive);
+    this.vbo.update(primitive);
   }
 
   render(program) {
-    this.objet.enable(program, 'next', 3);
-    this.objet.enable(program, 'previous', 3);
-    this.objet.enable(program, 'side', 1);
-    super.render(program);
+    this.vbo.render(program);
   }
 
   init = (pos) => {

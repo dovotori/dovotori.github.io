@@ -1,10 +1,10 @@
-import ObjetVbo from '../gl/ObjetVbo';
+import Vbos from '../vbos/Vbos';
 import TextureData from '../textures/TextureDataRgb';
 
 export default class {
   constructor(gl, { vbos, material = {} }) {
     this.material = material;
-    this.objet = new ObjetVbo(gl, vbos);
+    this.objet = new Vbos(gl, vbos);
 
     if (material.normalMap) {
       this.normalMap = new TextureData(gl, material.normalMap.data);
@@ -20,7 +20,7 @@ export default class {
     // if (this.normalMap) {
     //   program.setTexture(0, this.normalMap.get(), 'normalMap');
     // }
-    this.objet.render(program);
+    this.objet.render(program.get());
   }
 
   setModeDessin(mode) {

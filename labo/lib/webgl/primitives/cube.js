@@ -87,7 +87,7 @@ export default {
     1.0,
     -1.0, // v4-v7-v6-v5 back
   ],
-  indice: [
+  indices: [
     0,
     1,
     2,

@@ -1,15 +1,18 @@
 import TextureData from '../textures/TextureDataRgb';
 import { mapFromRange } from '../utils/numbers';
-import ParticulesVbo from '../vbos/ParticulesVbo';
+import Primitive from '../gl/Primitive';
 import Fbo from '../gl/Fbo';
 import Screen from '../gl/Screen';
+import { get2DGridTexturePoints } from '../primitives/particules';
 
 export default class {
   constructor(gl, width = 32, height = 32) {
     this.gl = gl;
     this.screen = new Screen(gl);
-    this.vbo = new ParticulesVbo(gl, width, height);
     this.fbo = new Fbo(gl, width, height);
+    const points = get2DGridTexturePoints(width, height);
+    this.vbo = new Primitive(gl, { texture: points });
+    this.vbo.setModeDessin(gl.POINTS);
     this.textures = {};
   }
 

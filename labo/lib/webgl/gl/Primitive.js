@@ -1,33 +1,63 @@
-import ObjetPrimitive from './ObjetPrimitive';
+import Vbos from '../vbos/Vbos';
 
-export default class {
-  constructor(gl, primitive, isDynamic = false) {
-    this.gl = gl;
-    this.objet = new ObjetPrimitive(this.gl, isDynamic);
-    this.setupObjet(primitive);
-  }
+const createVbosFromPrimitive = (gl, primitive) => {
+  return Object.keys(primitive).reduce((acc, locationKey) => {
+    const values = primitive[locationKey];
+    let componentType;
+    let type;
+    let size;
+    let convertedValues;
 
-  setupObjet(primitive) {
-    Object.keys(primitive).forEach((key) => {
-      if (key === 'indice') {
-        this.objet.setIndices(primitive.indice);
-      } else {
-        this.objet.setPoints(primitive[key], key);
+    switch (locationKey) {
+      default:
+      case 'position':
+      case 'next':
+      case 'previous':
+      case 'normale':
+      case 'color': {
+        type = 'VEC3';
+        size = 3;
+        componentType = gl.FLOAT;
+        convertedValues = new Float32Array(values);
+        break;
       }
-    });
-  }
+      case 'texture': {
+        type = 'VEC2';
+        size = 2;
+        componentType = gl.FLOAT;
+        convertedValues = new Float32Array(values);
+        break;
+      }
+      case 'indices': {
+        type = 'SCALAR';
+        size = 1;
+        componentType = gl.UNSIGNED_SHORT;
+        convertedValues = new Uint16Array(values);
+        break;
+      }
+      case 'side': {
+        type = 'FLOAT';
+        size = 1;
+        componentType = gl.FLOAT;
+        convertedValues = new Float32Array(values);
+        break;
+      }
+    }
+    acc[locationKey] = {
+      locationKey,
+      type,
+      values: convertedValues,
+      count: values.length / size,
+      componentType,
+      size,
+    };
+    return acc;
+  }, {});
+};
 
-  update(primitive) {
-    Object.keys(primitive).forEach((key) => {
-      this.objet.setPoints(primitive[key], key);
-    });
-  }
-
-  render(program) {
-    this.objet.enable(program, 'position', 3);
-    this.objet.enable(program, 'texture', 2);
-    this.gl.disable(this.gl.CULL_FACE);
-    this.objet.render();
-    this.gl.enable(this.gl.CULL_FACE);
+export default class extends Vbos {
+  constructor(gl, primitive, isDynamic = false) {
+    const vbos = createVbosFromPrimitive(gl, primitive);
+    super(gl, vbos, isDynamic);
   }
 }

@@ -1,11 +1,10 @@
 import Scene from '../lib/webgl/scenes/SceneLampe';
 import Screen from '../lib/webgl/gl/Screen';
-import VboPointsIndices from '../lib/webgl/vbos/VboPointsIndices';
+import Primitive from '../lib/webgl/gl/Primitive';
 import Mat4 from '../lib/webgl/maths/Mat4';
 import Vec3 from '../lib/webgl/maths/Vec3';
 import { getPoints, getIndices } from '../lib/webgl/primitives/grid';
 import Target from '../lib/webgl/maths/Target';
-import ObjetPrimitive from '../lib/webgl/gl/ObjetPrimitive';
 import primitive from '../lib/webgl/primitives/cube';
 
 const nsin = (val) => {
@@ -49,12 +48,10 @@ export default class extends Scene {
     });
 
     const indicesRoads = getIndices(2, roadLength);
-    this.roadVbo = new VboPointsIndices(gl, pointsRoads, indicesRoads);
-    this.roadVbo.setModeDessin(gl.TRIANGLES);
+    this.roadVbo = new Primitive(gl, { position: pointsRoads, indices: indicesRoads });
 
     const indicesMountains = getIndices(120, roadLength);
-    this.mountainVbo = new VboPointsIndices(gl, pointsMountains, indicesMountains);
-    this.mountainVbo.setModeDessin(gl.TRIANGLES);
+    this.mountainVbo = new Primitive(gl, { position: pointsMountains, indices: indicesMountains });
 
     this.shipPos = new Vec3(...shipPosition);
     this.currentShipPos = new Vec3(0.0);
@@ -65,9 +62,7 @@ export default class extends Scene {
     this.setLampeInfos(this.mngProg.get('gltf'));
     this.mngProg.get('roadSky').setTexture(1, this.mngTex.get('noisergb').get(), 'textureMap');
 
-    this.bonus = new ObjetPrimitive(this.gl);
-    this.bonus.setIndices(primitive.indice);
-    this.bonus.setPoints(primitive.position, 'position');
+    // this.bonus = new Primitive(this.gl, primitive);
   }
 
   update(time) {
@@ -174,8 +169,7 @@ export default class extends Scene {
     this.renderRoad();
     this.renderShip();
 
-    const program = this.mngProg.get('basique3d');
-    this.bonus.render();
+    // this.bonus.render(this.mngProg.get('basique3d').program.get());
     this.postProcess.end();
 
     this.bloom.start();
@@ -186,8 +180,6 @@ export default class extends Scene {
     this.postProcess.mergeBloom(this.bloom.getTexture(), 1.5, 2.2);
     this.postProcess.setFxaa2();
     this.postProcess.render();
-
-    // this.postProcess.render(this.bloom.getTexture().get());
   }
 
   interactShip = (mouse) => {

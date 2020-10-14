@@ -68,3 +68,16 @@ export const getGridPerlinPoints = (nbRows, nbColumns) => {
   }
   return result;
 };
+
+export const get2DGridTexturePoints = (width, height) => {
+  const texture = []; // texture coord to read position texture
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const posX = mapFromRange(x, 0, width - 1, 0, 1);
+      const posY = mapFromRange(y, 0, height - 1, 0, 1);
+      texture.push(posX);
+      texture.push(posY);
+    }
+  }
+  return texture;
+};

@@ -1,12 +1,11 @@
 import Scene from '../lib/webgl/scenes/SceneCamera';
 import Screen from '../lib/webgl/gl/Screen';
-import LinesTrail from '../lib/webgl/gl/LinesTrail';
+import LinesTrail from '../lib/webgl/lines/LinesTrail';
 import Grid from '../lib/webgl/particules/Grid';
 import Migration from '../lib/webgl/particules/Migration';
 import GpuParticules from '../lib/webgl/particules/GpuParticules';
 import Delaunay from '../lib/delaunay';
-import SimpleVbo from '../lib/webgl/vbos/SimpleVbo';
-import VboPointsIndices from '../lib/webgl/vbos/VboPointsIndices';
+import Primitive from '../lib/webgl/gl/Primitive';
 import Mat4 from '../lib/webgl/maths/Mat4';
 import Vec3 from '../lib/webgl/maths/Vec3';
 import { getGridPerlinPoints, getGridPoints } from '../lib/webgl/primitives/particules';
@@ -36,11 +35,11 @@ export default class extends Scene {
     this.linesTrail = new LinesTrail(this.gl);
 
     this.grid = new Grid(10);
-    this.vboGrid = new SimpleVbo(gl, this.grid.getPositions(), true);
+    this.vboGrid = new Primitive(gl, { position: this.grid.getPositions() }, true);
     this.vboGrid.setModeDessin(this.gl.POINTS);
 
     this.migration = new Migration(40);
-    this.vboMigration = new SimpleVbo(gl, this.migration.getPositions(), true);
+    this.vboMigration = new Primitive(gl, { position: this.migration.getPositions() }, true);
     this.vboMigration.setModeDessin(this.gl.POINTS);
 
     this.particules = new GpuParticules(gl, 32, 32);
@@ -53,11 +52,11 @@ export default class extends Scene {
     ]);
     const indices = Delaunay.triangulate(points);
     const points3d = points.reduce((acc, cur) => [...acc, cur[0], cur[1], 0], []);
-    this.vboDelaunay = new VboPointsIndices(gl, points3d, indices);
+    this.vboDelaunay = new Primitive(gl, { position: points3d, indices });
+    this.vboDelaunay.setModeDessin(gl.LINE_LOOP);
 
-    this.bloom.setSize(0.4);
-    this.bloom.setNbPass(4);
-    this.bloom.setIntensity(1.1);
+    this.bloom.setBlurSize(0.4);
+    this.bloom.setBlurIntensity(1.1);
 
     this.model = new Mat4();
 
@@ -71,8 +70,7 @@ export default class extends Scene {
       endZ: roadDepth,
     });
     const indicesRoads = getIndices(roadWidth, roadDepth);
-    this.roadVbo = new VboPointsIndices(gl, pointsRoads, indicesRoads);
-    this.roadVbo.setModeDessin(gl.TRIANGLES);
+    this.roadVbo = new Primitive(gl, { position: pointsRoads, indices: indicesRoads });
 
     this.roadFrequence = new Vec3(2, 0, 2);
     this.roadAmplitude = new Vec3(10, 0, 4);
@@ -117,13 +115,13 @@ export default class extends Scene {
       default:
       case 5: {
         this.grid.update();
-        this.vboGrid.update(this.grid.getPositions());
+        this.vboGrid.update({ position: this.grid.getPositions() });
         this.vboGrid.render(this.mngProg.get('point').get());
         break;
       }
       case 3: {
         this.migration.update();
-        this.vboMigration.update(this.migration.getPositions());
+        this.vboMigration.update({ position: this.migration.getPositions() });
         this.vboMigration.render(this.mngProg.get('point').get());
         break;
       }
@@ -163,7 +161,7 @@ export default class extends Scene {
         );
         this.camera.setPosition(cameraPos.getX(), this.roadPositionY + cameraPos.getY(), 0);
 
-        const program = this.mngProg.get('road3');
+        const program = this.mngProg.get('road');
         program.setProjectionView(this.camera);
         program.setMatrix('model', this.model.get());
         program.setFloat('time', time);

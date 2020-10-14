@@ -8,6 +8,32 @@ const { alias, rules } = require('./common');
 
 const port = process.env.PORT || 8080;
 const host = process.env.HOST || '0.0.0.0';
+const withAnalyze = process.env.ANALYZE || false;
+
+const plugins = [
+  new webpack.HotModuleReplacementPlugin(),
+  new webpack.NamedModulesPlugin(),
+  new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: JSON.stringify('developement'),
+      ASSET_PATH: JSON.stringify('/public'),
+      NAME: JSON.stringify(config.name),
+      MAIL: JSON.stringify(config.author.email),
+    },
+  }),
+  new HtmlWebpackPlugin({
+    title: config.name,
+    filename: 'index.html',
+    inject: 'body',
+    base: '/public',
+    chunks: ['polyfill', 'hot', 'devserver', 'main'],
+    template: path.resolve(__dirname, './templates/index.ejs'),
+  }),
+];
+
+if (withAnalyze) {
+  plugins.push(new BundleAnalyzerPlugin());
+}
 
 module.exports = {
   mode: 'development',
@@ -29,27 +55,7 @@ module.exports = {
     extensions: ['.js', '.jsx'],
     alias,
   },
-  plugins: [
-    new BundleAnalyzerPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('developement'),
-        ASSET_PATH: JSON.stringify('/public'),
-        NAME: JSON.stringify(config.name),
-        MAIL: JSON.stringify(config.author.email),
-      },
-    }),
-    new HtmlWebpackPlugin({
-      title: config.name,
-      filename: 'index.html',
-      inject: 'body',
-      base: '/public',
-      chunks: ['polyfill', 'hot', 'devserver', 'main'],
-      template: path.resolve(__dirname, './templates/index.ejs'),
-    }),
-  ],
+  plugins,
   devServer: {
     host,
     historyApiFallback: true,

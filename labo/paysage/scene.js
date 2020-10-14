@@ -4,7 +4,7 @@ import Spring from '../lib/webgl/maths/Spring';
 import Target from '../lib/webgl/maths/Target';
 import DualQuaternion from '../lib/webgl/maths/DualQuaternion';
 import { degToRad } from '../lib/webgl/utils/numbers';
-import ObjetPrimitive from '../lib/webgl/gl/ObjetPrimitive';
+import Primitive from '../lib/webgl/gl/Primitive';
 import Buffers from '../lib/webgl/postprocess/Buffers';
 import primitive from '../lib/webgl/primitives/plane';
 
@@ -20,14 +20,7 @@ export default class extends Scene {
     this.targetX = new Spring(0);
     this.targetZ = new Target(0, 0.05);
 
-    this.fakeShadow = new ObjetPrimitive(this.gl);
-    Object.keys(primitive).forEach((key) => {
-      if (key === 'indice') {
-        this.fakeShadow.setIndices(primitive.indice);
-      } else {
-        this.fakeShadow.setPoints(primitive[key], key);
-      }
-    });
+    this.fakeShadow = new Primitive(gl, primitive);
     this.targetZ.set(1.2);
 
     this.buffers = new Buffers(this.gl, config.width, config.height, this.canUseDepth());
@@ -58,11 +51,12 @@ export default class extends Scene {
   }
 
   mainRender = (program) => {
-    // this.gizmo.render(this.camera, this.model);
+    this.renderFakeShadow(this.mngProg.get('color'));
     this.mngGltf.get(this.config.MAIN_OBJ).render(program, this.model);
   };
 
   renderBasiqueForShadow = (program) => {
+    this.renderFakeShadow(program);
     this.mainRender(program);
   };
 
@@ -81,7 +75,6 @@ export default class extends Scene {
       this.shadow.setBlur();
 
       this.postProcess.start();
-      this.renderFakeShadow();
       this.mainRender(this.mngProg.get(this.config.MAIN_PROG));
       this.postProcess.end();
 
@@ -97,18 +90,16 @@ export default class extends Scene {
     }
   }
 
-  renderFakeShadow() {
-    const program = this.mngProg.get('color');
+  renderFakeShadow(program) {
     const model = new Mat4();
     model.identity();
     model.rotate(-90, 1, 0, 0);
-    model.translate(0, -1.0, 0);
-    model.scale(7.1, 7.0, 6.0);
+    model.translate(0.2, -7, 0);
+    model.scale(8.1, 1.0, 6.0);
     model.multiply(this.model);
     program.setMatrix('model', model.get());
-    program.setVector('color', [0.0, 0.0, 0.0, 0.4]);
-    this.fakeShadow.enable(program.get(), 'position', 3);
-    this.fakeShadow.render();
+    program.setVector('color', [0, 0, 0, 0.9]);
+    this.fakeShadow.render(program.get());
   }
 
   onMouseDrag = (mouse) => {

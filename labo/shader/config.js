@@ -1,7 +1,7 @@
 export default {
   slug: 'shader',
   shaders: [
-    '/camera/road3.js',
+    '/camera/road.js',
     '/screen/line.js',
     '/screen/point.js',
     '/particules/pass1Morph.js',

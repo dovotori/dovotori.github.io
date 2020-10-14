@@ -8,23 +8,21 @@ export default class {
 
   create(data) {
     const { locationKey, type, values, count, componentType, size, modeCalcul } = data;
+
     const bufferType = type !== 'SCALAR' ? this.gl.ARRAY_BUFFER : this.gl.ELEMENT_ARRAY_BUFFER;
-    const vbo = this.gl.createBuffer();
-    this.gl.bindBuffer(bufferType, vbo);
+    this.vbo = this.gl.createBuffer();
+    this.gl.bindBuffer(bufferType, this.vbo);
     this.gl.bufferData(bufferType, values, modeCalcul);
     this.gl.bindBuffer(bufferType, null);
-    this.config = {
-      vbo,
-      size,
-      count,
-      componentType,
-      bufferType,
-      locationKey,
-    };
+    this.size = size;
+    this.count = count;
+    this.componentType = componentType;
+    this.bufferType = bufferType;
+    this.locationKey = locationKey;
   }
 
   enable(program) {
-    const { locationKey, vbo, componentType, size, bufferType } = this.config;
+    const { locationKey, vbo, componentType, size, bufferType } = this;
     if (locationKey === 'indices') {
       this.gl.bindBuffer(bufferType, vbo);
     } else {
@@ -47,13 +45,21 @@ export default class {
     this.gl.useProgram(null);
   }
 
+  update(data) {
+    this.gl.bindBuffer(this.bufferType, this.vbo);
+    this.gl.bufferSubData(this.bufferType, 0, new Float32Array(data));
+    this.gl.bindBuffer(this.bufferType, null);
+  }
+
   render(program, modeDessin) {
-    this.start(program);
-    this.gl.drawElements(modeDessin, this.config.count, this.gl.UNSIGNED_SHORT, 0);
-    this.end();
+    if (this.locationKey === 'indices') {
+      this.gl.drawElements(modeDessin, this.count, this.componentType, 0);
+    } else {
+      this.gl.drawArrays(modeDessin, 0, this.count);
+    }
   }
 
   getCount() {
-    return this.config.count;
+    return this.count;
   }
 }

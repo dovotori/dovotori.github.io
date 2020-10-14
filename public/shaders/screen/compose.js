@@ -14,12 +14,13 @@ varying vec2 fragTexture;
 
 void main(void){
   vec3 albedo = texture2D(textureMap, fragTexture).xyz;
+  float alpha = texture2D(textureMap, fragTexture).a;
 
   float ssao = texture2D(ssaoMap, fragTexture).r;
   float shadow = texture2D(shadowMap, fragTexture).r;
 
   float depth = texture2D(depthMap, fragTexture).r * 2.0 - 1.0;
-  float opacity = depth > CAP_MAX_DEPTH ? 0.0 : 1.0;
+  float opacity = depth > CAP_MAX_DEPTH ? 0.0 : alpha;
 
   vec3 lighting = albedo * vec3(ssao) * vec3(shadow) * 2.0;
   

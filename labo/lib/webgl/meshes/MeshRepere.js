@@ -1,13 +1,11 @@
-import Objet from '../gl/ObjetPrimitive';
+import Primitive from '../gl/Primitive';
 import Mat4 from '../maths/Mat4';
 import primitive from '../primitives/cube';
 
 export default class {
   constructor(gl) {
     this.gl = gl;
-    this.objet = new Objet(this.gl);
-    this.objet.setIndices(primitive.indice);
-    this.objet.setPoints(primitive.position, 'position');
+    this.objet = new Primitive(this.gl, primitive);
 
     this.model = new Mat4();
     this.model.identity();
@@ -15,7 +13,6 @@ export default class {
 
   render(program) {
     program.setMatrix('model', this.model.get());
-    this.objet.enable(program.get(), 'position', 3);
     this.objet.render(program.get());
   }
 

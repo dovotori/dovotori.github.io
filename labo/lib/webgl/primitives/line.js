@@ -54,7 +54,7 @@ export const line = (points, weight = 0.1) => {
         }
         return [...acc, idx, idx + 2, idx + 1];
       }, []);
-    return { position: flat(newPoints), indice: indices };
+    return { position: flat(newPoints), indices };
   }
 
   return { position: flat(points) };
