@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import license from 'Assets/img/cclicense80x15.png';
 import { ReactComponent as Mail } from 'Assets/svg/mail.svg';
-import Toggle from './Toggle';
+import ToggleMode from './ToggleMode';
 import availablesLang from '../constants/locales';
 
 const Wrap = styled.div`
@@ -34,7 +34,6 @@ const Div = styled.div`
 const StyledMail = styled(Mail)`
   color: ${(p) => p.theme.light};
   height: 20px;
-  margin-top: -5px;
   .toOpen {
     transition: transform 300ms ease-out, color 300ms ease-out;
   }
@@ -50,27 +49,18 @@ const Img = styled.img`
   display: block;
   width: 80px;
   height: 14px;
-`;
-
-const commonItem = css`
-  position: relative;
-  padding: 0.4em;
-  margin: 0 1em;
-  text-transform: uppercase;
-  text-align: center;
-  min-width: 60px;
-  ${(p) => p.theme.monospace}
-`;
-
-const Span = styled.span`
-  ${commonItem}
-  color: ${(p) => (p.isHighlight ? p.theme.primary : p.theme.light)};
-  ${(p) => p.theme.monospace}
-  font-weight: normal;
+  margin: 0 0.4em;
 `;
 
 const Button = styled.button`
-  ${commonItem}
+  position: relative;
+  padding: 0.4em;
+  margin: 0 0.4em;
+  text-transform: uppercase;
+  text-align: center;
+  min-width: 120px;
+  ${(p) => p.theme.monospace}
+  font-weight: normal;
   color: ${(p) => p.theme.light};
   &:hover {
     color: ${(p) => p.theme.text};
@@ -90,50 +80,43 @@ const Line = styled.span`
   background: ${(p) => p.theme.primary};
   z-index: 0;
   transition: transform 300ms ease-out;
-  transform: ${(p) => (p.isHighlight ? 'none' : 'scale(0)')};
+  transform: ${(p) => (p.isHighlight ? 'none' : 'scale(0.01)')};
 `;
 
-const Label = styled.span`
+const SimpleSpan = styled.span`
   position: relative;
   z-index: 1;
-  background: ${(p) => p.theme.background};
+  transition: background-color 0.2s ease-out;
+  background-color: ${(p) => p.theme.background};
   padding: 0 0 0 0.4em;
 `;
 
 const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => {
   const renderLang = useCallback(
     () =>
-      availablesLang.map((availableLang) =>
-        availableLang.id === lang ? (
-          <Span key={availableLang.id} isHighlight>
-            <Label>{availableLang.short}</Label>
-            <Line isHighlight className="line" />
-          </Span>
-        ) : (
-          <Button key={availableLang.id} onClick={() => setLang(availableLang.id)}>
-            <Label>{availableLang.short}</Label>
-            <Line className="line" />
-          </Button>
-        )
-      ),
+      availablesLang.map((availableLang) => (
+        <Button key={availableLang.id} onClick={() => setLang(availableLang.id)}>
+          <SimpleSpan>{availableLang.short}</SimpleSpan>
+          <Line isHighlight={availableLang.id === lang} className="line" />
+        </Button>
+      )),
     [availablesLang, lang]
   );
   return (
     <Wrap className="footer">
       <Div>
-        <a href={`mailto:${process.env.MAIL}`}>
+        <a href={`mailto:${process.env.MAIL}`} title="contact">
           <StyledMail />
         </a>
       </Div>
       <Div>{renderLang()}</Div>
       <Div>
-        <a href="https://creativecommons.org/licenses/by/4.0/">
+        <a href="https://creativecommons.org/licenses/by/4.0/" title="license">
           <Img alt="license creative common" src={license} />
         </a>
       </Div>
       <Div>
-        <Toggle onClick={toggleTheme} checked={isDarkMode} />
-        <Span>{isDarkMode ? texts.lightMode : texts.darkMode}</Span>
+        <ToggleMode isDarkMode={isDarkMode} texts={texts} toggleTheme={toggleTheme} />
       </Div>
     </Wrap>
   );

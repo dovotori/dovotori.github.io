@@ -1,6 +1,6 @@
-import React, { Children } from "react";
-import styled, { keyframes } from "styled-components";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import React, { Children } from 'react';
+import styled, { keyframes } from 'styled-components';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 const duration = 1000;
 
@@ -12,8 +12,7 @@ const fadeUp = keyframes`
 const StyledCSSTransition = styled(CSSTransition)`
   &.fade-appear {
     opacity: 0;
-    animation: ${fadeUp} ${duration}ms ${(p) => p.theme.elastic}
-      ${(p) => p.delay}ms forwards;
+    animation: ${fadeUp} ${duration}ms ${(p) => p.theme.elastic} ${(p) => p.delay}ms forwards;
   }
 `;
 

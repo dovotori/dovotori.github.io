@@ -1,41 +1,29 @@
-import React from "react";
-import { Route, Router, Switch, Redirect } from "react-router-dom";
-import { createHashHistory } from "history"; // bettr for reload on SPA than createBrowserHistory
+import React from 'react';
+import { Route, Router, Switch, Redirect } from 'react-router-dom';
+import { createHashHistory } from 'history'; // bettr for reload on SPA than createBrowserHistory
 
-import TransitionRoute from "./TransitionRoute";
-import FooterContainer from "../containers/FooterContainer";
-import ProjectNavigationContainer from "../containers/ProjectNavigationContainer";
-import routes from "../constants/routes";
+import TransitionRoute from './TransitionRoute';
+import FooterContainer from '../containers/FooterContainer';
+import ProjectCommonContainer from '../containers/ProjectCommonContainer';
+import routes from '../constants/routes';
 
 const history = createHashHistory();
 
-const renderRoute = (route) => (
-  <Route
-    key={route.path}
-    path={route.path}
-    exact={route.exact}
-    component={route.component}
-  />
-);
+const renderRoute = (route) => {
+  return (
+    <Route key={route.path} path={route.path} exact={route.exact} component={route.component} />
+  );
+};
 
 const Routes = ({ isTouchDevice }) => (
   <Router history={history}>
     <>
-      {/* Navigation top */}
       <Switch>
-        <Route
-          path="/project/:slug"
-          exact
-          component={ProjectNavigationContainer}
-        />
+        <Route path="/project/:slug" exact component={ProjectCommonContainer} />
       </Switch>
-      {/* Main routes */}
-      <TransitionRoute isTouchDevice={isTouchDevice}>
+      <TransitionRoute $isTouchDevice={isTouchDevice}>
         {routes.map(renderRoute)}
-        <Route
-          path="*"
-          render={() => (<Redirect to="/" />)}
-        />
+        <Route path="*" render={() => <Redirect to="/" />} />
       </TransitionRoute>
       <FooterContainer />
     </>

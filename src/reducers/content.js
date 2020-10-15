@@ -1,6 +1,6 @@
-import { SET_LANG } from "../constants/actionsTypes";
-import * as contents from "../store/initialState";
-import { defaultLang } from "./device";
+import { SET_LANG } from '../constants/actionsTypes';
+import * as contents from '../store/initialState';
+import { defaultLang } from './device';
 
 const initialState = {
   ...contents[defaultLang],

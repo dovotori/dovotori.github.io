@@ -5,23 +5,20 @@ import styled from 'styled-components';
 import * as icons from 'Assets/svg/cv';
 import Chart from './Chart';
 
-const styledIcons = Object.keys(icons).reduce(
-  (acc, key) => ({
-    ...acc,
-    [key]: styled(icons[key])`
-      width: auto;
-      height: 2em;
-      filter: grayscale(100%);
-      transition: filter 300ms ease-out;
-      margin-right: 0.4em;
+const styledIcons = Object.keys(icons).reduce((acc, key) => {
+  acc[key] = styled(icons[key])`
+    width: auto;
+    height: 2em;
+    filter: grayscale(100%);
+    transition: filter 300ms ease-out;
+    margin-right: 0.4em;
 
-      &:hover {
-        filter: none;
-      }
-    `,
-  }),
-  {}
-);
+    &:hover {
+      filter: none;
+    }
+  `;
+  return acc;
+}, {});
 
 const Bloc = styled.div`
   margin-top: 3em;
@@ -40,7 +37,6 @@ const Category = styled.h3`
   margin: 0.5em 0;
   text-transform: lowercase;
   font-weight: normal;
-  font-size: 0.8em;
   color: ${(p) => p.theme.light};
   white-space: nowrap;
   display: inline-block;
@@ -57,13 +53,12 @@ const BlocJob = styled.div`
   margin: 0 0 1em 0;
 `;
 
-const Date = styled.div`
+const Date = styled.span`
   margin: ${(p) => (!p.isTouch ? '0' : '1em 0 0.5em 0')};
   color: ${(p) => p.theme.primary};
   ${(p) => p.theme.monospace}
   overflow-wrap: break-word;
-  ${(p) => !p.isTouch && 'text-align: right; width: 100%; margin-top: 0.3em;'};
-  font-size: 12px;
+  ${(p) => !p.isTouch && 'text-align: right; width: 100%; '};
 `;
 
 const WrapSvg = styled.div`
@@ -77,13 +72,11 @@ const Text = styled.span`
 
 const SubText = styled.span`
   color: ${(p) => p.theme.midl};
-  font-size: 0.9em;
   font-style: italic;
 `;
 
 const Level = styled.span`
   color: ${(p) => p.theme.midl};
-  font-size: 0.9em;
   margin: 0 1em;
 `;
 

@@ -16,26 +16,33 @@ const StyledLink = styled(Link).attrs({
   display: inline-block;
   margin: 1em;
   width: 400px;
-  height: 150px;
-  opacity: ${(p) => p.levelOpacity};
+  height: 100px;
+  opacity: ${(p) => p.$levelOpacity};
   box-shadow: 0 0 1em ${(p) => p.theme.backgroundHighlight};
-  transform: ${(p) => (p.isVisible ? 'none' : 'translateY(20%)')};
+  transform: ${(p) => {
+    if (p.$isVisible) {
+      return p.$isHover && !p.$isTouchDevice ? 'scale(1.2)' : 'none';
+    }
+    return 'translateY(20%)';
+  }};
+  z-index: ${(p) => (p.$isVisible && p.$isHover && !p.$isTouchDevice ? 1 : 0)};
   transition: opacity 1s ${(p) => p.theme.elastic}, transform 1s ${(p) => p.theme.elastic};
 
   ${(p) => p.theme.active}
-  ${(p) => p.theme.media.mobile`margin: 1em auto; width: 100%; height: auto;`}
+  ${(p) => p.theme.media.mobile`margin: 5px auto; width: 100%; height: auto;`}
 `;
 
 const StyledLazyImage = styled(LazyImage)`
   width: 100%;
-  transform: ${(p) => (p.isFocus ? 'scale(1.1)' : 'none')};
+  transform: ${(p) => (p.$isFocus ? 'scale(1.1)' : 'none')};
   transition: transform 5000ms ${(p) => p.theme.elastic};
   height: 100%;
   img {
     width: 100%;
     height: auto;
     display: block;
-    opacity: 0.8;
+    margin-top: -25px;
+    opacity: ${(p) => (p.$isFocus ? 0.7 : 0.8)};
   }
 `;
 
@@ -52,8 +59,9 @@ const Plus = styled(PlusIcon)`
   width: auto;
   height: 50%;
   fill: ${(p) => p.theme.getColor};
-  opacity: ${(p) => (p.isFocus ? 1 : 0)};
-  transition: opacity 1000ms ${(p) => p.theme.elastic};
+  opacity: ${(p) => (p.$isFocus ? 1 : 0)};
+  transition: opacity 1000ms ${(p) => p.theme.elastic}, transform 1000ms ${(p) => p.theme.elastic};
+  transform: ${(p) => (p.$isFocus ? 'none' : 'scale(0) rotate(45deg)')};
 `;
 
 const WrapLoader = styled.div`
@@ -62,7 +70,7 @@ const WrapLoader = styled.div`
 
 const Teaser = ({ entry, className, currentHover, setCurrentHover, isTouchDevice }) => {
   const { category, slug, title } = entry;
-  const colorType = getColorType(category);
+  const $colorType = getColorType(category);
   const [isHovered, setIsHovered] = useState(false);
   const [refInView, inView] = useInView({
     threshold: 0,
@@ -90,24 +98,27 @@ const Teaser = ({ entry, className, currentHover, setCurrentHover, isTouchDevice
       to={`/project/${slug}`}
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
-      levelOpacity={opacity}
-      isVisible={inView}
+      $levelOpacity={opacity}
+      $isVisible={inView}
+      title={slug}
+      $isHover={isHovered}
+      $isTouchDevice={isTouchDevice}
     >
-      <Infos colorType={colorType}>
+      <Infos $colorType={$colorType}>
         <StyledLazyImage
           src={getTeaserPath(slug)}
           alt={title}
           width={400}
           height={150}
           withGlitch={isHovered}
-          isFocus={isHovered}
+          $isFocus={isHovered}
         >
           <WrapLoader>
-            <Loader colorType={colorType} />
+            <Loader $colorType={$colorType} />
           </WrapLoader>
         </StyledLazyImage>
       </Infos>
-      <Plus isFocus={isHovered} colorType={colorType} />
+      <Plus $isFocus={isHovered} $colorType={$colorType} />
     </StyledLink>
   );
 };

@@ -1,5 +1,5 @@
-import { createStore } from "redux";
-import rootReducer from "../reducers/index";
+import { createStore } from 'redux';
+import rootReducer from '../reducers/index';
 
 export default function configureStore() {
   const store = createStore(
@@ -8,7 +8,7 @@ export default function configureStore() {
   );
 
   if (module.hot) {
-    module.hot.accept("../reducers/index", () => {
+    module.hot.accept('../reducers/index', () => {
       store.replaceReducer(rootReducer);
     });
   }

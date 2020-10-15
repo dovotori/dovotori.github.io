@@ -2,67 +2,31 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const config = require('../package.json');
-const utils = require('../scripts/utils');
-const { alias } = require('./common');
+const { alias, rules, getHtml } = require('./common');
 
 const port = process.env.PORT || 8081;
 const host = process.env.HOST || '0.0.0.0';
-const name = process.env.NAME || "labo";
 
-const configPromise = async () => {
-  const htmlPath = path.resolve(__dirname, `../assets/html/${name}.html`);
-  let html = '';
-  try {
-  html = await utils.readFile(htmlPath, 'utf8') || '';
-  } catch(e) {
-    console.log('no html find to be inject in template');
-  }
+const configPromise = async (name = process.env.NAME || 'labo') => {
+  const html = await getHtml(name);
   return {
     mode: 'development',
-    entry: [
-      'webpack/hot/only-dev-server',
-      `webpack-dev-server/client?http://${host}:${port}`,
-      `./labo/index.js`,
-    ],
+    entry: {
+      polyfill: '@babel/polyfill',
+      hot: 'webpack/hot/only-dev-server',
+      devserver: `webpack-dev-server/client?http://${host}:${port}`,
+      [name]: path.resolve(__dirname, `../labo/${name}/standalone.js`),
+    },
     output: {
-      filename: `${name}.js`,
+      filename: '[name].js',
       publicPath: '/',
     },
     devtool: 'inline-source-map',
     module: {
-      rules: [
-        {
-          test: /\.(js|jsx)$/,
-          exclude: /node_modules/,
-          loader: 'babel-loader',
-        },
-        {
-          test: /\.svg$/,
-          use: [
-            {
-              loader: '@svgr/webpack',
-              options: {
-                svgo: false,
-              },
-            },
-            {
-              loader: 'url-loader'
-            }
-          ],
-        },
-        {
-          test: /\.css$/i,
-          use: ['style-loader', 'css-loader'],
-        },
-        {
-          test: /\.(jpe?g|png|gif)$/i,
-          loader: 'url-loader?name=/img/[name].[ext]?[hash]?limit=100000',
-        },
-      ],
+      rules,
     },
     resolve: {
-      extensions: ['.js', '.jsx'],
+      extensions: ['.js'],
       alias,
     },
     plugins: [
@@ -71,16 +35,15 @@ const configPromise = async () => {
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify('developement'),
-          ASSET_PATH: JSON.stringify('/assets'),
+          ASSET_PATH: JSON.stringify('/public'),
           NAME: JSON.stringify(name),
-          MAIL: JSON.stringify(config.author.email),
         },
       }),
       new HtmlWebpackPlugin({
         title: name,
         filename: 'index.html',
         inject: 'body',
-        base: '/assets',
+        base: '/public',
         html,
         template: path.resolve(__dirname, './templates/labo.ejs'),
       }),

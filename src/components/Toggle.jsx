@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const CheckBoxWrapper = styled.div`
   position: relative;
@@ -15,7 +15,7 @@ const CheckBoxLabel = styled.label`
   background-color: ${(p) => p.theme.light};
   cursor: pointer;
   &::after {
-    content: "";
+    content: '';
     display: block;
     border-radius: 50%;
     width: 18px;
@@ -35,7 +35,7 @@ const CheckBox = styled.input`
   &:checked + ${CheckBoxLabel} {
     background: ${(p) => p.theme.light};
     &::after {
-      content: "";
+      content: '';
       display: block;
       border-radius: 50%;
       width: 18px;
@@ -46,15 +46,10 @@ const CheckBox = styled.input`
   }
 `;
 
-const Toggle = ({ onClick, checked, className }) => (
+const Toggle = ({ onClick, checked, className, label, id }) => (
   <CheckBoxWrapper className={className}>
-    <CheckBox
-      id="checkbox"
-      type="checkbox"
-      onChange={onClick}
-      checked={checked}
-    />
-    <CheckBoxLabel htmlFor="checkbox" />
+    <CheckBox id={id} type="checkbox" onChange={onClick} checked={checked} />
+    <CheckBoxLabel htmlFor={id}>{label}</CheckBoxLabel>
   </CheckBoxWrapper>
 );
 

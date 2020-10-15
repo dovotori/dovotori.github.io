@@ -1,29 +1,33 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-const useFetchJs = (name) => {
+const useFetchJs = (name, hasJs = true) => {
   const [pending, setPending] = useState(true);
-  const [value, setValue] = useState(null);
+  const [js, setJs] = useState(null);
   const [error, setError] = useState(false);
 
   useEffect(() => {
     setPending(true);
     setError(false);
-    setValue(null);
-    const fetchData = async () => {
-      setError(false);
-      try {
-        const js = await import(`Assets/js/${name}.js`);
-        setValue(js);
-      } catch (e) {
-        console.error(e);
-        setError(true);
-      }
+    setJs(null);
+    if (hasJs) {
+      const fetchData = async () => {
+        setError(false);
+        try {
+          const chunk = await import(`Labo/${name}/index.js`);
+          setJs(chunk);
+        } catch (e) {
+          console.error(e);
+          setError(true);
+        }
+        setPending(false);
+      };
+      fetchData();
+    } else {
       setPending(false);
-    };
-    fetchData();
+    }
   }, [name]);
 
-  return { pending, value, error };
+  return { pending, js, error };
 };
 
 export default useFetchJs;

@@ -2,7 +2,6 @@
   "files.autoSave": "onFocusChange",
   "editor.formatOnSave": true,
   "eslint.enable": true,
-  "eslint.validate.javascript": true,
   "eslint.packageManager": "npm",
   "search.exclude": {
     "**/.git": true,

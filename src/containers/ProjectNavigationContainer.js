@@ -1,12 +1,12 @@
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 
-import { getColorType } from "../utils";
-import ProjectNavigation from "../components/ProjectNavigation";
+import { getColorType } from '../utils';
+import ProjectNavigation from '../components/ProjectNavigation';
 
 const getEntryNav = (entries, slug) => {
   const entryIdx = entries.findIndex((entry) => entry.slug === slug);
   if (entryIdx === -1) {
-    window.location = "/";
+    window.location = '/';
   }
   let nextEntryIdx = entryIdx + 1;
   let prevEntryIdx = entryIdx - 1;
@@ -34,21 +34,18 @@ const getEntryNav = (entries, slug) => {
 };
 
 const mapStateToProps = (state, props) => {
-  const slug = props.match.params.slug || null;
-  const { category, nextEntry, prevEntry } = getEntryNav(
-    state.content.entries,
-    slug
-  );
-  const colorType = getColorType(category);
+  const slug = props.slug || null;
+  const { category, nextEntry, prevEntry } = getEntryNav(state.content.entries, slug);
+  const $colorType = getColorType(category);
   return {
     slug,
     nextEntry,
     prevEntry,
-    colorType,
+    $colorType,
     isTouchDevice: state.device.isTouch,
     labelBack: state.content.back,
     labelPrevious: state.content.previous,
-    labelNext: state.content.next
+    labelNext: state.content.next,
   };
 };
 

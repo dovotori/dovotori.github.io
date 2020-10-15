@@ -2,41 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 
 import ButtonBack from './ButtonBack';
-import Bloc from './Bloc';
-import TypingMessage from './TypingMessage';
 import ProjectImage from './ProjectImage';
-import { Title } from '../themes/styled';
-import ProjectHtml from './ProjectHtml';
-
-const TEXT_WIDTH = 400;
-
-const StyledProject = styled(Bloc)`
-  padding: 10% 0;
-`;
+import ProjectLabo from './ProjectLabo';
 
 const WrapContent = styled.div`
   margin: 0 auto;
   max-width: 800px;
-  min-height: 100vh;
-`;
-
-const WrapTexte = styled.div``;
-
-const Description = styled.div`
-  text-align: left;
-  color: ${(p) => p.theme.light};
-  width: 100%;
-  max-width: ${TEXT_WIDTH}px;
-
-  ${(p) => p.theme.media.tablet`
-    width: 100%;
-  `};
-`;
-
-const Text = styled.p`
-  background: ${(p) => `url(${p.theme.stripes}) repeat`};
-  padding: 10px;
-  width: calc(100% - 10px);
+  padding: 0 0 10%;
 `;
 
 const ImagesList = styled.div`
@@ -61,52 +33,25 @@ const Images = styled.div`
   margin: 0 auto;
 `;
 
-const Date = styled.p`
-  text-align: left;
-  display: inline-block;
-  margin: 0;
-  padding: 0.4em 10px;
-  color: ${(p) => p.theme.getColor};
-  ${(p) => p.theme.monospace}
-`;
-
-const StyledTitle = styled(Title)`
-  margin: 1em 0;
-  padding: 0 10px;
-`;
-
-const StyledProjectHtml = styled(ProjectHtml)`
+const StyledProjectLabo = styled(ProjectLabo)`
   background: ${(p) => (p.noBackground ? 'transparent' : p.theme.getGradient)};
+  --project-color: ${(p) => p.theme.getColor};
 `;
 
-const Project = ({ slug, title, description, images, date, colorType, html: hasHtml }) => {
+const Project = ({ slug, images, colorType, labo }) => {
   return (
-    <StyledProject>
+    <>
+      {!!labo && (
+        <StyledProjectLabo
+          slug={slug}
+          $colorType={colorType}
+          colorType={colorType}
+          noBackground={!!labo.noBackground}
+          hasHtml={!!labo.hasHtml}
+          hasJs={!!labo.hasJs}
+        />
+      )}
       <WrapContent>
-        <WrapTexte>
-          {title && (
-            <StyledTitle colorType={colorType}>
-              <TypingMessage message={title} />
-            </StyledTitle>
-          )}
-          {date && <Date colorType={colorType}>{date}</Date>}
-          {description && (
-            <Description>
-              {Array.isArray(description) ? (
-                description.map((text) => <Text key={text}>{text}</Text>)
-              ) : (
-                <Text>{description}</Text>
-              )}
-            </Description>
-          )}
-          {hasHtml && (
-            <StyledProjectHtml
-              slug={slug}
-              colorType={colorType}
-              noBackground={hasHtml.noBackground}
-            />
-          )}
-        </WrapTexte>
         {images && (
           <ImagesList>
             <Images>
@@ -118,15 +63,15 @@ const Project = ({ slug, title, description, images, date, colorType, html: hasH
                     key={`image-${slug}-${idx}`}
                     idx={idx}
                     slug={slug}
-                    colorType={colorType}
+                    $colorType={colorType}
                   />
                 ))}
             </Images>
           </ImagesList>
         )}
-        <ButtonBack colorType={colorType} />
+        <ButtonBack $colorType={colorType} />
       </WrapContent>
-    </StyledProject>
+    </>
   );
 };
 

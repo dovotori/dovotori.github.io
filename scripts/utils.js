@@ -38,24 +38,29 @@ const removeFile = (file) => {
 
 exports.removeFile = removeFile;
 
-exports.readCsv = (url) => new Promise((resolve, reject) => {
-  const data = [];
-  fs.createReadStream(url)
-    .pipe(csv())
-    .on('error', (e) => reject(e))
-    .on('data', (row) => {
-      data.push(row);
-    })
-    .on('end', () => { resolve(data); });
-});
+exports.readCsv = (url) =>
+  new Promise((resolve, reject) => {
+    const data = [];
+    fs.createReadStream(url)
+      .pipe(csv())
+      .on('error', (e) => reject(e))
+      .on('data', (row) => {
+        data.push(row);
+      })
+      .on('end', () => {
+        resolve(data);
+      });
+  });
 
 const deleteFolderRecursive = (folderPath) => {
   if (fs.existsSync(folderPath)) {
     fs.readdirSync(folderPath).forEach((file) => {
       const curPath = path.join(folderPath, file);
-      if (fs.lstatSync(curPath).isDirectory()) { // recurse
+      if (fs.lstatSync(curPath).isDirectory()) {
+        // recurse
         deleteFolderRecursive(curPath);
-      } else { // delete file
+      } else {
+        // delete file
         fs.unlinkSync(curPath);
       }
     });

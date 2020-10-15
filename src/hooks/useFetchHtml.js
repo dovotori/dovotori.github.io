@@ -1,34 +1,33 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-const useFetchHtml = (url) => {
+const useFetchHtml = (name, hasHtml = true) => {
   const [pending, setPending] = useState(true);
-  const [value, setValue] = useState(null);
+  const [html, setHtml] = useState(null);
   const [error, setError] = useState(false);
 
   useEffect(() => {
     setPending(true);
     setError(false);
-    setValue(null);
-    const fetchData = async () => {
-      setError(false);
-      try {
-        const response = await fetch(url);
-        if (response.status === 200) {
-          const text = await response.text();
-          setValue(text);
-        } else {
+    setHtml(null);
+    if (hasHtml) {
+      const fetchData = async () => {
+        setError(false);
+        try {
+          const chunk = await import(`Labo/${name}/inject.html`);
+          setHtml(chunk);
+        } catch (e) {
+          console.error(e);
           setError(true);
         }
-      } catch (e) {
-        console.error(e);
-        setError(true);
-      }
+        setPending(false);
+      };
+      fetchData();
+    } else {
       setPending(false);
-    };
-    fetchData();
-  }, [url]);
+    }
+  }, [name]);
 
-  return { pending, value, error };
+  return { pending, html, error };
 };
 
 export default useFetchHtml;
