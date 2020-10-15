@@ -1,14 +1,19 @@
 const path = require('path');
 const utils = require('../utils');
 
-const SAVE_FILE = path.resolve(__dirname, '../../assets/json');
+const SAVE_FILE = path.resolve(__dirname, '../../public/json');
 
 const generateContent = async (selection) => {
-  const geoDataFile = await utils.readFile(path.resolve(__dirname, './countries.geo.hires.json'), 'utf8');
+  const geoDataFile = await utils.readFile(
+    path.resolve(__dirname, './countries.geo.hires.json'),
+    'utf8'
+  );
   const geojson = JSON.parse(geoDataFile);
-  const filteredFeatures = geojson.features.filter(feature => selection.indexOf(feature.properties.ISO_A3) !== -1);
+  const filteredFeatures = geojson.features.filter(
+    (feature) => selection.indexOf(feature.properties.ISO_A3) !== -1
+  );
   return JSON.stringify({ ...geojson, features: filteredFeatures });
-}
+};
 
 const main = async () => {
   const myArgs = process.argv.slice(2);

@@ -3,10 +3,20 @@ import { css } from 'styled-components';
 import stripes from 'Assets/img/stripes.png';
 import stripesWhite from 'Assets/img/stripesWhite.png';
 
+const getType = (p) => {
+  const { colorType, $colorType } = p;
+  if ($colorType !== undefined) {
+    return $colorType;
+  }
+  return colorType;
+};
+
+// 186 / 247 / 236;
+
 const hue = {
   primary: 160, // hsl(160, 100%, 70%) // rgb(102, 255, 204) // #66ffcc
-  secondary: 30, // hsl(30, 100%, 70%) // rgb(255, 179, 102) // #ffb366
-  tertiary: 290, // hsl(290, 100%, 70%) // rgb(230, 102, 255) // #e666FF
+  secondary: 290, // hsl(30, 100%, 70%) // rgb(255, 179, 102) // #ffb366
+  tertiary: 247, // hsl(290, 100%, 70%) // rgb(230, 102, 255) // #e666FF
 };
 
 const common = {
@@ -16,18 +26,38 @@ const common = {
     tablet: 1020,
     mobile: 420,
   },
+  title: css`
+    text-align: left;
+    font-size: 6em;
+    letter-spacing: 0.2em;
+    color: ${(p) => p.theme.getColor};
+    overflow-wrap: break-word;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 0 ${(p) => p.theme.backgroundHighlight};
+    @media (max-width: 1020px) {
+      font-size: 6em;
+    }
+    @media (max-width: 570px) {
+      font-size: 4em;
+    }
+  `,
   monospace: css`
-    font-size: 0.8em;
-    line-height: 1.6em;
     letter-spacing: 0.4em;
-    font-family: 'whiterabbit', monospace;
+    /* font-family: Consolas, 'Andale Mono', monospace; */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   `,
   primaryGradient: 'linear-gradient(to right, #006666, #a5ffd4)',
-  secondaryGradient: 'linear-gradient(to right, #660000, #ffb366)',
-  tertiaryGradient: 'linear-gradient(to right, #cc0099,  #8d66d4)',
+  tertiaryGradient: 'linear-gradient(to right, #514799, #4531d5)',
+  secondaryGradient: 'linear-gradient(to right, #cc0099,  #8d66d4)',
+
+  // #5ba8c2
+  // #8b9fcb
+  // #514799
+  // #997869
+  // #ffffca
+  // #c6eab2
   media: {
     mobile: (...args) => css`
       @media (max-width: 570px) {
@@ -39,21 +69,28 @@ const common = {
         ${css(...args)};
       }
     `,
+    desktop: (...args) => css`
+      @media (min-width: 1020px) {
+        ${css(...args)};
+      }
+    `,
   },
   getColor: (p) => {
-    if (p.colorType === 1) {
+    const type = getType(p);
+    if (type === 1) {
       return p.theme.secondary;
     }
-    if (p.colorType === 2) {
+    if (type === 2) {
       return p.theme.tertiary;
     }
     return p.theme.primary;
   },
   getGradient: (p) => {
-    if (p.colorType === 1) {
+    const type = getType(p);
+    if (type === 1) {
       return p.theme.secondaryGradient;
     }
-    if (p.colorType === 2) {
+    if (type === 2) {
       return p.theme.tertiaryGradient;
     }
     return p.theme.primaryGradient;
@@ -76,7 +113,7 @@ export const dark = {
   tertiary: `hsl(${hue.tertiary}, 100%, 70%)`,
   tertiaryDark: `hsl(${hue.tertiary}, 100%, 60%)`,
   background: '#222',
-  backgroundHighlight: '#111',
+  backgroundHighlight: '#000',
   midl: '#666',
   light: '#bbb',
   text: '#fff',
@@ -93,7 +130,7 @@ export const light = {
   tertiary: `hsl(${hue.tertiary}, 80%, 50%)`,
   tertiaryDark: `hsl(${hue.tertiary}, 100%, 60%)`,
   background: '#fff',
-  backgroundHighlight: '#eee',
+  backgroundHighlight: '#ddd',
   midl: '#888',
   light: '#222',
   text: '#000',

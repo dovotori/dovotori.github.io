@@ -1,112 +1,63 @@
 const webpack = require('webpack');
 const path = require('path');
-const CompressionPlugin = require('compression-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const utils = require('../scripts/utils');
-const config = require('../package.json');
-const { alias, optimization } = require('./common');
+const { alias, optimization, rules, minify, getHtml, compression } = require('./common');
 
-const name = process.env.NAME || "labo";
+const BUILD_ASSET_PATH = process.env.ASSET_PATH || '/public';
+const SRC_ASSET_PATH = path.resolve(__dirname, '../public');
 
-// const BUILD_PATH = path.resolve(__dirname, `../assets/js/${name}`);
-const BUILD_PATH = path.resolve(__dirname, '../build');
-// const SRC_ASSET_PATH = path.resolve(__dirname, '../assets');
-const BUILD_ASSET_PATH = process.env.ASSET_PATH || '.';
-
-const configPromise = async () => {
-  const htmlPath = path.resolve(__dirname, `../assets/html/${name}.html`);
-  let html = '';
-  try {
-  html = await utils.readFile(htmlPath, 'utf8') || '';
-  } catch(e) {
-    console.log('no html find to be inject in template');
-  }
+const configPromise = async (name = process.env.NAME || 'labo') => {
+  const html = await getHtml(name);
+  const BUILD_PATH = path.resolve(__dirname, `../build/`);
   return {
     mode: 'production',
-    entry: path.resolve(__dirname, `../labo/index.js`),
+    entry: ['@babel/polyfill', path.resolve(__dirname, `../labo/${name}/index.js`)],
     output: {
       path: BUILD_PATH,
-      publicPath: `${BUILD_ASSET_PATH}/`,
-      filename: `${name}.js`
+      publicPath: '/',
+      filename: `${name}.js`,
     },
     module: {
-      rules: [
-        {
-          test: /\.(js|jsx)$/,
-          exclude: /node_modules/,
-          loader: 'babel-loader',
-        },
-        {
-          test: /\.svg$/,
-          use: [
-            {
-              loader: '@svgr/webpack',
-              options: {
-                svgo: false,
-              },
-            },
-            {
-              loader: 'url-loader'
-            }
-          ],
-        },
-        {
-          test: /\.css$/i,
-          use: ['style-loader', 'css-loader'],
-        },
-        {
-          test: /\.(jpe?g|png|gif)$/i,
-          loader: 'url-loader?name=/img/[name].[ext]?[hash]?limit=100000',
-        },
-      ],
+      rules,
     },
     resolve: {
-      extensions: ['.js', '.jsx'],
+      extensions: ['.js'],
       alias,
     },
     optimization,
     plugins: [
       new HtmlWebpackPlugin({
-        title: config.name,
+        title: name,
         filename: `${BUILD_PATH}/index.html`,
         inject: 'body',
         html,
+        base: BUILD_ASSET_PATH,
         template: path.resolve(__dirname, './templates/labo.ejs'),
-        minify: {
-          collapseWhitespace: true,
-          preserveLineBreaks: false,
-          removeComments: true,
-          removeRedundantAttributes: true,
-          removeScriptTypeAttributes: true,
-          removeStyleLinkTypeAttributes: true,
-        },
+        minify,
+      }),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: SRC_ASSET_PATH,
+            to: `${BUILD_PATH}${BUILD_ASSET_PATH}`,
+            globOptions: {
+              dot: true,
+              ignore: [`${SRC_ASSET_PATH}/app/`],
+            },
+          },
+        ],
       }),
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify('production'),
           ASSET_PATH: JSON.stringify(BUILD_ASSET_PATH),
           NAME: JSON.stringify(name),
-          MAIL: JSON.stringify(config.author.email),
         },
       }),
-      new CompressionPlugin({
-        test: /\.(js|css|svg|jpg|png|html)$/,
-        algorithm: 'gzip',
-        deleteOriginalAssets: false,
-        filename: '[path].gz[query]',
-        threshold: 0,
-        minRatio: 1,
-      }),
-      new CompressionPlugin({
-        test: /\.(js|css|svg|jpg|png|html)$/,
-        algorithm: 'brotliCompress',
-        deleteOriginalAssets: false,
-        filename: '[path].br[query]',
-        threshold: 0,
-        minRatio: 1,
-      })
-    ]
+      ...compression,
+    ],
   };
 };
 

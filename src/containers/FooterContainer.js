@@ -1,8 +1,8 @@
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-import Footer from "../components/Footer";
-import { toggleTheme, setLang } from "../actions/device";
+import Footer from '../components/Footer';
+import { toggleTheme, setLang } from '../actions/device';
 
 const mapStateToProps = (state) => ({
   isDarkMode: state.device.isDarkMode,
@@ -13,7 +13,6 @@ const mapStateToProps = (state) => ({
   },
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ toggleTheme, setLang }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ toggleTheme, setLang }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Footer);

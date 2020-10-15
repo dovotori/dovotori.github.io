@@ -3,53 +3,28 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
 
 const config = require('../package.json');
-const { alias, optimization } = require('./common');
+const { alias, optimization, minify, rules, laboEntries, compression } = require('./common');
 
 const BUILD_PATH = path.resolve(__dirname, '../build');
-const SRC_ASSET_PATH = path.resolve(__dirname, '../assets');
+const SRC_ASSET_PATH = path.resolve(__dirname, '../public');
 const BUILD_ASSET_PATH = process.env.ASSET_PATH || '/public';
 
 module.exports = {
   mode: 'production',
-  entry: path.resolve(__dirname, '../src/index.jsx'),
+  entry: {
+    polyfill: '@babel/polyfill',
+    [config.name]: path.resolve(__dirname, '../src/index.jsx'),
+    ...laboEntries,
+  },
   output: {
     path: `${BUILD_PATH}/public/js/`,
     publicPath: `${BUILD_ASSET_PATH}/js/`,
-    filename: `${config.name}.js`,
+    filename: '[name].js',
   },
   module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: 'babel-loader',
-          },
-        ],
-      },
-      {
-        test: /\.(jpe?g|png|gif)$/i,
-        loader: 'url-loader?name=/img/[name].[ext]?[hash]',
-      },
-      {
-        test: /\.svg$/,
-        use: [
-          {
-            loader: '@svgr/webpack',
-            options: {
-              svgo: false,
-            },
-          },
-          {
-            loader: 'url-loader'
-          }
-        ],
-      },
-    ],
+    rules,
   },
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -63,14 +38,7 @@ module.exports = {
       inject: 'body',
       base: BUILD_ASSET_PATH,
       template: path.resolve(__dirname, './templates/index.ejs'),
-      minify: {
-        collapseWhitespace: true,
-        preserveLineBreaks: false,
-        removeComments: true,
-        removeRedundantAttributes: true,
-        removeScriptTypeAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-      },
+      minify,
     }),
     new webpack.DefinePlugin({
       'process.env': {
@@ -81,28 +49,27 @@ module.exports = {
       },
     }),
     new ServiceWorkerWebpackPlugin({
-      entry: path.join(__dirname, '../src/utils/serviceWorker.js'),
+      entry: path.resolve(__dirname, '../src/utils/serviceWorker.js'),
     }),
-    new CopyWebpackPlugin([{ from: SRC_ASSET_PATH, to: `${BUILD_PATH}${BUILD_ASSET_PATH}`, ignore: [ `${SRC_ASSET_PATH  }/app/*.xml`,  `${SRC_ASSET_PATH  }/app/*.json`,  `${SRC_ASSET_PATH  }/app/*.webapp`] },
-      { from: `${SRC_ASSET_PATH  }/app/browserconfig.xml`, to: `${BUILD_PATH  }/browserconfig.xml` },
-      { from: `${SRC_ASSET_PATH  }/app/manifest.json`, to: `${BUILD_PATH  }/manifest.json` },
-      { from: `${SRC_ASSET_PATH  }/app/manifest.webapp`, to: `${BUILD_PATH  }/manifest.webapp` },
-    ]),
-    new CompressionPlugin({
-      test: /\.(js|css|svg|jpg|png|html)$/,
-      algorithm: 'gzip',
-      deleteOriginalAssets: false,
-      filename: '[path].gz[query]',
-      threshold: 0,
-      minRatio: 1,
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: SRC_ASSET_PATH,
+          to: `${BUILD_PATH}${BUILD_ASSET_PATH}`,
+          globOptions: {
+            dot: true,
+            ignore: [
+              `${SRC_ASSET_PATH}/app/*.xml`,
+              `${SRC_ASSET_PATH}/app/*.json`,
+              `${SRC_ASSET_PATH}/app/*.webapp`,
+            ],
+          },
+        },
+        { from: `${SRC_ASSET_PATH}/app/browserconfig.xml`, to: `${BUILD_PATH}/browserconfig.xml` },
+        { from: `${SRC_ASSET_PATH}/app/manifest.json`, to: `${BUILD_PATH}/manifest.json` },
+        { from: `${SRC_ASSET_PATH}/app/manifest.webapp`, to: `${BUILD_PATH}/manifest.webapp` },
+      ],
     }),
-    new CompressionPlugin({
-      test: /\.(js|css|svg|jpg|png|html)$/,
-      algorithm: 'brotliCompress',
-      deleteOriginalAssets: false,
-      filename: '[path].br[query]',
-      threshold: 0,
-      minRatio: 1,
-    }),
+    ...compression,
   ],
 };

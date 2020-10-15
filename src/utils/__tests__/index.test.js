@@ -1,7 +1,7 @@
-import { capitalize } from "../index";
+import { capitalize } from '../index';
 
-describe("Utils", () => {
-  test("capitalize", () => {
-    expect(capitalize("test")).toEqual("Test");
+describe('Utils', () => {
+  test('capitalize', () => {
+    expect(capitalize('test')).toEqual('Test');
   });
 });

@@ -1,4 +1,4 @@
-![Dovotori](./assets/app/firefox_app_128x128.png)
+![Dovotori](./public/app/firefox_app_128x128.png)
 
 # Portfolio
 

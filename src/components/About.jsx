@@ -9,7 +9,6 @@ import ButtonBack from './ButtonBack';
 import Button from './Button';
 import TypingMessage from './TypingMessage';
 import Bloc from './Bloc';
-import { Title } from '../themes/styled';
 
 const Links = styled.div`
   margin: 4em 0;
@@ -27,19 +26,18 @@ const Links = styled.div`
 `;
 
 const Wrap = styled(Bloc)`
-  padding: 10% 0;
+  padding: 20% 0 10%;
 `;
 
 const WrapContent = styled.div`
   margin: 0 auto;
   padding: 0 10px;
-  max-width: 500px;
+  max-width: 700px;
 `;
 
 const Description = styled.p`
   color: ${(p) => p.theme.light};
   width: 100%;
-  line-height: 1.4;
   font-style: italic;
   margin-bottom: 1em;
 `;
@@ -61,7 +59,8 @@ const StyledTypingMessage = styled(TypingMessage)`
   position: relative;
 `;
 
-const StyledTitle = styled(Title)`
+const StyledTitle = styled.h1`
+  ${(p) => p.theme.title}
   position: relative;
   margin-bottom: 1em;
 `;
@@ -81,20 +80,22 @@ const Quote = styled.div`
 
 const StyledQuoteIcon = styled(QuoteIcon)`
   margin-right: 0.1em;
+  width: 100%;
+  height: 100%;
 `;
 
 const About = ({ hello, isTouchDevice }) => (
   <Wrap>
     <WrapContent>
       <MarginLeft isTouch={isTouchDevice}>
-        <StyledTitle colorType>
+        <StyledTitle $colorType>
           <a href={`mailto:${process.env.MAIL}`}>
             <Quote>
               <StyledQuoteIcon />
               <StyledQuoteIcon />
             </Quote>
           </a>
-          <StyledTypingMessage message={hello.about} />
+          <StyledTypingMessage message={hello.about} firstMessage="はじめまして" />
         </StyledTitle>
         {hello.description.map((text) => (
           <Description key={text}>{text}</Description>
@@ -114,11 +115,11 @@ const About = ({ hello, isTouchDevice }) => (
       <MarginLeft isTouch={isTouchDevice}>
         <StyledButton
           href={`mailto:${process.env.MAIL}`}
-          colorType
+          $colorType
           isTouch={isTouchDevice}
           text={hello.contact}
         />
-        <StyledButtonBack colorType isTouch={isTouchDevice} />
+        <StyledButtonBack $colorType isTouch={isTouchDevice} />
       </MarginLeft>
     </WrapContent>
   </Wrap>

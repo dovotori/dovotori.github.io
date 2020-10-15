@@ -9,9 +9,10 @@ const Wrap = styled.div`
   margin: 0 auto;
   max-width: 800px;
   z-index: 1;
+  overflow: hidden;
 `;
 
-const LINK = styled(Link)`
+const StyledLink = styled(Link)`
   position: relative;
   width: 33.3333%;
   padding: 1.5em 0 1.5em 2%;
@@ -66,25 +67,25 @@ const Span = styled.span`
 const ProjectNavigation = ({
   prevEntry,
   nextEntry,
-  colorType,
+  $colorType,
   labelBack,
   labelPrevious,
   labelNext,
 }) => (
   <Wrap>
-    <LINK colorType={colorType} to="/">
-      <Arrow colorType={colorType} />
-      <Arrow colorType={colorType} />
+    <StyledLink $colorType={$colorType} to="/">
+      <Arrow $colorType={$colorType} />
+      <Arrow $colorType={$colorType} />
       <Span>{labelBack}</Span>
-    </LINK>
-    <LINK colorType={colorType} to={`/project/${prevEntry.slug}`}>
-      <Arrow colorType={colorType} />
+    </StyledLink>
+    <StyledLink $colorType={$colorType} to={`/project/${prevEntry.slug}`}>
+      <Arrow $colorType={$colorType} />
       <Span>{prevEntry.title !== '' ? prevEntry.title : labelPrevious}</Span>
-    </LINK>
-    <LINK colorType={colorType} to={`/project/${nextEntry.slug}`}>
-      <NextArrow colorType={colorType} />
+    </StyledLink>
+    <StyledLink $colorType={$colorType} to={`/project/${nextEntry.slug}`}>
+      <NextArrow $colorType={$colorType} />
       <Span>{nextEntry.title !== '' ? nextEntry.title : labelNext}</Span>
-    </LINK>
+    </StyledLink>
   </Wrap>
 );
 

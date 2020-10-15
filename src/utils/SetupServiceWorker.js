@@ -1,14 +1,14 @@
 const SetupServiceWorker = () => {
-  if ("serviceWorker" in navigator) {
+  if ('serviceWorker' in navigator) {
     navigator.serviceWorker
-      .register("/public/js/sw.js")
+      .register('/public/js/sw.js')
       .then((reg) => {
         if (reg.installing) {
-          console.log("Service worker installing");
+          console.log('Service worker installing');
         } else if (reg.waiting) {
-          console.log("Service worker installed");
+          console.log('Service worker installed');
         } else if (reg.active) {
-          console.log("Service worker active");
+          console.log('Service worker active');
         }
       })
       .catch((error) => {

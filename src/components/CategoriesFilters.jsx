@@ -1,8 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { getColorType } from "../utils";
+import { getColorType } from '../utils';
 
 const Wrap = styled.div`
   text-align: center;
@@ -16,35 +16,47 @@ const Wrap = styled.div`
 `;
 
 const StyledLink = styled(Link)`
+  position: relative;
   padding: 1em 2em;
-  margin: 1em 0;
   opacity: ${(p) => (p.selected ? 1 : 0.5)};
-  transition: color 100ms ease-out, background-color 100ms ease-out,
-    box-shadow 100ms ease-out;
-  color: ${(p) => (p.selected ? p.theme.background : p.theme.text)};
-  background-color: ${(p) => (p.selected ? p.theme.getColor : "none")};
+  font-weight: ${(p) => (p.selected ? 800 : 400)};
+  transition: color 100ms ease-out, background-color 100ms ease-out, box-shadow 100ms ease-out;
+  color: ${(p) => p.theme.text};
+  text-transform: uppercase;
   ${(p) => p.theme.monospace}
   ${(p) => p.theme.active}
   &:hover {
     opacity: 1;
-    box-shadow: 2px 2px 2px
-      ${(p) => (p.selected ? "none" : p.theme.backgroundHighlight)};
   }
+`;
+
+const Cross = styled.svg`
+  width: 0.5em;
+  height: 0.5em;
+  min-width: 0.5em;
+  stroke: ${(p) => p.theme.getColor};
+  fill: none;
 `;
 
 const CategoriesFilters = ({ selected, className, categories }) => (
   <Wrap className={className}>
-    {Object.keys(categories).map((categoryId) => {
+    {Object.keys(categories).map((categoryId, index) => {
       const isLinkSelected = selected === parseInt(categoryId, 10);
       return (
-        <StyledLink
-          key={categories[categoryId].slug}
-          to={isLinkSelected ? "/" : `/category/${categories[categoryId].slug}`}
-          selected={isLinkSelected}
-          colorType={getColorType(parseInt(categoryId, 10))}
-        >
-          {categories[categoryId].label}
-        </StyledLink>
+        <Fragment key={categories[categoryId].slug}>
+          {index !== 0 && (
+            <Cross viewBox="0 0 10 10">
+              <path d="M 0 0 L 10 10 Z M 0 10 L 10 0 Z" />
+            </Cross>
+          )}
+          <StyledLink
+            to={isLinkSelected ? '/' : `/category/${categories[categoryId].slug}`}
+            selected={isLinkSelected}
+            $colorType={getColorType(parseInt(categoryId, 10))}
+          >
+            {categories[categoryId].label}
+          </StyledLink>
+        </Fragment>
       );
     })}
   </Wrap>

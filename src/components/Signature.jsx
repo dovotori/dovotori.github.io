@@ -2,14 +2,18 @@ import React from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { Link } from 'react-router-dom';
 
-// import { ReactComponent as Sumo } from 'Assets/svg/sumo.svg';
-import ProjectHtml from './ProjectHtml';
+import ProjectLabo from './ProjectLabo';
 import TypingMessage from './TypingMessage';
-import { Title } from '../themes/styled';
 
 const fadeUp = keyframes`
   0% { transform: scale(0.8); opacity: 0; }
   100% { transform: none; opacity: 1; }
+`;
+
+const StyledTypingMessage = styled(TypingMessage)`
+  span {
+    justify-content: left;
+  }
 `;
 
 const StyledLink = styled(Link)`
@@ -30,13 +34,13 @@ const Appear = styled.div`
 `;
 
 const Infos = styled.div`
-  position: absolute;
+  /* position: absolute; */
   width: 45%;
+  transform: translate3d(80%, 0, 0);
   left: 50%;
-  top: 10%;
+  top: 0;
   max-width: 200px;
   margin: 0 auto;
-  transform: translate3d(50%, 0, 0);
   background: ${(p) => p.theme.text};
   padding: 1em;
   pointer-events: none;
@@ -53,12 +57,21 @@ const Infos = styled.div`
   `}
 `;
 
-const StyledHtml = styled(ProjectHtml)`
+const StyledLabo = styled(ProjectLabo)`
   text-align: center;
   margin: 0 auto;
-  width: 100%;
-  height: 60vh;
-  max-height: 512px;
+  /* width: 100%; */
+  width: 320px;
+  height: 320px;
+
+  /* ${(p) => p.theme.media.desktop`
+    height: 60vh;
+  `} */
+
+  /* only for picto */
+  canvas {
+    /* width: auto; */
+  }
 `;
 
 const Balloon = styled.svg`
@@ -107,7 +120,6 @@ const SpikeBalloon = styled(Balloon)`
 const Description = styled.p`
   color: ${(p) => p.theme.backgroundHighlight};
   width: 100%;
-  line-height: 1.4;
   user-select: none;
 
   a {
@@ -122,63 +134,65 @@ const Description = styled.p`
 `;
 
 const commonName = css`
-  position: absolute;
-  top: 50%;
-  font-size: 400%;
-  transform: translate3d(0, -50%, 0);
-  letter-spacing: 0;
+  /* position: absolute; */
+  /* left: 50%;
+  transform: translate3d(-50%, -50%, 0); */
+  width: 100%;
+  text-align: left;
   pointer-events: none;
   user-select: none;
-  ${(p) => p.theme.media.mobile`
-    text-align: center;
-    width: 100%;
-    position: relative;
-    top: auto;
-  `}
+
+  ${(p) => p.theme.media.mobile`text-align: center;`};
 `;
 
-const Name = styled(Title)`
+const Name = styled.h2`
+  /* ${(p) => p.theme.title} */
   ${commonName}
-  color:${(p) => p.theme.text};
-  right: 54%;
-  text-align: right;
-  font-size: 300%;
-  ${(p) => p.theme.media.mobile`
-    right: auto;
-  `}
+  /* top: 60%; */
+  letter-spacing: 0.1em;
+  line-height: 1;
+  margin: 0;
+  /* margin-bottom: 1em; */
+  color: ${(p) => p.theme.primary};
 `;
 
-const Katakana = styled(Title)`
+const Katakana = styled.h1`
+  /* ${(p) => p.theme.title} */
+  /* top: 70%; */
   ${commonName}
-  left: 54%;
-  text-align: left;
-  font-family: 'nikkyou', monospace;
+  margin-top: -0.2em;
+  color: ${(p) => p.theme.text};
   ${(p) => p.theme.media.mobile`
-    left: auto;
+    font-size: 200%;
   `}
 `;
 
 const CenterMobile = styled.div`
   ${(p) => p.theme.media.mobile`
+`}
+`;
+
+const Absolute = styled.div`
   position: absolute;
-  top: 60%;
-  left: 0;
-  width: 100%;`}
+  top: 50%;
+  left: 50%;
+  transform: translate3d(40%, 0, 0);
+
+  ${(p) => p.theme.media.mobile`
+    transform: none;
+    width: 100%;
+    left: auto;
+    top: auto;
+    max-width: none;
+    text-align:center;
+    position: relative;
+  `}
 `;
 
 const Signature = ({ className, hello }) => (
   <Wrap>
     <Appear>
-      <StyledLink to="/about" className={className}>
-        <StyledHtml slug="signature" colorType={0} />
-      </StyledLink>
-      <CenterMobile>
-        <Katakana>
-          <TypingMessage message="ド リ ア ン" />
-        </Katakana>
-        <Name>
-          <TypingMessage message="D o r i a n" />
-        </Name>
+      {/* <CenterMobile>
         <Infos>
           <LeftBalloon viewBox="0 0 100 100">
             <path d="M 100 0 L 90 10 L 100 100 Z" />
@@ -198,10 +212,31 @@ const Signature = ({ className, hello }) => (
           <SpikeBalloon viewBox="0 0 100 100">
             <path d="M 20 0 L 0 100 L 100 0 Z" />
           </SpikeBalloon>
+          
           <Description>{hello.text}</Description>
         </Infos>
-      </CenterMobile>
+      </CenterMobile> */}
+
+      <StyledLink to="/about" className={className} title="about">
+        <StyledLabo slug="picto" $colorType={0} noBackground hasJs />
+      </StyledLink>
     </Appear>
+
+    <Absolute>
+      <Name>
+        <StyledTypingMessage
+          message="dorian"
+          firstMessage="ドリアン"
+          width="0.9em"
+          isLoop
+          delay={5000}
+        />
+      </Name>
+
+      <Katakana>
+        <StyledTypingMessage message="ドリアン" width="2em" isLoop delay={5000} />
+      </Katakana>
+    </Absolute>
   </Wrap>
 );
 

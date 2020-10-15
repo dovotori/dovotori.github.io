@@ -1,0 +1,63 @@
+import Vbos from '../vbos/Vbos';
+
+const createVbosFromPrimitive = (gl, primitive) => {
+  return Object.keys(primitive).reduce((acc, locationKey) => {
+    const values = primitive[locationKey];
+    let componentType;
+    let type;
+    let size;
+    let convertedValues;
+
+    switch (locationKey) {
+      default:
+      case 'position':
+      case 'next':
+      case 'previous':
+      case 'normale':
+      case 'color': {
+        type = 'VEC3';
+        size = 3;
+        componentType = gl.FLOAT;
+        convertedValues = new Float32Array(values);
+        break;
+      }
+      case 'texture': {
+        type = 'VEC2';
+        size = 2;
+        componentType = gl.FLOAT;
+        convertedValues = new Float32Array(values);
+        break;
+      }
+      case 'indices': {
+        type = 'SCALAR';
+        size = 1;
+        componentType = gl.UNSIGNED_SHORT;
+        convertedValues = new Uint16Array(values);
+        break;
+      }
+      case 'side': {
+        type = 'FLOAT';
+        size = 1;
+        componentType = gl.FLOAT;
+        convertedValues = new Float32Array(values);
+        break;
+      }
+    }
+    acc[locationKey] = {
+      locationKey,
+      type,
+      values: convertedValues,
+      count: values.length / size,
+      componentType,
+      size,
+    };
+    return acc;
+  }, {});
+};
+
+export default class extends Vbos {
+  constructor(gl, primitive, isDynamic = false) {
+    const vbos = createVbosFromPrimitive(gl, primitive);
+    super(gl, vbos, isDynamic);
+  }
+}

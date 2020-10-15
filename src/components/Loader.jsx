@@ -1,10 +1,10 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import { loading, blink } from "../themes/animations";
+import { loading, blink } from '../themes/animations';
 
 const Wrap = styled.div.attrs({
-  className: "loader",
+  className: 'loader',
 })`
   position: absolute;
   width: 20px;
@@ -33,24 +33,20 @@ const Text = styled.div`
   top: 50%;
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
-  color: ${(p) => p.theme.text};
+  color: ${(p) => p.theme.light};
   ${(p) => p.theme.monospace}
-  font-size: 0.6em;
+  text-transform: uppercase;
 `;
 const Blink = styled.span`
   animation: ${blink} 1s linear infinite;
+  color: ${(p) => p.theme.primary};
 `;
 
-const Loader = ({ className, colorType }) => (
+const Loader = ({ className, $colorType }) => (
   <div className={className}>
     <Wrap>
       {[0, 1, 2, 3].map((idx) => (
-        <Bar
-          key={idx}
-          delay={idx * 100}
-          style={{ top: `${idx * 5}px` }}
-          colorType={colorType}
-        />
+        <Bar key={idx} delay={idx * 100} style={{ top: `${idx * 5}px` }} $colorType={$colorType} />
       ))}
     </Wrap>
     <Text>

@@ -1,7 +1,7 @@
 const path = require('path');
 const utils = require('./utils');
 
-const PATH_ASSETS = path.resolve(__dirname, '../assets/');
+const PATH_ASSETS = path.resolve(__dirname, '../public/');
 const PATH_LABO = path.resolve(__dirname, '../labo/');
 
 const main = async () => {

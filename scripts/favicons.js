@@ -1,13 +1,23 @@
 const path = require('path');
 const favicons = require('favicons');
-const fs = require('fs');
-const { promisify } = require('util');
 const utils = require('./utils');
 
 const config = require('../package.json');
 
-const SOURCE = path.resolve(__dirname, '../assets/img/source.png');
-const DEST = path.resolve(__dirname, '../assets/app');
+const SOURCE = path.resolve(__dirname, '../public/img/source.png');
+const DEST = path.resolve(__dirname, '../public/app');
+const HTML_NO_JS_MESSAGE = `
+<noscript>
+  <div id="noscript">
+    <h1>In JS we trust</h1>
+    <p>
+      Ce site utilise javascript pour s'afficher. S’il vous plaît, reconsiderez votre choix de le
+      désactiver, pour ce site en tout cas :) ou utiliser un
+      <a href="https://www.mozilla.org/fr/firefox/new/">navigateur compatible comme celui ci</a>
+    </p>
+  </div>
+</noscript>
+`;
 
 const BACKGROUND_COLOR = '#222';
 
@@ -20,7 +30,7 @@ const options = {
 };
 
 const configuration = {
-  path: '/assets/app/', // Path for overriding default icons path.
+  path: '/public/app/', // Path for overriding default icons path.
   appName: config.name,
   appShortName: config.name,
   appDescription: 'portfolio de Dorian Ratovo',
@@ -60,8 +70,16 @@ const createTemplate = (htmlFavicon) => {
   <meta name="apple-touch-fullscreen" content="yes">
   <meta name="description" content="dorian ratovo - code + design">
   ${htmlFavicon}
-  <link rel="icon" type="image/x-icon" href="<%= htmlWebpackPlugin.options.base %>/app/favicon.ico" />
-  <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.base %>/style/critical.css">
+  <link
+    rel="icon"
+    type="image/x-icon"
+    href="<%= htmlWebpackPlugin.options.base %>/app/favicon.ico"
+  />
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="<%= htmlWebpackPlugin.options.base %>/style/critical.css"
+  />
   <title>
     <%= htmlWebpackPlugin.options.title %>
   </title>
@@ -69,12 +87,7 @@ const createTemplate = (htmlFavicon) => {
 
 <body>
   <div id="<%= htmlWebpackPlugin.options.title %>"></div>
-  <noscript>
-    <div id="noscript">
-      <h1>In JS we trust</h1>
-      <p>Ce site utilise javascript pour s'afficher. S’il vous plaît, reconsiderez votre choix de le désactiver, pour ce site en tout cas :) ou utiliser un <a href="https://www.mozilla.org/fr/firefox/new/">navigateur compatible comme celui ci</a></p>
-    </div>
-  </noscript>
+  ${HTML_NO_JS_MESSAGE}
 </body>
 </html>
   `;
