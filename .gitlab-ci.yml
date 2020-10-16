@@ -5,10 +5,6 @@ stages:
   - test
   - deploy
 
-cache:
-  paths:
-    - node_modules
-
 build:
   stage: build
   script:
@@ -25,10 +21,6 @@ test:
   stage: test
   script:
     - test -f "build/index.html"
-    - npm run test
-  artifacts:
-    paths:
-      - coverage/
   only:
     - master
     - develop
@@ -36,6 +28,7 @@ test:
 pages:
   stage: deploy
   script:
+    - rm public/
     - mv build/ public/
     - ls public/
   artifacts:
