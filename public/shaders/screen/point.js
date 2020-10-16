@@ -1,0 +1,1 @@
+const vertex="\nattribute vec3 position;\n\nuniform float time;\n\nvoid main() {\n  gl_PointSize = 4.0;\n  gl_Position = vec4(position, 1.0);\n}\n",fragment="\nprecision mediump float;\n\nvoid main() {\n  gl_FragColor = vec4(1.0);\n}\n";export default{vertex,fragment,attributes:["position"],uniforms:["time"]};

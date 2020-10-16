@@ -1,0 +1,1 @@
+import fragment from"./basicFrag";const vertex="\nattribute float value;\nuniform mat4 projection;\nuniform mat4 model;\nuniform mat4 view;\n\nvoid main() {\n  vec3 position = vec3(value, 0.0, 0.0);\n  gl_Position = projection * view * model * vec4(position, 1.0);\n}\n";export default{vertex,fragment,attributes:["value"],uniforms:["projection","model","view"]};

@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "name": "dovotori-site",
+  "description": "portfolio de Dorian Ratovo",
+  "icons": {
+    "60": "/public/app/firefox_app_60x60.png",
+    "128": "/public/app/firefox_app_128x128.png",
+    "512": "/public/app/firefox_app_512x512.png"
+  },
+  "developer": {
+    "name": "Dorian Ratovo",
+    "url": "https://dovotori.gitlab.io"
+  }
+}

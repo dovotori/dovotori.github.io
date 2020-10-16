@@ -1,0 +1,1 @@
+export default"\nattribute vec3 position;\nattribute vec2 texture;\nvarying vec2 fragTexture;\nuniform float flipY; // 1 ou -1\n\nvoid main() {\n  fragTexture = texture;\n  gl_Position = vec4(position.x, position.y * flipY, position.z, 1.0);\n}\n";

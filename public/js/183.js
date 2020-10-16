@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[183],{803:function(i,o){i.exports='<div class="flex"> <video id="own"></video> <video id="emitter"></video> </div> <button id="btn">Join</button> <h4 id="status"></h4> '}}]);

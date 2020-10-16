@@ -1,0 +1,1 @@
+import vertex from"./basicVertex";const fragment="\nprecision mediump float;\n\nvarying vec3 fragSpecular;\nvarying float fragSpecDensity;\n\nvoid main() {\n  gl_FragColor = color;\n}\n";export default{vertex,fragment,attributes:["position"],uniforms:["projection","model","view","color"]};

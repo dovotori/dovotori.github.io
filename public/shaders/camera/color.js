@@ -1,0 +1,1 @@
+import vertex from"./basicVertex";const fragment="\nprecision mediump float;\nuniform vec4 color;\n\nvoid main() {\n  gl_FragColor = color;\n}\n";export default{vertex,fragment,attributes:["position"],uniforms:["projection","model","view","color"]};

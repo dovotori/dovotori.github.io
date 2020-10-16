@@ -1,0 +1,1 @@
+import vertex from"./basicVertex";const fragment="\nprecision mediump float;\nvarying vec2 fragTexture;\nuniform sampler2D textureMap;\nvoid main() {\n  gl_FragColor = texture2D(textureMap, fragTexture);\n}\n";export default{vertex,fragment,attributes:["position","texture"],uniforms:["flipY","textureMap"]};
