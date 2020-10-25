@@ -9,12 +9,18 @@ const createVbosFromPrimitive = (gl, primitive) => {
     let convertedValues;
 
     switch (locationKey) {
+      case 'color': {
+        type = 'VEC4';
+        size = 4;
+        componentType = gl.FLOAT;
+        convertedValues = new Float32Array(values);
+        break;
+      }
       default:
       case 'position':
       case 'next':
       case 'previous':
-      case 'normale':
-      case 'color': {
+      case 'normale': {
         type = 'VEC3';
         size = 3;
         componentType = gl.FLOAT;

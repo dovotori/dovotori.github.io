@@ -49,7 +49,7 @@ module.exports = {
       },
     }),
     new ServiceWorkerWebpackPlugin({
-      entry: path.resolve(__dirname, '../src/utils/serviceWorker.js'),
+      entry: path.resolve(__dirname, '../src/utils/sw.js'),
     }),
     new CopyWebpackPlugin({
       patterns: [
@@ -65,9 +65,18 @@ module.exports = {
             ],
           },
         },
-        { from: `${SRC_ASSET_PATH}/app/browserconfig.xml`, to: `${BUILD_PATH}/browserconfig.xml` },
-        { from: `${SRC_ASSET_PATH}/app/manifest.json`, to: `${BUILD_PATH}/manifest.json` },
-        { from: `${SRC_ASSET_PATH}/app/manifest.webapp`, to: `${BUILD_PATH}/manifest.webapp` },
+        {
+          from: `${SRC_ASSET_PATH}/app/browserconfig.xml`,
+          to: `${BUILD_PATH}/public/app/browserconfig.xml`,
+        },
+        {
+          from: `${SRC_ASSET_PATH}/app/manifest.json`,
+          to: `${BUILD_PATH}/public/app//manifest.json`,
+        },
+        {
+          from: `${SRC_ASSET_PATH}/app/manifest.webapp`,
+          to: `${BUILD_PATH}/public/app//manifest.webapp`,
+        },
       ],
     }),
     ...compression,

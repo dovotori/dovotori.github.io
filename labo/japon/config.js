@@ -1,5 +1,5 @@
 import geojson from 'Assets/json/JPN_CHN_PRK_KOR.json';
-import train from 'Assets/svg/train2.svg';
+import train from 'Assets/svg/train.svg';
 
 export default {
   slug: 'japon',

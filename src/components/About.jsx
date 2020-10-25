@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { ReactComponent as Linkedin } from 'Assets/svg/cv/linkedin.svg';
 import { ReactComponent as Gitlab } from 'Assets/svg/cv/gitlab.svg';
-import { ReactComponent as QuoteIcon } from 'Assets/svg/quote2.svg';
+import { ReactComponent as QuoteIcon } from 'Assets/svg/quote.svg';
 import CvContainer from '../containers/CvContainer';
 import ButtonBack from './ButtonBack';
 import Button from './Button';

@@ -1,5 +1,5 @@
 {
-  "name": "dovotori-site",
+  "name": "dovotori_portfolio",
   "version": "1.1.1",
   "description": "React version of my portfolio website",
   "author": {
@@ -23,7 +23,7 @@
     "docker:run:dev": "docker run --name dovotori_client_dev -p 8080:8080 -d --rm dovotori_client_dev:latest",
     "docker:build:prod": "docker build --no-cache --target client_prod --tag dovotori_client_prod:latest .",
     "docker:run:prod": "docker run --name dovotori_client_prod --rm dovotori_client_prod:latest",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build --remote github"
   },
   "engines": {
     "node": ">=12.10.0"
@@ -42,6 +42,7 @@
     "compression-webpack-plugin": "6.0.2",
     "copy-webpack-plugin": "6.1.1",
     "csv-parser": "2.3.3",
+    "earcut": "^2.2.2",
     "favicons": "6.2.0",
     "file-loader": "6.1.0",
     "geojson-vt": "^3.2.1",
