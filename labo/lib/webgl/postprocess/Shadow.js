@@ -1,6 +1,6 @@
-import WithBlur from './WithBlur';
+import Blur from './Blur';
 
-export default class extends WithBlur {
+export default class extends Blur {
   constructor(gl, config, programs = {}) {
     super(gl, config, programs);
     const program = this.programs.shadow;

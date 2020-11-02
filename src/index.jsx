@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-
 import runtime from 'serviceworker-webpack-plugin/lib/runtime';
+
 import AppContainer from './containers/AppContainer';
 import configureStore from './store/configureStore';
 

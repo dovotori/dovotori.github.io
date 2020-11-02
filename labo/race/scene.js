@@ -5,7 +5,6 @@ import Mat4 from '../lib/webgl/maths/Mat4';
 import Vec3 from '../lib/webgl/maths/Vec3';
 import { getPoints, getIndices } from '../lib/webgl/primitives/grid';
 import Target from '../lib/webgl/maths/Target';
-import primitive from '../lib/webgl/primitives/cube';
 
 const nsin = (val) => {
   return Math.sin(val) * 0.5 + 0.5;
@@ -30,7 +29,6 @@ export default class extends Scene {
     this.screen = new Screen(this.gl);
     this.model = new Mat4();
 
-    // this.road = new GpuParticules(gl, 16, 128);
     const { roadLength, roadWidth, shipPosition } = config;
 
     const pointsRoads = getPoints(2, roadLength, {
@@ -164,18 +162,18 @@ export default class extends Scene {
     super.render();
 
     this.postProcess.start();
-    // // this.renderLandscape();
+    // this.renderLandscape();
     this.renderMountain();
     this.renderRoad();
     this.renderShip();
 
     // this.bonus.render(this.mngProg.get('basique3d').program.get());
+
     this.postProcess.end();
 
     this.bloom.start();
     this.renderShipTrails();
     this.bloom.end();
-    this.bloom.setBloom(1.0, 0.1);
 
     this.postProcess.mergeBloom(this.bloom.getTexture(), 1.5, 2.2);
     this.postProcess.setFxaa2();

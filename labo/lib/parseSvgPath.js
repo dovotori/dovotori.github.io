@@ -45,19 +45,20 @@ const parseSvgPath = (path) => {
   return data;
 };
 
-export const getAbsoluteCoor = (path) => {
+export const getAbsoluteCoor = (path, inverseY = false) => {
   const relPos = { x: 0, y: 0 };
   const data = parseSvgPath(path);
+  const inv = inverseY ? -1 : 1;
 
   return data.reduce((acc, cur) => {
     if ((cur[0] === 'L' || cur[0] === 'M') && cur.length === 3) {
-      acc.push([cur[1], cur[2]]);
+      acc.push([cur[1], cur[2] * inv]);
     } else if ((cur[0] === 'm' || cur[0] === 'l') && cur.length === 3) {
       relPos.x += cur[1];
-      relPos.y += cur[2];
+      relPos.y += cur[2] * inv;
       acc.push([relPos.x, relPos.y]);
     } else if (cur[0] === 'v' && cur.length === 2) {
-      relPos.y += cur[1];
+      relPos.y += cur[1] * inv;
       acc.push([relPos.x, relPos.y]);
     } else if (cur[0] === 'h' && cur.length === 2) {
       relPos.x += cur[1];

@@ -14,7 +14,7 @@ uniform vec3 amplitude;
 uniform vec3 frequence;
 
 varying vec3 fragPosition;
-varying float depth;
+varying float fragDepth;
 
 ${PI}
 ${funcMap}
@@ -23,8 +23,6 @@ ${funcRoadDistortion}
 void main() {
   vec3 transformed = position.xyz;
   
-  depth = 1.0 - (transformed.z * 0.2 / roadLength);
-
   vec3 distortion  = getDistortion(transformed.z / roadLength, frequence, amplitude, time);
 
   transformed.x += distortion.x;
@@ -49,6 +47,7 @@ void main() {
   transformed.y += high;
 
   fragPosition = vec3(high / 4.0);
+  fragDepth = 1.0 - (transformed.z * 0.2 / roadLength);
 
   gl_Position = projection * view * model * vec4(transformed, 1.0);
 }
@@ -58,13 +57,12 @@ const fragment = `
 precision mediump float;
 
 varying vec3 fragPosition;
-varying float depth;
+varying float fragDepth;
 
 void main() {
   vec3 roadColor1 = vec3(13.0 / 255.0, 7.1 / 255.0, 32.9 / 255.0);
   vec3 color = roadColor1 * (1.0 - fragPosition.y);
-  // gl_FragColor = vec4(color, depth);
-  gl_FragColor = vec4(fragPosition, depth);
+  gl_FragColor = vec4(fragPosition, fragDepth);
 }
 `;
 

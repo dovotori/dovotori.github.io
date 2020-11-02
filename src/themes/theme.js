@@ -11,8 +11,6 @@ const getType = (p) => {
   return colorType;
 };
 
-// 186 / 247 / 236;
-
 const hue = {
   primary: 160, // hsl(160, 100%, 70%) // rgb(102, 255, 204) // #66ffcc
   secondary: 290, // hsl(30, 100%, 70%) // rgb(255, 179, 102) // #ffb366

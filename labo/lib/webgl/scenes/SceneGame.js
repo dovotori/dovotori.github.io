@@ -252,7 +252,7 @@ export default class extends Scene {
     const delta = this.targetRGB.get();
 
     this.postProcess.setRGB(delta, delta, posHeros.getX(), posHeros.getY());
-    this.postProcess.setWave(this.time * 0.1, this.targetWave.get(), center);
+    this.postProcess.setWave(this.time * 0.01, this.targetWave.get(), center);
     // this.postProcess.setSketch(0.2);
     // this.postProcess.setFxaa();
 

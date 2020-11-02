@@ -1,9 +1,9 @@
-import WithBlur from './WithBlur';
+import Blur from './Blur';
 import Vec3 from '../maths/Vec3';
 import { lerp } from '../utils/easing';
 import { random } from '../utils/numbers';
 
-export default class extends WithBlur {
+export default class extends Blur {
   constructor(gl, config, programs = {}) {
     super(gl, config, programs);
 

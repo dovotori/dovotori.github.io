@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 
 const config = require('../package.json');
 const { alias, rules } = require('./common');
@@ -20,6 +21,9 @@ const plugins = [
       NAME: JSON.stringify(config.name),
       MAIL: JSON.stringify(config.author.email),
     },
+  }),
+  new ServiceWorkerWebpackPlugin({
+    entry: path.resolve(__dirname, '../src/utils/sw.js'),
   }),
   new HtmlWebpackPlugin({
     title: config.name,

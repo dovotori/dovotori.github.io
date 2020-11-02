@@ -41,7 +41,8 @@ const createVbosFromPrimitive = (gl, primitive) => {
         convertedValues = new Uint16Array(values);
         break;
       }
-      case 'side': {
+      case 'side':
+      case 'random': {
         type = 'FLOAT';
         size = 1;
         componentType = gl.FLOAT;

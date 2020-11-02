@@ -54,13 +54,6 @@ export default class {
     this.renderToPingPong(program);
   }
 
-  setBloom(scale = 1.0, threshold = 1.0, tex = null) {
-    const program = this.applyTexToProg(this.programs.bloom, tex);
-    program.setFloat('scale', scale);
-    program.setFloat('threshold', threshold);
-    this.renderToPingPong(program);
-  }
-
   setFxaa2(tex = null) {
     const program = this.applyTexToProg(this.programs.fxaa2, tex);
     this.renderToPingPong(program);

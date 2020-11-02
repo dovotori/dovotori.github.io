@@ -1,5 +1,5 @@
 export default {
-  slug: 'fragment',
+  slug: 'terrain',
   shaders: [
     '/camera/basique3d.js',
     '/camera/vertexColor.js',
@@ -8,19 +8,7 @@ export default {
     '/screen/debug.js',
     '/particules/pass1.js',
     '/particules/pass2Camera.js',
-    '/screen/bloom.js',
   ],
-  postprocess: {
-    bloom: {
-      scale: 0.7,
-      threshold: 0.1,
-      blur: {
-        size: 0.1,
-        intensity: 1.2,
-      },
-    },
-  },
-  useDepthTexture: true,
   canvas: {
     width: 1024,
     height: 1024,
