@@ -10,19 +10,23 @@ uniform mat4 view;
 uniform sampler2D textureMap;
 uniform float time;
 
-varying vec4 fragColor;
+varying float fragHeight;
 
 ${anothorNoise}
 
 void main() {
-  // gl_PointSize = 2.0;
-  float speed = time * 0.001;
-  vec2 coord = texture * 6.0 + vec2(speed, 0.0);
-  // float height = texture2D(textureMap, coord).x;
-  float height = 1.0; // noise(coord);
-  fragColor = vec4(position + 0.4, 1.0);
-  // vec3 tranformed = vec3(position.x, height, position.z);
-  vec3 tranformed = vec3(position.x, position.y, position.z);
+  gl_PointSize = 4.0;
+  vec3 tranformed = position;
+
+  if (position.y == 0.0) {
+    float speed = time * 0.001;
+    vec2 coord = (position.xz / 10.0) + vec2(speed, 0.0);
+    // float height = texture2D(textureMap, coord).x;
+    float height = noise(coord);
+    tranformed.y = 1.0 + noise(coord) * 10.0;
+  }
+  fragHeight = tranformed.y;
+  
   gl_Position = projection * view * model * vec4(tranformed, 1.0);
 }
 `;
@@ -30,10 +34,16 @@ void main() {
 const fragment = `
 precision mediump float;
 
-varying vec4 fragColor;
+varying float fragHeight;
 
 void main() {
-  gl_FragColor = fragColor;
+  vec3 color = vec3(0.1);
+
+  if (fragHeight > -4.0) {
+    color = vec3(fragHeight / 12.0);
+  }
+
+  gl_FragColor = vec4(color, 1.0);
 }
 `;
 

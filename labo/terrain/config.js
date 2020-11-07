@@ -6,8 +6,8 @@ export default {
     height: 1024,
   },
   camera: {
-    position: { x: 0, y: 4, z: -4 },
-    target: { x: 0, y: 0, z: 0 },
+    position: { x: 0, y: 40, z: 180 },
+    target: { x: 20, y: 0, z: 20 },
     near: 1,
     far: 200,
     angle: 60,
@@ -15,6 +15,6 @@ export default {
   controls: {
     fullscreen: { buttonId: 'fullscreen-toggle-btn' },
   },
-  width: 32,
-  height: 32,
+  width: 40,
+  height: 40,
 };
