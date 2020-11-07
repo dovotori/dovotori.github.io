@@ -4,8 +4,8 @@ export default class extends Texture {
   create() {
     const b = new ArrayBuffer(this.size.width * this.size.height * 4);
     const pixels = new Uint8Array(b);
-    let cptRVBA = 0;
 
+    let cptRVBA = 0;
     for (let y = 0; y < this.size.height; y += 1) {
       for (let x = 0; x < this.size.width; x += 1) {
         pixels[cptRVBA] = Math.random() * 255;

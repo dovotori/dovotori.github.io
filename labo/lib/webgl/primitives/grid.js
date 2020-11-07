@@ -1,7 +1,7 @@
 import { mapFromRange } from '../utils/numbers';
 
 export const getPoints = (width, height, { startX = -1, endX = 1, startZ = -1, endZ = 1 } = {}) => {
-  const points = []; // texture coord to read position texture
+  const points = [];
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const posX = mapFromRange(x, 0, width - 1, startX, endX);
@@ -33,3 +33,21 @@ export const getIndices = (width, height) => {
   }
   return indices;
 };
+
+export const getTextures = (width, height) => {
+  const textures = [];
+  for (let y = 0; y < height; y++) {
+    const Y = y / height;
+    for (let x = 0; x < width; x++) {
+      textures.push(x / width);
+      textures.push(Y);
+    }
+  }
+  return textures;
+};
+
+export default (width, height, options) => ({
+  position: getPoints(width, height, options),
+  texture: getTextures(width, height),
+  indices: getIndices(width, height),
+});

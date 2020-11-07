@@ -1,14 +1,10 @@
 export default {
   slug: 'fragment',
   shaders: [
-    '/camera/basique3d.js',
     '/camera/vertexColor.js',
     '/screen/blurOnePass.js',
-    '/screen/screen.js',
-    '/screen/debug.js',
-    '/particules/pass1.js',
-    '/particules/pass2Camera.js',
     '/screen/bloom.js',
+    '/screen/screen.js',
   ],
   postprocess: {
     bloom: {

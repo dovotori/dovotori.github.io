@@ -1,4 +1,5 @@
 export default class {
+  // POWER OF TWO
   constructor(gl, width = 64, height = 64) {
     this.gl = gl;
     this.size = { width, height };
