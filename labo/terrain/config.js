@@ -1,13 +1,14 @@
 export default {
   slug: 'terrain',
-  shaders: ['/camera/terrain.js'],
+  shaders: ['/camera/terrain.js', '/camera/instancing.js'],
+  assets: [`/gltf/three.gltf`],
   canvas: {
     width: 1024,
     height: 1024,
   },
   camera: {
-    position: { x: 0, y: 40, z: 180 },
-    target: { x: 20, y: 0, z: 20 },
+    position: { x: 0, y: 2, z: 4 },
+    target: { x: 0, y: 0, z: 0 },
     near: 1,
     far: 200,
     angle: 60,
@@ -15,6 +16,6 @@ export default {
   controls: {
     fullscreen: { buttonId: 'fullscreen-toggle-btn' },
   },
-  width: 40,
-  height: 40,
+  width: 10,
+  height: 10,
 };

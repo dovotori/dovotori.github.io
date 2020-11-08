@@ -34,6 +34,8 @@ class Context {
 
       this.support.depthTexture = !!this.gl.getExtension('WEBGL_depth_texture');
 
+      this.support.instancedArrays = !!this.gl.getExtension('ANGLE_instanced_arrays');
+
       this.support.drawBuffers =
         !!this.gl.getExtension('WEBGL_draw_buffers') ||
         !!this.gl.getExtension('GL_EXT_draw_buffers') ||

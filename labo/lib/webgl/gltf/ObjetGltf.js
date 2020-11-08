@@ -22,6 +22,15 @@ export default class {
     this.nodes = nodes;
   }
 
+  addInstancingVbos(count, vbos) {
+    Object.keys(this.nodes).forEach((key) => {
+      const node = this.nodes[key];
+      const { mesh: meshIndex } = node;
+      const { primitives } = this.meshes[meshIndex];
+      primitives.forEach((primitive) => primitive.addInstancing(count, vbos));
+    });
+  }
+
   formatPrimitives = (gl, primitives) =>
     primitives.map((primitive) => {
       const { vbos, material } = primitive;
@@ -30,13 +39,13 @@ export default class {
 
   render(program, model) {
     Object.keys(this.nodes).forEach((key) => {
-      this.renderNode(key, program, model);
+      this.setNodeModel(key, program, model);
+      this.renderNode(key, program);
     });
   }
 
-  renderNode(key, program, model) {
+  setNodeModel = (key, program, model) => {
     const node = this.nodes[key];
-    const { mesh: meshIndex } = node;
 
     const localMatrix = this.handleLocalTransform(node);
     localMatrix.multiply(model);
@@ -47,6 +56,11 @@ export default class {
     normalMatrix.inverse(); // erreur quand scale a 0
     normalMatrix.transpose();
     program.setMatrix('normalMatrix', normalMatrix.get());
+  };
+
+  renderNode(key, program) {
+    const node = this.nodes[key];
+    const { mesh: meshIndex } = node;
 
     const { primitives } = this.meshes[meshIndex];
     primitives.forEach((primitive) => primitive.render(program));

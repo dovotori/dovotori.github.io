@@ -19,11 +19,10 @@ void main() {
   vec3 tranformed = position;
 
   if (position.y == 0.0) {
-    float speed = time * 0.001;
-    vec2 coord = (position.xz / 10.0) + vec2(speed, 0.0);
+    vec2 coord = position.xz + vec2(time, 0.0);
     // float height = texture2D(textureMap, coord).x;
     float height = noise(coord);
-    tranformed.y = 1.0 + noise(coord) * 10.0;
+    tranformed.y = height;
   }
   fragHeight = tranformed.y;
   
@@ -37,12 +36,7 @@ precision mediump float;
 varying float fragHeight;
 
 void main() {
-  vec3 color = vec3(0.1);
-
-  if (fragHeight > -4.0) {
-    color = vec3(fragHeight / 12.0);
-  }
-
+  vec3 color = vec3(fragHeight);
   gl_FragColor = vec4(color, 1.0);
 }
 `;

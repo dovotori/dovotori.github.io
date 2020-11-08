@@ -4,12 +4,16 @@ import TextureData from '../textures/TextureData';
 export default class {
   constructor(gl, { vbos, material = {} }) {
     this.material = material;
-    this.objet = new Vbos(gl, vbos);
+    this.vbos = new Vbos(gl, vbos);
 
     if (material.normalMap) {
       this.normalMap = new TextureData(gl, material.normalMap.data);
     }
   }
+
+  addInstancing = (count, vbos) => {
+    this.vbos.addInstancingVbos(count, vbos);
+  };
 
   render(program) {
     const { color, metal, rough, ao } = this.material;
@@ -20,14 +24,14 @@ export default class {
     // if (this.normalMap) {
     //   program.setTexture(0, this.normalMap.get(), 'normalMap');
     // }
-    this.objet.render(program.get());
+    this.vbos.render(program.get());
   }
 
   setModeDessin(mode) {
-    this.objet.setModeDessin(mode);
+    this.vbos.setModeDessin(mode);
   }
 
   setModeCalcul(mode) {
-    this.objet.setModeCalcul(mode);
+    this.vbos.setModeCalcul(mode);
   }
 }

@@ -12,6 +12,22 @@ export default class {
       acc[cur] = new Vbo(gl, { locationKey: cur, modeCalcul: this.modeCalcul, ...vbos[cur] });
       return acc;
     }, {});
+
+    this.instanceCount = -1;
+  }
+
+  addInstancingVbos(count, vbos) {
+    const newVbos = Object.keys(vbos).reduce((acc, cur) => {
+      acc[cur] = new Vbo(this.gl, {
+        locationKey: cur,
+        modeCalcul: this.modeCalcul,
+        isInstancing: true,
+        ...vbos[cur],
+      });
+      return acc;
+    }, {});
+    this.vbos = { ...this.vbos, ...newVbos };
+    this.instanceCount = count;
   }
 
   enable(program) {
@@ -27,10 +43,18 @@ export default class {
     });
   }
 
+  getActiveVbo = () => {
+    return this.vbos.indices || this.vbos.position || this.vbos.texture;
+  };
+
   render(program) {
     this.enable(program);
-    const vbo = this.vbos.indices || this.vbos.position || this.vbos.texture;
-    vbo.render(program, this.modeDessin);
+    const vbo = this.getActiveVbo();
+    if (this.instanceCount !== -1) {
+      vbo.renderInstancing(program, this.modeDessin, this.instanceCount);
+    } else {
+      vbo.render(program, this.modeDessin);
+    }
     vbo.end();
   }
 
