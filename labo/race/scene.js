@@ -139,12 +139,21 @@ export default class extends Scene {
     this.gl.enable(this.gl.DEPTH_TEST);
   }
 
+  renderTunnel() {
+    this.gl.disable(this.gl.DEPTH_TEST);
+    const program = this.mngProg.get('tunnelrace');
+    program.setFloat('flipY', -1);
+    program.setFloat('time', this.time * 0.005 + this.posTime * 5.0);
+    this.screen.render(program.get());
+    this.gl.enable(this.gl.DEPTH_TEST);
+  }
+
   renderShip = () => {
     const programShip = this.mngProg.get('gltf');
     const raceship = this.mngGltf.get('raceship');
     this.model.push();
     this.model.translate(...this.currentShipPos.get());
-    raceship.render(programShip, this.model);
+    raceship.renderExcept(['trail1', 'trail2'], programShip, this.model);
     this.model.pop();
   };
 
@@ -153,8 +162,7 @@ export default class extends Scene {
     const raceship = this.mngGltf.get('raceship');
     this.model.push();
     this.model.translate(...this.currentShipPos.get());
-    raceship.renderNode('trail1', programShip, this.model);
-    raceship.renderNode('trail2', programShip, this.model);
+    raceship.renderOnly(['trail1', 'trail2'], programShip, this.model);
     this.model.pop();
   };
 
@@ -162,11 +170,12 @@ export default class extends Scene {
     super.render();
 
     this.postProcess.start();
+
     // this.renderLandscape();
+    this.renderTunnel();
     this.renderMountain();
     this.renderRoad();
     this.renderShip();
-
     // this.bonus.render(this.mngProg.get('basique3d').program.get());
 
     this.postProcess.end();
@@ -176,6 +185,9 @@ export default class extends Scene {
     this.bloom.end();
 
     this.postProcess.mergeBloom(this.bloom.getTexture(), 1.5, 2.2);
+
+    const delta = this.targetSpeed.get() * 100.0;
+    this.postProcess.setRGB(delta, delta, 0.5, 0.5);
     this.postProcess.setFxaa2();
     this.postProcess.render();
   }

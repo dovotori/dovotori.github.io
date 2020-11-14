@@ -1,3 +1,5 @@
+import { UP, DOWN, LEFT, RIGHT } from '../lib/webgl/constants/keyboard';
+
 export default {
   slug: 'terrain',
   shaders: ['/camera/terrain.js', '/camera/instancing.js'],
@@ -7,7 +9,7 @@ export default {
     height: 1024,
   },
   camera: {
-    position: { x: 0, y: 2, z: 4 },
+    position: { x: -2, y: 4, z: 5 },
     target: { x: 0, y: 0, z: 0 },
     near: 1,
     far: 200,
@@ -16,6 +18,21 @@ export default {
   controls: {
     fullscreen: { buttonId: 'fullscreen-toggle-btn' },
   },
-  width: 10,
-  height: 10,
+  terrain: {
+    width: 100,
+    height: 100,
+    lacunarity: 2,
+    persistance: 0.5,
+  },
+  fog: {
+    color: [0.0, 0.0, 0.2, 0.0],
+    start: 2.0,
+    end: 7.0,
+  },
+  keyboard: {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+  },
 };

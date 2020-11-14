@@ -30,24 +30,25 @@ void main() {
   transformed.y += -1.0 * distortion.z; 
   transformed.y -= 0.01; // place a little lower than road
 
-  float high = 0.0;
+  float height = 0.0;
   float gapLength = roadWidth + 4.0;
   if (position.x > gapLength) {
-    high += funcMap(position.x, 5.0, 120.0, 1.0, 2.0);
+    height += funcMap(position.x, 5.0, 120.0, 1.0, 2.0);
   } else if (position.x < -gapLength) {
-    high += funcMap(position.x, -120.0, -5.0, 1.0, 2.0);
+    height += funcMap(position.x, -120.0, -5.0, 1.0, 2.0);
   }
   if (position.x > gapLength + 2.0) {
-    high += (0.2 + cos(position.z * 0.1)) * 0.5;
-    high += (0.2 + cos(position.x * 0.1)) * 2.0;
+    height += (0.2 + cos(position.z * 0.1)) * 0.5;
+    height += (0.2 + cos(position.x * 0.1)) * 2.0;
   } else if (position.x < -gapLength + 2.0) {
-    high += (0.2 + cos(position.z * 0.1)) * 2.0;
-    high += (0.2 + cos(position.x * 0.1)) * 0.5;
+    height += (0.2 + cos(position.z * 0.1)) * 2.0;
+    height += (0.2 + cos(position.x * 0.1)) * 0.5;
   }
-  transformed.y += high;
+  transformed.y += height;
 
-  fragPosition = vec3(high / 4.0);
-  fragDepth = 1.0 - (transformed.z * 0.2 / roadLength);
+  fragPosition = vec3(height / 4.0);
+  fragDepth = 1.0 - smoothstep(10.0, roadLength * 8.0, transformed.z);
+  // fragDepth = 1.0 - (transformed.z * 0.2 / roadLength);
 
   gl_Position = projection * view * model * vec4(transformed, 1.0);
 }

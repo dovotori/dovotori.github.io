@@ -14,7 +14,8 @@ void main() {
 	vec4 c2 = texture2D(textureMap, fragTexture);
 	vec4 c3 = texture2D(textureMap, fragTexture + value / resolution.y);
 
-  gl_FragColor = vec4(c1.r, c2.g, c3.b, c1.a + c2.a + c3.b);
+  float alpha = c2.a;
+  gl_FragColor = vec4(c1.r, c2.g, c3.b, alpha);
 }
 `;
 

@@ -15,6 +15,8 @@ export default {
     '/screen/mergeBloom.js',
     '/screen/fxaa.js',
     '/screen/fxaa2.js',
+    '/screen/tunnelrace.js',
+    '/screen/rgb.js',
   ],
   useDepthTexture: true,
   postprocess: {

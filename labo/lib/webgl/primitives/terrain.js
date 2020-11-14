@@ -36,28 +36,27 @@ export const getPoints = (width, nbDoublesLines = 1) => {
   return points;
 };
 
-const addThickPoints = (width, nbDoublesLines) => {
+const addThickPoints = (width, nbDoublesLines, { thicknessY = -1 }) => {
   const points = [];
-  const thickness = -1;
   // first point
   const lastStripPosition = [width - 1, nbDoublesLines * 2 - 1];
-  points.push(lastStripPosition[0], thickness, lastStripPosition[1]);
+  points.push(lastStripPosition[0], thicknessY, lastStripPosition[1]);
   // bottom side right to left
   const yBottom = nbDoublesLines * 2;
   for (let i = width - 1; i > 0; i--) {
-    points.push(i, thickness, yBottom);
+    points.push(i, thicknessY, yBottom);
   }
   // left side bottom to top
   for (let i = nbDoublesLines * 2; i > 0; i--) {
-    points.push(0, thickness, i);
+    points.push(0, thicknessY, i);
   }
   // left top left to right
   for (let i = 0; i < width - 1; i++) {
-    points.push(i, thickness, 0);
+    points.push(i, thicknessY, 0);
   }
   // right side top to bottom - minus first
   for (let i = 0; i < nbDoublesLines * 2 - 1; i++) {
-    points.push(width - 1, thickness, i);
+    points.push(width - 1, thicknessY, i);
   }
   return points;
 };
@@ -146,9 +145,9 @@ const addThickIndices = (width, nbDoublesLines) => {
 const getMappedPoints = (points, width, height) => {
   const newPoints = [];
   for (let i = 0; i < points.length; i += 3) {
-    const x = mapFromRange(points[i], 0, width, -1, 1);
+    const x = mapFromRange(points[i], 0, width - 1, -1, 1);
     const y = points[i + 1];
-    const z = mapFromRange(points[i + 2], 0, height, -1, 1);
+    const z = mapFromRange(points[i + 2], 0, height - 1, -1, 1);
     newPoints.push(x, y, z);
   }
   return newPoints;
@@ -158,7 +157,7 @@ export default (width, height, options = {}) => {
   const position = getPoints(width, height, options);
   const indices = getIndices(width, height);
   if (options.withThick) {
-    const allPoints = position.concat(addThickPoints(width, height));
+    const allPoints = position.concat(addThickPoints(width, height, options));
     return {
       position: getMappedPoints(allPoints, width, height),
       indices: indices.concat(addThickIndices(width, height)),

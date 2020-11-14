@@ -44,6 +44,22 @@ export default class {
     });
   }
 
+  renderOnly(keys, program, model) {
+    keys.forEach((key) => {
+      this.setNodeModel(key, program, model);
+      this.renderNode(key, program);
+    });
+  }
+
+  renderExcept(keys, program, model) {
+    Object.keys(this.nodes).forEach((key) => {
+      if (keys.indexOf(key) === -1) {
+        this.setNodeModel(key, program, model);
+        this.renderNode(key, program);
+      }
+    });
+  }
+
   setNodeModel = (key, program, model) => {
     const node = this.nodes[key];
 
