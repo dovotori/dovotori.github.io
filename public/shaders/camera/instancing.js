@@ -1,5 +1,6 @@
 import { locations, getNaturalHeight } from '../utils/terrain';
 import { getFogAmount } from '../utils/fog';
+import { uniformPBR, locationsPBR } from '../utils/pbr';
 
 const vertex = `
 attribute vec3 position;
@@ -43,7 +44,7 @@ vec4 getTerrainPosition(vec3 fixedPos) {
   modelScale[2] = vec4(0.0, 0.0, scaleLength.z, 0.0);
   modelScale[3] = vec4(0.0, 0.0, 0.0, 1.0);
 
-  vec3 offset = fixedPos * 2.0; // 2 scale
+  vec3 offset = fixedPos; // * 2.0; // 2 scale
 
   mat4 translation;
   translation[0] = vec4(1.0, 0.0, 0.0, 0.0);
@@ -96,7 +97,7 @@ void main() {
   vec4 pos = projection * view * getTerrainPosition(fixedPos);
   gl_Position = pos;
 
-  fragColor = vec3(fixedPos.y);
+  fragColor = acolor;
   fragFog = getFogAmount(pos.xyz, fogStart, fogEnd);
 }
 `;
@@ -105,12 +106,16 @@ const fragment = `
 precision mediump float;
 
 uniform vec4 fogColor;
+${uniformPBR}
 
 varying vec3 fragColor;
 varying float fragFog;
 
 void main() {
-  gl_FragColor = mix(vec4(fragColor, 1.0), fogColor, fragFog);
+  vec4 finalColor = color;
+  finalColor += vec4(fragColor * 0.2 , 1.0);
+  finalColor = mix(finalColor, fogColor, fragFog);
+  gl_FragColor = finalColor;
 }
 `;
 
@@ -118,14 +123,7 @@ export default {
   vertex,
   fragment,
   attributes: ['position', 'texture', 'offset', 'acolor', 'size'],
-  uniforms: [
-    'projection',
-    'model',
-    'view',
-    'time',
-    'fogStart',
-    'fogEnd',
-    'fogColor',
-    'moving',
-  ].concat(locations),
+  uniforms: ['projection', 'model', 'view', 'time', 'fogStart', 'fogEnd', 'fogColor', 'moving']
+    .concat(locations)
+    .concat(locationsPBR),
 };

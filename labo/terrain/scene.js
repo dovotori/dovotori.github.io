@@ -1,9 +1,42 @@
-import Scene from '../lib/webgl/scenes/SceneCamera';
+import Scene from '../lib/webgl/scenes/SceneLampe';
 import Primitive from '../lib/webgl/gl/Primitive';
 import Mat4 from '../lib/webgl/maths/Mat4';
 import Spring from '../lib/webgl/maths/Spring';
-import getGrid from '../lib/webgl/primitives/terrain';
+import getTerrain from '../lib/webgl/primitives/terrain';
+import getGrid from '../lib/webgl/primitives/grid';
 import TextureNoise from '../lib/webgl/textures/TexturePerlinNoise';
+// import Buffers from '../lib/webgl/postprocess/Buffers';
+import { hexToRgb } from '../lib/webgl/utils/color';
+
+// const COLORS = [
+//   // MARRONS DARK TO LIGHT
+//   '#675553',
+//   '#89776b',
+//   '#c8baad',
+//   // // LIGHT GREEN
+//   '#c1baa8',
+//   '#d1cfb8',
+//   // SHADOW BLUE
+//   '#86999d',
+//   '#a3b3c0',
+//   '#dde3e1',
+// ];
+
+const COLORS_STRANDING = [
+  // DIRT
+  '#251a16',
+  '#6e6254',
+  '#8b6a47',
+  // ROC
+  '#5d564c',
+  // '#978d72',
+  '#989b56',
+  // GREEN
+  '#6d753a',
+  '#89934c',
+  '#8b8f54',
+  '#ffffff',
+];
 
 class TerrainScene extends Scene {
   static setFog(program, fogConfig) {
@@ -27,15 +60,27 @@ class TerrainScene extends Scene {
     this.targetZ = new Spring(0);
     this.model = new Mat4();
 
-    this.vbo = new Primitive(gl, getGrid(width, height, { withThick: true, thicknessY: -0.1 }));
+    this.vbo = new Primitive(gl, getTerrain(width, height, { withThick: true, thicknessY: -0.1 }));
     this.vbo.setModeDessin(this.gl.TRIANGLE_STRIP);
-    this.noiseTex = new TextureNoise(gl, width, height);
+    this.noiseTex = new TextureNoise(gl, 128, 128);
+    // const primtive = getGrid(100, 100, { withThick: true, thicknessY: -0.2 });
+    // this.vbo2 = new Primitive(gl, primtive);
+    // this.vbo2.setModeDessin(this.gl.TRIANGLES);
 
     const prog1 = this.mngProg.get('terrain');
     const prog2 = this.mngProg.get('instancing');
     [prog1, prog2].forEach((p) => {
       TerrainScene.setFog(p, config.fog);
       TerrainScene.setTerrain(p, config.terrain);
+    });
+    prog1.setVector('gridSize', [width, height]);
+
+    COLORS_STRANDING.forEach((hex, i) => {
+      const { r, g, b } = hexToRgb(hex);
+      prog1.setVector(
+        `colors[${i}]`,
+        [r, g, b].map((c) => c / 255)
+      );
     });
 
     const threeCount = 100;
@@ -79,7 +124,7 @@ class TerrainScene extends Scene {
     super.render();
     this.model.identity();
     this.model.rotate(this.time * 0.01, 0, 1, 0);
-    this.model.scale(2);
+    // this.model.scale(2);
 
     this.targetX.update();
     this.targetZ.update();
@@ -91,11 +136,29 @@ class TerrainScene extends Scene {
     prog1.setMatrix('model', this.model.get());
     prog1.setTexture(0, this.noiseTex.get(), 'textureMap');
     prog1.setVector('moving', moving);
-    this.vbo.render(prog1.get());
 
     const prog2 = this.mngProg.get('instancing');
     prog2.setVector('moving', moving);
-    this.mngGltf.get('three').render(prog2, this.model);
+
+    this.vbo.render(prog1.get());
+    // this.mngGltf.get('three').render(prog2, this.model);
+
+    // this.renderShadow();
+  }
+
+  renderShadow() {
+    const lampe = this.getLampe(0);
+    this.shadow.start(lampe);
+    const pr = this.shadow.getProgram();
+    pr.setMatrix('model', this.model.get());
+
+    this.vbo.render(pr.get());
+    // this.mngGltf.get('three').render(prog2, this.model);
+
+    this.shadow.end();
+    // this.shadow.setBrightContrast(0.0, 4.0);
+    // this.shadow.setBlur();
+    this.postProcess.render(this.shadow.getTexture().get());
   }
 
   setKeyboardInteraction(keyboard) {

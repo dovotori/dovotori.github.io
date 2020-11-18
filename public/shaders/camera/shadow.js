@@ -1,4 +1,8 @@
-import { uniformVertShadow, uniformFragShadow, funcShadow, shadowLocations } from '../utils/shadow';
+import { uniformVertShadow, shadowLocations, fragment } from '../utils/shadow';
+
+/* 
+use lampe depth map texture to create a black and white shadow map
+*/
 
 const vertex = `
 attribute vec3 position;
@@ -23,30 +27,6 @@ void main() {
   fragTexture = texture;
   fragPosition = normalize((view * model * vec4(position, 1.0)).xyz);
   gl_Position = projection * view * model * vec4(position, 1.0);
-}
-`;
-
-const fragment = `
-precision mediump float;
-
-${uniformFragShadow}
-
-uniform vec2 resolution;
-
-varying vec3 fragPosition;
-varying vec4 fragShadow;
-varying vec3 fragNormale;
-varying vec2 fragTexture;
-
-${funcShadow}
-
-void main() {
-  vec3 N = normalize(fragNormale);
-  vec3 L = normalize(posLum - fragPosition);
-  float lambertCosinus = max(dot(N, L), 0.0);
-  
-  float shadow = funcShadow(fragShadow, resolution, lambertCosinus);
-  gl_FragColor = vec4(vec3(shadow), 1.0);
 }
 `;
 

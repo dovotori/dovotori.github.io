@@ -44,3 +44,27 @@ uniform vec3 posLum;
 `;
 
 export const shadowLocations = ['shadowView', 'shadowProjection', 'shadowMap', 'lighten', 'posLum'];
+
+export const fragment = `
+precision mediump float;
+
+${uniformFragShadow}
+
+uniform vec2 resolution;
+
+varying vec3 fragPosition;
+varying vec4 fragShadow;
+varying vec3 fragNormale;
+varying vec2 fragTexture;
+
+${funcShadow}
+
+void main() {
+  vec3 N = normalize(fragNormale);
+  vec3 L = normalize(posLum - fragPosition);
+  float lambertCosinus = max(dot(N, L), 0.0);
+  
+  float shadow = funcShadow(fragShadow, resolution, lambertCosinus);
+  gl_FragColor = vec4(vec3(shadow), 1.0);
+}
+`;

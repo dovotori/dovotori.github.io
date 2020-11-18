@@ -13,7 +13,7 @@ float getNaturalHeight(vec2 coor) {
   for(int i = 0; i < NB_OCTAVES; i += 1) {
     float frequency = pow(lacunarity, float(i));
     float amplitude = pow(persistance, float(i));
-    result += noise(coor * vec2(frequency)) * amplitude;
+    result += noise(coor * frequency) * amplitude;
     allAmpli += amplitude;
   }
   return result / allAmpli;

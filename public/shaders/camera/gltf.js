@@ -1,5 +1,5 @@
 import { uniformLights } from '../utils/light';
-import { /* funcPBR, */ PBRLocations, uniformPBR } from '../utils/pbr';
+import { /* funcPBR, */ locationsPBR, uniformPBR } from '../utils/pbr';
 import { funcLightsToon } from '../utils/toon';
 
 const vertex = `
@@ -51,5 +51,5 @@ export default {
   vertex,
   fragment,
   attributes: ['position', 'normale', 'tangent'],
-  uniforms: ['projection', 'model', 'view', 'normalMatrix', 'posEye'].concat(PBRLocations),
+  uniforms: ['projection', 'model', 'view', 'normalMatrix', 'posEye'].concat(locationsPBR),
 };

@@ -153,9 +153,16 @@ const getMappedPoints = (points, width, height) => {
   return newPoints;
 };
 
+const getNormales = (width, height = 1) => {
+  const nbPoints = getPlateauNbPoints(width, height);
+  const normales = Array.from({ length: nbPoints }).fill([0, 1, 0]);
+  return normales.flat();
+};
+
 export default (width, height, options = {}) => {
   const position = getPoints(width, height, options);
   const indices = getIndices(width, height);
+  const normales = getNormales(width, height);
   if (options.withThick) {
     const allPoints = position.concat(addThickPoints(width, height, options));
     return {
@@ -166,5 +173,6 @@ export default (width, height, options = {}) => {
   return {
     position,
     indices,
+    normales,
   };
 };
