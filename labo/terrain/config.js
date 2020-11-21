@@ -4,6 +4,7 @@ export default {
   slug: 'terrain',
   shaders: [
     '/camera/terrain.js',
+    '/camera/terrainWater.js',
     '/camera/instancing.js',
     // shadow
     '/screen/screen.js',
@@ -29,7 +30,7 @@ export default {
   },
   useDepthTexture: true,
   camera: {
-    position: { x: 2, y: 2, z: 2 },
+    position: { x: 4, y: 4, z: 4 },
     target: { x: 0, y: 0, z: 0 },
     near: 1,
     far: 200,
@@ -55,13 +56,41 @@ export default {
   terrain: {
     width: 100,
     height: 100,
-    lacunarity: 2,
+    lacunarity: 1.6,
     persistance: 0.5,
+    colors: [
+      // DIRT
+      '#251a16',
+      '#6e6254',
+      '#8b6a47',
+      // ROC
+      '#5d564c',
+      // '#978d72',
+      '#989b56',
+      // GREEN
+      '#6d753a',
+      '#89934c',
+      '#8b8f54',
+      '#ffffff',
+    ],
+    // [
+    //   // MARRONS DARK TO LIGHT
+    //   '#675553',
+    //   '#89776b',
+    //   '#c8baad',
+    //   // // LIGHT GREEN
+    //   '#c1baa8',
+    //   '#d1cfb8',
+    //   // SHADOW BLUE
+    //   '#86999d',
+    //   '#a3b3c0',
+    //   '#dde3e1',
+    // ]
   },
   fog: {
     color: [0.0, 0.0, 0.2, 0.0],
     start: 2.0,
-    end: 7.0,
+    end: 4.0,
   },
   keyboard: {
     UP,

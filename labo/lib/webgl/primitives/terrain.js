@@ -36,29 +36,13 @@ export const getPoints = (width, nbDoublesLines = 1) => {
   return points;
 };
 
-const addThickPoints = (width, nbDoublesLines, { thicknessY = -1 }) => {
-  const points = [];
-  // first point
-  const lastStripPosition = [width - 1, nbDoublesLines * 2 - 1];
-  points.push(lastStripPosition[0], thicknessY, lastStripPosition[1]);
-  // bottom side right to left
-  const yBottom = nbDoublesLines * 2;
-  for (let i = width - 1; i > 0; i--) {
-    points.push(i, thicknessY, yBottom);
-  }
-  // left side bottom to top
-  for (let i = nbDoublesLines * 2; i > 0; i--) {
-    points.push(0, thicknessY, i);
-  }
-  // left top left to right
-  for (let i = 0; i < width - 1; i++) {
-    points.push(i, thicknessY, 0);
-  }
-  // right side top to bottom - minus first
-  for (let i = 0; i < nbDoublesLines * 2 - 1; i++) {
-    points.push(width - 1, thicknessY, i);
-  }
-  return points;
+const getPlateauNbPoints = (width, nbDoublesLines) =>
+  width * (nbDoublesLines + 1) + (width + 1) * nbDoublesLines;
+
+const getNormales = (width, height = 1) => {
+  const nbPoints = getPlateauNbPoints(width, height);
+  const normales = Array.from({ length: nbPoints }).fill([0, 1, 0]);
+  return normales.flat();
 };
 
 export const getIndices = (width, nbDoublesLines = 1) => {
@@ -96,11 +80,33 @@ export const getIndices = (width, nbDoublesLines = 1) => {
   return indices;
 };
 
-const getPlateauNbPoints = (width, nbDoublesLines) =>
-  width * (nbDoublesLines + 1) + (width + 1) * nbDoublesLines;
-
 // export const getContourNbPoints = (width, nbDoublesLines) =>
 //   width * 2 + (nbDoublesLines * 2 - 1) * 2;
+
+const addThickPoints = (width, nbDoublesLines, { thicknessY = -1 }) => {
+  const points = [];
+  // first point
+  const lastStripPosition = [width - 1, nbDoublesLines * 2 - 1];
+  points.push(lastStripPosition[0], thicknessY, lastStripPosition[1]);
+  // bottom side right to left
+  const yBottom = nbDoublesLines * 2;
+  for (let i = width - 1; i > 0; i--) {
+    points.push(i, thicknessY, yBottom);
+  }
+  // left side bottom to top
+  for (let i = nbDoublesLines * 2; i > 0; i--) {
+    points.push(0, thicknessY, i);
+  }
+  // left top left to right
+  for (let i = 0; i < width - 1; i++) {
+    points.push(i, thicknessY, 0);
+  }
+  // right side top to bottom - minus first
+  for (let i = 0; i < nbDoublesLines * 2 - 1; i++) {
+    points.push(width - 1, thicknessY, i);
+  }
+  return points;
+};
 
 const addThickIndices = (width, nbDoublesLines) => {
   const indices = [];
@@ -142,37 +148,39 @@ const addThickIndices = (width, nbDoublesLines) => {
   return indices;
 };
 
+const addThickNormales = (width, nbDoublesLines) => {
+  const normales = [];
+  // const lastIndex = getPlateauNbPoints(width, nbDoublesLines) - 1;
+
+  return normales;
+};
+
 const getMappedPoints = (points, width, height) => {
   const newPoints = [];
   for (let i = 0; i < points.length; i += 3) {
     const x = mapFromRange(points[i], 0, width - 1, -1, 1);
     const y = points[i + 1];
-    const z = mapFromRange(points[i + 2], 0, height - 1, -1, 1);
+    const z = mapFromRange(points[i + 2], 0, height * 2 - 1, -1, 1);
     newPoints.push(x, y, z);
   }
   return newPoints;
 };
 
-const getNormales = (width, height = 1) => {
-  const nbPoints = getPlateauNbPoints(width, height);
-  const normales = Array.from({ length: nbPoints }).fill([0, 1, 0]);
-  return normales.flat();
-};
-
 export default (width, height, options = {}) => {
   const position = getPoints(width, height, options);
   const indices = getIndices(width, height);
-  const normales = getNormales(width, height);
+  // const normale = getNormales(width, height);
   if (options.withThick) {
     const allPoints = position.concat(addThickPoints(width, height, options));
     return {
       position: getMappedPoints(allPoints, width, height),
       indices: indices.concat(addThickIndices(width, height)),
+      // normale: normale.concat(addThickNormales(width, height)),
     };
   }
   return {
     position,
     indices,
-    normales,
+    // normale,
   };
 };

@@ -8,36 +8,6 @@ import TextureNoise from '../lib/webgl/textures/TexturePerlinNoise';
 // import Buffers from '../lib/webgl/postprocess/Buffers';
 import { hexToRgb } from '../lib/webgl/utils/color';
 
-// const COLORS = [
-//   // MARRONS DARK TO LIGHT
-//   '#675553',
-//   '#89776b',
-//   '#c8baad',
-//   // // LIGHT GREEN
-//   '#c1baa8',
-//   '#d1cfb8',
-//   // SHADOW BLUE
-//   '#86999d',
-//   '#a3b3c0',
-//   '#dde3e1',
-// ];
-
-const COLORS_STRANDING = [
-  // DIRT
-  '#251a16',
-  '#6e6254',
-  '#8b6a47',
-  // ROC
-  '#5d564c',
-  // '#978d72',
-  '#989b56',
-  // GREEN
-  '#6d753a',
-  '#89934c',
-  '#8b8f54',
-  '#ffffff',
-];
-
 class TerrainScene extends Scene {
   static setFog(program, fogConfig) {
     const { start, end, color } = fogConfig;
@@ -54,7 +24,7 @@ class TerrainScene extends Scene {
 
   constructor(gl, config, assets) {
     super(gl, config, assets);
-    const { width, height } = config.terrain;
+    const { width, height, colors } = config.terrain;
 
     this.targetX = new Spring(0);
     this.targetZ = new Spring(0);
@@ -62,20 +32,25 @@ class TerrainScene extends Scene {
 
     this.vbo = new Primitive(gl, getTerrain(width, height, { withThick: true, thicknessY: -0.1 }));
     this.vbo.setModeDessin(this.gl.TRIANGLE_STRIP);
+
+    // this.vbo = new Primitive(gl, getGrid(width, height, { withThick: true, thicknessY: -0.1 }));
+    // this.vbo.setModeDessin(this.gl.TRIANGLES);
+
     this.noiseTex = new TextureNoise(gl, 128, 128);
-    // const primtive = getGrid(100, 100, { withThick: true, thicknessY: -0.2 });
-    // this.vbo2 = new Primitive(gl, primtive);
-    // this.vbo2.setModeDessin(this.gl.TRIANGLES);
 
     const prog1 = this.mngProg.get('terrain');
     const prog2 = this.mngProg.get('instancing');
+    const prog3 = this.mngProg.get('terrainWater');
     [prog1, prog2].forEach((p) => {
       TerrainScene.setFog(p, config.fog);
       TerrainScene.setTerrain(p, config.terrain);
     });
+    prog1.setTexture(0, this.noiseTex.get(), 'textureMap');
     prog1.setVector('gridSize', [width, height]);
+    prog3.setVector('gridSize', [width, height]);
+    TerrainScene.setFog(prog3, config.fog);
 
-    COLORS_STRANDING.forEach((hex, i) => {
+    colors.forEach((hex, i) => {
       const { r, g, b } = hexToRgb(hex);
       prog1.setVector(
         `colors[${i}]`,
@@ -93,7 +68,7 @@ class TerrainScene extends Scene {
       siz.push(0.1 + Math.random() * 0.1);
     }
     const offsets = new Float32Array(pos);
-    const colors = new Float32Array(col);
+    const formatedColors = new Float32Array(col);
     const size = new Float32Array(siz);
     this.mngGltf.get('three').addInstancingVbos(threeCount, {
       offset: {
@@ -108,7 +83,7 @@ class TerrainScene extends Scene {
         count: threeCount,
         size: 3,
         type: 'VEC3',
-        values: colors,
+        values: formatedColors,
       },
       size: {
         componentType: gl.FLOAT,
@@ -133,14 +108,17 @@ class TerrainScene extends Scene {
     const moving = [this.targetX.get() + time, this.targetZ.get() + time];
 
     const prog1 = this.mngProg.get('terrain');
-    prog1.setMatrix('model', this.model.get());
-    prog1.setTexture(0, this.noiseTex.get(), 'textureMap');
-    prog1.setVector('moving', moving);
-
     const prog2 = this.mngProg.get('instancing');
-    prog2.setVector('moving', moving);
+    const prog3 = this.mngProg.get('terrainWater');
 
-    this.vbo.render(prog1.get());
+    prog1.setMatrix('model', this.model.get());
+    prog1.setVector('moving', moving);
+    prog2.setVector('moving', moving);
+    prog3.setMatrix('model', this.model.get());
+    prog3.setVector('moving', [this.time * 0.0001, this.time * 0.0001]);
+
+    // this.vbo.render(prog1.get());
+    this.vbo.render(prog3.get());
     // this.mngGltf.get('three').render(prog2, this.model);
 
     // this.renderShadow();
