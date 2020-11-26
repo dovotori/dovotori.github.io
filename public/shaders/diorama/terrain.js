@@ -1,11 +1,14 @@
 import { getFogAmount, fogFactorExp2 } from '../utils/fog';
 import { locations, getNaturalHeight } from '../utils/terrain';
+import { uniformLights, addLightLocations, funcLightsColor } from '../utils/light';
 
 const vertex = `
 attribute vec3 position;
+
 uniform mat4 projection;
 uniform mat4 model;
 uniform mat4 view;
+uniform mat3 normalMatrix;
 
 uniform vec2 moving;
 uniform float fogStart;
@@ -50,6 +53,7 @@ void main() {
     tranformed.y = getNaturalHeight(coord);
     normale = roundNormale(tranformed, moving);
   }
+
   if (position.x == 1.0) {
     normale = vec3(1.0 ,0.0, 0.0);
   } else if (position.x == -1.0) {
@@ -59,7 +63,8 @@ void main() {
   } else if (position.z == -1.0) {
     normale = vec3(0.0 ,0.0, -1.0);
   }
-  fragNormale = normale;
+  
+  fragNormale = normalMatrix * normale;
   fragTexture = position.xz * 0.5 + 0.5;
   fragPosition = tranformed;
   fragColor = vec3(position.xz, 0.0);
@@ -78,12 +83,19 @@ precision mediump float;
 
 uniform vec4 fogColor;
 uniform sampler2D textureMap;
+uniform float reflectPass;
+uniform float refractPass;
+uniform float waterLevel;
+
+${uniformLights}
 
 varying float fragFog;
 varying vec3 fragPosition;
 varying vec3 fragColor;
 varying vec2 fragTexture;
 varying vec3 fragNormale;
+
+${funcLightsColor}
 
 #define NB_COLORS ${NB_COLORS}
 uniform vec3 colors[NB_COLORS];
@@ -108,33 +120,40 @@ float getFogAmount() {
   return fogFactorExp2(fogDistance, FOG_DENSITY);
 }
 
+#define THRESHOLD 0.01
+
 void main() {
+  if (reflectPass > 0.5 || refractPass > 0.5) {
+    if (
+      (reflectPass > 0.5 && fragPosition.y < waterLevel)
+      || (refractPass > 0.5 && fragPosition.y > waterLevel)
+      || fragPosition.x >= 1.0 - THRESHOLD
+      || fragPosition.x <= -1.0 + THRESHOLD
+      || fragPosition.z >= 1.0 - THRESHOLD
+      || fragPosition.z <= -1.0 + THRESHOLD 
+    ) {
+      discard;
+    }
+  }
+
   vec3 color = getColor(fragPosition.y);
-  // vec3 color = vec3(fragPosition.y);
 
-  // float modulo = mod(fragHeight, 0.05);
-  // if (modulo > 0.0 && modulo < 0.002) {
-    // color *= 0.1;
-  // }
+   vec3 lightColor = funcLightsColor(
+    vec3(1.0),
+    color,
+    vec3(0.0),
+    fragNormale,
+    fragPosition
+  );
 
-  // float fogAmount = getFogAmount(); 
-  float fogAmount = fragFog;
-
-  // vec3 noiseColor = texture2D(textureMap, fragTexture).xyz;
-
-  vec3 posLum = vec3(4.0,4.0,4.0);
-  vec3 N = normalize(fragNormale);
-  vec3 L = normalize(posLum - fragPosition);
-  float lambertian = max(dot(N, L), 0.0);
-
-  vec4 finalColor = vec4(color, 1.0);
-  finalColor.xyz *= (lambertian + 0.4);
+  vec4 finalColor = vec4(lightColor, 1.0);
 
   // vec4 finalColor = vec4(mix(color, noiseColor, 0.1), 1.0);
+  // float fogAmount = getFogAmount(); 
+  float fogAmount = fragFog;
   finalColor = mix(finalColor, fogColor, fogAmount);
 
   gl_FragColor = finalColor;
-  // gl_FragColor = vec4(fragNormale, 1.0);
 }
 `;
 
@@ -146,13 +165,18 @@ export default {
     'projection',
     'model',
     'view',
+    'normalMatrix',
     'textureMap',
     'moving',
     'fogStart',
     'fogEnd',
     'fogColor',
     'gridSize',
+    'reflectPass',
+    'refractPass',
+    'waterLevel',
   ]
     .concat(locations)
-    .concat(Array.from({ length: NB_COLORS }).map((_, i) => `colors[${i}]`)),
+    .concat(Array.from({ length: NB_COLORS }).map((_, i) => `colors[${i}]`))
+    .concat(addLightLocations()),
 };

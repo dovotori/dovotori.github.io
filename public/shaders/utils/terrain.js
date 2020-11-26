@@ -23,8 +23,6 @@ float getNaturalHeight(vec2 coor) {
 export const locations = ['octaves', 'lacunarity', 'persistance'];
 
 export const funcWave = `
-// steepness = 0.5; 
-
 ${PI}
 
 struct Wave {

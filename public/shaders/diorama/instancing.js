@@ -1,9 +1,10 @@
 import { locations, getNaturalHeight } from '../utils/terrain';
 import { getFogAmount } from '../utils/fog';
-import { uniformPBR, locationsPBR } from '../utils/pbr';
+import { locationsPBR, funcPBR } from '../utils/pbr';
 
 const vertex = `
 attribute vec3 position;
+attribute vec3 normale;
 attribute vec2 texture;
 attribute vec3 offset;
 attribute vec3 acolor;
@@ -12,12 +13,15 @@ attribute float size;
 uniform mat4 projection;
 uniform mat4 model;
 uniform mat4 view;
+uniform mat3 normalMatrix;
 uniform vec2 moving;
 uniform float fogStart;
 uniform float fogEnd;
 
 varying vec3 fragColor;
 varying float fragFog;
+varying vec3 fragNormale;
+varying vec3 fragPosition;
 
 ${getNaturalHeight}
 ${getFogAmount}
@@ -94,10 +98,13 @@ vec4 getTerrainPosition(vec3 fixedPos) {
 
 void main() {
   vec3 fixedPos = getFixedPosition();
+  vec4 terrainPos = getTerrainPosition(fixedPos);
   vec4 pos = projection * view * getTerrainPosition(fixedPos);
   gl_Position = pos;
 
+  fragPosition = terrainPos.xyz;
   fragColor = acolor;
+  fragNormale = normalMatrix * normale;
   fragFog = getFogAmount(pos.xyz, fogStart, fogEnd);
 }
 `;
@@ -106,14 +113,18 @@ const fragment = `
 precision mediump float;
 
 uniform vec4 fogColor;
-${uniformPBR}
+uniform vec3 posEye;
 
 varying vec3 fragColor;
+varying vec3 fragNormale;
+varying vec3 fragPosition;
 varying float fragFog;
 
+${funcPBR}
+
 void main() {
-  vec4 finalColor = color;
-  finalColor += vec4(fragColor * 0.2 , 1.0);
+  vec3 pbrColor = funcPBR(fragPosition, fragNormale, posEye);
+  vec4 finalColor = vec4(mix(fragColor, pbrColor * 4.0, 0.8), 1.0);
   finalColor = mix(finalColor, fogColor, fragFog);
   gl_FragColor = finalColor;
 }
@@ -122,8 +133,19 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'texture', 'offset', 'acolor', 'size'],
-  uniforms: ['projection', 'model', 'view', 'time', 'fogStart', 'fogEnd', 'fogColor', 'moving']
+  attributes: ['position', 'texture', 'normale', 'offset', 'acolor', 'size'],
+  uniforms: [
+    'projection',
+    'model',
+    'view',
+    'normalMatrix',
+    'time',
+    'fogStart',
+    'fogEnd',
+    'fogColor',
+    'moving',
+    'posEye',
+  ]
     .concat(locations)
     .concat(locationsPBR),
 };
