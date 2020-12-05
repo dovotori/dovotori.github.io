@@ -8,6 +8,9 @@ ${anothorNoise}
 uniform float lacunarity; // frequency of noise octave
 uniform float persistance; // influence of noise octave
 
+uniform vec2 moving;
+uniform vec2 gridSize;
+
 float getNaturalHeight(vec2 coor) {
   float result = 0.0;
   float allAmpli = 0.0;
@@ -20,7 +23,7 @@ float getNaturalHeight(vec2 coor) {
   return result / allAmpli;
 }`;
 
-export const locations = ['octaves', 'lacunarity', 'persistance'];
+export const locations = ['octaves', 'lacunarity', 'persistance', 'moving', 'gridSize'];
 
 export const funcWave = `
 ${PI}
@@ -70,5 +73,42 @@ Wave funcWave(
     tangent,
     binormal
   );
+}
+`;
+
+export const getNormale = `
+vec3 computeNormale(vec3 p0, vec3 p1, vec3 p2) {
+  return cross(p1 - p0, p2 - p0);
+}
+
+vec3 roundNormale(vec3 position, vec2 moving) {
+  vec2 betweenPoints = 2.0 / gridSize;
+
+  vec2 coordP0 = position.xz + vec2(betweenPoints.x, 0.0) + moving;
+  vec2 coordP1 = position.xz + vec2(betweenPoints.x, 0.0) + moving;
+  vec2 coordP2 = position.xz + vec2(0.0, betweenPoints.y) + moving;
+  
+  vec3 p0 = vec3(0.0, position.y, 0.0);
+  vec3 p1 = vec3(betweenPoints.x, getNaturalHeight(coordP1), 0.0);
+  vec3 p2 = vec3(0.0, getNaturalHeight(coordP2), betweenPoints.y);
+
+  return normalize(computeNormale(p0, p2, p1));
+}
+
+vec3 getNormale(vec3 position, vec3 tranformed) {
+  vec3 normale = vec3(0.0);
+  if (position.y == 0.0) {
+    normale = roundNormale(tranformed, moving);
+  }
+  if (position.x == 1.0) {
+    normale = vec3(1.0 ,0.0, 0.0);
+  } else if (position.x == -1.0) {
+    normale = vec3(-1.0 ,0.0, 0.0);
+  } else if (position.z == 1.0) {
+    normale = vec3(0.0 ,0.0, 1.0);
+  } else if (position.z == -1.0) {
+    normale = vec3(0.0 ,0.0, -1.0);
+  }
+  return normale;
 }
 `;

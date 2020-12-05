@@ -8,8 +8,6 @@ import TextureNoise from '../lib/webgl/textures/TexturePerlinNoise';
 import { hexToRgb } from '../lib/webgl/utils/color';
 import Fbo from '../lib/webgl/gl/Fbo';
 
-const WATER_LEVEL = 0.4;
-
 class TerrainScene extends Scene {
   static setFog(program, fogConfig) {
     const { start, end, color } = fogConfig;
@@ -31,7 +29,7 @@ class TerrainScene extends Scene {
     this.fbo2 = new Fbo(this.gl, config.width, config.height, true);
     this.fbo3 = new Fbo(this.gl, config.width, config.height, true);
 
-    const { width, height, colors } = config.terrain;
+    const { width, height, colors, waterLevel } = config.terrain;
 
     this.targetX = new Spring(0);
     this.targetZ = new Spring(0);
@@ -47,23 +45,20 @@ class TerrainScene extends Scene {
 
     const progTerrain = this.mngProg.get('terrain');
     const progThrees = this.mngProg.get('instancing');
-    const progWater = this.mngProg.get('terrainWater');
-    [progTerrain, progThrees].forEach((p) => {
-      TerrainScene.setFog(p, config.fog);
-      TerrainScene.setTerrain(p, config.terrain);
-    });
-    progTerrain.setTexture(0, this.noiseTex.get(), 'textureMap');
-    progTerrain.setVector('gridSize', [width, height]);
-    progWater.setVector('gridSize', [width, height]);
-    progTerrain.setFloat('waterLevel', WATER_LEVEL);
-    progWater.setFloat('waterLevel', WATER_LEVEL);
-    progWater.setTexture(2, this.mngTex.get('waterN').get(), 'normaleMap');
-    progWater.setTexture(3, this.mngTex.get('dudv').get(), 'distortionMap');
-    TerrainScene.setFog(progWater, config.fog);
+    const progWater = this.mngProg.get('water');
+    const progShadow = this.mngProg.get('shadow');
+    const progTerrainDepth = this.mngProg.get('terrainDepth');
+    const progThreesShadow = this.mngProg.get('instancingDepth');
 
-    this.setLampeInfos(progWater);
-    this.setLampeInfos(progTerrain);
-    this.setLampeInfos(progThrees);
+    [progTerrain, progThrees, progShadow, progWater, progTerrainDepth, progThreesShadow].forEach(
+      (p) => {
+        TerrainScene.setFog(p, config.fog);
+        TerrainScene.setTerrain(p, config.terrain);
+        p.setVector('gridSize', [width, height]);
+        p.setFloat('waterLevel', waterLevel);
+        this.setLampeInfos(p);
+      }
+    );
 
     colors.forEach((hex, i) => {
       const { r, g, b } = hexToRgb(hex);
@@ -82,36 +77,40 @@ class TerrainScene extends Scene {
       col.push(0.4, 0.6, Math.random());
       siz.push(0.05 + Math.random() * 0.06);
     }
-    const offsets = new Float32Array(pos);
-    const formatedColors = new Float32Array(col);
-    const size = new Float32Array(siz);
+
+    const offset = {
+      componentType: gl.FLOAT,
+      count: threeCount,
+      size: 3,
+      type: 'VEC3',
+      values: new Float32Array(pos),
+    };
+
+    const acolor = {
+      componentType: gl.FLOAT,
+      count: threeCount,
+      size: 3,
+      type: 'VEC3',
+      values: new Float32Array(col),
+    };
+
+    const size = {
+      componentType: gl.FLOAT,
+      count: threeCount,
+      size: 1,
+      type: 'FLOAT',
+      values: new Float32Array(siz),
+    };
+
     this.mngGltf.get('three').addInstancingVbos(threeCount, {
-      offset: {
-        componentType: gl.FLOAT,
-        count: threeCount,
-        size: 3,
-        type: 'VEC3',
-        values: offsets,
-      },
-      acolor: {
-        componentType: gl.FLOAT,
-        count: threeCount,
-        size: 3,
-        type: 'VEC3',
-        values: formatedColors,
-      },
-      size: {
-        componentType: gl.FLOAT,
-        count: threeCount,
-        size: 1,
-        type: 'FLOAT',
-        values: size,
-      },
+      offset,
+      acolor,
+      size,
     });
   }
 
-  render() {
-    super.render();
+  update(time) {
+    super.update(time);
     this.model.identity();
     this.model.rotate(this.time * 0.01, 0, 1, 0);
     // this.model.scale(2);
@@ -123,65 +122,99 @@ class TerrainScene extends Scene {
     this.targetX.update();
     this.targetZ.update();
 
-    const time = this.time * 0.0001;
-    const moving = [this.targetX.get() + time, this.targetZ.get() + time];
+    const slowTime = this.time * 0.0001;
+    const moving = [this.targetX.get(), this.targetZ.get()];
+    // const moving = [this.targetX.get() + slowTime, this.targetZ.get() + slowTime];
 
     const progTerrain = this.mngProg.get('terrain');
     const progThrees = this.mngProg.get('instancing');
-    const progWater = this.mngProg.get('terrainWater');
+    const progWater = this.mngProg.get('water');
+    const progShadow = this.mngProg.get('shadow');
+    const progTerrainDepth = this.mngProg.get('terrainDepth');
+    const progThreesShadow = this.mngProg.get('instancingDepth');
 
-    progTerrain.setMatrix('model', this.model.get());
-    progWater.setMatrix('model', this.model.get());
+    [progTerrain, progThrees, progShadow, progWater, progTerrainDepth, progThreesShadow].forEach(
+      (p) => {
+        p.setMatrix('model', this.model.get());
+        p.setMatrix('normalMatrix', normalMatrix.get());
+        p.setVector('moving', moving);
+      }
+    );
+    progWater.setFloat('time', slowTime);
 
-    progTerrain.setMatrix('normalMatrix', normalMatrix.get());
-    progWater.setMatrix('normalMatrix', normalMatrix.get());
-    progThrees.setMatrix('normalMatrix', normalMatrix.get());
+    this.mngGltf.get('antenna').update(time * 0.1);
+  }
 
-    progTerrain.setVector('moving', moving);
-    progThrees.setVector('moving', moving);
-    progWater.setVector('moving', moving);
-    progWater.setFloat('time', this.time * 0.0001);
+  waterPasses() {
+    const progTerrain = this.mngProg.get('terrain');
+    const progWater = this.mngProg.get('water');
 
-    this.fbo.start();
     progTerrain.setFloat('reflectPass', 1);
     progTerrain.setFloat('refractPass', 0);
-    progTerrain.setMatrix('view', this.camera.getReflectViewMatrix(WATER_LEVEL).get());
+    progTerrain.setMatrix(
+      'view',
+      this.camera.getReflectViewMatrix(this.config.terrain.waterLevel).get()
+    );
+    this.fbo.start();
     this.vbo.render(progTerrain.get());
     this.fbo.end();
-    progWater.setTexture(0, this.fbo.getTexture().get(), 'reflectMap');
 
-    this.fbo2.start();
     progTerrain.setFloat('reflectPass', 0);
     progTerrain.setFloat('refractPass', 1);
     progTerrain.setMatrix('view', this.camera.getView().get());
+    this.fbo2.start();
     this.vbo.render(progTerrain.get());
     this.fbo2.end();
-    progWater.setTexture(1, this.fbo2.getTexture().get(), 'refractMap');
-
     progTerrain.setFloat('refractPass', 0);
 
-    // this.postProcess.render(this.fbo3.getDepthTexture().get());
-
-    // this.renderShadow();
-
-    this.vbo.render(progTerrain.get());
-    this.vbo.render(progWater.get());
-    this.mngGltf.get('three').render(progThrees, this.model);
+    progWater.setTexture(0, this.fbo.getTexture().get(), 'reflectMap');
+    progWater.setTexture(1, this.fbo2.getTexture().get(), 'refractMap');
+    progWater.setTexture(2, this.mngTex.get('waterN').get(), 'normaleMap');
+    progWater.setTexture(3, this.mngTex.get('dudv').get(), 'distortionMap');
   }
 
-  renderShadow() {
+  shadowPass() {
     const lampe = this.getLampe(0);
     this.shadow.start(lampe);
-    const pr = this.shadow.getProgram();
-    pr.setMatrix('model', this.model.get());
-
-    this.vbo.render(pr.get());
-    // this.mngGltf.get('three').render(progThrees, this.model);
-
+    this.vbo.render(this.shadow.getProgram().get());
+    this.mngGltf.get('three').render(this.mngProg.get('instancing'), this.model);
     this.shadow.end();
-    // this.shadow.setBrightContrast(0.0, 4.0);
+
+    this.shadow.setBrightContrast(0.0, 3.0);
     // this.shadow.setBlur();
-    this.postProcess.render(this.shadow.getTexture().get());
+  }
+
+  renderBasiqueForLampeDepth = () => {
+    const lampe = this.getLampe(0);
+    ['terrainDepth', 'instancingDepth'].forEach((keyProg) => {
+      const program = this.mngProg.get(keyProg);
+      lampe.setDepthProgram(program);
+    });
+    lampe.start();
+    // this.vbo.render(this.mngProg.get('terrainDepth').get());
+    // this.mngGltf.get('three').render(this.mngProg.get('instancingDepth'), this.model);
+    lampe.end();
+  };
+
+  render() {
+    super.render();
+
+    // this.waterPasses();
+    // this.shadowPass();
+
+    // this.postProcess.start();
+    // this.vbo.render(this.mngProg.get('terrain').get());
+    // this.vbo.render(this.mngProg.get('water').get());
+    // this.mngGltf.get('three').render(this.mngProg.get('instancing'), this.model);
+    // this.postProcess.end();
+
+    // this.postProcess.setComposeShadow(this.shadow.getTexture().get());
+    // this.postProcess.render();
+    // this.postProcess.render(this.getLampe(0).getDepthTexture().get());
+
+    this.model.scale(0.3);
+    // this.model.translate(0.0, 0.6, 0.0);
+    this.mngGltf.get('antenna').render(this.mngProg.get('gltf'), this.model);
   }
 
   setKeyboardInteraction(keyboard) {

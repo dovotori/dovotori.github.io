@@ -277,6 +277,41 @@ const getImages = (images, accessors, buffers, bufferViews) => {
     : null;
 };
 
+const addChildrenToNode = (parent, nodes) => {
+  const { children } = parent;
+  if (children) {
+    const newChildren = children.map((nodeId) => {
+      return addChildrenToNode(nodes[nodeId], nodes);
+    });
+    return { ...parent, children: newChildren };
+  }
+  return parent;
+};
+
+const organizeParenting = (nodes) => {
+  const indexNodeIsChild = {};
+  nodes.forEach(
+    ({ children }) =>
+      children &&
+      children.forEach((childIndex) => {
+        indexNodeIsChild[childIndex] = true;
+      })
+  );
+  const nodesWithChildren = nodes.map((node) => addChildrenToNode(node, nodes));
+  return nodesWithChildren.filter((node, index) => indexNodeIsChild[index] === undefined);
+};
+
+const convertNodesToObject = (nodes) => {
+  return nodes.reduce((acc, node) => {
+    const { name, children } = node;
+    acc[name] = node;
+    if (children) {
+      convertNodesToObject(children);
+    }
+    return acc;
+  }, {});
+};
+
 export default class {
   constructor(rawText) {
     const JsonData = JSON.parse(rawText);
@@ -320,9 +355,12 @@ export default class {
 
     const newMaterials = materials && materials.map((material) => getMaterial(material, newImages));
 
+    let newNodes = organizeParenting(nodes);
+    newNodes = convertNodesToObject(newNodes);
+
     this.data = {};
     if (newMeshes) this.data.meshes = newMeshes;
-    if (nodes) this.data.nodes = nodes.filter((node) => node.mesh !== undefined);
+    if (newNodes) this.data.nodes = newNodes;
     if (newSkins) this.data.skins = newSkins;
     if (newMaterials) this.data.materials = newMaterials;
     console.log('CUSTOM', this.data);

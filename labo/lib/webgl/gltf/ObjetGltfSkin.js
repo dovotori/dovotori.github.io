@@ -40,13 +40,12 @@ export default class extends ObjetGltfAnim {
     });
   };
 
-  renderNode(key, program, model) {
-    const node = this.nodes[key];
+  renderNode(node, program, model) {
     const { skin: skinIndex } = node;
     if (skinIndex !== undefined) {
       this.setProgramSkin(skinIndex, program);
     }
-    super.renderNode(key, program, model);
+    super.renderNode(node, program, model);
   }
 
   setProgramSkin = (skinIndex, program) => {

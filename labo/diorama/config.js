@@ -4,24 +4,25 @@ export default {
   slug: 'diorama',
   shaders: [
     '/diorama/terrain.js',
-    '/diorama/terrainWater.js',
+    '/diorama/water.js',
     '/diorama/instancing.js',
+    '/diorama/instancingDepth.js',
     '/diorama/shadow.js',
-    // shadow
+    '/diorama/terrainDepth.js',
     '/screen/screen.js',
     '/screen/blurOnePass.js',
-    '/camera/buffers.js',
-    '/camera/shadow.js',
     '/screen/brightcontrast.js',
+    '/screen/composeShadow.js',
+    '/camera/gltf.js',
   ],
-  assets: ['/gltf/three.gltf', '/textures/waterN.jpg', '/textures/dudv.png'],
+  assets: ['/gltf/three.gltf', '/gltf/antenna.gltf', '/textures/waterN.jpg', '/textures/dudv.png'],
   canvas: {
     width: 1024,
     height: 1024,
   },
   postprocess: {
     shadow: {
-      epsilon: 0.0001,
+      epsilon: 0.01,
       lighten: 0.1,
       blur: {
         size: 0.1,
@@ -48,6 +49,7 @@ export default {
       strength: 1.2,
       near: 1,
       far: 10,
+      ortho: { left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 },
     },
   ],
   controls: {
@@ -58,6 +60,7 @@ export default {
     height: 100,
     lacunarity: 1.6,
     persistance: 0.5,
+    waterLevel: 0.4,
     colors: [
       // DIRT
       '#251a16',
@@ -75,9 +78,9 @@ export default {
     ],
   },
   fog: {
-    color: [0.0, 0.0, 0.1, 0.0],
-    start: 2.0,
-    end: 3.0,
+    color: [0.0, 0.0, 0.0, 0.0],
+    start: 2,
+    end: 10,
   },
   keyboard: {
     UP,

@@ -9,12 +9,9 @@ export default class extends Blur {
   }
 
   start(lampe) {
-    super.start();
     const program = this.programs.shadow;
-    program.setTexture(2, lampe.getDepthTexture().get(), 'shadowMap');
-    program.setMatrix('shadowView', lampe.getView().get());
-    program.setMatrix('shadowProjection', lampe.getOrtho().get());
-    program.setVector('posLum', lampe.getPosition());
+    lampe.setShadowProgram(program);
+    super.start();
   }
 
   getProgram = () => {

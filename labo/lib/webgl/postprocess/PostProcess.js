@@ -176,4 +176,10 @@ export default class extends ProcessBase {
     // program.setTexture(2, albedoMap, 'albedoMap');
     this.renderToPingPong(program);
   }
+
+  setComposeShadow(shadowMap, tex = null) {
+    const program = this.applyTexToProg(this.programs.composeShadow, tex);
+    program.setTexture(4, shadowMap, 'shadowMap');
+    this.renderToPingPong(program);
+  }
 }

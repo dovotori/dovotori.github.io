@@ -1,3 +1,15 @@
+export const uniformVertShadow = `
+uniform mat4 shadowView;
+uniform mat4 shadowProjection;
+
+const mat4 bias = mat4(
+  0.5, 0.0, 0.0, 0.0,
+  0.0, 0.5, 0.0, 0.0,
+  0.0, 0.0, 0.5, 0.0,
+  0.5, 0.5, 0.5, 1.0
+);
+`;
+
 export const funcShadow = `
 float funcShadow(
   vec4 pos, 
@@ -24,18 +36,6 @@ float funcShadow(
 }
 `;
 
-export const uniformVertShadow = `
-uniform mat4 shadowView;
-uniform mat4 shadowProjection;
-
-const mat4 bias = mat4(
-  0.5, 0.0, 0.0, 0.0,
-  0.0, 0.5, 0.0, 0.0,
-  0.0, 0.0, 0.5, 0.0,
-  0.5, 0.5, 0.5, 1.0
-);
-`;
-
 export const uniformFragShadow = `
 uniform sampler2D shadowMap;
 uniform float shadowEpsilon;
@@ -43,7 +43,14 @@ uniform float lighten;
 uniform vec3 posLum;
 `;
 
-export const shadowLocations = ['shadowView', 'shadowProjection', 'shadowMap', 'lighten', 'posLum'];
+export const shadowLocations = [
+  'shadowView',
+  'shadowProjection',
+  'shadowMap',
+  'lighten',
+  'shadowEpsilon',
+  'posLum',
+];
 
 export const fragment = `
 precision mediump float;
@@ -55,7 +62,6 @@ uniform vec2 resolution;
 varying vec3 fragPosition;
 varying vec4 fragShadow;
 varying vec3 fragNormale;
-varying vec2 fragTexture;
 
 ${funcShadow}
 

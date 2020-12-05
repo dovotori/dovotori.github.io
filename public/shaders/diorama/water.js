@@ -1,4 +1,4 @@
-import { getFogAmount } from '../utils/fog';
+import { getFogAmount, fogLocations, fogUniforms } from '../utils/fog';
 import { funcWave } from '../utils/terrain';
 import { uniformLights, addLightLocations, funcLightsColor } from '../utils/light';
 
@@ -12,22 +12,17 @@ uniform mat3 normalMatrix;
 
 uniform vec2 moving;
 uniform float time;
-uniform float fogStart;
-uniform float fogEnd;
 uniform float waterLevel;
 uniform vec2 gridSize;
 uniform vec3 posEye;
 
 varying vec3 fragPosition;
 varying vec3 fragColor;
-varying float fragFog;
 varying vec2 fragTexture;
 varying vec2 fragMoving;
 varying vec3 fragNormale;
 varying vec4 fragClipPosition;
 varying vec3 fragEyeDir;
-
-${getFogAmount}
 
 ${funcWave}
 
@@ -45,8 +40,12 @@ void main() {
     vec3 tangent = vec3(1.0, 0.0,0.0);
 		vec3 binormal = vec3(0.0, 0.0, 1.0);
 
-    Wave wave1 = funcWave(coord, 0.1, 0.1, vec2(1.0, 0.0), moving, tangent, binormal);
-    Wave wave2 = funcWave(coord, 0.05, 0.2, vec2(0.0, 1.0), moving, wave1.tangent, wave1.binormal);
+    Wave wave1 = funcWave(
+      coord, 0.1, 0.1, vec2(1.0, 0.0), vec2(time), tangent, binormal
+    );
+    Wave wave2 = funcWave(
+      coord, 0.05, 0.2, vec2(0.0, 1.0), vec2(time), wave1.tangent, wave1.binormal
+    );
     
     transformed = wave1.position + wave2.position;
     transformed *= vec3(0.5, 1.0, 0.5); // rescale wave
@@ -69,11 +68,10 @@ void main() {
   fragTexture = position.xz * 0.5 + 0.5;
   fragPosition = transformed;
   fragColor = vec3(position.xz, 0.0);
-  fragMoving = moving;
+  fragMoving = moving + time;
   
   vec4 worldPos = model * vec4(transformed, 1.0);
   fragClipPosition = projection * view * worldPos;
-  fragFog = getFogAmount(fragClipPosition.xyz, fogStart, fogEnd);
 
   fragEyeDir = posEye - worldPos.xyz;
 
@@ -84,15 +82,15 @@ void main() {
 const fragment = `
 precision mediump float;
 
-uniform vec4 fogColor;
 uniform sampler2D reflectMap;
 uniform sampler2D refractMap;
 uniform sampler2D normaleMap;
 uniform sampler2D distortionMap;
+uniform sampler2D depthMap;
 
 ${uniformLights}
+${fogUniforms}
 
-varying float fragFog;
 varying vec3 fragPosition;
 varying vec3 fragColor;
 varying vec2 fragTexture;
@@ -101,16 +99,15 @@ varying vec4 fragClipPosition;
 varying vec3 fragEyeDir;
 varying vec2 fragMoving;
 
+${getFogAmount}
 ${funcLightsColor}
 
 void main() {
-  float fogAmount = fragFog;
-
-  vec3 waterColor = vec3(0.5);
+  vec3 waterColor = vec3(0.5, 0.5, 0.7);
 
   vec2 tilingCoor = fragMoving + fragTexture * 4.0;
 
-  float correction = 0.203; // ?? coor to low
+  float correction = 0.205; // ?? coor to low
   vec3 ndc = (fragClipPosition.xyz / fragClipPosition.w) / 2.0 + 0.5;
   vec2 reflectCoor = vec2(ndc.x, 1.0 - ndc.y + correction);
   vec2 refractCoor = vec2(ndc.x, ndc.y);
@@ -130,15 +127,14 @@ void main() {
   reflectCoor = clamp(reflectCoor, vec2(0.0001), vec2(0.9999));
   refractCoor = clamp(refractCoor, vec2(0.0001), vec2(0.9999));
 
-  vec4 reflectColor = texture2D(reflectMap, reflectCoor) * 0.5;
+  vec4 reflectColor = texture2D(reflectMap, reflectCoor);
   vec4 refractColor = texture2D(refractMap, refractCoor);
 
-  vec4 color = mix(reflectColor, refractColor, fresnel);
+  vec4 color = mix(refractColor, reflectColor, fresnel);
 
-  vec2 normCoor = (tilingCoor * 2.0) + (fragMoving * 0.1);
+  vec2 normCoor = (tilingCoor * 2.0) + (fragMoving * 0.2);
 
   vec3 normale = texture2D(normaleMap, normCoor).xyz;
-  // normale = normale * 2.0 - 1.0;
   normale = normalize(normale);
 
   if (fragNormale.y <= 0.99) {
@@ -153,7 +149,8 @@ void main() {
     fragPosition
   );
 
-  vec4 finalColor = color + vec4(lightColor, 0.0);
+  float fogAmount = getFogAmount(fragClipPosition.xyz, fogStart, fogEnd);
+  vec4 finalColor = color + vec4(lightColor, 0.0); // spec light how to add ?
   finalColor = mix(finalColor, fogColor, fogAmount);
 
   gl_FragColor = finalColor;
@@ -171,9 +168,6 @@ export default {
     'view',
     'normalMatrix',
     'moving',
-    'fogStart',
-    'fogEnd',
-    'fogColor',
     'gridSize',
     'waterLevel',
     'reflectMap',
@@ -182,5 +176,7 @@ export default {
     'distortionMap',
     'posEye',
     'time',
-  ].concat(addLightLocations()),
+  ]
+    .concat(fogLocations)
+    .concat(addLightLocations()),
 };

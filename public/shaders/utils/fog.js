@@ -26,3 +26,11 @@ float getFogAmount(vec3 position, float start, float end) {
   return fogFactorLinear(fogDistance, start, end);
 }
 `;
+
+export const fogUniforms = `
+uniform vec4 fogColor;
+uniform float fogStart;
+uniform float fogEnd;
+`;
+
+export const fogLocations = ['fogStart', 'fogEnd', 'fogColor'];

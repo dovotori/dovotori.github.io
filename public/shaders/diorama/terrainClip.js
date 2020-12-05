@@ -1,4 +1,3 @@
-import { getFogAmount, fogLocations, fogUniforms } from '../utils/fog';
 import { locations, getNaturalHeight, getNormale } from '../utils/terrain';
 import { uniformLights, addLightLocations, funcLightsColor } from '../utils/light';
 
@@ -47,7 +46,6 @@ uniform float reflectPass;
 uniform float refractPass;
 uniform float waterLevel;
 
-${fogUniforms}
 ${uniformLights}
 
 varying vec3 fragPosition;
@@ -57,7 +55,6 @@ varying vec3 fragNormale;
 varying vec3 fragClipPosition;
 
 ${funcLightsColor}
-${getFogAmount}
 
 #define NB_COLORS ${NB_COLORS}
 uniform vec3 colors[NB_COLORS];
@@ -101,12 +98,11 @@ void main() {
   );
 
   vec4 finalColor = vec4(lightColor, 1.0);
-  float fogAmount = getFogAmount(fragPosition, fogStart, fogEnd);
+  float fogAmount = getFogAmount(fragClipPosition, fogStart, fogEnd);
   if (reflectPass > 0.5 || refractPass > 0.5) {
     fogAmount = 0.0; // no fog for clipping
   }
   finalColor = mix(finalColor, fogColor, fogAmount);
-
   gl_FragColor = finalColor;
 }
 `;
@@ -125,7 +121,6 @@ export default {
     'waterLevel',
   ]
     .concat(locations)
-    .concat(fogLocations)
     .concat(Array.from({ length: NB_COLORS }).map((_, i) => `colors[${i}]`))
     .concat(addLightLocations()),
 };
