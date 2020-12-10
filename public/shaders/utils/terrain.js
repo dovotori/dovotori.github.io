@@ -1,8 +1,8 @@
-import { anothorNoise } from './noise';
+import { anothorNoise2D } from './noise';
 import { PI } from '.';
 
 export const getNaturalHeight = `
-${anothorNoise}
+${anothorNoise2D}
 
 #define NB_OCTAVES 10
 uniform float lacunarity; // frequency of noise octave

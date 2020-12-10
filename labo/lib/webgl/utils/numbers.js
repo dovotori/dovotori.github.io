@@ -32,3 +32,7 @@ export const nearestNextPowerOf2 = (n) => {
   v++;
   return v;
 };
+
+export const fract = (x) => x - Math.floor(x);
+
+export const mix = (x, y, a) => x * (1 - a) + y * a;

@@ -14,6 +14,7 @@ export default {
     '/screen/brightcontrast.js',
     '/screen/composeShadow.js',
     '/camera/gltf.js',
+    '/camera/basique3d.js',
   ],
   assets: ['/gltf/three.gltf', '/gltf/antenna.gltf', '/textures/waterN.jpg', '/textures/dudv.png'],
   canvas: {

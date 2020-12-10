@@ -1,12 +1,55 @@
 import Scene from '../lib/webgl/scenes/SceneLampe';
 import Primitive from '../lib/webgl/gl/Primitive';
 import Mat4 from '../lib/webgl/maths/Mat4';
+import Vec3 from '../lib/webgl/maths/Vec3';
 import Spring from '../lib/webgl/maths/Spring';
 import getTerrain from '../lib/webgl/primitives/terrain';
 import TextureNoise from '../lib/webgl/textures/TexturePerlinNoise';
-// import Buffers from '../lib/webgl/postprocess/Buffers';
+import TextureClouds from '../lib/webgl/textures/TextureClouds';
 import { hexToRgb } from '../lib/webgl/utils/color';
 import Fbo from '../lib/webgl/gl/Fbo';
+import { fract, mix } from '../lib/webgl/utils/numbers';
+
+const hash = (x, y) => {
+  const p3 = new Vec3(x, y, x).multiplyNumber(0.13).fract();
+  const d = new Vec3(p3.getY(), p3.getZ(), p3.getX()).addNumber(3.333);
+  p3.addNumber(p3.dot(d));
+  return fract((p3.getX() + p3.getY()) * p3.getZ());
+};
+
+const noise = (x, y) => {
+  const i = Math.floor(x);
+  const j = Math.floor(y);
+
+  const f = fract(x);
+  const g = fract(y);
+
+  // Four corners in 2D of a tile
+  const a = hash(i, j);
+  const b = hash(i + 1, j);
+  const c = hash(i, j + 1);
+  const d = hash(i + 1, j + 1);
+
+  const u = f * f * (3 - 2 * f);
+  const v = g * g * (3 - 2 * g);
+
+  return mix(a, b, u) + (c - a) * v * (1 - u) + (d - b) * u * v;
+};
+
+const NB_OCTAVES = 10;
+
+const getTerrainHeight = (coor, config) => {
+  const { lacunarity, persistance } = config;
+  let result = 0;
+  let allAmpli = 0;
+  for (let i = 0; i < NB_OCTAVES; i += 1) {
+    const frequency = lacunarity ** i;
+    const amplitude = persistance ** i;
+    result += noise(coor[0] * frequency, coor[1] * frequency) * amplitude;
+    allAmpli += amplitude;
+  }
+  return result / allAmpli;
+};
 
 class TerrainScene extends Scene {
   static setFog(program, fogConfig) {
@@ -41,7 +84,8 @@ class TerrainScene extends Scene {
     // this.vbo = new Primitive(gl, getGrid(width, height, { withThick: true, thicknessY: -0.1 }));
     // this.vbo.setModeDessin(this.gl.TRIANGLES);
 
-    this.noiseTex = new TextureNoise(gl, 128, 128);
+    // this.noiseTex = new TextureNoise(gl, 128, 128);
+    this.cloudsTex = new TextureClouds(gl, 4, 4);
 
     const progTerrain = this.mngProg.get('terrain');
     const progThrees = this.mngProg.get('instancing');
@@ -107,12 +151,17 @@ class TerrainScene extends Scene {
       acolor,
       size,
     });
+
+    const coor = [-0.6, 0.8];
+    this.posAntenna = [coor[0], getTerrainHeight(coor, config.terrain), coor[1]];
+    this.isAntennaVisible = false;
+    this.currentPosAntenna = this.posAntenna;
   }
 
   update(time) {
     super.update(time);
     this.model.identity();
-    this.model.rotate(this.time * 0.01, 0, 1, 0);
+    // this.model.rotate(this.time * 0.01, 0, 1, 0);
     // this.model.scale(2);
 
     const normalMatrix = this.model.getMatrice3x3();
@@ -122,7 +171,7 @@ class TerrainScene extends Scene {
     this.targetX.update();
     this.targetZ.update();
 
-    const slowTime = this.time * 0.0001;
+    const slowTime = this.time * 0.00001;
     const moving = [this.targetX.get(), this.targetZ.get()];
     // const moving = [this.targetX.get() + slowTime, this.targetZ.get() + slowTime];
 
@@ -143,11 +192,21 @@ class TerrainScene extends Scene {
     progWater.setFloat('time', slowTime);
 
     this.mngGltf.get('antenna').update(time * 0.1);
+    this.currentPosAntenna = [
+      this.posAntenna[0] - this.targetX.get(),
+      this.posAntenna[1],
+      this.posAntenna[2] - this.targetZ.get(),
+    ];
+    this.isAntennaVisible =
+      Math.abs(this.currentPosAntenna[0]) > 0 &&
+      Math.abs(this.currentPosAntenna[0]) < 1 &&
+      Math.abs(this.currentPosAntenna[2]) > 0 &&
+      Math.abs(this.currentPosAntenna[2]) < 1;
   }
 
   waterPasses() {
     const progTerrain = this.mngProg.get('terrain');
-    const progWater = this.mngProg.get('water');
+    const progThrees = this.mngProg.get('instancing');
 
     progTerrain.setFloat('reflectPass', 1);
     progTerrain.setFloat('refractPass', 0);
@@ -155,8 +214,13 @@ class TerrainScene extends Scene {
       'view',
       this.camera.getReflectViewMatrix(this.config.terrain.waterLevel).get()
     );
+    progThrees.setMatrix(
+      'view',
+      this.camera.getReflectViewMatrix(this.config.terrain.waterLevel).get()
+    );
     this.fbo.start();
     this.vbo.render(progTerrain.get());
+    this.mngGltf.get('three').render(progThrees, this.model);
     this.fbo.end();
 
     progTerrain.setFloat('reflectPass', 0);
@@ -166,55 +230,72 @@ class TerrainScene extends Scene {
     this.vbo.render(progTerrain.get());
     this.fbo2.end();
     progTerrain.setFloat('refractPass', 0);
-
-    progWater.setTexture(0, this.fbo.getTexture().get(), 'reflectMap');
-    progWater.setTexture(1, this.fbo2.getTexture().get(), 'refractMap');
-    progWater.setTexture(2, this.mngTex.get('waterN').get(), 'normaleMap');
-    progWater.setTexture(3, this.mngTex.get('dudv').get(), 'distortionMap');
   }
 
   shadowPass() {
     const lampe = this.getLampe(0);
     this.shadow.start(lampe);
     this.vbo.render(this.shadow.getProgram().get());
+    this.vbo.render(this.mngProg.get('water').get());
     this.mngGltf.get('three').render(this.mngProg.get('instancing'), this.model);
+    this.renderEntenna(this.mngProg.get('basique3d'));
     this.shadow.end();
-
     this.shadow.setBrightContrast(0.0, 3.0);
-    // this.shadow.setBlur();
   }
 
   renderBasiqueForLampeDepth = () => {
     const lampe = this.getLampe(0);
-    ['terrainDepth', 'instancingDepth'].forEach((keyProg) => {
+    ['terrainDepth', 'instancingDepth', 'basique3d', 'water'].forEach((keyProg) => {
       const program = this.mngProg.get(keyProg);
       lampe.setDepthProgram(program);
     });
     lampe.start();
-    // this.vbo.render(this.mngProg.get('terrainDepth').get());
-    // this.mngGltf.get('three').render(this.mngProg.get('instancingDepth'), this.model);
+    this.vbo.render(this.mngProg.get('terrainDepth').get());
+    this.vbo.render(this.mngProg.get('water').get());
+    this.mngGltf.get('three').render(this.mngProg.get('instancingDepth'), this.model);
+    this.renderEntenna(this.mngProg.get('basique3d'));
     lampe.end();
+
+    this.mngProg.get('water').setMatrix('projection', this.camera.getProjection().get());
+    this.mngProg.get('water').setMatrix('view', this.camera.getView().get());
   };
 
+  renderEntenna(prog) {
+    if (this.isAntennaVisible) {
+      this.model.push();
+      this.model.scale(0.07);
+      this.model.translate(...this.currentPosAntenna);
+      this.mngGltf.get('antenna').render(prog, this.model);
+      this.model.pop();
+    }
+  }
+
   render() {
+    this.waterPasses();
     super.render();
 
-    // this.waterPasses();
-    // this.shadowPass();
+    this.shadowPass();
 
-    // this.postProcess.start();
-    // this.vbo.render(this.mngProg.get('terrain').get());
-    // this.vbo.render(this.mngProg.get('water').get());
-    // this.mngGltf.get('three').render(this.mngProg.get('instancing'), this.model);
-    // this.postProcess.end();
+    const progWater = this.mngProg.get('water');
+    progWater.setTexture(0, this.fbo.getTexture().get(), 'reflectMap');
+    progWater.setTexture(1, this.fbo2.getTexture().get(), 'refractMap');
+    progWater.setTexture(4, this.mngTex.get('waterN').get(), 'normaleMap');
+    progWater.setTexture(5, this.mngTex.get('dudv').get(), 'distortionMap');
+    progWater.setTexture(6, this.fbo2.getDepthTexture().get(), 'depthMap');
 
-    // this.postProcess.setComposeShadow(this.shadow.getTexture().get());
-    // this.postProcess.render();
+    this.postProcess.start();
+    this.vbo.render(this.mngProg.get('terrain').get());
+    this.vbo.render(progWater.get());
+    this.mngGltf.get('three').render(this.mngProg.get('instancing'), this.model);
+    this.renderEntenna(this.mngProg.get('gltf'));
+    this.postProcess.end();
+
+    this.postProcess.setComposeShadow(this.shadow.getTexture().get());
+    this.postProcess.render();
+
     // this.postProcess.render(this.getLampe(0).getDepthTexture().get());
-
-    this.model.scale(0.3);
-    // this.model.translate(0.0, 0.6, 0.0);
-    this.mngGltf.get('antenna').render(this.mngProg.get('gltf'), this.model);
+    // this.postProcess.render(this.cloudsTex.get());
+    // this.postProcess.render(this.fbo2.getDepthTexture().get());
   }
 
   setKeyboardInteraction(keyboard) {
