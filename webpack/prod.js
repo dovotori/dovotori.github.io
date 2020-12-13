@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const config = require('../package.json');
@@ -47,9 +46,6 @@ module.exports = {
         NAME: JSON.stringify(config.name),
         MAIL: JSON.stringify(config.author.email),
       },
-    }),
-    new ServiceWorkerWebpackPlugin({
-      entry: path.resolve(__dirname, '../src/utils/sw.js'),
     }),
     new CopyWebpackPlugin({
       patterns: [

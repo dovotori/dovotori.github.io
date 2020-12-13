@@ -1,14 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import runtime from 'serviceworker-webpack-plugin/lib/runtime';
 
 import AppContainer from './containers/AppContainer';
 import configureStore from './store/configureStore';
 
-if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
-  runtime.register('/public/js/sw.js');
-}
+// if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+//   runtime.register('/public/js/sw.js');
+// }
 
 const store = configureStore();
 
