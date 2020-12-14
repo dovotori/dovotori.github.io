@@ -63,4 +63,5 @@ const TransitionRoute = ({ location, children /* , isTouchDevice */ }) => (
 //     </CSSTransition>
 //   </StyledTransitionGroup>
 // );
+
 export default withRouter(TransitionRoute);

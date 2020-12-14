@@ -22,6 +22,7 @@ module.exports = {
     publicPath: `${BUILD_ASSET_PATH}/js/`,
     filename: '[name].js',
   },
+  target: 'web',
   module: {
     rules,
   },

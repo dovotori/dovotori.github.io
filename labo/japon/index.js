@@ -1,6 +1,5 @@
 import drawTravelMap from 'Labo/lib/openlayers/TravelMap';
 import config from './config';
-// import topojson from 'Assets/json/392_156_410_408.json';
 
 import 'Assets/style/olmap.css';
 

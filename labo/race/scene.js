@@ -6,9 +6,7 @@ import Vec3 from '../lib/webgl/maths/Vec3';
 import { getPoints, getIndices } from '../lib/webgl/primitives/grid';
 import Target from '../lib/webgl/maths/Target';
 
-const nsin = (val) => {
-  return Math.sin(val) * 0.5 + 0.5;
-};
+const nsin = (val) => Math.sin(val) * 0.5 + 0.5;
 
 const getDistortion = (progress, frequence, amplitude, time) => {
   const movementProgressFix = 0.02;

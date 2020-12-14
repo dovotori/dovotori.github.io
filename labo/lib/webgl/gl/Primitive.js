@@ -1,7 +1,6 @@
 import Vbos from '../vbos/Vbos';
 
-const createVbosFromPrimitive = (gl, primitive) => {
-  return Object.keys(primitive).reduce((acc, locationKey) => {
+const createVbosFromPrimitive = (gl, primitive) => Object.keys(primitive).reduce((acc, locationKey) => {
     const values = primitive[locationKey];
     let componentType;
     let type;
@@ -60,7 +59,6 @@ const createVbosFromPrimitive = (gl, primitive) => {
     };
     return acc;
   }, {});
-};
 
 export default class extends Vbos {
   constructor(gl, primitive, isDynamic = false) {

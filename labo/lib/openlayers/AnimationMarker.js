@@ -109,9 +109,9 @@ class AnimationMarker {
         new Style({
           image: new Icon({
             src: plane,
-            size: [612, 571, 19897],
-            displacement: inverse ? [612, 0] : [0, 0],
-            scale: 0.1,
+            size: [161, 150, 19897],
+            displacement: inverse ? [161, 0] : [0, 0],
+            scale: 0.4,
             rotation,
           }),
         })

@@ -14,7 +14,5 @@ export default class extends Blur {
     super.start();
   }
 
-  getProgram = () => {
-    return this.programs.shadow;
-  };
+  getProgram = () => this.programs.shadow;
 }

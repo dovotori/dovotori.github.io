@@ -16,8 +16,7 @@ export default class extends ObjetGltf {
     this.lastFrame = 0;
   }
 
-  addAllAnimations = (nodes, forceStep) => {
-    return Object.keys(nodes).reduce((acc, key) => {
+  addAllAnimations = (nodes, forceStep) => Object.keys(nodes).reduce((acc, key) => {
       let newAcc = acc;
       const { animations, name, children } = nodes[key];
       if (animations) {
@@ -29,7 +28,6 @@ export default class extends ObjetGltf {
       }
       return newAcc;
     }, {});
-  };
 
   addAnimations = (animations, forceStep) => {
     const newAnimations = {};
@@ -52,8 +50,7 @@ export default class extends ObjetGltf {
     return newAnimations;
   };
 
-  removeNodesAnimations = (nodes) => {
-    return Object.keys(nodes).reduce((acc, nodeKey) => {
+  removeNodesAnimations = (nodes) => Object.keys(nodes).reduce((acc, nodeKey) => {
       let newAcc = acc;
       const node = nodes[nodeKey];
       newAcc[node.name] = this.removeNodeAnim(node);
@@ -62,7 +59,6 @@ export default class extends ObjetGltf {
       }
       return acc;
     }, {});
-  };
 
   removeNodeAnim = (node) => {
     const { animations, ...nodeWithoutAnim } = node;

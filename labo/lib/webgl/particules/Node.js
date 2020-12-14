@@ -117,11 +117,7 @@ export default class {
     this.speed.set(x, y, z);
   };
 
-  getPosition = () => {
-    return this.position;
-  };
+  getPosition = () => this.position;
 
-  getSpeed = () => {
-    return this.speed;
-  };
+  getSpeed = () => this.speed;
 }

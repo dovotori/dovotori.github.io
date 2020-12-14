@@ -3,7 +3,18 @@ import styled from 'styled-components';
 
 import { loading, blink } from '../themes/animations';
 
-const Wrap = styled.div.attrs({
+const Div = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Bars = styled.div.attrs({
   className: 'loader',
 })`
   position: absolute;
@@ -14,6 +25,7 @@ const Wrap = styled.div.attrs({
   transform: translate3d(-50%, -50%, 0) rotate(45deg);
   overflow: hidden;
   opacity: 0.3;
+  margin: 2em 0;
 `;
 
 const Bar = styled.div`
@@ -29,10 +41,6 @@ const Bar = styled.div`
 `;
 
 const Text = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate3d(-50%, -50%, 0);
   color: ${(p) => p.theme.light};
   ${(p) => p.theme.monospace}
   text-transform: uppercase;
@@ -43,17 +51,17 @@ const Blink = styled.span`
 `;
 
 const Loader = ({ className, $colorType }) => (
-  <div className={className}>
-    <Wrap>
+  <Div className={className}>
+    {/* <Bars>
       {[0, 1, 2, 3].map((idx) => (
         <Bar key={idx} delay={idx * 100} style={{ top: `${idx * 5}px` }} $colorType={$colorType} />
       ))}
-    </Wrap>
+    </Bars> */}
     <Text>
       <Blink>_</Blink>
       loading
     </Text>
-  </div>
+  </Div>
 );
 
 export default Loader;

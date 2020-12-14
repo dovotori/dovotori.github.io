@@ -55,7 +55,5 @@ export default class {
     }
   };
 
-  isConnected = () => {
-    return this.socket.connected;
-  };
+  isConnected = () => this.socket.connected;
 }

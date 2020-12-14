@@ -59,10 +59,12 @@ const StyledTypingMessage = styled(TypingMessage)`
   position: relative;
 `;
 
-const StyledTitle = styled.h1`
+const StyledTitle = styled.h3`
   ${(p) => p.theme.title}
   position: relative;
   margin-bottom: 1em;
+  font-size: 4em;
+  margin-bottom: 0;
 `;
 
 const Quote = styled.div`
@@ -80,8 +82,8 @@ const Quote = styled.div`
 
 const StyledQuoteIcon = styled(QuoteIcon)`
   margin-right: 0.1em;
-  width: 100%;
-  height: 100%;
+  width: 2em;
+  height: auto;
 `;
 
 const About = ({ hello, isTouchDevice }) => (

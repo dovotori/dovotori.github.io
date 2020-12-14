@@ -12,9 +12,7 @@ import { getGridPerlinPoints, getGridPoints } from '../lib/webgl/primitives/part
 import { getPoints, getIndices } from '../lib/webgl/primitives/grid';
 import { mapFromRange } from '../lib/webgl/utils/numbers';
 
-const nsin = (val) => {
-  return Math.sin(val) * 0.5 + 0.5;
-};
+const nsin = (val) => Math.sin(val) * 0.5 + 0.5;
 
 const getDistortion = (progress, frequence, amplitude, time) => {
   const movementProgressFix = 0.02;

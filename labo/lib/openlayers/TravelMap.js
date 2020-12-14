@@ -117,14 +117,15 @@ const getCoor = (coor) => fromLonLat(coor, 'EPSG:3857');
 // };
 
 const getView = (points, defaultZoom) => {
-  const extremes = points.reduce((acc, { coor }) => {
-    return {
+  const extremes = points.reduce(
+    (acc, { coor }) => ({
       minX: acc.minX ? Math.min(acc.minX, coor[0]) : coor[0],
       maxX: acc.maxX ? Math.max(acc.maxX, coor[0]) : coor[0],
       minY: acc.minY ? Math.min(acc.minY, coor[1]) : coor[1],
       maxY: acc.maxY ? Math.max(acc.maxY, coor[1]) : coor[1],
-    };
-  }, {});
+    }),
+    {}
+  );
 
   const centerX = extremes.minX + (extremes.maxX - extremes.minX) / 2;
   const centerY = extremes.minY + (extremes.maxY - extremes.minY) / 2;

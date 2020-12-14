@@ -182,37 +182,38 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
           <MarginLeft isTouch={isTouchDevice}>
             <Category>{skills.text}</Category>
           </MarginLeft>
-          {chart && <Chart data={chart} />}
-          {skills.items.map((item) => (
-            <Line key={item.text}>
-              <Clear isTouch={isTouchDevice}>
-                <FloatLeft isTouch={isTouchDevice}>
-                  <Date isTouch={isTouchDevice}>{item.text}</Date>
-                </FloatLeft>
-                <FloatRight isTouch={isTouchDevice}>
-                  {item.items.map((subitem) => {
-                    const Svg = subitem.picto ? styledIcons[subitem.picto] : null;
-                    return (
-                      <TwoColFloat isTouch={isTouchDevice} key={subitem.text}>
-                        <Line noMarginTop>
-                          {Svg ? (
-                            <WrapSvg>
-                              <Svg />
+          {chart && !isTouchDevice && <Chart data={chart} />}
+          {(isTouchDevice || !chart) &&
+            skills.items.map((item) => (
+              <Line key={item.text}>
+                <Clear isTouch={isTouchDevice}>
+                  <FloatLeft isTouch={isTouchDevice}>
+                    <Date isTouch={isTouchDevice}>{item.text}</Date>
+                  </FloatLeft>
+                  <FloatRight isTouch={isTouchDevice}>
+                    {item.items.map((subitem) => {
+                      const Svg = subitem.picto ? styledIcons[subitem.picto] : null;
+                      return (
+                        <TwoColFloat isTouch={isTouchDevice} key={subitem.text}>
+                          <Line noMarginTop>
+                            {Svg ? (
+                              <WrapSvg>
+                                <Svg />
+                                <Text>{subitem.text}</Text>
+                              </WrapSvg>
+                            ) : (
                               <Text>{subitem.text}</Text>
-                            </WrapSvg>
-                          ) : (
-                            <Text>{subitem.text}</Text>
-                          )}
+                            )}
 
-                          <Level>{subitem.level}</Level>
-                        </Line>
-                      </TwoColFloat>
-                    );
-                  })}
-                </FloatRight>
-              </Clear>
-            </Line>
-          ))}
+                            <Level>{subitem.level}</Level>
+                          </Line>
+                        </TwoColFloat>
+                      );
+                    })}
+                  </FloatRight>
+                </Clear>
+              </Line>
+            ))}
         </Bloc>
       ) : null,
     [skills, isTouchDevice]

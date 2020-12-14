@@ -267,22 +267,18 @@ const getAnimations = (animations, nodes, accessors, meshes) => {
   return animationsPerNodes;
 };
 
-const getImages = (images, accessors, buffers, bufferViews) => {
-  return images
+const getImages = (images, accessors, buffers, bufferViews) => images
     ? images.map(({ bufferView: bufferViewIndex, mimeType, name }) => {
         const bufferView = bufferViews[bufferViewIndex];
         const data = getImageBufferData(buffers, bufferView);
         return { mimeType, name, data };
       })
     : null;
-};
 
 const addChildrenToNode = (parent, nodes) => {
   const { children } = parent;
   if (children) {
-    const newChildren = children.map((nodeId) => {
-      return addChildrenToNode(nodes[nodeId], nodes);
-    });
+    const newChildren = children.map((nodeId) => addChildrenToNode(nodes[nodeId], nodes));
     return { ...parent, children: newChildren };
   }
   return parent;
@@ -301,8 +297,7 @@ const organizeParenting = (nodes) => {
   return nodesWithChildren.filter((node, index) => indexNodeIsChild[index] === undefined);
 };
 
-const convertNodesToObject = (nodes) => {
-  return nodes.reduce((acc, node) => {
+const convertNodesToObject = (nodes) => nodes.reduce((acc, node) => {
     const { name, children } = node;
     acc[name] = node;
     if (children) {
@@ -310,7 +305,6 @@ const convertNodesToObject = (nodes) => {
     }
     return acc;
   }, {});
-};
 
 export default class {
   constructor(rawText) {

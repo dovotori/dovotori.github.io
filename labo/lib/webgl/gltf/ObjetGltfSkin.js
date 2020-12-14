@@ -18,15 +18,13 @@ export default class extends ObjetGltfAnim {
     }
   }
 
-  removeAnimations = (joints) => {
-    return joints.map((joint) => {
+  removeAnimations = (joints) => joints.map((joint) => {
       const newJoint = joint;
       if (newJoint.children) {
         newJoint.children = this.removeAnimations(newJoint.children);
       }
       return this.removeAnim(newJoint);
     });
-  };
 
   addJointsAnimations = (joints, forceStep) => {
     joints.forEach((joint) => {

@@ -11,9 +11,7 @@ const CACHE_NAME = new Date().toISOString();
 
 let assetsToCache = [...assets, './'];
 
-assetsToCache = assetsToCache.map((path) => {
-  return new URL(path, global.location).toString();
-});
+assetsToCache = assetsToCache.map((path) => new URL(path, global.location).toString());
 
 // When the service worker is first added to a computer.
 self.addEventListener('install', (event) => {
@@ -26,9 +24,7 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     global.caches
       .open(CACHE_NAME)
-      .then((cache) => {
-        return cache.addAll(assetsToCache);
-      })
+      .then((cache) => cache.addAll(assetsToCache))
       .then(() => {
         if (DEBUG) {
           console.log('Cached assets: main', assetsToCache);
@@ -49,8 +45,7 @@ self.addEventListener('activate', (event) => {
 
   // Clean the caches
   event.waitUntil(
-    global.caches.keys().then((cacheNames) => {
-      return Promise.all(
+    global.caches.keys().then((cacheNames) => Promise.all(
         cacheNames.map((cacheName) => {
           // Delete the caches that are not the current one.
           if (cacheName.indexOf(CACHE_NAME) === 0) {
@@ -59,8 +54,7 @@ self.addEventListener('activate', (event) => {
 
           return global.caches.delete(cacheName);
         })
-      );
-    })
+      ))
   );
 });
 
@@ -130,9 +124,7 @@ self.addEventListener('fetch', (event) => {
 
         global.caches
           .open(CACHE_NAME)
-          .then((cache) => {
-            return cache.put(request, responseCache);
-          })
+          .then((cache) => cache.put(request, responseCache))
           .then(() => {
             if (DEBUG) {
               console.log(`[SW] Cache asset: ${requestUrl.href}`);

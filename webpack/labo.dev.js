@@ -13,14 +13,13 @@ const configPromise = async (name = process.env.NAME || 'labo') => {
     mode: 'development',
     entry: {
       polyfill: '@babel/polyfill',
-      hot: 'webpack/hot/only-dev-server',
-      devserver: `webpack-dev-server/client?http://${host}:${port}`,
       [name]: path.resolve(__dirname, `../labo/${name}/standalone.js`),
     },
     output: {
       filename: '[name].js',
       publicPath: '/',
     },
+    target: 'web',
     devtool: 'inline-source-map',
     module: {
       rules,
@@ -50,6 +49,7 @@ const configPromise = async (name = process.env.NAME || 'labo') => {
     ],
     devServer: {
       host,
+      https: true,
       historyApiFallback: true,
       hot: true,
       inline: true,

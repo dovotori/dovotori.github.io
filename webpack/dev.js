@@ -38,10 +38,9 @@ module.exports = {
   mode: 'development',
   entry: {
     polyfill: '@babel/polyfill',
-    hot: 'webpack/hot/only-dev-server',
-    devserver: `webpack-dev-server/client?http://${host}:${port}`,
     main: './src/index',
   },
+  target: 'web',
   output: {
     publicPath: '/',
     filename: '[name].js',
@@ -57,6 +56,7 @@ module.exports = {
   plugins,
   devServer: {
     host,
+    https: true,
     historyApiFallback: true,
     hot: true,
     inline: true,

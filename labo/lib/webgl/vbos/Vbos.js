@@ -43,9 +43,7 @@ export default class {
     });
   }
 
-  getActiveVbo = () => {
-    return this.vbos.indices || this.vbos.position || this.vbos.texture;
-  };
+  getActiveVbo = () => this.vbos.indices || this.vbos.position || this.vbos.texture;
 
   render(program) {
     this.enable(program);
