@@ -1,5 +1,5 @@
 import Perso from './PersoCollision';
-import Target from '../maths/Target';
+import Target from '../../../lib/webgl/maths/Target';
 
 export default class extends Perso {
   constructor({ constants, sprites, viewBox }) {

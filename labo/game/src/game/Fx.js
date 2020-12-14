@@ -1,6 +1,6 @@
-import StateSprite from '../logic/StateSprite';
-import MeshSprite from '../meshes/MeshSprite';
-import Vec3 from '../maths/Vec3';
+import StateSprite from '../../../lib/webgl/logic/StateSprite';
+import MeshSprite from '../../../lib/webgl/meshes/MeshSprite';
+import Vec3 from '../../../lib/webgl/maths/Vec3';
 
 export default class extends MeshSprite {
   constructor(constants, sprites, viewBox, startPos, status, callback) {

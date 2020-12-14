@@ -1,5 +1,5 @@
-import Mesh from '../meshes/MeshColor';
-import { mapFromRange } from '../utils/numbers';
+import Mesh from '../../../lib/webgl/meshes/MeshColor';
+import { mapFromRange } from '../../../lib/webgl/utils/numbers';
 
 export default class {
   constructor(viewBox, levelSize) {

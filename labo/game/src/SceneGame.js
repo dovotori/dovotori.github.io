@@ -1,12 +1,12 @@
-import Scene from './SceneLampe';
-import Background from '../game/Background';
-import Tilemap from '../game/Tilemap';
+import Scene from '../../lib/webgl/scenes/SceneLampe';
 
-import Target from '../maths/Target';
+import Target from '../../lib/webgl/maths/Target';
+import Collisions from '../../lib/webgl/collisions/Collisions';
 
-import Heros from '../persos/Heros';
-import Monster from '../persos/Monster';
-import Collisions from '../collisions/Collisions';
+import Background from './game/Background';
+import Tilemap from './game/Tilemap';
+import Heros from './persos/Heros';
+import Monster from './persos/Monster';
 
 export default class extends Scene {
   constructor(gl, config, assets, width = 1024, height = 1024) {
@@ -75,9 +75,9 @@ export default class extends Scene {
         }
       });
 
-      const boxes = Object.keys(this.interactives).map((id) => {
-        return this.interactives[id].getCollisionBox();
-      });
+      const boxes = Object.keys(this.interactives).map((id) =>
+        this.interactives[id].getCollisionBox()
+      );
 
       this.background = new Background(viewBox, this.tilemap.getLevelSize());
       this.collisions = new Collisions(boxes);
@@ -93,9 +93,9 @@ export default class extends Scene {
       this.interactives[id].reset();
     });
     this.collisions.clear();
-    const boxes = Object.keys(this.interactives).map((id) => {
-      return this.interactives[id].getCollisionBox();
-    });
+    const boxes = Object.keys(this.interactives).map((id) =>
+      this.interactives[id].getCollisionBox()
+    );
     this.collisions.addBoxes(boxes);
   }
 

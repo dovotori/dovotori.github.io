@@ -1,11 +1,11 @@
-import StateSprite from '../logic/StateSprite';
-import MeshSprite from '../meshes/MeshSprite';
+import StateSprite from '../../../lib/webgl/logic/StateSprite';
+import MeshSprite from '../../../lib/webgl/meshes/MeshSpriteNormalMatrix';
 
 export default class extends MeshSprite {
-  constructor(sprite) {
+  constructor(tiles) {
     super();
-    this.state = new StateSprite(sprite);
-    this.state.set('000');
+    this.state = new StateSprite(tiles);
+    this.state.set(tiles.colors['000'].pattern);
   }
 
   render(objet, program, texture) {
