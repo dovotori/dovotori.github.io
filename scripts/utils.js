@@ -52,18 +52,20 @@ exports.readCsv = (url) =>
       });
   });
 
-const deleteFolderRecursive = (folderPath) => {
+const deleteFolderRecursive = async (folderPath) => {
   if (fs.existsSync(folderPath)) {
-    fs.readdirSync(folderPath).forEach((file) => {
+    const files = fs.readdirSync(folderPath);
+    // eslint-disable-next-line
+    for await (const file of files) {
       const curPath = path.join(folderPath, file);
       if (fs.lstatSync(curPath).isDirectory()) {
         // recurse
-        deleteFolderRecursive(curPath);
+        await deleteFolderRecursive(curPath);
       } else {
         // delete file
         fs.unlinkSync(curPath);
       }
-    });
+    }
     fs.rmdirSync(folderPath);
   }
 };

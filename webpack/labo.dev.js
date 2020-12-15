@@ -7,7 +7,7 @@ const { alias, rules, getHtml } = require('./common');
 const port = process.env.PORT || 8081;
 const host = process.env.HOST || '0.0.0.0';
 
-const configPromise = async (name = process.env.NAME || 'labo') => {
+const configPromise = async (env, options, name = process.env.NAME || 'labo') => {
   const html = await getHtml(name);
   return {
     mode: 'development',
@@ -30,7 +30,6 @@ const configPromise = async (name = process.env.NAME || 'labo') => {
     },
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.NamedModulesPlugin(),
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify('developement'),
