@@ -31,7 +31,7 @@ const Wrap = styled(Bloc)`
 
 const WrapContent = styled.div`
   margin: 0 auto;
-  padding: 0 10px;
+  padding: 0 1.5em;
   max-width: 700px;
 `;
 
@@ -69,8 +69,7 @@ const StyledTitle = styled.h3`
 
 const Quote = styled.div`
   position: absolute;
-  color: ${(p) => p.theme.midl};
-  opacity: 0.5;
+  color: transparent;
   top: 0;
   left: 50%;
   display: flex;
@@ -81,9 +80,10 @@ const Quote = styled.div`
 `;
 
 const StyledQuoteIcon = styled(QuoteIcon)`
-  margin-right: 0.1em;
-  width: 2em;
+  margin-right: 0.2em;
+  width: 1.5em;
   height: auto;
+  stroke: ${(p) => p.theme.primary};
 `;
 
 const About = ({ hello, isTouchDevice }) => (

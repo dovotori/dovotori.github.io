@@ -50,11 +50,11 @@ const Line = styled.div`
 `;
 
 const BlocJob = styled.div`
-  margin: 0 0 1em 0;
+  margin: 0 0 2em 0;
 `;
 
 const Date = styled.span`
-  margin: ${(p) => (!p.isTouch ? '0' : '1em 0 0.5em 0')};
+  margin: 0;
   color: ${(p) => p.theme.primary};
   ${(p) => p.theme.monospace}
   overflow-wrap: break-word;
@@ -67,16 +67,18 @@ const WrapSvg = styled.div`
 `;
 
 const Text = styled.span`
+  font-weight: bold;
+  font-size: 1.2;
   color: ${(p) => p.theme.light};
 `;
 
 const SubText = styled.span`
-  color: ${(p) => p.theme.midl};
+  color: ${(p) => p.theme.light};
   font-style: italic;
 `;
 
 const Level = styled.span`
-  color: ${(p) => p.theme.midl};
+  color: ${(p) => p.theme.light};
   margin: 0 1em;
 `;
 
