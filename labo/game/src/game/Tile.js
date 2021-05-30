@@ -9,7 +9,7 @@ export default class extends MeshSprite {
   }
 
   render(objet, program, texture) {
-    program.setTexture(0, texture.get());
+    program.setTexture(0, texture.get(), 'textureMap');
     this.setSprite(this.state.get());
     super.render(objet, program);
   }

@@ -37,7 +37,7 @@ export default class extends MeshSprite {
       this.position.getY() - this.viewBox.y - (1 - h) + (py || 0),
       this.position.getZ()
     );
-    program.setTexture(0, texture.get());
+    program.setTexture(0, texture.get(), 'textureMap');
     program.setInt('inverseX', this.inverseX ? 1 : 0);
     super.render(objet, program);
     this.setSprite(this.stateSprite.get());
