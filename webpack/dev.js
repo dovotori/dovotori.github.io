@@ -14,7 +14,7 @@ const plugins = [
   new webpack.HotModuleReplacementPlugin(),
   new webpack.DefinePlugin({
     'process.env': {
-      NODE_ENV: JSON.stringify('developement'),
+      NODE_ENV: JSON.stringify('development'),
       ASSET_PATH: JSON.stringify('/public'),
       NAME: JSON.stringify(config.name),
       MAIL: JSON.stringify(config.author.email),

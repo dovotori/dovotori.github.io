@@ -20,6 +20,7 @@ const Div = styled.div`
   display: flex;
   align-items: center;
   margin: 1em;
+  min-width: 15%;
 
   a {
     cursor: pointer;
