@@ -139,7 +139,7 @@ export default class extends Scene {
 
   renderTunnel() {
     this.gl.disable(this.gl.DEPTH_TEST);
-    const program = this.mngProg.get('tunnelrace2');
+    const program = this.mngProg.get('tunnelrace');
     program.setFloat('flipY', -1);
     // program.setFloat('time', this.time * 0.005 + this.posTime * 5.0);
     program.setFloat('time', this.time * 0.001);
@@ -168,14 +168,14 @@ export default class extends Scene {
   render() {
     super.render();
 
-    // this.postProcess.start();
+    this.postProcess.start();
 
     // this.renderLandscape();
     this.renderTunnel();
     this.renderMountain();
     this.renderRoad();
     this.renderShip();
-    this.bonus.render(this.mngProg.get('basique3d').program.get());
+    // this.bonus.render(this.mngProg.get('basique3d').program.get());
 
     this.postProcess.end();
 
