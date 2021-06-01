@@ -5,11 +5,8 @@ import Mat4 from '../lib/webgl/maths/Mat4';
 import Vec3 from '../lib/webgl/maths/Vec3';
 import { getPoints, getIndices } from '../lib/webgl/primitives/grid';
 import Target from '../lib/webgl/maths/Target';
-import primitive from '../lib/webgl/primitives/cube';
 
-const nsin = (val) => {
-  return Math.sin(val) * 0.5 + 0.5;
-};
+const nsin = (val) => Math.sin(val) * 0.5 + 0.5;
 
 const getDistortion = (progress, frequence, amplitude, time) => {
   const movementProgressFix = 0.02;
@@ -30,7 +27,6 @@ export default class extends Scene {
     this.screen = new Screen(this.gl);
     this.model = new Mat4();
 
-    // this.road = new GpuParticules(gl, 16, 128);
     const { roadLength, roadWidth, shipPosition } = config;
 
     const pointsRoads = getPoints(2, roadLength, {
@@ -141,12 +137,22 @@ export default class extends Scene {
     this.gl.enable(this.gl.DEPTH_TEST);
   }
 
+  renderTunnel() {
+    this.gl.disable(this.gl.DEPTH_TEST);
+    const program = this.mngProg.get('tunnelrace');
+    program.setFloat('flipY', -1);
+    // program.setFloat('time', this.time * 0.005 + this.posTime * 5.0);
+    program.setFloat('time', this.time * 0.001);
+    this.screen.render(program.get());
+    this.gl.enable(this.gl.DEPTH_TEST);
+  }
+
   renderShip = () => {
     const programShip = this.mngProg.get('gltf');
     const raceship = this.mngGltf.get('raceship');
     this.model.push();
     this.model.translate(...this.currentShipPos.get());
-    raceship.render(programShip, this.model);
+    raceship.renderExcept(['trail1', 'trail2'], programShip, this.model);
     this.model.pop();
   };
 
@@ -155,8 +161,7 @@ export default class extends Scene {
     const raceship = this.mngGltf.get('raceship');
     this.model.push();
     this.model.translate(...this.currentShipPos.get());
-    raceship.renderNode('trail1', programShip, this.model);
-    raceship.renderNode('trail2', programShip, this.model);
+    raceship.renderOnly(['trail1', 'trail2'], programShip, this.model);
     this.model.pop();
   };
 
@@ -164,20 +169,24 @@ export default class extends Scene {
     super.render();
 
     this.postProcess.start();
-    // // this.renderLandscape();
+
+    // this.renderLandscape();
+    this.renderTunnel();
     this.renderMountain();
     this.renderRoad();
     this.renderShip();
-
     // this.bonus.render(this.mngProg.get('basique3d').program.get());
+
     this.postProcess.end();
 
     this.bloom.start();
     this.renderShipTrails();
     this.bloom.end();
-    this.bloom.setBloom(1.0, 0.1);
 
     this.postProcess.mergeBloom(this.bloom.getTexture(), 1.5, 2.2);
+
+    const delta = this.targetSpeed.get() * 100.0;
+    this.postProcess.setRGB(delta, delta, 0.5, 0.5);
     this.postProcess.setFxaa2();
     this.postProcess.render();
   }

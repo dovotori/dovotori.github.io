@@ -10,10 +10,9 @@ import Mat4 from '../lib/webgl/maths/Mat4';
 import Vec3 from '../lib/webgl/maths/Vec3';
 import { getGridPerlinPoints, getGridPoints } from '../lib/webgl/primitives/particules';
 import { getPoints, getIndices } from '../lib/webgl/primitives/grid';
+import { mapFromRange } from '../lib/webgl/utils/numbers';
 
-const nsin = (val) => {
-  return Math.sin(val) * 0.5 + 0.5;
-};
+const nsin = (val) => Math.sin(val) * 0.5 + 0.5;
 
 const getDistortion = (progress, frequence, amplitude, time) => {
   const movementProgressFix = 0.02;
@@ -136,7 +135,9 @@ export default class extends Scene {
       }
       case 1: {
         this.model.rotate(this.time * 0.001, 0, 1, 0);
-        this.particules.compute(this.mngProg.get('pass1Morph'), this.time * 0.01);
+        const newTime = mapFromRange(Math.cos(this.time * 0.01 * 0.05), -1, 1, 0, 1);
+
+        this.particules.compute(this.mngProg.get('pass1Morph'), newTime);
         this.resizeViewport();
         this.mngProg.get('pass2Camera').setMatrix('model', this.model.get());
         this.particules.render(this.mngProg.get('pass2Camera'));

@@ -18,7 +18,8 @@ export default class {
 
   hasAnimation = (nodes) => {
     let hasAnim = false;
-    nodes.forEach((node) => {
+    Object.keys(nodes).forEach((key) => {
+      const node = nodes[key];
       if (!hasAnim && node.animations) {
         hasAnim = true;
       }

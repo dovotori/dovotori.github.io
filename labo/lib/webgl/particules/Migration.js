@@ -12,7 +12,5 @@ export default class {
     });
   };
 
-  getPositions = () => {
-    return this.birds.reduce((acc, bird) => [...bird.getPosition().get(), ...acc], []);
-  };
+  getPositions = () => this.birds.reduce((acc, bird) => [...bird.getPosition().get(), ...acc], []);
 }

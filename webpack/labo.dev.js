@@ -7,20 +7,19 @@ const { alias, rules, getHtml } = require('./common');
 const port = process.env.PORT || 8081;
 const host = process.env.HOST || '0.0.0.0';
 
-const configPromise = async (name = process.env.NAME || 'labo') => {
+const configPromise = async (env, options, name = process.env.NAME || 'labo') => {
   const html = await getHtml(name);
   return {
     mode: 'development',
     entry: {
       polyfill: '@babel/polyfill',
-      hot: 'webpack/hot/only-dev-server',
-      devserver: `webpack-dev-server/client?http://${host}:${port}`,
       [name]: path.resolve(__dirname, `../labo/${name}/standalone.js`),
     },
     output: {
       filename: '[name].js',
       publicPath: '/',
     },
+    target: 'web',
     devtool: 'inline-source-map',
     module: {
       rules,
@@ -31,10 +30,9 @@ const configPromise = async (name = process.env.NAME || 'labo') => {
     },
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.NamedModulesPlugin(),
       new webpack.DefinePlugin({
         'process.env': {
-          NODE_ENV: JSON.stringify('developement'),
+          NODE_ENV: JSON.stringify('development'),
           ASSET_PATH: JSON.stringify('/public'),
           NAME: JSON.stringify(name),
         },
@@ -50,6 +48,7 @@ const configPromise = async (name = process.env.NAME || 'labo') => {
     ],
     devServer: {
       host,
+      https: true,
       historyApiFallback: true,
       hot: true,
       inline: true,

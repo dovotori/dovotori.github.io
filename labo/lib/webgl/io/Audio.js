@@ -141,13 +141,9 @@ export default class {
     }
   };
 
-  getAmplitudes = () => {
-    return this.amplitudeArray;
-  };
+  getAmplitudes = () => this.amplitudeArray;
 
-  getFrequencyLength = () => {
-    return this.analyserNode.frequencyBinCount;
-  };
+  getFrequencyLength = () => this.analyserNode.frequencyBinCount;
 
   getSupport() {
     return this.support;

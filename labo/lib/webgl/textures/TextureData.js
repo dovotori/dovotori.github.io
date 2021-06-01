@@ -1,7 +1,7 @@
 export default class {
   constructor(gl, uint8data) {
     this.gl = gl;
-    const size = Math.sqrt(uint8data.length); // power of 2
+    const size = Math.sqrt(uint8data.length / 4); // power of 2
     this.size = { width: size, height: size };
     this.texture = gl.createTexture();
     this.filter = gl.NEAREST;
@@ -14,11 +14,11 @@ export default class {
     this.gl.texImage2D(
       this.gl.TEXTURE_2D,
       0,
-      this.gl.ALPHA,
+      this.gl.RGBA,
       this.size.width,
       this.size.height,
       0,
-      this.gl.ALPHA,
+      this.gl.RGBA,
       this.gl.UNSIGNED_BYTE,
       data
     );

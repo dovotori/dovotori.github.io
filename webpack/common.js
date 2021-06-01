@@ -1,6 +1,7 @@
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+const zlib = require('zlib');
 
 const utils = require('../scripts/utils');
 
@@ -39,7 +40,6 @@ const optimization = {
         ecma: 6,
         warnings: false,
         sourceMap: false,
-        comments: false,
         compress: {
           drop_console: true,
         },
@@ -78,7 +78,11 @@ const rules = [
   },
   {
     test: /\.(jpe?g|png|gif)$/i,
-    loader: 'url-loader?name=/img/[name].[ext]?[hash]?limit=100000',
+    loader: 'url-loader',
+    options: {
+      name: '/img/[name].[ext]?[hash]',
+      limit: 100000,
+    },
   },
 ];
 
@@ -94,7 +98,6 @@ const minify = {
 
 const getHtml = async (name) => {
   const htmlPath = path.resolve(__dirname, `../labo/${name}/inject.html`);
-  console.log(htmlPath);
   let html = '';
   try {
     html = (await utils.readFile(htmlPath, 'utf8')) || '';
@@ -114,6 +117,7 @@ const NAMES = [
   'race',
   'religionmap',
   'signature',
+  'diorama',
 ];
 
 const laboEntries = NAMES.reduce(
@@ -137,6 +141,11 @@ const compression = [
     filename: '[path][base].br[query]',
     threshold: 0,
     minRatio: 1,
+    compressionOptions: {
+      params: {
+        [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
+      },
+    },
   }),
 ];
 

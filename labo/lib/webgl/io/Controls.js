@@ -29,9 +29,7 @@ export default class {
 
   getDomItem = () => this.controlsDomItem;
 
-  getRanges = () => {
-    return this.ranges;
-  };
+  getRanges = () => this.ranges;
 
   destroy() {
     if (this.fullscreen) {

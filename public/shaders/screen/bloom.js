@@ -8,6 +8,7 @@ varying vec2 fragTexture;
 uniform sampler2D textureMap;
 uniform float scale;
 uniform float threshold;
+uniform int useDepth;
 
 float kernel = .005;
 
@@ -27,20 +28,12 @@ void main() {
   for( int i=-2; i<=2; i++) sum+=texture2D(textureMap, fragTexture + vec2(i,j) * kernel);
   sum /= 25.0;
 
-
-  // WITH ALPHA
-  // vec4 s = texture2D(textureMap, fragTexture);
-  // gl_FragColor = s;
-  // // use the blurred colour if it's bright enough
-  // if (length(sum) > threshold) {
-  //   gl_FragColor += sum * scale;
-  // }
-
-  vec3 color = texture2D(textureMap, fragTexture).xyz;
+  vec4 color = texture2D(textureMap, fragTexture);
   if (length(sum) > threshold) {
-    color += sum.xyz * scale;
+    color += sum * scale;
   }
-  gl_FragColor = vec4(color, 1.0);
+  
+  gl_FragColor = vec4(color.xyz, 1.0);
 }
 `;
 

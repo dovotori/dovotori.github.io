@@ -1,12 +1,12 @@
 {
   "files.autoSave": "onFocusChange",
   "editor.formatOnSave": true,
-  "eslint.enable": true,
   "eslint.packageManager": "npm",
   "search.exclude": {
     "**/.git": true,
     "**/node_modules": true,
-    "**/build": true
+    "**/build": true,
+    "**/package-lock.json": true
   },
   "files.exclude": {
     "**/node_modules": true

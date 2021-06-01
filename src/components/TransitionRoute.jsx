@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 // import styled, { keyframes } from 'styled-components';
 // import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { Switch, withRouter } from 'react-router-dom';
@@ -51,17 +51,17 @@ const RenderSwitch = ({ location, children }) => (
   </Suspense>
 );
 
-const TransitionRoute = ({ location, children /* , isTouchDevice */ }) => {
+const TransitionRoute = ({ location, children /* , isTouchDevice */ }) => (
   // if (isTouchDevice) {
-  return <RenderSwitch location={location}>{children}</RenderSwitch>;
-  // }
-  // return (
-  //   <StyledTransitionGroup>
-  //     <CSSTransition key={shouldAnimRouteTransition(location)} timeout={TIME} classNames="route">
-  //       <RenderSwitch location={location}>{children}</RenderSwitch>
-  //     </CSSTransition>
-  //   </StyledTransitionGroup>
-  // );
-};
+  <RenderSwitch location={location}>{children}</RenderSwitch>
+);
+// }
+// return (
+//   <StyledTransitionGroup>
+//     <CSSTransition key={shouldAnimRouteTransition(location)} timeout={TIME} classNames="route">
+//       <RenderSwitch location={location}>{children}</RenderSwitch>
+//     </CSSTransition>
+//   </StyledTransitionGroup>
+// );
 
 export default withRouter(TransitionRoute);

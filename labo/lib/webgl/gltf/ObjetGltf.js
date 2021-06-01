@@ -22,6 +22,15 @@ export default class {
     this.nodes = nodes;
   }
 
+  addInstancingVbos(count, vbos) {
+    Object.keys(this.nodes).forEach((key) => {
+      const node = this.nodes[key];
+      const { mesh: meshIndex } = node;
+      const { primitives } = this.meshes[meshIndex];
+      primitives.forEach((primitive) => primitive.addInstancing(count, vbos));
+    });
+  }
+
   formatPrimitives = (gl, primitives) =>
     primitives.map((primitive) => {
       const { vbos, material } = primitive;
@@ -29,27 +38,59 @@ export default class {
     });
 
   render(program, model) {
-    Object.keys(this.nodes).forEach((key) => {
-      this.renderNode(key, program, model);
+    this.renderNodesAndChildren(this.nodes, program, model);
+  }
+
+  renderNodesAndChildren = (nodes, program, model) => {
+    Object.keys(nodes).forEach((key) => {
+      const node = nodes[key];
+      this.renderNodeAndChildren(node, program, model);
+    });
+  };
+
+  renderNodeAndChildren = (node, program, model) => {
+    let newModel = model;
+    newModel = this.setNodeModel(node, program, model);
+    this.renderNode(node, program);
+    if (node.children) {
+      this.renderNodesAndChildren(node.children, program, newModel);
+    }
+  };
+
+  renderOnly(keys, program, model) {
+    keys.forEach((key) => {
+      const node = this.nodes[key];
+      this.renderNodeAndChildren(node, program, model);
     });
   }
 
-  renderNode(key, program, model) {
-    const node = this.nodes[key];
-    const { mesh: meshIndex } = node;
+  renderExcept(keys, program, model) {
+    Object.keys(this.nodes).forEach((key) => {
+      if (keys.indexOf(key) === -1) {
+        const node = this.nodes[key];
+        this.renderNodeAndChildren(node, program, model);
+      }
+    });
+  }
 
+  setNodeModel = (node, program, model) => {
     const localMatrix = this.handleLocalTransform(node);
     localMatrix.multiply(model);
     program.setMatrix('model', localMatrix.get());
 
-    localMatrix.resetTranslate();
     const normalMatrix = localMatrix.getMatrice3x3();
     normalMatrix.inverse(); // erreur quand scale a 0
     normalMatrix.transpose();
     program.setMatrix('normalMatrix', normalMatrix.get());
+    return localMatrix;
+  };
 
-    const { primitives } = this.meshes[meshIndex];
-    primitives.forEach((primitive) => primitive.render(program));
+  renderNode(node, program) {
+    if (node.mesh !== undefined) {
+      const { mesh: meshIndex } = node;
+      const { primitives } = this.meshes[meshIndex];
+      primitives.forEach((primitive) => primitive.render(program));
+    }
   }
 
   handleLocalTransform = (node) => {

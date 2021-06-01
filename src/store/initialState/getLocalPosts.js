@@ -365,6 +365,23 @@ const rawPosts = [
   //   html: true,
   // },
   {
+    id: 20,
+    slug: 'diorama',
+    title: { [Locales.FR]: 'Diorama', [Locales.EN]: 'Diorama', [Locales.JP]: 'Diorama' },
+    category: CAT_BLOG,
+    tags: [],
+    date: 2020,
+    description: {
+      [Locales.FR]: [''],
+      [Locales.EN]: [''],
+      [Locales.JP]: [''],
+    },
+    labo: {
+      hasJs: true,
+      noBackground: true,
+    },
+  },
+  {
     id: 21,
     slug: 'race',
     title: { [Locales.FR]: 'Course', [Locales.EN]: 'Race', [Locales.JP]: '人種' },

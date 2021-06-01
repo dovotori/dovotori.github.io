@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useCallback } from 'react';
+import { forwardRef, useState, useCallback } from 'react';
 import styled from 'styled-components';
 
 import GlitchImage from './GlitchImage';

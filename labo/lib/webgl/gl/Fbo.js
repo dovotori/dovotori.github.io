@@ -66,6 +66,7 @@ export default class {
 
   end() {
     this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+    this.gl.bindTexture(this.gl.TEXTURE_2D, null);
   }
 
   get() {

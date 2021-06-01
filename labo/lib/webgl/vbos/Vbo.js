@@ -4,10 +4,20 @@ export default class {
     if (data) {
       this.create(data);
     }
+    this.extension = gl.getExtension('ANGLE_instanced_arrays');
   }
 
   create(data) {
-    const { locationKey, type, values, count, componentType, size, modeCalcul } = data;
+    const {
+      locationKey,
+      type,
+      values,
+      count,
+      componentType,
+      size,
+      modeCalcul,
+      isInstancing = false,
+    } = data;
 
     const bufferType = type !== 'SCALAR' ? this.gl.ARRAY_BUFFER : this.gl.ELEMENT_ARRAY_BUFFER;
     this.vbo = this.gl.createBuffer();
@@ -19,10 +29,11 @@ export default class {
     this.componentType = componentType;
     this.bufferType = bufferType;
     this.locationKey = locationKey;
+    this.isInstancing = isInstancing;
   }
 
   enable(program) {
-    const { locationKey, vbo, componentType, size, bufferType } = this;
+    const { locationKey, vbo, componentType, size, bufferType, isInstancing = false } = this;
     if (locationKey === 'indices') {
       this.gl.bindBuffer(bufferType, vbo);
     } else {
@@ -31,6 +42,9 @@ export default class {
         this.gl.bindBuffer(bufferType, vbo);
         this.gl.enableVertexAttribArray(location);
         this.gl.vertexAttribPointer(location, size, componentType, false, 0, 0);
+        if (isInstancing) {
+          this.extension.vertexAttribDivisorANGLE(location, 1);
+        }
       }
     }
   }
@@ -56,6 +70,25 @@ export default class {
       this.gl.drawElements(modeDessin, this.count, this.componentType, 0);
     } else {
       this.gl.drawArrays(modeDessin, 0, this.count);
+    }
+  }
+
+  renderInstancing(program, modeDessin, instanceCount) {
+    if (this.locationKey === 'indices') {
+      this.extension.drawElementsInstancedANGLE(
+        modeDessin,
+        this.count,
+        this.gl.UNSIGNED_SHORT,
+        0,
+        instanceCount
+      );
+    } else {
+      this.extension.drawArraysInstancedANGLE(
+        modeDessin,
+        0, // offset
+        this.count, // num vertices per instance
+        instanceCount // num instances
+      );
     }
   }
 

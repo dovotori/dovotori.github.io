@@ -1,5 +1,3 @@
-import React from 'react';
-
 import ProjectHeader from './ProjectHeader';
 import ProjectNavigationContainer from '../containers/ProjectNavigationContainer';
 

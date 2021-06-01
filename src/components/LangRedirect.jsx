@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { Redirect } from 'react-router-dom';
 import { Locales } from '../constants/locales';

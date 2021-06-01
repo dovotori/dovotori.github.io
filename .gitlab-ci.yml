@@ -1,17 +1,14 @@
-image: node:12.10.0-alpine
+image: node:14.12.0-alpine
 
 stages:
   - build
   - test
   - deploy
 
-cache:
-  paths:
-    - node_modules
-
 build:
   stage: build
   script:
+    - apk add git
     - npm install
     - npm run build
   artifacts:
@@ -25,10 +22,6 @@ test:
   stage: test
   script:
     - test -f "build/index.html"
-    - npm run test
-  artifacts:
-    paths:
-      - coverage/
   only:
     - master
     - develop
@@ -36,6 +29,7 @@ test:
 pages:
   stage: deploy
   script:
+    - rm -rf public/
     - mv build/ public/
     - ls public/
   artifacts:

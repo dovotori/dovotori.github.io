@@ -18,10 +18,10 @@ export default class extends Node {
     this.speed.set(Math.cos(angle), Math.sin(angle), 0);
   }
 
-  seek = (cible) => {
+  seek = (cible) => 
     // ATTIRER PAR LA CIBLE
-    return new Vec3().equal(cible).minus(this.position).multiplyNumber(MAX_SPEED).normalise();
-  };
+     new Vec3().equal(cible).minus(this.position).multiplyNumber(MAX_SPEED).normalise()
+  ;
 
   seekSteering = (cible) => {
     // ATTIRER PAR LA CIBLE AVEC UN SMOOTH DE TRAJECTOIRE
@@ -55,15 +55,15 @@ export default class extends Node {
       .add(this.speed);
   };
 
-  flee = (cible) => {
+  flee = (cible) => 
     // FUIT LA CIBLE
-    return new Vec3().equal(this.seek(cible)).multiplyNumber(-1);
-  };
+     new Vec3().equal(this.seek(cible)).multiplyNumber(-1)
+  ;
 
-  fleeSteering = (cible) => {
+  fleeSteering = (cible) => 
     // FUIT LA CIBLE EN STEERING
-    return new Vec3().equal(this.seekSteering(cible)).multiplyNumber(-1);
-  };
+     new Vec3().equal(this.seekSteering(cible)).multiplyNumber(-1)
+  ;
 
   // //////////////////////// GROUPE MOUV ///////////////////////////////////
 

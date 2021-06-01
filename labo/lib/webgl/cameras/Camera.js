@@ -78,4 +78,21 @@ export default class extends Objectif {
   getAngle() {
     return this.angle;
   }
+
+  getReflectViewMatrix(waterLevel = 0) {
+    const distanceY = 2 * (this.position.getY() - waterLevel);
+    return new Mat4()
+      .identity()
+      .lookAt(
+        this.position.getX(),
+        this.position.getY() - distanceY,
+        this.position.getZ(),
+        this.target.getX(),
+        this.target.getY(),
+        this.target.getZ(),
+        0,
+        1,
+        0
+      );
+  }
 }

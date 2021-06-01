@@ -1,9 +1,8 @@
-import React from 'react';
 import styled from 'styled-components';
 
 import { ReactComponent as Linkedin } from 'Assets/svg/cv/linkedin.svg';
 import { ReactComponent as Gitlab } from 'Assets/svg/cv/gitlab.svg';
-import { ReactComponent as QuoteIcon } from 'Assets/svg/quote2.svg';
+import { ReactComponent as QuoteIcon } from 'Assets/svg/quote.svg';
 import CvContainer from '../containers/CvContainer';
 import ButtonBack from './ButtonBack';
 import Button from './Button';
@@ -31,7 +30,7 @@ const Wrap = styled(Bloc)`
 
 const WrapContent = styled.div`
   margin: 0 auto;
-  padding: 0 10px;
+  padding: 0 1.5em;
   max-width: 700px;
 `;
 
@@ -59,16 +58,17 @@ const StyledTypingMessage = styled(TypingMessage)`
   position: relative;
 `;
 
-const StyledTitle = styled.h1`
+const StyledTitle = styled.h3`
   ${(p) => p.theme.title}
   position: relative;
   margin-bottom: 1em;
+  font-size: 4em;
+  margin-bottom: 0;
 `;
 
 const Quote = styled.div`
   position: absolute;
-  color: ${(p) => p.theme.midl};
-  opacity: 0.5;
+  color: transparent;
   top: 0;
   left: 50%;
   display: flex;
@@ -79,9 +79,10 @@ const Quote = styled.div`
 `;
 
 const StyledQuoteIcon = styled(QuoteIcon)`
-  margin-right: 0.1em;
-  width: 100%;
-  height: 100%;
+  margin-right: 0.2em;
+  width: 1.5em;
+  height: auto;
+  stroke: ${(p) => p.theme.primary};
 `;
 
 const About = ({ hello, isTouchDevice }) => (

@@ -55,9 +55,13 @@ export default class extends Scene {
     this.mngGltf.get(this.config.MAIN_OBJ).render(program, this.model);
   };
 
-  renderBasiqueForShadow = (program) => {
-    this.renderFakeShadow(program);
+  renderBasiqueForLampeDepth = () => {
+    const lampe = this.getLampe(0);
+    const program = this.mngProg.get('basique3d');
+    lampe.setDepthProgram(program);
+    lampe.start();
     this.mainRender(program);
+    lampe.end();
   };
 
   render() {

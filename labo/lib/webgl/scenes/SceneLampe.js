@@ -66,24 +66,11 @@ export default class extends Scene {
     });
   }
 
-  computeLampesDepthTexture() {
-    // for (let i = 0; i < this.config.lampes.length; i += 1) {
-    if (typeof this.renderBasiqueForShadow === 'function') {
-      for (let i = 0; i < 1; i += 1) {
-        const lampe = this.getLampe(i);
-        lampe.start();
-        const program = this.mngProg.get('basique3d');
-        program.setMatrix('projection', lampe.getOrtho().get());
-        program.setMatrix('view', lampe.getView().get());
-        this.renderBasiqueForShadow(program);
-        lampe.end();
-      }
-    }
-  }
-
   render() {
     super.render();
-    this.computeLampesDepthTexture();
+    if (typeof this.renderBasiqueForLampeDepth === 'function') {
+      this.renderBasiqueForLampeDepth();
+    }
     this.mngProg.setCameraMatrix(this.camera, !!this.config.camera.ortho);
   }
 

@@ -58,52 +58,69 @@ export default class {
     this.setMatrix('view', camera.getView().get());
   }
 
+  getLocation = (location) => this.program.locations[location] || null;
+
   setMatrix(location, matrix) {
-    this.gl.useProgram(this.program);
-    if (matrix.length === 16) {
-      this.gl.uniformMatrix4fv(this.program.locations[location], false, matrix);
-    } else {
-      this.gl.uniformMatrix3fv(this.program.locations[location], false, matrix);
+    const loc = this.getLocation(location);
+    if (loc !== null) {
+      this.gl.useProgram(this.program);
+      if (matrix.length === 16) {
+        this.gl.uniformMatrix4fv(loc, false, matrix);
+      } else {
+        this.gl.uniformMatrix3fv(loc, false, matrix);
+      }
+      this.gl.useProgram(null);
     }
-    this.gl.useProgram(null);
   }
 
   setInt(location, bool) {
-    this.gl.useProgram(this.program);
-    this.gl.uniform1i(this.program.locations[location], bool);
-    this.gl.useProgram(null);
+    const loc = this.getLocation(location);
+    if (loc !== null) {
+      this.gl.useProgram(this.program);
+      this.gl.uniform1i(loc, bool);
+      this.gl.useProgram(null);
+    }
   }
 
   setTexture(idx, texture, location) {
-    this.gl.useProgram(this.program);
-    this.gl.activeTexture(this.gl.TEXTURE0 + idx);
-    this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
-    this.gl.uniform1i(this.program.locations[location], idx);
-    this.gl.useProgram(null);
-    // distribTexIndex++;
+    const loc = this.getLocation(location);
+    if (loc !== null) {
+      this.gl.useProgram(this.program);
+      this.gl.activeTexture(this.gl.TEXTURE0 + idx);
+      this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+      this.gl.uniform1i(loc, idx);
+      this.gl.useProgram(null);
+      // distribTexIndex++;
+    }
   }
 
   setFloat(location, value) {
-    this.gl.useProgram(this.program);
-    this.gl.uniform1f(this.program.locations[location], value);
-    this.gl.useProgram(null);
+    const loc = this.getLocation(location);
+    if (loc !== null) {
+      this.gl.useProgram(this.program);
+      this.gl.uniform1f(loc, value);
+      this.gl.useProgram(null);
+    }
   }
 
   setVector(location, value) {
-    this.gl.useProgram(this.program);
-    switch (value.length) {
-      default:
-      case 2:
-        this.gl.uniform2fv(this.program.locations[location], value);
-        break;
-      case 3:
-        this.gl.uniform3fv(this.program.locations[location], value);
-        break;
-      case 4:
-        this.gl.uniform4fv(this.program.locations[location], value);
-        break;
+    const loc = this.getLocation(location);
+    if (loc !== null) {
+      this.gl.useProgram(this.program);
+      switch (value.length) {
+        default:
+        case 2:
+          this.gl.uniform2fv(loc, value);
+          break;
+        case 3:
+          this.gl.uniform3fv(loc, value);
+          break;
+        case 4:
+          this.gl.uniform4fv(loc, value);
+          break;
+      }
+      this.gl.useProgram(null);
     }
-    this.gl.useProgram(null);
   }
 
   enable() {

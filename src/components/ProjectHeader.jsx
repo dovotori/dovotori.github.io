@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 import TypingMessage from './TypingMessage';
@@ -44,26 +43,24 @@ const StyledTitle = styled.h1`
   padding: 0 10px;
 `;
 
-const ProjectHeader = ({ title, description, date, $colorType }) => {
-  return (
-    <WrapContent>
-      <WrapTexte>
-        {title && (
-          <StyledTitle $colorType={$colorType}>
-            <TypingMessage message={title} />
-          </StyledTitle>
+const ProjectHeader = ({ title, description, date, $colorType }) => (
+  <WrapContent>
+    <WrapTexte>
+      {title && (
+      <StyledTitle $colorType={$colorType}>
+        <TypingMessage message={title} />
+      </StyledTitle>
         )}
-        {date && <Date $colorType={$colorType}>{date}</Date>}
-        {description && (
-          <Description>
-            {description.map((text) => (
-              <Text key={text}>{text}</Text>
+      {date && <Date $colorType={$colorType}>{date}</Date>}
+      {description && (
+      <Description>
+        {description.map((text) => (
+          <Text key={text}>{text}</Text>
             ))}
-          </Description>
+      </Description>
         )}
-      </WrapTexte>
-    </WrapContent>
+    </WrapTexte>
+  </WrapContent>
   );
-};
 
 export default ProjectHeader;

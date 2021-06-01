@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 import ButtonBack from './ButtonBack';
@@ -38,41 +37,39 @@ const StyledProjectLabo = styled(ProjectLabo)`
   --project-color: ${(p) => p.theme.getColor};
 `;
 
-const Project = ({ slug, images, colorType, labo }) => {
-  return (
-    <>
-      {!!labo && (
-        <StyledProjectLabo
-          slug={slug}
-          $colorType={colorType}
-          colorType={colorType}
-          noBackground={!!labo.noBackground}
-          hasHtml={!!labo.hasHtml}
-          hasJs={!!labo.hasJs}
-        />
+const Project = ({ slug, images, colorType, labo }) => (
+  <>
+    {!!labo && (
+      <StyledProjectLabo
+        slug={slug}
+        $colorType={colorType}
+        colorType={colorType}
+        noBackground={!!labo.noBackground}
+        hasHtml={!!labo.hasHtml}
+        hasJs={!!labo.hasJs}
+      />
+    )}
+    <WrapContent>
+      {images && (
+        <ImagesList>
+          <Images>
+            {Array(images)
+              .fill()
+              .map((_, idx) => idx)
+              .map((idx) => (
+                <ProjectImage
+                  key={`image-${slug}-${idx}`}
+                  idx={idx}
+                  slug={slug}
+                  $colorType={colorType}
+                />
+              ))}
+          </Images>
+        </ImagesList>
       )}
-      <WrapContent>
-        {images && (
-          <ImagesList>
-            <Images>
-              {Array(images)
-                .fill()
-                .map((_, idx) => idx)
-                .map((idx) => (
-                  <ProjectImage
-                    key={`image-${slug}-${idx}`}
-                    idx={idx}
-                    slug={slug}
-                    $colorType={colorType}
-                  />
-                ))}
-            </Images>
-          </ImagesList>
-        )}
-        <ButtonBack $colorType={colorType} />
-      </WrapContent>
-    </>
-  );
-};
+      <ButtonBack $colorType={colorType} />
+    </WrapContent>
+  </>
+);
 
 export default Project;

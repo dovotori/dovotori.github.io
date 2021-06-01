@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import { dark, light } from '../themes/theme';

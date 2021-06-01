@@ -1,4 +1,4 @@
-import { funcPBR, PBRLocations } from '../utils/pbr';
+import { funcPBR, locationsPBR } from '../utils/pbr';
 
 const vertex = `
 attribute vec3 position;
@@ -49,6 +49,6 @@ export default {
   fragment,
   attributes: ['position', 'texture', 'normale'],
   uniforms: ['projection', 'model', 'view', 'normalMatrix', 'type', 'resolution', 'posEye'].concat(
-    PBRLocations
+    locationsPBR
   ),
 };
