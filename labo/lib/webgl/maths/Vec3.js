@@ -1,4 +1,4 @@
-import { signe } from '../utils/numbers';
+import { signe, fract } from '../utils/numbers';
 
 class Vec3 {
   constructor(x = 0, y = 0, z = 0) {
@@ -202,6 +202,13 @@ class Vec3 {
     this.d[0] /= v.d[0];
     this.d[1] /= v.d[1];
     this.d[2] /= v.d[2];
+    return this;
+  }
+
+  fract() {
+    this.d[0] = fract(this.d[0]);
+    this.d[1] = fract(this.d[1]);
+    this.d[2] = fract(this.d[2]);
     return this;
   }
 

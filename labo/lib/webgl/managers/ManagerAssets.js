@@ -56,9 +56,7 @@ class ManagerAssets {
   static loadSound(path, info) {
     return fetch(path)
       .then((response) => response.arrayBuffer())
-      .then((response) => {
-        return { data: response, info };
-      });
+      .then((response) => ({ data: response, info }));
   }
 
   get(paths) {

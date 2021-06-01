@@ -84,7 +84,7 @@ export default class {
   }
 
   canUseDepth() {
-    return this.config.useDepthTexture && this.config.support.depthTexture;
+    return (this.config.useDepthTexture && this.config.support.depthTexture) || false;
   }
 
   resize(box) {

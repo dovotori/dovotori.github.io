@@ -1,7 +1,7 @@
 import { funcLightsColor } from '../utils/light';
-import { funcPBR, PBRLocations } from '../utils/pbr';
+import { funcPBR, locationsPBR } from '../utils/pbr';
 import { uniformVertShadow, uniformFragShadow, funcShadow, shadowLocations } from '../utils/shadow';
-import { funcLightsToon } from '../utils/toon';
+// import { funcLightsToon } from '../utils/toon';
 
 const vertex = `
 attribute vec3 position;
@@ -86,6 +86,6 @@ export default {
     'ambiantMap',
     'posEye',
   ]
-    .concat(PBRLocations)
+    .concat(locationsPBR)
     .concat(shadowLocations),
 };

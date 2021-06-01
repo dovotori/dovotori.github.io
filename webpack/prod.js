@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const config = require('../package.json');
@@ -23,6 +22,7 @@ module.exports = {
     publicPath: `${BUILD_ASSET_PATH}/js/`,
     filename: '[name].js',
   },
+  target: 'web',
   module: {
     rules,
   },
@@ -48,9 +48,6 @@ module.exports = {
         MAIL: JSON.stringify(config.author.email),
       },
     }),
-    new ServiceWorkerWebpackPlugin({
-      entry: path.resolve(__dirname, '../src/utils/serviceWorker.js'),
-    }),
     new CopyWebpackPlugin({
       patterns: [
         {
@@ -65,9 +62,18 @@ module.exports = {
             ],
           },
         },
-        { from: `${SRC_ASSET_PATH}/app/browserconfig.xml`, to: `${BUILD_PATH}/browserconfig.xml` },
-        { from: `${SRC_ASSET_PATH}/app/manifest.json`, to: `${BUILD_PATH}/manifest.json` },
-        { from: `${SRC_ASSET_PATH}/app/manifest.webapp`, to: `${BUILD_PATH}/manifest.webapp` },
+        {
+          from: `${SRC_ASSET_PATH}/app/browserconfig.xml`,
+          to: `${BUILD_PATH}/public/app/browserconfig.xml`,
+        },
+        {
+          from: `${SRC_ASSET_PATH}/app/manifest.json`,
+          to: `${BUILD_PATH}/public/app//manifest.json`,
+        },
+        {
+          from: `${SRC_ASSET_PATH}/app/manifest.webapp`,
+          to: `${BUILD_PATH}/public/app//manifest.webapp`,
+        },
       ],
     }),
     ...compression,

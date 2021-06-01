@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import styled from 'styled-components';
 
 import license from 'Assets/img/cclicense80x15.png';
@@ -11,7 +11,7 @@ const Wrap = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   font-size: 0.9em;
   color: ${(p) => p.theme.text};
 `;
@@ -20,6 +20,7 @@ const Div = styled.div`
   display: flex;
   align-items: center;
   margin: 1em;
+  min-width: 15%;
 
   a {
     cursor: pointer;
@@ -54,10 +55,12 @@ const Img = styled.img`
 
 const Button = styled.button`
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 0.4em;
   margin: 0 0.4em;
   text-transform: uppercase;
-  text-align: center;
   min-width: 120px;
   ${(p) => p.theme.monospace}
   font-weight: normal;
@@ -72,23 +75,31 @@ const Button = styled.button`
 
 const Line = styled.span`
   display: inline-block;
-  position: absolute;
-  bottom: 50%;
-  left: 0;
   width: 100%;
   height: 1px;
   background: ${(p) => p.theme.primary};
   z-index: 0;
   transition: transform 300ms ease-out;
-  transform: ${(p) => (p.isHighlight ? 'none' : 'scale(0.01)')};
+  transform: ${(p) => (p.isHighlight ? 'none' : 'scale(0)')};
+`;
+
+const LineLeft = styled(Line)`
+  transform-origin: right center;
+  margin-right: 0.4em;
+`;
+
+const LineRight = styled(Line)`
+  transform-origin: left center;
+  margin-left: 0.4em;
 `;
 
 const SimpleSpan = styled.span`
-  position: relative;
   z-index: 1;
   transition: background-color 0.2s ease-out;
-  background-color: ${(p) => p.theme.background};
-  padding: 0 0 0 0.4em;
+  padding: 0 0 0;
+  width: 100%;
+  flex-grow: 2;
+  white-space: nowrap;
 `;
 
 const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => {
@@ -96,8 +107,9 @@ const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => {
     () =>
       availablesLang.map((availableLang) => (
         <Button key={availableLang.id} onClick={() => setLang(availableLang.id)}>
+          <LineLeft isHighlight={availableLang.id === lang} className="line" />
           <SimpleSpan>{availableLang.short}</SimpleSpan>
-          <Line isHighlight={availableLang.id === lang} className="line" />
+          <LineRight isHighlight={availableLang.id === lang} className="line" />
         </Button>
       )),
     [availablesLang, lang]

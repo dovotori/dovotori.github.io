@@ -1,6 +1,6 @@
-import WithBlur from './WithBlur';
+import Blur from './Blur';
 
-export default class extends WithBlur {
+export default class extends Blur {
   constructor(gl, config, programs = {}) {
     super(gl, config, programs);
     const program = this.programs.shadow;
@@ -9,15 +9,10 @@ export default class extends WithBlur {
   }
 
   start(lampe) {
-    super.start();
     const program = this.programs.shadow;
-    program.setTexture(2, lampe.getDepthTexture().get(), 'shadowMap');
-    program.setMatrix('shadowView', lampe.getView().get());
-    program.setMatrix('shadowProjection', lampe.getOrtho().get());
-    program.setVector('posLum', lampe.getPosition());
+    lampe.setShadowProgram(program);
+    super.start();
   }
 
-  getProgram = () => {
-    return this.programs.shadow;
-  };
+  getProgram = () => this.programs.shadow;
 }

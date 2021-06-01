@@ -78,9 +78,7 @@ export default class {
     }
   };
 
-  isOnFullscreen = () => {
-    return !!document.fullscreenElement;
-  };
+  isOnFullscreen = () => !!document.fullscreenElement;
 
   toggle = () => {
     if (this.isFullscreen) {

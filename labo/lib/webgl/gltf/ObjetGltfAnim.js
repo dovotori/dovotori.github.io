@@ -11,24 +11,23 @@ export default class extends ObjetGltf {
     const { nodes } = data;
     this.speedAnimation = 2000;
     this.animationInterval = [0, 0];
-    this.animations = nodes.reduce((acc, node) => {
-      const { animations, name } = node;
-      if (animations) {
-        acc[name] = this.addAnimations(animations, forceStep);
-      }
-      return acc;
-    }, {});
-    this.nodes = nodes.reduce((acc, node) => {
-      acc[node.name] = this.removeAnim(node);
-      return acc;
-    }, {});
+    this.animations = this.addAllAnimations(nodes, forceStep);
+    this.nodes = this.removeNodesAnimations(nodes);
     this.lastFrame = 0;
   }
 
-  removeAnim = (node) => {
-    const { animations, ...nodeWithoutAnim } = node;
-    return nodeWithoutAnim;
-  };
+  addAllAnimations = (nodes, forceStep) => Object.keys(nodes).reduce((acc, key) => {
+      let newAcc = acc;
+      const { animations, name, children } = nodes[key];
+      if (animations) {
+        // do children
+        newAcc[name] = this.addAnimations(animations, forceStep);
+      }
+      if (children) {
+        newAcc = { ...acc, ...this.addAllAnimations(children, forceStep) };
+      }
+      return newAcc;
+    }, {});
 
   addAnimations = (animations, forceStep) => {
     const newAnimations = {};
@@ -49,6 +48,21 @@ export default class extends ObjetGltf {
       };
     });
     return newAnimations;
+  };
+
+  removeNodesAnimations = (nodes) => Object.keys(nodes).reduce((acc, nodeKey) => {
+      let newAcc = acc;
+      const node = nodes[nodeKey];
+      newAcc[node.name] = this.removeNodeAnim(node);
+      if (node.children) {
+        newAcc = { ...newAcc, ...this.removeNodesAnimations(node.children) };
+      }
+      return acc;
+    }, {});
+
+  removeNodeAnim = (node) => {
+    const { animations, ...nodeWithoutAnim } = node;
+    return nodeWithoutAnim;
   };
 
   getAnimationInterval = (nodes) => {

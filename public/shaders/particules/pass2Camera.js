@@ -6,28 +6,34 @@ uniform mat4 view;
 uniform mat4 model;
 uniform sampler2D textureMap;
 
-varying vec3 color;
+varying vec4 color;
 
 void main() {
   vec3 particulePos = texture2D(textureMap, texture).xyz;
-  vec3 position = (particulePos * vec3(4.0)) - vec3(2.0);
+  // vec3 position = (particulePos * vec3(4.0)) - vec3(2.0);
+  vec3 position = particulePos;
   
-  // gl_PointSize = 10.0; 	
-  gl_PointSize = 2.0 + step(1.0 - (1.0 / 64.0), position.x);
+  gl_PointSize = 1.0; 	
+  // gl_PointSize = 2.0 + step(1.0 - (1.0 / 64.0), position.x);
   
   gl_Position = projection * view * model * vec4(position, 1.0);
 
-  color = vec3(position.y * 0.45, 0.1, position.x * 0.755);
+  // color = vec3(position.y * 0.45, 0.1, position.x * 0.755);
+  if (position == vec3(0.0)) {
+    color = vec4(0.0);
+  } else {
+    color = vec4(1.0);
+  }
 }
 `;
 
 const fragment = `
 precision mediump float;
 
-varying vec3 color;
+varying vec4 color;
 
 void main() {
-  gl_FragColor = vec4(color, 1.0);
+  gl_FragColor = color;
 }
 `;
 

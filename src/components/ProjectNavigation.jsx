@@ -1,8 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ReactComponent as BackArrow } from 'Assets/svg/arrow.svg';
+import ButtonNavigation from './ButtonNavigation';
 
 const Wrap = styled.div`
   position: relative;
@@ -10,39 +9,9 @@ const Wrap = styled.div`
   max-width: 800px;
   z-index: 1;
   overflow: hidden;
-`;
-
-const StyledLink = styled(Link)`
-  position: relative;
-  width: 33.3333%;
-  padding: 1.5em 0 1.5em 2%;
-  color: ${(p) => p.theme.getColor};
-  ${(p) => p.theme.active};
-  transition: background-color 1000ms ease-out, color 1000ms ease-out;
-  background-color: none;
-  float: left;
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
-  overflow-wrap: break-word;
-  overflow: hidden;
-  opacity: 0.5;
-
-  &:focus {
-    color: ${(p) => p.theme.getColor};
-  }
-
-  &:hover {
-    background-color: ${(p) => p.theme.backgroundHighlight};
-    opacity: 1;
-
-    span {
-      opacity: 1;
-    }
-  }
-  ${(p) => p.theme.media.mobile`
-    justify-content: center;
-  `}
 `;
 
 const Arrow = styled(BackArrow)`
@@ -54,16 +23,6 @@ const NextArrow = styled(Arrow)`
   transform: rotate(180deg);
 `;
 
-const Span = styled.span`
-  transition: opacity 1000ms ease-out;
-  opacity: 0;
-  margin: 0 0 0 1em;
-  ${(p) => p.theme.monospace}
-  ${(p) => p.theme.media.mobile`
-    display: none;
-  `}
-`;
-
 const ProjectNavigation = ({
   prevEntry,
   nextEntry,
@@ -73,19 +32,24 @@ const ProjectNavigation = ({
   labelNext,
 }) => (
   <Wrap>
-    <StyledLink $colorType={$colorType} to="/">
+    <ButtonNavigation $colorType={$colorType} to="/" label={labelBack}>
       <Arrow $colorType={$colorType} />
       <Arrow $colorType={$colorType} />
-      <Span>{labelBack}</Span>
-    </StyledLink>
-    <StyledLink $colorType={$colorType} to={`/project/${prevEntry.slug}`}>
+    </ButtonNavigation>
+    <ButtonNavigation
+      $colorType={$colorType}
+      to={`/project/${prevEntry.slug}`}
+      label={prevEntry.title !== '' ? prevEntry.title : labelPrevious}
+    >
       <Arrow $colorType={$colorType} />
-      <Span>{prevEntry.title !== '' ? prevEntry.title : labelPrevious}</Span>
-    </StyledLink>
-    <StyledLink $colorType={$colorType} to={`/project/${nextEntry.slug}`}>
+    </ButtonNavigation>
+    <ButtonNavigation
+      $colorType={$colorType}
+      to={`/project/${nextEntry.slug}`}
+      label={nextEntry.title !== '' ? nextEntry.title : labelNext}
+    >
       <NextArrow $colorType={$colorType} />
-      <Span>{nextEntry.title !== '' ? nextEntry.title : labelNext}</Span>
-    </StyledLink>
+    </ButtonNavigation>
   </Wrap>
 );
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState, useMemo } from 'react';
+import { useEffect, useCallback, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';

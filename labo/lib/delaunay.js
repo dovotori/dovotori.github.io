@@ -127,9 +127,7 @@ const Delaunay = {
 
     for (let i = n; i--; ) indices[i] = i;
 
-    indices.sort((i, j) => {
-      return vertices[j][0] - vertices[i][0];
-    });
+    indices.sort((i, j) => vertices[j][0] - vertices[i][0]);
 
     /* Next, find the vertices of the supertriangle (which contains all other
      * triangles), and append them onto the end of a (copy of) the vertex

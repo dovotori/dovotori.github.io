@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -50,11 +50,11 @@ const Line = styled.div`
 `;
 
 const BlocJob = styled.div`
-  margin: 0 0 1em 0;
+  margin: 0 0 2em 0;
 `;
 
 const Date = styled.span`
-  margin: ${(p) => (!p.isTouch ? '0' : '1em 0 0.5em 0')};
+  margin: 0;
   color: ${(p) => p.theme.primary};
   ${(p) => p.theme.monospace}
   overflow-wrap: break-word;
@@ -67,16 +67,18 @@ const WrapSvg = styled.div`
 `;
 
 const Text = styled.span`
+  font-weight: bold;
+  font-size: 1.2;
   color: ${(p) => p.theme.light};
 `;
 
 const SubText = styled.span`
-  color: ${(p) => p.theme.midl};
+  color: ${(p) => p.theme.light};
   font-style: italic;
 `;
 
 const Level = styled.span`
-  color: ${(p) => p.theme.midl};
+  color: ${(p) => p.theme.light};
   margin: 0 1em;
 `;
 
@@ -182,37 +184,38 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
           <MarginLeft isTouch={isTouchDevice}>
             <Category>{skills.text}</Category>
           </MarginLeft>
-          {chart && <Chart data={chart} />}
-          {skills.items.map((item) => (
-            <Line key={item.text}>
-              <Clear isTouch={isTouchDevice}>
-                <FloatLeft isTouch={isTouchDevice}>
-                  <Date isTouch={isTouchDevice}>{item.text}</Date>
-                </FloatLeft>
-                <FloatRight isTouch={isTouchDevice}>
-                  {item.items.map((subitem) => {
-                    const Svg = subitem.picto ? styledIcons[subitem.picto] : null;
-                    return (
-                      <TwoColFloat isTouch={isTouchDevice} key={subitem.text}>
-                        <Line noMarginTop>
-                          {Svg ? (
-                            <WrapSvg>
-                              <Svg />
+          {chart && !isTouchDevice && <Chart data={chart} />}
+          {(isTouchDevice || !chart) &&
+            skills.items.map((item) => (
+              <Line key={item.text}>
+                <Clear isTouch={isTouchDevice}>
+                  <FloatLeft isTouch={isTouchDevice}>
+                    <Date isTouch={isTouchDevice}>{item.text}</Date>
+                  </FloatLeft>
+                  <FloatRight isTouch={isTouchDevice}>
+                    {item.items.map((subitem) => {
+                      const Svg = subitem.picto ? styledIcons[subitem.picto] : null;
+                      return (
+                        <TwoColFloat isTouch={isTouchDevice} key={subitem.text}>
+                          <Line noMarginTop>
+                            {Svg ? (
+                              <WrapSvg>
+                                <Svg />
+                                <Text>{subitem.text}</Text>
+                              </WrapSvg>
+                            ) : (
                               <Text>{subitem.text}</Text>
-                            </WrapSvg>
-                          ) : (
-                            <Text>{subitem.text}</Text>
-                          )}
+                            )}
 
-                          <Level>{subitem.level}</Level>
-                        </Line>
-                      </TwoColFloat>
-                    );
-                  })}
-                </FloatRight>
-              </Clear>
-            </Line>
-          ))}
+                            <Level>{subitem.level}</Level>
+                          </Line>
+                        </TwoColFloat>
+                      );
+                    })}
+                  </FloatRight>
+                </Clear>
+              </Line>
+            ))}
         </Bloc>
       ) : null,
     [skills, isTouchDevice]

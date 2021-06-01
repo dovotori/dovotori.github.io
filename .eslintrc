@@ -19,8 +19,8 @@
   },
   "ignorePatterns": ["labo/lib/geojson-vt-dev.js", "src/store/initialState/"],
   "rules": {
-    "react/jsx-uses-react": "error",
-    "react/jsx-uses-vars": "error",
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
     "react/prop-types": 0,
     "react/display-name": 0,
     "no-console": 0,

@@ -15,6 +15,8 @@ export default {
     '/screen/mergeBloom.js',
     '/screen/fxaa.js',
     '/screen/fxaa2.js',
+    '/screen/tunnelrace.js',
+    '/screen/rgb.js',
   ],
   useDepthTexture: true,
   postprocess: {
@@ -56,8 +58,6 @@ export default {
   },
   roadFrequence: [2, 0, 2],
   roadAmplitude: [10, 0, 4],
-  // roadFrequence: [0, 0, 0],
-  // roadAmplitude: [0, 0, 0],
   roadLength: 128,
   roadWidth: 8,
   shipPosition: [0, 2, 3],

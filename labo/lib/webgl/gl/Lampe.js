@@ -41,4 +41,17 @@ export default class extends Objectif {
   getDepthTexture() {
     return this.fbo.getDepthTexture();
   }
+
+  setDepthProgram(program) {
+    program.setMatrix('projection', this.getOrtho().get());
+    program.setMatrix('view', this.getView().get());
+  }
+
+  setShadowProgram(program) {
+    // need to have renderBasiqueForLampeDepth method on scene
+    program.setTexture(2, this.getDepthTexture().get(), 'shadowMap');
+    program.setMatrix('shadowView', this.getView().get());
+    program.setMatrix('shadowProjection', this.getOrtho().get());
+    program.setVector('posLum', this.getPosition());
+  }
 }

@@ -90,4 +90,4 @@ vec3 funcPBR(vec3 position, vec3 normale, vec3 posEye) {
 }
 `;
 
-export const PBRLocations = addLightLocations().concat(['color', 'metal', 'rough', 'ao']);
+export const locationsPBR = addLightLocations().concat(['color', 'metal', 'rough', 'ao']);

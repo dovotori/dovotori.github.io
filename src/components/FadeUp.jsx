@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import { Children } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 

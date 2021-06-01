@@ -8,6 +8,7 @@ stages:
 build:
   stage: build
   script:
+    - apk add git
     - npm install
     - npm run build
   artifacts:

@@ -12,10 +12,9 @@ const withAnalyze = process.env.ANALYZE || false;
 
 const plugins = [
   new webpack.HotModuleReplacementPlugin(),
-  new webpack.NamedModulesPlugin(),
   new webpack.DefinePlugin({
     'process.env': {
-      NODE_ENV: JSON.stringify('developement'),
+      NODE_ENV: JSON.stringify('development'),
       ASSET_PATH: JSON.stringify('/public'),
       NAME: JSON.stringify(config.name),
       MAIL: JSON.stringify(config.author.email),
@@ -39,10 +38,9 @@ module.exports = {
   mode: 'development',
   entry: {
     polyfill: '@babel/polyfill',
-    hot: 'webpack/hot/only-dev-server',
-    devserver: `webpack-dev-server/client?http://${host}:${port}`,
     main: './src/index',
   },
+  target: 'web',
   output: {
     publicPath: '/',
     filename: '[name].js',
@@ -58,6 +56,7 @@ module.exports = {
   plugins,
   devServer: {
     host,
+    https: true,
     historyApiFallback: true,
     hot: true,
     inline: true,

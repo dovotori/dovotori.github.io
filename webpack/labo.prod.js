@@ -19,6 +19,7 @@ const configPromise = async (name = process.env.NAME || 'labo') => {
       publicPath: '/',
       filename: `${name}.js`,
     },
+    target: 'web',
     module: {
       rules,
     },

@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useEffect } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import usePrevious from '../hooks/usePrevious';
@@ -30,6 +30,7 @@ const Letter = styled.span`
   display: inline-block;
   width: ${(p) => p.width};
   min-width: 0.2em;
+  line-height: 1.2;
 `;
 
 const ANIM_DURATION_RANGE = 30;
@@ -54,9 +55,7 @@ const TypingMessage = ({
   const oldMessage = usePrevious(message);
   const fromMessage = useRef(firstMessage);
 
-  const randomChar = useCallback(() => {
-    return CHARS[Math.floor(Math.random() * CHARS.length)];
-  }, []);
+  const randomChar = useCallback(() => CHARS[Math.floor(Math.random() * CHARS.length)], []);
 
   const update = useCallback(() => {
     const now = new Date().getTime();

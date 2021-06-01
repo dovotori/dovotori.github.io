@@ -1,5 +1,5 @@
-import Scene from '../lib/webgl/scenes/SceneGame';
-import SplashScreen from '../lib/webgl/game/SplashScreen';
+import Scene from './src/SceneGame';
+import SplashScreen from './src/game/SplashScreen';
 
 export default class extends Scene {
   constructor(gl, config, assets, width = 512, height = 512) {
