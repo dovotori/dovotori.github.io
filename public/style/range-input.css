@@ -38,7 +38,7 @@ input[type='range']::-webkit-slider-thumb {
   height: 2em;
   width: 1em;
   margin: calc(2px - 1em) 0 0 0;
-  background: transparent;
+  background: #fff;
   cursor: pointer;
   border-radius: 0;
   border: solid 2px #444;
@@ -49,7 +49,7 @@ input[type='range']::-moz-range-thumb {
   height: 2em;
   width: 1em;
   margin: calc(2px - 1em) 0 0 0;
-  background: transparent;
+  background: #fff;
   cursor: pointer;
   border-radius: 0;
   border: solid 2px #444;
@@ -60,7 +60,7 @@ input[type='range']::-ms-thumb {
   height: 2em;
   width: 1em;
   margin: calc(2px - 1em) 0 0 0;
-  background: transparent;
+  background: #fff;
   cursor: pointer;
   border-radius: 0;
   border: solid 2px #444;

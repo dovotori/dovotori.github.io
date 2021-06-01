@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[180],{800:function(i,o){i.exports='<div id="picto"></div>'}}]);

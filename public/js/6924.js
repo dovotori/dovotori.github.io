@@ -1,0 +1,1 @@
+(self.webpackChunkdovotori_portfolio=self.webpackChunkdovotori_portfolio||[]).push([[6924],{86924:o=>{o.exports='<div id="picto"></div>'}}]);

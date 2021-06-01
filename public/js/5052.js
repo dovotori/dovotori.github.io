@@ -1,0 +1,1 @@
+(self.webpackChunkdovotori_portfolio=self.webpackChunkdovotori_portfolio||[]).push([[5052],{45052:e=>{e.exports='<style>#fragment{position:relative;width:100%;height:auto}#fragment canvas{margin:0 auto;width:100%}</style> <link rel="stylesheet" href="/public/style/fullscreen-btn.css"/> '}}]);

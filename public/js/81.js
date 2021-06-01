@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[81],{193:function(n,o,i){"use strict";i.r(o),o.default="\nattribute vec3 position;\nuniform mat4 projection;\nuniform mat4 model;\nuniform mat4 view;\n\nvoid main() {\n  gl_Position = projection * view * model * vec4(position, 1.0);\n}\n"}}]);

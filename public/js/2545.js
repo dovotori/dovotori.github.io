@@ -1,0 +1,1 @@
+(self.webpackChunkdovotori_portfolio=self.webpackChunkdovotori_portfolio||[]).push([[2545],{92545:o=>{o.exports='<div class="flex"> <video id="own"></video> <video id="emitter"></video> </div> <button id="btn">Join</button> <h4 id="status"></h4> '}}]);
