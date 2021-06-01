@@ -5,7 +5,8 @@
   "search.exclude": {
     "**/.git": true,
     "**/node_modules": true,
-    "**/build": true
+    "**/build": true,
+    "**/package-lock.json": true
   },
   "files.exclude": {
     "**/node_modules": true

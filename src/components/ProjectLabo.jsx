@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 
 import Labo from './Labo';

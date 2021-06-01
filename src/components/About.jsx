@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 import { ReactComponent as Linkedin } from 'Assets/svg/cv/linkedin.svg';

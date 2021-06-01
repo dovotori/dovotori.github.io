@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 import { loading, blink } from '../themes/animations';

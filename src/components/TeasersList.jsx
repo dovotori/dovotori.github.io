@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import styled from 'styled-components';
 
 import Teaser from './Teaser';

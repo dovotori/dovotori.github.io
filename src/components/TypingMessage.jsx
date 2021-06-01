@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useEffect } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import usePrevious from '../hooks/usePrevious';

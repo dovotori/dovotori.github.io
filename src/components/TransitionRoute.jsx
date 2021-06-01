@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 // import styled, { keyframes } from 'styled-components';
 // import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { Switch, withRouter } from 'react-router-dom';
