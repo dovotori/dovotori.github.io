@@ -8,16 +8,16 @@ const { alias, optimization, rules, minify, getHtml, compression } = require('./
 const BUILD_ASSET_PATH = process.env.ASSET_PATH || '/public';
 const SRC_ASSET_PATH = path.resolve(__dirname, '../public');
 
-const configPromise = async (name = process.env.NAME || 'labo') => {
+const configPromise = async (env, options, name = process.env.NAME || 'labo') => {
   const html = await getHtml(name);
   const BUILD_PATH = path.resolve(__dirname, `../build/`);
   return {
     mode: 'production',
-    entry: ['@babel/polyfill', path.resolve(__dirname, `../labo/${name}/index.js`)],
+    entry: ['@babel/polyfill', path.resolve(__dirname, `../labo/${name}/standalone.js`)],
     output: {
       path: BUILD_PATH,
       publicPath: '/',
-      filename: `${name}.js`,
+      filename: '[name].js',
     },
     target: 'web',
     module: {

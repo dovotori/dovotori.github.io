@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const config = require('../package.json');
-const { alias, optimization, minify, rules, laboEntries, compression } = require('./common');
+const { alias, optimization, minify, rules, compression } = require('./common');
 
 const BUILD_PATH = path.resolve(__dirname, '../build');
 const SRC_ASSET_PATH = path.resolve(__dirname, '../public');
@@ -15,7 +15,6 @@ module.exports = {
   entry: {
     polyfill: '@babel/polyfill',
     [config.name]: path.resolve(__dirname, '../src/index.jsx'),
-    ...laboEntries,
   },
   output: {
     path: `${BUILD_PATH}/public/js/`,
@@ -68,11 +67,11 @@ module.exports = {
         },
         {
           from: `${SRC_ASSET_PATH}/app/manifest.json`,
-          to: `${BUILD_PATH}/public/app//manifest.json`,
+          to: `${BUILD_PATH}/public/app/manifest.json`,
         },
         {
           from: `${SRC_ASSET_PATH}/app/manifest.webapp`,
-          to: `${BUILD_PATH}/public/app//manifest.webapp`,
+          to: `${BUILD_PATH}/public/app/manifest.webapp`,
         },
       ],
     }),

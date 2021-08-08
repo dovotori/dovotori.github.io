@@ -107,24 +107,6 @@ const getHtml = async (name) => {
   return html;
 };
 
-const NAMES = [
-  'deform',
-  'game',
-  'paysage',
-  'game',
-  'japon',
-  'norway',
-  'race',
-  'religionmap',
-  'signature',
-  'diorama',
-];
-
-const laboEntries = NAMES.reduce(
-  (acc, name) => ({ ...acc, [name]: path.resolve(__dirname, `../labo/${name}/index.js`) }),
-  {}
-);
-
 const compression = [
   new CompressionPlugin({
     test: /\.(js|css|svg|jpg|png|html)$/,
@@ -149,4 +131,4 @@ const compression = [
   }),
 ];
 
-module.exports = { alias, optimization, rules, minify, getHtml, laboEntries, compression };
+module.exports = { alias, optimization, rules, minify, getHtml, compression };
