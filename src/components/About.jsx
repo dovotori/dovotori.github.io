@@ -74,7 +74,7 @@ const Quote = styled.div`
   display: flex;
 
   :hover svg {
-    color: ${(p) => p.theme.primary};
+    color: ${(p) => p.theme.primaryDark};
   }
 `;
 

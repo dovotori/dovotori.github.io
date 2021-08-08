@@ -14,7 +14,6 @@
     "clean": "node scripts/cleanBuild.js",
     "labo:start": "webpack serve --config webpack/labo.dev.js",
     "labo:build": "webpack --config webpack/labo.prod.js",
-    "labo:all": "webpack --config webpack/labo.all.js",
     "local:server": "npx http-server build/",
     "lint": "npx prettier --write \"{src,labo,webpack,scripts,public}/**/*.{js,jsx}\" && eslint --fix --config .eslintrc --ext .jsx,.js src/ labo/ webpack/ scripts/ public/shaders/",
     "favicon": "node scripts/favicons.js",
