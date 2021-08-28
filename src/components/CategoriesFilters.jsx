@@ -8,6 +8,10 @@ const Wrap = styled.div`
   text-align: center;
   max-width: 1212px;
   margin: 4em auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${(p) => p.theme.media.mobile`flex-direction: column;`}
 `;
 
 const StyledLink = styled(Link)`
