@@ -6,13 +6,8 @@ import { getColorType } from '../utils';
 
 const Wrap = styled.div`
   text-align: center;
-  width: calc(100% - 20px);
   max-width: 1212px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   margin: 4em auto;
-  padding-left: 0.4em;
 `;
 
 const StyledLink = styled(Link)`

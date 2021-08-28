@@ -14,11 +14,13 @@ const Wrap = styled.div`
   justify-content: space-around;
   font-size: 0.9em;
   color: ${(p) => p.theme.text};
+  ${(p) => p.theme.media.mobile`flex-direction: column;`}
 `;
 
 const Div = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   margin: 1em;
   min-width: 15%;
 
@@ -30,6 +32,8 @@ const Div = styled.div`
   a:hover {
     opacity: 1;
   }
+
+  ${(p) => p.theme.media.mobile`flex-direction: column;`}
 `;
 
 const StyledMail = styled(Mail)`
@@ -85,16 +89,13 @@ const Line = styled.span`
 
 const LineLeft = styled(Line)`
   transform-origin: right center;
-  margin-right: 0.4em;
 `;
 
 const LineRight = styled(Line)`
   transform-origin: left center;
-  margin-left: 0.4em;
 `;
 
 const SimpleSpan = styled.span`
-  z-index: 1;
   transition: background-color 0.2s ease-out;
   padding: 0 0 0;
   width: 100%;
@@ -102,36 +103,31 @@ const SimpleSpan = styled.span`
   white-space: nowrap;
 `;
 
-const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => {
-  const renderLang = useCallback(
-    () =>
-      availablesLang.map((availableLang) => (
+const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => (
+  <Wrap className="footer">
+    <Div>
+      <a href={`mailto:${process.env.MAIL}`} title="contact">
+        <StyledMail />
+      </a>
+    </Div>
+    <Div>
+      {availablesLang.map((availableLang) => (
         <Button key={availableLang.id} onClick={() => setLang(availableLang.id)}>
           <LineLeft isHighlight={availableLang.id === lang} className="line" />
           <SimpleSpan>{availableLang.short}</SimpleSpan>
           <LineRight isHighlight={availableLang.id === lang} className="line" />
         </Button>
-      )),
-    [availablesLang, lang]
-  );
-  return (
-    <Wrap className="footer">
-      <Div>
-        <a href={`mailto:${process.env.MAIL}`} title="contact">
-          <StyledMail />
-        </a>
-      </Div>
-      <Div>{renderLang()}</Div>
-      <Div>
-        <a href="https://creativecommons.org/licenses/by/4.0/" title="license">
-          <Img alt="license creative common" src={license} />
-        </a>
-      </Div>
-      <Div>
-        <ToggleMode isDarkMode={isDarkMode} texts={texts} toggleTheme={toggleTheme} />
-      </Div>
-    </Wrap>
-  );
-};
+      ))}
+    </Div>
+    <Div>
+      <a href="https://creativecommons.org/licenses/by/4.0/" title="license">
+        <Img alt="license creative common" src={license} />
+      </a>
+    </Div>
+    <Div>
+      <ToggleMode isDarkMode={isDarkMode} texts={texts} toggleTheme={toggleTheme} />
+    </Div>
+  </Wrap>
+);
 
 export default Footer;
