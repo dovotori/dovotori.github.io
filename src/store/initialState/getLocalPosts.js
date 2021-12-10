@@ -11,7 +11,7 @@ const rawPosts = [
     date: 2014,
     description: {
       [Locales.FR]: [
-        'Datavisualisation désignant les différentes institutions ennemies d\'Internet" à travers le monde.',
+        'Datavisualisation désignant les différentes institutions "ennemis d\'Internet" à travers le monde.',
         "Projet réalisé au sein de l'association Reporters sans frontières.",
       ],
       [Locales.EN]:

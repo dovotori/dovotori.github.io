@@ -43,24 +43,33 @@ const StyledTitle = styled.h1`
   padding: 0 10px;
 `;
 
+const Bar = styled.div`
+  width: 100%;
+  max-width: calc(400px - 10px);
+  height: 1px;
+  margin: 0;
+  background: ${(p) => p.theme.getGradient};
+`;
+
 const ProjectHeader = ({ title, description, date, $colorType }) => (
   <WrapContent>
     <WrapTexte>
       {title && (
-      <StyledTitle $colorType={$colorType}>
-        <TypingMessage message={title} />
-      </StyledTitle>
-        )}
+        <StyledTitle $colorType={$colorType}>
+          <TypingMessage message={title} />
+        </StyledTitle>
+      )}
       {date && <Date $colorType={$colorType}>{date}</Date>}
+      <Bar $colorType={$colorType} />
       {description && (
-      <Description>
-        {description.map((text) => (
-          <Text key={text}>{text}</Text>
-            ))}
-      </Description>
-        )}
+        <Description>
+          {description.map((text) => (
+            <Text key={text}>{text}</Text>
+          ))}
+        </Description>
+      )}
     </WrapTexte>
   </WrapContent>
-  );
+);
 
 export default ProjectHeader;

@@ -82,4 +82,7 @@ export default {
     width: 1024,
     height: 1024,
   },
+  controls: {
+    fullscreen: { buttonId: 'fullscreen-toggle-btn' },
+  },
 };

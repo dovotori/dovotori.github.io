@@ -23,28 +23,23 @@ const initialState = {
       items: [
         {
           date: 2013,
-          text:
-            'Diplôme national d’expression plastique avec félicitations du jury  à l’école supérieure d’art et design de Saint-Étienne section design ',
+          text: 'Diplôme national d’expression plastique avec félicitations du jury  à l’école supérieure d’art et design de Saint-Étienne section design ',
         },
         {
           date: 2013,
-          text:
-            'Exposition lors de la biennale internationale du design  de Saint-Étienne avec le projet Barasson au Fil ',
+          text: 'Exposition lors de la biennale internationale du design  de Saint-Étienne avec le projet Barasson au Fil ',
         },
         {
           date: 2012,
-          text:
-            'Semestre dans le département Multimedia / Réalité virtuelle  de l’école d’art Burg Giebichenstein à Halle en Allemagne ',
+          text: 'Semestre dans le département Multimedia / Réalité virtuelle  de l’école d’art Burg Giebichenstein à Halle en Allemagne ',
         },
         {
           date: 2011,
-          text:
-            'Diplôme national d’arts plastiques avec mention à l’école supérieure d’art et design de Saint-Étienne section design ',
+          text: 'Diplôme national d’arts plastiques avec mention à l’école supérieure d’art et design de Saint-Étienne section design ',
         },
         {
           date: 2009,
-          text:
-            'Diplôme de graphisme / multimédia à LISAA Paris l’institut supérieur des arts appliqués',
+          text: 'Diplôme de graphisme / multimédia à LISAA Paris l’institut supérieur des arts appliqués',
         },
         {
           date: 2006,
@@ -67,8 +62,7 @@ const initialState = {
         {
           startDate: 2014,
           endDate: 2016,
-          text:
-            'Co-gérant de l’entreprise de Web design Pix 21, responsable du design et du développement web',
+          text: 'Co-gérant de l’entreprise de Web design Pix 21, responsable du design et du développement web',
           tasks: [
             'développement et déploiement de sites internet',
             'conception / mise en page / gestion d’impression de documents de communication',
@@ -97,8 +91,7 @@ const initialState = {
         {
           startDate: 2009,
           endDate: 2009,
-          text:
-            'Stage puis missions au sein de l’atelier des Giboulées, agence  de conseil et création graphique',
+          text: 'Stage puis missions au sein de l’atelier des Giboulées, agence  de conseil et création graphique',
           tasks: [
             'conception / mise en page / suivi d’impression de documents de communication',
             "participation à l'élaboration du cahiers des charges avec le client",

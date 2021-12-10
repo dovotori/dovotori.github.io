@@ -37,16 +37,8 @@ export default class extends Scene {
     program.setVector('posEye', this.camera.getPosition());
     program.setInt('numLights', this.lampes.length);
     this.config.lampes.forEach((lampeConfig, i) => {
-      const {
-        type,
-        ambiant,
-        diffuse,
-        specular,
-        brillance,
-        radius,
-        direction,
-        strength,
-      } = lampeConfig;
+      const { type, ambiant, diffuse, specular, brillance, radius, direction, strength } =
+        lampeConfig;
 
       program.setInt(`lights[${i}].type`, type);
       program.setVector(`lights[${i}].position`, this.lampes[i].getPosition());

@@ -13,6 +13,10 @@ export default async () => {
   app = new App();
   await app.setup(Scene, config);
   const div = document.querySelector(`#${config.slug}`);
+  if (div.parentNode) {
+    div.parentNode.style.display = 'flex';
+    div.parentNode.style.alignItems = 'center';
+  }
   div.appendChild(app.getCanvas());
 };
 

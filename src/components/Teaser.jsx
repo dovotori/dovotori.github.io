@@ -19,6 +19,7 @@ const StyledLink = styled(Link).attrs({
   height: 100px;
   opacity: ${(p) => p.$levelOpacity};
   box-shadow: 0 0 1em ${(p) => p.theme.backgroundHighlight};
+  border-radius: 0.4em;
   transform: ${(p) => {
     if (p.$isVisible) {
       return p.$isHover && !p.$isTouchDevice ? 'scale(1.2)' : 'none';
@@ -26,7 +27,8 @@ const StyledLink = styled(Link).attrs({
     return 'translateY(20%)';
   }};
   z-index: ${(p) => (p.$isVisible && p.$isHover && !p.$isTouchDevice ? 1 : 0)};
-  transition: opacity 1s ${(p) => p.theme.elastic}, transform 1s ${(p) => p.theme.elastic};
+  transition: opacity 1s ${(p) => p.theme.elastic}, transform 1s ${(p) => p.theme.elastic},
+    box-shadow 800ms linear;
 
   ${(p) => p.theme.active}
   ${(p) => p.theme.media.mobile`margin: 5px auto; width: 100%; height: auto;`}

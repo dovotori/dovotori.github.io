@@ -45,7 +45,8 @@ self.addEventListener('activate', (event) => {
 
   // Clean the caches
   event.waitUntil(
-    global.caches.keys().then((cacheNames) => Promise.all(
+    global.caches.keys().then((cacheNames) =>
+      Promise.all(
         cacheNames.map((cacheName) => {
           // Delete the caches that are not the current one.
           if (cacheName.indexOf(CACHE_NAME) === 0) {
@@ -54,7 +55,8 @@ self.addEventListener('activate', (event) => {
 
           return global.caches.delete(cacheName);
         })
-      ))
+      )
+    )
   );
 });
 

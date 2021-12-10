@@ -1,7 +1,7 @@
 {
   "extends": ["airbnb", "prettier", "eslint:recommended"],
   "plugins": ["react", "jsx-a11y", "import", "jest"],
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": 8,
@@ -23,6 +23,7 @@
     "react/react-in-jsx-scope": "off",
     "react/prop-types": 0,
     "react/display-name": 0,
+    "react/function-component-definition": 0,
     "no-console": 0,
     "no-bitwise": 0,
     "no-plusplus": 0,

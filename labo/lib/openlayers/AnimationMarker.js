@@ -2,7 +2,7 @@ import Feature from 'ol/Feature';
 import { Vector as VectorLayer } from 'ol/layer';
 import Point from 'ol/geom/Point';
 import VectorSource from 'ol/source/Vector';
-import { Style, Icon } from 'ol/style';
+import { Circle as CircleStyle, Fill, Style, Icon } from 'ol/style';
 import { getVectorContext } from 'ol/render';
 
 import house from 'Assets/svg/house.svg';
@@ -22,7 +22,6 @@ const mapFromRange = (valeur, minRef, maxRef, minDest, maxDest) => {
 class AnimationMarker {
   constructor(points, icon, isLoop = true) {
     this.now = null;
-    this.map = null;
     this.points = points;
     this.step = 0;
     this.animating = false;
@@ -30,7 +29,7 @@ class AnimationMarker {
     this.isLoop = isLoop;
     this.DISTANCE_PER_SECOND = 70000;
     this.DISTANCE_PER_SECOND_PLANE = 140000;
-    this.DELAY_BETWEEN_LOOP = 10;
+    this.DELAY_BETWEEN_LOOP = 1000;
     this.DELAY_BETWEEN_SEGMENT = 1000;
     this.timeout = null;
     this.iconStyle = icon;
@@ -100,33 +99,26 @@ class AnimationMarker {
       inverse = true;
     }
 
-    const previousHasNoLabel = this.points[this.step].label === undefined;
-    const nextHasLabel = this.points[this.step].label === undefined;
-    const isPlane = previousHasNoLabel || nextHasLabel;
-
-    if (isPlane) {
+    if (this.points[this.step].picto === 'plane') {
       this.geoMarker.setStyle(
         new Style({
           image: new Icon({
             src: plane,
-            size: [161, 150, 19897],
-            displacement: inverse ? [161, 0] : [0, 0],
-            scale: 0.4,
+            size: [60, 56],
+            offset: inverse ? [60, 0] : [0, 0],
             rotation,
           }),
         })
       );
       this.speed = (length / this.DISTANCE_PER_SECOND_PLANE) * 1000;
     } else {
-      const newIconStyle = { ...this.iconStyle };
-      if (this.iconStyle.size) {
-        newIconStyle.displacement = inverse ? [this.iconStyle.size[0], 0] : [0, 0];
-      }
-
-      newIconStyle.rotation = rotation;
       this.geoMarker.setStyle(
         new Style({
-          image: new Icon(newIconStyle),
+          image: new Icon({
+            ...this.iconStyle,
+            offset: inverse && this.iconStyle.size ? [this.iconStyle.size[0], 0] : [0, 0],
+            rotation,
+          }),
         })
       );
       this.speed = (length / this.DISTANCE_PER_SECOND) * 1000;
@@ -153,10 +145,7 @@ class AnimationMarker {
 
   moveFeature = (event) => {
     if (this.animating) {
-      const vectorContext = getVectorContext(event);
-      const { frameState } = event;
-
-      const elapsedTime = frameState.time - this.now;
+      const elapsedTime = event ? event.frameState.time - this.now : 0;
 
       if (elapsedTime < this.speed) {
         const previous = this.points[this.step].coor;
@@ -165,15 +154,14 @@ class AnimationMarker {
           mapFromRange(elapsedTime, 0, this.speed, previous[0], next[0]),
           mapFromRange(elapsedTime, 0, this.speed, previous[1], next[1]),
         ];
-        this.update(vectorContext, coor);
-        this.map.render();
+        this.update(coor);
       } else {
         this.stopOrContinueAnimation();
       }
     }
   };
 
-  update = (vectorContext, coor) => {
+  update = (coor) => {
     const currentPoint = new Point(coor);
     this.geoMarker.setGeometry(currentPoint);
   };
@@ -188,7 +176,6 @@ class AnimationMarker {
         this.computeSpeedAndRotation();
         this.now = new Date().getTime();
         this.vectorLayer.on('postrender', this.moveFeature);
-        this.map.render();
       },
       isNewLoop ? this.DELAY_BETWEEN_LOOP : this.DELAY_BETWEEN_SEGMENT
     );
@@ -212,10 +199,6 @@ class AnimationMarker {
     this.animTooltip(this.points[this.step]);
     this.vectorLayer.un('postrender', this.moveFeature);
   };
-
-  setMap(map) {
-    this.map = map;
-  }
 
   getVectorLayer = () => this.vectorLayer;
 }
