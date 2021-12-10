@@ -161,7 +161,8 @@ const getMarkersLayer = (points) => {
   const style = new Style({
     image: new CircleStyle({
       radius: 4,
-      fill: new Fill({ color: '#fff' }),
+      fill: new Fill({ color: '#444' }),
+      stroke: new Stroke({ color: '#fff', width: 2 }),
     }),
   });
 
@@ -190,7 +191,7 @@ const getLineLayer = (points) => {
 };
 
 const replacer = (key, value) => {
-  if (value.geometry) {
+  if (value?.geometry) {
     let type;
     const rawType = value.type;
     let { geometry } = value;
@@ -256,7 +257,7 @@ const getVectorMap = (json, highlightIso, colors) => {
   });
 
   const style = (feature) => {
-    if (feature.get('ISO_A3') === highlightIso) {
+    if (feature.get('iso_a3') === highlightIso) {
       return new Style({
         fill: new Fill({ color: colors.highlight }),
       });
@@ -313,11 +314,12 @@ export default ({
     //     layer: 'terrain-labels'
     //   })
     // }),
-    getVectorMap(geojson, highlightIso, colors),
+    // getMarkersBackgroundLayer(formatPoints),
     // getVectorMap2(topojson),
+
+    getVectorMap(geojson, highlightIso, colors),
     getLineLayer(labelPoints),
     getMarkersLayer(labelPoints),
-    // getMarkersBackgroundLayer(formatPoints),
     animMarker.getVectorLayer(),
   ];
 
@@ -338,11 +340,10 @@ export default ({
   labelPoints.forEach((point) => createTooltip(map, point));
 
   const start = () => {
-    map.un('postrender', start);
-    animMarker.setMap(map);
     animMarker.animTooltip(formatPoints[0]);
     animMarker.start(true);
+    map.render();
   };
 
-  map.on('postrender', start);
+  map.once('postrender', start);
 };

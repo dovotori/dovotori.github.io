@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import styled from 'styled-components';
 
 import license from 'Assets/img/cclicense80x15.png';
@@ -36,6 +35,10 @@ const Div = styled.div`
   ${(p) => p.theme.media.mobile`flex-direction: column;`}
 `;
 
+const Start = styled(Div)`
+  justify-content: flex-start;
+`;
+
 const StyledMail = styled(Mail)`
   color: ${(p) => p.theme.light};
   height: 20px;
@@ -67,6 +70,7 @@ const Button = styled.button`
   text-transform: uppercase;
   min-width: 120px;
   ${(p) => p.theme.monospace}
+  ${(p) => p.theme.active}
   font-weight: normal;
   color: ${(p) => p.theme.light};
   &:hover {
@@ -114,7 +118,7 @@ const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => (
       {availablesLang.map((availableLang) => (
         <Button key={availableLang.id} onClick={() => setLang(availableLang.id)}>
           <LineLeft isHighlight={availableLang.id === lang} className="line" />
-          <SimpleSpan>{availableLang.short}</SimpleSpan>
+          <SimpleSpan>&#8202;{availableLang.short}</SimpleSpan>
           <LineRight isHighlight={availableLang.id === lang} className="line" />
         </Button>
       ))}
@@ -124,9 +128,9 @@ const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => (
         <Img alt="license creative common" src={license} />
       </a>
     </Div>
-    <Div>
+    <Start>
       <ToggleMode isDarkMode={isDarkMode} texts={texts} toggleTheme={toggleTheme} />
-    </Div>
+    </Start>
   </Wrap>
 );
 

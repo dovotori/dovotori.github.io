@@ -233,9 +233,11 @@ const getAnimations = (animations, nodes, accessors, meshes) => {
   if (animations) {
     animations.forEach(({ channels, samplers }) => {
       channels.forEach(({ target, sampler: samplerIndex }) => {
-        const { input: inputAccessorIndex, output: outputAccessorIndex, interpolation } = samplers[
-          samplerIndex
-        ];
+        const {
+          input: inputAccessorIndex,
+          output: outputAccessorIndex,
+          interpolation,
+        } = samplers[samplerIndex];
         const input = accessors[inputAccessorIndex];
         const output = accessors[outputAccessorIndex];
         const { node: nodeIndex, path } = target;
@@ -267,7 +269,8 @@ const getAnimations = (animations, nodes, accessors, meshes) => {
   return animationsPerNodes;
 };
 
-const getImages = (images, accessors, buffers, bufferViews) => images
+const getImages = (images, accessors, buffers, bufferViews) =>
+  images
     ? images.map(({ bufferView: bufferViewIndex, mimeType, name }) => {
         const bufferView = bufferViews[bufferViewIndex];
         const data = getImageBufferData(buffers, bufferView);
@@ -297,7 +300,8 @@ const organizeParenting = (nodes) => {
   return nodesWithChildren.filter((node, index) => indexNodeIsChild[index] === undefined);
 };
 
-const convertNodesToObject = (nodes) => nodes.reduce((acc, node) => {
+const convertNodesToObject = (nodes) =>
+  nodes.reduce((acc, node) => {
     const { name, children } = node;
     acc[name] = node;
     if (children) {
@@ -309,17 +313,8 @@ const convertNodesToObject = (nodes) => nodes.reduce((acc, node) => {
 export default class {
   constructor(rawText) {
     const JsonData = JSON.parse(rawText);
-    const {
-      animations,
-      buffers,
-      bufferViews,
-      accessors,
-      skins,
-      nodes,
-      meshes,
-      materials,
-      images,
-    } = JsonData;
+    const { animations, buffers, bufferViews, accessors, skins, nodes, meshes, materials, images } =
+      JsonData;
 
     const newBuffers = buffers && buffers.map((buffer) => base64ToArrayBuffer(buffer.uri));
 

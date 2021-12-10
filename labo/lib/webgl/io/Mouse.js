@@ -65,20 +65,21 @@ class Mouse {
     }
   }
 
-  static getPos(e) {
-    return e.touches
-      ? {
-          x: e.touches[0].clientX,
-          y: e.touches[0].clientY,
-        }
-      : {
-          x: e.clientX,
-          y: e.clientY,
-        };
+  getPos(e) {
+    if (e.touches?.length >= 0) {
+      return {
+        x: e.touches.length === 0 ? this.oldPos.x : e.touches[0].clientX,
+        y: e.touches.length === 0 ? this.oldPos.y : e.touches[0].clientY,
+      };
+    }
+    return {
+      x: e.clientX,
+      y: e.clientY,
+    };
   }
 
   computeInfos(e) {
-    const pos = Mouse.getPos(e);
+    const pos = this.getPos(e);
     const box = this.div.getBoundingClientRect();
     const x = pos.x - box.x;
     const y = pos.y - box.y;
@@ -108,7 +109,7 @@ class Mouse {
 
   onMove = (e) => {
     const infos = this.computeInfos(e);
-    this.oldPos = Mouse.getPos(e);
+    this.oldPos = this.getPos(e);
     if (this.callbackMove !== null) this.callbackMove(infos);
     if (this.isDragging) {
       if (this.callbackDrag !== null) this.callbackDrag(infos);
@@ -117,12 +118,12 @@ class Mouse {
 
   onDown = (e) => {
     this.isDragging = true;
-    this.startDraggingMousePos = Mouse.getPos(e);
+    this.startDraggingMousePos = this.getPos(e);
     if (this.callbackDown !== null) {
       const infos = this.computeInfos(e);
       this.callbackDown(infos);
-      this.oldPos = Mouse.getPos(e);
     }
+    this.oldPos = this.getPos(e);
   };
 
   onUp = (e) => {

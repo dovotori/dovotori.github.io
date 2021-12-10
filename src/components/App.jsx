@@ -14,11 +14,9 @@ const App = ({ isDarkMode }) => {
   }, [isDarkMode]);
 
   return (
-    <>
-      <ThemeProvider theme={isDarkMode ? dark : light}>
-        <RoutesContainer />
-      </ThemeProvider>
-    </>
+    <ThemeProvider theme={isDarkMode ? dark : light}>
+      <RoutesContainer />
+    </ThemeProvider>
   );
 };
 

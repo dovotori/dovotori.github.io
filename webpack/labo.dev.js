@@ -47,13 +47,15 @@ const configPromise = async (env, options, name = process.env.NAME || 'labo') =>
       }),
     ],
     devServer: {
+      server: 'https',
       host,
-      https: true,
       historyApiFallback: true,
-      hot: true,
-      inline: true,
       port,
-      publicPath: '/',
+      static: {
+        directory: path.join(__dirname, '../public'),
+        publicPath: '/public/',
+        watch: false,
+      },
     },
   };
 };

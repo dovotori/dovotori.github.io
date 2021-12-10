@@ -64,10 +64,10 @@ const ArcWithItem = ({
   const imageWidth = strokeWidth * 0.7;
   const middleAngle = startAngle + angle / 2 - margin / 2;
   const imagePos = polarToCartesian(x, y, radius, middleAngle);
-  const visible = useMemo(() => !((startAngle === 0 || startAngle === 360) && angle === 0), [
-    startAngle,
-    angle,
-  ]);
+  const visible = useMemo(
+    () => !((startAngle === 0 || startAngle === 360) && angle === 0),
+    [startAngle, angle]
+  );
 
   return (
     <Wrap className={className} onClick={onClick} noHoverAnim={noHoverAnim}>

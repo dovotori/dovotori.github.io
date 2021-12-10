@@ -26,7 +26,7 @@ const Span = styled.span`
 `;
 
 const animationLoad = css`
-  animation: ${loadTransition} 300ms linear forwards;
+  animation: ${loadTransition} 800ms linear forwards;
 `;
 
 const TransitionEffect = styled.div`

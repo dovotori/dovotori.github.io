@@ -1,6 +1,7 @@
 import Vbos from '../vbos/Vbos';
 
-const createVbosFromPrimitive = (gl, primitive) => Object.keys(primitive).reduce((acc, locationKey) => {
+const createVbosFromPrimitive = (gl, primitive) =>
+  Object.keys(primitive).reduce((acc, locationKey) => {
     const values = primitive[locationKey];
     let componentType;
     let type;

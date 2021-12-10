@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import ButtonBack from './ButtonBack';
 import ProjectImage from './ProjectImage';
 import ProjectLabo from './ProjectLabo';
+import CrossSvg from './Cross';
 
 const WrapContent = styled.div`
   margin: 0 auto;
@@ -20,8 +21,6 @@ const ImagesList = styled.div`
   ${(p) => p.theme.media.tablet`
     position: relative;
     width: 100%;
-    overflow-x: hidden;
-    overflow-y: hidden;
     height: auto;
     left: auto;
   `}
@@ -35,6 +34,15 @@ const Images = styled.div`
 const StyledProjectLabo = styled(ProjectLabo)`
   background: ${(p) => (p.noBackground ? 'transparent' : p.theme.getGradient)};
   --project-color: ${(p) => p.theme.getColor};
+`;
+
+const Cross = styled(CrossSvg)`
+  margin: 0 auto 2em;
+`;
+
+const Center = styled.div`
+  text-align: center;
+  margin: 4em auto;
 `;
 
 const Project = ({ slug, images, colorType, labo }) => (
@@ -67,6 +75,9 @@ const Project = ({ slug, images, colorType, labo }) => (
           </Images>
         </ImagesList>
       )}
+      <Center>
+        <Cross $colorType={colorType} />
+      </Center>
       <ButtonBack $colorType={colorType} />
     </WrapContent>
   </>

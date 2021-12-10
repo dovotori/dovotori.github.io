@@ -18,7 +18,7 @@ const Hidden = styled.span`
 const Anim = styled.span`
   position: absolute;
   display: inline-block;
-  top: 0;
+  top: 0.2em;
   left: 0;
   width: 100%;
   height: 100%;

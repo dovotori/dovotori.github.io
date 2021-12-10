@@ -4,11 +4,11 @@ import { Locales } from '../../constants/locales';
 const categories = {
   [CAT_DESIGN]: {
     slug: 'design',
-    label: { [Locales.FR]: 'design', [Locales.EN]: 'design', [Locales.JP]: '設計' },
+    label: { [Locales.FR]: 'design', [Locales.EN]: 'design', [Locales.JP]: 'デザイン' },
   },
   [CAT_CODE]: {
     slug: 'code',
-    label: { [Locales.FR]: 'code', [Locales.EN]: 'code', [Locales.JP]: 'コード' },
+    label: { [Locales.FR]: 'code', [Locales.EN]: 'code', [Locales.JP]: 'コーディング' },
   },
   [CAT_BLOG]: {
     slug: 'blog',

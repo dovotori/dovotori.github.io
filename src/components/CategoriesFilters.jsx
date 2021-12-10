@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { getColorType } from '../utils';
+import Cross from './Cross';
 
 const Wrap = styled.div`
   text-align: center;
@@ -29,25 +30,13 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const Cross = styled.svg`
-  width: 0.5em;
-  height: 0.5em;
-  min-width: 0.5em;
-  stroke: ${(p) => p.theme.getColor};
-  fill: none;
-`;
-
 const CategoriesFilters = ({ selected, className, categories }) => (
   <Wrap className={className}>
     {Object.keys(categories).map((categoryId, index) => {
       const isLinkSelected = selected === parseInt(categoryId, 10);
       return (
         <Fragment key={categories[categoryId].slug}>
-          {index !== 0 && (
-            <Cross viewBox="0 0 10 10">
-              <path d="M 0 0 L 10 10 Z M 0 10 L 10 0 Z" />
-            </Cross>
-          )}
+          {index !== 0 && <Cross />}
           <StyledLink
             to={isLinkSelected ? '/' : `/category/${categories[categoryId].slug}`}
             selected={isLinkSelected}

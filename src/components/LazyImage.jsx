@@ -20,13 +20,6 @@ const LazyImage = forwardRef(
     const [isLoaded, setIsLoaded] = useState(false);
     const hasLoaded = useCallback(() => setIsLoaded(true), [setIsLoaded]);
 
-    // shouldComponentUpdate(newProps, newState) {
-    //   return (
-    //     newState.loaded !== this.state.loaded ||
-    //     newProps.withGlitch !== this.props.withGlitch
-    //   );
-    // }
-
     return (
       <Wrap ref={ref} className={className}>
         <IMG

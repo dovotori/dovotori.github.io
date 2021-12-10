@@ -18,7 +18,8 @@ export default class extends ObjetGltfAnim {
     }
   }
 
-  removeAnimations = (joints) => joints.map((joint) => {
+  removeAnimations = (joints) =>
+    joints.map((joint) => {
       const newJoint = joint;
       if (newJoint.children) {
         newJoint.children = this.removeAnimations(newJoint.children);

@@ -32,8 +32,7 @@ const initialState = {
       items: [
         {
           date: 2013,
-          text:
-            'National degree on plastic expression with mention at Saint-Etienne fine art school',
+          text: 'National degree on plastic expression with mention at Saint-Etienne fine art school',
         },
         {
           date: 2013,
@@ -41,8 +40,7 @@ const initialState = {
         },
         {
           date: 2012,
-          text:
-            'Semester at Halle Burg Giebichenstein art school in Germany on multimedia /virtual reality departement',
+          text: 'Semester at Halle Burg Giebichenstein art school in Germany on multimedia /virtual reality departement',
         },
         {
           date: 2011,

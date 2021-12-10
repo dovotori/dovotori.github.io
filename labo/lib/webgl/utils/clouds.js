@@ -35,7 +35,8 @@ const find3DClosestDistanceFromSamples = (point, samples) => {
 const get2Ddistance = (p1, p2) =>
   Math.sqrt((p2[0] - p1[0]) * (p2[0] - p1[0]) + (p2[1] - p1[1]) * (p2[1] - p1[1]));
 
-const find2DClosestDistanceFromSamples = (point, samples) => Math.max(
+const find2DClosestDistanceFromSamples = (point, samples) =>
+  Math.max(
     0,
     samples.reduce((acc, cur) => {
       const newDistance = get2Ddistance(point, cur);
