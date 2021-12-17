@@ -25,7 +25,6 @@ export default class extends Scene {
 
   render() {
     super.render();
-
     const delta = Math.sin(this.value) * 0.1;
     const time = this.time * 0.004;
     this.postProcess.setGlitch(time, delta, delta, this.mngTex.get('signature').get());

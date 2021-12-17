@@ -42,12 +42,21 @@ const LoadedTransition = styled.div`
 `;
 
 const StyledLabo = styled(Labo)`
+  width: 100%;
+  height: auto;
+
   canvas {
     display: block;
     margin: 0 auto;
     width: 100%;
     height: auto;
     max-height: 100vh;
+  }
+
+  :fullscreen {
+    canvas {
+      width: auto;
+    }
   }
 `;
 

@@ -24,6 +24,7 @@ const Anim = styled.span`
   height: 100%;
   display: flex;
   flex-wrap: wrap;
+  transition: color 1000ms linear;
 `;
 
 const Letter = styled.span`

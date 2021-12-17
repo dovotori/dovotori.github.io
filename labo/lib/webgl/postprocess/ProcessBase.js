@@ -2,15 +2,14 @@ import PingPongBuffer from './PingPongBuffer';
 import Screen from '../gl/Screen';
 
 export default class {
-  constructor(gl, config = {}, programs) {
+  constructor(gl, config = {}, programs = {}) {
     this.gl = gl;
     const { width = 1024, height = 1024, useDepth = false } = config;
     this.ppb = new PingPongBuffer(gl, width, height, useDepth);
     this.screen = new Screen(gl);
-    this.width = width;
-    this.height = height;
     this.passCount = 0;
     this.programs = programs;
+    this.viewportSize = { width, height };
   }
 
   start() {
@@ -24,6 +23,7 @@ export default class {
 
   resize(box) {
     this.ppb.resize(box);
+    this.viewportSize = box;
   }
 
   applyTexToProg(program, tex = null) {
@@ -68,12 +68,14 @@ export default class {
 
   render(tex = null, isDebug = false) {
     const program = this.applyTexToProg(this.programs[isDebug ? 'debug' : 'screen'], tex);
+    this.gl.viewport(0, 0, this.viewportSize.width, this.viewportSize.height);
     this.screen.render(program.get());
   }
 
   renderInverse(tex = null, isDebug = false) {
     const program = this.applyTexToProg(this.programs[isDebug ? 'debug' : 'screen'], tex);
     program.setFloat('flipY', 1.0);
+    this.gl.viewport(0, 0, this.viewportSize.width, this.viewportSize.height);
     this.screen.render(program.get());
   }
 

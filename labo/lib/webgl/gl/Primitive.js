@@ -16,17 +16,7 @@ const createVbosFromPrimitive = (gl, primitive) =>
         convertedValues = new Float32Array(values);
         break;
       }
-      default:
-      case 'position':
-      case 'next':
-      case 'previous':
-      case 'normale': {
-        type = 'VEC3';
-        size = 3;
-        componentType = gl.FLOAT;
-        convertedValues = new Float32Array(values);
-        break;
-      }
+
       case 'texture': {
         type = 'VEC2';
         size = 2;
@@ -45,6 +35,17 @@ const createVbosFromPrimitive = (gl, primitive) =>
       case 'random': {
         type = 'FLOAT';
         size = 1;
+        componentType = gl.FLOAT;
+        convertedValues = new Float32Array(values);
+        break;
+      }
+      case 'position':
+      case 'next':
+      case 'previous':
+      case 'normale':
+      default: {
+        type = 'VEC3';
+        size = 3;
         componentType = gl.FLOAT;
         convertedValues = new Float32Array(values);
         break;

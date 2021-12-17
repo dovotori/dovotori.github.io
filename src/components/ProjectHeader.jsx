@@ -25,7 +25,7 @@ const Description = styled.div`
 const Text = styled.p`
   background: ${(p) => `url(${p.theme.stripes}) repeat`};
   padding: 10px;
-  width: calc(100% - 10px);
+  width: 100%;
 `;
 
 const Date = styled.p`
@@ -45,7 +45,7 @@ const StyledTitle = styled.h1`
 
 const Bar = styled.div`
   width: 100%;
-  max-width: calc(400px - 10px);
+  max-width: 400px;
   height: 1px;
   margin: 0;
   background: ${(p) => p.theme.getGradient};
@@ -60,13 +60,16 @@ const ProjectHeader = ({ title, description, date, $colorType }) => (
         </StyledTitle>
       )}
       {date && <Date $colorType={$colorType}>{date}</Date>}
-      <Bar $colorType={$colorType} />
+
       {description && (
-        <Description>
-          {description.map((text) => (
-            <Text key={text}>{text}</Text>
-          ))}
-        </Description>
+        <>
+          <Bar $colorType={$colorType} />
+          <Description>
+            {description.map((text) => (
+              <Text key={text}>{text}</Text>
+            ))}
+          </Description>
+        </>
       )}
     </WrapTexte>
   </WrapContent>

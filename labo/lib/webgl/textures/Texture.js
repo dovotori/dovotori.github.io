@@ -55,4 +55,8 @@ export default class {
   setFiltre(valeur) {
     this.filter = valeur;
   }
+
+  delete() {
+    this.gl.deleteTexture(this.texture);
+  }
 }

@@ -264,7 +264,7 @@ const rawPosts = [
       [Locales.EN]: 'Work on Winamax betting application.',
       [Locales.JP]: 'ギャンブル の スポーツ を Winamax会社 で 開発 しました。',
     },
-    images: 8,
+    images: 13,
   },
   {
     id: 15,

@@ -15,11 +15,12 @@ export default class {
     this.buffer.width = width;
     this.buffer.height = height;
     this.clearColor = [0, 0, 0, 0];
+    this.useDepth = useDepth;
 
-    this.setup(useDepth, extension, attachmentIdx);
+    this.setup(extension, attachmentIdx);
   }
 
-  setup(useDepth = false, extension = null, attachmentIdx = 0) {
+  setup(extension = null, attachmentIdx = 0) {
     this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.buffer);
 
     const attachement =
@@ -37,7 +38,7 @@ export default class {
       0
     );
 
-    if (useDepth) {
+    if (this.useDepth) {
       this.depthTexture = new TextureDepth(this.gl, this.buffer.width, this.buffer.height);
       this.depthTexture.setup();
       this.gl.framebufferTexture2D(
@@ -53,6 +54,15 @@ export default class {
   }
 
   resize(box) {
+    this.end();
+    if (this.texture) {
+      this.texture.delete();
+    }
+    if (this.depthTexture) {
+      this.depthTexture.delete();
+    }
+    this.destroy();
+    this.buffer = this.gl.createFramebuffer();
     this.buffer.width = box.width;
     this.buffer.height = box.height;
     this.setup();
@@ -83,5 +93,11 @@ export default class {
 
   setClearColor(r, v, b, a) {
     this.clearColor = [r, v, b, a];
+  }
+
+  destroy() {
+    if (this.buffer) {
+      this.gl.deleteFramebuffer(this.buffer);
+    }
   }
 }

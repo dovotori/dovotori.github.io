@@ -5,8 +5,6 @@ import config from './config';
 import 'Assets/style/controls.css';
 import 'Assets/style/fullscreen-btn.css';
 
-import './style.css';
-
 let app = null;
 
 export default async () => {

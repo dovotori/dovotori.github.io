@@ -236,8 +236,8 @@ class TerrainScene extends Scene {
     const lampe = this.getLampe(0);
     this.shadow.start(lampe);
     this.vbo.render(this.shadow.getProgram().get());
-    this.vbo.render(this.mngProg.get('water').get());
-    this.mngGltf.get('three').render(this.mngProg.get('instancing'), this.model);
+    // this.vbo.render(this.mngProg.get('water').get());
+    this.mngGltf.get('three').render(this.mngProg.get('instancingDepth'), this.model);
     this.renderEntenna(this.mngProg.get('basique3d'));
     this.shadow.end();
     this.shadow.setBrightContrast(0.0, 3.0);
@@ -245,19 +245,17 @@ class TerrainScene extends Scene {
 
   renderBasiqueForLampeDepth = () => {
     const lampe = this.getLampe(0);
-    ['terrainDepth', 'instancingDepth', 'basique3d', 'water'].forEach((keyProg) => {
+    ['instancingDepth', 'basique3d'].forEach((keyProg) => {
       const program = this.mngProg.get(keyProg);
       lampe.setDepthProgram(program);
     });
     lampe.start();
-    this.vbo.render(this.mngProg.get('terrainDepth').get());
-    this.vbo.render(this.mngProg.get('water').get());
     this.mngGltf.get('three').render(this.mngProg.get('instancingDepth'), this.model);
     this.renderEntenna(this.mngProg.get('basique3d'));
     lampe.end();
 
-    this.mngProg.get('water').setMatrix('projection', this.camera.getProjection().get());
-    this.mngProg.get('water').setMatrix('view', this.camera.getView().get());
+    // this.mngProg.get('water').setMatrix('projection', this.camera.getProjection().get());
+    // this.mngProg.get('water').setMatrix('view', this.camera.getView().get());
   };
 
   renderEntenna(prog) {
@@ -271,21 +269,21 @@ class TerrainScene extends Scene {
   }
 
   render() {
-    this.waterPasses();
+    // this.waterPasses();
     super.render();
 
     this.shadowPass();
 
-    const progWater = this.mngProg.get('water');
-    progWater.setTexture(0, this.fbo.getTexture().get(), 'reflectMap');
-    progWater.setTexture(1, this.fbo2.getTexture().get(), 'refractMap');
-    progWater.setTexture(4, this.mngTex.get('waterN').get(), 'normaleMap');
-    progWater.setTexture(5, this.mngTex.get('dudv').get(), 'distortionMap');
-    progWater.setTexture(6, this.fbo2.getDepthTexture().get(), 'depthMap');
+    // const progWater = this.mngProg.get('water');
+    // progWater.setTexture(0, this.fbo.getTexture().get(), 'reflectMap');
+    // progWater.setTexture(1, this.fbo2.getTexture().get(), 'refractMap');
+    // progWater.setTexture(4, this.mngTex.get('waterN').get(), 'normaleMap');
+    // progWater.setTexture(5, this.mngTex.get('dudv').get(), 'distortionMap');
+    // progWater.setTexture(6, this.fbo2.getDepthTexture().get(), 'depthMap');
 
     this.postProcess.start();
     this.vbo.render(this.mngProg.get('terrain').get());
-    this.vbo.render(progWater.get());
+    // // this.vbo.render(progWater.get());
     this.mngGltf.get('three').render(this.mngProg.get('instancing'), this.model);
     this.renderEntenna(this.mngProg.get('gltf'));
     this.postProcess.end();
@@ -293,6 +291,7 @@ class TerrainScene extends Scene {
     this.postProcess.setComposeShadow(this.shadow.getTexture().get());
     this.postProcess.render();
 
+    // this.postProcess.render(this.shadow.getTexture().get());
     // this.postProcess.render(this.getLampe(0).getDepthTexture().get());
     // this.postProcess.render(this.cloudsTex.get());
     // this.postProcess.render(this.fbo2.getDepthTexture().get());

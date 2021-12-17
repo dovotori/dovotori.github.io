@@ -2,7 +2,8 @@ import App from '../lib/webgl/App';
 import Scene from './scene';
 import config from './config';
 
-import './style.css';
+import 'Assets/style/controls.css';
+import 'Assets/style/fullscreen-btn.css';
 
 let app = null;
 

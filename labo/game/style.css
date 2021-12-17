@@ -49,7 +49,7 @@ meter {
 #title {
   font-size: 6em;
   font-weight: 100;
-  text-shadow: 1px 1px 0 #000;
+  text-shadow: 0.04em 0.04em 0 rgba(0, 0, 0, 0.7);
   margin: 0;
 }
 

@@ -13,16 +13,17 @@ export default class {
     this.mouse = null;
     this.scene = null;
     this.loop = null;
+    this.configRatio = null;
   }
 
   async setup(Scene, config) {
-    let width = document.body.offsetWidth;
-    let height = window.innerHeight;
+    const container = document.querySelector(`#${config.slug}`);
+    if (!container) return;
+    this.configRatio = window.innerHeight / document.body.offsetWidth;
 
     let assets = {};
     if (config) {
-      width = config.canvas.width;
-      height = config.canvas.height;
+      this.configRatio = config.canvas.height / config.canvas.width;
 
       if (config.assets) {
         const am = new ManagerAssets();
@@ -36,10 +37,14 @@ export default class {
     }
 
     this.canvas = new Canvas();
-    this.canvas.resize({ width, height });
-    const finalConfig = { ...config, support: this.canvas.getSupport() };
+    const { width, height } = this.getCurrentSize(container);
+    const finalConfig = {
+      ...config,
+      canvas: { ...config.canvas, width, height },
+      support: this.canvas.getSupport(),
+    };
     this.scene = new Scene(this.canvas.getContext(), finalConfig, assets);
-    const container = document.querySelector(`#${config.slug}`);
+    new ResizeObserver(this.resize).observe(container);
 
     if (config) {
       if (config.keyboard) {
@@ -71,6 +76,26 @@ export default class {
     this.loop.setCallback(this.render);
     this.loop.start();
   }
+
+  resize = (e) => {
+    const container = e[0].target;
+    if (container) {
+      this.adaptCanvas(container);
+    }
+  };
+
+  adaptCanvas = (container) => {
+    const { width, height } = this.getCurrentSize(container);
+    this.canvas.resize({ width, height });
+    this.scene.resize({ width, height });
+  };
+
+  getCurrentSize = (container) => {
+    const ratio = window.devicePixelRatio || 1;
+    const width = (container?.offsetWidth || 1024) * ratio;
+    const height = width * this.configRatio;
+    return { width, height };
+  };
 
   render = (time) => {
     if (this.keyboard) {

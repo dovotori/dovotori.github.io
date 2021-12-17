@@ -89,6 +89,19 @@ export default class {
 
   resize(box) {
     this.containerSize = box;
+    if (this.postProcess) {
+      this.postProcess.resize(box);
+    }
+    if (this.bloom) {
+      this.bloom.resize(box);
+    }
+    if (this.ssao) {
+      this.ssao.resize(box);
+    }
+    if (this.shadow) {
+      this.shadow.resize(box);
+    }
+    this.mngProg.updateResolution(this.containerSize.width, this.containerSize.height);
     this.resizeViewport();
   }
 
