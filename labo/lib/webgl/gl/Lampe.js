@@ -54,4 +54,8 @@ export default class extends Objectif {
     program.setMatrix('shadowProjection', this.getOrtho().get());
     program.setVector('posLum', this.getPosition());
   }
+
+  resize(box) {
+    this.fbo.resize(box);
+  }
 }

@@ -7,10 +7,8 @@ export default class {
     Object.keys(shaders).forEach((name) => {
       const shader = shaders[name];
       this.programs[name] = new Program(gl, shader);
-      if (shader.uniforms.indexOf('resolution') !== -1) {
-        this.programs[name].setVector('resolution', [resolution.width, resolution.height]);
-      }
     });
+    this.updateResolution(resolution.width, resolution.height);
   }
 
   setCameraMatrix(camera, isOrtho = false) {
@@ -20,6 +18,12 @@ export default class {
       this.programs[name].setMatrix('projection', proj.get());
     });
   }
+
+  updateResolution = (width, height) => {
+    Object.keys(this.programs).forEach((name) => {
+      this.programs[name].setVector('resolution', [width, height]);
+    });
+  };
 
   get(id) {
     return this.programs[id];

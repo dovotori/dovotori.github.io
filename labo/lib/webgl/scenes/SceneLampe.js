@@ -73,6 +73,11 @@ export default class extends Scene {
     return null;
   }
 
+  resize(box) {
+    super.resize(box);
+    this.lampes.forEach((lampe) => lampe.resize(box));
+  }
+
   // getTestPoint() {
   //   return this.camera.get2dScreenPoint(
   //     this.lampe.getPositionVec3(),
