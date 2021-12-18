@@ -25,7 +25,7 @@
     "deploy": "gh-pages -d build --remote github"
   },
   "engines": {
-    "node": ">=14.12.0"
+    "node": ">=16.13.1"
   },
   "browserslist": "> 0.25%, not dead",
   "dependencies": {
