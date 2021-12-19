@@ -35,20 +35,22 @@ const Arc = ({ x, y, radius, startAngle, endAngle, className }) => {
       const deltaStart = startAngle - cStart;
       const deltaEnd = endAngle - cEnd;
 
-      if (
-        Math.abs(deltaRadius) < ANIMATION_THRESHOLD &&
-        Math.abs(deltaStart) < ANIMATION_THRESHOLD &&
-        Math.abs(deltaEnd) < ANIMATION_THRESHOLD
-      ) {
-        ref.current.setAttribute('d', getD(x, y, radius, startAngle, endAngle));
-        current.current = { radius, startAngle, endAngle };
-        window.cancelAnimationFrame(raf);
-      } else {
-        cRadius += deltaRadius * 0.04;
-        cStart += deltaStart * 0.04;
-        cEnd += deltaEnd * 0.04;
-        ref.current.setAttribute('d', getD(x, y, cRadius, cStart, cEnd));
-        raf = window.requestAnimationFrame(loop);
+      if (ref.current) {
+        if (
+          Math.abs(deltaRadius) < ANIMATION_THRESHOLD &&
+          Math.abs(deltaStart) < ANIMATION_THRESHOLD &&
+          Math.abs(deltaEnd) < ANIMATION_THRESHOLD
+        ) {
+          ref.current.setAttribute('d', getD(x, y, radius, startAngle, endAngle));
+          current.current = { radius, startAngle, endAngle };
+          window.cancelAnimationFrame(raf);
+        } else {
+          cRadius += deltaRadius * 0.04;
+          cStart += deltaStart * 0.04;
+          cEnd += deltaEnd * 0.04;
+          ref.current.setAttribute('d', getD(x, y, cRadius, cStart, cEnd));
+          raf = window.requestAnimationFrame(loop);
+        }
       }
     };
 

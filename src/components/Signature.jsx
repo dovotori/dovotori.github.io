@@ -1,12 +1,22 @@
+import { useState, useCallback } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { Link } from 'react-router-dom';
 
+import signature from 'Assets/img/signature2.png';
+
 import ProjectLabo from './ProjectLabo';
 import TypingMessage from './TypingMessage';
+import Pulse from './Pulse';
 
 const fadeUp = keyframes`
   0% { transform: scale(0.8); opacity: 0; }
   100% { transform: none; opacity: 1; }
+`;
+
+const Wrap = styled.div`
+  position: relative;
+  margin: 20vh auto 0;
+}
 `;
 
 const StyledTypingMessage = styled(TypingMessage)`
@@ -21,15 +31,15 @@ const StyledLink = styled(Link)`
   display: block;
   ${(p) => p.theme.active}
   text-align: center;
-`;
-
-const Wrap = styled.div`
-  position: relative;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
 `;
 
 const Appear = styled.div`
   animation: ${fadeUp} 1s 1 linear;
   transform-origin: center;
+  text-align: center;
 `;
 
 const StyledLabo = styled(ProjectLabo)`
@@ -37,6 +47,9 @@ const StyledLabo = styled(ProjectLabo)`
   margin: 0 auto;
   width: 320px;
   height: 320px;
+  z-index: 1;
+  position: relative;
+  min-height: auto;
 `;
 
 const commonName = css`
@@ -44,7 +57,7 @@ const commonName = css`
   text-align: left;
   pointer-events: none;
   user-select: none;
-
+  ${(p) => p.isTouch && `text-align: center;`};
   ${(p) => p.theme.media.mobile`text-align: center;`};
 `;
 
@@ -65,47 +78,78 @@ const Katakana = styled.h1`
   `}
 `;
 
+const common = css`
+  transform: none;
+  width: 100%;
+  left: auto;
+  top: auto;
+  max-width: none;
+  text-align: center;
+  position: relative;
+  margin-bottom: 10em;
+`;
+
 const Absolute = styled.div`
   position: absolute;
   top: 45%;
-  left: 50%;
-  transform: translate3d(40%, 0, 0);
+  left: calc(50% + 100px);
+
+  ${(p) => p.isTouch && `${common}`}
 
   ${(p) => p.theme.media.mobile`
-    transform: none;
-    width: 100%;
-    left: auto;
-    top: auto;
-    max-width: none;
-    text-align:center;
-    position: relative;
+    ${common}
   `}
 `;
 
-const Signature = ({ className }) => (
-  <Wrap>
-    <Appear>
-      <StyledLink to="/about" className={className} title="about">
-        <StyledLabo slug="picto" $colorType={0} noBackground hasJs />
-      </StyledLink>
-    </Appear>
+const Img = styled.img`
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin: 0 auto;
+  width: 90%;
+`;
 
-    <Absolute>
-      <Name>
-        <StyledTypingMessage
-          message="dorian"
-          firstMessage="ドリアン"
-          width="0.9em"
-          isLoop
-          delay={5000}
-        />
-      </Name>
+const Signature = ({ className, isTouchDevice, hello, isHome = true }) => {
+  const [count, setCount] = useState(0);
 
-      <Katakana>
-        <StyledTypingMessage message="ドリアン" width="2em" isLoop delay={5000} />
-      </Katakana>
-    </Absolute>
-  </Wrap>
-);
+  const add = useCallback(() => {
+    setCount(count + 1);
+  }, [count]);
+
+  return (
+    <Wrap>
+      <Appear>
+        <StyledLink to={isHome ? '/about' : '/'} className={className} title="about" onClick={add}>
+          {isTouchDevice ? (
+            <Img alt="Hello" src={signature} />
+          ) : (
+            <StyledLabo slug="picto" $colorType={0} noBackground hasJs />
+          )}
+          <Pulse className="circle" count={count} />
+        </StyledLink>
+      </Appear>
+      <Absolute isTouch={isTouchDevice}>
+        <Name isTouch={isTouchDevice}>
+          <StyledTypingMessage
+            message={isHome ? 'dorian' : hello}
+            firstMessage="ドリアン"
+            width="1em"
+            isLoop
+            delay={5000}
+          />
+        </Name>
+
+        <Katakana isTouch={isTouchDevice}>
+          <StyledTypingMessage
+            message={isHome ? 'ドリアン' : 'はじめまして'}
+            width="1.5em"
+            isLoop
+            delay={5000}
+          />
+        </Katakana>
+      </Absolute>
+    </Wrap>
+  );
+};
 
 export default Signature;

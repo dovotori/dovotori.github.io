@@ -36,7 +36,7 @@ const CategoriesFilters = ({ selected, className, categories }) => (
       const isLinkSelected = selected === parseInt(categoryId, 10);
       return (
         <Fragment key={categories[categoryId].slug}>
-          {index !== 0 && <Cross />}
+          {index !== 0 && <Cross $colorType={0} />}
           <StyledLink
             to={isLinkSelected ? '/' : `/category/${categories[categoryId].slug}`}
             selected={isLinkSelected}
@@ -51,3 +51,5 @@ const CategoriesFilters = ({ selected, className, categories }) => (
 );
 
 export default CategoriesFilters;
+
+// transform: perspective(100px) rotateX(20deg) rotateY(20deg);

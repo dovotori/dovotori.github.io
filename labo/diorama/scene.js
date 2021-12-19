@@ -312,6 +312,16 @@ class TerrainScene extends Scene {
       this.targetZ.set(0.01);
     }
   }
+
+  onMouseDrag = (mouse) => {
+    this.targetZ.set(-mouse.relPrevious.x * 0.001);
+    this.targetX.set(mouse.relPrevious.y * 0.001);
+  };
+
+  onMouseClick = (mouse) => {
+    this.targetZ.set(-mouse.rel.x * 0.1);
+    this.targetX.set(-mouse.rel.y * 0.1);
+  };
 }
 
 export default TerrainScene;

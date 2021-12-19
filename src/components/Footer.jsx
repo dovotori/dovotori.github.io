@@ -85,7 +85,7 @@ const Line = styled.span`
   display: inline-block;
   width: 100%;
   height: 1px;
-  background: ${(p) => p.theme.primary};
+  background: ${(p) => p.theme.text};
   z-index: 0;
   transition: transform 300ms ease-out;
   transform: ${(p) => (p.isHighlight ? 'none' : 'scale(0)')};

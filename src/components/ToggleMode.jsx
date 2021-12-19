@@ -51,7 +51,6 @@ const Circle = styled.div`
 `;
 
 const ToggleMode = ({ isDarkMode, toggleTheme, texts }) => {
-  const [nextMode, setNextMode] = useState(isDarkMode);
   const [isModeTransition, setIsModeTransition] = useState(false);
   const refTransition = useRef(null);
 
@@ -62,8 +61,7 @@ const ToggleMode = ({ isDarkMode, toggleTheme, texts }) => {
   const onClick = useCallback(() => {
     toggleTheme();
     setIsModeTransition(true);
-    setNextMode(!isDarkMode);
-  }, [nextMode, isDarkMode]);
+  }, [isDarkMode]);
 
   useEffect(() => {
     if (refTransition.current) {

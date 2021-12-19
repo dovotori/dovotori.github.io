@@ -100,6 +100,9 @@ const TypingMessage = ({
     } else if (isLoop) {
       count.current = 0;
       fromMessage.current = message;
+      if (timeout.current) {
+        clearTimeout(timeout.current);
+      }
       timeout.current = setTimeout(() => {
         req.current = requestAnimationFrame(update);
       }, delay);
