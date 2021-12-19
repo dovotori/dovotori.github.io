@@ -1,7 +1,21 @@
 @font-face {
   font-family: 'typo';
-  src: url('../fonts/raleway.woff2') format('woff2');
+  src: url('../fonts/raleway/regular.woff2') format('woff2');
   font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'typo';
+  src: url('../fonts/raleway/italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'typo';
+  src: url('../fonts/raleway/semi.woff2') format('woff2');
+  font-weight: 600;
   font-style: normal;
 }
 
@@ -13,7 +27,7 @@
 
 html,
 body,
-#dovotori-app {
+#dovotori_portfolio {
   width: 100%;
 }
 
@@ -50,7 +64,7 @@ html:lang(jp) body,
 html:lang(jp) h1,
 html:lang(jp) button,
 html:lang(jp) a {
-  font-family: 'typo', 'メイリオ', Meiryo, Osaka, 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
+  font-family: 'typo', Meiryo, Osaka, sans-serif;
 }
 
 p {
@@ -63,6 +77,8 @@ button:focus {
   text-decoration: none;
   outline: 0;
   border-radius: 0;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
 }
 
 a {
@@ -82,9 +98,9 @@ a {
 }
 ::-moz-selection {
   background: #66ffcc;
-  color: #fff;
+  color: #000;
 }
 ::selection {
   background: #66ffcc;
-  color: #fff;
+  color: #000;
 }
