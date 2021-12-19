@@ -1,12 +1,13 @@
-import { Route, HashRouter as Router, Switch, Redirect } from 'react-router-dom';
+import { Route, HashRouter as Router, Switch, Redirect, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { ReactComponent as BackArrow } from 'Assets/svg/arrow.svg';
 import TransitionRoute from './TransitionRoute';
 import ButtonNavigation from './ButtonNavigation';
 import FooterContainer from '../containers/FooterContainer';
 import ProjectCommonContainer from '../containers/ProjectCommonContainer';
+import SignatureContainer from '../containers/SignatureContainer';
 import routes from '../constants/routes';
 
 const Arrow = styled(BackArrow)`
@@ -28,24 +29,32 @@ const Center = styled.div`
   position: relative;
   margin: 0 auto;
   max-width: 700px;
+  ${(p) => p.hide && `visibility: hidden; pointer-events: none;`}
 `;
 
-const BackButton = connect((state) => ({ labelBack: state.content.back }))(({ labelBack }) => (
-  <Center>
-    <ButtonNavigation to="/" label={labelBack} $colorType={0}>
-      <Arrow $colorType={0} />
-      <Arrow $colorType={0} />
-    </ButtonNavigation>
-  </Center>
-));
+const BackButton = () => {
+  const match = useRouteMatch();
+  const labelBack = useSelector((state) => state.content.back);
+  return (
+    <Center hide={match.path !== '/about'}>
+      <ButtonNavigation to="/" label={labelBack} $colorType={0}>
+        <Arrow $colorType={0} />
+        <Arrow $colorType={0} />
+      </ButtonNavigation>
+    </Center>
+  );
+};
 
 const Routes = ({ isTouchDevice }) => (
   <Router>
     <>
       <MinHeight>
         <Switch>
+          <Route path={['/', '/category/:slug', '/about']} exact component={BackButton} />
           <Route path="/project/:slug" exact component={ProjectCommonContainer} />
-          <Route path="/about" exact component={BackButton} />
+        </Switch>
+        <Switch>
+          <Route path={['/', '/category/:slug', '/about']} exact component={SignatureContainer} />
         </Switch>
         <TransitionRoute $isTouchDevice={isTouchDevice}>
           {routes.map(renderRoute)}

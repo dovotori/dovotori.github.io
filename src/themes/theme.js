@@ -13,7 +13,7 @@ const getType = (p) => {
 
 const hue = {
   primary: 160, // hsl(160, 100%, 70%) // rgb(102, 255, 204) // #66ffcc
-  secondary: 290, // hsl(30, 100%, 70%) // rgb(255, 179, 102) // #ffb366
+  secondary: 0, // hsl(30, 100%, 70%) // rgb(255, 179, 102) // #ffb366
   tertiary: 247, // hsl(290, 100%, 70%) // rgb(230, 102, 255) // #e666FF
 };
 
@@ -33,10 +33,10 @@ const common = {
     text-transform: uppercase;
     text-shadow: 2px 2px 0 ${(p) => p.theme.backgroundHighlight};
     @media (max-width: 1020px) {
-      font-size: 6em;
+      font-size: 4em;
     }
     @media (max-width: 570px) {
-      font-size: 4em;
+      font-size: 3em;
     }
   `,
   monospace: css`
@@ -47,8 +47,9 @@ const common = {
     text-rendering: optimizeLegibility;
   `,
   primaryGradient: 'linear-gradient(to right, #006666, #a5ffd4)',
+  secondaryGradient: 'linear-gradient(to right, #FF4D4D,  #993D3D)',
   tertiaryGradient: 'linear-gradient(to right, #514799, #4531d5)',
-  secondaryGradient: 'linear-gradient(to right, #cc0099,  #8d66d4)',
+  neutralGradient: 'linear-gradient(to right, #444,  #aaa)',
 
   // #5ba8c2
   // #8b9fcb
@@ -75,23 +76,29 @@ const common = {
   },
   getColor: (p) => {
     const type = getType(p);
+    if (type === 0) {
+      return p.theme.primary;
+    }
     if (type === 1) {
       return p.theme.secondary;
     }
     if (type === 2) {
       return p.theme.tertiary;
     }
-    return p.theme.primary;
+    return '#999';
   },
   getGradient: (p) => {
     const type = getType(p);
+    if (type === 0) {
+      return p.theme.primaryGradient;
+    }
     if (type === 1) {
       return p.theme.secondaryGradient;
     }
     if (type === 2) {
       return p.theme.tertiaryGradient;
     }
-    return p.theme.primaryGradient;
+    return p.theme.neutralGradient;
   },
   motion: { stiffness: 120, damping: 20 },
   zindex: {

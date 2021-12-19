@@ -1,12 +1,11 @@
 import styled from 'styled-components';
 
 import Bloc from './Bloc';
-import SignatureContainer from '../containers/SignatureContainer';
 import TeasersListContainer from '../containers/TeasersListContainer';
 import CategoriesFiltersContainer from '../containers/CategoriesFiltersContainer';
 
 const StyledHome = styled(Bloc)`
-  margin: 20vh auto;
+  margin: 0 auto 20vh;
   @media (max-width: 570px) {
     margin-top: 10vh;
   }
@@ -14,7 +13,6 @@ const StyledHome = styled(Bloc)`
 
 const Home = () => (
   <StyledHome>
-    <SignatureContainer />
     <CategoriesFiltersContainer />
     <TeasersListContainer />
   </StyledHome>

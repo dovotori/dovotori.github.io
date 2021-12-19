@@ -9,7 +9,6 @@ const StyledLink = styled(Link)`
   ${(p) => p.theme.active};
   transition: background-color 1000ms ease-out, color 1000ms ease-out;
   background-color: none;
-  float: left;
   display: flex;
   align-items: center;
   justify-content: flex-start;

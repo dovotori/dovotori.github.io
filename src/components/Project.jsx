@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import ButtonBack from './ButtonBack';
 import ProjectImage from './ProjectImage';
 import ProjectLabo from './ProjectLabo';
-import CrossSvg from './Cross';
 
 const WrapContent = styled.div`
   margin: 0 auto;
@@ -36,15 +35,6 @@ const StyledProjectLabo = styled(ProjectLabo)`
   --project-color: ${(p) => p.theme.getColor};
 `;
 
-const Cross = styled(CrossSvg)`
-  margin: 0 auto 2em;
-`;
-
-const Center = styled.div`
-  text-align: center;
-  margin: 4em auto;
-`;
-
 const Project = ({ slug, images, colorType, labo }) => (
   <>
     {!!labo && (
@@ -75,10 +65,7 @@ const Project = ({ slug, images, colorType, labo }) => (
           </Images>
         </ImagesList>
       )}
-      <Center>
-        <Cross $colorType={colorType} />
-      </Center>
-      <ButtonBack $colorType={colorType} />
+      <ButtonBack $colorType={null} />
     </WrapContent>
   </>
 );

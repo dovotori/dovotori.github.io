@@ -35,8 +35,8 @@ const getEntryNav = (entries, slug) => {
 
 const mapStateToProps = (state, props) => {
   const slug = props.slug || null;
-  const { category, nextEntry, prevEntry } = getEntryNav(state.content.entries, slug);
-  const $colorType = getColorType(category);
+  const { /* category, */ nextEntry, prevEntry } = getEntryNav(state.content.entries, slug);
+  const $colorType = null; // getColorType(category);
   return {
     slug,
     nextEntry,

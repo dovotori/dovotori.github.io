@@ -7,8 +7,10 @@ import Chart from './Chart';
 
 const styledIcons = Object.keys(icons).reduce((acc, key) => {
   acc[key] = styled(icons[key])`
+    display: block;
     width: auto;
     height: 2em;
+    max-width: 40px;
     filter: grayscale(100%);
     transition: filter 300ms ease-out;
     margin-right: 0.4em;
@@ -54,7 +56,6 @@ const BlocJob = styled.div`
 `;
 
 const Date = styled.span`
-  margin: 0;
   color: ${(p) => p.theme.primary};
   ${(p) => p.theme.monospace}
   overflow-wrap: break-word;
@@ -66,9 +67,17 @@ const WrapSvg = styled.div`
   align-items: center;
 `;
 
+const ColSvg = styled.span`
+  ${(p) =>
+    p.isTouch &&
+    `
+      display: inline-block;
+      width: 50px;
+  `};
+`;
+
 const Text = styled.span`
   font-weight: bold;
-  font-size: 1.2;
   color: ${(p) => p.theme.light};
 `;
 
@@ -91,11 +100,27 @@ const MarginLeft = styled.div`
 `;
 
 const FloatLeft = styled.div`
-  ${(p) => !p.isTouch && 'width: 18%; margin: 0 2% 0 0; text-align: right; display: flex;'};
+  ${(p) =>
+    !p.isTouch
+      ? 'width: 18%; margin: 0 2% 0 0; text-align: right; display: flex;'
+      : 'margin: 0 0 2% 0;'};
 `;
 
 const FloatRight = styled.div`
   ${(p) => !p.isTouch && 'width: 80%;'};
+`;
+
+const FloatRightTwoCol = styled.div`
+  ${(p) =>
+    p.isTouch &&
+    `
+    @media (min-width: 400px) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 2%;
+      margin-bottom: 4%;
+    }
+  `};
 `;
 
 const TwoCol = styled.div`
@@ -125,16 +150,18 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
             <Category>{formation.text}</Category>
           </MarginLeft>
           {formation.items.map((item) => (
-            <Line key={item.text}>
-              <Clear isTouch={isTouchDevice}>
-                <FloatLeft isTouch={isTouchDevice}>
-                  <Date isTouch={isTouchDevice}>{item.date}</Date>
-                </FloatLeft>
-                <FloatRight isTouch={isTouchDevice}>
-                  <Text>{item.text}</Text>
-                </FloatRight>
-              </Clear>
-            </Line>
+            <BlocJob key={item.text}>
+              <Line>
+                <Clear isTouch={isTouchDevice}>
+                  <FloatLeft isTouch={isTouchDevice}>
+                    <Date isTouch={isTouchDevice}>{item.date}</Date>
+                  </FloatLeft>
+                  <FloatRight isTouch={isTouchDevice}>
+                    <Text>{item.text}</Text>
+                  </FloatRight>
+                </Clear>
+              </Line>
+            </BlocJob>
           ))}
         </Bloc>
       ) : null,
@@ -187,34 +214,38 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
           {chart && !isTouchDevice && <Chart data={chart} />}
           {(isTouchDevice || !chart) &&
             skills.items.map((item) => (
-              <Line key={item.text}>
-                <Clear isTouch={isTouchDevice}>
-                  <FloatLeft isTouch={isTouchDevice}>
-                    <Date isTouch={isTouchDevice}>{item.text}</Date>
-                  </FloatLeft>
-                  <FloatRight isTouch={isTouchDevice}>
-                    {item.items.map((subitem) => {
-                      const Svg = subitem.picto ? styledIcons[subitem.picto] : null;
-                      return (
-                        <TwoColFloat isTouch={isTouchDevice} key={subitem.text}>
-                          <Line noMarginTop>
-                            {Svg ? (
-                              <WrapSvg>
-                                <Svg />
+              <BlocJob key={item.text}>
+                <Line>
+                  <Clear isTouch={isTouchDevice}>
+                    <FloatLeft isTouch={isTouchDevice}>
+                      <Date isTouch={isTouchDevice}>{item.text}</Date>
+                    </FloatLeft>
+                    <FloatRightTwoCol isTouch={isTouchDevice}>
+                      {item.items.map((subitem) => {
+                        const Svg = subitem.picto ? styledIcons[subitem.picto] : null;
+                        return (
+                          <TwoColFloat isTouch={isTouchDevice} key={subitem.text}>
+                            <Line noMarginTop>
+                              {Svg ? (
+                                <WrapSvg>
+                                  <ColSvg isTouch={isTouchDevice}>
+                                    <Svg />
+                                  </ColSvg>
+                                  <Text>{subitem.text}</Text>
+                                </WrapSvg>
+                              ) : (
                                 <Text>{subitem.text}</Text>
-                              </WrapSvg>
-                            ) : (
-                              <Text>{subitem.text}</Text>
-                            )}
+                              )}
 
-                            <Level>{subitem.level}</Level>
-                          </Line>
-                        </TwoColFloat>
-                      );
-                    })}
-                  </FloatRight>
-                </Clear>
-              </Line>
+                              <Level>{subitem.level}</Level>
+                            </Line>
+                          </TwoColFloat>
+                        );
+                      })}
+                    </FloatRightTwoCol>
+                  </Clear>
+                </Line>
+              </BlocJob>
             ))}
         </Bloc>
       ) : null,

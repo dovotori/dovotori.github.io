@@ -83,6 +83,9 @@ export default {
     start: 2,
     end: 10,
   },
+  mouse: {
+    events: ['drag', 'click'],
+  },
   keyboard: {
     UP,
     DOWN,

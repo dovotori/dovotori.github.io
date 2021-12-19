@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import { ReactComponent as Linkedin } from 'Assets/svg/cv/linkedin.svg';
 import { ReactComponent as Gitlab } from 'Assets/svg/cv/gitlab.svg';
@@ -7,18 +7,35 @@ import { ReactComponent as QuoteIcon } from 'Assets/svg/quote.svg';
 import { ReactComponent as Mail } from 'Assets/svg/mail.svg';
 import CvContainer from '../containers/CvContainer';
 import ButtonBack from './ButtonBack';
-import TypingMessage from './TypingMessage';
 import Bloc from './Bloc';
-import CrossSvg from './Cross';
 import { jiggle } from './Animations';
 
+export const move = keyframes`
+  0% {
+    transform: scale(0.9,1);
+  }
+  25% {
+    transform: scale(0.7,1);
+  }
+  50% {
+    transform: scale(0.8,1);
+  }
+  75% {
+    transform: scale(0.7,1);
+  }
+  100% {
+    transform: none;
+  }
+}
+`;
+
 const Links = styled.div`
-  margin: 4em 0;
+  margin: 10em 0;
   text-align: center;
   svg {
     min-width: 40px;
-    width: 10%;
-    margin: 0 1em;
+    width: 2em;
+    margin: 0 2em;
     filter: grayscale(100%);
     transition: filter 300ms ease-out;
 
@@ -29,13 +46,14 @@ const Links = styled.div`
 `;
 
 const Wrap = styled(Bloc)`
-  padding: 20% 0 10%;
+  margin: 0 auto 20vh;
 `;
 
 const WrapContent = styled.div`
   margin: 0 auto;
   padding: 0 1.5em;
   max-width: 700px;
+  ${(p) => p.theme.media.tablet`max-width: 500px;`};
 `;
 
 const Description = styled.p`
@@ -53,30 +71,19 @@ const StyledButtonBack = styled(ButtonBack)`
   margin: 12em auto 2em;
 `;
 
-const StyledTypingMessage = styled(TypingMessage)`
-  pointer-events: none;
-  position: relative;
-`;
-
-const StyledTitle = styled.h3`
-  ${(p) => p.theme.title}
-  position: relative;
-  font-size: 4em;
-  margin-top: ${(p) => (!p.isTouch ? 0 : '1.5em')};
-  margin-bottom: 0;
-  line-height: 1;
+const Link = styled.a`
+  margin-top: ${(p) => (!p.isTouch ? 0 : '10em')};
+  display: flex;
+  justify-content: flex-end;
 `;
 
 const Quote = styled.div`
-  display: flex;
-  position: absolute;
-  color: transparent;
-  bottom: 2px;
-  top: -0.5em;
-  right: 0;
-  max-width: 50%;
   :hover {
     animation: ${jiggle} 1s linear;
+  }
+
+  svg {
+    color: transparent;
   }
 
   :hover svg {
@@ -87,7 +94,7 @@ const Quote = styled.div`
 const StyledQuoteIcon = styled(QuoteIcon)`
   margin-right: 0.2em;
   stroke: ${(p) => p.theme.primary};
-  height: 1em;
+  height: 4em;
 `;
 
 const Center = styled.div`
@@ -109,42 +116,31 @@ const StyledMail = styled(Mail)`
 `;
 
 const Bar = styled.div`
-  width: 25%;
+  width: 50%;
   height: 1px;
-  margin: 1em auto 2em;
+  margin: 2em 0;
   background: ${(p) => p.theme.getGradient};
-`;
-
-const Cross = styled(CrossSvg)`
-  margin: 0 auto;
+  transform-origin: left center;
+  animation: ${move} 6s ${(p) => p.theme.elastic} alternate-reverse infinite;
 `;
 
 const About = ({ hello, isTouchDevice }) => (
   <Wrap>
     <WrapContent>
       <MarginLeft isTouch={isTouchDevice}>
-        <StyledTitle $colorType isTouch={isTouchDevice}>
-          <a href={`mailto:${process.env.MAIL}`}>
-            <Quote>
-              <StyledQuoteIcon />
-              <StyledQuoteIcon />
-            </Quote>
-          </a>
-          <StyledTypingMessage message={hello.about} firstMessage="はじめまして" />
-        </StyledTitle>
-        <Bar />
+        <Link href={`mailto:${process.env.MAIL}`} isTouch={isTouchDevice}>
+          <Quote>
+            <StyledQuoteIcon />
+            <StyledQuoteIcon />
+          </Quote>
+        </Link>
         {hello.description.map((text) => (
           <Description key={text}>{text}</Description>
         ))}
-        <Center>
-          <Cross />
-        </Center>
+        <Bar />
       </MarginLeft>
       <CvContainer />
       <MarginLeft isTouch={isTouchDevice}>
-        <Center>
-          <Cross />
-        </Center>
         <Links>
           <a href="https://gitlab.com/dovotori">
             <Gitlab />
@@ -156,7 +152,6 @@ const About = ({ hello, isTouchDevice }) => (
             <StyledMail />
           </a>
         </Links>
-        <Bar />
       </MarginLeft>
       <MarginLeft isTouch={isTouchDevice}>
         <Center>
