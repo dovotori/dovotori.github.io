@@ -1,5 +1,5 @@
 FROM node:16.13-alpine3.14 as client_base
-LABEL maintainer="dovotori@protonmail.com"
+LABEL maintainer="dovotori@proton.me"
 WORKDIR /client
 
 COPY package.json .

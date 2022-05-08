@@ -108,15 +108,15 @@ export default class {
     if (loc !== null) {
       this.gl.useProgram(this.program);
       switch (value.length) {
-        default:
-        case 2:
-          this.gl.uniform2fv(loc, value);
-          break;
         case 3:
           this.gl.uniform3fv(loc, value);
           break;
         case 4:
           this.gl.uniform4fv(loc, value);
+          break;
+        case 2:
+        default:
+          this.gl.uniform2fv(loc, value);
           break;
       }
       this.gl.useProgram(null);

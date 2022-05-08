@@ -7,7 +7,12 @@ const LangRedirect = lazy(() => import('../containers/LangRedirectContainer'));
 
 const routes = [
   {
-    path: ['/en', '/jp'],
+    path: '/en',
+    component: LangRedirect,
+    exact: true,
+  },
+  {
+    path: '/jp',
     component: LangRedirect,
     exact: true,
   },
@@ -22,7 +27,12 @@ const routes = [
     exact: true,
   },
   {
-    path: ['/', '/category/:slug'],
+    path: '/category/:slug',
+    component: Home,
+    exact: true,
+  },
+  {
+    path: '/',
     component: Home,
     exact: true,
   },

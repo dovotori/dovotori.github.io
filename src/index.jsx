@@ -1,7 +1,7 @@
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 
-import AppContainer from './containers/AppContainer';
+import App from './components/App';
 import configureStore from './store/configureStore';
 
 // if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
@@ -10,21 +10,10 @@ import configureStore from './store/configureStore';
 
 const store = configureStore();
 
-const render = (Component) => {
-  ReactDOM.render(
-    <Provider store={store}>
-      <Component />
-    </Provider>,
-    document.querySelector(`#${process.env.NAME}`)
-  );
-};
+const Main = () => (
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
 
-render(AppContainer);
-
-if (module.hot) {
-  module.hot.accept('./containers/AppContainer', () => {
-    /* eslint-disable-next-line global-require */
-    const NextApp = require('./containers/AppContainer').default;
-    render(NextApp);
-  });
-}
+createRoot(document.querySelector(`#${process.env.NAME}`)).render(<Main />);

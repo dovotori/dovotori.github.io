@@ -6,7 +6,6 @@ import signature from 'Assets/img/signature2.png';
 
 import ProjectLabo from './ProjectLabo';
 import TypingMessage from './TypingMessage';
-import Pulse from './Pulse';
 
 const fadeUp = keyframes`
   0% { transform: scale(0.8); opacity: 0; }
@@ -125,7 +124,6 @@ const Signature = ({ className, isTouchDevice, hello, isHome = true }) => {
           ) : (
             <StyledLabo slug="picto" $colorType={0} noBackground hasJs />
           )}
-          <Pulse className="circle" count={count} />
         </StyledLink>
       </Appear>
       <Absolute isTouch={isTouchDevice}>

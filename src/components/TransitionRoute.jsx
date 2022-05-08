@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 // import styled, { keyframes } from 'styled-components';
 // import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { Switch, withRouter } from 'react-router-dom';
+import { Routes } from 'react-router-dom';
 
 import Bloc from './Bloc';
 import Loader from './Loader';
@@ -47,7 +47,7 @@ const renderLoader = () => (
 
 const RenderSwitch = ({ location, children }) => (
   <Suspense fallback={renderLoader()}>
-    <Switch location={location}>{children}</Switch>
+    <Routes location={location}>{children}</Routes>
   </Suspense>
 );
 
@@ -64,4 +64,4 @@ const TransitionRoute = ({ location, children /* , isTouchDevice */ }) => (
 //   </StyledTransitionGroup>
 // );
 
-export default withRouter(TransitionRoute);
+export default TransitionRoute;
