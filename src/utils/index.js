@@ -17,13 +17,13 @@ export const getProjectImagePath = (slug, idx) => getEnvPath(`/img/${slug}/${slu
 
 export const getColorType = (category) => {
   switch (category) {
-    default:
-    case 0:
-      return 1;
     case 1:
       return 0;
     case 2:
       return 2;
+    case 0:
+    default:
+      return 1;
   }
 };
 

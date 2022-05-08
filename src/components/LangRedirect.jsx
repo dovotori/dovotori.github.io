@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { Locales } from '../constants/locales';
 
 export default ({ location: { pathname }, setLang }) => {
@@ -12,5 +12,5 @@ export default ({ location: { pathname }, setLang }) => {
       setLang(Locales.JP);
     }
   }, []);
-  return <Redirect to="/" />;
+  return <Navigate to="/" />;
 };

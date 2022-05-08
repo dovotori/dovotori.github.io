@@ -1,4 +1,11 @@
-import { Route, HashRouter as Router, Switch, Redirect, useRouteMatch } from 'react-router-dom';
+import {
+  Route,
+  HashRouter as Router,
+  Routes,
+  Navigate,
+  useMatch,
+  useLocation,
+} from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
@@ -9,6 +16,7 @@ import FooterContainer from '../containers/FooterContainer';
 import ProjectCommonContainer from '../containers/ProjectCommonContainer';
 import SignatureContainer from '../containers/SignatureContainer';
 import routes from '../constants/routes';
+import { getIsTouchDevice } from '../selectors';
 
 const Arrow = styled(BackArrow)`
   height: 1em;
@@ -19,11 +27,12 @@ const MinHeight = styled.div`
   min-height: 100vh;
 `;
 
-const renderRoute = (route) => (
-  <Route key={route.path} path={route.path} exact={route.exact} component={route.component} />
-);
+const renderRoute = (route) => {
+  const Comp = route.component;
+  return <Route key={route.path} path={route.path} exact={route.exact} element={<Comp />} />;
+};
 
-const RedirectionHome = () => <Redirect to="/" />;
+const RedirectionHome = () => <Navigate to="/" />;
 
 const Center = styled.div`
   position: relative;
@@ -33,7 +42,8 @@ const Center = styled.div`
 `;
 
 const BackButton = () => {
-  const match = useRouteMatch();
+  const location = useLocation();
+  const match = useMatch(location.pathname);
   const labelBack = useSelector((state) => state.content.back);
   return (
     <Center hide={match.path !== '/about'}>
@@ -45,25 +55,32 @@ const BackButton = () => {
   );
 };
 
-const Routes = ({ isTouchDevice }) => (
-  <Router>
-    <>
-      <MinHeight>
-        <Switch>
-          <Route path={['/', '/category/:slug', '/about']} exact component={BackButton} />
-          <Route path="/project/:slug" exact component={ProjectCommonContainer} />
-        </Switch>
-        <Switch>
-          <Route path={['/', '/category/:slug', '/about']} exact component={SignatureContainer} />
-        </Switch>
-        <TransitionRoute $isTouchDevice={isTouchDevice}>
-          {routes.map(renderRoute)}
-          <Route path="*" component={RedirectionHome} />
-        </TransitionRoute>
-      </MinHeight>
-      <FooterContainer />
-    </>
-  </Router>
-);
+const MainRoutes = () => {
+  const isTouchDevice = getIsTouchDevice();
+  return (
+    <Router>
+      <>
+        <MinHeight>
+          <Routes>
+            <Route path="/category/:slug" exact element={<BackButton />} />
+            <Route path="/about" exact element={<BackButton />} />
+            <Route path="/" exact element={<BackButton />} />
+            <Route path="/project/:slug" exact element={<ProjectCommonContainer />} />
+          </Routes>
+          <Routes>
+            <Route path="/category/:slug" exact element={<SignatureContainer />} />
+            <Route path="/about" exact element={<SignatureContainer />} />
+            <Route path="/" exact element={<SignatureContainer />} />
+          </Routes>
+          <TransitionRoute $isTouchDevice={isTouchDevice}>
+            {routes.map(renderRoute)}
+            <Route path="*" element={<RedirectionHome />} />
+          </TransitionRoute>
+        </MinHeight>
+        <FooterContainer />
+      </>
+    </Router>
+  );
+};
 
-export default Routes;
+export default MainRoutes;

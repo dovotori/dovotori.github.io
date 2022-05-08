@@ -1,7 +1,6 @@
-import { connect } from 'react-redux';
 
-import { getColorType } from '../utils';
 import ProjectNavigation from '../components/ProjectNavigation';
+import { getEntries, getContentBack, getContentPrevious, getIsTouchDevice, getContentNext } from '../selectors';
 
 const getEntryNav = (entries, slug) => {
   const entryIdx = entries.findIndex((entry) => entry.slug === slug);
@@ -33,20 +32,24 @@ const getEntryNav = (entries, slug) => {
   };
 };
 
-const mapStateToProps = (state, props) => {
-  const slug = props.slug || null;
-  const { /* category, */ nextEntry, prevEntry } = getEntryNav(state.content.entries, slug);
+const ProjectNavigationContainer = ({ slug }) => {
+  const entries = getEntries();
+  const { /* category, */ nextEntry, prevEntry } = getEntryNav(entries, slug);
   const $colorType = null; // getColorType(category);
-  return {
-    slug,
-    nextEntry,
-    prevEntry,
-    $colorType,
-    isTouchDevice: state.device.isTouch,
-    labelBack: state.content.back,
-    labelPrevious: state.content.previous,
-    labelNext: state.content.next,
-  };
+  const isTouchDevice = getIsTouchDevice();
+  const labelBack = getContentBack();
+  const labelPrevious = getContentPrevious();
+  const labelNext = getContentNext();
+  return <ProjectNavigation
+    slug={slug}
+    nextEntry={nextEntry}
+    prevEntry={prevEntry}
+    $colorType={$colorType}
+    isTouchDevice={isTouchDevice}
+    labelBack={labelBack}
+    labelPrevious={labelPrevious}
+    labelNext={labelNext}
+  />;
 };
 
-export default connect(mapStateToProps)(ProjectNavigation);
+export default ProjectNavigationContainer;

@@ -14,7 +14,7 @@ const initialState = {
   lang: defaultLang,
 };
 
-export default function device(state = initialState, action) {
+export default function device(state = initialState, action = {}) {
   switch (action.type) {
     case DEVICE_IS_TOUCH:
       return {

@@ -1,7 +1,7 @@
 import Behavior from './BehaviorCollision';
 
 export default class extends Behavior {
-  constructor(constants, updateState = null, tileSize, startPos, goLeft) {
+  constructor(constants, updateState, tileSize, startPos, goLeft) {
     super(constants, updateState, tileSize);
     this.isAiming = true;
     this.goLeft = goLeft;
