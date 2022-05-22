@@ -2,6 +2,7 @@ import drawTravelMap from 'Labo/lib/openlayers/TravelMap';
 import config from './config';
 
 import 'Assets/style/olmap.css';
+import './style.css';
 
 export default () => {
   const { slug, width = '100%', height = '400px', ...restConfig } = config;
