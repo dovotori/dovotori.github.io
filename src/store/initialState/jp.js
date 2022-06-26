@@ -19,15 +19,19 @@ const initialState = {
   },
   cv: {
     formation: {
-      text: '学習',
+      text: '学歴',
       items: [
+        {
+          date: 2022,
+          text: 'リンゲージ日本語学校',
+        },
         {
           date: 2013,
           text: 'サンティティエンヌの芸術とデザインの大学院でのプラスチック表現の国立ディプロマ',
         },
         {
           date: 2013,
-          text: ' セイント・エティエンヌのデザインの国際隔年で、バラソンプロジェクトで展示バラソンプロジェクト',
+          text: 'セイント・エティエンヌのデザインの国際隔年展示で、バラソンプロジェクト',
         },
         {
           date: 2012,
@@ -39,7 +43,7 @@ const initialState = {
         },
         {
           date: 2009,
-          text: 'グラフィックデザインの卒業証書/ LISAAパリの応用芸術の高等研究所でのマルチメディア',
+          text: 'グラフィックデザインの卒業証書 / LISAAパリの応用芸術の高等研究所でのマルチメディア',
         },
         {
           date: 2006,
@@ -48,12 +52,12 @@ const initialState = {
       ],
     },
     jobs: {
-      text: '実務経験',
+      text: '職歴',
       items: [
         {
-          startDate: 0,
-          endDate: 0,
-          text: 'Winamaxのフロントエンドの開発者',
+          startDate: 2016,
+          endDate: 2022,
+          text: 'Winamaxというスポーツ賭け事会社でフロントエンドの開発者',
           tasks: [''],
         },
         {
@@ -97,7 +101,7 @@ const initialState = {
       ],
     },
     skills: {
-      text: '手並み',
+      text: '使用スキル',
       items: [
         {
           text: 'dev',
@@ -111,7 +115,7 @@ const initialState = {
           ],
         },
         {
-          text: 'イメージ & 編集',
+          text: 'イメージ&編集',
           items: [
             { text: 'Photoshop', level: '' },
             { text: 'Illustrator', level: '' },
@@ -124,7 +128,7 @@ const initialState = {
         {
           text: '語',
           items: [
-            { text: 'フランス語', level: '読んで話しました' },
+            { text: 'フランス語', level: '母語' },
             { text: '英語', level: '読んで話しました' },
             { text: '日本語', level: '勉強しています' },
           ],
@@ -135,19 +139,19 @@ const initialState = {
       text: '趣味',
       items: [
         {
-          text: 'ビデオゲームの作成',
+          text: 'ビデオゲームの作り方',
         },
         {
-          text: '日本の文化',
+          text: '日本文化',
         },
       ],
     },
     chart,
   },
-  back: 'バック',
+  back: '戻る',
   darkMode: '暗い',
   lightMode: '明るい',
-  next: '次',
+  next: '次へ',
   previous: '前',
 };
 

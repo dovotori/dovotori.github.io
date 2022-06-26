@@ -19,15 +19,19 @@ const initialState = {
   },
   cv: {
     formation: {
-      text: 'études',
+      text: 'Études',
       items: [
         {
-          date: 2013,
-          text: 'Diplôme national d’expression plastique avec félicitations du jury  à l’école supérieure d’art et design de Saint-Étienne section design ',
+          date: 2022,
+          text: 'Apprentissage du japonais à la Linguage Japanese Language School à Shinjuku, Tokyo',
         },
         {
           date: 2013,
-          text: 'Exposition lors de la biennale internationale du design  de Saint-Étienne avec le projet Barasson au Fil ',
+          text: 'Diplôme national d’expression plastique avec félicitations du jury à l’école supérieure d’art et design de Saint-Étienne section design',
+        },
+        {
+          date: 2013,
+          text: 'Exposition lors de la biennale internationale du design de Saint-Étienne avec le projet Barasson au Fil',
         },
         {
           date: 2012,
@@ -51,12 +55,13 @@ const initialState = {
       text: 'Experiences',
       items: [
         {
-          startDate: 0,
-          endDate: 0,
+          startDate: 2016,
+          endDate: 2022,
           text: 'Développeur Front-end au sein de Winamax',
           tasks: [
             "développement des évolutions de l'application de paris sportifs",
-            "développement de l'application le jeu de l'entraîneur",
+            "développement de l'application le Jeu de l'entraîneur",
+            "développement de la nouvelle version des Grilles",
           ],
         },
         {

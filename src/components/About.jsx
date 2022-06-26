@@ -155,7 +155,7 @@ const About = ({ hello, isTouchDevice }) => (
       </MarginLeft>
       <MarginLeft isTouch={isTouchDevice}>
         <Center>
-          <StyledButtonBack $colorType isTouch={isTouchDevice} />
+          <StyledButtonBack isTouch={isTouchDevice} />
         </Center>
       </MarginLeft>
     </WrapContent>
