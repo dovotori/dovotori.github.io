@@ -31,6 +31,10 @@ const initialState = {
       text: 'Education',
       items: [
         {
+          date: 2022,
+          text: 'Learning Japanese at Linguage Japanese Language School in Shinjuku, Tokyo',
+        },
+        {
           date: 2013,
           text: 'National degree on plastic expression with mention at Saint-Etienne fine art school',
         },
