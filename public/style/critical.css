@@ -19,6 +19,20 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'jap';
+  src: url('../fonts/koruri/Koruri-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'jap';
+  src: url('../fonts/koruri/Koruri-Semibold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -46,8 +60,16 @@ body[theme='light'] {
 body,
 button,
 a,
-h1 {
+h1,
+html:lang(jp) .numbers {
   font-family: 'typo', 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, FreeSans, sans-serif;
+}
+
+html:lang(jp) body,
+html:lang(jp) h1,
+html:lang(jp) button,
+html:lang(jp) a {
+  font-family: 'jap', Meiryo, Osaka, sans-serif;
 }
 
 button {
@@ -58,13 +80,6 @@ button {
 
 h1 {
   line-height: 1;
-}
-
-html:lang(jp) body,
-html:lang(jp) h1,
-html:lang(jp) button,
-html:lang(jp) a {
-  font-family: 'typo', Meiryo, Osaka, sans-serif;
 }
 
 p {
@@ -93,13 +108,16 @@ a {
   width: 4px;
   background-color: #222;
 }
+
 ::-webkit-scrollbar-thumb {
   background-color: #666;
 }
+
 ::-moz-selection {
   background: #66ffcc;
   color: #000;
 }
+
 ::selection {
   background: #66ffcc;
   color: #000;

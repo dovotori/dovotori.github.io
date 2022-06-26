@@ -55,11 +55,13 @@ const BlocJob = styled.div`
   margin: 0 0 2em 0;
 `;
 
-const Date = styled.span`
+const Date = styled.span.attrs({ className: 'numbers' })`
   color: ${(p) => p.theme.primary};
   ${(p) => p.theme.monospace}
   overflow-wrap: break-word;
   ${(p) => !p.isTouch && 'text-align: right; width: 100%; '};
+  font-size: 0.8em;
+  line-height: 2;
 `;
 
 const WrapSvg = styled.div`

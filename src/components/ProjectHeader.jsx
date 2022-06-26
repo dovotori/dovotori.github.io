@@ -28,7 +28,7 @@ const Text = styled.p`
   width: 100%;
 `;
 
-const Date = styled.p`
+const Date = styled.p.attrs({ className: 'numbers' })`
   text-align: left;
   display: inline-block;
   margin: 0;

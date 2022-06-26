@@ -63,10 +63,10 @@ const Pulse = ({ count }) => {
 
   return (
     <>
-      <CircleAnim ref={ref} className={isModeTransition ? 'go' : ''} viewBox="0 0 4 4">
+      <CircleAnim ref={ref} className={isModeTransition ? 'go' : ''}>
         {/* <path d="M0 2 L2 0 L4 2 L2 4Z" /> */}
       </CircleAnim>
-      <Circle viewBox="0 0 4 4">
+      <Circle>
         {/* <path d="M0 2 L2 0 L4 2 L2 4Z" /> */}
       </Circle>
     </>

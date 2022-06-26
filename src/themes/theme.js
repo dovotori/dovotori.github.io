@@ -40,8 +40,7 @@ const common = {
     }
   `,
   monospace: css`
-    letter-spacing: 0.4em;
-    /* font-family: Consolas, 'Andale Mono', monospace; */
+    letter-spacing: 0.2em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;

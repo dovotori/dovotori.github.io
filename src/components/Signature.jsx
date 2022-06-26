@@ -2,8 +2,7 @@ import { useState, useCallback } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import signature from 'Assets/img/signature2.png';
-
+import Bol from './Bol';
 import ProjectLabo from './ProjectLabo';
 import TypingMessage from './TypingMessage';
 import Pulse from './Pulse';
@@ -93,20 +92,20 @@ const Absolute = styled.div`
   position: absolute;
   top: 45%;
   left: calc(50% + 100px);
+  z-index: 2;
 
   ${(p) => p.isTouch && `${common}`}
-
   ${(p) => p.theme.media.mobile`
     ${common}
   `}
 `;
 
-const Img = styled.img`
+const StyledBol = styled(Bol)`
+  margin: 0 auto;
+  width: 80%;
+  display: block;
   position: relative;
   z-index: 1;
-  display: block;
-  margin: 0 auto;
-  width: 90%;
 `;
 
 const Signature = ({ className, isTouchDevice, hello, isHome = true }) => {
@@ -121,7 +120,8 @@ const Signature = ({ className, isTouchDevice, hello, isHome = true }) => {
       <Appear>
         <StyledLink to={isHome ? '/about' : '/'} className={className} title="about" onClick={add}>
           {isTouchDevice ? (
-            <Img alt="Hello" src={signature} />
+            <StyledBol />
+
           ) : (
             <StyledLabo slug="picto" $colorType={0} noBackground hasJs />
           )}

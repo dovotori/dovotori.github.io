@@ -60,12 +60,13 @@ const initialState = {
       text: 'Jobs',
       items: [
         {
-          startDate: 0,
-          endDate: 0,
+          startDate: 2016,
+          endDate: 2022,
           text: 'Front-end developer at Winamax',
           tasks: [
             'betting web application development',
             'fantasy sport web application development',
+            'new grids application development',
           ],
         },
         {
@@ -125,6 +126,7 @@ const initialState = {
         {
           text: 'languages',
           items: [
+            { text: 'French', level: 'native' },
             { text: 'English', level: 'read and talked' },
             { text: 'Japanese', level: 'learning' },
           ],
