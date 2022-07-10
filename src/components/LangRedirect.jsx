@@ -1,15 +1,20 @@
 import { useEffect } from 'react';
+import {
+  useLocation,
+  Navigate
+} from 'react-router-dom';
 
-import { Navigate } from 'react-router-dom';
 import { Locales } from '../constants/locales';
 
-export default ({ location: { pathname }, setLang }) => {
+export default ({ setLang }) => {
+  const location = useLocation();
   useEffect(() => {
-    console.log(pathname);
-    if (pathname === '/en') {
-      setLang(Locales.EN);
-    } else {
+    if (location.pathname === '/fr') {
+      setLang(Locales.FR);
+    } else if (location.pathname === '/jp') {
       setLang(Locales.JP);
+    } else {
+      setLang(Locales.EN);
     }
   }, []);
   return <Navigate to="/" />;

@@ -2,7 +2,7 @@ import { DEVICE_IS_TOUCH, TOGGLE_THEME, SET_LANG } from '../constants/actionsTyp
 import { isTouchDevice, getLocationHash, storage } from '../utils';
 import availablesLang from '../constants/locales';
 
-export const defaultLang = getLocationHash() || storage.getItem('lang') || availablesLang[0].id;
+export const defaultLang = getLocationHash() || storage.getItem('lang') || availablesLang[1].id;
 
 document.documentElement.setAttribute('lang', defaultLang);
 
