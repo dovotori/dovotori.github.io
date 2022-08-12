@@ -1,40 +1,67 @@
 import { lazy } from 'react';
 
+import LangRedirect from '../components/LangRedirect';
+
 const About = lazy(() => import('../containers/AboutContainer'));
 const Project = lazy(() => import('../containers/ProjectContainer'));
 const Home = lazy(() => import('../components/Home'));
-const LangRedirect = lazy(() => import('../containers/LangRedirectContainer'));
 
 const routes = [
   {
     path: '/en',
     component: LangRedirect,
-    exact: true,
   },
   {
     path: '/jp',
     component: LangRedirect,
-    exact: true,
+  },
+  {
+    path: '/fr',
+    component: LangRedirect,
+  },
+  {
+    path: '/fr/about',
+    component: LangRedirect,
+  },
+  {
+    path: '/en/about',
+    component: LangRedirect,
+  },
+  {
+    path: '/jp/about',
+    component: LangRedirect,
+  },
+  {
+    path: '/fr/project/:slug',
+    component: LangRedirect,
+  },
+  {
+    path: '/en/project/:slug',
+    component: LangRedirect,
+  },
+  {
+    path: '/jp/project/:slug',
+    component: LangRedirect,
   },
   {
     path: '/about',
     component: About,
-    exact: true,
   },
   {
     path: '/project/:slug',
     component: Project,
-    exact: true,
   },
   {
     path: '/category/:slug',
     component: Home,
-    exact: true,
+  },
+  {
+    path: '/project/:slug',
+    component: Project,
   },
   {
     path: '/',
     component: Home,
-    exact: true,
   },
 ];
 
