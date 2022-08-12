@@ -63,7 +63,7 @@ const initialState = {
         {
           startDate: 2014,
           endDate: 2016,
-          text: 'Pix 21のウェブデザインの会社の共同マネージャー、グラフィックデザインとウェブ開発の責任者',
+          text: 'ウェブ代理店会社Pix 21の起業共同マネージャー、グラフィックデザインとウェブ開発の責任者',
           tasks: [
             'ウェブサイトの開発と展開',
             '創生 / ページ組み / コミュニケーション文書とテンプレートの印刷管理',
@@ -106,17 +106,24 @@ const initialState = {
         {
           text: 'dev',
           items: [
-            { text: 'Javascript / Nodejs', level: '' },
-            { text: 'React / Redux', level: '' },
-            { text: 'HTML5 / CSS3', level: '' },
-            { text: 'd3.js', level: '' },
-            { text: 'WebGL', level: '' },
-            { text: 'Php', level: '' },
+            { text: 'Javascript', level: '', picto: 'js' },
+            { text: 'Nodejs', level: '', picto: 'node' },
+            { text: 'React', level: '', picto: 'react' },
+            { text: 'Redux', level: '', picto: 'redux' },
+            { text: 'HTML5', level: '', picto: 'html' },
+            { text: 'CSS3', level: '', picto: 'css' },
+            { text: 'd3.js', level: '', picto: 'd3' },
+            { text: 'WebGL', level: '', picto: 'webgl' },
+            { text: 'Php', level: '', picto: 'php' },
+            { text: 'Flow', level: '', picto: 'flow' },
+            { text: 'Jest', level: '', picto: 'jest' },
+            { text: 'Webpack', level: '', picto: 'webpack' },
           ],
         },
         {
           text: 'イメージ&編集',
           items: [
+            { text: 'Figma', level: '' },
             { text: 'Photoshop', level: '' },
             { text: 'Illustrator', level: '' },
             { text: 'InDesign', level: '' },
