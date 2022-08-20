@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const SwCachePlugin = require('sw-cache-plugin');
 
 const config = require('../package.json');
 const { alias, optimization, minify, rules, compression } = require('./common');
@@ -58,6 +59,7 @@ module.exports = {
               `${SRC_ASSET_PATH}/app/*.xml`,
               `${SRC_ASSET_PATH}/app/*.json`,
               `${SRC_ASSET_PATH}/app/*.webapp`,
+              `${SRC_ASSET_PATH}/sw.js`,
             ],
           },
         },
@@ -73,8 +75,19 @@ module.exports = {
           from: `${SRC_ASSET_PATH}/app/manifest.webapp`,
           to: `${BUILD_PATH}/public/app/manifest.webapp`,
         },
+        {
+          from: `${SRC_ASSET_PATH}/sw.js`,
+          to: `${BUILD_PATH}/sw.js`,
+        },
       ],
     }),
+    new SwCachePlugin(
+      {
+        cacheName: 'v1',
+        ignore: [/.*\.map$/],
+        include: ['/']
+      }
+    ),
     ...compression,
   ],
 };
