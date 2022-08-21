@@ -7,6 +7,7 @@
   "display": "standalone",
   "orientation": "any",
   "scope": "/",
+  "id": "/",
   "start_url": "/",
   "background_color": "#222",
   "theme_color": "#222",
@@ -55,6 +56,12 @@
       "src": "/public/app/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "/public/app/maskable-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
