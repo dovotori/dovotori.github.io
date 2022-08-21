@@ -3,7 +3,6 @@ import {
   HashRouter as Router,
   Routes,
   Navigate,
-  useMatch,
   useLocation,
 } from 'react-router-dom';
 import styled from 'styled-components';
@@ -43,10 +42,9 @@ const Center = styled.div`
 
 const BackButton = () => {
   const location = useLocation();
-  const match = useMatch(location.pathname);
   const labelBack = useSelector((state) => state.content.back);
   return (
-    <Center hide={match.path !== '/about'}>
+    <Center hide={location.pathname === '/' || location.pathname.indexOf('/category/') !== -1}>
       <ButtonNavigation to="/" label={labelBack} $colorType={0}>
         <Arrow $colorType={0} />
         <Arrow $colorType={0} />
@@ -62,8 +60,9 @@ const MainRoutes = () => {
       <>
         <MinHeight>
           <Routes>
-            <Route path="/category/:slug" exact element={<BackButton />} />
+            <Route path="/qrcode" exact element={<BackButton />} />
             <Route path="/about" exact element={<BackButton />} />
+            <Route path="/category/:slug" exact element={<BackButton />} />
             <Route path="/" exact element={<BackButton />} />
             <Route path="/project/:slug" exact element={<ProjectCommonContainer />} />
           </Routes>
