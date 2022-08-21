@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 
 const Wrap = styled.div`
@@ -7,12 +7,14 @@ const Wrap = styled.div`
 `;
 
 const Bloc = ({ className, children }) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const onScrollTop = useCallback((d) => {
     if (d === null) {
       window.scrollTo(0, 0);
     }
   }, []);
-
   return (
     <Wrap className={`${className} bloc`} ref={onScrollTop}>
       {children}
