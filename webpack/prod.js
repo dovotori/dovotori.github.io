@@ -56,24 +56,9 @@ module.exports = {
           globOptions: {
             dot: true,
             ignore: [
-              `${SRC_ASSET_PATH}/app/*.xml`,
-              `${SRC_ASSET_PATH}/app/*.json`,
-              `${SRC_ASSET_PATH}/app/*.webapp`,
-              `${SRC_ASSET_PATH}/sw.js`,
+              `**/sw.js`,
             ],
           },
-        },
-        {
-          from: `${SRC_ASSET_PATH}/app/browserconfig.xml`,
-          to: `${BUILD_PATH}/public/app/browserconfig.xml`,
-        },
-        {
-          from: `${SRC_ASSET_PATH}/app/manifest.json`,
-          to: `${BUILD_PATH}/public/app/manifest.json`,
-        },
-        {
-          from: `${SRC_ASSET_PATH}/app/manifest.webapp`,
-          to: `${BUILD_PATH}/public/app/manifest.webapp`,
         },
         {
           from: `${SRC_ASSET_PATH}/sw.js`,

@@ -5,6 +5,7 @@ import LangRedirect from '../components/LangRedirect';
 const About = lazy(() => import('../containers/AboutContainer'));
 const Project = lazy(() => import('../containers/ProjectContainer'));
 const Home = lazy(() => import('../components/Home'));
+const QrCode = lazy(() => import('../components/QrCode'));
 
 const routes = [
   {
@@ -58,6 +59,10 @@ const routes = [
   {
     path: '/project/:slug',
     component: Project,
+  },
+  {
+    path: '/qrcode',
+    component: QrCode,
   },
   {
     path: '/',
