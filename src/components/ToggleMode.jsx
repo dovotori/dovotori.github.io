@@ -20,7 +20,7 @@ const commonItem = css`
   font-weight: normal;
 `;
 
-const Span = styled.span`
+const Span = styled.label`
   ${commonItem}
   color: ${(p) => (p.isHighlight ? p.theme.primary : p.theme.light)};
 `;
@@ -77,7 +77,7 @@ const ToggleMode = ({ isDarkMode, toggleTheme, texts }) => {
   return (
     <>
       <Toggle id="themeMode" onClick={onClick} checked={isDarkMode} />
-      <Span>{isDarkMode ? texts.lightMode : texts.darkMode}</Span>
+      <Span htmlFor="themeMode">{isDarkMode ? texts.lightMode : texts.darkMode}</Span>
       {isModeTransition &&
         createPortal(
           <TransitionEffect isDarkMode={isDarkMode}>

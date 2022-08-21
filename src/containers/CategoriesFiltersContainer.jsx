@@ -1,22 +1,29 @@
-import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import CategoriesFilters from '../components/CategoriesFilters';
-import { getSelectedCategory } from '../utils';
 import { getCategories, getEntries } from '../selectors';
+import { setCategory } from '../actions/device';
 
 export default () => {
-  const params = useParams();
+  const dispatch = useDispatch();
   const categories = getCategories();
   const entries = getEntries();
   const categoryIds = entries.reduce((acc, cur) => ({ ...acc, [cur.category]: true }), {});
+  const categoryId = useSelector((state) => state.device.category);
   const filterCategories = Object.keys(categoryIds).reduce(
     (acc, cur) => ({ ...acc, [cur]: categories[cur] }),
     {}
   );
+
+  const onClick = (cat) => () => {
+    dispatch(setCategory(parseInt(cat, 10)));
+  };
+
   return (
     <CategoriesFilters
-      selected={getSelectedCategory(categories, params.slug)}
+      selected={categoryId}
       categories={filterCategories}
+      onClickCategory={onClick}
     />
   );
 };

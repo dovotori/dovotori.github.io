@@ -66,7 +66,7 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   padding: 0.4em;
-  margin: 0 0.4em;
+  margin: 0.4em;
   text-transform: uppercase;
   min-width: 120px;
   ${(p) => p.theme.monospace}
@@ -116,7 +116,7 @@ const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => (
     </Div>
     <Div>
       {availablesLang.map((availableLang) => (
-        <Button key={availableLang.id} onClick={() => setLang(availableLang.id)}>
+        <Button key={availableLang.id} onClick={setLang(availableLang.id)}>
           <LineLeft isHighlight={availableLang.id === lang} className="line" />
           <SimpleSpan>&#8202;{availableLang.short}</SimpleSpan>
           <LineRight isHighlight={availableLang.id === lang} className="line" />

@@ -11,7 +11,7 @@ const Wrap = styled.div`
   overflow: hidden;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
 `;
 
 const Arrow = styled(BackArrow)`
