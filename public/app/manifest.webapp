@@ -1,11 +1,17 @@
 {
   "version": "1.0",
-  "name": "dovotori-site",
+  "name": "dovotori",
   "description": "portfolio de Dorian Ratovo",
   "icons": {
     "60": "/public/app/firefox_app_60x60.png",
     "128": "/public/app/firefox_app_128x128.png",
-    "512": "/public/app/firefox_app_512x512.png"
+    "512": "/public/app/firefox_app_512x512.png",
+    {
+      "src": "/public/app/maskable-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   },
   "developer": {
     "name": "Dorian Ratovo",
