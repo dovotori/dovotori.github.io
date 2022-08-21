@@ -1,5 +1,5 @@
 import styled, { keyframes, createGlobalStyle } from 'styled-components';
-import { ReactComponent as BolSvg } from 'Assets/svg/bol.svg';
+import { ReactComponent as BolSvg } from 'Assets/svg/bol2.svg';
 
 const GlobalStyle = createGlobalStyle`
 body[theme='light'] {
