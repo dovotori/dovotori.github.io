@@ -1,4 +1,6 @@
 
+import { useSelector } from 'react-redux';
+
 import ProjectNavigation from '../components/ProjectNavigation';
 import { getEntries, getContentBack, getContentPrevious, getIsTouchDevice, getContentNext } from '../selectors';
 
@@ -33,8 +35,13 @@ const getEntryNav = (entries, slug) => {
 };
 
 const ProjectNavigationContainer = ({ slug }) => {
-  const entries = getEntries();
-  const { /* category, */ nextEntry, prevEntry } = getEntryNav(entries, slug);
+  const stateEntries = getEntries();
+  const categoryId = useSelector((state) => state.device.category);
+  const entries =
+    categoryId === -1
+      ? stateEntries
+      : stateEntries.filter((entry) => entry.category === categoryId);
+  const { nextEntry, prevEntry } = getEntryNav(entries, slug);
   const $colorType = null; // getColorType(category);
   const isTouchDevice = getIsTouchDevice();
   const labelBack = getContentBack();

@@ -30,7 +30,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const CategoriesFilters = ({ selected, className, categories }) => (
+const CategoriesFilters = ({ selected, className, categories, onClickCategory }) => (
   <Wrap className={className}>
     {Object.keys(categories).map((categoryId, index) => {
       const isLinkSelected = selected === parseInt(categoryId, 10);
@@ -41,6 +41,7 @@ const CategoriesFilters = ({ selected, className, categories }) => (
             to={isLinkSelected ? '/' : `/category/${categories[categoryId].slug}`}
             selected={isLinkSelected}
             $colorType={getColorType(parseInt(categoryId, 10))}
+            onClick={onClickCategory(categoryId)}
           >
             {categories[categoryId].label}
           </StyledLink>
@@ -51,5 +52,3 @@ const CategoriesFilters = ({ selected, className, categories }) => (
 );
 
 export default CategoriesFilters;
-
-// transform: perspective(100px) rotateX(20deg) rotateY(20deg);
