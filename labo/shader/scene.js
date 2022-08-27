@@ -18,11 +18,11 @@ const getDistortion = (progress, frequence, amplitude, time) => {
   const movementProgressFix = 0.02;
   return new Vec3(
     Math.cos(progress * Math.PI * frequence.getX() + time) * amplitude.getX() -
-      Math.cos(movementProgressFix * Math.PI * frequence.getX() + time) * amplitude.getX(),
+    Math.cos(movementProgressFix * Math.PI * frequence.getX() + time) * amplitude.getX(),
     nsin(progress * Math.PI * frequence.getY() + time) * amplitude.getY() -
-      nsin(movementProgressFix * Math.PI * frequence.getY() + time) * amplitude.getY(),
+    nsin(movementProgressFix * Math.PI * frequence.getY() + time) * amplitude.getY(),
     nsin(progress * Math.PI * frequence.getZ() + time) * amplitude.getZ() -
-      nsin(movementProgressFix * Math.PI * frequence.getZ() + time) * amplitude.getZ()
+    nsin(movementProgressFix * Math.PI * frequence.getZ() + time) * amplitude.getZ()
   );
 };
 
@@ -33,7 +33,7 @@ export default class extends Scene {
     this.screen = new Screen(this.gl);
     this.linesTrail = new LinesTrail(this.gl);
 
-    this.grid = new Grid(10);
+    this.grid = new Grid(40);
     this.vboGrid = new Primitive(gl, { position: this.grid.getPositions() }, true);
     this.vboGrid.setModeDessin(this.gl.POINTS);
 
@@ -50,7 +50,7 @@ export default class extends Scene {
       Math.random() * 2.0 - 1.0,
     ]);
     const indices = Delaunay.triangulate(points);
-    const points3d = points.reduce((acc, cur) => [...acc, cur[0], cur[1], 0], []);
+    const points3d = points.reduce((acc, cur) => [...acc, cur[0], cur[1], Math.random() * 2.0 - 1.0], []);
     this.vboDelaunay = new Primitive(gl, { position: points3d, indices });
     this.vboDelaunay.setModeDessin(gl.LINE_LOOP);
 
@@ -111,13 +111,6 @@ export default class extends Scene {
     this.camera.setPosition(position.x, position.y, position.z);
 
     switch (this.mode) {
-      default:
-      case 5: {
-        this.grid.update();
-        this.vboGrid.update({ position: this.grid.getPositions() });
-        this.vboGrid.render(this.mngProg.get('point').get());
-        break;
-      }
       case 3: {
         this.migration.update();
         this.vboMigration.update({ position: this.migration.getPositions() });
@@ -180,6 +173,13 @@ export default class extends Scene {
         program.setFloat('flipY', 1);
         program.setFloat('time', this.time * 0.001);
         this.screen.render(program.get());
+        break;
+      }
+      case 5:
+      default: {
+        this.grid.update();
+        this.vboGrid.update({ position: this.grid.getPositions() });
+        this.vboGrid.render(this.mngProg.get('point').get());
         break;
       }
     }
