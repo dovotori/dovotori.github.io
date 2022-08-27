@@ -137,7 +137,7 @@ const initialState = {
           items: [
             { text: 'フランス語', level: '母語' },
             { text: '英語', level: '読んで話しました' },
-            { text: '日本語', level: '勉強しています' },
+            { text: '日本語', level: '日本語能力試験N4' },
           ],
         },
       ],

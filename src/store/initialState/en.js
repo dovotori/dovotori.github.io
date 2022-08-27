@@ -138,7 +138,7 @@ const initialState = {
           items: [
             { text: 'French', level: 'native' },
             { text: 'English', level: 'read and talked' },
-            { text: 'Japanese', level: 'learning' },
+            { text: 'Japanese', level: 'JLPT N4, learning N3' },
           ],
         },
       ],
