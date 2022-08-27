@@ -3,7 +3,7 @@ import Attractor from './Attractor';
 import Node from './Node';
 
 export default class {
-  constructor(nbRows = 3, nbColumns = 1) {
+  constructor(nbRows = 3, nbColumns = undefined) {
     this.nbRows = nbRows;
     this.nbColumns = nbColumns || nbRows;
     this.nodes = Array.from(
