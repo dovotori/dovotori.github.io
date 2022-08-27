@@ -11,6 +11,7 @@ export default {
     '/screen/blurOnePass.js',
     '/screen/screen.js',
     '/screen/debug.js',
+    '/screen/bloom.js',
   ],
   postprocess: {
     bloom: true,

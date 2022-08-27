@@ -12,6 +12,18 @@
         "--ignore-certificate-errors",
         "--unsafely-treat-insecure-origin-as-secure=https://localhost:8080"
       ]
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Labo",
+      "url": "https://localhost:8081",
+      "sourceMaps": true,
+      "webRoot": "${workspaceFolder}",
+      "runtimeArgs": [
+        "--ignore-certificate-errors",
+        "--unsafely-treat-insecure-origin-as-secure=https://localhost:8081"
+      ]
     }
   ]
 }
