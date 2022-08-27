@@ -139,7 +139,7 @@ const initialState = {
           text: 'langues',
           items: [
             { text: 'Anglais', level: 'lu et parlé' },
-            { text: 'Japonais', level: 'en apprentissage' },
+            { text: 'Japonais', level: 'JLPT N4, étudie le N3' },
           ],
         },
       ],
