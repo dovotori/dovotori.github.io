@@ -14,7 +14,7 @@ const fadeUp = keyframes`
 
 const Wrap = styled.div`
   position: relative;
-  margin: 20vh auto 0;
+  margin: 18vh auto 0;
 }
 `;
 
@@ -70,8 +70,9 @@ const Name = styled.h2`
 
 const Katakana = styled.h1`
   ${commonName}
-  margin-top: -0.2em;
+  opacity: 0.5;
   color: ${(p) => p.theme.text};
+  line-height: 0.7;
   ${(p) => p.theme.media.mobile`
     font-size: 200%;
   `}
@@ -100,6 +101,16 @@ const Absolute = styled.div`
   `}
 `;
 
+const Text = styled.h4`
+  font-size: 0.8em;  
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  white-space: nowrap;
+  color: ${(p) => p.theme.text};
+  font-weight: 400;
+`;
+
 const StyledBol = styled(Bol)`
   margin: 0 auto;
   width: 80%;
@@ -108,7 +119,7 @@ const StyledBol = styled(Bol)`
   z-index: 1;
 `;
 
-const Signature = ({ className, isTouchDevice, hello, isHome = true }) => {
+const Signature = ({ className, isTouchDevice, hello, text, isHome = true }) => {
   const [count, setCount] = useState(0);
 
   const add = useCallback(() => {
@@ -138,7 +149,7 @@ const Signature = ({ className, isTouchDevice, hello, isHome = true }) => {
             delay={5000}
           />
         </Name>
-
+        <Text>{text}</Text>
         <Katakana isTouch={isTouchDevice}>
           <StyledTypingMessage
             message={isHome ? 'ドリアン' : 'はじめまして'}

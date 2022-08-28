@@ -8,9 +8,10 @@ const initialState = {
   entries: getLocalPosts(Locales.FR),
   hello: {
     title: 'Dorian Ratovo',
-    text: 'graphiste devenu developpeur web',
+    text: 'Front End developer',
     contact: 'Contact',
     about: 'Enchanté!',
+    bulle: 'Plus de détails',
     description: [
       'Après des études dans le domaine de la conception graphique, je me suis intéressé au développement web en autodidacte.',
       "Le javascript est devenu mon outil favori pour expérimenter ces possibilités notamment la génération d'image via les contextes 2D et 3D de l'api canvas.",

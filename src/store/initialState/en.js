@@ -17,9 +17,10 @@ const initialState = {
   entries: getLocalPosts(Locales.EN),
   hello: {
     title: 'Dorian Ratovo',
-    text: 'graphic designer who became front end developer',
+    text: 'Front End developer',
     contact: 'Contact me',
     about: 'Nice to meet you!',
+    bulle: 'See more',
     description: [
       'After graphic design studies, i was impressed by web possibilities and start to learn on my own.',
       'Javascript became my perfect tool to experiment especially 2D and 3D web api.',

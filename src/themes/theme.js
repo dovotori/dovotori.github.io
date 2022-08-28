@@ -13,8 +13,8 @@ const getType = (p) => {
 
 const hue = {
   primary: 160, // hsl(160, 100%, 70%) // rgb(102, 255, 204) // #66ffcc
-  secondary: 0, // hsl(30, 100%, 70%) // rgb(255, 179, 102) // #ffb366
-  tertiary: 247, // hsl(290, 100%, 70%) // rgb(230, 102, 255) // #e666FF
+  secondary: 0, // hsl(30, 100%, 70%) // rgb(255, 179, 102) // #ffb366　
+  tertiary: 247, // hsl(290, 100%, 70%) // rgb(230, 102, 255) // #e666FF　#7866ff
 };
 
 const common = {

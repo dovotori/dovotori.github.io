@@ -8,9 +8,10 @@ const initialState = {
   entries: getLocalPosts(Locales.JP),
   hello: {
     title: 'Dorian Ratovo',
-    text: 'グラフィックデザイナーでした 其れ から,ウェブプログラマーを成る事にした',
+    text: 'フロントエンドの開発者',
     contact: 'お問い合わせ',
     about: '私について',
+    bulle: '詳しくへ',
     description: [
       'グラフィック設計を勉強しました。其の後ウェブ開発に趣味がありましたので自分で、養成しました。',
       'javascriptは一番好きなツールに成りました。 経験をするためにJavascriptを使います。 例えばAPIcanvasで2D / 3D画像を作りました。',
