@@ -353,8 +353,19 @@ const rawPosts = [
   {
     id: 20,
     slug: 'shader',
-    title: { [Locales.FR]: 'Shader', [Locales.EN]: 'Shader', [Locales.JP]: 'Shader' },
+    title: { [Locales.FR]: 'Shader', [Locales.EN]: 'Shader', [Locales.JP]: 'シェーダー' },
     category: CAT_BLOG,
+    description: {
+      [Locales.FR]: [
+        "Différentes expérimentations avec glsl.",
+      ],
+      [Locales.EN]: [
+        'Different experimentations with glsl.',
+      ],
+      [Locales.JP]: [
+        'glslをしながら、色々実験',
+      ],
+    },
     tags: [],
     date: 2020,
     labo: {

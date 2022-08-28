@@ -8,8 +8,9 @@ const SignatureContainer = () => {
   const match = useMatch(location.pathname);
   const isHome = match.pathname !== '/about';
   const hello = useSelector((state) => state.content.hello.about);
+  const text = useSelector((state) => state.content.hello.text);
   const isTouchDevice = useSelector((state) => state.device.isTouch);
-  return <Signature hello={hello} isTouchDevice={isTouchDevice} isHome={isHome} />;
+  return <Signature hello={hello} isTouchDevice={isTouchDevice} isHome={isHome} text={text} />;
 };
 
 export default SignatureContainer;
