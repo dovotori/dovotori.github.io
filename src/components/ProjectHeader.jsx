@@ -41,6 +41,10 @@ const StyledTitle = styled.h1`
   ${(p) => p.theme.title}
   margin: 1.5em 0 0;
   padding: 0 10px;
+
+  & > span > span > span {
+    ${(p) => p.theme.primaryGradientText}
+  }
 `;
 
 const Bar = styled.div`

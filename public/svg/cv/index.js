@@ -3,6 +3,7 @@ export { ReactComponent as css } from './css.svg';
 export { ReactComponent as d3 } from './d3.svg';
 export { ReactComponent as flow } from './flow.svg';
 export { ReactComponent as gitlab } from './gitlab.svg';
+export { ReactComponent as github } from './github.svg';
 export { ReactComponent as html } from './html.svg';
 export { ReactComponent as jest } from './jest.svg';
 export { ReactComponent as js } from './js.svg';

@@ -1,10 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 
-import { ReactComponent as Linkedin } from 'Assets/svg/cv/linkedin.svg';
-import { ReactComponent as Gitlab } from 'Assets/svg/cv/gitlab.svg';
 import { ReactComponent as QuoteIcon } from 'Assets/svg/quote.svg';
-
-import { ReactComponent as Mail } from 'Assets/svg/mail.svg';
+import SocialLinks from './SocialLinks';
 import CvContainer from '../containers/CvContainer';
 import ButtonBack from './ButtonBack';
 import Bloc from './Bloc';
@@ -29,19 +26,12 @@ export const move = keyframes`
 }
 `;
 
-const Links = styled.div`
+const StyledSocialLinks = styled(SocialLinks)`
   margin: 10em 0;
-  text-align: center;
   svg {
     min-width: 40px;
     width: 2em;
-    margin: 0 2em;
-    filter: grayscale(100%);
-    transition: filter 300ms ease-out;
-
-    &:hover {
-      filter: none;
-    }
+    margin: 0 1.5em;
   }
 `;
 
@@ -102,19 +92,6 @@ const Center = styled.div`
   margin: 4em auto;
 `;
 
-const StyledMail = styled(Mail)`
-  color: ${(p) => p.theme.light};
-  .toOpen {
-    transition: transform 300ms ease-out, color 300ms ease-out;
-  }
-  &:hover .toOpen {
-    transform: rotate3d(1, 0, 0, 170deg);
-  }
-  &:hover {
-    color: ${(p) => p.theme.primary};
-  }
-`;
-
 const Bar = styled.div`
   width: 50%;
   height: 1px;
@@ -141,17 +118,7 @@ const About = ({ hello, isTouchDevice }) => (
       </MarginLeft>
       <CvContainer />
       <MarginLeft isTouch={isTouchDevice}>
-        <Links>
-          <a href="https://gitlab.com/dovotori">
-            <Gitlab />
-          </a>
-          <a href="https://fr.linkedin.com/in/dorian-ratovo-636a9a95">
-            <Linkedin />
-          </a>
-          <a href={`mailto:${process.env.MAIL}`} title="contact">
-            <StyledMail />
-          </a>
-        </Links>
+        <StyledSocialLinks />
       </MarginLeft>
       <MarginLeft isTouch={isTouchDevice}>
         <Center>

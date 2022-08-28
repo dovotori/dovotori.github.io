@@ -49,7 +49,6 @@ const common = {
   secondaryGradient: 'linear-gradient(to right, #FF4D4D,  #993D3D)',
   tertiaryGradient: 'linear-gradient(to right, #514799, #4531d5)',
   neutralGradient: 'linear-gradient(to right, #444,  #aaa)',
-
   // #5ba8c2
   // #8b9fcb
   // #514799
