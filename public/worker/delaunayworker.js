@@ -124,6 +124,5 @@ self.onmessage = (e) => {
       break;
     default: break;
   }
-
   self.postMessage({ type, id, payload: newPayload });
 };
