@@ -91,7 +91,7 @@ const common = css`
 
 const Absolute = styled.div`
   position: absolute;
-  top: 45%;
+  top: 40%;
   left: calc(50% + 100px);
   z-index: 2;
 

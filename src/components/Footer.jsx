@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 import license from 'Assets/img/cclicense80x15.png';
-import { ReactComponent as Mail } from 'Assets/svg/mail.svg';
 import ToggleMode from './ToggleMode';
 import availablesLang from '../constants/locales';
+import SocialLinks from './SocialLinks';
 
 const Wrap = styled.div`
   padding: 2em 4%;
@@ -21,7 +21,7 @@ const Div = styled.div`
   align-items: center;
   justify-content: center;
   margin: 1em;
-  min-width: 15%;
+  min-height: 3em;
 
   a {
     cursor: pointer;
@@ -39,20 +39,6 @@ const Start = styled(Div)`
   justify-content: flex-start;
 `;
 
-const StyledMail = styled(Mail)`
-  color: ${(p) => p.theme.light};
-  height: 20px;
-  .toOpen {
-    transition: transform 300ms ease-out, color 300ms ease-out;
-  }
-  &:hover .toOpen {
-    transform: rotate3d(1, 0, 0, 170deg);
-  }
-  &:hover {
-    color: ${(p) => p.theme.primary};
-  }
-`;
-
 const Img = styled.img`
   display: block;
   width: 80px;
@@ -68,7 +54,7 @@ const Button = styled.button`
   padding: 0.4em;
   margin: 0.4em;
   text-transform: uppercase;
-  min-width: 120px;
+  min-width: 80px;
   ${(p) => p.theme.monospace}
   ${(p) => p.theme.active}
   font-weight: normal;
@@ -107,12 +93,17 @@ const SimpleSpan = styled.span`
   white-space: nowrap;
 `;
 
+const StyledSocialLinks = styled(SocialLinks)`
+svg {
+  height: 20px;
+  margin: 0 0.5em;
+}
+`;
+
 const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => (
   <Wrap className="footer">
     <Div>
-      <a href={`mailto:${process.env.MAIL}`} title="contact">
-        <StyledMail />
-      </a>
+      <StyledSocialLinks />
     </Div>
     <Div>
       {availablesLang.map((availableLang) => (
