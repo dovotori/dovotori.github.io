@@ -350,20 +350,19 @@ const rawPosts = [
       hasHtml: true,
     },
   },
-  // {
-  //   id: 20,
-  //   slug: 'shader',
-  //   title: { [Locales.FR]: 'Shader', [Locales.EN]: 'Shader', [Locales.JP]: 'Shader' },
-  //   category: CAT_BLOG,
-  //   tags: [],
-  //   date: 2020,
-  //   description: {
-  //     [Locales.FR]: [''],
-  //     [Locales.EN]: [''],
-  //     [Locales.JP]: [''],
-  //   },
-  //   html: true,
-  // },
+  {
+    id: 20,
+    slug: 'shader',
+    title: { [Locales.FR]: 'Shader', [Locales.EN]: 'Shader', [Locales.JP]: 'Shader' },
+    category: CAT_BLOG,
+    tags: [],
+    date: 2020,
+    labo: {
+      hasJs: true,
+      hasHtml: true,
+      noBackground: true,
+    },
+  },
   {
     id: 21,
     slug: 'diorama',
@@ -371,11 +370,6 @@ const rawPosts = [
     category: CAT_BLOG,
     tags: [],
     date: 2020,
-    description: {
-      [Locales.FR]: [''],
-      [Locales.EN]: [''],
-      [Locales.JP]: [''],
-    },
     labo: {
       hasJs: true,
       noBackground: true,
@@ -402,6 +396,7 @@ const rawPosts = [
     labo: {
       hasJs: true,
       hasHtml: true,
+      noBackground: true,
     },
   },
 ];

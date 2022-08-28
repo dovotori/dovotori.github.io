@@ -129,7 +129,6 @@ export default class extends Scene {
       case 1: {
         this.model.rotate(this.time * 0.001, 0, 1, 0);
         const newTime = mapFromRange(Math.cos(this.time * 0.01 * 0.05), -1, 1, 0, 1);
-
         this.particules.compute(this.mngProg.get('pass1Morph'), newTime);
         this.resizeViewport();
         this.mngProg.get('pass2Camera').setMatrix('model', this.model.get());
