@@ -7,10 +7,18 @@ import 'Assets/style/selectfile.css';
 
 import './style.css';
 
-const container = document.querySelector('#container');
-const webworker = new Worker(new URL('/public/worker/delaunayworker.js', import.meta.url));
-const canvas = document.querySelector('#imagecanvas');
-const canvasDebug = document.createElement('canvas');
+let canvasDebug = null;
+let webworker = null;
+let container = null;
+let canvas = null;
+let rangeThreshold = null;
+let rangeGreen = null;
+let rangeBlue = null;
+let rangeRed = null;
+let rangeBright = null;
+let boxHide = null;
+let boxDebug = null;
+let boxGrey = null;
 
 let initialDataImage = null;
 
@@ -64,7 +72,7 @@ const redrawSvg = () => {
   container.innerHTML = '';
   const context = canvas.getContext('2d');
   const { data } = context.getImageData(0, 0, canvas.width, canvas.height);
-  startDelaunayProcess(data, document.querySelector('#threshold').value);
+  startDelaunayProcess(data, rangeThreshold.value);
 };
 
 const receiveDelaunay = ({ coors, corners, width, height }) => {
@@ -110,25 +118,21 @@ const loadImage = (url) => new Promise(resolve => {
 });
 
 const changeColor = () => {
-  const rangeGreen = document.querySelector('#green');
-  const rangeBlue = document.querySelector('#blue');
-  const rangeRed = document.querySelector('#red');
-  const rangeBright = document.querySelector('#bright');
   const green = parseInt(rangeGreen.value, 10);
   const blue = parseInt(rangeBlue.value, 10);
   const red = parseInt(rangeRed.value, 10);
   const bright = parseFloat(rangeBright.value, 10);
   const { width, height } = canvas;
-  const grey = !!document.querySelector("#boxgrey").checked;
+  const grey = !!boxGrey.checked;
   const payload = { data: initialDataImage, width, height, blue, red, green, bright, grey };
   webworker.postMessage({ type: 'color', payload });
 };
 
 const resetSettings = () => {
-  document.querySelector('#green').value = 1;
-  document.querySelector('#blue').value = 1;
-  document.querySelector('#red').value = 1;
-  document.querySelector('#bright').value = 1;
+  rangeGreen.value = 1;
+  rangeBlue.value = 1;
+  rangeRed.value = 1;
+  rangeBright.value = 1;
 }
 
 const handleFile = async (file) => {
@@ -156,6 +160,19 @@ const changeHide = (elem) => (e) => {
 
 export default async () => {
   // const url = "/public/app/android-chrome-36x36.png";
+  canvasDebug = document.createElement('canvas');
+  container = document.querySelector('#container');
+  canvas = document.querySelector('#imagecanvas');
+  rangeThreshold = document.querySelector('#threshold');
+  rangeGreen = document.querySelector('#green');
+  rangeBlue = document.querySelector('#blue');
+  rangeRed = document.querySelector('#red');
+  rangeBright = document.querySelector('#bright');
+  boxHide = document.querySelector("#boxhide");
+  boxDebug = document.querySelector("#boxdebug");
+  boxGrey = document.querySelector("#boxgrey");
+
+  webworker = new Worker(new URL('/public/worker/delaunayworker.js', import.meta.url));
   const url = "/public/img/japon/japon-0.jpg";
   const img = await loadImage(url);
   const { width, height } = img;
@@ -166,29 +183,32 @@ export default async () => {
   const { data: initialData } = context.getImageData(0, 0, width, height);
   initialDataImage = initialData;
 
-  const rangeThreshold = document.querySelector('#threshold');
   webworker.addEventListener("message", endProcess);
   startDelaunayProcess(initialData, rangeThreshold.value);
 
   rangeThreshold.addEventListener("change", redrawSvg);
-
-  const rangeGreen = document.querySelector('#green');
-  const rangeBlue = document.querySelector('#blue');
-  const rangeRed = document.querySelector('#red');
-  const rangeBright = document.querySelector('#bright');
   rangeBright.addEventListener("change", changeColor);
   rangeBlue.addEventListener("change", changeColor);
   rangeRed.addEventListener("change", changeColor);
   rangeGreen.addEventListener("change", changeColor);
+  boxHide.addEventListener("change", changeHide(container));
+  boxDebug.addEventListener("change", changeHide(canvasDebug));
+  boxGrey.addEventListener("change", changeColor);
 
   selectfile.setup(handleFile);
+};
 
-  const boxHide = document.querySelector("#boxhide");
-  boxHide.addEventListener("change", changeHide(container));
-
-  const boxDebug = document.querySelector("#boxdebug");
-  boxDebug.addEventListener("change", changeHide(canvasDebug));
-
-  const boxGrey = document.querySelector("#boxgrey");
-  boxGrey.addEventListener("change", changeColor);
+export const destroy = () => {
+  if (rangeThreshold) rangeThreshold.removeEventListener("change", redrawSvg);
+  if (rangeBright) rangeBright.removeEventListener("change", changeColor);
+  if (rangeBlue) rangeBlue.removeEventListener("change", changeColor);
+  if (rangeRed) rangeRed.removeEventListener("change", changeColor);
+  if (rangeGreen) rangeGreen.removeEventListener("change", changeColor);
+  if (boxHide) boxHide.removeEventListener("change", changeHide(container));
+  if (boxDebug) boxDebug.removeEventListener("change", changeHide(canvasDebug));
+  if (boxGrey) boxGrey.removeEventListener("change", changeColor);
+  if (webworker) {
+    webworker.removeEventListener("message", endProcess);
+    webworker.terminate();
+  }
 };
