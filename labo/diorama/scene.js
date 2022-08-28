@@ -272,7 +272,7 @@ class TerrainScene extends Scene {
     // this.waterPasses();
     super.render();
 
-    this.shadowPass();
+    // this.shadowPass();
 
     // const progWater = this.mngProg.get('water');
     // progWater.setTexture(0, this.fbo.getTexture().get(), 'reflectMap');
@@ -281,15 +281,15 @@ class TerrainScene extends Scene {
     // progWater.setTexture(5, this.mngTex.get('dudv').get(), 'distortionMap');
     // progWater.setTexture(6, this.fbo2.getDepthTexture().get(), 'depthMap');
 
-    this.postProcess.start();
+    // this.postProcess.start();
     this.vbo.render(this.mngProg.get('terrain').get());
-    // // this.vbo.render(progWater.get());
+    // this.vbo.render(progWater.get());
     this.mngGltf.get('three').render(this.mngProg.get('instancing'), this.model);
     this.renderEntenna(this.mngProg.get('gltf'));
-    this.postProcess.end();
+    // this.postProcess.end();
 
-    this.postProcess.setComposeShadow(this.shadow.getTexture().get());
-    this.postProcess.render();
+    // this.postProcess.setComposeShadow(this.shadow.getTexture().get());
+    // this.postProcess.render();
 
     // this.postProcess.render(this.shadow.getTexture().get());
     // this.postProcess.render(this.getLampe(0).getDepthTexture().get());
