@@ -8,6 +8,15 @@
   display: block;
 }
 
+#delaunay #controls div {
+  margin: 0 0 1em 0;
+}
+
+#delaunay #controls div label:not(.nomargin) {
+  margin: 0 0 1em 0;
+  min-width: 40%;
+}
+
 #delaunay img {
   display: block;
 }

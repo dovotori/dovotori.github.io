@@ -9,14 +9,23 @@ export default class {
     const { fullscreen, ranges } = config;
     if (ranges) {
       this.ranges = Object.keys(ranges).reduce((acc, id) => {
-        const { min = 0, max = 100, value = 0 } = ranges[id];
+        const { min = 0, max = 100, value = 0, label = null } = ranges[id];
+        const domDiv = document.createElement('div');
         const domRange = document.createElement('input');
         domRange.setAttribute('type', 'range');
         domRange.setAttribute('id', id);
         domRange.setAttribute('min', min);
         domRange.setAttribute('max', max);
         domRange.setAttribute('value', value);
-        this.controlsDomItem.appendChild(domRange);
+        domRange.setAttribute('name', id);
+        if (label) {
+          const domLabel = document.createElement('label');
+          domLabel.setAttribute('for', id);
+          domLabel.innerHTML = label;
+          domDiv.appendChild(domLabel);
+        }
+        domDiv.appendChild(domRange);
+        this.controlsDomItem.appendChild(domDiv);
         return { ...acc, [id]: { id, min, max, value, dom: domRange } };
       }, {});
     }

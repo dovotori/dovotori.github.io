@@ -40,8 +40,8 @@ export default {
   controls: {
     fullscreen: { domId: 'deform', buttonId: 'fullscreen-toggle-btn' },
     ranges: {
-      volume: { min: 0, max: 100, value: 50 },
-      playbackRate: { min: 0, max: 100, value: 50 },
+      volume: { min: 0, max: 100, value: 50, label: "Volume" },
+      playbackRate: { min: 0, max: 100, value: 50, label: "Playback rate" },
     },
   },
   postprocess: true,
