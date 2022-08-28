@@ -98,9 +98,11 @@ const computeColor = ({ data, width, height, green, red, blue, bright, grey }) =
     const r = data[i] * red;
     const v = data[i + 1] * green;
     const b = data[i + 2] * blue;
-    const g = Math.min(Number.parseInt(r + v + b / 3, 10), 255);
+    newData[i] = r;
+    newData[i + 1] = v;
+    newData[i + 2] = b;
     if (grey) {
-
+      const g = Math.min(Number.parseInt(r + v + b / 3, 10), 255);
       newData[i] = g;
       newData[i + 1] = g;
       newData[i + 2] = g;
