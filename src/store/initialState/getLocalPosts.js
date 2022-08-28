@@ -365,7 +365,7 @@ const rawPosts = [
   //   html: true,
   // },
   {
-    id: 20,
+    id: 21,
     slug: 'diorama',
     title: { [Locales.FR]: 'Diorama', [Locales.EN]: 'Diorama', [Locales.JP]: 'Diorama' },
     category: CAT_BLOG,
@@ -382,7 +382,7 @@ const rawPosts = [
     },
   },
   {
-    id: 21,
+    id: 22,
     slug: 'race',
     title: { [Locales.FR]: 'Course', [Locales.EN]: 'Race', [Locales.JP]: '人種' },
     category: CAT_BLOG,
@@ -390,6 +390,18 @@ const rawPosts = [
     date: 2020,
     labo: {
       hasJs: true,
+    },
+  },
+  {
+    id: 23,
+    slug: 'delaunay',
+    title: { [Locales.FR]: 'Delaunay', [Locales.EN]: 'Delaunay', [Locales.JP]: 'ドロネー' },
+    category: CAT_CODE,
+    tags: [],
+    date: 2022,
+    labo: {
+      hasJs: true,
+      hasHtml: true,
     },
   },
 ];

@@ -1,3 +1,37 @@
 #delaunay {
-    --project-color: #e666ff;
+  --project-color: #66ffcc;
+  width: 100%;
+  margin: 0 auto;
+}
+
+#delaunay #controls {
+  display: block;
+}
+
+#delaunay img {
+  display: block;
+}
+
+#delaunay svg,
+#delaunay canvas.debug {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+#delaunay svg,
+#delaunay canvas {
+  max-width: 1200px;
+  width: 100%;
+  height: auto;
+}
+
+#delaunay #container {
+  position: relative;
+  z-index: 1;
+}
+
+.hide {
+  visibility: hidden;
 }

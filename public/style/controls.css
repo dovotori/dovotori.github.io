@@ -1,8 +1,41 @@
 #controls {
   position: absolute;
-  top: 4px;
-  right: 4px;
+  top: 0;
+  right: 0;
   display: flex;
   align-items: stretch;
-  z-index: 1;
+  z-index: 10;
+  background-color: rgba(34, 34, 34, .8);
+  margin: .5em;
+  padding: .5em;
+}
+
+#controls div {
+  margin: 0 0 0.5em 0;
+  display: flex;
+  align-items: stretch;
+}
+
+#controls div input[type=range] {
+  width: 100%;
+}
+
+#controls div input[type=checkbox] {
+  margin-right: 0.5em;
+}
+
+#controls label,
+#controls a {
+  display: inline-block;
+  font-size: .8em;
+  letter-spacing: 0.1em;
+  min-width: 50%;
+}
+
+@media (max-width: 570px) {
+  #controls.responsive {
+    position: relative;
+    width: 100%;
+    margin: 0;
+  }
 }

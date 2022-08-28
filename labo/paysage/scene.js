@@ -66,7 +66,7 @@ export default class extends Scene {
 
   render() {
     super.render();
-
+    /*
     if (this.canUseDepth()) {
       const progBuffers = this.mngProg.get('buffers');
       this.buffers.generateTextures(this.mainRender, progBuffers);
@@ -90,8 +90,9 @@ export default class extends Scene {
       this.postProcess.setFxaa2();
       this.postProcess.render();
     } else {
-      this.mainRender(this.mngProg.get(this.config.MAIN_PROG));
-    }
+      */
+    this.mainRender(this.mngProg.get(this.config.MAIN_PROG));
+    // }
   }
 
   renderFakeShadow(program) {
