@@ -81,6 +81,7 @@ export default class extends Scene {
 
   setupControls = () => {
     this.mode = 0;
+    this.message = document.querySelector('#message');
     this.buttons = document.querySelectorAll('.mode');
     this.buttons.forEach((button, index) => {
       button.addEventListener('click', (e) => this.onClickButton(e.target, index), false);
@@ -91,6 +92,12 @@ export default class extends Scene {
     this.buttons.forEach((b) => b.removeAttribute('data-current'));
     button.setAttribute('data-current', true);
     this.mode = index;
+
+    if (index === 2) {
+      this.message.style.display = "block";
+    } else {
+      this.message.style.display = "none";
+    }
   };
 
   destroy = () => {
