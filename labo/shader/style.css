@@ -43,3 +43,19 @@
 #modes button p {
   margin-bottom: 2px;
 }
+
+#shader #message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  color: #fff;
+  font-size: 1em;
+  letter-spacing: 0.2em;
+  display: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
