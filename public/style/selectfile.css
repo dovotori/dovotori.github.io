@@ -24,3 +24,9 @@
 #fileinput {
   margin: 1em 0;
 }
+
+#filelog {
+  color: #f00;
+  margin: 0 0 1em 0;
+  display: none;
+}
