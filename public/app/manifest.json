@@ -4,7 +4,7 @@
   "description": "portfolio de Dorian Ratovo",
   "dir": "ltr",
   "lang": "fr-FR",
-  "display": "standalone",
+  "display": "fullscreen",
   "orientation": "any",
   "scope": "/",
   "id": "/",
