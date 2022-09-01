@@ -3,14 +3,18 @@
   "short_name": "dovotori",
   "description": "portfolio de Dorian Ratovo",
   "dir": "ltr",
-  "lang": "fr-FR",
-  "display": "standalone",
+  "lang": "en",
+  "display": "fullscreen",
   "orientation": "any",
   "scope": "/",
   "id": "/",
   "start_url": "/",
   "background_color": "#222",
   "theme_color": "#222",
+  "developer": {
+    "name": "Dorian Ratovo",
+    "url": "https://dovotori.gitlab.io"
+  },
   "icons": [
     {
       "src": "/public/app/android-chrome-36x36.png",
