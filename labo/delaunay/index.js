@@ -78,13 +78,16 @@ const redrawSvg = () => {
 const receiveDelaunay = ({ coors, corners, width, height }) => {
   const svg = generateSvg(width, height, coors);
   container.appendChild(svg);
-  const context = canvasDebug.getContext('2d');
-  canvasDebug.width = width;
-  canvasDebug.height = height;
-  canvasDebug.setAttribute('class', 'debug');
-  debugFastCorner(context, corners);
-  // drawOnCanvas(context, coors);
-  container.appendChild(canvasDebug);
+
+  if (boxDebug.checked) {
+    const context = canvasDebug.getContext('2d');
+    canvasDebug.width = width;
+    canvasDebug.height = height;
+    canvasDebug.setAttribute('class', 'debug');
+    debugFastCorner(context, corners);
+    // drawOnCanvas(context, coors);
+    container.appendChild(canvasDebug);
+  }
   downloadSVG(svg, "#downloadsvg", "delaunay");
 };
 
@@ -136,16 +139,21 @@ const resetSettings = () => {
 }
 
 const handleFile = async (file) => {
-  const img = await loadImage(URL.createObjectURL(file));
-  const { width, height } = img;
-  canvas.width = width;
-  canvas.height = height;
-  const context = canvas.getContext('2d');
-  context.drawImage(img, 0, 0);
-  const { data: initialData } = context.getImageData(0, 0, width, height);
-  initialDataImage = initialData;
-  resetSettings();
-  redrawSvg();
+  const fileSize = file.size / 1024 / 1024;
+  if (fileSize < 1) { // < 1 Mb
+    const img = await loadImage(URL.createObjectURL(file));
+    const { width, height } = img;
+    canvas.width = width;
+    canvas.height = height;
+    const context = canvas.getContext('2d');
+    context.drawImage(img, 0, 0);
+    const { data: initialData } = context.getImageData(0, 0, width, height);
+    initialDataImage = initialData;
+    resetSettings();
+    redrawSvg();
+  } else {
+    selectfile.setError("File too big. Please select a file under 1 MB");
+  }
 };
 
 const stopPropa = (e) => {
