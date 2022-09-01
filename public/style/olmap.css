@@ -1,9 +1,3 @@
-body .ol-layers .ol-layer {
-  /* background: #bd4949a3; */
-  background: #ffffca;
-  /* #7dcdbb */
-}
-
 body .ol-layers .ol-layer canvas {
   max-height: none;
   max-width: none;
@@ -14,8 +8,8 @@ body .ol-layers .ol-layer canvas {
   pointer-events: none;
 }
 
-.ol-overlaycontainer > *,
-.ol-overlaycontainer-stopevent > * {
+.ol-overlaycontainer>*,
+.ol-overlaycontainer-stopevent>* {
   pointer-events: auto;
 }
 

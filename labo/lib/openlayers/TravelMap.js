@@ -268,6 +268,7 @@ const getVectorMap = (json, highlightIso, colors) => {
   };
 
   return new VectorTileLayer({
+    background: '#ffffca',
     source: vectorSource,
     style,
   });
@@ -302,13 +303,19 @@ export default ({
   const labelPoints = formatPoints.filter((point) => point.label);
   const view = getView(labelPoints, defaultZoom);
   const animMarker = new AnimationMarker(formatPoints, icon);
+
+  const vectors = getVectorMap(geojson, highlightIso, colors);
+  /* const tiles = new TileLayer({
+    source: new Stamen({
+      layer: 'watercolor'
+    })
+  }); */
+  const lines = getLineLayer(labelPoints);
+  const markers = getMarkersLayer(labelPoints);
+  const animations = animMarker.getVectorLayer();
+
   const layers = [
     // new TileLayer({ source: new OSM() }),
-    // new TileLayer({
-    //   source: new Stamen({
-    //     layer: 'watercolor'
-    //   })
-    // }),
     // new TileLayer({
     //   source: new Stamen({
     //     layer: 'terrain-labels'
@@ -317,10 +324,11 @@ export default ({
     // getMarkersBackgroundLayer(formatPoints),
     // getVectorMap2(topojson),
 
-    getVectorMap(geojson, highlightIso, colors),
-    getLineLayer(labelPoints),
-    getMarkersLayer(labelPoints),
-    animMarker.getVectorLayer(),
+    // tiles,
+    vectors,
+    lines,
+    markers,
+    animations,
   ];
 
   const map = new Map({
