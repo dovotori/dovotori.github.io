@@ -7,7 +7,6 @@ export default class {
     width = 1024,
     height = 1024,
     useDepth = false,
-    extension = null,
     attachmentIdx = 0
   ) {
     this.gl = gl;
@@ -17,11 +16,17 @@ export default class {
     this.clearColor = [0, 0, 0, 0];
     this.useDepth = useDepth;
 
-    this.setup(extension, attachmentIdx);
+
+
+    this.setup(attachmentIdx);
   }
 
-  setup(extension = null, attachmentIdx = 0) {
+  setup(attachmentIdx = 0) {
     this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.buffer);
+
+    const extension = this.gl.getExtension('WEBGL_draw_buffers') ||
+      this.gl.getExtension('GL_EXT_draw_buffers') ||
+      this.gl.getExtension('EXT_draw_buffers');
 
     const attachement =
       extension !== null

@@ -107,8 +107,12 @@ const Text = styled.h4`
   text-transform: uppercase;
   letter-spacing: 0.2em;
   white-space: nowrap;
-  color: ${(p) => p.theme.text};
-  font-weight: 400;
+  color: ${(p) => p.theme.background};
+  background-color: ${(p) => p.theme.text};
+  font-weight: 600;
+  padding: 0.2em 0.4em;
+  margin-bottom: 0.4em;
+  display: inline-block;
 `;
 
 const StyledBol = styled(Bol)`

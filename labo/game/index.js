@@ -13,7 +13,8 @@ export default async () => {
   app = new App();
   await app.setup(Scene, config);
   const div = document.querySelector(`#${config.slug}`);
-  div.appendChild(app.getCanvas());
+  const canvas = app.getCanvas();
+  if (canvas && div) div.appendChild(canvas);
 };
 
 export const destroy = () => {

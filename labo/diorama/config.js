@@ -32,6 +32,7 @@ export default {
     },
   },
   useDepthTexture: true,
+  useDrawBuffer: true,
   camera: {
     position: { x: 2, y: 2, z: 2 },
     target: { x: 0, y: 0, z: 0 },
