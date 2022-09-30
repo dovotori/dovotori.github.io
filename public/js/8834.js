@@ -1,1 +1,1 @@
-"use strict";(self.webpackChunkdovotori_portfolio=self.webpackChunkdovotori_portfolio||[]).push([[8834],{78834:(o,i,n)=>{n.r(i),n.d(i,{default:()=>e});const e="\nprecision mediump float;\nvoid main() {\n  gl_FragColor = vec4(1.0);\n}\n"}}]);
+"use strict";(self.webpackChunkdovotori=self.webpackChunkdovotori||[]).push([[8834],{78834:(o,n,e)=>{e.r(n),e.d(n,{default:()=>i});const i="\nprecision mediump float;\nvoid main() {\n  gl_FragColor = vec4(1.0);\n}\n"}}]);

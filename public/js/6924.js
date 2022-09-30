@@ -1,1 +1,1 @@
-"use strict";(self.webpackChunkdovotori_portfolio=self.webpackChunkdovotori_portfolio||[]).push([[6924],{86924:(o,i,t)=>{t.r(i),t.d(i,{default:()=>d});const d='<div id="picto"></div>'}}]);
+"use strict";(self.webpackChunkdovotori=self.webpackChunkdovotori||[]).push([[6924],{86924:(o,d,i)=>{i.r(d),i.d(d,{default:()=>t});const t='<div id="picto"></div>'}}]);
