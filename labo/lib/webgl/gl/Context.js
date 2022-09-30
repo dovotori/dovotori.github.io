@@ -42,7 +42,7 @@ class Context {
         !!this.gl.getExtension('EXT_draw_buffers');
     }
     this.support.pixelRatio = window.devicePixelRatio || 1;
-    console.debug('Webgl support info', this.support);
+    console.log('Webgl support info', this.support);
   }
 
   get() {

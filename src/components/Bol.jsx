@@ -63,6 +63,18 @@ const hashi2 = keyframes`
 }
 `;
 
+const noding = keyframes`
+0%, 100% {
+    transform: none;
+}
+30% {
+    transform: translate3d(-0.05%, 0.1%, 0);
+}
+75% {
+  transform: translate3d(0.03%, -0.05%, 0);
+}
+`;
+
 const StyledBol = styled(BolSvg)`
   .mode {
     fill: #333;
@@ -111,6 +123,10 @@ const StyledBol = styled(BolSvg)`
 
   .hand {
     animation: ${move} 4s linear 1s infinite;
+  }
+
+  .face {
+    animation: ${noding} 4s linear 2s infinite;
   }
 `;
 

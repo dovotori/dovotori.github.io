@@ -1,5 +1,5 @@
 {
-  "name": "dovotori_portfolio",
+  "name": "dovotori",
   "version": "1.1.1",
   "description": "React version of my portfolio website",
   "author": {
@@ -12,7 +12,7 @@
     "start": "webpack serve --config webpack/dev.js",
     "build": "webpack --config webpack/prod.js",
     "clean": "node scripts/cleanBuild.js",
-    "labo:start": "cross-env NAME=japon webpack serve --config webpack/labo.dev.js",
+    "labo:start": "cross-env NAME=skin webpack serve --config webpack/labo.dev.js",
     "labo:build": "webpack --config webpack/labo.prod.js",
     "local:server": "npx http-server build/ -S -C cert.pem -p 8080 -b -g --cors",
     "lint": "npx prettier --write \"{src,labo,webpack,scripts,public}/**/*.{js,jsx}\" && eslint --fix --config .eslintrc --ext .jsx,.js src/ labo/ webpack/ scripts/ public/shaders/",

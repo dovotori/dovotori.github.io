@@ -15,7 +15,8 @@ export default async () => {
     div.parentNode.style.display = 'flex';
     div.parentNode.style.alignItems = 'center';
   }
-  div.appendChild(app.getCanvas());
+  const canvas = app.getCanvas();
+  if (canvas && div) div.appendChild(canvas);
 };
 
 export const destroy = () => {

@@ -1,5 +1,5 @@
 const MAIN_PROG = 'gltf';
-const MAIN_OBJ = 'sphereMat';
+const MAIN_OBJ = 'rigged';
 export default {
   slug: 'skin',
   MAIN_PROG,

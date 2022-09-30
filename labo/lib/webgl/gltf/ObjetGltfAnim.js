@@ -5,7 +5,7 @@ import Sample from '../maths/Sample';
 import { lerp } from '../utils/easing';
 import { mapFromRange } from '../utils/numbers';
 
-export default class extends ObjetGltf {
+class ObjectGltfAnim extends ObjetGltf {
   constructor(gl, data, forceStep = null) {
     super(gl, data);
     const { nodes } = data;
@@ -55,19 +55,19 @@ export default class extends ObjetGltf {
     Object.keys(nodes).reduce((acc, nodeKey) => {
       let newAcc = acc;
       const node = nodes[nodeKey];
-      newAcc[node.name] = this.removeNodeAnim(node);
+      newAcc[node.name] = ObjectGltfAnim.removeNodeAnim(node);
       if (node.children) {
         newAcc = { ...newAcc, ...this.removeNodesAnimations(node.children) };
       }
       return acc;
     }, {});
 
-  removeNodeAnim = (node) => {
+  static removeNodeAnim = (node) => {
     const { animations, ...nodeWithoutAnim } = node;
     return nodeWithoutAnim;
   };
 
-  getAnimationInterval = (nodes) => {
+  static getAnimationInterval = (nodes) => {
     let max = 0;
     nodes.forEach((node) => {
       const { animations } = node;
@@ -94,15 +94,15 @@ export default class extends ObjetGltf {
       const nodeAnimations = this.animations[nodeName];
       Object.keys(nodeAnimations).forEach((path) => {
         if (path === 'rotation') {
-          nodeAnimations[path] = this.updateQuat(nodeAnimations[path], time);
+          nodeAnimations[path] = ObjectGltfAnim.updateQuat(nodeAnimations[path], time);
         } else {
-          nodeAnimations[path] = this.updateVector(nodeAnimations[path], time);
+          nodeAnimations[path] = ObjectGltfAnim.updateVector(nodeAnimations[path], time);
         }
       });
     });
   };
 
-  updateVector = (animation, time) => {
+  static updateVector = (animation, time) => {
     const newAnimation = animation;
     const { sample, customStep, output } = newAnimation;
 
@@ -127,7 +127,7 @@ export default class extends ObjetGltf {
     return newAnimation;
   };
 
-  updateQuat = (animation, time) => {
+  static updateQuat = (animation, time) => {
     const newAnimation = animation;
     const { sample, customStep, output } = newAnimation;
 
@@ -162,13 +162,13 @@ export default class extends ObjetGltf {
 
     // inverse T * R * S
     if (scale || scaleAnimation) {
-      localMatrix.scale(...this.getVector(scale, scaleAnimation));
+      localMatrix.scale(...ObjectGltfAnim.getVector(scale, scaleAnimation));
     }
     if (rotation || rotationAnimation) {
-      localMatrix.multiply(this.getRotationMat(rotation, rotationAnimation));
+      localMatrix.multiply(ObjectGltfAnim.getRotationMat(rotation, rotationAnimation));
     }
     if (translation || translationAnimation) {
-      localMatrix.translate(...this.getVector(translation, translationAnimation));
+      localMatrix.translate(...ObjectGltfAnim.getVector(translation, translationAnimation));
     }
 
     if (matrix) {
@@ -189,17 +189,19 @@ export default class extends ObjetGltf {
     animation.sample.setSpeed(millis);
   };
 
-  getVector = (vector = [0, 0, 0], vectorAnimation = null) => {
+  static getVector = (vector = [0, 0, 0], vectorAnimation = null) => {
     if (vectorAnimation && vectorAnimation.value) {
       return vectorAnimation.value;
     }
     return vector;
   };
 
-  getRotationMat = (rotation = [0, 0, 0, 1], rotationAnimation = null) => {
+  static getRotationMat = (rotation = [0, 0, 0, 1], rotationAnimation = null) => {
     if (rotationAnimation && rotationAnimation.value) {
       return rotationAnimation.value;
     }
     return new Quaternion(...rotation).toMatrix4();
   };
 }
+
+export default ObjectGltfAnim;

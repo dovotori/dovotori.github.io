@@ -385,6 +385,7 @@ const rawPosts = [
       hasJs: true,
       noBackground: true,
     },
+    images: 3,
   },
   {
     id: 22,

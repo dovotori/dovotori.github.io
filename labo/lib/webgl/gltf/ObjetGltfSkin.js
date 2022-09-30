@@ -3,7 +3,7 @@ import ObjetGltfAnim from './ObjetGltfAnim';
 // import Bones from './Bones';
 import Mat4 from '../maths/Mat4';
 
-export default class extends ObjetGltfAnim {
+class ObjectGltfSkin extends ObjetGltfAnim {
   constructor(gl, data, forceStep = null) {
     super(gl, data);
     const { skins } = data;
@@ -24,7 +24,7 @@ export default class extends ObjetGltfAnim {
       if (newJoint.children) {
         newJoint.children = this.removeAnimations(newJoint.children);
       }
-      return this.removeAnim(newJoint);
+      return ObjetGltfAnim.removeNodeAnim(newJoint);
     });
 
   addJointsAnimations = (joints, forceStep) => {
@@ -81,3 +81,5 @@ export default class extends ObjetGltfAnim {
     });
   };
 }
+
+export default ObjectGltfSkin;

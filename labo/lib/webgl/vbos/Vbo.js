@@ -73,7 +73,7 @@ export default class {
     }
   }
 
-  renderInstancing(program, modeDessin, instanceCount) {
+  renderInstancing(program, modeDessin, instanceCount) { // need draw buffers support
     if (this.locationKey === 'indices') {
       this.extension.drawElementsInstancedANGLE(
         modeDessin,

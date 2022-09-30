@@ -1,8 +1,12 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import * as icons from 'Assets/svg/cv';
+import { ReactComponent as Manette } from 'Assets/svg/manette.svg';
+import { ReactComponent as Skills } from 'Assets/svg/chimie.svg';
+import { ReactComponent as Tie } from 'Assets/svg/tie2.svg';
+import { ReactComponent as Diploma } from 'Assets/svg/diploma.svg';
 import Chart from './Chart';
 
 const styledIcons = Object.keys(icons).reduce((acc, key) => {
@@ -26,6 +30,31 @@ const Bloc = styled.div`
   margin-top: 3em;
 `;
 
+const commonIcon = css`
+  display: inline-block;
+  margin: 0 0.5em 0 0;
+  height: 1.7em;
+  padding: 0.4em 0.5em;
+  background-color: ${(p) => p.theme.light};
+  min-width: 40px;
+`;
+
+const ManetteIcon = styled(Manette)`
+  ${commonIcon}
+`;
+
+const SkillsIcon = styled(Skills)`
+  ${commonIcon}
+`;
+
+const TieIcon = styled(Tie)`
+  ${commonIcon}
+`;
+
+const DiplomaIcon = styled(Diploma)`
+  ${commonIcon}
+`;
+
 const StyledLink = styled(Link)`
   span {
     color: ${(p) => p.theme.text};
@@ -36,14 +65,13 @@ const StyledLink = styled(Link)`
 `;
 
 const Category = styled.h3`
-  margin: 0.5em 0;
+  margin: 2em 0;
   text-transform: lowercase;
   font-weight: normal;
   color: ${(p) => p.theme.light};
   white-space: nowrap;
-  display: inline-block;
+  display: flex;
   background: ${(p) => `url(${p.theme.stripes}) repeat`};
-  padding: 0.1em 0.5em;
   letter-spacing: 0.2em;
 `;
 
@@ -149,7 +177,7 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
       formation.items.length > 0 ? (
         <Bloc>
           <MarginLeft isTouch={isTouchDevice}>
-            <Category>{formation.text}</Category>
+            <Category><DiplomaIcon />{formation.text}</Category>
           </MarginLeft>
           {formation.items.map((item) => (
             <BlocJob key={item.text}>
@@ -175,7 +203,7 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
       jobs.items.length > 0 ? (
         <Bloc>
           <MarginLeft isTouch={isTouchDevice}>
-            <Category>{jobs.text}</Category>
+            <Category><TieIcon />{jobs.text}</Category>
           </MarginLeft>
           {jobs.items.map((item) => {
             const { startDate, endDate, text, tasks } = item;
@@ -211,7 +239,7 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
       skills.items.length > 0 ? (
         <Bloc>
           <MarginLeft isTouch={isTouchDevice}>
-            <Category>{skills.text}</Category>
+            <Category><SkillsIcon />{skills.text}</Category>
           </MarginLeft>
           {chart && !isTouchDevice && <Chart data={chart} />}
           {(isTouchDevice || !chart) &&
@@ -259,7 +287,7 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
       hobbies.items.length > 0 ? (
         <Bloc>
           <MarginLeft isTouch={isTouchDevice}>
-            <Category>{hobbies.text}</Category>
+            <Category><ManetteIcon />{hobbies.text}</Category>
             {hobbies.items.map((item) => {
               const { text, about } = item;
               return (

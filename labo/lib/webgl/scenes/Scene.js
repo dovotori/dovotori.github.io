@@ -81,6 +81,13 @@ export default class {
       }
     }
     this.resizeViewport();
+
+    const shouldDisabled = this.config.useDrawBuffer && !this.config.support.drawBuffers;
+    if (shouldDisabled) {
+      const domElem = document.querySelector(`#${this.config.slug}`);
+      domElem.parentNode.style.minHeight = "auto";
+      domElem.remove();
+    }
   }
 
   canUseDepth() {

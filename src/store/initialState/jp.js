@@ -8,7 +8,7 @@ const initialState = {
   entries: getLocalPosts(Locales.JP),
   hello: {
     title: 'Dorian Ratovo',
-    text: 'フロントエンドの開発者',
+    text: 'フロントエンド開発者',
     contact: 'お問い合わせ',
     about: '私について',
     bulle: '詳しくへ',

@@ -4,9 +4,8 @@ export default class {
   constructor(gl, width = 1024, height = 1024, useDepth = false) {
     this.fbos = [];
     this.currentFbo = 0;
-    const extension = null;
-    this.fbos[0] = new Fbo(gl, width, height, useDepth, extension, 0);
-    this.fbos[1] = new Fbo(gl, width, height, useDepth, extension, 1);
+    this.fbos[0] = new Fbo(gl, width, height, useDepth, 0);
+    this.fbos[1] = new Fbo(gl, width, height, useDepth, 1);
   }
 
   start() {
