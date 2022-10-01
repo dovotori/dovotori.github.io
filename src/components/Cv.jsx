@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components';
 import * as icons from 'Assets/svg/cv';
 import { ReactComponent as Manette } from 'Assets/svg/manette.svg';
 import { ReactComponent as Skills } from 'Assets/svg/chimie.svg';
-import { ReactComponent as Tie } from 'Assets/svg/tie2.svg';
+import { ReactComponent as Tie } from 'Assets/svg/tie.svg';
 import { ReactComponent as Diploma } from 'Assets/svg/diploma.svg';
 import Chart from './Chart';
 
@@ -35,7 +35,7 @@ const commonIcon = css`
   margin: 0 0.5em 0 0;
   height: 1.7em;
   padding: 0.4em 0.5em;
-  background-color: ${(p) => p.theme.light};
+  background-color: ${(p) => p.theme.backgroundHighlight};
   min-width: 40px;
 `;
 
