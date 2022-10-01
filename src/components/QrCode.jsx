@@ -9,6 +9,10 @@ const StyledQrCode = styled(QrCode)`
   max-width: 512px;
   padding: 10%;
   margin: 0 auto;
+
+  .logo {
+    color: ${(p) => p.theme.primary};
+  }
 `;
 
 export default () => <StyledQrCode />;

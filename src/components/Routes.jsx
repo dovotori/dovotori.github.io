@@ -53,6 +53,8 @@ const BackButton = () => {
   );
 };
 
+const Common = () => (<><BackButton /><SignatureContainer /></>);
+
 const MainRoutes = () => {
   const isTouchDevice = getIsTouchDevice();
   return (
@@ -61,15 +63,10 @@ const MainRoutes = () => {
         <MinHeight>
           <Routes>
             <Route path="/qrcode" exact element={<BackButton />} />
-            <Route path="/about" exact element={<BackButton />} />
-            <Route path="/category/:slug" exact element={<BackButton />} />
-            <Route path="/" exact element={<BackButton />} />
+            <Route path="/about" exact element={<Common />} />
+            <Route path="/category/:slug" exact element={<Common />} />
+            <Route path="/" exact element={<Common />} />
             <Route path="/project/:slug" exact element={<ProjectCommonContainer />} />
-          </Routes>
-          <Routes>
-            <Route path="/category/:slug" exact element={<SignatureContainer />} />
-            <Route path="/about" exact element={<SignatureContainer />} />
-            <Route path="/" exact element={<SignatureContainer />} />
           </Routes>
           <TransitionRoute $isTouchDevice={isTouchDevice}>
             {routes.map(renderRoute)}
