@@ -68,7 +68,6 @@ class ObjectGltfSkin extends ObjetGltfAnim {
 
       const jointInverse = new Mat4();
       jointInverse.setFromArray(invMatrix);
-      jointInverse.resetScale(); // tmp ? fix blender export with inverse matrix
 
       finalMatrix.multiply(jointInverse);
       finalMatrix.multiply(localMatrix);

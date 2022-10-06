@@ -21,7 +21,6 @@ class ObjectGltfAnim extends ObjetGltf {
       let newAcc = acc;
       const { animations, name, children } = nodes[key];
       if (animations) {
-        // do children
         newAcc[name] = this.addAnimations(animations, forceStep);
       }
       if (children) {
