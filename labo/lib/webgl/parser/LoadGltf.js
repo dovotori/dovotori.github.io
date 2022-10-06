@@ -18,9 +18,6 @@ const acessorsTypes = {
 
 export const getNumComponentPerType = (type) => {
   switch (type) {
-    default:
-    case acessorsTypes.SCALAR:
-      return 1;
     case acessorsTypes.VEC2:
       return 2;
     case acessorsTypes.VEC3:
@@ -33,6 +30,9 @@ export const getNumComponentPerType = (type) => {
       return 9;
     case acessorsTypes.MAT4:
       return 16;
+    case acessorsTypes.SCALAR:
+    default:
+      return 1;
   }
 };
 
@@ -47,8 +47,9 @@ const getConvertMethod = (componentType) => {
       return dataViewToUint16;
     case 5126: // FLOAT
       return dataViewToFloat32;
-    case 5120: // BYTE / Int8Array
     case 5121: // UNSIGNED_BYTE / Uint8Array
+      return dataViewToUint8; // for joints
+    case 5120: // BYTE / Int8Array
     case 5122: // SHORT / Int16Array
     case 5125: // UNSIGNED_INT / Uint32Array
     default:
@@ -139,17 +140,15 @@ const getVbos = (attributes, accessors, indices, targets) => {
     indices: { ...indicesAcc, size: getNumComponentPerType(indicesAcc.type) },
   };
 
-  let newTargets =
-    targets &&
-    targets.map((target) =>
-      Object.keys(target).reduce((acc, cur) => {
-        const accessor = accessors[target[cur]];
-        return {
-          ...acc,
-          [cur]: { ...accessor, size: getNumComponentPerType(accessor.type) },
-        };
-      }, {})
-    );
+  let newTargets = targets?.map((target) =>
+    Object.keys(target).reduce((acc, cur) => {
+      const accessor = accessors[target[cur]];
+      return {
+        ...acc,
+        [cur]: { ...accessor, size: getNumComponentPerType(accessor.type) },
+      };
+    }, {})
+  );
   if (newTargets) {
     newTargets = newTargets.reduce((acc, cur, index) => {
       const newFormatTargets = Object.keys(cur).reduce((a, c) => {
@@ -272,10 +271,10 @@ const getAnimations = (animations, nodes, accessors, meshes) => {
 const getImages = (images, accessors, buffers, bufferViews) =>
   images
     ? images.map(({ bufferView: bufferViewIndex, mimeType, name }) => {
-        const bufferView = bufferViews[bufferViewIndex];
-        const data = getImageBufferData(buffers, bufferView);
-        return { mimeType, name, data };
-      })
+      const bufferView = bufferViews[bufferViewIndex];
+      const data = getImageBufferData(buffers, bufferView);
+      return { mimeType, name, data };
+    })
     : null;
 
 const addChildrenToNode = (parent, nodes) => {
@@ -300,15 +299,27 @@ const organizeParenting = (nodes) => {
   return nodesWithChildren.filter((node, index) => indexNodeIsChild[index] === undefined);
 };
 
-const convertNodesToObject = (nodes) =>
-  nodes.reduce((acc, node) => {
-    const { name, children } = node;
-    acc[name] = node;
-    if (children) {
-      convertNodesToObject(children);
+const convertNodesToObject = (nodesArray) => nodesArray.reduce((acc, node) => {
+  const { name, children } = node;
+  acc[name] = node;
+  if (children) {
+    acc[name].children = convertNodesToObject(children);
+  }
+  return acc;
+}, {});
+
+const markedAndNameNodes = (nodes, allJointsIds = []) => {
+  const newNodes = nodes.map((node, index) => {
+    let name = node.name || `node-${index}`;
+    let customType = "node";
+    if (allJointsIds.indexOf(index) !== -1) {
+      name = node.name || `joint-${index}`;
+      customType = "joint";
     }
-    return acc;
-  }, {});
+    return { ...node, name, customType };
+  });
+  return newNodes;
+};
 
 export default class {
   constructor(rawText) {
@@ -316,22 +327,22 @@ export default class {
     const { animations, buffers, bufferViews, accessors, skins, nodes, meshes, materials, images } =
       JsonData;
 
-    const newBuffers = buffers && buffers.map((buffer) => base64ToArrayBuffer(buffer.uri));
+    const newBuffers = buffers?.map((buffer) => base64ToArrayBuffer(buffer.uri));
 
-    const newAccessors =
-      accessors &&
-      accessors.map((accessor) => ({
-        ...accessor,
-        values: getBufferDataFromAccessor(newBuffers, bufferViews, accessor),
-      }));
+    const newAccessors = accessors?.map((accessor) => ({
+      ...accessor,
+      values: getBufferDataFromAccessor(newBuffers, bufferViews, accessor),
+    }));
+    const allJointsIds = skins?.reduce((acc, skin) => acc.concat(skin.joints), []);
+    const markedNodes = markedAndNameNodes(nodes, allJointsIds);
 
     // add animations to nodes
-    const animationsPerNodes = getAnimations(animations, nodes, newAccessors, meshes);
+    const animationsPerNodes = getAnimations(animations, markedNodes, newAccessors, meshes);
     Object.keys(animationsPerNodes).forEach((nodeIndex) => {
-      nodes[nodeIndex].animations = animationsPerNodes[nodeIndex];
+      markedNodes[nodeIndex].animations = animationsPerNodes[nodeIndex];
     });
 
-    const newSkins = getSkins(skins, nodes, newAccessors);
+    const newSkins = getSkins(skins, markedNodes, newAccessors);
 
     const newMeshes = meshes.map(({ primitives, weights }) => {
       const newPrimitives = getPrimitiveData(primitives, newAccessors);
@@ -344,7 +355,7 @@ export default class {
 
     const newMaterials = materials && materials.map((material) => getMaterial(material, newImages));
 
-    let newNodes = organizeParenting(nodes);
+    let newNodes = organizeParenting(markedNodes);
     newNodes = convertNodesToObject(newNodes);
 
     this.data = {};
@@ -352,7 +363,7 @@ export default class {
     if (newNodes) this.data.nodes = newNodes;
     if (newSkins) this.data.skins = newSkins;
     if (newMaterials) this.data.materials = newMaterials;
-    console.log('CUSTOM', this.data);
+    console.log('[Gltf custom data]', this.data, `\n${nodes.length} nodes\n${allJointsIds?.length} joints`);
   }
 
   get() {

@@ -2,7 +2,7 @@ import ObjetGltfPrimitive from './ObjetGltfPrimitive';
 import Quaternion from '../maths/Quaternion';
 import Mat4 from '../maths/Mat4';
 
-export default class {
+class ObjetGltf {
   constructor(gl, data) {
     const { nodes, meshes, materials } = data;
     this.meshes = meshes.map(({ primitives, name = '', weights }) => {
@@ -12,7 +12,7 @@ export default class {
         }
         return primitive;
       });
-      const formatPrimitives = this.formatPrimitives(gl, primitivesData);
+      const formatPrimitives = ObjetGltf.formatPrimitives(gl, primitivesData);
       return {
         name,
         primitives: formatPrimitives,
@@ -31,12 +31,6 @@ export default class {
     });
   }
 
-  formatPrimitives = (gl, primitives) =>
-    primitives.map((primitive) => {
-      const { vbos, material } = primitive;
-      return new ObjetGltfPrimitive(gl, { vbos, material });
-    });
-
   render(program, model) {
     this.renderNodesAndChildren(this.nodes, program, model);
   }
@@ -50,8 +44,11 @@ export default class {
 
   renderNodeAndChildren = (node, program, model) => {
     let newModel = model;
-    newModel = this.setNodeModel(node, program, model);
-    this.renderNode(node, program);
+    // apply only on mesh transformation, should exclude joint transformation/animation
+    if (node.customType !== "joint") {
+      newModel = this.setNodeModel(node, program, model);
+      this.renderNode(node, program);
+    }
     if (node.children) {
       this.renderNodesAndChildren(node.children, program, newModel);
     }
@@ -93,6 +90,12 @@ export default class {
     }
   }
 
+  static formatPrimitives = (gl, primitives) =>
+    primitives.map((primitive) => {
+      const { vbos, material } = primitive;
+      return new ObjetGltfPrimitive(gl, { vbos, material });
+    });
+
   handleLocalTransform = (node) => {
     const { translation, rotation, scale, matrix } = node;
 
@@ -116,3 +119,5 @@ export default class {
     return localMatrix;
   };
 }
+
+export default ObjetGltf;
