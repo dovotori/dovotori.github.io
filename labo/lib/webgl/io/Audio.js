@@ -1,3 +1,5 @@
+// import AudioNode from './AudioNode';
+
 export default class {
   constructor(audioArrayBuffer) {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -33,6 +35,16 @@ export default class {
       // analyse
       this.sampleSize = 1024; // power of two / number of samples to collect before analyzing data
       this.javascriptNode = this.audioContext.createScriptProcessor(this.sampleSize, 1, 1);
+      /*
+      // anticipate deprecated chrome alert but still unecessery  
+      this.audioContext.audioWorklet.addModule('/public/worker/audioProcessor.js').then(() => {
+        this.audioNode = new AudioNode(this.audioContext);
+        this.audioNode.port.onmessage = (event) => {
+          // Handling data from the processor.
+          console.log(event.data);
+        };
+      });
+      */
       this.analyserNode = this.audioContext.createAnalyser();
       // this.analyserNode.fftSize = this.sampleSize;
       this.amplitudeArray = new Uint8Array(this.analyserNode.frequencyBinCount);
