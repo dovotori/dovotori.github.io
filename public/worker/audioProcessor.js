@@ -1,0 +1,1 @@
+class AudioProcessor extends AudioWorkletProcessor{constructor(){super(),this.port.onmessage=s=>{},this.port.postMessage("Hi!")}process(s,o,r){return!0}}registerProcessor("deform-worklet-processor",AudioProcessor);
