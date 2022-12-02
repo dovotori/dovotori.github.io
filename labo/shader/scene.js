@@ -76,6 +76,30 @@ export default class extends Scene {
     this.roadPositionY = 1.2;
     this.roadLength = 128;
 
+    this.mousePos = [0, 0];
+
+    const CIRCLE_VERTICES_COUNT = 256;
+    const CIRCLES_COUNT = 10;
+    const indexes = new Array(CIRCLE_VERTICES_COUNT).fill(0).map((_, index) => index);
+    this.circleVbo = new Primitive(gl, { index: indexes });
+    this.circleVbo.setModeDessin(this.gl.LINE_LOOP);
+    const progCircle = this.mngProg.get('movingCircle');
+    progCircle.setInt('length', CIRCLE_VERTICES_COUNT);
+    progCircle.setInt('count', CIRCLES_COUNT);
+    progCircle.setVector('mouse', this.mousePos);
+
+    const pos = new Array(CIRCLES_COUNT).fill(0).map((_, index) => index);
+    const offset = {
+      componentType: gl.FLOAT,
+      count: CIRCLES_COUNT,
+      size: 1,
+      type: 'VEC3',
+      values: new Float32Array(pos),
+    };
+    this.circleVbo.addInstancingVbos(CIRCLES_COUNT, {
+      offset,
+    });
+
     this.setupControls();
   }
 
@@ -134,7 +158,7 @@ export default class extends Scene {
         break;
       }
       case 1: {
-        this.model.rotate(this.time * 0.001, 0, 1, 0);
+        this.model.rotate(this.time * 0.005, 0, 1, 0);
         const newTime = mapFromRange(Math.cos(this.time * 0.01 * 0.05), -1, 1, 0, 1);
         this.particules.compute(this.mngProg.get('pass1Morph'), newTime);
         this.resizeViewport();
@@ -181,6 +205,15 @@ export default class extends Scene {
         this.screen.render(program.get());
         break;
       }
+      case 7: {
+        this.model.rotate(this.mousePos[0] * 40 - 20, 0, 1, 0);
+        const progCircle = this.mngProg.get('movingCircle');
+        progCircle.setMatrix('model', this.model.get());
+        progCircle.setFloat('time', this.time * 0.001);
+        progCircle.setVector('mouse', this.mousePos);
+        this.circleVbo.render(progCircle.get());
+        break;
+      }
       case 5:
       default: {
         this.grid.update();
@@ -201,5 +234,12 @@ export default class extends Scene {
     if (this.mode === 2) {
       this.linesTrail.onMouseDown(mouse);
     }
+  };
+
+  onMouseMove = (mouse) => {
+    this.mousePos = [
+      mouse.relScroll.x / mouse.size.width,
+      1 - mouse.relScroll.y / mouse.size.height,
+    ];
   };
 }

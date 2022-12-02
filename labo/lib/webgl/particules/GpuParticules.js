@@ -19,7 +19,7 @@ export const padMissingPoints = (points) => {
 };
 
 export default class {
-  constructor(gl, width = 32, height = 32, modeDessin) {
+  constructor(gl, width = 32, height = 32, modeDessin = gl.POINTS) {
     this.gl = gl;
     this.screen = new Screen(gl);
     this.fbo = new Fbo(gl, width, height);

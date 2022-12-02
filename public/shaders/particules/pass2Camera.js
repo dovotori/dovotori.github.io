@@ -11,9 +11,10 @@ varying vec4 color;
 void main() {
   vec3 particulePos = texture2D(textureMap, texture).xyz;
   // vec3 position = (particulePos * vec3(4.0)) - vec3(2.0);
+  particulePos.xz = particulePos.xz * 2.0 - 1.0; // center points
   vec3 position = particulePos;
   
-  gl_PointSize = 1.0; 	
+  gl_PointSize = 2.0; 	
   // gl_PointSize = 2.0 + step(1.0 - (1.0 / 64.0), position.x);
   
   gl_Position = projection * view * model * vec4(position, 1.0);

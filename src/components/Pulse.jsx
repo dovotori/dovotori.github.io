@@ -15,6 +15,7 @@ const pulse = keyframes`
     transform: scale(1.02);
   }
 `;
+
 const Circle = styled.div`
   position: absolute;
   width: 240px;
@@ -25,7 +26,7 @@ const Circle = styled.div`
   background: linear-gradient(to right, #222, #333);
   transform-origin: center center;
   border-radius: 50%;
-`;
+  `;
 
 const CircleAnim = styled(Circle)`
   background: ${(p) => p.theme.primary};

@@ -7,6 +7,7 @@ export default {
     '/particules/pass1Morph.js',
     '/particules/pass2Camera.js',
     '/camera/basique3d.js',
+    '/camera/movingCircle.js',
     '/screen/landscape.js',
     '/screen/blurOnePass.js',
     '/screen/screen.js',

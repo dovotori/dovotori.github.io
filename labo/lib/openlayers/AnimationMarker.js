@@ -3,7 +3,7 @@ import { Vector as VectorLayer } from 'ol/layer';
 import Point from 'ol/geom/Point';
 import VectorSource from 'ol/source/Vector';
 import { Circle as CircleStyle, Fill, Style, Icon } from 'ol/style';
-import { getVectorContext } from 'ol/render';
+// import { getVectorContext } from 'ol/render';
 
 import house from 'Assets/svg/house.svg';
 import plane from 'Assets/svg/doubleplane.svg';

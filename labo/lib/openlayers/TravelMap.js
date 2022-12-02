@@ -160,9 +160,9 @@ const getMarkersLayer = (points) => {
 
   const style = new Style({
     image: new CircleStyle({
-      radius: 4,
-      fill: new Fill({ color: '#444' }),
-      stroke: new Stroke({ color: '#fff', width: 2 }),
+      radius: 6,
+      fill: new Fill({ color: '#66ffcc' }),
+      stroke: new Stroke({ color: '#ffffca', width: 2 }),
     }),
   });
 
@@ -174,7 +174,7 @@ const getMarkersLayer = (points) => {
 
 const getLineLayer = (points) => {
   const style = new Style({
-    stroke: new Stroke({ color: '#fff', width: 2, lineDash: [4, 4] }),
+    stroke: new Stroke({ color: '#66ffcc', width: 4, lineDash: [6, 10] }),
   });
 
   return new VectorLayer({
@@ -190,11 +190,19 @@ const getLineLayer = (points) => {
   });
 };
 
-const replacer = (key, value) => {
+const replacer = (moveX = 0, moveY = 0) => (key, value) => {
   if (value?.geometry) {
     let type;
     const rawType = value.type;
     let { geometry } = value;
+
+    if (moveX !== 0 || moveY !== 0) {
+      for (let i = 0; i < geometry.length; i++) {
+        for (let j = 0; j < geometry[i].length; j++) {
+          geometry[i][j] = [geometry[i][j][0] + moveX, geometry[i][j][1] + moveY];
+        }
+      }
+    }
 
     if (rawType === 1) {
       type = 'MultiPoint';
@@ -228,21 +236,14 @@ const replacer = (key, value) => {
   return value;
 };
 
-const getVectorMap = (json, highlightIso, colors) => {
+const getVectorMap = (json, format, highlightIso, colors) => {
   const tileIndex = geojsonvt(json, {
     extent: 4096,
     debug: 1,
   });
 
-  const vectorSource = new VectorTileSource({
-    format: new GeoJSON({
-      // Data returned from geojson-vt is in tile pixel units
-      dataProjection: new Projection({
-        code: 'TILE_PIXELS',
-        units: 'tile-pixels',
-        extent: [0, 0, 4096, 4096],
-      }),
-    }),
+  const source = new VectorTileSource({
+    format,
     tileUrlFunction(tileCoord) {
       const data = tileIndex.getTile(tileCoord[0], tileCoord[1], tileCoord[2]);
       const geojsonData = JSON.stringify(
@@ -250,7 +251,7 @@ const getVectorMap = (json, highlightIso, colors) => {
           type: 'FeatureCollection',
           features: data ? data.features : [],
         },
-        replacer
+        replacer()
       );
       return `data:application/json;charset=UTF-8,${geojsonData}`;
     },
@@ -268,8 +269,44 @@ const getVectorMap = (json, highlightIso, colors) => {
   };
 
   return new VectorTileLayer({
-    background: '#ffffca',
-    source: vectorSource,
+    background: colors.background,
+    source,
+    style,
+  });
+};
+
+const getDecalVectorMap = (json, format, highlightIso, colors) => {
+  const tileIndex = geojsonvt(json, {
+    extent: 4096,
+    debug: 1,
+  });
+
+  const source = new VectorTileSource({
+    format,
+    tileUrlFunction(tileCoord) {
+      const data = tileIndex.getTile(tileCoord[0], tileCoord[1], tileCoord[2]);
+      const geojsonData = JSON.stringify(
+        {
+          type: 'FeatureCollection',
+          features: data ? data.features : [],
+        },
+        replacer(10, 10)
+      );
+      return `data:application/json;charset=UTF-8,${geojsonData}`;
+    },
+  });
+
+  const style = (feature) => {
+    if (feature.get('iso_a3') === highlightIso) {
+      return new Style({
+        stroke: new Stroke({ color: colors.stroke }),
+      });
+    }
+    return null;
+  };
+
+  return new VectorTileLayer({
+    source,
     style,
   });
 };
@@ -297,14 +334,25 @@ export default ({
   icon,
   highlightIso,
   defaultZoom = 6,
-  colors = { highlight: '#4531d5', land: '#514799' },
+  colors = { highlight: '#4531d5', land: '#514799', stroke: '#0000ff', background: '#ffffca' },
 }) => {
   const formatPoints = points.map((point) => ({ ...point, coor: getCoor(point.coor) }));
   const labelPoints = formatPoints.filter((point) => point.label);
   const view = getView(labelPoints, defaultZoom);
   const animMarker = new AnimationMarker(formatPoints, icon);
 
-  const vectors = getVectorMap(geojson, highlightIso, colors);
+  const format = new GeoJSON({
+    // Data returned from geojson-vt is in tile pixel units
+    dataProjection: new Projection({
+      code: 'TILE_PIXELS',
+      units: 'tile-pixels',
+      extent: [0, 0, 4096, 4096],
+    }),
+  });
+
+  const vectors = getVectorMap(geojson, format, highlightIso, colors);
+  const translateVectors = getDecalVectorMap(geojson, format, highlightIso, colors);
+
   /* const tiles = new TileLayer({
     source: new Stamen({
       layer: 'watercolor'
@@ -326,6 +374,7 @@ export default ({
 
     // tiles,
     vectors,
+    translateVectors,
     lines,
     markers,
     animations,

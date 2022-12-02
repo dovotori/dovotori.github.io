@@ -7,7 +7,7 @@ import Cross from './Cross';
 
 const Wrap = styled.div`
   text-align: center;
-  max-width: 1212px;
+  max-width: 1400px;
   margin: 4em auto;
   display: flex;
   align-items: center;

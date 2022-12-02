@@ -1,11 +1,9 @@
 import { useRef, useCallback, useEffect } from 'react';
-import { connect } from 'react-redux';
 import styled from 'styled-components';
 import usePrevious from '../hooks/usePrevious';
 
 const Wrap = styled.span`
   position: relative;
-  display: inline-block;
   overflow: hidden;
 `;
 
@@ -17,21 +15,23 @@ const Hidden = styled.span`
 
 const Anim = styled.span`
   position: absolute;
-  display: inline-block;
-  top: 0.2em;
+  top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   display: flex;
   flex-wrap: wrap;
-  transition: color 1000ms linear;
+  display: flex;
+  min-width: 0.2em;
+  line-height: 1;
+  transition: color 500ms linear;
 `;
 
 const Letter = styled.span`
-  display: inline-block;
-  width: ${(p) => p.width};
+  display: flex;
   min-width: 0.2em;
-  line-height: 1.2;
+  line-height: 1;
+  overflow: visible;
 `;
 
 const ANIM_DURATION_RANGE = 30;
@@ -40,11 +40,10 @@ const CHARS = '!<>-_\\/[]{}—=+*^?#';
 
 const TypingMessage = ({
   message,
-  isTouchDevice,
+  isDisabled = false,
   firstMessage = '',
   className,
   isLoop = false,
-  width = 'auto',
   delay = 100, // en ms
 }) => {
   const animRef = useRef(null);
@@ -85,8 +84,8 @@ const TypingMessage = ({
         animRef.current.innerHTML = output
           .split('')
           .map((letter) => {
-            let span = `<span className="${className} letter" `;
-            span += `style="display:inline-block; width:${width}; min-width: 0.2em;">`;
+            let span = `<span class="letter" `;
+            span += `style="display:inline-block;">`;
             span += `${letter}</span>`;
             return span;
           })
@@ -115,7 +114,7 @@ const TypingMessage = ({
   }, []);
 
   useEffect(() => {
-    if (!isTouchDevice) {
+    if (!isDisabled) {
       const old = oldMessage || fromMessage.current;
       const length = Math.max(old.length, message.length);
       queue.current = [];
@@ -154,11 +153,11 @@ const TypingMessage = ({
 
   return (
     <Wrap className={className}>
-      <Hidden $isVisible={isTouchDevice}>
+      <Hidden $isVisible={isDisabled}>
         {message.split('').map((letter, index) => {
           const key = `${message}${letter}${index}`;
           return (
-            <Letter width={width} key={key}>
+            <Letter className="hidden-letter" key={key}>
               {letter}
             </Letter>
           );
@@ -169,8 +168,4 @@ const TypingMessage = ({
   );
 };
 
-const mapStateToProps = (state) => ({
-  isTouchDevice: state.device.isTouch,
-});
-
-export default connect(mapStateToProps)(TypingMessage);
+export default TypingMessage;

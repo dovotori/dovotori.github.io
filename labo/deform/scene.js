@@ -34,6 +34,10 @@ export default class extends Scene {
 
     this.mngObj.get(this.config.MAIN_OBJ).setModeDessin(this.gl.POINTS);
     this.targetZ.set(1);
+
+    const progCircle = this.mngProg.get('frequencyCircle');
+    progCircle.setInt('length', this.fVbo.getCount());
+    progCircle.setInt('maxfrequency', 256.0);
   }
 
   setupControls = ({ ranges }) => {
@@ -94,7 +98,7 @@ export default class extends Scene {
     program.setFloat('time', this.pulse.get());
   }
 
-  mainRender = (program, texData = null) => {
+  renderGlobe = (program, texData = null) => {
     // this.mngGltf.get(this.config.MAIN_OBJ).render(program, this.model);
     program.setMatrix('model', this.model.get());
     const normalMatrix = this.model.getMatrice3x3();
@@ -116,19 +120,17 @@ export default class extends Scene {
     const amplitudes = this.mngSound.get('akira').getAmplitudes();
     const texData = new TextureData(this.gl, amplitudes);
 
-    this.mainRender(this.mngProg.get(this.config.MAIN_PROG), texData);
+    this.renderGlobe(this.mngProg.get(this.config.MAIN_PROG), texData);
 
     const progCircle = this.mngProg.get('frequencyCircle');
-    progCircle.setMatrix('projection', this.camera.getProjection().get());
-    progCircle.setMatrix('view', this.camera.getView().get());
     progCircle.setMatrix('model', this.model.get());
-    progCircle.setInt('length', this.fVbo.getCount());
-    progCircle.setInt('maxfrequency', 256.0);
     this.uVbo.start(progCircle.get(), 'value', amplitudes);
     this.fVbo.start(progCircle.get(), 'index');
     this.gl.drawArrays(this.gl.LINE_LOOP, 0, this.fVbo.getCount());
     this.uVbo.end();
+    this.fVbo.end();
 
+    /* 
     const progGrid = this.mngProg.get('frequencyGrid');
     progGrid.setMatrix('model', this.model.get());
     progGrid.setInt('length', this.fVbo.getCount());
@@ -137,7 +139,7 @@ export default class extends Scene {
     this.fVbo.start(progGrid.get(), 'index');
     // this.gl.drawArrays(this.gl.POINTS, 0, this.fVbo.getCount());
     this.uVbo.end();
-
+    */
     // DEBUG
     // this.postProcess.render(texData.get());
   }

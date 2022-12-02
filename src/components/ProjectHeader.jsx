@@ -9,7 +9,9 @@ const WrapContent = styled.div`
   max-width: 800px;
 `;
 
-const WrapTexte = styled.div``;
+const WrapTexte = styled.div`
+ margin-top: 6em;
+`;
 
 const Description = styled.div`
   text-align: left;
@@ -23,7 +25,7 @@ const Description = styled.div`
 `;
 
 const Text = styled.p`
-  background: ${(p) => `url(${p.theme.stripes}) repeat`};
+  background: ${(p) => p.theme.backgroundHighlight};
   padding: 10px;
   width: 100%;
 `;
@@ -32,19 +34,20 @@ const Date = styled.p.attrs({ className: 'numbers' })`
   text-align: left;
   display: inline-block;
   margin: 0;
-  padding: 0.4em 10px;
+  padding: 0.4em 10px 0;
   color: ${(p) => p.theme.getColor};
   ${(p) => p.theme.monospace}
 `;
 
 const StyledTitle = styled.h1`
   ${(p) => p.theme.title}
-  margin: 1.5em 0 0;
+  margin: 0;
   padding: 0 10px;
+  white-space: nowrap;
+`;
 
-  & > span > span > span {
-    ${(p) => p.theme.primaryGradientText}
-  }
+const StyledTypingMessage = styled(TypingMessage)`
+  white-space: nowrap;
 `;
 
 const Bar = styled.div`
@@ -58,13 +61,12 @@ const Bar = styled.div`
 const ProjectHeader = ({ title, description, date, $colorType }) => (
   <WrapContent>
     <WrapTexte>
+      {date && <Date $colorType={$colorType}>{date}</Date>}
       {title && (
         <StyledTitle $colorType={$colorType}>
-          <TypingMessage message={title} />
+          <StyledTypingMessage message={title} />
         </StyledTitle>
       )}
-      {date && <Date $colorType={$colorType}>{date}</Date>}
-
       {description && (
         <>
           <Bar $colorType={$colorType} />

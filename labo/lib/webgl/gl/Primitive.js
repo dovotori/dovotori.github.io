@@ -32,6 +32,7 @@ const createVbosFromPrimitive = (gl, primitive) =>
         break;
       }
       case 'side':
+      case 'index':
       case 'random': {
         type = 'FLOAT';
         size = 1;

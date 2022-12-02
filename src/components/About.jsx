@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 import { ReactComponent as QuoteIcon } from 'Assets/svg/quote.svg';
 import SocialLinks from './SocialLinks';
@@ -7,24 +7,6 @@ import ButtonBack from './ButtonBack';
 import Bloc from './Bloc';
 import { jiggle } from './Animations';
 
-export const move = keyframes`
-  0% {
-    transform: scale(0.9,1);
-  }
-  25% {
-    transform: scale(0.7,1);
-  }
-  50% {
-    transform: scale(0.8,1);
-  }
-  75% {
-    transform: scale(0.7,1);
-  }
-  100% {
-    transform: none;
-  }
-}
-`;
 
 const StyledSocialLinks = styled(SocialLinks)`
   margin: 10em 0;
@@ -92,15 +74,6 @@ const Center = styled.div`
   margin: 4em auto;
 `;
 
-const Bar = styled.div`
-  width: 50%;
-  height: 1px;
-  margin: 2em 0;
-  background: ${(p) => p.theme.getGradient};
-  transform-origin: left center;
-  animation: ${move} 6s ${(p) => p.theme.elastic} alternate-reverse infinite;
-`;
-
 const About = ({ hello, isTouchDevice }) => (
   <Wrap>
     <WrapContent>
@@ -114,7 +87,6 @@ const About = ({ hello, isTouchDevice }) => (
         {hello.description.map((text) => (
           <Description key={text}>{text}</Description>
         ))}
-        <Bar />
       </MarginLeft>
       <CvContainer />
       <MarginLeft isTouch={isTouchDevice}>

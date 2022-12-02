@@ -45,7 +45,7 @@ const SociaLinks = ({ className }) => (
     <a href="https://github.com/dovotori">
       <StyledGithub />
     </a>
-    <a href="https://fr.linkedin.com/in/dorian-ratovo-636a9a95">
+    <a href="https://jp.linkedin.com/in/dorian-ratovo">
       <Linkedin />
     </a>
     <a href={`mailto:${process.env.MAIL}`} title="contact">

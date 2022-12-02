@@ -1,5 +1,3 @@
-import { mapFromRange } from '../utils/numbers';
-
 export const getPoints = (width, height) => {
   const points = [];
   for (let y = 0; y < height; y++) {

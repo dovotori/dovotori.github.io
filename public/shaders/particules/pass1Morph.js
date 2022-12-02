@@ -21,8 +21,8 @@ uniform float time;
 void main() {
   vec3 position = texture2D(textureMap, fragTexture).xyz;
   vec3 morph = texture2D(morphMap, fragTexture).xyz;
-  vec3 finalPos = mix(position, morph, vec3(time));
-  gl_FragColor = vec4(finalPos, 1.0);
+  position.y = mix(position.y, morph.y, time);
+  gl_FragColor = vec4(position, 1.0);
 }
 `;
 

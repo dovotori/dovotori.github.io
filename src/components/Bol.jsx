@@ -1,15 +1,54 @@
 import styled, { keyframes, createGlobalStyle } from 'styled-components';
 import { ReactComponent as BolSvg } from 'Assets/svg/bol2.svg';
+import { ReactComponent as BonzaiSvg } from 'Assets/svg/bonzai2.svg';
+import { useEffect, useRef } from 'react';
+import usePrevious from '../hooks/usePrevious';
+import { timeout } from "../utils";
 
 const GlobalStyle = createGlobalStyle`
 body[theme='light'] {
-    .hair {
-        fill: #444;
-    }   
-    .mode {
-        fill: #eee;
-    }
+  .hair {
+    fill: #444;
+  }   
+  .mode {
+    fill: #eee;
+  }
 }
+`;
+
+const revolution = keyframes`
+0% {
+  transform: none;
+}
+30% {
+  transform: rotate3d(0, 1, 0, 15deg);
+}
+70% {
+  transform: rotate3d(0, 1, 0, -25deg);
+}
+`;
+
+const Div = styled.div`
+  position:relative;
+  width: 100%;
+  height: 100%;
+
+  svg {
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    transform: translate3d(-50%, -50%, 0);
+  }
+
+  svg path {
+    transition: opacity 100ms ease-out;
+    opacity: 0;
+  }
+
+  svg path.anim {
+    opacity: 1;
+  }
 `;
 
 const dash = keyframes`
@@ -75,7 +114,19 @@ const noding = keyframes`
 }
 `;
 
+const StyledBonzai = styled(BonzaiSvg)`
+  z-index: 1;
+
+  g {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ${revolution} 10s linear infinite;
+  }
+`;
+
 const StyledBol = styled(BolSvg)`
+  z-index: 2;
+  position:relative;
   .mode {
     fill: #333;
   }
@@ -130,10 +181,44 @@ const StyledBol = styled(BolSvg)`
   }
 `;
 
-const Bol = ({ className }) => (<>
-  <GlobalStyle />
-  <StyledBol className={className} $colorType={0} />
-</>
-);
+const Bol = ({ className, isSwitched = false }) => {
+  const ref = useRef(null);
+  const svgs = useRef(null);
+  const previousIsSwitched = usePrevious(isSwitched);
+
+  const animSvg = async (svg, isAppear = true) => {
+    const paths = svg.querySelectorAll("path");
+    for (const p of paths) {
+      if (isAppear) {
+        p.classList.add('anim');
+      } else {
+        p.classList.remove('anim');
+      }
+      await timeout(20);
+    }
+  };
+
+  useEffect(() => {
+    if (ref.current) {
+      const isFirstMount = previousIsSwitched === undefined;
+      svgs.current = ref.current.querySelectorAll("svg");
+      const cpt = isSwitched ? 1 : 0;
+      const asyncExec = async () => {
+        if (!isFirstMount) {
+          await animSvg(svgs.current[!isSwitched ? 1 : 0], false);
+        }
+        await animSvg(svgs.current[cpt]);
+      };
+      asyncExec();
+    }
+  }, [isSwitched]);
+
+  return (<Div ref={ref} className={className}>
+    <GlobalStyle />
+    <StyledBol $colorType={0} />
+    <StyledBonzai />
+  </Div>
+  );
+};
 
 export default Bol;

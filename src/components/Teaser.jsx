@@ -17,7 +17,7 @@ const StyledLink = styled(Link).attrs({
   margin: 1em;
   width: 400px;
   height: 100px;
-  opacity: ${(p) => p.$levelOpacity};
+  opacity: 1;
   box-shadow: 0 0 1em ${(p) => p.theme.backgroundHighlight};
   border-radius: 0.4em;
   transform: ${(p) => {

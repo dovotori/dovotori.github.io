@@ -19,7 +19,7 @@ const initialState = {
     title: 'Dorian Ratovo',
     text: 'Front End developer',
     contact: 'Contact me',
-    about: 'Nice to meet you!',
+    about: 'Hi!',
     bulle: 'See more',
     description: [
       'After graphic design studies, i was impressed by web possibilities and start to learn on my own.',

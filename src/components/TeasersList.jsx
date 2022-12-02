@@ -12,10 +12,11 @@ const Wrap = styled.div.attrs({
 })`
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   flex-wrap: wrap;
   width: calc(100% - 20px);
-  margin-left: 10px;
+  margin: 0 auto;
+  max-width: 1400px;
 `;
 
 const TeasersList = ({ entries, isTouchDevice, className }) => {

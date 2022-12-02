@@ -112,11 +112,11 @@ class TerrainScene extends Scene {
       );
     });
 
-    const threeCount = 400;
+    const THREE_COUNT = 400;
     const pos = [];
     const col = [];
     const siz = [];
-    for (let i = 0; i < threeCount; i++) {
+    for (let i = 0; i < THREE_COUNT; i++) {
       pos.push(Math.random() * 2.0 - 1.0, 0, Math.random() * 2.0 - 1.0);
       col.push(0.4, 0.6, Math.random());
       siz.push(0.05 + Math.random() * 0.06);
@@ -124,7 +124,7 @@ class TerrainScene extends Scene {
 
     const offset = {
       componentType: gl.FLOAT,
-      count: threeCount,
+      count: THREE_COUNT,
       size: 3,
       type: 'VEC3',
       values: new Float32Array(pos),
@@ -132,7 +132,7 @@ class TerrainScene extends Scene {
 
     const acolor = {
       componentType: gl.FLOAT,
-      count: threeCount,
+      count: THREE_COUNT,
       size: 3,
       type: 'VEC3',
       values: new Float32Array(col),
@@ -140,13 +140,13 @@ class TerrainScene extends Scene {
 
     const size = {
       componentType: gl.FLOAT,
-      count: threeCount,
+      count: THREE_COUNT,
       size: 1,
       type: 'FLOAT',
       values: new Float32Array(siz),
     };
 
-    this.mngGltf.get('three').addInstancingVbos(threeCount, {
+    this.mngGltf.get('three').addInstancingVbos(THREE_COUNT, {
       offset,
       acolor,
       size,
