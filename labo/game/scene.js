@@ -2,18 +2,19 @@ import Scene from './src/SceneGame';
 import SplashScreen from './src/game/SplashScreen';
 
 export default class extends Scene {
-  constructor(gl, config, assets, width = 512, height = 512) {
-    const { game, ...restConfig } = config;
-    const { levels, ...restGame } = game;
-    const { levels: assetsLevels, ...restAssets } = assets;
-    const finalConfig = { ...restConfig, game: restGame };
-    super(gl, finalConfig, restAssets, width, height);
+  constructor(gl, config) {
+    super(gl, config);
     this.isSplashScreen = true;
     this.needReset = false;
     this.splash = new SplashScreen();
     this.splash.showReady();
     this.currentLevel = 0;
+  }
 
+  async setupAssets(assets) {
+    const { levels: assetsLevels, ...restAssets } = assets;
+    await super.setupAssets(restAssets);
+    const { levels } = this.config.game;
     if (levels) {
       const level = levels[this.currentLevel];
       const asset = assetsLevels[level.tilemap.texture];

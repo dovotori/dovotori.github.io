@@ -6,9 +6,7 @@ import DualQuaternion from '../lib/webgl/maths/DualQuaternion';
 import { mapFromRange, degToRad } from '../lib/webgl/utils/numbers';
 
 export default class extends Scene {
-  constructor(gl, config, assets) {
-    super(gl, config, assets);
-
+  setup() {
     this.model = new Mat4();
     this.model.identity();
     this.targetX = new Target(0, 0.2);

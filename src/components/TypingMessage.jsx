@@ -1,139 +1,155 @@
-import { useRef, useCallback, useEffect } from 'react';
+import { useRef, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import usePrevious from '../hooks/usePrevious';
 
-const Wrap = styled.span`
+const Wrap = styled.div`
   position: relative;
-  overflow: hidden;
+
+  p {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: ${p => p.$isVertical ? 'column' : 'row'};
+    line-height: 1;
+    align-items: center;
+    justify-content: ${p => p.$isCenter ? 'center' : 'flex-start'};
+
+    span {
+      margin: 0 ${p => p.$isVertical ? 0 : '0.2em'} 0 0;
+    }
+  }
 `;
 
-const Hidden = styled.span`
-  display: flex;
-  flex-wrap: wrap;
+const Hidden = styled.p`
   visibility: ${(p) => (p.$isVisible ? 'visible' : 'hidden')};
 `;
 
-const Anim = styled.span`
+const Anim = styled.p`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  display: flex;
-  min-width: 0.2em;
-  line-height: 1;
   transition: color 500ms linear;
 `;
 
-const Letter = styled.span`
-  display: flex;
-  min-width: 0.2em;
-  line-height: 1;
-  overflow: visible;
-`;
-
-const ANIM_DURATION_RANGE = 30;
-const ANIM_FPS = 3000 / 60;
 const CHARS = '!<>-_\\/[]{}—=+*^?#';
+const Modes = {
+  DISAPPEAR: -1,
+  APPEAR: 1,
+  STOP: 0
+};
 
 const TypingMessage = ({
-  message,
+  message = '',
   isDisabled = false,
+  isVertical = false,
+  isCenter = false,
   firstMessage = '',
   className,
   isLoop = false,
-  delay = 100, // en ms
+  delayLoop = 5000, // en ms
+  delayLetter = 100, // en ms
 }) => {
-  const animRef = useRef(null);
-  const queue = useRef([]);
   const count = useRef(0);
   const lastFrame = useRef(new Date().getTime());
   const req = useRef(null);
   const timeout = useRef(null);
-  const oldMessage = usePrevious(message);
   const fromMessage = useRef(firstMessage);
+  const toMessage = useRef(message);
+  const mode = useRef(Modes.STOP);
+  const [displayMessage, setDisplayMessage] = useState(firstMessage);
 
   const randomChar = useCallback(() => CHARS[Math.floor(Math.random() * CHARS.length)], []);
+  const randomStr = useCallback((length) => new Array(length).fill(0).map(randomChar).join(''), []);
+  const randomCurrentStr = useCallback((str) => str.split('').map((car, i) => {
+    if (car === ' ') return car;
+    if (Math.random() > 0.5) return randomChar();
+    return car;
+  }).join(''), []);
 
   const update = useCallback(() => {
     const now = new Date().getTime();
     const milli = now - lastFrame.current;
-
-    let complete = 0;
-    if (milli > ANIM_FPS) {
-      let output = '';
-      for (let i = 0, n = queue.current.length; i < n; i++) {
-        const { from, to, start, end } = queue.current[i];
-        let { char } = queue.current[i];
-        if (count.current >= end) {
-          complete += 1;
-          output += to;
-        } else if (count.current >= start) {
-          if (!char || Math.random() < 0.5) {
-            char = randomChar();
-            queue.current[i].char = char;
-          }
-          output += char;
-        } else {
-          output += from;
-        }
-      }
-      if (animRef.current && output.length > 0) {
-        animRef.current.innerHTML = output
-          .split('')
-          .map((letter) => {
-            let span = `<span class="letter" `;
-            span += `style="display:inline-block;">`;
-            span += `${letter}</span>`;
-            return span;
-          })
-          .join('');
-      }
-      lastFrame.current = now;
-    }
-    if (complete !== queue.current.length) {
-      count.current += 1;
+    if (milli < delayLetter) {
       req.current = requestAnimationFrame(update);
-    } else if (isLoop) {
-      count.current = 0;
-      fromMessage.current = message;
+      return;
+    }
+
+    let text = '';
+    switch (mode.current) {
+      case Modes.APPEAR: {
+        if (count.current < toMessage.current.length) {
+          count.current++;
+          text = toMessage.current.substring(0, count.current);
+          text = randomCurrentStr(text);
+        } else {
+          text = toMessage.current;
+          fromMessage.current = toMessage.current;
+          mode.current = Modes.STOP;
+        }
+        break;
+      }
+      case Modes.DISAPPEAR: {
+        if (count.current > 0) {
+          count.current--;
+          text = fromMessage.current.substring(0, count.current);
+          text = randomCurrentStr(text);
+        } else {
+          count.current++;
+          mode.current = Modes.APPEAR;
+          text = randomStr(count.current);
+        }
+        break;
+      }
+      case Modes.STOP:
+      default:
+        break;
+    }
+
+    setDisplayMessage(text)
+    lastFrame.current = now;
+
+    if (mode.current !== Modes.STOP) {
+      req.current = requestAnimationFrame(update);
+    } else if (mode.current === Modes.STOP && isLoop) {
       if (timeout.current) {
         clearTimeout(timeout.current);
       }
       timeout.current = setTimeout(() => {
+        mode.current = Modes.DISAPPEAR;
         req.current = requestAnimationFrame(update);
-      }, delay);
+      }, delayLoop);
     }
-    return () => {
-      if (timeout.current) {
-        clearTimeout(timeout.current);
-      }
-    };
-  }, []);
+  }, [setDisplayMessage]);
 
   useEffect(() => {
+    if (timeout.current) {
+      clearTimeout(timeout.current);
+    }
+
     if (!isDisabled) {
-      const old = oldMessage || fromMessage.current;
-      const length = Math.max(old.length, message.length);
-      queue.current = [];
-      for (let i = 0; i < length; i += 1) {
-        const from = old.charAt(i) || '';
-        const to = message.charAt(i) || '';
-        const start = Math.floor(Math.random() * ANIM_DURATION_RANGE);
-        const end = start + Math.floor(Math.random() * ANIM_DURATION_RANGE);
-        queue.current.push({
-          from,
-          to,
-          start,
-          end,
-        });
+      const old = displayMessage;
+      let nextMode = Modes.STOP;
+
+      // determine le mode
+      if (old.length === 0 && message.length > 0) {
+        nextMode = Modes.APPEAR;
+        count.current = 0;
+      } else if (old.length > 0 && message.length > 0) {
+        nextMode = Modes.DISAPPEAR;
+        count.current = old.length;
+      } else {
+        nextMode = Modes.STOP;
       }
-      cancelAnimationFrame(req.current);
-      count.current = 0;
-      lastFrame.current = new Date().getTime();
-      req.current = requestAnimationFrame(update);
+
+      if (req.current) {
+        cancelAnimationFrame(req.current);
+      }
+      if (nextMode !== Modes.STOP) {
+        fromMessage.current = old;
+        toMessage.current = message;
+        lastFrame.current = new Date().getTime();
+        mode.current = nextMode;
+        req.current = requestAnimationFrame(update);
+      }
     }
     return () => {
       if (req.current) {
@@ -143,27 +159,57 @@ const TypingMessage = ({
   }, [message]);
 
   useEffect(
+    () => {
+      if (timeout.current) {
+        clearTimeout(timeout.current);
+      }
+      if (isLoop) {
+        timeout.current = setTimeout(() => {
+          mode.current = Modes.DISAPPEAR;
+          req.current = requestAnimationFrame(update);
+        }, delayLoop);
+      }
+      return () => {
+        if (timeout.current) {
+          clearTimeout(timeout.current);
+        }
+      };
+    },
+    [isLoop]
+  );
+
+  useEffect(
     () => () => {
       if (req.current) {
         cancelAnimationFrame(req.current);
+      }
+      if (timeout.current) {
+        clearTimeout(timeout.current);
       }
     },
     []
   );
 
   return (
-    <Wrap className={className}>
+    <Wrap className={className} $isVertical={isVertical} $isCenter={isCenter}>
       <Hidden $isVisible={isDisabled}>
         {message.split('').map((letter, index) => {
           const key = `${message}${letter}${index}`;
           return (
-            <Letter className="hidden-letter" key={key}>
-              {letter}
-            </Letter>
+            <span key={key}>
+              {letter === ' ' ? `_` : letter}
+            </span>
           );
         })}
       </Hidden>
-      <Anim ref={animRef} />
+      <Anim>{displayMessage.split('').map((letter, index) => {
+        const key = `${displayMessage}${letter}${index}`;
+        return (
+          <span key={key}>
+            {letter === ' ' ? `_` : letter}
+          </span>
+        );
+      })}</Anim>
     </Wrap>
   );
 };

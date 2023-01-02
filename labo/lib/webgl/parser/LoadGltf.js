@@ -363,7 +363,7 @@ export default class {
     if (newNodes) this.data.nodes = newNodes;
     if (newSkins) this.data.skins = newSkins;
     if (newMaterials) this.data.materials = newMaterials;
-    console.log('[Gltf custom data]', this.data, `\n${nodes.length} nodes\n${allJointsIds?.length} joints`);
+    console.log('[Gltf custom data]', this.data, `\n${nodes.length} nodes\n${allJointsIds?.length || '0'} joints`);
   }
 
   get() {

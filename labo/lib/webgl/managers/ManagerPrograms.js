@@ -1,13 +1,36 @@
 import Program from '../gl/Program';
+import { later } from '../../../utils';
+
 
 export default class {
-  constructor(gl, shaders, resolution) {
+  constructor() {
     this.programs = {};
+  }
 
+  async setup(gl, shaders, resolution) {
+    const startTime = performance.now();
+    /*
+    // linear loading
     Object.keys(shaders).forEach((name) => {
       const shader = shaders[name];
       this.programs[name] = new Program(gl, shader);
     });
+    */
+    function* generateProgram() {
+      const shadersKeys = Object.keys(shaders);
+      for (let i = 0; i < shadersKeys.length; i++) {
+        const name = shadersKeys[i];
+        const shader = shaders[name];
+        yield { prog: new Program(gl, shader), name };
+      }
+    };
+    const generator = generateProgram();
+    for (const item of generator) {
+      await later();
+      this.programs[item.name] = item.prog;
+    }
+
+    console.log('programs', performance.now() - startTime);
     this.updateResolution(resolution.width, resolution.height);
   }
 

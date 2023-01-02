@@ -19,7 +19,7 @@ export const getPoints = (stacks = 32, slices = 32) => {
   return points;
 };
 
-export const getIndices = (stacks = 32, slices = 32, nbPoints) => {
+export const getIndices = (stacks = 32, slices = 32, nbPoints = 30) => {
   const indices = [];
   // top row triangle fan
   for (let j = 1; j < slices; j++) {

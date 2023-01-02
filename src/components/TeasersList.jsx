@@ -27,7 +27,9 @@ const TeasersList = ({ entries, isTouchDevice, className }) => {
       {sortEntries.map((item, index) => (
         <StyledTeaser
           key={item.id}
-          entry={item}
+          category={item.category}
+          slug={item.slug}
+          title={item.title}
           index={index}
           currentHover={currentHover}
           setCurrentHover={setCurrentHover}

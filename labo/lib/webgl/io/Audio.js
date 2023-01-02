@@ -33,7 +33,7 @@ export default class {
       this.gainNode.connect(this.audioContext.destination);
 
       // analyse
-      this.sampleSize = 1024; // power of two / number of samples to collect before analyzing data
+      this.sampleSize = 2048; // power of two / number of samples to collect before analyzing data
       this.javascriptNode = this.audioContext.createScriptProcessor(this.sampleSize, 1, 1);
       /*
       // anticipate deprecated chrome alert but still unecessery  
@@ -46,7 +46,9 @@ export default class {
       });
       */
       this.analyserNode = this.audioContext.createAnalyser();
-      // this.analyserNode.fftSize = this.sampleSize;
+      this.analyserNode.minDecibels = -90;
+      this.analyserNode.maxDecibels = -30;
+      this.analyserNode.fftSize = this.sampleSize;
       this.amplitudeArray = new Uint8Array(this.analyserNode.frequencyBinCount);
     } else {
       console.debug('No audio api support');

@@ -1,5 +1,5 @@
 const MAIN_PROG = 'skin';
-const MAIN_OBJ = 'RiggedFigureCustom2'; // 'rigTest'; // 'skinTest1'; // 'RiggedFigure';
+const MAIN_OBJ = 'moreSimple'; // 'RiggedFigureCustom2'; // 'rigTest'; // 'skinTest1'; // 'RiggedFigure';
 export default {
   slug: 'skin',
   MAIN_PROG,
@@ -7,7 +7,7 @@ export default {
   shaders: ['/camera/basique3d.js', `/camera/${MAIN_PROG}.js`],
   assets: [`/gltf/${MAIN_OBJ}.gltf`],
   camera: {
-    position: { x: 0, y: 0, z: 10 },
+    position: { x: 0, y: 0, z: 40 },
     target: { x: 0, y: 0, z: 0 },
     near: 1,
     far: 200,

@@ -6,7 +6,7 @@ import Mat4 from '../maths/Mat4';
 class ObjectGltfSkin extends ObjetGltfAnim {
   constructor(gl, data, forceStep = null) {
     super(gl, data);
-    const { skins } = data;
+    const { nodes, skins } = data;
     if (skins) {
       skins.forEach(({ joints }) => {
         this.addJointsAnimations(joints, forceStep);
@@ -57,8 +57,14 @@ class ObjectGltfSkin extends ObjetGltfAnim {
   };
 
   setProgramJoints = (joints, program, parentMatrix, depth = 0) => {
+    // console.log('--------')
     joints.forEach((joint) => {
-      const { invMatrix, children } = joint;
+      const { invMatrix, children, name } = joint;
+
+      // if (['neutral_bone', 'Bras.L', 'AvBras.L', 'Main.L'].indexOf(name) !== -1) return;
+      // if (['neutral_bone', 'Cou', 'Tete'].indexOf(name) !== -1) return;
+      // console.log(name, depth, finalMatrix.get())
+
 
       const localMatrix = this.handleLocalTransform(joint);
       localMatrix.multiply(parentMatrix);
@@ -82,3 +88,25 @@ class ObjectGltfSkin extends ObjetGltfAnim {
 }
 
 export default ObjectGltfSkin;
+
+/**
+ 
+"skins" : [
+  {
+    "inverseBindMatrices" : 5,
+    "joints" : [
+      7, // Hanches
+      6, // Torse
+      5, // HautTorse
+      1, // COU
+      0, // TETE
+      4, // Bras.L
+      3, // AvBras.L
+      2, // Main.L
+      8 // neutral_bone
+    ],
+    "name" : "Armature.001"
+  }
+],
+
+ */

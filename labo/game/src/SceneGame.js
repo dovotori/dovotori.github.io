@@ -9,8 +9,8 @@ import Heros from './persos/Heros';
 import Monster from './persos/Monster';
 
 export default class extends Scene {
-  constructor(gl, config, assets, width = 1024, height = 1024) {
-    super(gl, config, assets, width, height);
+  constructor(gl, config) {
+    super(gl, config);
 
     this.targetRGB = new Target(0, 0.1);
     this.targetWave = new Target(0, 0.1);
@@ -97,11 +97,6 @@ export default class extends Scene {
       this.interactives[id].getCollisionBox()
     );
     this.collisions.addBoxes(boxes);
-  }
-
-  resize(box) {
-    super.resize(box);
-    this.postProcess.resize(box);
   }
 
   update(time) {

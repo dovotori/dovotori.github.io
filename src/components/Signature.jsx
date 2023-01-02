@@ -87,6 +87,7 @@ const Katakana = styled.h1`
   left: 50%;
   transform: translate3d(-50%,-50%, 0);
   width: 1.5em;
+  text-shadow: none;
 
   span {
     text-align: center;
@@ -94,10 +95,6 @@ const Katakana = styled.h1`
 
   ${(p) => p.theme.media.mobile`
     font-size: 800%;
-    span.letter, span.hidden-letter {
-      display: block;
-      width: 100%;
-    }
   `}
 `;
 
@@ -156,9 +153,8 @@ const Signature = ({ className, isTouchDevice, hello, text, isHome = true }) => 
       <Katakana isTouch={isTouchDevice} isHome={isHome}>
         <StyledTypingMessage
           message={isHome ? 'ドリアン' : 'はじめまして'}
-          width="1.5em"
           isLoop
-          delay={5000}
+          isVertical
         />
       </Katakana>
       <Absolute isTouch={isTouchDevice}>
@@ -177,9 +173,8 @@ const Signature = ({ className, isTouchDevice, hello, text, isHome = true }) => 
               <StyledTypingMessage
                 message={isHome ? 'dorian' : hello}
                 firstMessage="ドリアン"
-                width="1em"
                 isLoop
-                delay={5000}
+                isCenter
               />
             </Name>
             <Text>{text}</Text>

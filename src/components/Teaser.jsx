@@ -52,7 +52,21 @@ const Infos = styled.div`
   overflow: hidden;
   background: ${(p) => p.theme.getGradient};
   height: 100%;
-`;
+  `;
+
+const Title = styled.h3`
+  position: absolute;
+  top: 50%;
+  left: 0;
+  color: ${(p) => p.theme.text};
+  font-size: 10em;
+  letter-spacing: 0.1em;
+  opacity: ${(p) => (p.$isFocus ? 0.4 : 0)};
+  transition: opacity 1s ${(p) => p.theme.elastic}, transform 1s ${(p) => p.theme.elastic};
+  transform: ${(p) => (p.$isFocus ? 'translate3d(0, -50%, 0)' : 'translate3d(-100%, -50%, 0)')};
+  z-index: 1;
+  white-space: nowrap;
+  `;
 
 const Plus = styled(PlusIcon)`
   position: absolute;
@@ -62,16 +76,16 @@ const Plus = styled(PlusIcon)`
   height: 50%;
   fill: ${(p) => p.theme.getColor};
   opacity: ${(p) => (p.$isFocus ? 1 : 0)};
-  transition: opacity 1000ms ${(p) => p.theme.elastic}, transform 1000ms ${(p) => p.theme.elastic};
+  transition: opacity 1s ${(p) => p.theme.elastic}, transform 1s ${(p) => p.theme.elastic};
   transform: ${(p) => (p.$isFocus ? 'none' : 'scale(0) rotate(45deg)')};
+  z-index: 2;
 `;
 
 const WrapLoader = styled.div`
   margin: 20px auto;
 `;
 
-const Teaser = ({ entry, className, currentHover, setCurrentHover, isTouchDevice }) => {
-  const { category, slug, title } = entry;
+const Teaser = ({ className, category, slug, title = '', currentHover, setCurrentHover = () => { }, isTouchDevice }) => {
   const $colorType = getColorType(category);
   const [isHovered, setIsHovered] = useState(false);
   const [refInView, inView] = useInView({
@@ -120,7 +134,10 @@ const Teaser = ({ entry, className, currentHover, setCurrentHover, isTouchDevice
           </WrapLoader>
         </StyledLazyImage>
       </Infos>
-      <Plus $isFocus={isHovered} $colorType={$colorType} />
+      {!isTouchDevice ? <>
+        <Plus $isFocus={isHovered} $colorType={$colorType} />
+        <Title $isFocus={isHovered}>{title}</Title>
+      </> : null}
     </StyledLink>
   );
 };

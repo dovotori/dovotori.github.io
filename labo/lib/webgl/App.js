@@ -14,6 +14,7 @@ export default class {
     this.scene = null;
     this.loop = null;
     this.configRatio = null;
+    this.resizeObserver = null;
   }
 
   async setup(Scene, config) {
@@ -43,8 +44,13 @@ export default class {
       canvas: { ...config.canvas, width, height },
       support: this.canvas.getSupport(),
     };
-    this.scene = new Scene(this.canvas.getContext(), finalConfig, assets);
-    new ResizeObserver(this.resize).observe(container);
+    this.scene = new Scene(this.canvas.getContext(), finalConfig);
+    await this.scene.setupAssets(assets)
+    if (this.scene.setup) {
+      this.scene.setup();
+    }
+    this.resizeObserver = new ResizeObserver(this.resize);
+    this.resizeObserver.observe(container);
 
     if (config) {
       if (config.keyboard) {
@@ -127,6 +133,9 @@ export default class {
     }
     if (this.controls) {
       this.controls.destroy();
+    }
+    if (this.controls) {
+      this.resizeObserver.disconnect();
     }
   }
 

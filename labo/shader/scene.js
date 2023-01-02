@@ -27,19 +27,18 @@ const getDistortion = (progress, frequence, amplitude, time) => {
 };
 
 export default class extends Scene {
-  constructor(gl, config, assets) {
-    super(gl, config, assets);
-
-    this.screen = new Screen(this.gl);
-    this.linesTrail = new LinesTrail(this.gl);
+  setup() {
+    const { gl } = this;
+    this.screen = new Screen(gl);
+    this.linesTrail = new LinesTrail(gl);
 
     this.grid = new Grid(40);
     this.vboGrid = new Primitive(gl, { position: this.grid.getPositions() }, true);
-    this.vboGrid.setModeDessin(this.gl.POINTS);
+    this.vboGrid.setModeDessin(gl.POINTS);
 
     this.migration = new Migration(40);
     this.vboMigration = new Primitive(gl, { position: this.migration.getPositions() }, true);
-    this.vboMigration.setModeDessin(this.gl.POINTS);
+    this.vboMigration.setModeDessin(gl.POINTS);
 
     this.particules = new GpuParticules(gl, 32, 32);
     this.particules.addDataTexture('textureMap', getGridPerlinPoints(32, 32));
@@ -82,7 +81,7 @@ export default class extends Scene {
     const CIRCLES_COUNT = 10;
     const indexes = new Array(CIRCLE_VERTICES_COUNT).fill(0).map((_, index) => index);
     this.circleVbo = new Primitive(gl, { index: indexes });
-    this.circleVbo.setModeDessin(this.gl.LINE_LOOP);
+    this.circleVbo.setModeDessin(gl.LINE_LOOP);
     const progCircle = this.mngProg.get('movingCircle');
     progCircle.setInt('length', CIRCLE_VERTICES_COUNT);
     progCircle.setInt('count', CIRCLES_COUNT);

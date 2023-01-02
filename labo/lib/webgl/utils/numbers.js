@@ -36,3 +36,24 @@ export const nearestNextPowerOf2 = (n) => {
 export const fract = (x) => x - Math.floor(x);
 
 export const mix = (x, y, a) => x * (1 - a) + y * a;
+
+export const TWO_PI = Math.PI * 2
+export const QUARTER_TURN = Math.PI / 2;
+
+export const inverseLerp = (start, end, value) => (value - start) / (end - start)
+
+export const normalizeAngle = (angle) => {
+  if (angle < 0) {
+    return TWO_PI - (Math.abs(angle) % TWO_PI);
+  }
+  return angle % TWO_PI;
+}
+
+export const latLngToCartesian = ([radius, lat, lng]) => {
+  const nlng = -lng + Math.PI / 2;
+  return [
+    radius * Math.cos(lat) * Math.cos(nlng),
+    radius * Math.sin(lat),
+    radius * -Math.cos(lat) * Math.sin(nlng),
+  ];
+}

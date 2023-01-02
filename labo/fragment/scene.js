@@ -9,9 +9,7 @@ const pathLogo =
   'm-10-20-2 2 8 12-18 18v5l7 7v-10l5-5 5 5h10l5-5 5 5v10l7-7v-5l-18-18 8-12-2-2-10 10z';
 
 export default class extends Scene {
-  constructor(gl, config, assets) {
-    super(gl, config, assets);
-
+  setup() {
     const points = getAbsoluteCoor(pathLogo, true);
     const indices = earcut(points.flat());
 

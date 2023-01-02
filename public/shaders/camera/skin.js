@@ -1,4 +1,4 @@
-const MAX_JOINT_MAT = 4;
+const MAX_JOINT_MAT = 6;
 
 const vertex = `
 attribute vec3 position;

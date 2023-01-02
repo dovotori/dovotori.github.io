@@ -49,6 +49,7 @@ const common = {
   secondaryGradient: 'linear-gradient(to right, #FF4D4D,  #993D3D)',
   tertiaryGradient: 'linear-gradient(to right, #514799, #4531d5)',
   neutralGradient: 'linear-gradient(to right, #444,  #aaa)',
+  // gradient(315deg, #42d392 25%, #647eff); // vuejs
   // #5ba8c2
   // #8b9fcb
   // #514799
@@ -122,6 +123,7 @@ export const dark = {
   text: '#fff',
   stripes: stripesWhite,
   isLight: false,
+  softGradient: 'linear-gradient(180deg, #111, #222)',
 };
 
 export const light = {
@@ -139,4 +141,5 @@ export const light = {
   text: '#000',
   stripes,
   isLight: true,
+  softGradient: 'linear-gradient(180deg, #ccc, #fff)',
 };

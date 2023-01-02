@@ -60,7 +60,7 @@ const MainRoutes = () => {
   return (
     <Router>
       <>
-        <MinHeight>
+        <MinHeight className='min-height'>
           <Routes>
             <Route path="/qrcode" exact element={<BackButton />} />
             <Route path="/about" exact element={<Common />} />

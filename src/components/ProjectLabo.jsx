@@ -12,8 +12,8 @@ const loadTransition = keyframes`
 const Wrap = styled.div`
   position: relative;
   margin: 0 auto 10vh;
-  min-height: 400px;
   max-width: 1024px;
+  min-height: 400px;
   text-align: left;
   color: ${(p) => p.theme.light};
   overflow: hidden;

@@ -65,12 +65,12 @@ class TerrainScene extends Scene {
     program.setFloat('persistance', persistance);
   }
 
-  constructor(gl, config, assets) {
-    super(gl, config, assets);
+  setup() {
+    const { config, gl } = this;
 
-    this.fbo = new Fbo(this.gl, config.width, config.height, true);
-    this.fbo2 = new Fbo(this.gl, config.width, config.height, true);
-    this.fbo3 = new Fbo(this.gl, config.width, config.height, true);
+    this.fbo = new Fbo(gl, config.width, config.height, true);
+    this.fbo2 = new Fbo(gl, config.width, config.height, true);
+    this.fbo3 = new Fbo(gl, config.width, config.height, true);
 
     const { width, height, colors, waterLevel } = config.terrain;
 
@@ -79,10 +79,10 @@ class TerrainScene extends Scene {
     this.model = new Mat4();
 
     this.vbo = new Primitive(gl, getTerrain(width, height, { withThick: true, thicknessY: -0.1 }));
-    this.vbo.setModeDessin(this.gl.TRIANGLE_STRIP);
+    this.vbo.setModeDessin(gl.TRIANGLE_STRIP);
 
     // this.vbo = new Primitive(gl, getGrid(width, height, { withThick: true, thicknessY: -0.1 }));
-    // this.vbo.setModeDessin(this.gl.TRIANGLES);
+    // this.vbo.setModeDessin(gl.TRIANGLES);
 
     // this.noiseTex = new TextureNoise(gl, 128, 128);
     this.cloudsTex = new TextureClouds(gl, 4, 4);

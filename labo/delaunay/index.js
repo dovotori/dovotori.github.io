@@ -1,5 +1,6 @@
 import * as selectfile from './selectfile';
 import { downloadSVG } from '../utils';
+import WebWorker from '../lib/WebWorker';
 
 import 'Assets/style/controls.css';
 import 'Assets/style/range-input.css';
@@ -180,7 +181,6 @@ export default async () => {
   boxDebug = document.querySelector("#boxdebug");
   boxGrey = document.querySelector("#boxgrey");
 
-  webworker = new Worker(new URL('/public/worker/delaunayworker.js', import.meta.url));
   const url = "/public/img/japon/japon-0.jpg";
   const img = await loadImage(url);
   const { width, height } = img;
@@ -190,8 +190,8 @@ export default async () => {
   context.drawImage(img, 0, 0);
   const { data: initialData } = context.getImageData(0, 0, width, height);
   initialDataImage = initialData;
-
-  webworker.addEventListener("message", endProcess);
+  webworker = new WebWorker(new Worker(new URL('/public/worker/delaunayworker.js', import.meta.url)));
+  webworker.setMessageListener(endProcess);
   startDelaunayProcess(initialData, rangeThreshold.value);
 
   rangeThreshold.addEventListener("change", redrawSvg);
@@ -215,8 +215,5 @@ export const destroy = () => {
   if (boxHide) boxHide.removeEventListener("change", changeHide(container));
   if (boxDebug) boxDebug.removeEventListener("change", changeHide(canvasDebug));
   if (boxGrey) boxGrey.removeEventListener("change", changeColor);
-  if (webworker) {
-    webworker.removeEventListener("message", endProcess);
-    webworker.terminate();
-  }
+  webworker.destroy();
 };

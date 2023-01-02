@@ -30,7 +30,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const CategoriesFilters = ({ selected, className, categories, onClickCategory }) => (
+const CategoriesFilters = ({ selected, className, categories, onClickCategory = () => { } }) => (
   <Wrap className={className}>
     {Object.keys(categories).map((categoryId, index) => {
       const isLinkSelected = selected === parseInt(categoryId, 10);

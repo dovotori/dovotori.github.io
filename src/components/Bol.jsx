@@ -58,56 +58,56 @@ const dash = keyframes`
 `;
 
 const blink = keyframes`
-to {
+  to {
     visibility: hidden;
   }
 `;
 
 const move = keyframes`
 0%, 100% {
-    transform: none;
+  transform: none;
 }
 35% {
-    transform: translate3d(0.2%, -0.1%, 0);
+  transform: translate3d(0.2%, -0.1%, 0);
 }
 75% {
-    transform: translate3d(-0.1%, 0.2%, 0);
+  transform: translate3d(-0.1%, 0.2%, 0);
 }
 `;
 
 const evaporate = keyframes`
 0%, 100% {
-    transform: none;
+  ransform: none;
 }
 50% {
-    transform: translate3d(0, 0.2%, 0) scale(0.8);
+  transform: translate3d(0, 0.2%, 0) scale(0.8);
 }
 `;
 
 const hashi = keyframes`
 0%, 10%, 20%, 100% {
-    transform: translate3d(0, -2%, 0);
+  transform: translate3d(0, -2%, 0);
 }
 5%, 15% {
-    transform: translate3d(0, -2%, 0) rotate(2deg);
+  transform: translate3d(0, -2%, 0) rotate(2deg);
 }
 `;
 
 const hashi2 = keyframes`
 0%, 10%, 20%, 100% {
-    transform: translate3d(0, 2%, 0);
+  transform: translate3d(0, 2%, 0);
 }
 5%, 15% {
-    transform: translate3d(0, 2%, 0) rotate(-2deg);
+  transform: translate3d(0, 2%, 0) rotate(-2deg);
 }
 `;
 
 const noding = keyframes`
 0%, 100% {
-    transform: none;
+  transform: none;
 }
 30% {
-    transform: translate3d(-0.05%, 0.1%, 0);
+  transform: translate3d(-0.05%, 0.1%, 0);
 }
 75% {
   transform: translate3d(0.03%, -0.05%, 0);

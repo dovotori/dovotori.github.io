@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 const Wrap = styled.div`
   width: 100%;
-  min-height: 100vh;
 `;
 
 const Bloc = ({ className, children }) => {
@@ -16,7 +15,7 @@ const Bloc = ({ className, children }) => {
     }
   }, []);
   return (
-    <Wrap className={`${className} bloc`} ref={onScrollTop}>
+    <Wrap className={className} ref={onScrollTop}>
       {children}
     </Wrap>
   );

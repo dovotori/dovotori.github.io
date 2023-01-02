@@ -195,7 +195,7 @@ const rawPosts = [
   {
     id: 11,
     slug: 'depardon',
-    title: { [Locales.FR]: 'Depardon', [Locales.EN]: 'Depardon', [Locales.JP]: 'Depardon' },
+    title: { [Locales.FR]: 'Depardon', [Locales.EN]: 'Depardon', [Locales.JP]: 'デパルドン' },
     category: CAT_DESIGN,
     tags: [],
     date: 2009,
@@ -377,7 +377,7 @@ const rawPosts = [
   {
     id: 21,
     slug: 'diorama',
-    title: { [Locales.FR]: 'Diorama', [Locales.EN]: 'Diorama', [Locales.JP]: 'Diorama' },
+    title: { [Locales.FR]: 'Diorama', [Locales.EN]: 'Diorama', [Locales.JP]: 'ジオラマ' },
     category: CAT_BLOG,
     tags: [],
     date: 2020,
@@ -416,16 +416,19 @@ const rawPosts = [
 export default (locale) => {
   return rawPosts.map((post) => {
     const description = post.description && post.description[locale];
+    const inverseLocale = locale === Locales.JP ? Locales.EN : Locales.JP;
     if (description) {
       return {
         ...post,
         title: post.title[locale],
+        inverseTitle: post.title[inverseLocale],
         description,
       };
     }
     return {
       ...post,
       title: post.title[locale],
+      inverseTitle: post.title[inverseLocale],
     };
   });
 };

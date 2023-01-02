@@ -12,22 +12,21 @@ const getDistortion = (progress, frequence, amplitude, time) => {
   const movementProgressFix = 0.02;
   return [
     Math.cos(progress * Math.PI * frequence[0] + time) * amplitude[0] -
-      Math.cos(movementProgressFix * Math.PI * frequence[0] + time) * amplitude[0],
+    Math.cos(movementProgressFix * Math.PI * frequence[0] + time) * amplitude[0],
     nsin(progress * Math.PI * frequence[1] + time) * amplitude[1] -
-      nsin(movementProgressFix * Math.PI * frequence[1] + time) * amplitude[1],
+    nsin(movementProgressFix * Math.PI * frequence[1] + time) * amplitude[1],
     nsin(progress * Math.PI * frequence[2] + time) * amplitude[2] -
-      nsin(movementProgressFix * Math.PI * frequence[2] + time) * amplitude[2],
+    nsin(movementProgressFix * Math.PI * frequence[2] + time) * amplitude[2],
   ];
 };
 
 export default class extends Scene {
-  constructor(gl, config, assets) {
-    super(gl, config, assets);
-
-    this.screen = new Screen(this.gl);
+  setup() {
+    const { gl } = this;
+    this.screen = new Screen(gl);
     this.model = new Mat4();
 
-    const { roadLength, roadWidth, shipPosition } = config;
+    const { roadLength, roadWidth, shipPosition } = this.config;
 
     const pointsRoads = getPoints(2, roadLength, {
       startX: -roadWidth,
@@ -58,7 +57,7 @@ export default class extends Scene {
     this.setLampeInfos(this.mngProg.get('gltf'));
     this.mngProg.get('roadSky').setTexture(1, this.mngTex.get('noisergb').get(), 'textureMap');
 
-    // this.bonus = new Primitive(this.gl, primitive);
+    // this.bonus = new Primitive(gl, primitive);
   }
 
   update(time) {

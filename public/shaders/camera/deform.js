@@ -25,11 +25,11 @@ ${funcMap}
 void main() {
   gl_PointSize = 2.0;
 
-  float noise = texture2D(noiseMap, texture + vec2(time * 0.005)).x;
+  // float noise = texture2D(noiseMap, texture + vec2(time * 0.005)).x;
 
   float SIZE = 0.1;
   float fromCenterY = funcMap(texture.y, 0.0, 1.0, -SIZE, SIZE);
-  float wave = 1.0 + (funcMap(cos(fromCenterY * time), -1.0, 1.0, 0.0, PI / 2.0) * 0.2);
+  float wave = 1.0 + (funcMap(cos(fromCenterY * time), -1.0, 1.0, -PI / 2.0, PI / 2.0) * 0.2);
 
   float frequency = texture2D(displacementMap, texture).a;
   float displacement = frequency + wave;
@@ -65,8 +65,8 @@ void main() {
   vec3 texColor = texture2D(colorMap, fragTexture).xyz;
   vec3 phong = funcLightsColor(
     texColor,
-    vec3(1.0,1.0,1.0),
-    vec3(1.0,1.0,1.0),
+    vec3(1.0, 1.0, 1.0),
+    vec3(1.0, 1.0, 1.0),
     fragNormale,
     fragPosition
   );

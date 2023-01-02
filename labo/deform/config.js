@@ -1,16 +1,14 @@
 const MAIN_PROG = 'deform';
-const MAIN_OBJ = 'sphere4';
 export default {
   slug: 'deform',
   MAIN_PROG,
-  MAIN_OBJ,
   shaders: [
-    '/camera/basique3d.js',
+    '/camera/normale.js',
     '/camera/frequencyCircle.js',
     '/camera/frequencyGrid.js',
     `/camera/${MAIN_PROG}.js`,
   ],
-  assets: [`/obj/${MAIN_OBJ}.obj`, '/textures/earth.png', '/sound/akira.mp3'],
+  assets: ['/textures/earth.png', '/sound/akira.mp3'],
   camera: {
     position: { x: 0, y: 0, z: 20 },
     target: { x: 0, y: 0, z: 0 },

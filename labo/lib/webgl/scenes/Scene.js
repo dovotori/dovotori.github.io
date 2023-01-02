@@ -8,8 +8,9 @@ import Bloom from '../postprocess/Bloom';
 import Ssao from '../postprocess/Ssao';
 import Shadow from '../postprocess/Shadow';
 
+
 export default class {
-  constructor(gl, config, assets) {
+  constructor(gl, config) {
     this.gl = gl;
     this.config = config;
     this.time = 0;
@@ -18,73 +19,76 @@ export default class {
       width,
       height,
     };
+  }
 
-    if (assets) {
-      if (assets.shaders) {
-        this.mngProg = new ManagerPrograms(this.gl, assets.shaders, config.canvas);
+  async setupAssets(assets) {
+    const { config, gl } = this;
+    const { width, height } = config.canvas;
+    if (assets?.shaders) {
+      this.mngProg = new ManagerPrograms();
+      await this.mngProg.setup(gl, assets.shaders, config.canvas);
 
-        if (config.postprocess) {
-          const useDepth = this.canUseDepth();
-          const processConfig = { width, height, useDepth };
-          const programs = this.mngProg.getAll();
+      if (config.postprocess) {
+        const useDepth = this.canUseDepth();
+        const processConfig = { width, height, useDepth };
+        const programs = this.mngProg.getAll();
 
-          this.postProcess = new PostProcess(this.gl, processConfig, programs);
+        this.postProcess = new PostProcess(gl, processConfig, programs);
 
-          if (config.postprocess.bloom) {
-            this.bloom = new Bloom(
-              this.gl,
-              { ...processConfig, ...config.postprocess.bloom },
-              programs
-            );
-          }
+        if (config.postprocess.bloom) {
+          this.bloom = new Bloom(
+            gl,
+            { ...processConfig, ...config.postprocess.bloom },
+            programs
+          );
+        }
 
-          if (config.postprocess.ssao) {
-            this.ssao = new Ssao(
-              this.gl,
-              {
-                ...processConfig,
-                ...config.postprocess.ssao,
-                near: config.camera.near,
-                far: config.camera.far,
-              },
-              programs
-            );
-          }
+        if (config.postprocess.ssao) {
+          this.ssao = new Ssao(
+            gl,
+            {
+              ...processConfig,
+              ...config.postprocess.ssao,
+              near: config.camera.near,
+              far: config.camera.far,
+            },
+            programs
+          );
+        }
 
-          if (config.postprocess.shadow) {
-            this.shadow = new Shadow(
-              this.gl,
-              {
-                ...processConfig,
-                ...config.postprocess.shadow,
-              },
-              programs
-            );
-          }
+        if (config.postprocess.shadow) {
+          this.shadow = new Shadow(
+            gl,
+            {
+              ...processConfig,
+              ...config.postprocess.shadow,
+            },
+            programs
+          );
         }
       }
+    }
 
-      if (assets.textures) {
-        this.mngTex = new ManagerTextures(this.gl, assets.textures, config.textures);
-      }
+    if (assets?.textures) {
+      this.mngTex = new ManagerTextures(gl, assets.textures, config.textures);
+    }
 
-      if (assets.objets) {
-        this.mngObj = new ManagerObjets(this.gl, assets.objets, assets.materials);
-      }
+    if (assets?.objets) {
+      this.mngObj = new ManagerObjets(gl, assets.objets, assets.materials);
+    }
 
-      if (assets.gltfs) {
-        this.mngGltf = new ManagerGltfs(this.gl, assets.gltfs);
-      }
+    if (assets?.gltfs) {
+      this.mngGltf = new ManagerGltfs(gl, assets.gltfs);
+    }
 
-      if (assets.sounds) {
-        this.mngSound = new ManagerSounds(assets.sounds);
-      }
+    if (assets?.sounds) {
+      this.mngSound = new ManagerSounds(assets.sounds);
     }
     this.resizeViewport();
 
-    const shouldDisabled = this.config.useDrawBuffer && !this.config.support.drawBuffers;
+    const shouldDisabled = config.useDrawBuffer && !config.support.drawBuffers;
     if (shouldDisabled) {
-      const domElem = document.querySelector(`#${this.config.slug}`);
+      const domElem = document.querySelector(`#${config.slug}`);
       domElem.parentNode.style.minHeight = "auto";
       domElem.remove();
     }

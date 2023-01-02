@@ -10,14 +10,15 @@ const WrapContent = styled.div`
 `;
 
 const WrapTexte = styled.div`
- margin-top: 6em;
+  margin-top: 6em;
 `;
 
 const Description = styled.div`
-  text-align: left;
+  background: ${(p) => p.theme.backgroundHighlight};
   color: ${(p) => p.theme.light};
   width: 100%;
   max-width: ${TEXT_WIDTH}px;
+  padding: 10px;
 
   ${(p) => p.theme.media.tablet`
     width: 100%;
@@ -25,14 +26,12 @@ const Description = styled.div`
 `;
 
 const Text = styled.p`
-  background: ${(p) => p.theme.backgroundHighlight};
-  padding: 10px;
+  margin: 0 0 10px 0;
   width: 100%;
 `;
 
 const Date = styled.p.attrs({ className: 'numbers' })`
   text-align: left;
-  display: inline-block;
   margin: 0;
   padding: 0.4em 10px 0;
   color: ${(p) => p.theme.getColor};
@@ -41,13 +40,12 @@ const Date = styled.p.attrs({ className: 'numbers' })`
 
 const StyledTitle = styled.h1`
   ${(p) => p.theme.title}
+  position: relative;
   margin: 0;
   padding: 0 10px;
-  white-space: nowrap;
 `;
 
 const StyledTypingMessage = styled(TypingMessage)`
-  white-space: nowrap;
 `;
 
 const Bar = styled.div`
@@ -58,27 +56,41 @@ const Bar = styled.div`
   background: ${(p) => p.theme.getGradient};
 `;
 
-const ProjectHeader = ({ title, description, date, $colorType }) => (
+const InvTitle = styled.span`
+  position: absolute;
+  top: -.2em;
+  left: -.2em;
+  font-size: 4em;
+  font-weight: 800;
+  z-index: -1;
+  background: ${(p) => p.theme.softGradient};
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+`;
+
+const ProjectHeader = ({ title, inverseTitle, descriptions, date, $colorType }) => (
   <WrapContent>
     <WrapTexte>
       {date && <Date $colorType={$colorType}>{date}</Date>}
       {title && (
         <StyledTitle $colorType={$colorType}>
+          <InvTitle>{inverseTitle}</InvTitle>
           <StyledTypingMessage message={title} />
         </StyledTitle>
       )}
-      {description && (
+      {descriptions && (
         <>
           <Bar $colorType={$colorType} />
           <Description>
-            {description.map((text) => (
+            {descriptions.map((text) => (
               <Text key={text}>{text}</Text>
             ))}
           </Description>
         </>
       )}
     </WrapTexte>
-  </WrapContent>
+  </WrapContent >
 );
 
 export default ProjectHeader;

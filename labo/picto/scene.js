@@ -1,8 +1,7 @@
 import Scene from '../lib/webgl/scenes/Scene';
 
 export default class extends Scene {
-  constructor(gl, config, assets) {
-    super(gl, config, assets);
+  setup() {
     this.req = null;
     this.value = 0;
     this.target = 0;

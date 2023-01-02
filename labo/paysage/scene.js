@@ -9,8 +9,8 @@ import Buffers from '../lib/webgl/postprocess/Buffers';
 import primitive from '../lib/webgl/primitives/plane';
 
 export default class extends Scene {
-  constructor(gl, config, assets) {
-    super(gl, config, assets);
+  constructor(gl, config) {
+    super(gl, config);
 
     this.config.MAIN_PROG = config.MAIN_PROG;
     this.config.MAIN_OBJ = config.MAIN_OBJ;
