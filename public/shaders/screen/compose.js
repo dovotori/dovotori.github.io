@@ -1,4 +1,4 @@
-import vertex from './basicVertex';
+import vertex from "./basicVertex";
 
 const fragment = `
 precision mediump float;
@@ -31,6 +31,6 @@ void main(void){
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'texture'],
-  uniforms: ['flipY', 'textureMap', 'ssaoMap', 'shadowMap', 'depthMap'],
+  attributes: ["position", "texture"],
+  uniforms: ["flipY", "textureMap", "ssaoMap", "shadowMap", "depthMap"],
 };

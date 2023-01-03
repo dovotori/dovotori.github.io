@@ -1,4 +1,4 @@
-import io from 'socket.io-client';
+import io from "socket.io-client";
 
 export default class {
   constructor() {
@@ -7,26 +7,26 @@ export default class {
     //   transports: ['websocket'],
     //   forceNew: true,
     // };
-    const url = 'http://localhost:8083';
     // const url = 'https://dovotori-test.herokuapp.com';
-
     this.socket = null;
-    console.log('constructor');
+  }
 
-    return new Promise((resolve, reject) => {
+  create = () =>
+    new Promise((resolve, reject) => {
+      const url = "http://localhost:8083";
+
       this.socket = io(url);
-      console.log('socket connect');
+      console.log("socket connect");
       // const socket = io();
-      this.socket.on('connect_error', (e) => {
+      this.socket.on("connect_error", (e) => {
         this.socket.disconnect();
         reject(e);
       });
 
-      this.socket.on('connect', () => {
+      this.socket.on("connect", () => {
         resolve(this);
       });
     });
-  }
 
   on = (...args) => this.socket.on(...args);
 
@@ -36,14 +36,14 @@ export default class {
     this.close();
     return new Promise((resolve, reject) => {
       this.socket.connect();
-      console.log('socket connect');
+      console.log("socket connect");
 
-      this.socket.on('connect_error', (e) => {
+      this.socket.on("connect_error", (e) => {
         this.socket.close();
         reject(e);
       });
 
-      this.socket.on('connect', () => {
+      this.socket.on("connect", () => {
         resolve(this);
       });
     });

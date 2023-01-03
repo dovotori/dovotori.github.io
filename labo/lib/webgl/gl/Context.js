@@ -1,6 +1,6 @@
 class Context {
   static checkWebGl(canvas) {
-    const contexts = ['webgl', 'experimental-webgl', 'webkit-3d', 'moz-webgl'];
+    const contexts = ["webgl", "experimental-webgl", "webkit-3d", "moz-webgl"];
     let gl;
     for (let i = 0; i < contexts.length; i += 1) {
       try {
@@ -32,17 +32,19 @@ class Context {
       this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
       this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
 
-      this.support.depthTexture = !!this.gl.getExtension('WEBGL_depth_texture');
+      this.support.depthTexture = !!this.gl.getExtension("WEBGL_depth_texture");
 
-      this.support.instancedArrays = !!this.gl.getExtension('ANGLE_instanced_arrays');
+      this.support.instancedArrays = !!this.gl.getExtension(
+        "ANGLE_instanced_arrays",
+      );
 
       this.support.drawBuffers =
-        !!this.gl.getExtension('WEBGL_draw_buffers') ||
-        !!this.gl.getExtension('GL_EXT_draw_buffers') ||
-        !!this.gl.getExtension('EXT_draw_buffers');
+        !!this.gl.getExtension("WEBGL_draw_buffers") ||
+        !!this.gl.getExtension("GL_EXT_draw_buffers") ||
+        !!this.gl.getExtension("EXT_draw_buffers");
     }
     this.support.pixelRatio = window.devicePixelRatio || 1;
-    console.log('Webgl support info', this.support);
+    console.log("Webgl support info", this.support);
   }
 
   get() {

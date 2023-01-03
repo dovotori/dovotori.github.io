@@ -1,10 +1,10 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import ButtonBack from './ButtonBack';
-import ProjectImage from './ProjectImage';
-import ProjectLabo from './ProjectLabo';
+import ButtonBack from "./ButtonBack";
+import ProjectImage from "./ProjectImage";
+import ProjectLabo from "./ProjectLabo";
 
-const ImagesList = styled.div`  
+const ImagesList = styled.div`
   margin: 0 auto;
   max-width: 800px;
 
@@ -22,7 +22,7 @@ const ImagesList = styled.div`
 `;
 
 const StyledProjectLabo = styled(ProjectLabo)`
-  background: ${(p) => (p.noBackground ? 'transparent' : p.theme.getGradient)};
+  background: ${(p) => (p.noBackground ? "transparent" : p.theme.getGradient)};
   --project-color: ${(p) => p.theme.getColor};
 `;
 

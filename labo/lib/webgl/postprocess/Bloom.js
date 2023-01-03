@@ -1,4 +1,4 @@
-import Blur from './Blur';
+import Blur from "./Blur";
 
 export default class extends Blur {
   constructor(gl, config, programs = {}) {
@@ -14,8 +14,8 @@ export default class extends Blur {
 
   process(tex = null) {
     const program = this.applyTexToProg(this.programs.bloom, tex);
-    program.setFloat('scale', this.scale);
-    program.setFloat('threshold', this.threshold);
+    program.setFloat("scale", this.scale);
+    program.setFloat("threshold", this.threshold);
     this.renderToPingPong(program);
     this.setBlur();
   }

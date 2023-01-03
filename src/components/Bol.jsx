@@ -1,9 +1,9 @@
-import styled, { keyframes, createGlobalStyle } from 'styled-components';
-import { ReactComponent as BolSvg } from 'Assets/svg/bol2.svg';
-import { ReactComponent as BonzaiSvg } from 'Assets/svg/bonzai2.svg';
-import { useEffect, useRef } from 'react';
-import usePrevious from '../hooks/usePrevious';
-import { timeout } from "../utils";
+import styled, { keyframes, createGlobalStyle } from "styled-components";
+import { ReactComponent as BolSvg } from "Assets/svg/bol2.svg";
+import { ReactComponent as BonzaiSvg } from "Assets/svg/bonzai2.svg";
+import { useEffect, useRef } from "react";
+import usePrevious from "../hooks/usePrevious";
+import { later } from "../utils";
 
 const GlobalStyle = createGlobalStyle`
 body[theme='light'] {
@@ -29,12 +29,12 @@ const revolution = keyframes`
 `;
 
 const Div = styled.div`
-  position:relative;
+  position: relative;
   width: 100%;
   height: 100%;
 
   svg {
-    position:absolute;
+    position: absolute;
     top: 50%;
     left: 50%;
     width: 100%;
@@ -126,7 +126,7 @@ const StyledBonzai = styled(BonzaiSvg)`
 
 const StyledBol = styled(BolSvg)`
   z-index: 2;
-  position:relative;
+  position: relative;
   .mode {
     fill: #333;
   }
@@ -190,11 +190,11 @@ const Bol = ({ className, isSwitched = false }) => {
     const paths = svg.querySelectorAll("path");
     for (const p of paths) {
       if (isAppear) {
-        p.classList.add('anim');
+        p.classList.add("anim");
       } else {
-        p.classList.remove('anim');
+        p.classList.remove("anim");
       }
-      await timeout(20);
+      await later(20);
     }
   };
 
@@ -213,11 +213,12 @@ const Bol = ({ className, isSwitched = false }) => {
     }
   }, [isSwitched]);
 
-  return (<Div ref={ref} className={className}>
-    <GlobalStyle />
-    <StyledBol $colorType={0} />
-    <StyledBonzai />
-  </Div>
+  return (
+    <Div ref={ref} className={className}>
+      <GlobalStyle />
+      <StyledBol $colorType={0} />
+      <StyledBonzai />
+    </Div>
   );
 };
 

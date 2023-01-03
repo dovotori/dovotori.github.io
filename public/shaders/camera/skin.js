@@ -43,6 +43,6 @@ const getExtraLocations = () => {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'joint', 'weight'],
-  uniforms: ['projection', 'model', 'view'].concat(getExtraLocations()),
+  attributes: ["position", "joint", "weight"],
+  uniforms: ["projection", "model", "view"].concat(getExtraLocations()),
 };

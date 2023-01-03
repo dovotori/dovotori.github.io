@@ -26,7 +26,11 @@ export const rgbToHsl = (r, g, b) => {
     }
     h /= 6;
   }
-  return { h: Math.floor(h * 360), s: Math.floor(s * 100), l: Math.floor(l * 100) };
+  return {
+    h: Math.floor(h * 360),
+    s: Math.floor(s * 100),
+    l: Math.floor(l * 100),
+  };
 };
 
 const hueToRgb = (p, q, t) => {
@@ -60,7 +64,11 @@ export const hslToRgb = (hue, sat, light) => {
     b = hueToRgb(p, q, h - 1 / 3);
   }
 
-  return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) };
+  return {
+    r: Math.round(r * 255),
+    g: Math.round(g * 255),
+    b: Math.round(b * 255),
+  };
 };
 
 export const hsvToHsl = (h, s, v) => {

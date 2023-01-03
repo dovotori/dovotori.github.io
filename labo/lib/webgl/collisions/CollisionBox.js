@@ -1,4 +1,4 @@
-import CollisionEndpoint from './CollisionEndpoint';
+import CollisionEndpoint from "./CollisionEndpoint";
 
 export default class {
   constructor() {

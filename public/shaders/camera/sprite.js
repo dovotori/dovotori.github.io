@@ -1,4 +1,4 @@
-import { funcMap } from '../utils';
+import { funcMap } from "../utils";
 
 const vertex = `
 attribute vec3 position;
@@ -88,20 +88,20 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'texture'],
+  attributes: ["position", "texture"],
   uniforms: [
-    'projection',
-    'model',
-    'view',
-    'textureMap',
-    'spriteUV',
-    'spriteGrid',
-    'spriteSize',
-    'spriteRefSize',
-    'spritePivot',
-    'inverseX',
-    'tint',
-    'inverseColor',
-    'damage',
+    "projection",
+    "model",
+    "view",
+    "textureMap",
+    "spriteUV",
+    "spriteGrid",
+    "spriteSize",
+    "spriteRefSize",
+    "spritePivot",
+    "inverseX",
+    "tint",
+    "inverseColor",
+    "damage",
   ],
 };

@@ -1,4 +1,4 @@
-import Audio from '../io/Audio';
+import Audio from "../io/Audio";
 
 export default class {
   constructor(audios) {

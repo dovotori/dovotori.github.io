@@ -1,18 +1,18 @@
-const MAIN_PROG = 'signature';
-const MAIN_OBJ = 'head';
+const MAIN_PROG = "signature";
+const MAIN_OBJ = "head";
 export default {
-  slug: 'signature',
+  slug: "signature",
   MAIN_PROG,
   MAIN_OBJ,
   shaders: [
-    '/camera/basique3d.js',
+    "/camera/basique3d.js",
     `/camera/${MAIN_PROG}.js`,
-    '/screen/glitch.js',
-    '/screen/wave.js',
-    '/screen/watercolorMoving.js',
-    '/screen/fxaa.js',
-    '/screen/screen.js',
-    '/screen/debug.js',
+    "/screen/glitch.js",
+    "/screen/wave.js",
+    "/screen/watercolorMoving.js",
+    "/screen/fxaa.js",
+    "/screen/screen.js",
+    "/screen/debug.js",
   ],
   postprocess: true,
   assets: [`/gltf/${MAIN_OBJ}.gltf`],
@@ -53,7 +53,7 @@ export default {
     //   direction: [0, 0, 1]
     // }
   ],
-  mouse: { events: ['move'] },
+  mouse: { events: ["move"] },
   useDepthTexture: true,
   canvas: {
     width: 512,

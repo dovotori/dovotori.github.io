@@ -1,5 +1,5 @@
-import vertex from './basicVertex';
-import { funcRandRange } from '../utils/random';
+import vertex from "./basicVertex";
+import { funcRandRange } from "../utils/random";
 
 const fragment = `
 precision mediump float;
@@ -158,6 +158,6 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'texture'],
-  uniforms: ['flipY', 'textureMap', 'time', 'delta'],
+  attributes: ["position", "texture"],
+  uniforms: ["flipY", "textureMap", "time", "delta"],
 };

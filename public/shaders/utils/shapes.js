@@ -1,5 +1,5 @@
-import { PI, TWO_PI } from './index';
-import { funcNoise, funcPnoise, funcSnoise } from './noise';
+import { PI, TWO_PI } from "./index";
+import { funcNoise, funcPnoise, funcSnoise } from "./noise";
 
 export const rect = `
 float rect(vec2 uv, vec2 start, vec2 size) {

@@ -1,5 +1,9 @@
-import { locations, getNaturalHeight, getNormale } from '../utils/terrain';
-import { uniformLights, addLightLocations, funcLightsColor } from '../utils/light';
+import { locations, getNaturalHeight, getNormale } from "../utils/terrain";
+import {
+  uniformLights,
+  addLightLocations,
+  funcLightsColor,
+} from "../utils/light";
 
 const vertex = `
 attribute vec3 position;
@@ -110,15 +114,15 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position'],
+  attributes: ["position"],
   uniforms: [
-    'projection',
-    'model',
-    'view',
-    'normalMatrix',
-    'reflectPass',
-    'refractPass',
-    'waterLevel',
+    "projection",
+    "model",
+    "view",
+    "normalMatrix",
+    "reflectPass",
+    "refractPass",
+    "waterLevel",
   ]
     .concat(locations)
     .concat(Array.from({ length: NB_COLORS }).map((_, i) => `colors[${i}]`))

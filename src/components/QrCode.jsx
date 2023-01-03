@@ -1,5 +1,5 @@
-import { ReactComponent as QrCode } from 'Assets/svg/labqrcode.svg';
-import styled from 'styled-components';
+import { ReactComponent as QrCode } from "Assets/svg/labqrcode.svg";
+import styled from "styled-components";
 
 const StyledQrCode = styled(QrCode)`
   display: block;

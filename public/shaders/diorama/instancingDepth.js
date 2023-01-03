@@ -1,6 +1,6 @@
-import { locations, getNaturalHeight } from '../utils/terrain';
-import { funcInstancing } from '../utils/instancing';
-import fragment from '../camera/basicFrag';
+import { locations, getNaturalHeight } from "../utils/terrain";
+import { funcInstancing } from "../utils/instancing";
+import fragment from "../camera/basicFrag";
 
 const vertex = `
 attribute vec3 position;
@@ -32,6 +32,6 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'normale', 'offset', 'size'],
-  uniforms: ['projection', 'model', 'view', 'waterLevel'].concat(locations),
+  attributes: ["position", "normale", "offset", "size"],
+  uniforms: ["projection", "model", "view", "waterLevel"].concat(locations),
 };

@@ -1,5 +1,5 @@
-import { PI, funcMap } from '../utils';
-import funcRoadDistortion from '../utils/roadDistortion';
+import { PI, funcMap } from "../utils";
+import funcRoadDistortion from "../utils/roadDistortion";
 
 const vertex = `
 attribute vec3 position;
@@ -70,15 +70,15 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position'],
+  attributes: ["position"],
   uniforms: [
-    'projection',
-    'model',
-    'view',
-    'time',
-    'roadLength',
-    'roadWidth',
-    'frequence',
-    'amplitude',
+    "projection",
+    "model",
+    "view",
+    "time",
+    "roadLength",
+    "roadWidth",
+    "frequence",
+    "amplitude",
   ],
 };

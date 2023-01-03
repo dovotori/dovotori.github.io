@@ -6,7 +6,7 @@ class AudioProcessor extends AudioWorkletProcessor {
       console.log(event.data);
     };
 
-    this.port.postMessage('Hi!');
+    this.port.postMessage("Hi!");
   }
 
   process(inputs, outputs, parameters) {
@@ -15,4 +15,4 @@ class AudioProcessor extends AudioWorkletProcessor {
   }
 }
 
-registerProcessor('deform-worklet-processor', AudioProcessor);
+registerProcessor("deform-worklet-processor", AudioProcessor);

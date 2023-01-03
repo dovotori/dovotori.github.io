@@ -1,5 +1,5 @@
-import Perso from './PersoCollision';
-import Target from '../../../lib/webgl/maths/Target';
+import Perso from "./PersoCollision";
+import Target from "../../../lib/webgl/maths/Target";
 
 export default class extends Perso {
   constructor({ constants, sprites, viewBox }) {
@@ -8,12 +8,12 @@ export default class extends Perso {
     this.callbackDeath = null;
     this.targetDamage = new Target(0, 0.1);
     if (constants.displayLife) {
-      this.bar = document.createElement('meter');
-      this.bar.setAttribute('data-id', constants.id);
-      this.bar.setAttribute('min', 0);
-      this.bar.setAttribute('max', constants.life);
-      this.bar.setAttribute('value', this.life);
-      this.insert(document.querySelector('#gameinfos'));
+      this.bar = document.createElement("meter");
+      this.bar.setAttribute("data-id", constants.id);
+      this.bar.setAttribute("min", 0);
+      this.bar.setAttribute("max", constants.life);
+      this.bar.setAttribute("value", this.life);
+      this.insert(document.querySelector("#gameinfos"));
     }
   }
 
@@ -29,13 +29,13 @@ export default class extends Perso {
 
   setLife = (value) => {
     this.life = value;
-    this.bar.setAttribute('value', this.life);
+    this.bar.setAttribute("value", this.life);
   };
 
   setDamage = (value) => {
     this.life -= value;
     this.targetDamage.setDirect(2);
-    if (this.bar) this.bar.setAttribute('value', this.life);
+    if (this.bar) this.bar.setAttribute("value", this.life);
 
     if (this.life <= 0) {
       this.behavior.setStatus(this.constants.states.DIE);
@@ -51,7 +51,7 @@ export default class extends Perso {
   };
 
   render(program, texture, objet) {
-    program.setFloat('damage', this.targetDamage.get());
+    program.setFloat("damage", this.targetDamage.get());
     super.render(program, texture, objet);
   }
 
@@ -62,6 +62,6 @@ export default class extends Perso {
   reset() {
     super.reset();
     this.life = this.constants.life;
-    if (this.bar) this.bar.setAttribute('value', this.life);
+    if (this.bar) this.bar.setAttribute("value", this.life);
   }
 }

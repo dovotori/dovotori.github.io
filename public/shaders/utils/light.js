@@ -29,7 +29,7 @@ export const addLightLocations = () => {
     lights.push(`lights[${i}].brillance`);
     lights.push(`lights[${i}].strength`);
   }
-  lights.push('numLights');
+  lights.push("numLights");
   return lights;
 };
 

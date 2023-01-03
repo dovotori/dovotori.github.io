@@ -7,8 +7,8 @@ import {
   concentricCircles,
   fluid,
   planet,
-} from '../utils/shapes';
-import { funcMap, funcGradiant } from '../utils';
+} from "../utils/shapes";
+import { funcMap, funcGradiant } from "../utils";
 
 const vertex = `
 attribute vec3 position;
@@ -97,6 +97,6 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['texture'],
-  uniforms: ['time'],
+  attributes: ["texture"],
+  uniforms: ["time"],
 };

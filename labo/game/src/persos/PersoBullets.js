@@ -1,6 +1,6 @@
-import Perso from './PersoFxs';
-import Bullets from '../game/Bullets';
-import Vec3 from '../../../lib/webgl/maths/Vec3';
+import Perso from "./PersoFxs";
+import Bullets from "../game/Bullets";
+import Vec3 from "../../../lib/webgl/maths/Vec3";
 
 export default class PersoBullets extends Perso {
   constructor({ constants, sprites, viewBox, fxs, bullets }) {
@@ -11,7 +11,11 @@ export default class PersoBullets extends Perso {
 
     if (bullets) {
       const finalId = `${constants.id}-${bullets.constants.id}`;
-      this.bullets = new Bullets({ ...bullets.constants, id: finalId }, bullets.sprites, viewBox);
+      this.bullets = new Bullets(
+        { ...bullets.constants, id: finalId },
+        bullets.sprites,
+        viewBox,
+      );
 
       this.bullets.setCallbackShoot(this.callbackBulletShoot);
       this.bullets.setCallbackCollide(this.callbackBulletCollide);
@@ -22,11 +26,19 @@ export default class PersoBullets extends Perso {
     super.update(map, tileSize);
 
     this.aimingPos.equal(this.behavior.getPosition());
-    this.aimingPos.addX(this.inverseX ? this.offsetAiming.invX : this.offsetAiming.x);
+    this.aimingPos.addX(
+      this.inverseX ? this.offsetAiming.invX : this.offsetAiming.x,
+    );
     this.aimingPos.addY(this.offsetAiming.y);
 
     if (this.bullets) {
-      this.bullets.update(map, tileSize, this.aimingPos, this.isAiming(), this.inverseX);
+      this.bullets.update(
+        map,
+        tileSize,
+        this.aimingPos,
+        this.isAiming(),
+        this.inverseX,
+      );
     }
   }
 
@@ -68,7 +80,7 @@ export default class PersoBullets extends Perso {
         this.viewBox.x +
         (this.inverseX ? this.offsetAiming.invX : this.offsetAiming.x),
       this.behavior.getY() - this.viewBox.y - h + this.offsetAiming.y,
-      this.behavior.getZ()
+      this.behavior.getZ(),
     );
   }
 

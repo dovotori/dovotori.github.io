@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import { ReactComponent as BackArrow } from 'Assets/svg/arrow.svg';
-import ButtonNavigation from './ButtonNavigation';
+import { ReactComponent as BackArrow } from "Assets/svg/arrow.svg";
+import ButtonNavigation from "./ButtonNavigation";
 
 const Wrap = styled.div`
   position: relative;
@@ -39,14 +39,14 @@ const ProjectNavigation = ({
     <ButtonNavigation
       $colorType={$colorType}
       to={`/project/${prevEntry.slug}`}
-      label={prevEntry.title !== '' ? prevEntry.title : labelPrevious}
+      label={prevEntry.title !== "" ? prevEntry.title : labelPrevious}
     >
       <Arrow $colorType={$colorType} />
     </ButtonNavigation>
     <ButtonNavigation
       $colorType={$colorType}
       to={`/project/${nextEntry.slug}`}
-      label={nextEntry.title !== '' ? nextEntry.title : labelNext}
+      label={nextEntry.title !== "" ? nextEntry.title : labelNext}
     >
       <NextArrow $colorType={$colorType} />
     </ButtonNavigation>

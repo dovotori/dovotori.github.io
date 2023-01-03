@@ -1,9 +1,9 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import license from 'Assets/img/cclicense80x15.png';
-import ToggleMode from './ToggleMode';
-import availablesLang from '../constants/locales';
-import SocialLinks from './SocialLinks';
+import license from "Assets/img/cclicense80x15.png";
+import ToggleMode from "./ToggleMode";
+import availablesLang from "../constants/locales";
+import SocialLinks from "./SocialLinks";
 
 const Wrap = styled.div`
   padding: 2em 4%;
@@ -74,7 +74,7 @@ const Line = styled.span`
   background: ${(p) => p.theme.text};
   z-index: 0;
   transition: transform 300ms ease-out;
-  transform: ${(p) => (p.isHighlight ? 'none' : 'scale(0)')};
+  transform: ${(p) => (p.isHighlight ? "none" : "scale(0)")};
 `;
 
 const LineLeft = styled(Line)`
@@ -94,10 +94,10 @@ const SimpleSpan = styled.span`
 `;
 
 const StyledSocialLinks = styled(SocialLinks)`
-svg {
-  height: 20px;
-  margin: 0 0.5em;
-}
+  svg {
+    height: 20px;
+    margin: 0 0.5em;
+  }
 `;
 
 const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => (
@@ -120,7 +120,11 @@ const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => (
       </a>
     </Div>
     <Start>
-      <ToggleMode isDarkMode={isDarkMode} texts={texts} toggleTheme={toggleTheme} />
+      <ToggleMode
+        isDarkMode={isDarkMode}
+        texts={texts}
+        toggleTheme={toggleTheme}
+      />
     </Start>
   </Wrap>
 );

@@ -1,13 +1,12 @@
-import ManagerTextures from '../managers/ManagerTextures';
-import ManagerObjets from '../managers/ManagerObjets';
-import ManagerPrograms from '../managers/ManagerPrograms';
-import ManagerGltfs from '../managers/ManagerGltfs';
-import ManagerSounds from '../managers/ManagerSounds';
-import PostProcess from '../postprocess/PostProcess';
-import Bloom from '../postprocess/Bloom';
-import Ssao from '../postprocess/Ssao';
-import Shadow from '../postprocess/Shadow';
-
+import ManagerTextures from "../managers/ManagerTextures";
+import ManagerObjets from "../managers/ManagerObjets";
+import ManagerPrograms from "../managers/ManagerPrograms";
+import ManagerGltfs from "../managers/ManagerGltfs";
+import ManagerSounds from "../managers/ManagerSounds";
+import PostProcess from "../postprocess/PostProcess";
+import Bloom from "../postprocess/Bloom";
+import Ssao from "../postprocess/Ssao";
+import Shadow from "../postprocess/Shadow";
 
 export default class {
   constructor(gl, config) {
@@ -39,7 +38,7 @@ export default class {
           this.bloom = new Bloom(
             gl,
             { ...processConfig, ...config.postprocess.bloom },
-            programs
+            programs,
           );
         }
 
@@ -52,7 +51,7 @@ export default class {
               near: config.camera.near,
               far: config.camera.far,
             },
-            programs
+            programs,
           );
         }
 
@@ -63,7 +62,7 @@ export default class {
               ...processConfig,
               ...config.postprocess.shadow,
             },
-            programs
+            programs,
           );
         }
       }
@@ -88,7 +87,9 @@ export default class {
   }
 
   canUseDepth() {
-    return (this.config.useDepthTexture && this.config.support.depthTexture) || false;
+    return (
+      (this.config.useDepthTexture && this.config.support.depthTexture) || false
+    );
   }
 
   resize(box) {
@@ -105,7 +106,10 @@ export default class {
     if (this.shadow) {
       this.shadow.resize(box);
     }
-    this.mngProg.updateResolution(this.containerSize.width, this.containerSize.height);
+    this.mngProg.updateResolution(
+      this.containerSize.width,
+      this.containerSize.height,
+    );
     this.resizeViewport();
   }
 

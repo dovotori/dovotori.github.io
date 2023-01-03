@@ -1,13 +1,13 @@
-import ManagerShaders from '../../labo/lib/webgl/managers/ManagerShaders';
-import ManagerAssets from '../../labo/lib/webgl/managers/ManagerAssets';
-import { getEnvPath } from '../../labo/lib/webgl/utils';
+import ManagerShaders from "../../labo/lib/webgl/managers/ManagerShaders";
+import ManagerAssets from "../../labo/lib/webgl/managers/ManagerAssets";
+import { getEnvPath } from "../../labo/lib/webgl/utils";
 
 self.onmessage = async (e) => {
   const { type, config, id } = e.data;
   let assets = {};
 
   switch (type) {
-    case 'setup': {
+    case "setup": {
       if (config.assets) {
         const am = new ManagerAssets();
         assets = await am.get(config.assets.map((path) => getEnvPath(path)));
@@ -18,7 +18,8 @@ self.onmessage = async (e) => {
       }
       break;
     }
-    default: break;
+    default:
+      break;
   }
   self.postMessage({ type, id, payload: { assets }, config });
 };

@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import TypingMessage from './TypingMessage';
+import TypingMessage from "./TypingMessage";
 
 const TEXT_WIDTH = 400;
 
@@ -30,7 +30,7 @@ const Text = styled.p`
   width: 100%;
 `;
 
-const Date = styled.p.attrs({ className: 'numbers' })`
+const Date = styled.p.attrs({ className: "numbers" })`
   text-align: left;
   margin: 0;
   padding: 0.4em 10px 0;
@@ -49,8 +49,7 @@ const StyledTitle = styled.h1`
   }
 `;
 
-const StyledTypingMessage = styled(TypingMessage)`
-`;
+const StyledTypingMessage = styled(TypingMessage)``;
 
 const Bar = styled.div`
   width: 100%;
@@ -62,8 +61,8 @@ const Bar = styled.div`
 
 const InvTitle = styled.span`
   position: absolute;
-  top: -.2em;
-  left: -.2em;
+  top: -0.2em;
+  left: -0.2em;
   font-size: 4em;
   font-weight: 800;
   z-index: -1;
@@ -73,7 +72,13 @@ const InvTitle = styled.span`
   text-shadow: none;
 `;
 
-const ProjectHeader = ({ title, inverseTitle, descriptions, date, $colorType }) => (
+const ProjectHeader = ({
+  title,
+  inverseTitle,
+  descriptions,
+  date,
+  $colorType,
+}) => (
   <WrapContent>
     <WrapTexte>
       {date && <Date $colorType={$colorType}>{date}</Date>}
@@ -94,7 +99,7 @@ const ProjectHeader = ({ title, inverseTitle, descriptions, date, $colorType }) 
         </>
       )}
     </WrapTexte>
-  </WrapContent >
+  </WrapContent>
 );
 
 export default ProjectHeader;

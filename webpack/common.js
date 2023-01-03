@@ -1,24 +1,24 @@
-const path = require('path');
-const TerserPlugin = require('terser-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
-const zlib = require('zlib');
+const path = require("path");
+const TerserPlugin = require("terser-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
+const zlib = require("zlib");
 
-const utils = require('../scripts/utils');
+const utils = require("../scripts/utils");
 
 const alias = {
-  Assets: path.resolve(__dirname, '../public/'),
-  Labo: path.resolve(__dirname, '../labo/'),
+  Assets: path.resolve(__dirname, "../public/"),
+  Labo: path.resolve(__dirname, "../labo/"),
 };
 
 const optimization = {
   splitChunks: {
-    chunks: 'async',
+    chunks: "async",
     minSize: 30000,
     maxSize: 240000,
     minChunks: 1,
     maxAsyncRequests: 6,
     maxInitialRequests: 4,
-    automaticNameDelimiter: '~',
+    automaticNameDelimiter: "~",
     cacheGroups: {
       defaultVendors: {
         test: /[\\/]node_modules[\\/]/,
@@ -52,35 +52,35 @@ const rules = [
   {
     test: /\.(js|jsx)$/i,
     exclude: /node_modules/,
-    loader: 'babel-loader',
+    loader: "babel-loader",
   },
   {
     test: /\.svg$/i,
     use: [
       {
-        loader: '@svgr/webpack',
+        loader: "@svgr/webpack",
         options: {
           svgo: false,
         },
       },
       {
-        loader: 'url-loader',
+        loader: "url-loader",
       },
     ],
   },
   {
     test: /\.css$/i,
-    use: ['style-loader', 'css-loader'],
+    use: ["style-loader", "css-loader"],
   },
   {
     test: /\.html$/i,
-    loader: 'html-loader',
+    loader: "html-loader",
   },
   {
     test: /\.(jpe?g|png|gif)$/i,
-    loader: 'url-loader',
+    loader: "url-loader",
     options: {
-      name: '/img/[name].[ext]?[hash]',
+      name: "/img/[name].[ext]?[hash]",
       limit: 100000,
     },
   },
@@ -98,11 +98,11 @@ const minify = {
 
 const getHtml = async (name) => {
   const htmlPath = path.resolve(__dirname, `../labo/${name}/inject.html`);
-  let html = '';
+  let html = "";
   try {
-    html = (await utils.readFile(htmlPath, 'utf8')) || '';
+    html = (await utils.readFile(htmlPath, "utf8")) || "";
   } catch (e) {
-    console.log('no html find to be inject in template');
+    console.log("no html find to be inject in template");
   }
   return html;
 };
@@ -110,17 +110,17 @@ const getHtml = async (name) => {
 const compression = [
   new CompressionPlugin({
     test: /\.(js|css|svg|jpg|png|html)$/,
-    algorithm: 'gzip',
+    algorithm: "gzip",
     deleteOriginalAssets: false,
-    filename: '[path][base].gz[query]',
+    filename: "[path][base].gz[query]",
     threshold: 0,
     minRatio: 1,
   }),
   new CompressionPlugin({
     test: /\.(js|css|svg|jpg|png|html)$/,
-    algorithm: 'brotliCompress',
+    algorithm: "brotliCompress",
     deleteOriginalAssets: false,
-    filename: '[path][base].br[query]',
+    filename: "[path][base].br[query]",
     threshold: 0,
     minRatio: 1,
     compressionOptions: {

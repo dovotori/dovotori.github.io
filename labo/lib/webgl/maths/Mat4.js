@@ -1,6 +1,6 @@
-import { EPSILON } from '../constants/maths';
-import Vec3 from './Vec3';
-import Mat3 from './Mat3';
+import { EPSILON } from "../constants/maths";
+import Vec3 from "./Vec3";
+import Mat3 from "./Mat3";
 
 class Mat4 {
   constructor() {
@@ -72,7 +72,7 @@ class Mat4 {
       values[12],
       values[13],
       values[14],
-      values[15]
+      values[15],
     );
   }
 
@@ -87,7 +87,7 @@ class Mat4 {
       this.d[6],
       this.d[8],
       this.d[9],
-      this.d[10]
+      this.d[10],
     );
     return mat3;
   }
@@ -132,14 +132,18 @@ class Mat4 {
   pop() {
     if (this.empilement > 0) {
       let cpt = 0;
-      for (let i = (this.empilement - 1) * 16; i < this.empilement * 16; i += 1) {
+      for (
+        let i = (this.empilement - 1) * 16;
+        i < this.empilement * 16;
+        i += 1
+      ) {
         this.d[cpt] = this.sauvegardePrecedente[i];
         this.sauvegardePrecedente[i] = null;
         cpt += 1;
       }
       this.empilement -= 1;
     } else {
-      console.error('pop de trop');
+      console.error("pop de trop");
     }
     return this;
   }
@@ -186,24 +190,35 @@ class Mat4 {
     const axe = new Vec3(x, y, z);
     axe.normalise();
 
-    rotation.d[0] = axe.d[0] * axe.d[0] * (1 - Math.cos(angleInRadians)) + Math.cos(angleInRadians);
+    rotation.d[0] =
+      axe.d[0] * axe.d[0] * (1 - Math.cos(angleInRadians)) +
+      Math.cos(angleInRadians);
     rotation.d[1] =
-      axe.d[0] * axe.d[1] * (1 - Math.cos(angleInRadians)) - axe.d[2] * Math.sin(angleInRadians);
+      axe.d[0] * axe.d[1] * (1 - Math.cos(angleInRadians)) -
+      axe.d[2] * Math.sin(angleInRadians);
     rotation.d[2] =
-      axe.d[0] * axe.d[2] * (1 - Math.cos(angleInRadians)) + axe.d[1] * Math.sin(angleInRadians);
+      axe.d[0] * axe.d[2] * (1 - Math.cos(angleInRadians)) +
+      axe.d[1] * Math.sin(angleInRadians);
 
     rotation.d[4] =
-      axe.d[0] * axe.d[1] * (1 - Math.cos(angleInRadians)) + axe.d[2] * Math.sin(angleInRadians);
-    rotation.d[5] = axe.d[1] * axe.d[1] * (1 - Math.cos(angleInRadians)) + Math.cos(angleInRadians);
+      axe.d[0] * axe.d[1] * (1 - Math.cos(angleInRadians)) +
+      axe.d[2] * Math.sin(angleInRadians);
+    rotation.d[5] =
+      axe.d[1] * axe.d[1] * (1 - Math.cos(angleInRadians)) +
+      Math.cos(angleInRadians);
     rotation.d[6] =
-      axe.d[1] * axe.d[2] * (1 - Math.cos(angleInRadians)) - axe.d[0] * Math.sin(angleInRadians);
+      axe.d[1] * axe.d[2] * (1 - Math.cos(angleInRadians)) -
+      axe.d[0] * Math.sin(angleInRadians);
 
     rotation.d[8] =
-      axe.d[0] * axe.d[2] * (1 - Math.cos(angleInRadians)) - axe.d[1] * Math.sin(angleInRadians);
+      axe.d[0] * axe.d[2] * (1 - Math.cos(angleInRadians)) -
+      axe.d[1] * Math.sin(angleInRadians);
     rotation.d[9] =
-      axe.d[1] * axe.d[2] * (1 - Math.cos(angleInRadians)) + axe.d[0] * Math.sin(angleInRadians);
+      axe.d[1] * axe.d[2] * (1 - Math.cos(angleInRadians)) +
+      axe.d[0] * Math.sin(angleInRadians);
     rotation.d[10] =
-      axe.d[2] * axe.d[2] * (1 - Math.cos(angleInRadians)) + Math.cos(angleInRadians);
+      axe.d[2] * axe.d[2] * (1 - Math.cos(angleInRadians)) +
+      Math.cos(angleInRadians);
 
     rotation.d[15] = 1.0;
 
@@ -241,7 +256,7 @@ class Mat4 {
       0,
       0,
       near * far * rangeInv * 2,
-      0
+      0,
     );
     return this;
   }
@@ -263,7 +278,7 @@ class Mat4 {
       -(right + left) / (right - left),
       -(top + bottom) / (top - bottom),
       -(far + near) / (far - near),
-      1
+      1,
     );
     return this;
   }
@@ -354,7 +369,7 @@ class Mat4 {
       -(x0 * eyex + x1 * eyey + x2 * eyez),
       -(y0 * eyex + y1 * eyey + y2 * eyez),
       -(z0 * eyex + z1 * eyey + z2 * eyez),
-      1
+      1,
     );
     return this;
   }
@@ -420,7 +435,7 @@ class Mat4 {
       this.d[11],
       this.d[13],
       this.d[14],
-      this.d[15]
+      this.d[15],
     );
     const cofactor1 = Mat4.getCofacteur(
       this.d[4],
@@ -431,7 +446,7 @@ class Mat4 {
       this.d[11],
       this.d[12],
       this.d[14],
-      this.d[15]
+      this.d[15],
     );
     const cofactor2 = Mat4.getCofacteur(
       this.d[4],
@@ -442,7 +457,7 @@ class Mat4 {
       this.d[11],
       this.d[12],
       this.d[13],
-      this.d[15]
+      this.d[15],
     );
     const cofactor3 = Mat4.getCofacteur(
       this.d[4],
@@ -453,12 +468,15 @@ class Mat4 {
       this.d[10],
       this.d[12],
       this.d[13],
-      this.d[14]
+      this.d[14],
     );
 
     // get determinant
     const determinant =
-      this.d[0] * cofactor0 - this.d[1] * cofactor1 + this.d[2] * cofactor2 - this.d[3] * cofactor3;
+      this.d[0] * cofactor0 -
+      this.d[1] * cofactor1 +
+      this.d[2] * cofactor2 -
+      this.d[3] * cofactor3;
 
     const cofactor4 = Mat4.getCofacteur(
       this.d[1],
@@ -469,7 +487,7 @@ class Mat4 {
       this.d[11],
       this.d[13],
       this.d[14],
-      this.d[15]
+      this.d[15],
     );
     const cofactor5 = Mat4.getCofacteur(
       this.d[0],
@@ -480,7 +498,7 @@ class Mat4 {
       this.d[11],
       this.d[12],
       this.d[14],
-      this.d[15]
+      this.d[15],
     );
     const cofactor6 = Mat4.getCofacteur(
       this.d[0],
@@ -491,7 +509,7 @@ class Mat4 {
       this.d[11],
       this.d[12],
       this.d[13],
-      this.d[15]
+      this.d[15],
     );
     const cofactor7 = Mat4.getCofacteur(
       this.d[0],
@@ -502,7 +520,7 @@ class Mat4 {
       this.d[10],
       this.d[12],
       this.d[13],
-      this.d[14]
+      this.d[14],
     );
 
     const cofactor8 = Mat4.getCofacteur(
@@ -514,7 +532,7 @@ class Mat4 {
       this.d[7],
       this.d[13],
       this.d[14],
-      this.d[15]
+      this.d[15],
     );
     const cofactor9 = Mat4.getCofacteur(
       this.d[0],
@@ -525,7 +543,7 @@ class Mat4 {
       this.d[7],
       this.d[12],
       this.d[14],
-      this.d[15]
+      this.d[15],
     );
     const cofactor10 = Mat4.getCofacteur(
       this.d[0],
@@ -536,7 +554,7 @@ class Mat4 {
       this.d[7],
       this.d[12],
       this.d[13],
-      this.d[15]
+      this.d[15],
     );
     const cofactor11 = Mat4.getCofacteur(
       this.d[0],
@@ -547,7 +565,7 @@ class Mat4 {
       this.d[6],
       this.d[12],
       this.d[13],
-      this.d[14]
+      this.d[14],
     );
 
     const cofactor12 = Mat4.getCofacteur(
@@ -559,7 +577,7 @@ class Mat4 {
       this.d[7],
       this.d[9],
       this.d[10],
-      this.d[11]
+      this.d[11],
     );
     const cofactor13 = Mat4.getCofacteur(
       this.d[0],
@@ -570,7 +588,7 @@ class Mat4 {
       this.d[7],
       this.d[8],
       this.d[10],
-      this.d[11]
+      this.d[11],
     );
     const cofactor14 = Mat4.getCofacteur(
       this.d[0],
@@ -581,7 +599,7 @@ class Mat4 {
       this.d[7],
       this.d[8],
       this.d[9],
-      this.d[11]
+      this.d[11],
     );
     const cofactor15 = Mat4.getCofacteur(
       this.d[0],
@@ -592,7 +610,7 @@ class Mat4 {
       this.d[6],
       this.d[8],
       this.d[9],
-      this.d[10]
+      this.d[10],
     );
 
     const invDeterminant = 1.0 / determinant;
@@ -631,7 +649,7 @@ class Mat4 {
           this.d[11],
           this.d[13],
           this.d[14],
-          this.d[15]
+          this.d[15],
         ) -
       this.d[1] *
         Mat4.getCofacteur(
@@ -643,7 +661,7 @@ class Mat4 {
           this.d[11],
           this.d[12],
           this.d[14],
-          this.d[15]
+          this.d[15],
         ) +
       this.d[2] *
         Mat4.getCofacteur(
@@ -655,7 +673,7 @@ class Mat4 {
           this.d[11],
           this.d[12],
           this.d[13],
-          this.d[15]
+          this.d[15],
         ) -
       this.d[3] *
         Mat4.getCofacteur(
@@ -667,13 +685,17 @@ class Mat4 {
           this.d[10],
           this.d[12],
           this.d[13],
-          this.d[14]
+          this.d[14],
         )
     );
   }
 
   static getCofacteur(m0, m1, m2, m3, m4, m5, m6, m7, m8) {
-    return m0 * (m4 * m8 - m5 * m7) - m1 * (m3 * m8 - m5 * m6) + m2 * (m3 * m7 - m4 * m6);
+    return (
+      m0 * (m4 * m8 - m5 * m7) -
+      m1 * (m3 * m8 - m5 * m6) +
+      m2 * (m3 * m7 - m4 * m6)
+    );
   }
 }
 

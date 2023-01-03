@@ -1,4 +1,4 @@
-import Peer from 'simple-peer';
+import Peer from "simple-peer";
 
 export default class {
   constructor() {
@@ -33,31 +33,31 @@ export default class {
       // },
     });
 
-    console.log('create peer', this.isInitiator);
+    console.log("create peer", this.isInitiator);
 
-    this.peer.on('error', (error) => console.log(error));
+    this.peer.on("error", (error) => console.log(error));
 
-    this.peer.on('signal', (data) => {
-      console.log('peer on signal', data);
+    this.peer.on("signal", (data) => {
+      console.log("peer on signal", data);
       if (!this.isConnected) {
-        if (this.isInitiator && data.type && data.type === 'offer') {
-          this.ask('question offer', data);
-        } else if (!this.isInitiator && data.type && data.type === 'answer') {
-          this.ask('question answer', data);
+        if (this.isInitiator && data.type && data.type === "offer") {
+          this.ask("question offer", data);
+        } else if (!this.isInitiator && data.type && data.type === "answer") {
+          this.ask("question answer", data);
         }
       }
     });
 
-    this.peer.on('stream', (mediaStream) => {
-      console.log('stream emitter');
+    this.peer.on("stream", (mediaStream) => {
+      console.log("stream emitter");
       // got remote video stream, now let's show it in a video tag
-      const video = document.querySelector('#emitter');
+      const video = document.querySelector("#emitter");
       video.srcObject = mediaStream;
       video.play();
     });
 
-    this.peer.on('connect', () => {
-      console.log('peer connected');
+    this.peer.on("connect", () => {
+      console.log("peer connected");
       this.isConnected = true;
     });
 
@@ -95,7 +95,7 @@ export default class {
   };
 
   setIsInitiator = (value) => {
-    console.log('set initiator', value);
+    console.log("set initiator", value);
     this.isInitiator = value;
     this.tryToCreate();
   };

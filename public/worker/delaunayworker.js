@@ -1,5 +1,5 @@
-import fast from '../../labo/lib/fastcorner';
-import Delaunay from '../../labo/lib/delaunay';
+import fast from "../../labo/lib/fastcorner";
+import Delaunay from "../../labo/lib/delaunay";
 
 const getGrayScaleBuffer = (data, width, height) => {
   const gs = new Uint8Array(width * height);
@@ -12,16 +12,17 @@ const getGrayScaleBuffer = (data, width, height) => {
       // data[idx+2] is blue
       // data[idx+3] is alpha
       // const gray = parseInt(data[idx] * 0.3 + data[idx + 1] * 0.6 + data[idx + 2] * 0.11, 10);
-      const gray = (data[idx] >> 2) + (data[idx + 1] >> 1) + (data[idx + 2] >> 2); // faster
+      const gray =
+        (data[idx] >> 2) + (data[idx + 1] >> 1) + (data[idx + 2] >> 2); // faster
       gs[i++] = gray;
     }
   }
   return gs;
 };
 
-
 // Calculate area of triangle formed by (x1, y1), (x2, y2) and (x3, y3)
-const computeArea = (x1, y1, x2, y2, x3, y3) => Math.abs((x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2.0);
+const computeArea = (x1, y1, x2, y2, x3, y3) =>
+  Math.abs((x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2.0);
 
 // Check whether point P(x, y) lies inside the triangle formed by A(x1, y1), B(x2, y2) and C(x3, y3)
 const isInside = (x1, y1, x2, y2, x3, y3, x, y) => {
@@ -34,11 +35,11 @@ const isInside = (x1, y1, x2, y2, x3, y3, x, y) => {
   // Calculate area of triangle PAB
   const A3 = computeArea(x1, y1, x2, y2, x, y);
   // Check if sum of A1, A2 and A3 is same as A
-  return (A === A1 + A2 + A3);
+  return A === A1 + A2 + A3;
 };
 
 const getColorPixelFromBuffer = (buffer, x, y, width) => {
-  const indexPixel = (width * Math.max(0, y - 1)) + x;
+  const indexPixel = width * Math.max(0, y - 1) + x;
   const offset = 4; // rgba
   const i = indexPixel * offset;
   return buffer.subarray(i, i + offset).values();
@@ -73,7 +74,10 @@ const getAverageColorOnTriangle = (data, x0, y0, x1, y1, x2, y2, width) => {
 const computeDelaunay = ({ data, width, height, threshold }) => {
   const gs = getGrayScaleBuffer(data, width, height);
   const corners = fast.detect(gs, width, height, threshold, true);
-  const points = corners.reduce((acc, cur) => { acc.push([cur.x, cur.y]); return acc; }, []);
+  const points = corners.reduce((acc, cur) => {
+    acc.push([cur.x, cur.y]);
+    return acc;
+  }, []);
   points.push([0, 0], [width - 1, 0], [0, height - 1], [width - 1, height - 1]); // image corners
   const indices = Delaunay.triangulate(points);
   const coors = [];
@@ -86,13 +90,31 @@ const computeDelaunay = ({ data, width, height, threshold }) => {
     const x2 = points[indices[j + 2]][0];
     const y2 = points[indices[j + 2]][1];
 
-    const color = getAverageColorOnTriangle(data, x0, y0, x1, y1, x2, y2, width);
+    const color = getAverageColorOnTriangle(
+      data,
+      x0,
+      y0,
+      x1,
+      y1,
+      x2,
+      y2,
+      width
+    );
     coors.push({ x0, y0, x1, y1, x2, y2, color });
   }
   return { coors, width, height, corners };
-}
+};
 
-const computeColor = ({ data, width, height, green, red, blue, bright, grey }) => {
+const computeColor = ({
+  data,
+  width,
+  height,
+  green,
+  red,
+  blue,
+  bright,
+  grey,
+}) => {
   const newData = data;
   for (let i = 0; i <= data.length; i += 4) {
     const r = data[i] * red;
@@ -118,13 +140,14 @@ self.onmessage = (e) => {
   const { type, payload, id } = e.data;
   let newPayload = null;
   switch (type) {
-    case 'delaunay':
+    case "delaunay":
       newPayload = computeDelaunay(payload);
       break;
-    case 'color':
+    case "color":
       newPayload = computeColor(payload);
       break;
-    default: break;
+    default:
+      break;
   }
   self.postMessage({ type, id, payload: newPayload });
 };

@@ -1,5 +1,5 @@
-import PingPongBuffer from './PingPongBuffer';
-import Screen from '../gl/Screen';
+import PingPongBuffer from "./PingPongBuffer";
+import Screen from "../gl/Screen";
 
 export default class {
   constructor(gl, config = {}, programs = {}) {
@@ -35,17 +35,17 @@ export default class {
      */
     const textureIdx = this.passCount + 1;
     const finalTexture = usePPBtex ? this.ppb.getTexture().get() : tex;
-    program.setTexture(textureIdx, finalTexture, 'textureMap');
+    program.setTexture(textureIdx, finalTexture, "textureMap");
     // const flipY = this.passCount % 2 === 0 ? -1.0 : 1.0;
     // program.setFloat('flipY', flipY);
-    program.setFloat('flipY', -1.0);
+    program.setFloat("flipY", -1.0);
     return program;
   }
 
   setBrightContrast(bright, contrast, tex = null) {
     const program = this.applyTexToProg(this.programs.brightcontrast, tex);
-    program.setFloat('brightness', bright);
-    program.setFloat('contrast', contrast);
+    program.setFloat("brightness", bright);
+    program.setFloat("contrast", contrast);
     this.renderToPingPong(program);
   }
 
@@ -67,14 +67,20 @@ export default class {
   }
 
   render(tex = null, isDebug = false) {
-    const program = this.applyTexToProg(this.programs[isDebug ? 'debug' : 'screen'], tex);
+    const program = this.applyTexToProg(
+      this.programs[isDebug ? "debug" : "screen"],
+      tex,
+    );
     this.gl.viewport(0, 0, this.viewportSize.width, this.viewportSize.height);
     this.screen.render(program.get());
   }
 
   renderInverse(tex = null, isDebug = false) {
-    const program = this.applyTexToProg(this.programs[isDebug ? 'debug' : 'screen'], tex);
-    program.setFloat('flipY', 1.0);
+    const program = this.applyTexToProg(
+      this.programs[isDebug ? "debug" : "screen"],
+      tex,
+    );
+    program.setFloat("flipY", 1.0);
     this.gl.viewport(0, 0, this.viewportSize.width, this.viewportSize.height);
     this.screen.render(program.get());
   }

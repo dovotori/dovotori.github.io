@@ -1,4 +1,4 @@
-import { generate2DTexture, generate3DTexture } from '../utils/clouds';
+import { generate2DTexture } from "../utils/clouds";
 
 export default class {
   constructor(gl, width = 4, height = 4, depth = 4) {
@@ -17,7 +17,7 @@ export default class {
   }
 
   create() {
-    const { width, height, depth = null } = this.size;
+    const { width, height } = this.size;
     const resolution = 32; // power of two
     const b = new ArrayBuffer(width * resolution * height * resolution * 4);
     const pixels = new Uint8Array(b);
@@ -44,15 +44,31 @@ export default class {
       0,
       this.gl.RGBA,
       this.gl.UNSIGNED_BYTE,
-      pixels
+      pixels,
     );
   }
 
   setFilters() {
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.filter);
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.filter);
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.REPEAT);
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.REPEAT);
+    this.gl.texParameteri(
+      this.gl.TEXTURE_2D,
+      this.gl.TEXTURE_MAG_FILTER,
+      this.filter,
+    );
+    this.gl.texParameteri(
+      this.gl.TEXTURE_2D,
+      this.gl.TEXTURE_MIN_FILTER,
+      this.filter,
+    );
+    this.gl.texParameteri(
+      this.gl.TEXTURE_2D,
+      this.gl.TEXTURE_WRAP_S,
+      this.gl.REPEAT,
+    );
+    this.gl.texParameteri(
+      this.gl.TEXTURE_2D,
+      this.gl.TEXTURE_WRAP_T,
+      this.gl.REPEAT,
+    );
   }
 
   get() {

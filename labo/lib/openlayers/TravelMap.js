@@ -1,31 +1,31 @@
-import Map from 'ol/Map';
-import View from 'ol/View';
-import Feature from 'ol/Feature';
+import Map from "ol/Map";
+import View from "ol/View";
+import Feature from "ol/Feature";
 // import TileLayer from 'ol/layer/Tile';
-import { Vector as VectorLayer, VectorTile as VectorTileLayer } from 'ol/layer';
-import Point from 'ol/geom/Point';
-import LineString from 'ol/geom/LineString';
+import { Vector as VectorLayer, VectorTile as VectorTileLayer } from "ol/layer";
+import Point from "ol/geom/Point";
+import LineString from "ol/geom/LineString";
 // import Circle from 'ol/geom/Circle';
 // import MultiPoint from 'ol/geom/MultiPoint';
 // import MultiPolygon from 'ol/geom/MultiPolygon';
 // import OSM from 'ol/source/OSM';
-import VectorSource from 'ol/source/Vector';
+import VectorSource from "ol/source/Vector";
 // import TileJSON from 'ol/source/TileJSON';
-import VectorTileSource from 'ol/source/VectorTile';
+import VectorTileSource from "ol/source/VectorTile";
 // import Stamen from 'ol/source/Stamen';
-import GeoJSON from 'ol/format/GeoJSON';
+import GeoJSON from "ol/format/GeoJSON";
 // import TopoJSON from 'ol/format/TopoJSON';
-import { fromLonLat } from 'ol/proj';
-import Projection from 'ol/proj/Projection';
-import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
-import Overlay from 'ol/Overlay';
-import { defaults as defaultControls, ScaleLine } from 'ol/control';
+import { fromLonLat } from "ol/proj";
+import Projection from "ol/proj/Projection";
+import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
+import Overlay from "ol/Overlay";
+import { defaults as defaultControls, ScaleLine } from "ol/control";
 
-import geojsonvt from 'geojson-vt';
+import geojsonvt from "geojson-vt";
 
-import AnimationMarker from './AnimationMarker';
+import AnimationMarker from "./AnimationMarker";
 
-const getCoor = (coor) => fromLonLat(coor, 'EPSG:3857');
+const getCoor = (coor) => fromLonLat(coor, "EPSG:3857");
 
 // const createText = (text, offsetY = -14) => {
 //   return new Text({
@@ -124,7 +124,7 @@ const getView = (points, defaultZoom) => {
       minY: acc.minY ? Math.min(acc.minY, coor[1]) : coor[1],
       maxY: acc.maxY ? Math.max(acc.maxY, coor[1]) : coor[1],
     }),
-    {}
+    {},
   );
 
   const centerX = extremes.minX + (extremes.maxX - extremes.minX) / 2;
@@ -151,18 +151,18 @@ const getMarkersLayer = (points) => {
   const features = points.map(
     ({ label, coor, offsetY }) =>
       new Feature({
-        type: 'icon',
+        type: "icon",
         geometry: new Point(coor),
         text: label,
         offsetY,
-      })
+      }),
   );
 
   const style = new Style({
     image: new CircleStyle({
       radius: 6,
-      fill: new Fill({ color: '#66ffcc' }),
-      stroke: new Stroke({ color: '#ffffca', width: 2 }),
+      fill: new Fill({ color: "#66ffcc" }),
+      stroke: new Stroke({ color: "#ffffca", width: 2 }),
     }),
   });
 
@@ -174,7 +174,7 @@ const getMarkersLayer = (points) => {
 
 const getLineLayer = (points) => {
   const style = new Style({
-    stroke: new Stroke({ color: '#66ffcc', width: 4, lineDash: [6, 10] }),
+    stroke: new Stroke({ color: "#66ffcc", width: 4, lineDash: [6, 10] }),
   });
 
   return new VectorLayer({
@@ -190,51 +190,56 @@ const getLineLayer = (points) => {
   });
 };
 
-const replacer = (moveX = 0, moveY = 0) => (key, value) => {
-  if (value?.geometry) {
-    let type;
-    const rawType = value.type;
-    let { geometry } = value;
+const replacer =
+  (moveX = 0, moveY = 0) =>
+  (key, value) => {
+    if (value?.geometry) {
+      let type;
+      const rawType = value.type;
+      let { geometry } = value;
 
-    if (moveX !== 0 || moveY !== 0) {
-      for (let i = 0; i < geometry.length; i++) {
-        for (let j = 0; j < geometry[i].length; j++) {
-          geometry[i][j] = [geometry[i][j][0] + moveX, geometry[i][j][1] + moveY];
+      if (moveX !== 0 || moveY !== 0) {
+        for (let i = 0; i < geometry.length; i++) {
+          for (let j = 0; j < geometry[i].length; j++) {
+            geometry[i][j] = [
+              geometry[i][j][0] + moveX,
+              geometry[i][j][1] + moveY,
+            ];
+          }
         }
       }
-    }
 
-    if (rawType === 1) {
-      type = 'MultiPoint';
-      if (geometry.length === 1) {
-        type = 'Point';
-        geometry[0] = geometry;
+      if (rawType === 1) {
+        type = "MultiPoint";
+        if (geometry.length === 1) {
+          type = "Point";
+          geometry[0] = geometry;
+        }
+      } else if (rawType === 2) {
+        type = "MultiLineString";
+        if (geometry.length === 1) {
+          type = "LineString";
+          geometry[0] = geometry;
+        }
+      } else if (rawType === 3) {
+        type = "Polygon";
+        if (geometry.length > 1) {
+          type = "MultiPolygon";
+          geometry = [geometry];
+        }
       }
-    } else if (rawType === 2) {
-      type = 'MultiLineString';
-      if (geometry.length === 1) {
-        type = 'LineString';
-        geometry[0] = geometry;
-      }
-    } else if (rawType === 3) {
-      type = 'Polygon';
-      if (geometry.length > 1) {
-        type = 'MultiPolygon';
-        geometry = [geometry];
-      }
-    }
 
-    return {
-      type: 'Feature',
-      geometry: {
-        type,
-        coordinates: geometry,
-      },
-      properties: value.tags,
-    };
-  }
-  return value;
-};
+      return {
+        type: "Feature",
+        geometry: {
+          type,
+          coordinates: geometry,
+        },
+        properties: value.tags,
+      };
+    }
+    return value;
+  };
 
 const getVectorMap = (json, format, highlightIso, colors) => {
   const tileIndex = geojsonvt(json, {
@@ -248,17 +253,17 @@ const getVectorMap = (json, format, highlightIso, colors) => {
       const data = tileIndex.getTile(tileCoord[0], tileCoord[1], tileCoord[2]);
       const geojsonData = JSON.stringify(
         {
-          type: 'FeatureCollection',
+          type: "FeatureCollection",
           features: data ? data.features : [],
         },
-        replacer()
+        replacer(),
       );
       return `data:application/json;charset=UTF-8,${geojsonData}`;
     },
   });
 
   const style = (feature) => {
-    if (feature.get('iso_a3') === highlightIso) {
+    if (feature.get("iso_a3") === highlightIso) {
       return new Style({
         fill: new Fill({ color: colors.highlight }),
       });
@@ -287,17 +292,17 @@ const getDecalVectorMap = (json, format, highlightIso, colors) => {
       const data = tileIndex.getTile(tileCoord[0], tileCoord[1], tileCoord[2]);
       const geojsonData = JSON.stringify(
         {
-          type: 'FeatureCollection',
+          type: "FeatureCollection",
           features: data ? data.features : [],
         },
-        replacer(10, 10)
+        replacer(10, 10),
       );
       return `data:application/json;charset=UTF-8,${geojsonData}`;
     },
   });
 
   const style = (feature) => {
-    if (feature.get('iso_a3') === highlightIso) {
+    if (feature.get("iso_a3") === highlightIso) {
       return new Style({
         stroke: new Stroke({ color: colors.stroke }),
       });
@@ -313,15 +318,15 @@ const getDecalVectorMap = (json, format, highlightIso, colors) => {
 
 const createTooltip = (map, point) => {
   const { label, coor, offsetY } = point;
-  const tooltipElement = document.createElement('div');
-  const classDirection = offsetY ? 'bottom' : 'top';
+  const tooltipElement = document.createElement("div");
+  const classDirection = offsetY ? "bottom" : "top";
   const className = `ol-tooltip ol-tooltip-measure ${classDirection} ${label.toLowerCase()}`;
   tooltipElement.className = className;
   tooltipElement.innerHTML = label;
   const tooltip = new Overlay({
     element: tooltipElement,
     offset: [0, offsetY ? 40 : -40],
-    positioning: 'center-center',
+    positioning: "center-center",
   });
   tooltip.setPosition(coor);
   map.addOverlay(tooltip);
@@ -334,9 +339,17 @@ export default ({
   icon,
   highlightIso,
   defaultZoom = 6,
-  colors = { highlight: '#4531d5', land: '#514799', stroke: '#0000ff', background: '#ffffca' },
+  colors = {
+    highlight: "#4531d5",
+    land: "#514799",
+    stroke: "#0000ff",
+    background: "#ffffca",
+  },
 }) => {
-  const formatPoints = points.map((point) => ({ ...point, coor: getCoor(point.coor) }));
+  const formatPoints = points.map((point) => ({
+    ...point,
+    coor: getCoor(point.coor),
+  }));
   const labelPoints = formatPoints.filter((point) => point.label);
   const view = getView(labelPoints, defaultZoom);
   const animMarker = new AnimationMarker(formatPoints, icon);
@@ -344,14 +357,19 @@ export default ({
   const format = new GeoJSON({
     // Data returned from geojson-vt is in tile pixel units
     dataProjection: new Projection({
-      code: 'TILE_PIXELS',
-      units: 'tile-pixels',
+      code: "TILE_PIXELS",
+      units: "tile-pixels",
       extent: [0, 0, 4096, 4096],
     }),
   });
 
   const vectors = getVectorMap(geojson, format, highlightIso, colors);
-  const translateVectors = getDecalVectorMap(geojson, format, highlightIso, colors);
+  const translateVectors = getDecalVectorMap(
+    geojson,
+    format,
+    highlightIso,
+    colors,
+  );
 
   /* const tiles = new TileLayer({
     source: new Stamen({
@@ -386,7 +404,7 @@ export default ({
       rotate: false,
     }).extend([
       new ScaleLine({
-        units: 'metric',
+        units: "metric",
       }),
     ]),
     target: div,
@@ -402,5 +420,5 @@ export default ({
     map.render();
   };
 
-  map.once('postrender', start);
+  map.once("postrender", start);
 };

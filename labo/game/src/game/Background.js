@@ -1,5 +1,5 @@
-import Mesh from '../../../lib/webgl/meshes/MeshColor';
-import { mapFromRange } from '../../../lib/webgl/utils/numbers';
+import Mesh from "../../../lib/webgl/meshes/MeshColor";
+import { mapFromRange } from "../../../lib/webgl/utils/numbers";
 
 export default class {
   constructor(viewBox, levelSize) {
@@ -41,7 +41,7 @@ export default class {
         0,
         this.levelSize.w,
         this.viewBox.w + inverseIdx * 10,
-        -inverseIdx * 10
+        -inverseIdx * 10,
       );
       const y = 10 + scale / 2;
       const color = mapFromRange(idx, 0, this.mountains.length, 255, 100);
@@ -66,13 +66,17 @@ export default class {
       mesh.update();
       mesh.setScale(scale, scale, scale);
       mesh.setRotate(45, 0, 0, 1);
-      mesh.setTranslate(this.cloudData[idx].x, this.cloudData[idx].y, this.cloudData[idx].z);
+      mesh.setTranslate(
+        this.cloudData[idx].x,
+        this.cloudData[idx].y,
+        this.cloudData[idx].z,
+      );
       mesh.setColor(255, 255, 255, 0.4);
     });
   }
 
   renderScreen(objet, program, herosX, speed) {
-    program.setFloat('offset', herosX * speed);
+    program.setFloat("offset", herosX * speed);
     this.screen.render(objet, program);
   }
 

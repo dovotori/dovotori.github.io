@@ -1,4 +1,4 @@
-export default class {
+class Fullscreen {
   constructor(domScene) {
     this.domItem = domScene;
     this.isFullscreen = false;
@@ -9,8 +9,8 @@ export default class {
       document.webkitExitFullscreen
     );
 
-    this.button = document.createElement('button');
-    this.button.id = 'fullscreen-toggle-btn';
+    this.button = document.createElement("button");
+    this.button.id = "fullscreen-toggle-btn";
     this.button.innerHTML = `
 <svg viewbox="0 0 100 100">
   <path d="M 0 40 L 0 0 L 40 0 L 40 10 L 10 10 L 10 40 Z"></path>
@@ -18,7 +18,7 @@ export default class {
 </svg>
     `;
 
-    this.button.addEventListener('click', this.toggle, false);
+    this.button.addEventListener("click", this.toggle, false);
 
     this.listen();
   }
@@ -55,30 +55,34 @@ export default class {
   listen = () => {
     if (this.support) {
       if (document.exitFullscreen) {
-        document.addEventListener('fullscreenchange', this.onChange, false);
+        document.addEventListener("fullscreenchange", this.onChange, false);
       } else if (document.msExitFullscreen) {
-        document.addEventListener('MSFullscreenChange', this.onChange, false);
+        document.addEventListener("MSFullscreenChange", this.onChange, false);
       } else if (document.mozCancelFullScreen) {
-        document.addEventListener('mozfullscreenchange', this.onChange, false);
+        document.addEventListener("mozfullscreenchange", this.onChange, false);
       } else if (document.webkitExitFullscreen) {
-        document.addEventListener('webkitfullscreenchange', this.onChange, false);
+        document.addEventListener(
+          "webkitfullscreenchange",
+          this.onChange,
+          false,
+        );
       }
     }
   };
 
   onChange = () => {
     if (this.domItem) {
-      if (this.isOnFullscreen()) {
-        this.domItem.setAttribute('data-fullscreen', true);
+      if (Fullscreen.isOnFullscreen()) {
+        this.domItem.setAttribute("data-fullscreen", true);
         this.isFullscreen = true;
       } else {
-        this.domItem.removeAttribute('data-fullscreen');
+        this.domItem.removeAttribute("data-fullscreen");
         this.isFullscreen = false;
       }
     }
   };
 
-  isOnFullscreen = () => !!document.fullscreenElement;
+  static isOnFullscreen = () => !!document.fullscreenElement;
 
   toggle = () => {
     if (this.isFullscreen) {
@@ -90,18 +94,22 @@ export default class {
 
   destroy() {
     if (this.button) {
-      this.button.removeEventListener('click', this.toggle, false);
+      this.button.removeEventListener("click", this.toggle, false);
     }
 
     if (this.support) {
       if (document.exitFullscreen) {
-        document.removeEventListener('fullscreenchange', this.onExit, false);
+        document.removeEventListener("fullscreenchange", this.onExit, false);
       } else if (document.msExitFullscreen) {
-        document.removeEventListener('MSFullscreenChange', this.onExit, false);
+        document.removeEventListener("MSFullscreenChange", this.onExit, false);
       } else if (document.mozCancelFullScreen) {
-        document.removeEventListener('mozfullscreenchange', this.onExit, false);
+        document.removeEventListener("mozfullscreenchange", this.onExit, false);
       } else if (document.webkitExitFullscreen) {
-        document.removeEventListener('webkitfullscreenchange', this.onExit, false);
+        document.removeEventListener(
+          "webkitfullscreenchange",
+          this.onExit,
+          false,
+        );
       }
     }
   }
@@ -116,3 +124,5 @@ export default class {
     return this.support;
   }
 }
+
+export default Fullscreen;

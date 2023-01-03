@@ -1,23 +1,23 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import { ReactComponent as Linkedin } from 'Assets/svg/cv/linkedin.svg';
-import { ReactComponent as Gitlab } from 'Assets/svg/cv/gitlab.svg';
-import { ReactComponent as Github } from 'Assets/svg/cv/github.svg';
-import { ReactComponent as Mail } from 'Assets/svg/mail.svg';
+import { ReactComponent as Linkedin } from "Assets/svg/cv/linkedin.svg";
+import { ReactComponent as Gitlab } from "Assets/svg/cv/gitlab.svg";
+import { ReactComponent as Github } from "Assets/svg/cv/github.svg";
+import { ReactComponent as Mail } from "Assets/svg/mail.svg";
 
 const Wrap = styled.div`
-text-align: center;
-svg {
-  min-width: 40px;
-  width: 2em;
-  margin: 0 2em;
-  filter: grayscale(100%);
-  transition: filter 300ms ease-out;
+  text-align: center;
+  svg {
+    min-width: 40px;
+    width: 2em;
+    margin: 0 2em;
+    filter: grayscale(100%);
+    transition: filter 300ms ease-out;
 
-  &:hover {
-    filter: none;
+    &:hover {
+      filter: none;
+    }
   }
-}
 `;
 
 const StyledMail = styled(Mail)`
@@ -51,6 +51,7 @@ const SociaLinks = ({ className }) => (
     <a href={`mailto:${process.env.MAIL}`} title="contact">
       <StyledMail />
     </a>
-  </Wrap>);
+  </Wrap>
+);
 
 export default SociaLinks;

@@ -1,6 +1,6 @@
-import vertex from './basicVertex';
+import vertex from "./basicVertex";
 
-import { funcBlur2 } from '../utils/blur';
+import { funcBlur2 } from "../utils/blur";
 
 const fragment = `
 precision mediump float;
@@ -22,6 +22,6 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'texture'],
-  uniforms: ['flipY', 'textureMap', 'resolution', 'direction'],
+  attributes: ["position", "texture"],
+  uniforms: ["flipY", "textureMap", "resolution", "direction"],
 };

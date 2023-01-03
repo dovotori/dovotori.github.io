@@ -1,8 +1,8 @@
-import { useMemo } from 'react';
-import styled from 'styled-components';
+import { useMemo } from "react";
+import styled from "styled-components";
 
-import { polarToCartesian } from '../utils';
-import Arc from './Arc';
+import { polarToCartesian } from "../utils";
+import Arc from "./Arc";
 
 const Wrap = styled.g`
   cursor: pointer;
@@ -14,7 +14,7 @@ const Wrap = styled.g`
   }
 
   &:hover > path {
-    transform: ${(p) => (p.noHoverAnim ? 'none' : 'scale(1.05)')};
+    transform: ${(p) => (p.noHoverAnim ? "none" : "scale(1.05)")};
   }
 `;
 
@@ -66,7 +66,7 @@ const ArcWithItem = ({
   const imagePos = polarToCartesian(x, y, radius, middleAngle);
   const visible = useMemo(
     () => !((startAngle === 0 || startAngle === 360) && angle === 0),
-    [startAngle, angle]
+    [startAngle, angle],
   );
 
   return (

@@ -1,14 +1,14 @@
-import { useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import { useCallback } from "react";
+import { Link } from "react-router-dom";
+import styled, { css } from "styled-components";
 
-import * as icons from 'Assets/svg/cv';
-import { ReactComponent as Manette } from 'Assets/svg/manette.svg';
-import { ReactComponent as Skills } from 'Assets/svg/chimie.svg';
-import { ReactComponent as Tie } from 'Assets/svg/tie.svg';
-import { ReactComponent as Diploma } from 'Assets/svg/diploma.svg';
-import Chart from './Chart';
-import AnimBar from './AnimBar';
+import * as icons from "Assets/svg/cv";
+import { ReactComponent as Manette } from "Assets/svg/manette.svg";
+import { ReactComponent as Skills } from "Assets/svg/chimie.svg";
+import { ReactComponent as Tie } from "Assets/svg/tie.svg";
+import { ReactComponent as Diploma } from "Assets/svg/diploma.svg";
+import Chart from "./Chart";
+import AnimBar from "./AnimBar";
 
 const styledIcons = Object.keys(icons).reduce((acc, key) => {
   acc[key] = styled(icons[key])`
@@ -32,7 +32,7 @@ const Bloc = styled.div`
 `;
 
 const commonIcon = css`
-  display:block;
+  display: block;
   margin: 0 auto;
   padding: 0 2em;
   height: 4em;
@@ -95,18 +95,19 @@ const CategoryText = styled.span`
 `;
 
 const Line = styled.div`
-  margin: ${(p) => `${p.noMarginTop ? 0 : '0.5em'} 0 ${p.noMarginBottom ? 0 : '0.5em'}`};
+  margin: ${(p) =>
+    `${p.noMarginTop ? 0 : "0.5em"} 0 ${p.noMarginBottom ? 0 : "0.5em"}`};
 `;
 
 const BlocJob = styled.div`
   margin: 0 0 2em 0;
 `;
 
-const Date = styled.span.attrs({ className: 'numbers' })`
+const Date = styled.span.attrs({ className: "numbers" })`
   color: ${(p) => p.theme.primary};
   ${(p) => p.theme.monospace}
   overflow-wrap: break-word;
-  ${(p) => !p.isTouch && 'text-align: right; width: 100%; '};
+  ${(p) => !p.isTouch && "text-align: right; width: 100%; "};
   font-size: 0.8em;
   line-height: 2;
 `;
@@ -141,22 +142,23 @@ const Level = styled.span`
 `;
 
 const Clear = styled.div`
-  ${(p) => !p.isTouch && 'position: relative; overflow: hidden; display: flex;'};
+  ${(p) =>
+    !p.isTouch && "position: relative; overflow: hidden; display: flex;"};
 `;
 
 const MarginLeft = styled.div`
-  margin: ${(p) => !p.isTouch && '0 0 0 20%'};
+  margin: ${(p) => !p.isTouch && "0 0 0 20%"};
 `;
 
 const FloatLeft = styled.div`
   ${(p) =>
     !p.isTouch
-      ? 'width: 18%; margin: 0 2% 0 0; text-align: right; display: flex;'
-      : 'margin: 0 0 2% 0;'};
+      ? "width: 18%; margin: 0 2% 0 0; text-align: right; display: flex;"
+      : "margin: 0 0 2% 0;"};
 `;
 
 const FloatRight = styled.div`
-  ${(p) => !p.isTouch && 'width: 80%;'};
+  ${(p) => !p.isTouch && "width: 80%;"};
 `;
 
 const FloatRightTwoCol = styled.div`
@@ -173,17 +175,25 @@ const FloatRightTwoCol = styled.div`
 `;
 
 const TwoCol = styled.div`
-  ${(p) => !p.isTouch && 'width: 50%;'};
+  ${(p) => !p.isTouch && "width: 50%;"};
 `;
 
 const TwoColFloat = styled(TwoCol)`
-  ${(p) => !p.isTouch && 'float: left;'};
+  ${(p) => !p.isTouch && "float: left;"};
 `;
 
-const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies }) => {
+const Cv = ({
+  className,
+  formation,
+  isTouchDevice,
+  chart,
+  jobs,
+  skills,
+  hobbies,
+}) => {
   const renderDate = useCallback((start, end) => {
     if (start === 0) {
-      return 'now';
+      return "now";
     }
     if (start !== end) {
       return `${end} ${start}`;
@@ -195,7 +205,11 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
     () =>
       formation.items.length > 0 ? (
         <Bloc>
-          <Category><StyledAnimBar /><DiplomaIcon /><CategoryText>{formation.text}</CategoryText></Category>
+          <Category>
+            <StyledAnimBar />
+            <DiplomaIcon />
+            <CategoryText>{formation.text}</CategoryText>
+          </Category>
           {formation.items.map((item) => (
             <BlocJob key={item.text}>
               <Line>
@@ -212,14 +226,18 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
           ))}
         </Bloc>
       ) : null,
-    [formation, isTouchDevice]
+    [formation, isTouchDevice],
   );
 
   const renderJobs = useCallback(
     () =>
       jobs.items.length > 0 ? (
         <Bloc>
-          <Category><StyledAnimBar /><TieIcon /><CategoryText>{jobs.text}</CategoryText></Category>
+          <Category>
+            <StyledAnimBar />
+            <TieIcon />
+            <CategoryText>{jobs.text}</CategoryText>
+          </Category>
           {jobs.items.map((item) => {
             const { startDate, endDate, text, tasks } = item;
             return (
@@ -227,7 +245,9 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
                 <Line noMarginBottom>
                   <Clear isTouch={isTouchDevice}>
                     <FloatLeft isTouch={isTouchDevice}>
-                      <Date isTouch={isTouchDevice}>{renderDate(startDate, endDate)}</Date>
+                      <Date isTouch={isTouchDevice}>
+                        {renderDate(startDate, endDate)}
+                      </Date>
                     </FloatLeft>
                     <FloatRight isTouch={isTouchDevice}>
                       <Text>{text}</Text>
@@ -246,14 +266,18 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
           })}
         </Bloc>
       ) : null,
-    [jobs, renderDate, isTouchDevice]
+    [jobs, renderDate, isTouchDevice],
   );
 
   const renderSkills = useCallback(
     () =>
       skills.items.length > 0 ? (
         <Bloc>
-          <Category><StyledAnimBar /><SkillsIcon /><CategoryText>{skills.text}</CategoryText></Category>
+          <Category>
+            <StyledAnimBar />
+            <SkillsIcon />
+            <CategoryText>{skills.text}</CategoryText>
+          </Category>
           {chart && !isTouchDevice && <Chart data={chart} />}
           {(isTouchDevice || !chart) &&
             skills.items.map((item) => (
@@ -265,9 +289,14 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
                     </FloatLeft>
                     <FloatRightTwoCol isTouch={isTouchDevice}>
                       {item.items.map((subitem) => {
-                        const Svg = subitem.picto ? styledIcons[subitem.picto] : null;
+                        const Svg = subitem.picto
+                          ? styledIcons[subitem.picto]
+                          : null;
                         return (
-                          <TwoColFloat isTouch={isTouchDevice} key={subitem.text}>
+                          <TwoColFloat
+                            isTouch={isTouchDevice}
+                            key={subitem.text}
+                          >
                             <Line noMarginTop>
                               {Svg ? (
                                 <WrapSvg>
@@ -292,14 +321,18 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
             ))}
         </Bloc>
       ) : null,
-    [skills, isTouchDevice]
+    [skills, isTouchDevice],
   );
 
   const renderHobbies = useCallback(
     () =>
       hobbies.items.length > 0 ? (
         <Bloc>
-          <Category><StyledAnimBar /><ManetteIcon /><CategoryText>{hobbies.text}</CategoryText></Category>
+          <Category>
+            <StyledAnimBar />
+            <ManetteIcon />
+            <CategoryText>{hobbies.text}</CategoryText>
+          </Category>
           <MarginLeft isTouch={isTouchDevice}>
             {hobbies.items.map((item) => {
               const { text, about } = item;
@@ -320,7 +353,7 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
           </MarginLeft>
         </Bloc>
       ) : null,
-    [hobbies, isTouchDevice]
+    [hobbies, isTouchDevice],
   );
 
   return (

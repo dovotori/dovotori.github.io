@@ -1,7 +1,7 @@
-import { locations, getNaturalHeight } from '../utils/terrain';
-import { getFogAmount, fogLocations, fogUniforms } from '../utils/fog';
-import { locationsPBR, funcPBR } from '../utils/pbr';
-import { funcInstancing } from '../utils/instancing';
+import { locations, getNaturalHeight } from "../utils/terrain";
+import { getFogAmount, fogLocations, fogUniforms } from "../utils/fog";
+import { locationsPBR, funcPBR } from "../utils/pbr";
+import { funcInstancing } from "../utils/instancing";
 
 const vertex = `
 attribute vec3 position;
@@ -66,17 +66,17 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'texture', 'normale', 'offset', 'acolor', 'size'],
+  attributes: ["position", "texture", "normale", "offset", "acolor", "size"],
   uniforms: [
-    'projection',
-    'model',
-    'view',
-    'normalMatrix',
-    'fogStart',
-    'fogEnd',
-    'fogColor',
-    'posEye',
-    'waterLevel',
+    "projection",
+    "model",
+    "view",
+    "normalMatrix",
+    "fogStart",
+    "fogEnd",
+    "fogColor",
+    "posEye",
+    "waterLevel",
   ]
     .concat(locations)
     .concat(fogLocations)

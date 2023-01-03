@@ -28,26 +28,22 @@
   },
   "ignorePatterns": [
     "labo/lib/geojson-vt-dev.js",
+    "labo/lib/fastcorner.js",
     "src/store/initialState/"
   ],
   "rules": {
-    "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": 0,
     "react/display-name": 0,
     "react/function-component-definition": 0,
+    "react/jsx-props-no-spreading": 0,
     "no-console": 0,
     "no-bitwise": 0,
     "no-plusplus": 0,
-    "comma-dangle": 0,
-    "import/prefer-default-export": 0
-  },
-  "settings": {
-    "import/resolver": {
-      "node": {},
-      "webpack": {
-        "config": "./webpack/prod.js"
-      }
-    }
+    "no-await-in-loop": 0,
+    "no-restricted-syntax": 0,
+    "comma-dangle": 1,
+    "import/prefer-default-export": 0,
+    "import/no-unresolved": 0
   }
 }

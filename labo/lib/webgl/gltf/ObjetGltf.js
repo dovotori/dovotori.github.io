@@ -1,11 +1,11 @@
-import ObjetGltfPrimitive from './ObjetGltfPrimitive';
-import Quaternion from '../maths/Quaternion';
-import Mat4 from '../maths/Mat4';
+import ObjetGltfPrimitive from "./ObjetGltfPrimitive";
+import Quaternion from "../maths/Quaternion";
+import Mat4 from "../maths/Mat4";
 
 class ObjetGltf {
   constructor(gl, data) {
     const { nodes, meshes, materials } = data;
-    this.meshes = meshes.map(({ primitives, name = '', weights }) => {
+    this.meshes = meshes.map(({ primitives, name = "", weights }) => {
       const primitivesData = primitives.map((primitive) => {
         if (primitive.material !== undefined) {
           return { ...primitive, material: materials[primitive.material] };
@@ -46,7 +46,7 @@ class ObjetGltf {
     let newModel = model;
     // apply only on mesh transformation, should exclude joint transformation/animation
     if (node.customType !== "joint") {
-      newModel = this.setNodeModel(node, program, model);
+      newModel = ObjetGltf.setNodeModel(node, program, model);
       this.renderNode(node, program);
     }
     if (node.children) {
@@ -70,15 +70,15 @@ class ObjetGltf {
     });
   }
 
-  setNodeModel = (node, program, model) => {
-    const localMatrix = this.handleLocalTransform(node);
+  static setNodeModel = (node, program, model) => {
+    const localMatrix = ObjetGltf.handleLocalTransform(node);
     localMatrix.multiply(model);
-    program.setMatrix('model', localMatrix.get());
+    program.setMatrix("model", localMatrix.get());
 
     const normalMatrix = localMatrix.getMatrice3x3();
     normalMatrix.inverse(); // erreur quand scale a 0
     normalMatrix.transpose();
-    program.setMatrix('normalMatrix', normalMatrix.get());
+    program.setMatrix("normalMatrix", normalMatrix.get());
     return localMatrix;
   };
 
@@ -96,7 +96,7 @@ class ObjetGltf {
       return new ObjetGltfPrimitive(gl, { vbos, material });
     });
 
-  handleLocalTransform = (node) => {
+  static handleLocalTransform = (node) => {
     const { translation, rotation, scale, matrix } = node;
 
     const localMatrix = new Mat4();

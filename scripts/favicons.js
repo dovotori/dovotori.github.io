@@ -1,11 +1,11 @@
-const path = require('path');
-const favicons = require('favicons');
-const utils = require('./utils');
+const path = require("path");
+const favicons = require("favicons");
+const utils = require("./utils");
 
-const config = require('../package.json');
+const config = require("../package.json");
 
-const SOURCE = path.resolve(__dirname, '../public/img/source.png');
-const DEST = path.resolve(__dirname, '../public/app');
+const SOURCE = path.resolve(__dirname, "../public/img/source.png");
+const DEST = path.resolve(__dirname, "../public/app");
 const HTML_NO_JS_MESSAGE = `
 <noscript>
   <div id="noscript">
@@ -19,7 +19,7 @@ const HTML_NO_JS_MESSAGE = `
 </noscript>
 `;
 
-const BACKGROUND_COLOR = '#222';
+const BACKGROUND_COLOR = "#222";
 
 const options = {
   offset: 20, // offset in percentage
@@ -30,22 +30,22 @@ const options = {
 };
 
 const configuration = {
-  path: '/public/app/', // Path for overriding default icons path.
+  path: "/public/app/", // Path for overriding default icons path.
   appName: config.name,
   appShortName: config.name,
-  appDescription: 'portfolio de Dorian Ratovo',
-  developerName: 'Dorian Ratovo',
-  developerURL: 'https://dovotori.gitlab.io',
-  dir: 'ltr',
-  lang: 'fr-FR',
+  appDescription: "portfolio de Dorian Ratovo",
+  developerName: "Dorian Ratovo",
+  developerURL: "https://dovotori.gitlab.io",
+  dir: "ltr",
+  lang: "fr-FR",
   background: BACKGROUND_COLOR,
-  theme_color: '#66ffcc',
+  theme_color: "#66ffcc",
   appleStatusBarStyle: BACKGROUND_COLOR,
-  display: 'standalone',
-  orientation: 'any',
-  scope: '/',
-  start_url: '/',
-  version: '1.0',
+  display: "standalone",
+  orientation: "any",
+  scope: "/",
+  start_url: "/",
+  version: "1.0",
   logging: false,
   pixel_art: false,
   loadManifestWithCredentials: false,
@@ -91,7 +91,7 @@ const createTemplate = (htmlFavicon) => {
 </body>
 </html>
   `;
-  utils.saveFile(path.resolve(__dirname, './templates/index.ejs'), html);
+  utils.saveFile(path.resolve(__dirname, "./templates/index.ejs"), html);
 };
 
 const callback = (error, response) => {
@@ -102,16 +102,18 @@ const callback = (error, response) => {
 
   const { images, files, html } = response;
   images.forEach((img) => utils.saveFile(`${DEST}/${img.name}`, img.contents));
-  files.forEach((file) => utils.saveFile(`${DEST}/${file.name}`, file.contents));
-  console.log('create template ejs');
-  createTemplate(html.join('\n    '));
+  files.forEach((file) =>
+    utils.saveFile(`${DEST}/${file.name}`, file.contents),
+  );
+  console.log("create template ejs");
+  createTemplate(html.join("\n    "));
 };
 
 const main = async () => {
   await utils.clean(DEST);
-  console.log('clean');
+  console.log("clean");
   await favicons(SOURCE, configuration, callback);
-  console.log('done');
+  console.log("done");
 };
 
 main();

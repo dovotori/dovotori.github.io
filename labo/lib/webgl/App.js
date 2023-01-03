@@ -1,13 +1,13 @@
-import Loop from './logic/Loop';
-import ManagerAssets from './managers/ManagerAssets';
-import ManagerShaders from './managers/ManagerShaders';
-import Canvas from './gl/Canvas';
-import Keyboard from './io/Keyboard';
-import Controls from './io/Controls';
-import Mouse from './io/Mouse';
-import { capitalize, getEnvPath } from './utils';
+import Loop from "./logic/Loop";
+import ManagerAssets from "./managers/ManagerAssets";
+import ManagerShaders from "./managers/ManagerShaders";
+import Canvas from "./gl/Canvas";
+import Keyboard from "./io/Keyboard";
+import Controls from "./io/Controls";
+import Mouse from "./io/Mouse";
+import { capitalize, getEnvPath } from "./utils";
 
-export default class {
+class App {
   constructor() {
     this.keyboard = null;
     this.mouse = null;
@@ -49,7 +49,7 @@ export default class {
 
     const shouldDisabled = config.useDrawBuffer && !supportConfig.drawBuffers;
     if (shouldDisabled) {
-      const oups = document.createElement('p');
+      const oups = document.createElement("p");
       oups.innerHTML = `
       <b>ご迷惑おかけして申し訳ありません。</b>
       <br/>Sorry. Webgl draw buffers extension support problem occured.
@@ -62,7 +62,7 @@ export default class {
     }
 
     this.scene = new Scene(this.canvas.getContext(), finalConfig);
-    await this.scene.setupAssets(assets)
+    await this.scene.setupAssets(assets);
     if (this.scene.setup) {
       this.scene.setup();
     }
@@ -78,11 +78,14 @@ export default class {
         const callbacks = events.reduce(
           (acc, cur) => ({
             ...acc,
-            [`callback${capitalize(cur)}`]: this.scene[`onMouse${capitalize(cur)}`],
+            [`callback${capitalize(cur)}`]:
+              this.scene[`onMouse${capitalize(cur)}`],
           }),
-          {}
+          {},
         );
-        const mouseContainer = domId ? document.querySelector(`#${domId}`) : container;
+        const mouseContainer = domId
+          ? document.querySelector(`#${domId}`)
+          : container;
         this.mouse = new Mouse(mouseContainer, callbacks);
       }
       if (config.controls) {
@@ -94,11 +97,11 @@ export default class {
       }
     }
 
-    this.revealAfterLoaded(container);
+    App.revealAfterLoaded(container);
     this.loop = new Loop();
     this.loop.setCallback(this.render);
     this.loop.start();
-    return true;
+    container.appendChild(this.canvas.get());
   }
 
   resize = (e) => {
@@ -157,10 +160,12 @@ export default class {
     }
   }
 
-  revealAfterLoaded = (container) => {
+  static revealAfterLoaded = (container) => {
     if (container) {
-      const itemsToReveal = container.querySelectorAll('[style]');
-      itemsToReveal.forEach((item) => item.removeAttribute('style'));
+      const itemsToReveal = container.querySelectorAll("[style]");
+      itemsToReveal.forEach((item) => item.removeAttribute("style"));
     }
   };
 }
+
+export default App;

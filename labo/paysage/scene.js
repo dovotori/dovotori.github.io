@@ -1,12 +1,12 @@
-import Scene from '../lib/webgl/scenes/SceneLampe';
-import Mat4 from '../lib/webgl/maths/Mat4';
-import Spring from '../lib/webgl/maths/Spring';
-import Target from '../lib/webgl/maths/Target';
-import DualQuaternion from '../lib/webgl/maths/DualQuaternion';
-import { degToRad } from '../lib/webgl/utils/numbers';
-import Primitive from '../lib/webgl/gl/Primitive';
-import Buffers from '../lib/webgl/postprocess/Buffers';
-import primitive from '../lib/webgl/primitives/plane';
+import Scene from "../lib/webgl/scenes/SceneLampe";
+import Mat4 from "../lib/webgl/maths/Mat4";
+import Spring from "../lib/webgl/maths/Spring";
+import Target from "../lib/webgl/maths/Target";
+import DualQuaternion from "../lib/webgl/maths/DualQuaternion";
+import { degToRad } from "../lib/webgl/utils/numbers";
+import Primitive from "../lib/webgl/gl/Primitive";
+import Buffers from "../lib/webgl/postprocess/Buffers";
+import primitive from "../lib/webgl/primitives/plane";
 
 export default class extends Scene {
   constructor(gl, config) {
@@ -23,7 +23,12 @@ export default class extends Scene {
     this.fakeShadow = new Primitive(gl, primitive);
     this.targetZ.set(1.2);
 
-    this.buffers = new Buffers(this.gl, config.width, config.height, this.canUseDepth());
+    this.buffers = new Buffers(
+      this.gl,
+      config.width,
+      config.height,
+      this.canUseDepth(),
+    );
   }
 
   update(time) {
@@ -45,19 +50,19 @@ export default class extends Scene {
     // pour faire disparaite les objet qui sorte de la scene
     const invModel = new Mat4();
     invModel.equal(this.camera.getView()).multiply(this.model).inverse();
-    program.setMatrix('inverseModel', invModel.get());
+    program.setMatrix("inverseModel", invModel.get());
 
     this.mngGltf.get(this.config.MAIN_OBJ).update(time);
   }
 
   mainRender = (program) => {
-    this.renderFakeShadow(this.mngProg.get('color'));
+    this.renderFakeShadow(this.mngProg.get("color"));
     this.mngGltf.get(this.config.MAIN_OBJ).render(program, this.model);
   };
 
   renderBasiqueForLampeDepth = () => {
     const lampe = this.getLampe(0);
-    const program = this.mngProg.get('basique3d');
+    const program = this.mngProg.get("basique3d");
     lampe.setDepthProgram(program);
     lampe.start();
     this.mainRender(program);
@@ -102,8 +107,8 @@ export default class extends Scene {
     model.translate(0.2, -7, 0);
     model.scale(8.1, 1.0, 6.0);
     model.multiply(this.model);
-    program.setMatrix('model', model.get());
-    program.setVector('color', [0, 0, 0, 0.9]);
+    program.setMatrix("model", model.get());
+    program.setVector("color", [0, 0, 0, 0.9]);
     this.fakeShadow.render(program.get());
   }
 

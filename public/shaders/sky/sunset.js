@@ -1,4 +1,4 @@
-import vertex from '../screen/basicVertex';
+import vertex from "../screen/basicVertex";
 
 const fragment = `
 precision mediump float;
@@ -55,6 +55,6 @@ void main(){
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'texture'],
-  uniforms: ['flipY', 'resolution', 'time'],
+  attributes: ["position", "texture"],
+  uniforms: ["flipY", "resolution", "time"],
 };

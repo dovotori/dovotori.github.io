@@ -1,4 +1,4 @@
-import Vec3 from '../../../lib/webgl/maths/Vec3';
+import Vec3 from "../../../lib/webgl/maths/Vec3";
 
 export default class {
   constructor(constants, updateState) {

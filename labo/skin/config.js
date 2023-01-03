@@ -1,10 +1,10 @@
-const MAIN_PROG = 'skin';
-const MAIN_OBJ = 'riggedPerso3';
+const MAIN_PROG = "skin";
+const MAIN_OBJ = "riggedPerso3";
 export default {
-  slug: 'skin',
+  slug: "skin",
   MAIN_PROG,
   MAIN_OBJ,
-  shaders: ['/camera/basique3d.js', `/camera/${MAIN_PROG}.js`],
+  shaders: ["/camera/basique3d.js", `/camera/${MAIN_PROG}.js`],
   assets: [`/gltf/${MAIN_OBJ}.gltf`],
   camera: {
     position: { x: 0, y: 0, z: 40 },

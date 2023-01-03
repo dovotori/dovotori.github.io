@@ -1,7 +1,7 @@
-const { promisify } = require('util');
-const path = require('path');
-const fs = require('fs');
-const csv = require('csv-parser');
+const { promisify } = require("util");
+const path = require("path");
+const fs = require("fs");
+const csv = require("csv-parser");
 
 const writeFile = promisify(fs.writeFile);
 
@@ -19,7 +19,7 @@ exports.saveFile = (url, data) => {
 
 exports.saveHtml = (url, data) => {
   const stream = fs.createWriteStream(url);
-  stream.once('open', () => {
+  stream.once("open", () => {
     stream.end(data);
   });
 };
@@ -43,11 +43,11 @@ exports.readCsv = (url) =>
     const data = [];
     fs.createReadStream(url)
       .pipe(csv())
-      .on('error', (e) => reject(e))
-      .on('data', (row) => {
+      .on("error", (e) => reject(e))
+      .on("data", (row) => {
         data.push(row);
       })
-      .on('end', () => {
+      .on("end", () => {
         resolve(data);
       });
   });

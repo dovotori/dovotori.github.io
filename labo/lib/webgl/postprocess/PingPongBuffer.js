@@ -1,4 +1,4 @@
-import Fbo from '../gl/Fbo';
+import Fbo from "../gl/Fbo";
 
 export default class {
   constructor(gl, width = 1024, height = 1024, useDepth = false) {

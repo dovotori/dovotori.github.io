@@ -20,6 +20,6 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position'],
-  uniforms: ['time'],
+  attributes: ["position"],
+  uniforms: ["time"],
 };

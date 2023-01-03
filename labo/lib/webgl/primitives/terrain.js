@@ -1,5 +1,5 @@
 // based on ftp://ftp.cs.brown.edu/pub/techreports/05/cs05-14.pdf
-import { mapFromRange } from '../utils/numbers';
+import { mapFromRange } from "../utils/numbers";
 
 export const getPoints = (width, nbDoublesLines = 1) => {
   const points = [];
@@ -38,12 +38,6 @@ export const getPoints = (width, nbDoublesLines = 1) => {
 
 const getPlateauNbPoints = (width, nbDoublesLines) =>
   width * (nbDoublesLines + 1) + (width + 1) * nbDoublesLines;
-
-const getNormales = (width, height = 1) => {
-  const nbPoints = getPlateauNbPoints(width, height);
-  const normales = Array.from({ length: nbPoints }).fill([0, 1, 0]);
-  return normales.flat();
-};
 
 export const getIndices = (width, nbDoublesLines = 1) => {
   const indices = [];
@@ -146,13 +140,6 @@ const addThickIndices = (width, nbDoublesLines) => {
   indices.push(lastStripIndex);
   indices.push(firstThickIndex);
   return indices;
-};
-
-const addThickNormales = (width, nbDoublesLines) => {
-  const normales = [];
-  // const lastIndex = getPlateauNbPoints(width, nbDoublesLines) - 1;
-
-  return normales;
 };
 
 const getMappedPoints = (points, width, height) => {

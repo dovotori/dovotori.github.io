@@ -1,9 +1,9 @@
-import { useCallback, useState } from 'react';
-import styled from 'styled-components';
+import { useCallback, useState } from "react";
+import styled from "styled-components";
 
-import * as svgs from 'Assets/svg/cv2';
-import { mapFromRange } from '../utils';
-import ArcWithItem from './ArcWithItem';
+import * as svgs from "Assets/svg/cv2";
+import { mapFromRange } from "../utils";
+import ArcWithItem from "./ArcWithItem";
 
 const STROKE_WIDTH = 30;
 const CENTER_WIDTH = 30;
@@ -51,7 +51,7 @@ const Chart = ({ className, data, showAllIcons = false }) => {
         setCurrentName(node.name);
       }
     },
-    [curretName]
+    [curretName],
   );
 
   const drawNodes = useCallback(
@@ -69,8 +69,12 @@ const Chart = ({ className, data, showAllIcons = false }) => {
         const childHasChildren = !!child.children;
         if (isActive) {
           const isFirst = current !== data.name && depth === 1;
-          angle = isFirst ? parentAngle : mapFromRange(value, 0, 100, 0, parentAngle);
-          newEnd = isFirst ? parentAngle : mapFromRange(value, 0, 100, 0, parentAngle);
+          angle = isFirst
+            ? parentAngle
+            : mapFromRange(value, 0, 100, 0, parentAngle);
+          newEnd = isFirst
+            ? parentAngle
+            : mapFromRange(value, 0, 100, 0, parentAngle);
           image = svgs[name] || null;
           newDepth = depth + 1;
           nextCurrent = data.name;
@@ -94,14 +98,22 @@ const Chart = ({ className, data, showAllIcons = false }) => {
             showIcon={showAllIcons}
           >
             {childHasChildren &&
-              drawNodes(nextCurrent, x, y, child, newDepth, currentStartAngle, newEnd)}
+              drawNodes(
+                nextCurrent,
+                x,
+                y,
+                child,
+                newDepth,
+                currentStartAngle,
+                newEnd,
+              )}
           </StyledArcWithItem>
         );
         currentStartAngle += angle;
         return returnValue;
       });
     },
-    [handleClickArc, showAllIcons]
+    [handleClickArc, showAllIcons],
   );
 
   return (

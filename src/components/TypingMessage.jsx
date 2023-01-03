@@ -1,5 +1,5 @@
-import { useRef, useCallback, useEffect, useState } from 'react';
-import styled from 'styled-components';
+import { useRef, useCallback, useEffect, useState } from "react";
+import styled from "styled-components";
 
 const Wrap = styled.div`
   position: relative;
@@ -7,19 +7,19 @@ const Wrap = styled.div`
   p {
     display: flex;
     flex-wrap: wrap;
-    flex-direction: ${p => p.$isVertical ? 'column' : 'row'};
+    flex-direction: ${(p) => (p.$isVertical ? "column" : "row")};
     line-height: 1;
     align-items: center;
-    justify-content: ${p => p.$isCenter ? 'center' : 'flex-start'};
+    justify-content: ${(p) => (p.$isCenter ? "center" : "flex-start")};
 
     span {
-      margin: 0 ${p => p.$isVertical ? 0 : '0.2em'} 0 0;
+      margin: 0 ${(p) => (p.$isVertical ? 0 : "0.2em")} 0 0;
     }
   }
 `;
 
 const Hidden = styled.p`
-  visibility: ${(p) => (p.$isVisible ? 'visible' : 'hidden')};
+  visibility: ${(p) => (p.$isVisible ? "visible" : "hidden")};
 `;
 
 const Anim = styled.p`
@@ -30,19 +30,19 @@ const Anim = styled.p`
   transition: color 500ms linear;
 `;
 
-const CHARS = '!<>-_\\/[]{}—=+*^?#';
+const CHARS = "!<>-_\\/[]{}—=+*^?#";
 const Modes = {
   DISAPPEAR: -1,
   APPEAR: 1,
-  STOP: 0
+  STOP: 0,
 };
 
 const TypingMessage = ({
-  message = '',
+  message = "",
   isDisabled = false,
   isVertical = false,
   isCenter = false,
-  firstMessage = '',
+  firstMessage = "",
   className,
   isLoop = false,
   delayLoop = 5000, // en ms
@@ -57,13 +57,26 @@ const TypingMessage = ({
   const mode = useRef(Modes.STOP);
   const [displayMessage, setDisplayMessage] = useState(firstMessage);
 
-  const randomChar = useCallback(() => CHARS[Math.floor(Math.random() * CHARS.length)], []);
-  const randomStr = useCallback((length) => new Array(length).fill(0).map(randomChar).join(''), []);
-  const randomCurrentStr = useCallback((str) => str.split('').map((car, i) => {
-    if (car === ' ') return car;
-    if (Math.random() > 0.5) return randomChar();
-    return car;
-  }).join(''), []);
+  const randomChar = useCallback(
+    () => CHARS[Math.floor(Math.random() * CHARS.length)],
+    [],
+  );
+  const randomStr = useCallback(
+    (length) => new Array(length).fill(0).map(randomChar).join(""),
+    [],
+  );
+  const randomCurrentStr = useCallback(
+    (str) =>
+      str
+        .split("")
+        .map((car) => {
+          if (car === " ") return car;
+          if (Math.random() > 0.5) return randomChar();
+          return car;
+        })
+        .join(""),
+    [],
+  );
 
   const update = useCallback(() => {
     const now = new Date().getTime();
@@ -73,7 +86,7 @@ const TypingMessage = ({
       return;
     }
 
-    let text = '';
+    let text = "";
     switch (mode.current) {
       case Modes.APPEAR: {
         if (count.current < toMessage.current.length) {
@@ -104,7 +117,7 @@ const TypingMessage = ({
         break;
     }
 
-    setDisplayMessage(text)
+    setDisplayMessage(text);
     lastFrame.current = now;
 
     if (mode.current !== Modes.STOP) {
@@ -158,25 +171,22 @@ const TypingMessage = ({
     };
   }, [message]);
 
-  useEffect(
-    () => {
+  useEffect(() => {
+    if (timeout.current) {
+      clearTimeout(timeout.current);
+    }
+    if (isLoop) {
+      timeout.current = setTimeout(() => {
+        mode.current = Modes.DISAPPEAR;
+        req.current = requestAnimationFrame(update);
+      }, delayLoop);
+    }
+    return () => {
       if (timeout.current) {
         clearTimeout(timeout.current);
       }
-      if (isLoop) {
-        timeout.current = setTimeout(() => {
-          mode.current = Modes.DISAPPEAR;
-          req.current = requestAnimationFrame(update);
-        }, delayLoop);
-      }
-      return () => {
-        if (timeout.current) {
-          clearTimeout(timeout.current);
-        }
-      };
-    },
-    [isLoop]
-  );
+    };
+  }, [isLoop]);
 
   useEffect(
     () => () => {
@@ -187,29 +197,23 @@ const TypingMessage = ({
         clearTimeout(timeout.current);
       }
     },
-    []
+    [],
   );
 
   return (
     <Wrap className={className} $isVertical={isVertical} $isCenter={isCenter}>
       <Hidden $isVisible={isDisabled}>
-        {message.split('').map((letter, index) => {
+        {message.split("").map((letter, index) => {
           const key = `${message}${letter}${index}`;
-          return (
-            <span key={key}>
-              {letter === ' ' ? `_` : letter}
-            </span>
-          );
+          return <span key={key}>{letter === " " ? `_` : letter}</span>;
         })}
       </Hidden>
-      <Anim>{displayMessage.split('').map((letter, index) => {
-        const key = `${displayMessage}${letter}${index}`;
-        return (
-          <span key={key}>
-            {letter === ' ' ? `_` : letter}
-          </span>
-        );
-      })}</Anim>
+      <Anim>
+        {displayMessage.split("").map((letter, index) => {
+          const key = `${displayMessage}${letter}${index}`;
+          return <span key={key}>{letter === " " ? `_` : letter}</span>;
+        })}
+      </Anim>
     </Wrap>
   );
 };

@@ -1,4 +1,4 @@
-import Mat4 from '../maths/Mat4';
+import Mat4 from "../maths/Mat4";
 
 export default class {
   constructor() {
@@ -8,12 +8,12 @@ export default class {
   }
 
   setProgram(program) {
-    program.setMatrix('model', this.model.get());
+    program.setMatrix("model", this.model.get());
   }
 
   setProgramSpecifics(program) {
-    program.setInt('selected', this.selected);
-    program.setVector('color', [1.0, 1.0, 1.0, 1.0]);
+    program.setInt("selected", this.selected);
+    program.setVector("color", [1.0, 1.0, 1.0, 1.0]);
   }
 
   render(objet, program) {
@@ -25,8 +25,8 @@ export default class {
 
   renderColor(objet, program) {
     this.setProgram(program);
-    program.setInt('selected', this.selected);
-    program.setVector('color', [1.0, 1.0, 1.0, 1.0]);
+    program.setInt("selected", this.selected);
+    program.setVector("color", [1.0, 1.0, 1.0, 1.0]);
     objet.enable(program.get());
     objet.render(program.get());
   }

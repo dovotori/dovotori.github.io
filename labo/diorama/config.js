@@ -1,22 +1,27 @@
-import { UP, DOWN, LEFT, RIGHT } from '../lib/webgl/constants/keyboard';
+import { UP, DOWN, LEFT, RIGHT } from "../lib/webgl/constants/keyboard";
 
 export default {
-  slug: 'diorama',
+  slug: "diorama",
   shaders: [
-    '/diorama/terrain.js',
-    '/diorama/water.js',
-    '/diorama/instancing.js',
-    '/diorama/instancingDepth.js',
-    '/diorama/shadow.js',
-    '/diorama/terrainDepth.js',
-    '/screen/screen.js',
-    '/screen/blurOnePass.js',
-    '/screen/brightcontrast.js',
-    '/screen/composeShadow.js',
-    '/camera/gltf.js',
-    '/camera/basique3d.js',
+    "/diorama/terrain.js",
+    "/diorama/water.js",
+    "/diorama/instancing.js",
+    "/diorama/instancingDepth.js",
+    "/diorama/shadow.js",
+    "/diorama/terrainDepth.js",
+    "/screen/screen.js",
+    "/screen/blurOnePass.js",
+    "/screen/brightcontrast.js",
+    "/screen/composeShadow.js",
+    "/camera/gltf.js",
+    "/camera/basique3d.js",
   ],
-  assets: ['/gltf/three.gltf', '/gltf/antenna.gltf', '/textures/waterN.jpg', '/textures/dudv.png'],
+  assets: [
+    "/gltf/three.gltf",
+    "/gltf/antenna.gltf",
+    "/textures/waterN.jpg",
+    "/textures/dudv.png",
+  ],
   canvas: {
     width: 1024,
     height: 1024,
@@ -55,7 +60,7 @@ export default {
     },
   ],
   controls: {
-    fullscreen: { buttonId: 'fullscreen-toggle-btn' },
+    fullscreen: { buttonId: "fullscreen-toggle-btn" },
   },
   terrain: {
     width: 200,
@@ -65,18 +70,18 @@ export default {
     waterLevel: 0.4,
     colors: [
       // DIRT
-      '#251a16',
-      '#6e6254',
-      '#8b6a47',
+      "#251a16",
+      "#6e6254",
+      "#8b6a47",
       // ROC
-      '#5d564c',
+      "#5d564c",
       // '#978d72',
-      '#989b56',
+      "#989b56",
       // GREEN
-      '#6d753a',
-      '#89934c',
-      '#8b8f54',
-      '#ffffff',
+      "#6d753a",
+      "#89934c",
+      "#8b8f54",
+      "#ffffff",
     ],
   },
   fog: {
@@ -85,7 +90,7 @@ export default {
     end: 10,
   },
   mouse: {
-    events: ['drag', 'click'],
+    events: ["drag", "click"],
   },
   keyboard: {
     UP,

@@ -1,11 +1,11 @@
-export default class {
+class WebWorker {
   constructor(worker) {
     this.worker = worker;
     this.onMessage = null;
-    this.worker.addEventListener('error', this.onError);
+    this.worker.addEventListener("error", WebWorker.onError);
   }
 
-  onError(err) {
+  static onError(err) {
     console.error(`${err.filename}, line ${err.lineno}: ${err.message}`);
   }
 
@@ -23,8 +23,10 @@ export default class {
       if (this.onMessage) {
         this.worker.removeEventListener("message", this.onMessage);
       }
-      this.worker.removeEventListener('error', this.onError);
+      this.worker.removeEventListener("error", WebWorker.onError);
       this.worker.terminate();
     }
   }
 }
+
+export default WebWorker;

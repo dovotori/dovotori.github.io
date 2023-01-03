@@ -1,7 +1,7 @@
-import { fogLocations } from '../utils/fog';
-import { funcWave } from '../utils/terrain';
-import { addLightLocations } from '../utils/light';
-import fragment from './waterFragment1';
+import { fogLocations } from "../utils/fog";
+import { funcWave } from "../utils/terrain";
+import { addLightLocations } from "../utils/light";
+import fragment from "./waterFragment1";
 
 const vertex = `
 attribute vec3 position;
@@ -83,22 +83,22 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position'],
+  attributes: ["position"],
   uniforms: [
-    'projection',
-    'model',
-    'view',
-    'normalMatrix',
-    'moving',
-    'gridSize',
-    'waterLevel',
-    'reflectMap',
-    'refractMap',
-    'normaleMap',
-    'distortionMap',
-    'depthMap',
-    'posEye',
-    'time',
+    "projection",
+    "model",
+    "view",
+    "normalMatrix",
+    "moving",
+    "gridSize",
+    "waterLevel",
+    "reflectMap",
+    "refractMap",
+    "normaleMap",
+    "distortionMap",
+    "depthMap",
+    "posEye",
+    "time",
   ]
     .concat(fogLocations)
     .concat(addLightLocations()),

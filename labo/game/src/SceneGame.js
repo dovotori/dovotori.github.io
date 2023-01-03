@@ -1,12 +1,12 @@
-import Scene from '../../lib/webgl/scenes/SceneLampe';
+import Scene from "../../lib/webgl/scenes/SceneLampe";
 
-import Target from '../../lib/webgl/maths/Target';
-import Collisions from '../../lib/webgl/collisions/Collisions';
+import Target from "../../lib/webgl/maths/Target";
+import Collisions from "../../lib/webgl/collisions/Collisions";
 
-import Background from './game/Background';
-import Tilemap from './game/Tilemap';
-import Heros from './persos/Heros';
-import Monster from './persos/Monster';
+import Background from "./game/Background";
+import Tilemap from "./game/Tilemap";
+import Heros from "./persos/Heros";
+import Monster from "./persos/Monster";
 
 export default class extends Scene {
   constructor(gl, config) {
@@ -47,7 +47,7 @@ export default class extends Scene {
           const constants = { ...configType.constants, x, y, id };
           const { sprites } = configType;
           switch (type) {
-            case 'heros': {
+            case "heros": {
               const { fxs, bullets } = configType;
               this.interactives[id] = new Heros({
                 constants,
@@ -60,7 +60,7 @@ export default class extends Scene {
               this.interactives[id].setCallbackDeath(callbackRestart);
               break;
             }
-            case 'monster': {
+            case "monster": {
               this.interactives[id] = new Monster({
                 constants,
                 sprites,
@@ -76,7 +76,7 @@ export default class extends Scene {
       });
 
       const boxes = Object.keys(this.interactives).map((id) =>
-        this.interactives[id].getCollisionBox()
+        this.interactives[id].getCollisionBox(),
       );
 
       this.background = new Background(viewBox, this.tilemap.getLevelSize());
@@ -94,7 +94,7 @@ export default class extends Scene {
     });
     this.collisions.clear();
     const boxes = Object.keys(this.interactives).map((id) =>
-      this.interactives[id].getCollisionBox()
+      this.interactives[id].getCollisionBox(),
     );
     this.collisions.addBoxes(boxes);
   }
@@ -110,7 +110,7 @@ export default class extends Scene {
 
     this.camera.followPosY(herosWorldPos[1]);
     this.tilemap.follow(herosPos);
-    this.tilemap.update(this.mngProg.get('spritePhong'));
+    this.tilemap.update(this.mngProg.get("spritePhong"));
     // this.background.update(herosPos);
 
     if (!this.isPause) {
@@ -133,10 +133,10 @@ export default class extends Scene {
     if (collisionsIdentifiers.length > 0) {
       collisionsIdentifiers.forEach(({ type, on, from, bulletId }) => {
         switch (type) {
-          case 'SIMPLE': {
+          case "SIMPLE": {
             const onElem = this.interactives[on];
             const fromElem = this.interactives[from];
-            const isAttacking = onElem.getStatus() === 'SLASH';
+            const isAttacking = onElem.getStatus() === "SLASH";
             if (isAttacking) {
               fromElem.addToSpeed(fromElem.getX() < onElem.getX() ? -1 : 1);
               fromElem.setDamage(30);
@@ -146,7 +146,7 @@ export default class extends Scene {
             }
             break;
           }
-          case 'SHOOT': {
+          case "SHOOT": {
             const onElem = this.interactives[on];
             const fromElem = this.interactives[from];
             onElem.addToSpeed(fromElem.getX() < onElem.getX() ? 1 : -1);
@@ -177,49 +177,77 @@ export default class extends Scene {
 
   renderTilemap() {
     this.tilemap.render(
-      this.mngProg.get('spritePhong'),
-      this.mngTex.get('level1'),
-      this.mngObj.get('cubeTile'),
-      this.mngObj.get('tile')
+      this.mngProg.get("spritePhong"),
+      this.mngTex.get("level1"),
+      this.mngObj.get("cubeTile"),
+      this.mngObj.get("tile"),
     );
   }
 
   renderInteractives() {
     Object.keys(this.interactives).forEach((id) => {
       this.interactives[id].render(
-        this.mngProg.get('sprite'),
-        this.mngTex.get('heros'),
-        this.mngObj.get('tile')
+        this.mngProg.get("sprite"),
+        this.mngTex.get("heros"),
+        this.mngObj.get("tile"),
       );
     });
     const { heros } = this.interactives;
-    heros.renderFxs(this.mngProg.get('sprite'), this.mngTex.get('fx'), this.mngObj.get('tile'));
+    heros.renderFxs(
+      this.mngProg.get("sprite"),
+      this.mngTex.get("fx"),
+      this.mngObj.get("tile"),
+    );
     heros.renderBullets(
-      this.mngProg.get('sprite'),
-      this.mngTex.get('bullet'),
-      this.mngObj.get('tile')
+      this.mngProg.get("sprite"),
+      this.mngTex.get("bullet"),
+      this.mngObj.get("tile"),
     );
   }
 
   renderBackground() {
     const { heros } = this.interactives;
     const herosPosX = heros.getX();
-    const program = this.mngProg.get('background');
-    this.background.renderMountains(this.mngObj.get('tile'), this.mngProg.get('color'));
+    const program = this.mngProg.get("background");
+    this.background.renderMountains(
+      this.mngObj.get("tile"),
+      this.mngProg.get("color"),
+    );
     this.background.updateScreens(-0.15);
-    program.setTexture(0, this.mngTex.get('clouds').get(), 'textureMap');
-    this.background.renderScreen(this.mngObj.get('tile'), program, herosPosX, 0.0005);
+    program.setTexture(0, this.mngTex.get("clouds").get(), "textureMap");
+    this.background.renderScreen(
+      this.mngObj.get("tile"),
+      program,
+      herosPosX,
+      0.0005,
+    );
     this.background.updateScreens(-0.1);
-    program.setTexture(0, this.mngTex.get('rocks').get(), 'textureMap');
-    this.background.renderScreen(this.mngObj.get('tile'), program, herosPosX, 0.001);
+    program.setTexture(0, this.mngTex.get("rocks").get(), "textureMap");
+    this.background.renderScreen(
+      this.mngObj.get("tile"),
+      program,
+      herosPosX,
+      0.001,
+    );
     this.background.updateScreens(-0.05);
-    program.setTexture(0, this.mngTex.get('ground').get(), 'textureMap');
-    this.background.renderScreen(this.mngObj.get('tile'), program, herosPosX, 0.005);
-    this.background.renderCloudsBack(this.mngObj.get('tile'), this.mngProg.get('color'));
+    program.setTexture(0, this.mngTex.get("ground").get(), "textureMap");
+    this.background.renderScreen(
+      this.mngObj.get("tile"),
+      program,
+      herosPosX,
+      0.005,
+    );
+    this.background.renderCloudsBack(
+      this.mngObj.get("tile"),
+      this.mngProg.get("color"),
+    );
   }
 
   renderForeground() {
-    this.background.renderCloudsFront(this.mngObj.get('tile'), this.mngProg.get('color'));
+    this.background.renderCloudsFront(
+      this.mngObj.get("tile"),
+      this.mngProg.get("color"),
+    );
   }
 
   effects() {

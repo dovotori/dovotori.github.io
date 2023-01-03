@@ -1,12 +1,14 @@
-import CategoriesFilters from '../CategoriesFilters';
+import CategoriesFilters from "../CategoriesFilters";
 
 export default {
-  title: 'Components/CategoriesFilters',
+  title: "Components/CategoriesFilters",
   component: CategoriesFilters,
 };
 
 const Template = (args) => <CategoriesFilters {...args} />;
 export const Primary = Template.bind({});
 Primary.args = {
-  categories: new Array(4).fill(0).map((v, id) => ({ label: `category ${id}`, slug: `cat${id}`, id }))
+  categories: new Array(4)
+    .fill(0)
+    .map((v, id) => ({ label: `category ${id}`, slug: `cat${id}`, id })),
 };

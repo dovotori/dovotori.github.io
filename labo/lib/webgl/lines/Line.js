@@ -1,6 +1,6 @@
-import Primitive from '../gl/Primitive';
-import SpringVec3 from '../maths/SpringVec3';
-import Vec3 from '../maths/Vec3';
+import Primitive from "../gl/Primitive";
+import SpringVec3 from "../maths/SpringVec3";
+import Vec3 from "../maths/Vec3";
 
 import {
   getSide,
@@ -8,7 +8,7 @@ import {
   getTexture,
   getPoints,
   lineShaderWithAdjacents,
-} from '../primitives/line';
+} from "../primitives/line";
 
 export default class {
   constructor(gl, count, { spring, friction }) {
@@ -31,7 +31,11 @@ export default class {
       } else {
         newPos = this.points[index - 1];
       }
-      const vec = Vec3.lerp(new Vec3(...point), new Vec3(...newPos), index === 0 ? 0.9999 : 0.8);
+      const vec = Vec3.lerp(
+        new Vec3(...point),
+        new Vec3(...newPos),
+        index === 0 ? 0.9999 : 0.8,
+      );
       return vec.get();
     });
     const primitive = lineShaderWithAdjacents(this.points);

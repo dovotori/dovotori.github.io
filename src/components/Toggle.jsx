@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const CheckBoxWrapper = styled.div`
   position: relative;
@@ -14,7 +14,7 @@ const CheckBoxLabel = styled.label`
   background-color: ${(p) => p.theme.light};
   cursor: pointer;
   &::after {
-    content: '';
+    content: "";
     display: block;
     border-radius: 50%;
     width: 18px;
@@ -34,7 +34,7 @@ const CheckBox = styled.input`
   &:checked + ${CheckBoxLabel} {
     background: ${(p) => p.theme.light};
     &::after {
-      content: '';
+      content: "";
       display: block;
       border-radius: 50%;
       width: 18px;

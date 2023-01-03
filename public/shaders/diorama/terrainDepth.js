@@ -1,5 +1,5 @@
-import { locations, getNaturalHeight } from '../utils/terrain';
-import fragment from '../camera/basicFrag';
+import { locations, getNaturalHeight } from "../utils/terrain";
+import fragment from "../camera/basicFrag";
 
 const vertex = `
 attribute vec3 position;
@@ -25,6 +25,6 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position'],
-  uniforms: ['projection', 'model', 'view'].concat(locations),
+  attributes: ["position"],
+  uniforms: ["projection", "model", "view"].concat(locations),
 };

@@ -57,6 +57,6 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'texture', 'next', 'previous', 'side'],
-  uniforms: ['time', 'weight', 'color'],
+  attributes: ["position", "texture", "next", "previous", "side"],
+  uniforms: ["time", "weight", "color"],
 };

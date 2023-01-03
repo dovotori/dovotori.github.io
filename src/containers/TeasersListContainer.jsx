@@ -1,7 +1,7 @@
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
-import TeasersList from '../components/TeasersList';
-import { getEntries, getIsTouchDevice } from '../selectors';
+import TeasersList from "../components/TeasersList";
+import { getEntries, getIsTouchDevice } from "../selectors";
 
 export default () => {
   const stateEntries = getEntries();

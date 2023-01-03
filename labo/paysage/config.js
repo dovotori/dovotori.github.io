@@ -1,23 +1,23 @@
-const MAIN_PROG = 'paysage';
-const MAIN_OBJ = 'paysage';
+const MAIN_PROG = "paysage";
+const MAIN_OBJ = "paysage";
 export default {
-  slug: 'paysage',
+  slug: "paysage",
   MAIN_PROG,
   MAIN_OBJ,
   shaders: [
-    '/camera/basique3d.js',
-    '/camera/color.js',
+    "/camera/basique3d.js",
+    "/camera/color.js",
     `/camera/${MAIN_PROG}.js`,
-    '/screen/fxaa.js',
-    '/screen/fxaa2.js',
-    '/screen/screen.js',
-    '/camera/buffers.js',
-    '/screen/brightcontrast.js',
-    '/screen/ssao.js',
-    '/screen/blurOnePass.js',
-    '/screen/compose.js',
-    '/screen/bloom.js',
-    '/camera/shadow.js',
+    "/screen/fxaa.js",
+    "/screen/fxaa2.js",
+    "/screen/screen.js",
+    "/camera/buffers.js",
+    "/screen/brightcontrast.js",
+    "/screen/ssao.js",
+    "/screen/blurOnePass.js",
+    "/screen/compose.js",
+    "/screen/bloom.js",
+    "/camera/shadow.js",
   ],
   postprocess: {
     ssao: {
@@ -76,13 +76,13 @@ export default {
     },
   ],
   mouse: {
-    events: ['drag', 'wheel'],
+    events: ["drag", "wheel"],
   },
   canvas: {
     width: 1024,
     height: 1024,
   },
   controls: {
-    fullscreen: { buttonId: 'fullscreen-toggle-btn' },
+    fullscreen: { buttonId: "fullscreen-toggle-btn" },
   },
 };

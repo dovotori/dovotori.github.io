@@ -1,7 +1,7 @@
 // https://john-chapman-graphics.blogspot.com/2013/01/ssao-tutorial.html
 // not working for me :(
 
-import vertex from './basicVertex';
+import vertex from "./basicVertex";
 
 export const NUM_SAMPLES = 64;
 export const NUM_NOISE = 4; // tex size
@@ -90,22 +90,23 @@ void main() {
 }
 `;
 
-const addSamplesLocations = () => Array.from(Array(NUM_SAMPLES).keys()).map((i) => `samples[${i}]`);
+const addSamplesLocations = () =>
+  Array.from(Array(NUM_SAMPLES).keys()).map((i) => `samples[${i}]`);
 
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'texture'],
+  attributes: ["position", "texture"],
   uniforms: [
-    'flipY',
-    'positionMap',
-    'normalMap',
-    'depthMap',
-    'noiseMap',
-    'projection',
-    'inverseProjection',
-    'inverseView',
-    'radius',
-    'resolution',
+    "flipY",
+    "positionMap",
+    "normalMap",
+    "depthMap",
+    "noiseMap",
+    "projection",
+    "inverseProjection",
+    "inverseView",
+    "radius",
+    "resolution",
   ].concat(addSamplesLocations()),
 };

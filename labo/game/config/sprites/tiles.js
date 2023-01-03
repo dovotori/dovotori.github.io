@@ -34,25 +34,25 @@ export default {
     FLAT,
   },
   colors: {
-    '000': { pattern: TILE1, objType: FLAT },
+    "000": { pattern: TILE1, objType: FLAT },
     150150150: { pattern: TILE2, objType: FLAT },
-    '00255': { pattern: TILE2, objType: FLAT, z: -1 },
+    "00255": { pattern: TILE2, objType: FLAT, z: -1 },
     25500: { pattern: TILE2, objType: FLAT },
-    '02500': { pattern: TILE2, objType: FLAT },
-    '02550': {
+    "02500": { pattern: TILE2, objType: FLAT },
+    "02550": {
       pattern: TREE1,
       objType: FLAT,
       scale: { x: 2, y: 2 },
       z: -0.4,
     },
-    '02000': { pattern: TREE2, objType: FLAT, z: 1 },
-    '01500': {
+    "02000": { pattern: TREE2, objType: FLAT, z: 1 },
+    "01500": {
       pattern: TREE3,
       objType: FLAT,
       scale: { x: 1.5, y: 1.5 },
       z: -0.5,
     },
-    '01000': { pattern: TREE4, objType: FLAT },
+    "01000": { pattern: TREE4, objType: FLAT },
     10000: { pattern: DOOR1, scale: { x: 2, y: 2 }, objType: FLAT },
   },
   [DOOR1]: { uv: [{ x: 166, y: 26, w: 52, h: 52 }] },

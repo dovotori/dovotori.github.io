@@ -1,4 +1,4 @@
-import Vec3 from '../maths/Vec3';
+import Vec3 from "../maths/Vec3";
 
 const getNormale = (point1, point2) => {
   const v1 = new Vec3(...point1);

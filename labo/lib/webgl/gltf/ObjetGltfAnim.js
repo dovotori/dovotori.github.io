@@ -1,9 +1,9 @@
-import ObjetGltf from './ObjetGltf';
-import Quaternion from '../maths/Quaternion';
-import Mat4 from '../maths/Mat4';
-import Sample from '../maths/Sample';
-import { lerp } from '../utils/easing';
-import { mapFromRange } from '../utils/numbers';
+import ObjetGltf from "./ObjetGltf";
+import Quaternion from "../maths/Quaternion";
+import Mat4 from "../maths/Mat4";
+import Sample from "../maths/Sample";
+import { lerp } from "../utils/easing";
+import { mapFromRange } from "../utils/numbers";
 
 class ObjectGltfAnim extends ObjetGltf {
   constructor(gl, data, forceStep = null) {
@@ -33,7 +33,7 @@ class ObjectGltfAnim extends ObjetGltf {
     const newAnimations = {};
     animations.forEach(({ path, times, output, interpolation }) => {
       let value = forceStep !== null ? output[forceStep] : output[0];
-      if (path === 'rotation') {
+      if (path === "rotation") {
         value = new Quaternion(...value).toMatrix4();
       }
 
@@ -92,10 +92,16 @@ class ObjectGltfAnim extends ObjetGltf {
     Object.keys(this.animations).forEach((nodeName) => {
       const nodeAnimations = this.animations[nodeName];
       Object.keys(nodeAnimations).forEach((path) => {
-        if (path === 'rotation') {
-          nodeAnimations[path] = ObjectGltfAnim.updateQuat(nodeAnimations[path], time);
+        if (path === "rotation") {
+          nodeAnimations[path] = ObjectGltfAnim.updateQuat(
+            nodeAnimations[path],
+            time,
+          );
         } else {
-          nodeAnimations[path] = ObjectGltfAnim.updateVector(nodeAnimations[path], time);
+          nodeAnimations[path] = ObjectGltfAnim.updateVector(
+            nodeAnimations[path],
+            time,
+          );
         }
       });
     });
@@ -117,7 +123,7 @@ class ObjectGltfAnim extends ObjetGltf {
         const next = output[index];
         const interpolationValue = sample.get();
         newAnimation.value = previous.map((previousValue, i) =>
-          lerp(interpolationValue, previousValue, next[i])
+          lerp(interpolationValue, previousValue, next[i]),
         );
       }
     } else {
@@ -136,12 +142,18 @@ class ObjectGltfAnim extends ObjetGltf {
       if (index === 0) {
         newAnimation.value = new Quaternion(...output[0]).toMatrix4();
       } else if (index > output.length - 1) {
-        newAnimation.value = new Quaternion(...output[output.length - 1]).toMatrix4();
+        newAnimation.value = new Quaternion(
+          ...output[output.length - 1],
+        ).toMatrix4();
       } else {
         const previous = output[index - 1];
         const next = output[index];
         const interpolationValue = sample.get();
-        newAnimation.value = Quaternion.slerpArray(previous, next, interpolationValue).toMatrix4();
+        newAnimation.value = Quaternion.slerpArray(
+          previous,
+          next,
+          interpolationValue,
+        ).toMatrix4();
       }
     } else {
       newAnimation.value = new Quaternion(...output[customStep]).toMatrix4();
@@ -164,10 +176,14 @@ class ObjectGltfAnim extends ObjetGltf {
       localMatrix.scale(...ObjectGltfAnim.getVector(scale, scaleAnimation));
     }
     if (rotation || rotationAnimation) {
-      localMatrix.multiply(ObjectGltfAnim.getRotationMat(rotation, rotationAnimation));
+      localMatrix.multiply(
+        ObjectGltfAnim.getRotationMat(rotation, rotationAnimation),
+      );
     }
     if (translation || translationAnimation) {
-      localMatrix.translate(...ObjectGltfAnim.getVector(translation, translationAnimation));
+      localMatrix.translate(
+        ...ObjectGltfAnim.getVector(translation, translationAnimation),
+      );
     }
 
     if (matrix) {
@@ -195,7 +211,10 @@ class ObjectGltfAnim extends ObjetGltf {
     return vector;
   };
 
-  static getRotationMat = (rotation = [0, 0, 0, 1], rotationAnimation = null) => {
+  static getRotationMat = (
+    rotation = [0, 0, 0, 1],
+    rotationAnimation = null,
+  ) => {
     if (rotationAnimation && rotationAnimation.value) {
       return rotationAnimation.value;
     }

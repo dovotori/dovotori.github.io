@@ -1,9 +1,13 @@
-import Vec3 from '../maths/Vec3';
-import Mat4 from '../maths/Mat4';
+import Vec3 from "../maths/Vec3";
+import Mat4 from "../maths/Mat4";
 
 export default class {
   constructor(config) {
-    this.position = new Vec3(config.position.x, config.position.y, config.position.z);
+    this.position = new Vec3(
+      config.position.x,
+      config.position.y,
+      config.position.z,
+    );
     this.target = new Vec3(0.0, 0.0, 0.0);
     this.view = new Mat4();
     if (config.ortho) {
@@ -26,7 +30,7 @@ export default class {
         this.target.getZ(),
         0,
         1,
-        0
+        0,
       );
   }
 

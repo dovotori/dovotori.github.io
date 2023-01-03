@@ -10,7 +10,7 @@ const supertriangle = (vertices) => {
   let xmax = Number.NEGATIVE_INFINITY;
   let ymax = Number.NEGATIVE_INFINITY;
 
-  for (let i = vertices.length; i--;) {
+  for (let i = vertices.length; i--; ) {
     const [x, y] = vertices[i];
     if (x < xmin) xmin = x;
     if (x > xmax) xmax = x;
@@ -47,7 +47,8 @@ const circumcircle = (vertices, i, j, k) => {
   let my2;
 
   /* Check for coincident points */
-  if (fabsy1y2 < EPSILON && fabsy2y3 < EPSILON) throw new Error('Eek! Coincident points!');
+  if (fabsy1y2 < EPSILON && fabsy2y3 < EPSILON)
+    throw new Error("Eek! Coincident points!");
 
   if (fabsy1y2 < EPSILON) {
     m2 = -((x3 - x2) / (y3 - y2));
@@ -85,11 +86,11 @@ const dedup = (edges) => {
   let m;
   let n;
 
-  for (j = edges.length; j;) {
+  for (j = edges.length; j; ) {
     b = edges[--j];
     a = edges[--j];
 
-    for (i = j; i;) {
+    for (i = j; i; ) {
       n = edges[--i];
       m = edges[--i];
 
@@ -119,13 +120,13 @@ const Delaunay = {
      * later on!) */
     const vertices = rawVertices.slice(0);
 
-    if (key) for (let i = n; i--;) vertices[i] = vertices[i][key];
+    if (key) for (let i = n; i--; ) vertices[i] = vertices[i][key];
 
     /* Make an array of indices into the vertex array, sorted by the
      * vertices' x-position. */
     const indices = new Array(n);
 
-    for (let i = n; i--;) indices[i] = i;
+    for (let i = n; i--; ) indices[i] = i;
 
     indices.sort((i, j) => vertices[j][0] - vertices[i][0]);
 
@@ -149,7 +150,7 @@ const Delaunay = {
       /* For each open triangle, check to see if the current point is
        * inside it's circumcircle. If it is, remove the triangle and add
        * it's edges to an edge list. */
-      for (let j = open.length; j--;) {
+      for (let j = open.length; j--; ) {
         /* If this point is to the right of this triangle's circumcircle,
          * then this triangle should never get checked again. Remove it
          * from the open list, add it to the closed list, and skip. */
@@ -162,7 +163,14 @@ const Delaunay = {
           dy = vertices[c][1] - open[j].y;
           if (!(dx * dx + dy * dy - open[j].r > EPSILON)) {
             /* Remove the triangle and add it's edges to the edge list. */
-            edges.push(open[j].i, open[j].j, open[j].j, open[j].k, open[j].k, open[j].i);
+            edges.push(
+              open[j].i,
+              open[j].j,
+              open[j].j,
+              open[j].k,
+              open[j].k,
+              open[j].i,
+            );
             open.splice(j, 1);
           }
         }
@@ -172,7 +180,7 @@ const Delaunay = {
       dedup(edges);
 
       /* Add a new triangle for each edge. */
-      for (let j = edges.length; j;) {
+      for (let j = edges.length; j; ) {
         b = edges[--j];
         a = edges[--j];
         open.push(circumcircle(vertices, a, b, c));
@@ -182,10 +190,10 @@ const Delaunay = {
     /* Copy any remaining open triangles to the closed list, and then
      * remove any triangles that share a vertex with the supertriangle,
      * building a list of triplets that represent triangles. */
-    for (let i = open.length; i--;) closed.push(open[i]);
+    for (let i = open.length; i--; ) closed.push(open[i]);
     open.length = 0;
 
-    for (let i = closed.length; i--;)
+    for (let i = closed.length; i--; )
       if (closed[i].i < n && closed[i].j < n && closed[i].k < n)
         open.push(closed[i].i, closed[i].j, closed[i].k);
 

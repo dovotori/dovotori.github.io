@@ -1,6 +1,6 @@
-import { PI } from '../utils';
+import { PI } from "../utils";
 
-import vertex from './basicVertex';
+import vertex from "./basicVertex";
 
 export const NUM_SAMPLES = 64;
 
@@ -134,6 +134,14 @@ void main(void) {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'texture'],
-  uniforms: ['flipY', 'textureMap', 'radius', 'resolution', 'near', 'far', 'strength'],
+  attributes: ["position", "texture"],
+  uniforms: [
+    "flipY",
+    "textureMap",
+    "radius",
+    "resolution",
+    "near",
+    "far",
+    "strength",
+  ],
 };

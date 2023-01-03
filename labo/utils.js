@@ -15,40 +15,39 @@ export const downloadSVG = (svg, selector, prefix) => {
   element.href = url;
 };
 
-export const later = (delay = 20) => {
-  return new Promise(function (resolve) {
+export const later = (delay = 20) =>
+  new Promise((resolve) => {
     setTimeout(resolve, delay);
   });
-}
 
 // better to use worker
-export const heavyProcessSplit = (data, handler) => new Promise(resolve => {
-  const maxtime = 100;		// chunk processing time
-  const delay = 20;		// delay between processes
-  const queue = data.concat();	// clone original array
-  const result = [];
+export const heavyProcessSplit = (data, handler) =>
+  new Promise((resolve) => {
+    const maxtime = 100; // chunk processing time
+    const delay = 20; // delay between processes
+    const queue = data.concat(); // clone original array
+    const result = [];
 
-  const loop = () => {
-    const endtime = +new Date() + maxtime;
-    do {
-      const r = handler(queue.shift());
-      result.push(r);
-    } while (queue.length > 0 && endtime > +new Date());
-    if (queue.length > 0) {
-      setTimeout(loop, delay);
-      return;
-    }
-    resolve(result);
-  };
-  setTimeout(loop, delay);
-});
-
+    const loop = () => {
+      const endtime = +new Date() + maxtime;
+      do {
+        const r = handler(queue.shift());
+        result.push(r);
+      } while (queue.length > 0 && endtime > +new Date());
+      if (queue.length > 0) {
+        setTimeout(loop, delay);
+        return;
+      }
+      resolve(result);
+    };
+    setTimeout(loop, delay);
+  });
 
 export const processSplit = (data, handler) => {
   let cancel = false;
-  const promise = new Promise(resolve => {
-    const maxtime = 100;		// chunk processing time
-    const queue = data.concat();	// clone original array
+  const promise = new Promise((resolve) => {
+    const maxtime = 100; // chunk processing time
+    const queue = data.concat(); // clone original array
     const result = [];
 
     const loop = async () => {
@@ -58,9 +57,10 @@ export const processSplit = (data, handler) => {
         result.push(r);
       } while (queue.length > 0 && endtime > +new Date() && !cancel);
       if (cancel) {
-        console.log('cancel')
+        console.log("cancel");
         return;
-      } else if (queue.length > 0) {
+      }
+      if (queue.length > 0) {
         await later();
         loop();
         return;
@@ -70,11 +70,12 @@ export const processSplit = (data, handler) => {
     loop();
   });
 
-  const setCancelled = () => cancel = true;
+  const setCancelled = () => {
+    cancel = true;
+  };
 
   return { promise, setCancelled };
 };
-
 
 /* CANCELLABLE PROMISE
 const data = [];
@@ -91,4 +92,3 @@ setTimeout(() => {
   console.log('cancelled')
 }, 4000);
 */
-

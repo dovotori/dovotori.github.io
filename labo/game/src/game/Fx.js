@@ -1,6 +1,6 @@
-import StateSprite from '../../../lib/webgl/logic/StateSprite';
-import MeshSprite from '../../../lib/webgl/meshes/MeshSprite';
-import Vec3 from '../../../lib/webgl/maths/Vec3';
+import StateSprite from "../../../lib/webgl/logic/StateSprite";
+import MeshSprite from "../../../lib/webgl/meshes/MeshSprite";
+import Vec3 from "../../../lib/webgl/maths/Vec3";
 
 export default class extends MeshSprite {
   constructor(constants, sprites, viewBox, startPos, status, callback) {
@@ -15,7 +15,7 @@ export default class extends MeshSprite {
     this.position = new Vec3(
       startPos.getX() || constants.x || 0,
       startPos.getY() || constants.y || 0,
-      startPos.getZ() || constants.z || 0
+      startPos.getZ() || constants.z || 0,
     );
     this.stateSprite.reload(status);
   }
@@ -35,10 +35,10 @@ export default class extends MeshSprite {
     this.setTranslate(
       this.position.getX() - this.viewBox.x + offsetX,
       this.position.getY() - this.viewBox.y - (1 - h) + (py || 0),
-      this.position.getZ()
+      this.position.getZ(),
     );
-    program.setTexture(0, texture.get(), 'textureMap');
-    program.setInt('inverseX', this.inverseX ? 1 : 0);
+    program.setTexture(0, texture.get(), "textureMap");
+    program.setInt("inverseX", this.inverseX ? 1 : 0);
     super.render(objet, program);
     this.setSprite(this.stateSprite.get());
   }

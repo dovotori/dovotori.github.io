@@ -1,8 +1,14 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
-import useFetchLabo from '../hooks/useFetchLabo';
+import useFetchLabo from "../hooks/useFetchLabo";
 
-const Labo = ({ className, slug, hasHtml = false, hasJs = false, onLoad = null }) => {
+const Labo = ({
+  className,
+  slug,
+  hasHtml = false,
+  hasJs = false,
+  onLoad = null,
+}) => {
   const { js, html, isLoaded } = useFetchLabo(slug, hasHtml, hasJs);
 
   useEffect(() => {
@@ -22,7 +28,7 @@ const Labo = ({ className, slug, hasHtml = false, hasJs = false, onLoad = null }
       runJs();
     }
     return () => {
-      if (js && js.destroy && typeof js.destroy === 'function') {
+      if (js && js.destroy && typeof js.destroy === "function") {
         js.destroy();
       }
     };

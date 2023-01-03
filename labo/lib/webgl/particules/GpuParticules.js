@@ -1,9 +1,9 @@
-import TextureData from '../textures/TextureData';
-import Primitive from '../gl/Primitive';
-import Fbo from '../gl/Fbo';
-import Screen from '../gl/Screen';
-import { get2DGridTexturePoints } from '../primitives/particules';
-import { nearestNextPowerOf2 } from '../utils/numbers';
+import TextureData from "../textures/TextureData";
+import Primitive from "../gl/Primitive";
+import Fbo from "../gl/Fbo";
+import Screen from "../gl/Screen";
+import { get2DGridTexturePoints } from "../primitives/particules";
+import { nearestNextPowerOf2 } from "../utils/numbers";
 
 export const getTextureSizeFromPoints = (points) => {
   const powerOfTwo = nearestNextPowerOf2(points.length);
@@ -42,7 +42,7 @@ export default class {
       progPass1.setTexture(index, this.textures[location].get(), location);
     });
 
-    progPass1.setFloat('time', time);
+    progPass1.setFloat("time", time);
     this.fbo.start();
     this.screen.render(progPass1.get());
     this.fbo.end();
@@ -50,7 +50,7 @@ export default class {
 
   render(progPass2) {
     // shoud resize viewport before // scene.resizeViewport()
-    progPass2.setTexture(0, this.fbo.getTexture().get(), 'textureMap');
+    progPass2.setTexture(0, this.fbo.getTexture().get(), "textureMap");
     this.vbo.render(progPass2.get());
   }
 }

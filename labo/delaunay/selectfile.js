@@ -63,4 +63,4 @@ export const destroy = () => {
     dropbox.removeEventListener("dragleave", dragLeave);
     dropbox.removeEventListener("dragover", stopPropa);
   }
-}
+};
