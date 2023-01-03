@@ -373,6 +373,7 @@ const rawPosts = [
       hasHtml: true,
       noBackground: true,
     },
+    images: 3,
   },
   {
     id: 21,

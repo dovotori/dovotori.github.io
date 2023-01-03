@@ -43,6 +43,10 @@ const StyledTitle = styled.h1`
   position: relative;
   margin: 0;
   padding: 0 10px;
+
+  & > span > span > span {
+    ${(p) => p.theme.primaryGradientText}
+  }
 `;
 
 const StyledTypingMessage = styled(TypingMessage)`

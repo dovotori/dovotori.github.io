@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import { ReactComponent as QuoteIcon } from 'Assets/svg/quote.svg';
 import SocialLinks from './SocialLinks';
@@ -87,6 +87,7 @@ const About = ({ hello, isTouchDevice }) => (
         {hello.description.map((text) => (
           <Description key={text}>{text}</Description>
         ))}
+        <Bar />
       </MarginLeft>
       <CvContainer />
       <MarginLeft isTouch={isTouchDevice}>

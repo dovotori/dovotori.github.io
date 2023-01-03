@@ -15,7 +15,6 @@ const pulse = keyframes`
     transform: scale(1.02);
   }
 `;
-
 const Circle = styled.div`
   position: absolute;
   width: 240px;
