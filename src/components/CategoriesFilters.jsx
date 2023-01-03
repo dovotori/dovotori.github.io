@@ -35,7 +35,6 @@ const CategoriesFilters = ({
   selected,
   className,
   categories,
-  onClickCategory = () => {},
 }) => (
   <Wrap className={className}>
     {Object.keys(categories).map((categoryId, index) => {
@@ -49,7 +48,6 @@ const CategoriesFilters = ({
             }
             selected={isLinkSelected}
             $colorType={getColorType(parseInt(categoryId, 10))}
-            onClick={onClickCategory(categoryId)}
           >
             {categories[categoryId].label}
           </StyledLink>

@@ -53,16 +53,16 @@ const routes = [
     component: Project,
   },
   {
-    path: "/category/:slug",
-    component: Home,
-  },
-  {
     path: "/project/:slug",
     component: Project,
   },
   {
     path: "/qrcode",
     component: QrCode,
+  },
+  {
+    path: "/category/:category",
+    component: Home,
   },
   {
     path: "/",

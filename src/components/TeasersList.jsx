@@ -22,7 +22,10 @@ const Wrap = styled.div.attrs({
 const TeasersList = ({ entries, isTouchDevice, className }) => {
   const [currentHover, setCurrentHover] = useState("");
   const sortEntries = useMemo(
-    () => entries.sort((a, b) => (a.date > b.date ? -1 : 1)),
+    () =>
+      // concat very important, create a copy to avoid mutation on store
+      entries.concat().sort((a, b) => (a.date > b.date ? -1 : 1))
+    ,
     [entries],
   );
   return (

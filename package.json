@@ -70,7 +70,7 @@
     "socket.io-client": "^4.5.4",
     "style-loader": "^3.3.1",
     "styled-components": "^5.3.6",
-    "sw-cache-plugin": "^0.1.2",
+    "sw-cache-plugin": "^1.1.0",
     "terser-webpack-plugin": "^5.3.6",
     "url-loader": "^4.1.1",
     "webpack": "^5.75.0",
@@ -103,10 +103,10 @@
     "eslint-plugin-react": "^7.31.11",
     "eslint-plugin-react-hooks": "^4.6.0",
     "gh-pages": "^4.0.0",
+    "husky": "^8.0.0",
     "jest": "^29.3.1",
     "prettier": "^2.8.1",
-    "webpack-dev-server": "^4.11.1",
-    "husky": "^8.0.0"
+    "webpack-dev-server": "^4.11.1"
   },
   "main": "src/index.js",
   "repository": {

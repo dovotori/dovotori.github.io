@@ -1,11 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import CategoriesFilters from "../components/CategoriesFilters";
 import { getCategories, getEntries } from "../selectors";
-import { setCategory } from "../actions/device";
 
 export default () => {
-  const dispatch = useDispatch();
   const categories = getCategories();
   const entries = getEntries();
   const categoryIds = entries.reduce(
@@ -18,15 +16,10 @@ export default () => {
     {},
   );
 
-  const onClick = (cat) => () => {
-    dispatch(setCategory(parseInt(cat, 10)));
-  };
-
   return (
     <CategoriesFilters
       selected={categoryId}
       categories={filterCategories}
-      onClickCategory={onClick}
     />
   );
 };
