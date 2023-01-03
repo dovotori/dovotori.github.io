@@ -1,5 +1,5 @@
 const MAIN_PROG = 'skin';
-const MAIN_OBJ = 'moreSimple'; // 'RiggedFigureCustom2'; // 'rigTest'; // 'skinTest1'; // 'RiggedFigure';
+const MAIN_OBJ = 'riggedPerso3';
 export default {
   slug: 'skin',
   MAIN_PROG,
