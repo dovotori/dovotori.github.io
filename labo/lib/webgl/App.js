@@ -20,6 +20,7 @@ export default class {
   async setup(Scene, config) {
     const container = document.querySelector(`#${config.slug}`);
     if (!container) return;
+
     this.configRatio = window.innerHeight / document.body.offsetWidth;
 
     let assets = {};
@@ -39,11 +40,27 @@ export default class {
 
     this.canvas = new Canvas();
     const { width, height } = this.getCurrentSize(container);
+    const supportConfig = this.canvas.getSupport();
     const finalConfig = {
       ...config,
       canvas: { ...config.canvas, width, height },
-      support: this.canvas.getSupport(),
+      support: supportConfig,
     };
+
+    const shouldDisabled = config.useDrawBuffer && !supportConfig.drawBuffers;
+    if (shouldDisabled) {
+      const oups = document.createElement('p');
+      oups.innerHTML = `
+      <b>ご迷惑おかけして申し訳ありません。</b>
+      <br/>Sorry. Webgl draw buffers extension support problem occured.
+      <br/>Please try on a more recent device.
+      `;
+      oups.style.textAlign = "center";
+      oups.style.margin = "20px auto";
+      container.appendChild(oups);
+      return;
+    }
+
     this.scene = new Scene(this.canvas.getContext(), finalConfig);
     await this.scene.setupAssets(assets)
     if (this.scene.setup) {
@@ -81,6 +98,7 @@ export default class {
     this.loop = new Loop();
     this.loop.setCallback(this.render);
     this.loop.start();
+    return true;
   }
 
   resize = (e) => {

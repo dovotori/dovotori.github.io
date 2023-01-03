@@ -85,13 +85,6 @@ export default class {
       this.mngSound = new ManagerSounds(assets.sounds);
     }
     this.resizeViewport();
-
-    const shouldDisabled = config.useDrawBuffer && !config.support.drawBuffers;
-    if (shouldDisabled) {
-      const domElem = document.querySelector(`#${config.slug}`);
-      domElem.parentNode.style.minHeight = "auto";
-      domElem.remove();
-    }
   }
 
   canUseDepth() {

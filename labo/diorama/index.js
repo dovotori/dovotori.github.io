@@ -9,8 +9,9 @@ let app = null;
 
 export default async () => {
   app = new App();
-  await app.setup(Scene, config);
   const div = document.querySelector(`#${config.slug}`);
+  const isOkay = await app.setup(Scene, config);
+  if (!isOkay) return;
   const canvas = app.getCanvas();
   if (canvas && div) div.appendChild(canvas);
 };
