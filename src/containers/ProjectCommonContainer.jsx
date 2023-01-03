@@ -13,7 +13,9 @@ const ProjectCommonContainer = () => {
   return <ProjectCommon
     slug={slug}
     $colorType={getColorType(entry.category)}
-    title={entry.title} description={entry.descriptions} date={entry.date}
+    title={entry.title}
+    description={entry.description}
+    date={entry.date}
     inverseTitle={entry.inverseTitle}
   />;
 };

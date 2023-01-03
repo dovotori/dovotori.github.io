@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 import { ReactComponent as QuoteIcon } from 'Assets/svg/quote.svg';
 import SocialLinks from './SocialLinks';
@@ -24,15 +24,21 @@ const Wrap = styled(Bloc)`
 const WrapContent = styled.div`
   margin: 0 auto;
   padding: 0 1.5em;
-  max-width: 700px;
-  ${(p) => p.theme.media.tablet`max-width: 500px;`};
+  max-width: 500px;
+`;
+
+const BlocDescription = styled.div`
+  background: ${(p) => p.theme.softGradient};
+  padding: 2em;
+  border-radius: 1em;
+  box-shadow: 0 0 2em ${(p) => p.theme.backgroundHighlight};
 `;
 
 const Description = styled.p`
-  color: ${(p) => p.theme.light};
+  color: ${(p) => p.theme.text};
   width: 100%;
   font-style: italic;
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
 `;
 
 const MarginLeft = styled.div`
@@ -59,7 +65,7 @@ const Quote = styled.div`
   }
 
   :hover svg {
-    color: ${(p) => p.theme.primaryDark};
+    color: ${(p) => p.theme.softGradient};
   }
 `;
 
@@ -77,27 +83,22 @@ const Center = styled.div`
 const About = ({ hello, isTouchDevice }) => (
   <Wrap>
     <WrapContent>
-      <MarginLeft isTouch={isTouchDevice}>
-        <Link href={`mailto:${process.env.MAIL}`} isTouch={isTouchDevice}>
-          <Quote>
-            <StyledQuoteIcon />
-            <StyledQuoteIcon />
-          </Quote>
-        </Link>
+      <Link href={`mailto:${process.env.MAIL}`} isTouch={isTouchDevice}>
+        <Quote>
+          <StyledQuoteIcon />
+          <StyledQuoteIcon />
+        </Quote>
+      </Link>
+      <BlocDescription>
         {hello.description.map((text) => (
           <Description key={text}>{text}</Description>
         ))}
-        <Bar />
-      </MarginLeft>
+      </BlocDescription>
       <CvContainer />
-      <MarginLeft isTouch={isTouchDevice}>
-        <StyledSocialLinks />
-      </MarginLeft>
-      <MarginLeft isTouch={isTouchDevice}>
-        <Center>
-          <StyledButtonBack isTouch={isTouchDevice} />
-        </Center>
-      </MarginLeft>
+      <StyledSocialLinks />
+      <Center>
+        <StyledButtonBack isTouch={isTouchDevice} />
+      </Center>
     </WrapContent>
   </Wrap>
 );

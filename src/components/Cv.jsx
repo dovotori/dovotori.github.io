@@ -85,7 +85,6 @@ const Category = styled.h3`
 `;
 
 const CategoryText = styled.span`
-  background:${(p) => p.theme.background};
   letter-spacing: 0.2em;
   position: absolute;
   top: 50%;
@@ -196,9 +195,7 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
     () =>
       formation.items.length > 0 ? (
         <Bloc>
-          <MarginLeft isTouch={isTouchDevice}>
-            <Category><StyledAnimBar /><DiplomaIcon /><CategoryText>{formation.text}</CategoryText></Category>
-          </MarginLeft>
+          <Category><StyledAnimBar /><DiplomaIcon /><CategoryText>{formation.text}</CategoryText></Category>
           {formation.items.map((item) => (
             <BlocJob key={item.text}>
               <Line>
@@ -222,9 +219,7 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
     () =>
       jobs.items.length > 0 ? (
         <Bloc>
-          <MarginLeft isTouch={isTouchDevice}>
-            <Category><StyledAnimBar /><TieIcon /><CategoryText>{jobs.text}</CategoryText></Category>
-          </MarginLeft>
+          <Category><StyledAnimBar /><TieIcon /><CategoryText>{jobs.text}</CategoryText></Category>
           {jobs.items.map((item) => {
             const { startDate, endDate, text, tasks } = item;
             return (
@@ -258,9 +253,7 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
     () =>
       skills.items.length > 0 ? (
         <Bloc>
-          <MarginLeft isTouch={isTouchDevice}>
-            <Category><StyledAnimBar /><SkillsIcon /><CategoryText>{skills.text}</CategoryText></Category>
-          </MarginLeft>
+          <Category><StyledAnimBar /><SkillsIcon /><CategoryText>{skills.text}</CategoryText></Category>
           {chart && !isTouchDevice && <Chart data={chart} />}
           {(isTouchDevice || !chart) &&
             skills.items.map((item) => (
@@ -306,8 +299,8 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
     () =>
       hobbies.items.length > 0 ? (
         <Bloc>
+          <Category><StyledAnimBar /><ManetteIcon /><CategoryText>{hobbies.text}</CategoryText></Category>
           <MarginLeft isTouch={isTouchDevice}>
-            <Category><StyledAnimBar /><ManetteIcon /><CategoryText>{hobbies.text}</CategoryText></Category>
             {hobbies.items.map((item) => {
               const { text, about } = item;
               return (

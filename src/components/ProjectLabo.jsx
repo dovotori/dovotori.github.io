@@ -11,12 +11,11 @@ const loadTransition = keyframes`
 
 const Wrap = styled.div`
   position: relative;
-  margin: 0 auto 10vh;
-  max-width: 1024px;
-  min-height: 400px;
-  text-align: left;
+  min-height: 50px;
+  text-align: center;
   color: ${(p) => p.theme.light};
   overflow: hidden;
+  margin-bottom: 1em;
 
   img {
     width: 100%;
@@ -44,6 +43,8 @@ const LoadedTransition = styled.div`
 const StyledLabo = styled(Labo)`
   width: 100%;
   height: auto;
+  max-width: 1024px;
+  margin: 0 auto;
 
   canvas {
     display: block;

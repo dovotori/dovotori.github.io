@@ -124,6 +124,7 @@ export const dark = {
   stripes: stripesWhite,
   isLight: false,
   softGradient: 'linear-gradient(180deg, #111, #222)',
+  deepGradient: 'linear-gradient(180deg, #ccc, #fff)',
 };
 
 export const light = {
@@ -142,4 +143,5 @@ export const light = {
   stripes,
   isLight: true,
   softGradient: 'linear-gradient(180deg, #ccc, #fff)',
+  deepGradient: 'linear-gradient(180deg, #111, #222)',
 };

@@ -6,8 +6,8 @@ import Loader from './Loader';
 import { getProjectImagePath } from '../utils';
 
 const StyledLazyImage = styled(LazyImage)`
-  margin: 0 auto 10vh;
-  min-height: 100px;
+  margin: 0 auto 1em;
+  min-height: 50px;
   background: ${(p) => p.theme.getGradient};
   box-shadow: 0 0 2em ${(p) => p.theme.backgroundHighlight};
   opacity: ${(p) => (p.$isVisible ? 1 : 0)};

@@ -371,9 +371,7 @@ const rawPosts = [
     labo: {
       hasJs: true,
       hasHtml: true,
-      noBackground: true,
     },
-    images: 3,
   },
   {
     id: 21,

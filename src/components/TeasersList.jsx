@@ -14,7 +14,7 @@ const Wrap = styled.div.attrs({
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  width: calc(100% - 20px);
+  width: calc(100% - 2em);
   margin: 0 auto;
   max-width: 1400px;
 `;

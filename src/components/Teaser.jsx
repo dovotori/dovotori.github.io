@@ -31,7 +31,7 @@ const StyledLink = styled(Link).attrs({
     box-shadow 800ms linear;
 
   ${(p) => p.theme.active}
-  ${(p) => p.theme.media.mobile`margin: 5px auto; width: 100%; height: auto;`}
+  ${(p) => p.theme.media.mobile`margin: 0.5em auto; width: 100%; height: auto;`}
 `;
 
 const StyledLazyImage = styled(LazyImage)`
