@@ -1,5 +1,6 @@
 *.log
 node_modules/
+coverage/
 build/
 cert.pem
 key.pem
