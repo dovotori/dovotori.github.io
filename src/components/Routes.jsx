@@ -24,6 +24,8 @@ const Arrow = styled(BackArrow)`
 
 const MinHeight = styled.div`
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 `;
 
 const renderRoute = (route) => {
