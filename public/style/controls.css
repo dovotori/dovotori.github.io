@@ -23,14 +23,65 @@
   margin-right: 0.5em;
 }
 
+#controls select {
+  background-color: #555;
+  color: var(--project-color);
+  border: none;
+  border-radius: 0.2em;
+  display: inline-block;
+  padding: 0.5em 1em 0.5em 0.2em;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+#controls select:focus {
+  outline: 0;
+}
+
+#controls select option {
+  font-size: 1.2em;
+}
+
 #controls label {
   display: flex;
   align-items: center;
 }
 
 #controls label,
-#controls a {
+#controls a,
+#controls button,
+#controls select {
   font-size: .8em;
+}
+
+#controls div label {
+  min-width: 40%;
+  margin-right: 5px;
+}
+
+#controls a,
+#controls button {
+  background: #555;
+  padding: 0.5em;
+  border-radius: 0.2em;
+  color: var(--project-color);
+  transition: background 200ms ease-out;
+}
+
+#controls .primary {
+  background: var(--project-color);
+  color: black;
+}
+
+#controls a:hover,
+#controls button:hover {
+  background: black;
+  color: var(--project-color);
+}
+
+#controls a:active,
+#controls button:active {
+  transform: scale(0.9);
 }
 
 @media (max-width: 570px) {
