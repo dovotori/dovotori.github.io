@@ -1,0 +1,1 @@
+import{vertex}from"./normale";const fragment="\nprecision mediump float;\nvarying vec3 fragNormale;\n\nvoid main() {\n  gl_FragColor = vec4(vec3(102.0 / 255.0, 1.0, 204.0 / 255.0) + (fragNormale * vec3(0.2)), 1.0);\n}\n";export default{vertex,fragment,attributes:["position","normale"],uniforms:["projection","model","view"]};
