@@ -20,7 +20,10 @@ const StyledLink = styled(Link)`
   padding: 1em 2em;
   opacity: ${(p) => (p.selected ? 1 : 0.5)};
   font-weight: ${(p) => (p.selected ? 800 : 400)};
-  transition: color 100ms ease-out, background-color 100ms ease-out, box-shadow 100ms ease-out;
+  transition:
+    color 100ms ease-out,
+    background-color 100ms ease-out,
+    box-shadow 100ms ease-out;
   color: ${(p) => p.theme.text};
   text-transform: uppercase;
   ${(p) => p.theme.monospace}
@@ -30,7 +33,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const CategoriesFilters = ({ selected, className, categories, onClickCategory = () => { } }) => (
+const CategoriesFilters = ({ selected, className, categories, onClickCategory = () => {} }) => (
   <Wrap className={className}>
     {Object.keys(categories).map((categoryId, index) => {
       const isLinkSelected = selected === parseInt(categoryId, 10);

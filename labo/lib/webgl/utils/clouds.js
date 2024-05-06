@@ -28,7 +28,7 @@ const find3DClosestDistanceFromSamples = (point, samples) => {
       const p2 = new Vec3(...cur);
       const newDistance = p1.distance(p2);
       return Math.min(acc, newDistance);
-    }, 1)
+    }, 1),
   );
 };
 
@@ -41,7 +41,7 @@ const find2DClosestDistanceFromSamples = (point, samples) =>
     samples.reduce((acc, cur) => {
       const newDistance = get2Ddistance(point, cur);
       return Math.min(acc, newDistance);
-    }, 1)
+    }, 1),
   );
 
 const getSampleFromGridPos = (gridPos, samples, sizes) => {

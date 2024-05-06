@@ -1,8 +1,13 @@
-
 import { useSelector } from 'react-redux';
 
 import ProjectNavigation from '../components/ProjectNavigation';
-import { getEntries, getContentBack, getContentPrevious, getIsTouchDevice, getContentNext } from '../selectors';
+import {
+  getEntries,
+  getContentBack,
+  getContentPrevious,
+  getIsTouchDevice,
+  getContentNext,
+} from '../selectors';
 
 const getEntryNav = (entries, slug) => {
   const entryIdx = entries.findIndex((entry) => entry.slug === slug);
@@ -47,16 +52,18 @@ const ProjectNavigationContainer = ({ slug }) => {
   const labelBack = getContentBack();
   const labelPrevious = getContentPrevious();
   const labelNext = getContentNext();
-  return <ProjectNavigation
-    slug={slug}
-    nextEntry={nextEntry}
-    prevEntry={prevEntry}
-    $colorType={$colorType}
-    isTouchDevice={isTouchDevice}
-    labelBack={labelBack}
-    labelPrevious={labelPrevious}
-    labelNext={labelNext}
-  />;
+  return (
+    <ProjectNavigation
+      slug={slug}
+      nextEntry={nextEntry}
+      prevEntry={prevEntry}
+      $colorType={$colorType}
+      isTouchDevice={isTouchDevice}
+      labelBack={labelBack}
+      labelPrevious={labelPrevious}
+      labelNext={labelNext}
+    />
+  );
 };
 
 export default ProjectNavigationContainer;

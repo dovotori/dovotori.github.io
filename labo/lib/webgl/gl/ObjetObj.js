@@ -46,7 +46,7 @@ export default class {
           this.gl.FLOAT,
           false,
           this.stride * 4,
-          decalage * 4
+          decalage * 4,
         );
       }
       if (this.steps[type] !== null) decalage += this.steps[type];

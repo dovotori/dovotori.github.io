@@ -94,10 +94,10 @@ const SimpleSpan = styled.span`
 `;
 
 const StyledSocialLinks = styled(SocialLinks)`
-svg {
-  height: 20px;
-  margin: 0 0.5em;
-}
+  svg {
+    height: 20px;
+    margin: 0 0.5em;
+  }
 `;
 
 const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => (

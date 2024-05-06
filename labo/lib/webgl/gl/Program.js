@@ -29,7 +29,7 @@ export default class {
 
   creerShader(type, source) {
     const shader = this.gl.createShader(
-      type === 'vertex' ? this.gl.VERTEX_SHADER : this.gl.FRAGMENT_SHADER
+      type === 'vertex' ? this.gl.VERTEX_SHADER : this.gl.FRAGMENT_SHADER,
     );
     this.gl.shaderSource(shader, source);
     this.gl.compileShader(shader);

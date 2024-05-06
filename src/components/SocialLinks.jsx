@@ -6,24 +6,26 @@ import { ReactComponent as Github } from 'Assets/svg/cv/github.svg';
 import { ReactComponent as Mail } from 'Assets/svg/mail.svg';
 
 const Wrap = styled.div`
-text-align: center;
-svg {
-  min-width: 40px;
-  width: 2em;
-  margin: 0 2em;
-  filter: grayscale(100%);
-  transition: filter 300ms ease-out;
+  text-align: center;
+  svg {
+    min-width: 40px;
+    width: 2em;
+    margin: 0 2em;
+    filter: grayscale(100%);
+    transition: filter 300ms ease-out;
 
-  &:hover {
-    filter: none;
+    &:hover {
+      filter: none;
+    }
   }
-}
 `;
 
 const StyledMail = styled(Mail)`
   color: ${(p) => p.theme.light};
   .toOpen {
-    transition: transform 300ms ease-out, color 300ms ease-out;
+    transition:
+      transform 300ms ease-out,
+      color 300ms ease-out;
   }
   &:hover .toOpen {
     transform: rotate3d(1, 0, 0, 170deg);
@@ -51,6 +53,7 @@ const SociaLinks = ({ className }) => (
     <a href={`mailto:${process.env.MAIL}`} title="contact">
       <StyledMail />
     </a>
-  </Wrap>);
+  </Wrap>
+);
 
 export default SociaLinks;

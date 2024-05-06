@@ -65,7 +65,6 @@ class ObjectGltfSkin extends ObjetGltfAnim {
       // if (['neutral_bone', 'Cou', 'Tete'].indexOf(name) !== -1) return;
       // console.log(name, depth, finalMatrix.get())
 
-
       const localMatrix = this.handleLocalTransform(joint);
       localMatrix.multiply(parentMatrix);
 

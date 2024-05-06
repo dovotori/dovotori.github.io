@@ -44,13 +44,13 @@ const drawOnCanvas = (context, coors) => {
 };
 
 const generateSvg = (width, height, coors) => {
-  const xmlns = "http://www.w3.org/2000/svg";
+  const xmlns = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(xmlns, 'svg');
-  svg.setAttribute("viewBox", `0 0 ${width} ${height} `);
-  svg.setAttribute("width", width);
-  svg.setAttribute("height", height);
-  svg.setAttribute("version", "1.1");
-  svg.setAttribute("xmlns", xmlns);
+  svg.setAttribute('viewBox', `0 0 ${width} ${height} `);
+  svg.setAttribute('width', width);
+  svg.setAttribute('height', height);
+  svg.setAttribute('version', '1.1');
+  svg.setAttribute('xmlns', xmlns);
 
   coors.forEach(({ x0, y0, x1, y1, x2, y2, color }) => {
     const fc = `rgba(${color.r}, ${color.g}, ${color.b}, 1)`;
@@ -89,7 +89,7 @@ const receiveDelaunay = ({ coors, corners, width, height }) => {
     // drawOnCanvas(context, coors);
     container.appendChild(canvasDebug);
   }
-  downloadSVG(svg, "#downloadsvg", "delaunay");
+  downloadSVG(svg, '#downloadsvg', 'delaunay');
 };
 
 const receiveColor = ({ buffer, width, height }) => {
@@ -100,7 +100,7 @@ const receiveColor = ({ buffer, width, height }) => {
   context.putImageData(newImg, 0, 0);
 
   redrawSvg();
-}
+};
 
 const endProcess = (e) => {
   const { type, payload } = e.data;
@@ -111,15 +111,17 @@ const endProcess = (e) => {
     case 'color':
       receiveColor(payload);
       break;
-    default: break;
+    default:
+      break;
   }
 };
 
-const loadImage = (url) => new Promise(resolve => {
-  const img = new Image();
-  img.addEventListener("load", () => resolve(img));
-  img.src = url;
-});
+const loadImage = (url) =>
+  new Promise((resolve) => {
+    const img = new Image();
+    img.addEventListener('load', () => resolve(img));
+    img.src = url;
+  });
 
 const changeColor = () => {
   const green = parseInt(rangeGreen.value, 10);
@@ -137,11 +139,12 @@ const resetSettings = () => {
   rangeBlue.value = 1;
   rangeRed.value = 1;
   rangeBright.value = 1;
-}
+};
 
 const handleFile = async (file) => {
   const fileSize = file.size / 1024 / 1024;
-  if (fileSize < 1) { // < 1 Mb
+  if (fileSize < 1) {
+    // < 1 Mb
     const img = await loadImage(URL.createObjectURL(file));
     const { width, height } = img;
     canvas.width = width;
@@ -153,7 +156,7 @@ const handleFile = async (file) => {
     resetSettings();
     redrawSvg();
   } else {
-    selectfile.setError("File too big. Please select a file under 1 MB");
+    selectfile.setError('File too big. Please select a file under 1 MB');
   }
 };
 
@@ -177,11 +180,11 @@ export default async () => {
   rangeBlue = document.querySelector('#blue');
   rangeRed = document.querySelector('#red');
   rangeBright = document.querySelector('#bright');
-  boxHide = document.querySelector("#boxhide");
-  boxDebug = document.querySelector("#boxdebug");
-  boxGrey = document.querySelector("#boxgrey");
+  boxHide = document.querySelector('#boxhide');
+  boxDebug = document.querySelector('#boxdebug');
+  boxGrey = document.querySelector('#boxgrey');
 
-  const url = "/public/img/japon/japon-0.jpg";
+  const url = '/public/img/japon/japon-0.jpg';
   const img = await loadImage(url);
   const { width, height } = img;
   canvas.width = width;
@@ -190,30 +193,32 @@ export default async () => {
   context.drawImage(img, 0, 0);
   const { data: initialData } = context.getImageData(0, 0, width, height);
   initialDataImage = initialData;
-  webworker = new WebWorker(new Worker(new URL('/public/worker/delaunayworker.js', import.meta.url)));
+  webworker = new WebWorker(
+    new Worker(new URL('/public/worker/delaunayworker.js', import.meta.url)),
+  );
   webworker.setMessageListener(endProcess);
   startDelaunayProcess(initialData, rangeThreshold.value);
 
-  rangeThreshold.addEventListener("change", redrawSvg);
-  rangeBright.addEventListener("change", changeColor);
-  rangeBlue.addEventListener("change", changeColor);
-  rangeRed.addEventListener("change", changeColor);
-  rangeGreen.addEventListener("change", changeColor);
-  boxHide.addEventListener("change", changeHide(container));
-  boxDebug.addEventListener("change", changeHide(canvasDebug));
-  boxGrey.addEventListener("change", changeColor);
+  rangeThreshold.addEventListener('change', redrawSvg);
+  rangeBright.addEventListener('change', changeColor);
+  rangeBlue.addEventListener('change', changeColor);
+  rangeRed.addEventListener('change', changeColor);
+  rangeGreen.addEventListener('change', changeColor);
+  boxHide.addEventListener('change', changeHide(container));
+  boxDebug.addEventListener('change', changeHide(canvasDebug));
+  boxGrey.addEventListener('change', changeColor);
 
   selectfile.setup(handleFile);
 };
 
 export const destroy = () => {
-  if (rangeThreshold) rangeThreshold.removeEventListener("change", redrawSvg);
-  if (rangeBright) rangeBright.removeEventListener("change", changeColor);
-  if (rangeBlue) rangeBlue.removeEventListener("change", changeColor);
-  if (rangeRed) rangeRed.removeEventListener("change", changeColor);
-  if (rangeGreen) rangeGreen.removeEventListener("change", changeColor);
-  if (boxHide) boxHide.removeEventListener("change", changeHide(container));
-  if (boxDebug) boxDebug.removeEventListener("change", changeHide(canvasDebug));
-  if (boxGrey) boxGrey.removeEventListener("change", changeColor);
+  if (rangeThreshold) rangeThreshold.removeEventListener('change', redrawSvg);
+  if (rangeBright) rangeBright.removeEventListener('change', changeColor);
+  if (rangeBlue) rangeBlue.removeEventListener('change', changeColor);
+  if (rangeRed) rangeRed.removeEventListener('change', changeColor);
+  if (rangeGreen) rangeGreen.removeEventListener('change', changeColor);
+  if (boxHide) boxHide.removeEventListener('change', changeHide(container));
+  if (boxDebug) boxDebug.removeEventListener('change', changeHide(canvasDebug));
+  if (boxGrey) boxGrey.removeEventListener('change', changeColor);
   webworker.destroy();
 };

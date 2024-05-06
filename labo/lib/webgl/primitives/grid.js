@@ -49,7 +49,7 @@ export const getTextures = (width, height) => {
 const addThickPoints = (
   width,
   height,
-  { startX = -1, endX = 1, startZ = -1, endZ = 1, thicknessY = -1 } = {}
+  { startX = -1, endX = 1, startZ = -1, endZ = 1, thicknessY = -1 } = {},
 ) => {
   const points = [];
   // top

@@ -1,7 +1,6 @@
 import Program from '../gl/Program';
 import { later } from '../../../utils';
 
-
 export default class {
   constructor() {
     this.programs = {};
@@ -23,7 +22,7 @@ export default class {
         const shader = shaders[name];
         yield { prog: new Program(gl, shader), name };
       }
-    };
+    }
     const generator = generateProgram();
     for (const item of generator) {
       await later();

@@ -44,7 +44,7 @@ export default class {
       0,
       this.gl.RGBA,
       this.gl.UNSIGNED_BYTE,
-      pixels
+      pixels,
     );
   }
 

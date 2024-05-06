@@ -101,14 +101,14 @@ class TerrainScene extends Scene {
         p.setVector('gridSize', [width, height]);
         p.setFloat('waterLevel', waterLevel);
         this.setLampeInfos(p);
-      }
+      },
     );
 
     colors.forEach((hex, i) => {
       const { r, g, b } = hexToRgb(hex);
       progTerrain.setVector(
         `colors[${i}]`,
-        [r, g, b].map((c) => c / 255)
+        [r, g, b].map((c) => c / 255),
       );
     });
 
@@ -187,7 +187,7 @@ class TerrainScene extends Scene {
         p.setMatrix('model', this.model.get());
         p.setMatrix('normalMatrix', normalMatrix.get());
         p.setVector('moving', moving);
-      }
+      },
     );
     progWater.setFloat('time', slowTime);
 
@@ -212,11 +212,11 @@ class TerrainScene extends Scene {
     progTerrain.setFloat('refractPass', 0);
     progTerrain.setMatrix(
       'view',
-      this.camera.getReflectViewMatrix(this.config.terrain.waterLevel).get()
+      this.camera.getReflectViewMatrix(this.config.terrain.waterLevel).get(),
     );
     progThrees.setMatrix(
       'view',
-      this.camera.getReflectViewMatrix(this.config.terrain.waterLevel).get()
+      this.camera.getReflectViewMatrix(this.config.terrain.waterLevel).get(),
     );
     this.fbo.start();
     this.vbo.render(progTerrain.get());

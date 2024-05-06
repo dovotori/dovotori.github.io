@@ -62,12 +62,12 @@ class CollisionSweepPrune {
       endpointsDecroissantsX = CollisionSweepPrune.addEndpointDecroissant(
         endpointsDecroissantsX,
         boxs[i].getMin(0),
-        boxs[i].getMax(0)
+        boxs[i].getMax(0),
       );
       endpointsDecroissantsY = CollisionSweepPrune.addEndpointDecroissant(
         endpointsDecroissantsY,
         boxs[i].getMin(1),
-        boxs[i].getMax(1)
+        boxs[i].getMax(1),
       );
     }
 
@@ -80,7 +80,7 @@ class CollisionSweepPrune {
 
   addEndPointsOnListe(
     axe,
-    newEndPoints // array des new points en sens decroissant
+    newEndPoints, // array des new points en sens decroissant
   ) {
     const e = new CollisionEndpoint();
     e.set(9999);

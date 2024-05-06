@@ -14,7 +14,7 @@ export default class extends Camera {
     this.position.set(
       this.options.position.x + Math.sin(this.rotationX.get() * 0.01) * this.options.position.z,
       this.options.position.y,
-      Math.cos(this.rotationX.get() * 0.01) * this.options.position.z
+      Math.cos(this.rotationX.get() * 0.01) * this.options.position.z,
     );
   }
 

@@ -46,7 +46,7 @@ class Mat3 {
       values[5],
       values[6],
       values[7],
-      values[8]
+      values[8],
     );
   }
 

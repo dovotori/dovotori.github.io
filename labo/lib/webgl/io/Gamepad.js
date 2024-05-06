@@ -10,7 +10,7 @@ export default class {
       e.gamepad.index,
       e.gamepad.id,
       e.gamepad.buttons.length,
-      e.gamepad.axes.length
+      e.gamepad.axes.length,
     );
   }
 

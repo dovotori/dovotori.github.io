@@ -10,12 +10,16 @@ const ProjectCommonContainer = () => {
   if (entry === null) {
     window.location.href = '/';
   }
-  return <ProjectCommon
-    slug={slug}
-    $colorType={getColorType(entry.category)}
-    title={entry.title} description={entry.descriptions} date={entry.date}
-    inverseTitle={entry.inverseTitle}
-  />;
+  return (
+    <ProjectCommon
+      slug={slug}
+      $colorType={getColorType(entry.category)}
+      title={entry.title}
+      description={entry.descriptions}
+      date={entry.date}
+      inverseTitle={entry.inverseTitle}
+    />
+  );
 };
 
 export default ProjectCommonContainer;

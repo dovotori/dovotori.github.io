@@ -117,7 +117,7 @@ class ObjectGltfAnim extends ObjetGltf {
         const next = output[index];
         const interpolationValue = sample.get();
         newAnimation.value = previous.map((previousValue, i) =>
-          lerp(interpolationValue, previousValue, next[i])
+          lerp(interpolationValue, previousValue, next[i]),
         );
       }
     } else {

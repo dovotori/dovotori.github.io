@@ -1,10 +1,4 @@
-import {
-  Route,
-  HashRouter as Router,
-  Routes,
-  Navigate,
-  useLocation,
-} from 'react-router-dom';
+import { Route, HashRouter as Router, Routes, Navigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
@@ -54,14 +48,19 @@ const BackButton = () => {
   );
 };
 
-const Common = () => (<><BackButton /><SignatureContainer /></>);
+const Common = () => (
+  <>
+    <BackButton />
+    <SignatureContainer />
+  </>
+);
 
 const MainRoutes = () => {
   const isTouchDevice = getIsTouchDevice();
   return (
     <Router>
       <>
-        <MinHeight className='min-height'>
+        <MinHeight className="min-height">
           <Routes>
             <Route path="/qrcode" exact element={<BackButton />} />
             <Route path="/about" exact element={<Common />} />

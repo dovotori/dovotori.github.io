@@ -34,7 +34,7 @@ const LazyImage = forwardRef(
         {!isLoaded && children}
       </Wrap>
     );
-  }
+  },
 );
 
 export default LazyImage;

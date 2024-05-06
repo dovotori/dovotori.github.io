@@ -107,7 +107,7 @@ class AnimationMarker {
             offset: inverse ? [60, 0] : [0, 0],
             rotation,
           }),
-        })
+        }),
       );
       this.speed = (length / this.DISTANCE_PER_SECOND_PLANE) * 1000;
     } else {
@@ -118,7 +118,7 @@ class AnimationMarker {
             offset: inverse && this.iconStyle.size ? [this.iconStyle.size[0], 0] : [0, 0],
             rotation,
           }),
-        })
+        }),
       );
       this.speed = (length / this.DISTANCE_PER_SECOND) * 1000;
     }
@@ -176,7 +176,7 @@ class AnimationMarker {
         this.now = new Date().getTime();
         this.vectorLayer.on('postrender', this.moveFeature);
       },
-      isNewLoop ? this.DELAY_BETWEEN_LOOP : this.DELAY_BETWEEN_SEGMENT
+      isNewLoop ? this.DELAY_BETWEEN_LOOP : this.DELAY_BETWEEN_SEGMENT,
     );
   };
 
@@ -193,7 +193,7 @@ class AnimationMarker {
           src: house,
           scale: 0.08,
         }),
-      })
+      }),
     );
     this.animTooltip(this.points[this.step]);
     this.vectorLayer.un('postrender', this.moveFeature);

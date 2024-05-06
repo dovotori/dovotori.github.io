@@ -12,7 +12,7 @@ export default () => {
   const categoryId = useSelector((state) => state.device.category);
   const filterCategories = Object.keys(categoryIds).reduce(
     (acc, cur) => ({ ...acc, [cur]: categories[cur] }),
-    {}
+    {},
   );
 
   const onClick = (cat) => () => {

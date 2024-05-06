@@ -31,7 +31,7 @@ export default class {
         ...acc,
         [cur]: this.createVbo(vbos[cur]),
       }),
-      {}
+      {},
     );
   }
 

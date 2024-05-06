@@ -8,7 +8,6 @@ import Bloom from '../postprocess/Bloom';
 import Ssao from '../postprocess/Ssao';
 import Shadow from '../postprocess/Shadow';
 
-
 export default class {
   constructor(gl, config) {
     this.gl = gl;
@@ -36,11 +35,7 @@ export default class {
         this.postProcess = new PostProcess(gl, processConfig, programs);
 
         if (config.postprocess.bloom) {
-          this.bloom = new Bloom(
-            gl,
-            { ...processConfig, ...config.postprocess.bloom },
-            programs
-          );
+          this.bloom = new Bloom(gl, { ...processConfig, ...config.postprocess.bloom }, programs);
         }
 
         if (config.postprocess.ssao) {
@@ -52,7 +47,7 @@ export default class {
               near: config.camera.near,
               far: config.camera.far,
             },
-            programs
+            programs,
           );
         }
 
@@ -63,7 +58,7 @@ export default class {
               ...processConfig,
               ...config.postprocess.shadow,
             },
-            programs
+            programs,
           );
         }
       }
@@ -89,7 +84,7 @@ export default class {
     const shouldDisabled = config.useDrawBuffer && !config.support.drawBuffers;
     if (shouldDisabled) {
       const domElem = document.querySelector(`#${config.slug}`);
-      domElem.parentNode.style.minHeight = "auto";
+      domElem.parentNode.style.minHeight = 'auto';
       domElem.remove();
     }
   }

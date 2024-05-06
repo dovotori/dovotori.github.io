@@ -45,7 +45,7 @@ export default class {
         tileSize,
         startPos,
         goLeft,
-      })
+      }),
     );
     this.numero += 1;
   }

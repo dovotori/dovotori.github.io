@@ -3,7 +3,7 @@ module.exports = {
 
   fast9_detect,
   fast9_score,
-  nonmax_suppression
+  nonmax_suppression,
 };
 
 /*
@@ -25,7 +25,6 @@ function detect(im, width, height, threshold, nonmax) {
     corners[i].score = scores[i];
   }
   return corners;
-
 }
 
 /* fast9.c */
@@ -34,7 +33,8 @@ function fast9_detect(im, xsize, ysize, b) {
   const corners = [];
   const rsize = 512;
   const pixel = new Array(16);
-  let x; let y;
+  let x;
+  let y;
   const stride = xsize;
 
   pixel[0] = 0 + stride * 3;
@@ -69,16 +69,13 @@ function fast9_detect(im, xsize, ysize, b) {
                 if (im[idx + pixel[5]] > cb)
                   if (im[idx + pixel[6]] > cb)
                     if (im[idx + pixel[7]] > cb)
-                      if (im[idx + pixel[8]] > cb) { }
-                      else
-                        if (im[idx + pixel[15]] > cb) { }
-                        else
-                          continue;
+                      if (im[idx + pixel[8]] > cb) {
+                      } else if (im[idx + pixel[15]] > cb) {
+                      } else continue;
                     else if (im[idx + pixel[7]] < c_b)
                       if (im[idx + pixel[14]] > cb)
-                        if (im[idx + pixel[15]] > cb) { }
-                        else
-                          continue;
+                        if (im[idx + pixel[15]] > cb) {
+                        } else continue;
                       else if (im[idx + pixel[14]] < c_b)
                         if (im[idx + pixel[8]] < c_b)
                           if (im[idx + pixel[9]] < c_b)
@@ -86,36 +83,24 @@ function fast9_detect(im, xsize, ysize, b) {
                               if (im[idx + pixel[11]] < c_b)
                                 if (im[idx + pixel[12]] < c_b)
                                   if (im[idx + pixel[13]] < c_b)
-                                    if (im[idx + pixel[15]] < c_b) { }
-                                    else
-                                      continue;
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      if (im[idx + pixel[14]] > cb)
-                        if (im[idx + pixel[15]] > cb) { }
-                        else
-                          continue;
-                      else
-                        continue;
+                                    if (im[idx + pixel[15]] < c_b) {
+                                    } else continue;
+                                  else continue;
+                                else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[14]] > cb)
+                      if (im[idx + pixel[15]] > cb) {
+                      } else continue;
+                    else continue;
                   else if (im[idx + pixel[6]] < c_b)
                     if (im[idx + pixel[15]] > cb)
                       if (im[idx + pixel[13]] > cb)
-                        if (im[idx + pixel[14]] > cb) { }
-                        else
-                          continue;
+                        if (im[idx + pixel[14]] > cb) {
+                        } else continue;
                       else if (im[idx + pixel[13]] < c_b)
                         if (im[idx + pixel[7]] < c_b)
                           if (im[idx + pixel[8]] < c_b)
@@ -123,109 +108,72 @@ function fast9_detect(im, xsize, ysize, b) {
                               if (im[idx + pixel[10]] < c_b)
                                 if (im[idx + pixel[11]] < c_b)
                                   if (im[idx + pixel[12]] < c_b)
-                                    if (im[idx + pixel[14]] < c_b) { }
-                                    else
-                                      continue;
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      if (im[idx + pixel[7]] < c_b)
-                        if (im[idx + pixel[8]] < c_b)
-                          if (im[idx + pixel[9]] < c_b)
-                            if (im[idx + pixel[10]] < c_b)
-                              if (im[idx + pixel[11]] < c_b)
-                                if (im[idx + pixel[12]] < c_b)
-                                  if (im[idx + pixel[13]] < c_b)
-                                    if (im[idx + pixel[14]] < c_b) { }
-                                    else
-                                      continue;
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    if (im[idx + pixel[13]] > cb)
-                      if (im[idx + pixel[14]] > cb)
-                        if (im[idx + pixel[15]] > cb) { }
-                        else
-                          continue;
-                      else
-                        continue;
-                    else if (im[idx + pixel[13]] < c_b)
-                      if (im[idx + pixel[7]] < c_b)
-                        if (im[idx + pixel[8]] < c_b)
-                          if (im[idx + pixel[9]] < c_b)
-                            if (im[idx + pixel[10]] < c_b)
-                              if (im[idx + pixel[11]] < c_b)
-                                if (im[idx + pixel[12]] < c_b)
-                                  if (im[idx + pixel[14]] < c_b)
-                                    if (im[idx + pixel[15]] < c_b) { }
-                                    else
-                                      continue;
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
+                                    if (im[idx + pixel[14]] < c_b) {
+                                    } else continue;
+                                  else continue;
+                                else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[7]] < c_b)
+                      if (im[idx + pixel[8]] < c_b)
+                        if (im[idx + pixel[9]] < c_b)
+                          if (im[idx + pixel[10]] < c_b)
+                            if (im[idx + pixel[11]] < c_b)
+                              if (im[idx + pixel[12]] < c_b)
+                                if (im[idx + pixel[13]] < c_b)
+                                  if (im[idx + pixel[14]] < c_b) {
+                                  } else continue;
+                                else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else if (im[idx + pixel[13]] > cb)
+                    if (im[idx + pixel[14]] > cb)
+                      if (im[idx + pixel[15]] > cb) {
+                      } else continue;
+                    else continue;
+                  else if (im[idx + pixel[13]] < c_b)
+                    if (im[idx + pixel[7]] < c_b)
+                      if (im[idx + pixel[8]] < c_b)
+                        if (im[idx + pixel[9]] < c_b)
+                          if (im[idx + pixel[10]] < c_b)
+                            if (im[idx + pixel[11]] < c_b)
+                              if (im[idx + pixel[12]] < c_b)
+                                if (im[idx + pixel[14]] < c_b)
+                                  if (im[idx + pixel[15]] < c_b) {
+                                  } else continue;
+                                else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
                 else if (im[idx + pixel[5]] < c_b)
                   if (im[idx + pixel[14]] > cb)
                     if (im[idx + pixel[12]] > cb)
                       if (im[idx + pixel[13]] > cb)
-                        if (im[idx + pixel[15]] > cb) { }
-                        else
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb)
-                                if (im[idx + pixel[9]] > cb)
-                                  if (im[idx + pixel[10]] > cb)
-                                    if (im[idx + pixel[11]] > cb) { }
-                                    else
-                                      continue;
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        continue;
+                        if (im[idx + pixel[15]] > cb) {
+                        } else if (im[idx + pixel[6]] > cb)
+                          if (im[idx + pixel[7]] > cb)
+                            if (im[idx + pixel[8]] > cb)
+                              if (im[idx + pixel[9]] > cb)
+                                if (im[idx + pixel[10]] > cb)
+                                  if (im[idx + pixel[11]] > cb) {
+                                  } else continue;
+                                else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
                     else if (im[idx + pixel[12]] < c_b)
                       if (im[idx + pixel[6]] < c_b)
                         if (im[idx + pixel[7]] < c_b)
@@ -233,23 +181,15 @@ function fast9_detect(im, xsize, ysize, b) {
                             if (im[idx + pixel[9]] < c_b)
                               if (im[idx + pixel[10]] < c_b)
                                 if (im[idx + pixel[11]] < c_b)
-                                  if (im[idx + pixel[13]] < c_b) { }
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
+                                  if (im[idx + pixel[13]] < c_b) {
+                                  } else continue;
+                                else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
                   else if (im[idx + pixel[14]] < c_b)
                     if (im[idx + pixel[7]] < c_b)
                       if (im[idx + pixel[8]] < c_b)
@@ -258,150 +198,98 @@ function fast9_detect(im, xsize, ysize, b) {
                             if (im[idx + pixel[11]] < c_b)
                               if (im[idx + pixel[12]] < c_b)
                                 if (im[idx + pixel[13]] < c_b)
-                                  if (im[idx + pixel[6]] < c_b) { }
-                                  else
-                                    if (im[idx + pixel[15]] < c_b) { }
-                                    else
-                                      continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    if (im[idx + pixel[6]] < c_b)
-                      if (im[idx + pixel[7]] < c_b)
-                        if (im[idx + pixel[8]] < c_b)
-                          if (im[idx + pixel[9]] < c_b)
-                            if (im[idx + pixel[10]] < c_b)
-                              if (im[idx + pixel[11]] < c_b)
-                                if (im[idx + pixel[12]] < c_b)
-                                  if (im[idx + pixel[13]] < c_b) { }
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                else
-                  if (im[idx + pixel[12]] > cb)
-                    if (im[idx + pixel[13]] > cb)
-                      if (im[idx + pixel[14]] > cb)
-                        if (im[idx + pixel[15]] > cb) { }
-                        else
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb)
-                                if (im[idx + pixel[9]] > cb)
-                                  if (im[idx + pixel[10]] > cb)
-                                    if (im[idx + pixel[11]] > cb) { }
-                                    else
-                                      continue;
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else if (im[idx + pixel[12]] < c_b)
+                                  if (im[idx + pixel[6]] < c_b) {
+                                  } else if (im[idx + pixel[15]] < c_b) {
+                                  } else continue;
+                                else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else if (im[idx + pixel[6]] < c_b)
                     if (im[idx + pixel[7]] < c_b)
                       if (im[idx + pixel[8]] < c_b)
                         if (im[idx + pixel[9]] < c_b)
                           if (im[idx + pixel[10]] < c_b)
                             if (im[idx + pixel[11]] < c_b)
-                              if (im[idx + pixel[13]] < c_b)
-                                if (im[idx + pixel[14]] < c_b)
-                                  if (im[idx + pixel[6]] < c_b) { }
-                                  else
-                                    if (im[idx + pixel[15]] < c_b) { }
-                                    else
-                                      continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
+                              if (im[idx + pixel[12]] < c_b)
+                                if (im[idx + pixel[13]] < c_b) {
+                                } else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else if (im[idx + pixel[12]] > cb)
+                  if (im[idx + pixel[13]] > cb)
+                    if (im[idx + pixel[14]] > cb)
+                      if (im[idx + pixel[15]] > cb) {
+                      } else if (im[idx + pixel[6]] > cb)
+                        if (im[idx + pixel[7]] > cb)
+                          if (im[idx + pixel[8]] > cb)
+                            if (im[idx + pixel[9]] > cb)
+                              if (im[idx + pixel[10]] > cb)
+                                if (im[idx + pixel[11]] > cb) {
+                                } else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else if (im[idx + pixel[12]] < c_b)
+                  if (im[idx + pixel[7]] < c_b)
+                    if (im[idx + pixel[8]] < c_b)
+                      if (im[idx + pixel[9]] < c_b)
+                        if (im[idx + pixel[10]] < c_b)
+                          if (im[idx + pixel[11]] < c_b)
+                            if (im[idx + pixel[13]] < c_b)
+                              if (im[idx + pixel[14]] < c_b)
+                                if (im[idx + pixel[6]] < c_b) {
+                                } else if (im[idx + pixel[15]] < c_b) {
+                                } else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
               else if (im[idx + pixel[4]] < c_b)
                 if (im[idx + pixel[13]] > cb)
                   if (im[idx + pixel[11]] > cb)
                     if (im[idx + pixel[12]] > cb)
                       if (im[idx + pixel[14]] > cb)
-                        if (im[idx + pixel[15]] > cb) { }
-                        else
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb)
-                                if (im[idx + pixel[9]] > cb)
-                                  if (im[idx + pixel[10]] > cb) { }
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb)
-                                if (im[idx + pixel[9]] > cb)
-                                  if (im[idx + pixel[10]] > cb) { }
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      continue;
+                        if (im[idx + pixel[15]] > cb) {
+                        } else if (im[idx + pixel[6]] > cb)
+                          if (im[idx + pixel[7]] > cb)
+                            if (im[idx + pixel[8]] > cb)
+                              if (im[idx + pixel[9]] > cb)
+                                if (im[idx + pixel[10]] > cb) {
+                                } else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else if (im[idx + pixel[5]] > cb)
+                        if (im[idx + pixel[6]] > cb)
+                          if (im[idx + pixel[7]] > cb)
+                            if (im[idx + pixel[8]] > cb)
+                              if (im[idx + pixel[9]] > cb)
+                                if (im[idx + pixel[10]] > cb) {
+                                } else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
                   else if (im[idx + pixel[11]] < c_b)
                     if (im[idx + pixel[5]] < c_b)
                       if (im[idx + pixel[6]] < c_b)
@@ -409,23 +297,15 @@ function fast9_detect(im, xsize, ysize, b) {
                           if (im[idx + pixel[8]] < c_b)
                             if (im[idx + pixel[9]] < c_b)
                               if (im[idx + pixel[10]] < c_b)
-                                if (im[idx + pixel[12]] < c_b) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
+                                if (im[idx + pixel[12]] < c_b) {
+                                } else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
                 else if (im[idx + pixel[13]] < c_b)
                   if (im[idx + pixel[7]] < c_b)
                     if (im[idx + pixel[8]] < c_b)
@@ -434,193 +314,125 @@ function fast9_detect(im, xsize, ysize, b) {
                           if (im[idx + pixel[11]] < c_b)
                             if (im[idx + pixel[12]] < c_b)
                               if (im[idx + pixel[6]] < c_b)
-                                if (im[idx + pixel[5]] < c_b) { }
-                                else
-                                  if (im[idx + pixel[14]] < c_b) { }
-                                  else
-                                    continue;
-                              else
-                                if (im[idx + pixel[14]] < c_b)
-                                  if (im[idx + pixel[15]] < c_b) { }
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
-                else
-                  if (im[idx + pixel[5]] < c_b)
-                    if (im[idx + pixel[6]] < c_b)
-                      if (im[idx + pixel[7]] < c_b)
-                        if (im[idx + pixel[8]] < c_b)
-                          if (im[idx + pixel[9]] < c_b)
-                            if (im[idx + pixel[10]] < c_b)
-                              if (im[idx + pixel[11]] < c_b)
-                                if (im[idx + pixel[12]] < c_b) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
-              else
-                if (im[idx + pixel[11]] > cb)
-                  if (im[idx + pixel[12]] > cb)
-                    if (im[idx + pixel[13]] > cb)
-                      if (im[idx + pixel[14]] > cb)
-                        if (im[idx + pixel[15]] > cb) { }
-                        else
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb)
-                                if (im[idx + pixel[9]] > cb)
-                                  if (im[idx + pixel[10]] > cb) { }
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb)
-                                if (im[idx + pixel[9]] > cb)
-                                  if (im[idx + pixel[10]] > cb) { }
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      continue;
-                  else
-                    continue;
-                else if (im[idx + pixel[11]] < c_b)
-                  if (im[idx + pixel[7]] < c_b)
-                    if (im[idx + pixel[8]] < c_b)
-                      if (im[idx + pixel[9]] < c_b)
-                        if (im[idx + pixel[10]] < c_b)
-                          if (im[idx + pixel[12]] < c_b)
-                            if (im[idx + pixel[13]] < c_b)
-                              if (im[idx + pixel[6]] < c_b)
-                                if (im[idx + pixel[5]] < c_b) { }
-                                else
-                                  if (im[idx + pixel[14]] < c_b) { }
-                                  else
-                                    continue;
-                              else
-                                if (im[idx + pixel[14]] < c_b)
-                                  if (im[idx + pixel[15]] < c_b) { }
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
-                else
-                  continue;
+                                if (im[idx + pixel[5]] < c_b) {
+                                } else if (im[idx + pixel[14]] < c_b) {
+                                } else continue;
+                              else if (im[idx + pixel[14]] < c_b)
+                                if (im[idx + pixel[15]] < c_b) {
+                                } else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else if (im[idx + pixel[5]] < c_b)
+                  if (im[idx + pixel[6]] < c_b)
+                    if (im[idx + pixel[7]] < c_b)
+                      if (im[idx + pixel[8]] < c_b)
+                        if (im[idx + pixel[9]] < c_b)
+                          if (im[idx + pixel[10]] < c_b)
+                            if (im[idx + pixel[11]] < c_b)
+                              if (im[idx + pixel[12]] < c_b) {
+                              } else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else if (im[idx + pixel[11]] > cb)
+                if (im[idx + pixel[12]] > cb)
+                  if (im[idx + pixel[13]] > cb)
+                    if (im[idx + pixel[14]] > cb)
+                      if (im[idx + pixel[15]] > cb) {
+                      } else if (im[idx + pixel[6]] > cb)
+                        if (im[idx + pixel[7]] > cb)
+                          if (im[idx + pixel[8]] > cb)
+                            if (im[idx + pixel[9]] > cb)
+                              if (im[idx + pixel[10]] > cb) {
+                              } else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[5]] > cb)
+                      if (im[idx + pixel[6]] > cb)
+                        if (im[idx + pixel[7]] > cb)
+                          if (im[idx + pixel[8]] > cb)
+                            if (im[idx + pixel[9]] > cb)
+                              if (im[idx + pixel[10]] > cb) {
+                              } else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else if (im[idx + pixel[11]] < c_b)
+                if (im[idx + pixel[7]] < c_b)
+                  if (im[idx + pixel[8]] < c_b)
+                    if (im[idx + pixel[9]] < c_b)
+                      if (im[idx + pixel[10]] < c_b)
+                        if (im[idx + pixel[12]] < c_b)
+                          if (im[idx + pixel[13]] < c_b)
+                            if (im[idx + pixel[6]] < c_b)
+                              if (im[idx + pixel[5]] < c_b) {
+                              } else if (im[idx + pixel[14]] < c_b) {
+                              } else continue;
+                            else if (im[idx + pixel[14]] < c_b)
+                              if (im[idx + pixel[15]] < c_b) {
+                              } else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
             else if (im[idx + pixel[3]] < c_b)
               if (im[idx + pixel[10]] > cb)
                 if (im[idx + pixel[11]] > cb)
                   if (im[idx + pixel[12]] > cb)
                     if (im[idx + pixel[13]] > cb)
                       if (im[idx + pixel[14]] > cb)
-                        if (im[idx + pixel[15]] > cb) { }
-                        else
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb)
-                                if (im[idx + pixel[9]] > cb) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb)
-                                if (im[idx + pixel[9]] > cb) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[4]] > cb)
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb)
-                                if (im[idx + pixel[9]] > cb) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    continue;
-                else
-                  continue;
+                        if (im[idx + pixel[15]] > cb) {
+                        } else if (im[idx + pixel[6]] > cb)
+                          if (im[idx + pixel[7]] > cb)
+                            if (im[idx + pixel[8]] > cb)
+                              if (im[idx + pixel[9]] > cb) {
+                              } else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else if (im[idx + pixel[5]] > cb)
+                        if (im[idx + pixel[6]] > cb)
+                          if (im[idx + pixel[7]] > cb)
+                            if (im[idx + pixel[8]] > cb)
+                              if (im[idx + pixel[9]] > cb) {
+                              } else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[4]] > cb)
+                      if (im[idx + pixel[5]] > cb)
+                        if (im[idx + pixel[6]] > cb)
+                          if (im[idx + pixel[7]] > cb)
+                            if (im[idx + pixel[8]] > cb)
+                              if (im[idx + pixel[9]] > cb) {
+                              } else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
               else if (im[idx + pixel[10]] < c_b)
                 if (im[idx + pixel[7]] < c_b)
                   if (im[idx + pixel[8]] < c_b)
@@ -628,148 +440,95 @@ function fast9_detect(im, xsize, ysize, b) {
                       if (im[idx + pixel[11]] < c_b)
                         if (im[idx + pixel[6]] < c_b)
                           if (im[idx + pixel[5]] < c_b)
-                            if (im[idx + pixel[4]] < c_b) { }
-                            else
-                              if (im[idx + pixel[12]] < c_b)
-                                if (im[idx + pixel[13]] < c_b) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                          else
-                            if (im[idx + pixel[12]] < c_b)
-                              if (im[idx + pixel[13]] < c_b)
-                                if (im[idx + pixel[14]] < c_b) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                        else
-                          if (im[idx + pixel[12]] < c_b)
+                            if (im[idx + pixel[4]] < c_b) {
+                            } else if (im[idx + pixel[12]] < c_b)
+                              if (im[idx + pixel[13]] < c_b) {
+                              } else continue;
+                            else continue;
+                          else if (im[idx + pixel[12]] < c_b)
                             if (im[idx + pixel[13]] < c_b)
-                              if (im[idx + pixel[14]] < c_b)
-                                if (im[idx + pixel[15]] < c_b) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
-                else
-                  continue;
-              else
-                continue;
-            else
-              if (im[idx + pixel[10]] > cb)
-                if (im[idx + pixel[11]] > cb)
-                  if (im[idx + pixel[12]] > cb)
-                    if (im[idx + pixel[13]] > cb)
-                      if (im[idx + pixel[14]] > cb)
-                        if (im[idx + pixel[15]] > cb) { }
-                        else
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb)
-                                if (im[idx + pixel[9]] > cb) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb)
-                                if (im[idx + pixel[9]] > cb) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[4]] > cb)
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb)
-                                if (im[idx + pixel[9]] > cb) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    continue;
-                else
-                  continue;
-              else if (im[idx + pixel[10]] < c_b)
-                if (im[idx + pixel[7]] < c_b)
-                  if (im[idx + pixel[8]] < c_b)
-                    if (im[idx + pixel[9]] < c_b)
-                      if (im[idx + pixel[11]] < c_b)
-                        if (im[idx + pixel[12]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[5]] < c_b)
-                              if (im[idx + pixel[4]] < c_b) { }
-                              else
-                                if (im[idx + pixel[13]] < c_b) { }
-                                else
-                                  continue;
-                            else
-                              if (im[idx + pixel[13]] < c_b)
-                                if (im[idx + pixel[14]] < c_b) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                          else
-                            if (im[idx + pixel[13]] < c_b)
-                              if (im[idx + pixel[14]] < c_b)
-                                if (im[idx + pixel[15]] < c_b) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
-                else
-                  continue;
-              else
-                continue;
+                              if (im[idx + pixel[14]] < c_b) {
+                              } else continue;
+                            else continue;
+                          else continue;
+                        else if (im[idx + pixel[12]] < c_b)
+                          if (im[idx + pixel[13]] < c_b)
+                            if (im[idx + pixel[14]] < c_b)
+                              if (im[idx + pixel[15]] < c_b) {
+                              } else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else if (im[idx + pixel[10]] > cb)
+              if (im[idx + pixel[11]] > cb)
+                if (im[idx + pixel[12]] > cb)
+                  if (im[idx + pixel[13]] > cb)
+                    if (im[idx + pixel[14]] > cb)
+                      if (im[idx + pixel[15]] > cb) {
+                      } else if (im[idx + pixel[6]] > cb)
+                        if (im[idx + pixel[7]] > cb)
+                          if (im[idx + pixel[8]] > cb)
+                            if (im[idx + pixel[9]] > cb) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[5]] > cb)
+                      if (im[idx + pixel[6]] > cb)
+                        if (im[idx + pixel[7]] > cb)
+                          if (im[idx + pixel[8]] > cb)
+                            if (im[idx + pixel[9]] > cb) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else if (im[idx + pixel[4]] > cb)
+                    if (im[idx + pixel[5]] > cb)
+                      if (im[idx + pixel[6]] > cb)
+                        if (im[idx + pixel[7]] > cb)
+                          if (im[idx + pixel[8]] > cb)
+                            if (im[idx + pixel[9]] > cb) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else if (im[idx + pixel[10]] < c_b)
+              if (im[idx + pixel[7]] < c_b)
+                if (im[idx + pixel[8]] < c_b)
+                  if (im[idx + pixel[9]] < c_b)
+                    if (im[idx + pixel[11]] < c_b)
+                      if (im[idx + pixel[12]] < c_b)
+                        if (im[idx + pixel[6]] < c_b)
+                          if (im[idx + pixel[5]] < c_b)
+                            if (im[idx + pixel[4]] < c_b) {
+                            } else if (im[idx + pixel[13]] < c_b) {
+                            } else continue;
+                          else if (im[idx + pixel[13]] < c_b)
+                            if (im[idx + pixel[14]] < c_b) {
+                            } else continue;
+                          else continue;
+                        else if (im[idx + pixel[13]] < c_b)
+                          if (im[idx + pixel[14]] < c_b)
+                            if (im[idx + pixel[15]] < c_b) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else continue;
           else if (im[idx + pixel[2]] < c_b)
             if (im[idx + pixel[9]] > cb)
               if (im[idx + pixel[10]] > cb)
@@ -777,69 +536,45 @@ function fast9_detect(im, xsize, ysize, b) {
                   if (im[idx + pixel[12]] > cb)
                     if (im[idx + pixel[13]] > cb)
                       if (im[idx + pixel[14]] > cb)
-                        if (im[idx + pixel[15]] > cb) { }
-                        else
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[4]] > cb)
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    if (im[idx + pixel[3]] > cb)
-                      if (im[idx + pixel[4]] > cb)
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                else
-                  continue;
-              else
-                continue;
+                        if (im[idx + pixel[15]] > cb) {
+                        } else if (im[idx + pixel[6]] > cb)
+                          if (im[idx + pixel[7]] > cb)
+                            if (im[idx + pixel[8]] > cb) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else if (im[idx + pixel[5]] > cb)
+                        if (im[idx + pixel[6]] > cb)
+                          if (im[idx + pixel[7]] > cb)
+                            if (im[idx + pixel[8]] > cb) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[4]] > cb)
+                      if (im[idx + pixel[5]] > cb)
+                        if (im[idx + pixel[6]] > cb)
+                          if (im[idx + pixel[7]] > cb)
+                            if (im[idx + pixel[8]] > cb) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else if (im[idx + pixel[3]] > cb)
+                    if (im[idx + pixel[4]] > cb)
+                      if (im[idx + pixel[5]] > cb)
+                        if (im[idx + pixel[6]] > cb)
+                          if (im[idx + pixel[7]] > cb)
+                            if (im[idx + pixel[8]] > cb) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
             else if (im[idx + pixel[9]] < c_b)
               if (im[idx + pixel[7]] < c_b)
                 if (im[idx + pixel[8]] < c_b)
@@ -847,184 +582,118 @@ function fast9_detect(im, xsize, ysize, b) {
                     if (im[idx + pixel[6]] < c_b)
                       if (im[idx + pixel[5]] < c_b)
                         if (im[idx + pixel[4]] < c_b)
-                          if (im[idx + pixel[3]] < c_b) { }
-                          else
-                            if (im[idx + pixel[11]] < c_b)
-                              if (im[idx + pixel[12]] < c_b) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                        else
-                          if (im[idx + pixel[11]] < c_b)
-                            if (im[idx + pixel[12]] < c_b)
-                              if (im[idx + pixel[13]] < c_b) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[11]] < c_b)
+                          if (im[idx + pixel[3]] < c_b) {
+                          } else if (im[idx + pixel[11]] < c_b)
+                            if (im[idx + pixel[12]] < c_b) {
+                            } else continue;
+                          else continue;
+                        else if (im[idx + pixel[11]] < c_b)
                           if (im[idx + pixel[12]] < c_b)
-                            if (im[idx + pixel[13]] < c_b)
-                              if (im[idx + pixel[14]] < c_b) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[11]] < c_b)
+                            if (im[idx + pixel[13]] < c_b) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else if (im[idx + pixel[11]] < c_b)
                         if (im[idx + pixel[12]] < c_b)
                           if (im[idx + pixel[13]] < c_b)
-                            if (im[idx + pixel[14]] < c_b)
-                              if (im[idx + pixel[15]] < c_b) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    continue;
-                else
-                  continue;
-              else
-                continue;
-            else
-              continue;
-          else
-            if (im[idx + pixel[9]] > cb)
-              if (im[idx + pixel[10]] > cb)
-                if (im[idx + pixel[11]] > cb)
-                  if (im[idx + pixel[12]] > cb)
-                    if (im[idx + pixel[13]] > cb)
-                      if (im[idx + pixel[14]] > cb)
-                        if (im[idx + pixel[15]] > cb) { }
-                        else
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[4]] > cb)
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    if (im[idx + pixel[3]] > cb)
-                      if (im[idx + pixel[4]] > cb)
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb)
-                              if (im[idx + pixel[8]] > cb) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                else
-                  continue;
-              else
-                continue;
-            else if (im[idx + pixel[9]] < c_b)
-              if (im[idx + pixel[7]] < c_b)
-                if (im[idx + pixel[8]] < c_b)
-                  if (im[idx + pixel[10]] < c_b)
-                    if (im[idx + pixel[11]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[4]] < c_b)
-                            if (im[idx + pixel[3]] < c_b) { }
-                            else
-                              if (im[idx + pixel[12]] < c_b) { }
-                              else
-                                continue;
-                          else
-                            if (im[idx + pixel[12]] < c_b)
-                              if (im[idx + pixel[13]] < c_b) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                        else
-                          if (im[idx + pixel[12]] < c_b)
-                            if (im[idx + pixel[13]] < c_b)
-                              if (im[idx + pixel[14]] < c_b) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[12]] < c_b)
-                          if (im[idx + pixel[13]] < c_b)
-                            if (im[idx + pixel[14]] < c_b)
-                              if (im[idx + pixel[15]] < c_b) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      continue;
-                  else
-                    continue;
-                else
-                  continue;
-              else
-                continue;
-            else
-              continue;
+                            if (im[idx + pixel[14]] < c_b) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[11]] < c_b)
+                      if (im[idx + pixel[12]] < c_b)
+                        if (im[idx + pixel[13]] < c_b)
+                          if (im[idx + pixel[14]] < c_b)
+                            if (im[idx + pixel[15]] < c_b) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else continue;
+          else if (im[idx + pixel[9]] > cb)
+            if (im[idx + pixel[10]] > cb)
+              if (im[idx + pixel[11]] > cb)
+                if (im[idx + pixel[12]] > cb)
+                  if (im[idx + pixel[13]] > cb)
+                    if (im[idx + pixel[14]] > cb)
+                      if (im[idx + pixel[15]] > cb) {
+                      } else if (im[idx + pixel[6]] > cb)
+                        if (im[idx + pixel[7]] > cb)
+                          if (im[idx + pixel[8]] > cb) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[5]] > cb)
+                      if (im[idx + pixel[6]] > cb)
+                        if (im[idx + pixel[7]] > cb)
+                          if (im[idx + pixel[8]] > cb) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else if (im[idx + pixel[4]] > cb)
+                    if (im[idx + pixel[5]] > cb)
+                      if (im[idx + pixel[6]] > cb)
+                        if (im[idx + pixel[7]] > cb)
+                          if (im[idx + pixel[8]] > cb) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else if (im[idx + pixel[3]] > cb)
+                  if (im[idx + pixel[4]] > cb)
+                    if (im[idx + pixel[5]] > cb)
+                      if (im[idx + pixel[6]] > cb)
+                        if (im[idx + pixel[7]] > cb)
+                          if (im[idx + pixel[8]] > cb) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else continue;
+          else if (im[idx + pixel[9]] < c_b)
+            if (im[idx + pixel[7]] < c_b)
+              if (im[idx + pixel[8]] < c_b)
+                if (im[idx + pixel[10]] < c_b)
+                  if (im[idx + pixel[11]] < c_b)
+                    if (im[idx + pixel[6]] < c_b)
+                      if (im[idx + pixel[5]] < c_b)
+                        if (im[idx + pixel[4]] < c_b)
+                          if (im[idx + pixel[3]] < c_b) {
+                          } else if (im[idx + pixel[12]] < c_b) {
+                          } else continue;
+                        else if (im[idx + pixel[12]] < c_b)
+                          if (im[idx + pixel[13]] < c_b) {
+                          } else continue;
+                        else continue;
+                      else if (im[idx + pixel[12]] < c_b)
+                        if (im[idx + pixel[13]] < c_b)
+                          if (im[idx + pixel[14]] < c_b) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[12]] < c_b)
+                      if (im[idx + pixel[13]] < c_b)
+                        if (im[idx + pixel[14]] < c_b)
+                          if (im[idx + pixel[15]] < c_b) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else continue;
+          else continue;
         else if (im[idx + pixel[1]] < c_b)
           if (im[idx + pixel[8]] > cb)
             if (im[idx + pixel[9]] > cb)
@@ -1033,76 +702,49 @@ function fast9_detect(im, xsize, ysize, b) {
                   if (im[idx + pixel[12]] > cb)
                     if (im[idx + pixel[13]] > cb)
                       if (im[idx + pixel[14]] > cb)
-                        if (im[idx + pixel[15]] > cb) { }
-                        else
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[4]] > cb)
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    if (im[idx + pixel[3]] > cb)
-                      if (im[idx + pixel[4]] > cb)
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                else
-                  if (im[idx + pixel[2]] > cb)
-                    if (im[idx + pixel[3]] > cb)
-                      if (im[idx + pixel[4]] > cb)
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
-              else
-                continue;
-            else
-              continue;
+                        if (im[idx + pixel[15]] > cb) {
+                        } else if (im[idx + pixel[6]] > cb)
+                          if (im[idx + pixel[7]] > cb) {
+                          } else continue;
+                        else continue;
+                      else if (im[idx + pixel[5]] > cb)
+                        if (im[idx + pixel[6]] > cb)
+                          if (im[idx + pixel[7]] > cb) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[4]] > cb)
+                      if (im[idx + pixel[5]] > cb)
+                        if (im[idx + pixel[6]] > cb)
+                          if (im[idx + pixel[7]] > cb) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else if (im[idx + pixel[3]] > cb)
+                    if (im[idx + pixel[4]] > cb)
+                      if (im[idx + pixel[5]] > cb)
+                        if (im[idx + pixel[6]] > cb)
+                          if (im[idx + pixel[7]] > cb) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else if (im[idx + pixel[2]] > cb)
+                  if (im[idx + pixel[3]] > cb)
+                    if (im[idx + pixel[4]] > cb)
+                      if (im[idx + pixel[5]] > cb)
+                        if (im[idx + pixel[6]] > cb)
+                          if (im[idx + pixel[7]] > cb) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else continue;
           else if (im[idx + pixel[8]] < c_b)
             if (im[idx + pixel[7]] < c_b)
               if (im[idx + pixel[9]] < c_b)
@@ -1110,223 +752,143 @@ function fast9_detect(im, xsize, ysize, b) {
                   if (im[idx + pixel[5]] < c_b)
                     if (im[idx + pixel[4]] < c_b)
                       if (im[idx + pixel[3]] < c_b)
-                        if (im[idx + pixel[2]] < c_b) { }
-                        else
-                          if (im[idx + pixel[10]] < c_b)
-                            if (im[idx + pixel[11]] < c_b) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[10]] < c_b)
-                          if (im[idx + pixel[11]] < c_b)
-                            if (im[idx + pixel[12]] < c_b) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[10]] < c_b)
+                        if (im[idx + pixel[2]] < c_b) {
+                        } else if (im[idx + pixel[10]] < c_b)
+                          if (im[idx + pixel[11]] < c_b) {
+                          } else continue;
+                        else continue;
+                      else if (im[idx + pixel[10]] < c_b)
                         if (im[idx + pixel[11]] < c_b)
-                          if (im[idx + pixel[12]] < c_b)
-                            if (im[idx + pixel[13]] < c_b) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    if (im[idx + pixel[10]] < c_b)
+                          if (im[idx + pixel[12]] < c_b) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[10]] < c_b)
                       if (im[idx + pixel[11]] < c_b)
                         if (im[idx + pixel[12]] < c_b)
-                          if (im[idx + pixel[13]] < c_b)
-                            if (im[idx + pixel[14]] < c_b) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                else
-                  if (im[idx + pixel[10]] < c_b)
+                          if (im[idx + pixel[13]] < c_b) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else if (im[idx + pixel[10]] < c_b)
                     if (im[idx + pixel[11]] < c_b)
                       if (im[idx + pixel[12]] < c_b)
                         if (im[idx + pixel[13]] < c_b)
-                          if (im[idx + pixel[14]] < c_b)
-                            if (im[idx + pixel[15]] < c_b) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
-              else
-                continue;
-            else
-              continue;
-          else
-            continue;
-        else
-          if (im[idx + pixel[8]] > cb)
-            if (im[idx + pixel[9]] > cb)
-              if (im[idx + pixel[10]] > cb)
-                if (im[idx + pixel[11]] > cb)
-                  if (im[idx + pixel[12]] > cb)
-                    if (im[idx + pixel[13]] > cb)
-                      if (im[idx + pixel[14]] > cb)
-                        if (im[idx + pixel[15]] > cb) { }
-                        else
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[4]] > cb)
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    if (im[idx + pixel[3]] > cb)
-                      if (im[idx + pixel[4]] > cb)
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                else
-                  if (im[idx + pixel[2]] > cb)
-                    if (im[idx + pixel[3]] > cb)
-                      if (im[idx + pixel[4]] > cb)
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[7]] > cb) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
-              else
-                continue;
-            else
-              continue;
-          else if (im[idx + pixel[8]] < c_b)
-            if (im[idx + pixel[7]] < c_b)
-              if (im[idx + pixel[9]] < c_b)
-                if (im[idx + pixel[10]] < c_b)
-                  if (im[idx + pixel[6]] < c_b)
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[4]] < c_b)
-                        if (im[idx + pixel[3]] < c_b)
-                          if (im[idx + pixel[2]] < c_b) { }
-                          else
-                            if (im[idx + pixel[11]] < c_b) { }
-                            else
-                              continue;
-                        else
-                          if (im[idx + pixel[11]] < c_b)
-                            if (im[idx + pixel[12]] < c_b) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[11]] < c_b)
-                          if (im[idx + pixel[12]] < c_b)
-                            if (im[idx + pixel[13]] < c_b) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[11]] < c_b)
-                        if (im[idx + pixel[12]] < c_b)
-                          if (im[idx + pixel[13]] < c_b)
-                            if (im[idx + pixel[14]] < c_b) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    if (im[idx + pixel[11]] < c_b)
+                          if (im[idx + pixel[14]] < c_b) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else if (im[idx + pixel[10]] < c_b)
+                  if (im[idx + pixel[11]] < c_b)
+                    if (im[idx + pixel[12]] < c_b)
+                      if (im[idx + pixel[13]] < c_b)
+                        if (im[idx + pixel[14]] < c_b)
+                          if (im[idx + pixel[15]] < c_b) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else continue;
+          else continue;
+        else if (im[idx + pixel[8]] > cb)
+          if (im[idx + pixel[9]] > cb)
+            if (im[idx + pixel[10]] > cb)
+              if (im[idx + pixel[11]] > cb)
+                if (im[idx + pixel[12]] > cb)
+                  if (im[idx + pixel[13]] > cb)
+                    if (im[idx + pixel[14]] > cb)
+                      if (im[idx + pixel[15]] > cb) {
+                      } else if (im[idx + pixel[6]] > cb)
+                        if (im[idx + pixel[7]] > cb) {
+                        } else continue;
+                      else continue;
+                    else if (im[idx + pixel[5]] > cb)
+                      if (im[idx + pixel[6]] > cb)
+                        if (im[idx + pixel[7]] > cb) {
+                        } else continue;
+                      else continue;
+                    else continue;
+                  else if (im[idx + pixel[4]] > cb)
+                    if (im[idx + pixel[5]] > cb)
+                      if (im[idx + pixel[6]] > cb)
+                        if (im[idx + pixel[7]] > cb) {
+                        } else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else if (im[idx + pixel[3]] > cb)
+                  if (im[idx + pixel[4]] > cb)
+                    if (im[idx + pixel[5]] > cb)
+                      if (im[idx + pixel[6]] > cb)
+                        if (im[idx + pixel[7]] > cb) {
+                        } else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else if (im[idx + pixel[2]] > cb)
+                if (im[idx + pixel[3]] > cb)
+                  if (im[idx + pixel[4]] > cb)
+                    if (im[idx + pixel[5]] > cb)
+                      if (im[idx + pixel[6]] > cb)
+                        if (im[idx + pixel[7]] > cb) {
+                        } else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else continue;
+          else continue;
+        else if (im[idx + pixel[8]] < c_b)
+          if (im[idx + pixel[7]] < c_b)
+            if (im[idx + pixel[9]] < c_b)
+              if (im[idx + pixel[10]] < c_b)
+                if (im[idx + pixel[6]] < c_b)
+                  if (im[idx + pixel[5]] < c_b)
+                    if (im[idx + pixel[4]] < c_b)
+                      if (im[idx + pixel[3]] < c_b)
+                        if (im[idx + pixel[2]] < c_b) {
+                        } else if (im[idx + pixel[11]] < c_b) {
+                        } else continue;
+                      else if (im[idx + pixel[11]] < c_b)
+                        if (im[idx + pixel[12]] < c_b) {
+                        } else continue;
+                      else continue;
+                    else if (im[idx + pixel[11]] < c_b)
                       if (im[idx + pixel[12]] < c_b)
-                        if (im[idx + pixel[13]] < c_b)
-                          if (im[idx + pixel[14]] < c_b)
-                            if (im[idx + pixel[15]] < c_b) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                else
-                  continue;
-              else
-                continue;
-            else
-              continue;
-          else
-            continue;
+                        if (im[idx + pixel[13]] < c_b) {
+                        } else continue;
+                      else continue;
+                    else continue;
+                  else if (im[idx + pixel[11]] < c_b)
+                    if (im[idx + pixel[12]] < c_b)
+                      if (im[idx + pixel[13]] < c_b)
+                        if (im[idx + pixel[14]] < c_b) {
+                        } else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else if (im[idx + pixel[11]] < c_b)
+                  if (im[idx + pixel[12]] < c_b)
+                    if (im[idx + pixel[13]] < c_b)
+                      if (im[idx + pixel[14]] < c_b)
+                        if (im[idx + pixel[15]] < c_b) {
+                        } else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else continue;
+          else continue;
+        else continue;
       else if (im[idx + pixel[0]] < c_b)
         if (im[idx + pixel[1]] > cb)
           if (im[idx + pixel[8]] > cb)
@@ -1336,76 +898,49 @@ function fast9_detect(im, xsize, ysize, b) {
                   if (im[idx + pixel[5]] > cb)
                     if (im[idx + pixel[4]] > cb)
                       if (im[idx + pixel[3]] > cb)
-                        if (im[idx + pixel[2]] > cb) { }
-                        else
-                          if (im[idx + pixel[10]] > cb)
-                            if (im[idx + pixel[11]] > cb) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[10]] > cb)
-                          if (im[idx + pixel[11]] > cb)
-                            if (im[idx + pixel[12]] > cb) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[10]] > cb)
+                        if (im[idx + pixel[2]] > cb) {
+                        } else if (im[idx + pixel[10]] > cb)
+                          if (im[idx + pixel[11]] > cb) {
+                          } else continue;
+                        else continue;
+                      else if (im[idx + pixel[10]] > cb)
                         if (im[idx + pixel[11]] > cb)
-                          if (im[idx + pixel[12]] > cb)
-                            if (im[idx + pixel[13]] > cb) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    if (im[idx + pixel[10]] > cb)
+                          if (im[idx + pixel[12]] > cb) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[10]] > cb)
                       if (im[idx + pixel[11]] > cb)
                         if (im[idx + pixel[12]] > cb)
-                          if (im[idx + pixel[13]] > cb)
-                            if (im[idx + pixel[14]] > cb) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                else
-                  if (im[idx + pixel[10]] > cb)
+                          if (im[idx + pixel[13]] > cb) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else if (im[idx + pixel[10]] > cb)
                     if (im[idx + pixel[11]] > cb)
                       if (im[idx + pixel[12]] > cb)
                         if (im[idx + pixel[13]] > cb)
-                          if (im[idx + pixel[14]] > cb)
-                            if (im[idx + pixel[15]] > cb) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
-              else
-                continue;
-            else
-              continue;
+                          if (im[idx + pixel[14]] > cb) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else if (im[idx + pixel[10]] > cb)
+                  if (im[idx + pixel[11]] > cb)
+                    if (im[idx + pixel[12]] > cb)
+                      if (im[idx + pixel[13]] > cb)
+                        if (im[idx + pixel[14]] > cb)
+                          if (im[idx + pixel[15]] > cb) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else continue;
           else if (im[idx + pixel[8]] < c_b)
             if (im[idx + pixel[9]] < c_b)
               if (im[idx + pixel[10]] < c_b)
@@ -1413,78 +948,50 @@ function fast9_detect(im, xsize, ysize, b) {
                   if (im[idx + pixel[12]] < c_b)
                     if (im[idx + pixel[13]] < c_b)
                       if (im[idx + pixel[14]] < c_b)
-                        if (im[idx + pixel[15]] < c_b) { }
-                        else
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[4]] < c_b)
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    if (im[idx + pixel[3]] < c_b)
-                      if (im[idx + pixel[4]] < c_b)
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                else
-                  if (im[idx + pixel[2]] < c_b)
-                    if (im[idx + pixel[3]] < c_b)
-                      if (im[idx + pixel[4]] < c_b)
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
-              else
-                continue;
-            else
-              continue;
-          else
-            continue;
+                        if (im[idx + pixel[15]] < c_b) {
+                        } else if (im[idx + pixel[6]] < c_b)
+                          if (im[idx + pixel[7]] < c_b) {
+                          } else continue;
+                        else continue;
+                      else if (im[idx + pixel[5]] < c_b)
+                        if (im[idx + pixel[6]] < c_b)
+                          if (im[idx + pixel[7]] < c_b) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[4]] < c_b)
+                      if (im[idx + pixel[5]] < c_b)
+                        if (im[idx + pixel[6]] < c_b)
+                          if (im[idx + pixel[7]] < c_b) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else if (im[idx + pixel[3]] < c_b)
+                    if (im[idx + pixel[4]] < c_b)
+                      if (im[idx + pixel[5]] < c_b)
+                        if (im[idx + pixel[6]] < c_b)
+                          if (im[idx + pixel[7]] < c_b) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else if (im[idx + pixel[2]] < c_b)
+                  if (im[idx + pixel[3]] < c_b)
+                    if (im[idx + pixel[4]] < c_b)
+                      if (im[idx + pixel[5]] < c_b)
+                        if (im[idx + pixel[6]] < c_b)
+                          if (im[idx + pixel[7]] < c_b) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else continue;
+          else continue;
         else if (im[idx + pixel[1]] < c_b)
           if (im[idx + pixel[2]] > cb)
             if (im[idx + pixel[9]] > cb)
@@ -1494,130 +1001,84 @@ function fast9_detect(im, xsize, ysize, b) {
                     if (im[idx + pixel[6]] > cb)
                       if (im[idx + pixel[5]] > cb)
                         if (im[idx + pixel[4]] > cb)
-                          if (im[idx + pixel[3]] > cb) { }
-                          else
-                            if (im[idx + pixel[11]] > cb)
-                              if (im[idx + pixel[12]] > cb) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                        else
-                          if (im[idx + pixel[11]] > cb)
-                            if (im[idx + pixel[12]] > cb)
-                              if (im[idx + pixel[13]] > cb) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[11]] > cb)
+                          if (im[idx + pixel[3]] > cb) {
+                          } else if (im[idx + pixel[11]] > cb)
+                            if (im[idx + pixel[12]] > cb) {
+                            } else continue;
+                          else continue;
+                        else if (im[idx + pixel[11]] > cb)
                           if (im[idx + pixel[12]] > cb)
-                            if (im[idx + pixel[13]] > cb)
-                              if (im[idx + pixel[14]] > cb) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[11]] > cb)
+                            if (im[idx + pixel[13]] > cb) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else if (im[idx + pixel[11]] > cb)
                         if (im[idx + pixel[12]] > cb)
                           if (im[idx + pixel[13]] > cb)
-                            if (im[idx + pixel[14]] > cb)
-                              if (im[idx + pixel[15]] > cb) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    continue;
-                else
-                  continue;
-              else
-                continue;
+                            if (im[idx + pixel[14]] > cb) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[11]] > cb)
+                      if (im[idx + pixel[12]] > cb)
+                        if (im[idx + pixel[13]] > cb)
+                          if (im[idx + pixel[14]] > cb)
+                            if (im[idx + pixel[15]] > cb) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
             else if (im[idx + pixel[9]] < c_b)
               if (im[idx + pixel[10]] < c_b)
                 if (im[idx + pixel[11]] < c_b)
                   if (im[idx + pixel[12]] < c_b)
                     if (im[idx + pixel[13]] < c_b)
                       if (im[idx + pixel[14]] < c_b)
-                        if (im[idx + pixel[15]] < c_b) { }
-                        else
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[4]] < c_b)
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    if (im[idx + pixel[3]] < c_b)
-                      if (im[idx + pixel[4]] < c_b)
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                else
-                  continue;
-              else
-                continue;
-            else
-              continue;
+                        if (im[idx + pixel[15]] < c_b) {
+                        } else if (im[idx + pixel[6]] < c_b)
+                          if (im[idx + pixel[7]] < c_b)
+                            if (im[idx + pixel[8]] < c_b) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else if (im[idx + pixel[5]] < c_b)
+                        if (im[idx + pixel[6]] < c_b)
+                          if (im[idx + pixel[7]] < c_b)
+                            if (im[idx + pixel[8]] < c_b) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[4]] < c_b)
+                      if (im[idx + pixel[5]] < c_b)
+                        if (im[idx + pixel[6]] < c_b)
+                          if (im[idx + pixel[7]] < c_b)
+                            if (im[idx + pixel[8]] < c_b) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else if (im[idx + pixel[3]] < c_b)
+                    if (im[idx + pixel[4]] < c_b)
+                      if (im[idx + pixel[5]] < c_b)
+                        if (im[idx + pixel[6]] < c_b)
+                          if (im[idx + pixel[7]] < c_b)
+                            if (im[idx + pixel[8]] < c_b) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else continue;
           else if (im[idx + pixel[2]] < c_b)
             if (im[idx + pixel[3]] > cb)
               if (im[idx + pixel[10]] > cb)
@@ -1627,105 +1088,68 @@ function fast9_detect(im, xsize, ysize, b) {
                       if (im[idx + pixel[11]] > cb)
                         if (im[idx + pixel[6]] > cb)
                           if (im[idx + pixel[5]] > cb)
-                            if (im[idx + pixel[4]] > cb) { }
-                            else
-                              if (im[idx + pixel[12]] > cb)
-                                if (im[idx + pixel[13]] > cb) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                          else
-                            if (im[idx + pixel[12]] > cb)
-                              if (im[idx + pixel[13]] > cb)
-                                if (im[idx + pixel[14]] > cb) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                        else
-                          if (im[idx + pixel[12]] > cb)
+                            if (im[idx + pixel[4]] > cb) {
+                            } else if (im[idx + pixel[12]] > cb)
+                              if (im[idx + pixel[13]] > cb) {
+                              } else continue;
+                            else continue;
+                          else if (im[idx + pixel[12]] > cb)
                             if (im[idx + pixel[13]] > cb)
-                              if (im[idx + pixel[14]] > cb)
-                                if (im[idx + pixel[15]] > cb) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
-                else
-                  continue;
+                              if (im[idx + pixel[14]] > cb) {
+                              } else continue;
+                            else continue;
+                          else continue;
+                        else if (im[idx + pixel[12]] > cb)
+                          if (im[idx + pixel[13]] > cb)
+                            if (im[idx + pixel[14]] > cb)
+                              if (im[idx + pixel[15]] > cb) {
+                              } else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
               else if (im[idx + pixel[10]] < c_b)
                 if (im[idx + pixel[11]] < c_b)
                   if (im[idx + pixel[12]] < c_b)
                     if (im[idx + pixel[13]] < c_b)
                       if (im[idx + pixel[14]] < c_b)
-                        if (im[idx + pixel[15]] < c_b) { }
-                        else
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b)
-                                if (im[idx + pixel[9]] < c_b) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b)
-                                if (im[idx + pixel[9]] < c_b) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[4]] < c_b)
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b)
-                                if (im[idx + pixel[9]] < c_b) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    continue;
-                else
-                  continue;
-              else
-                continue;
+                        if (im[idx + pixel[15]] < c_b) {
+                        } else if (im[idx + pixel[6]] < c_b)
+                          if (im[idx + pixel[7]] < c_b)
+                            if (im[idx + pixel[8]] < c_b)
+                              if (im[idx + pixel[9]] < c_b) {
+                              } else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else if (im[idx + pixel[5]] < c_b)
+                        if (im[idx + pixel[6]] < c_b)
+                          if (im[idx + pixel[7]] < c_b)
+                            if (im[idx + pixel[8]] < c_b)
+                              if (im[idx + pixel[9]] < c_b) {
+                              } else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[4]] < c_b)
+                      if (im[idx + pixel[5]] < c_b)
+                        if (im[idx + pixel[6]] < c_b)
+                          if (im[idx + pixel[7]] < c_b)
+                            if (im[idx + pixel[8]] < c_b)
+                              if (im[idx + pixel[9]] < c_b) {
+                              } else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
             else if (im[idx + pixel[3]] < c_b)
               if (im[idx + pixel[4]] > cb)
                 if (im[idx + pixel[13]] > cb)
@@ -1736,30 +1160,19 @@ function fast9_detect(im, xsize, ysize, b) {
                           if (im[idx + pixel[11]] > cb)
                             if (im[idx + pixel[12]] > cb)
                               if (im[idx + pixel[6]] > cb)
-                                if (im[idx + pixel[5]] > cb) { }
-                                else
-                                  if (im[idx + pixel[14]] > cb) { }
-                                  else
-                                    continue;
-                              else
-                                if (im[idx + pixel[14]] > cb)
-                                  if (im[idx + pixel[15]] > cb) { }
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
+                                if (im[idx + pixel[5]] > cb) {
+                                } else if (im[idx + pixel[14]] > cb) {
+                                } else continue;
+                              else if (im[idx + pixel[14]] > cb)
+                                if (im[idx + pixel[15]] > cb) {
+                                } else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
                 else if (im[idx + pixel[13]] < c_b)
                   if (im[idx + pixel[11]] > cb)
                     if (im[idx + pixel[5]] > cb)
@@ -1768,89 +1181,58 @@ function fast9_detect(im, xsize, ysize, b) {
                           if (im[idx + pixel[8]] > cb)
                             if (im[idx + pixel[9]] > cb)
                               if (im[idx + pixel[10]] > cb)
-                                if (im[idx + pixel[12]] > cb) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
+                                if (im[idx + pixel[12]] > cb) {
+                                } else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
                   else if (im[idx + pixel[11]] < c_b)
                     if (im[idx + pixel[12]] < c_b)
                       if (im[idx + pixel[14]] < c_b)
-                        if (im[idx + pixel[15]] < c_b) { }
-                        else
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b)
-                                if (im[idx + pixel[9]] < c_b)
-                                  if (im[idx + pixel[10]] < c_b) { }
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b)
-                                if (im[idx + pixel[9]] < c_b)
-                                  if (im[idx + pixel[10]] < c_b) { }
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      continue;
-                  else
-                    continue;
-                else
-                  if (im[idx + pixel[5]] > cb)
-                    if (im[idx + pixel[6]] > cb)
-                      if (im[idx + pixel[7]] > cb)
-                        if (im[idx + pixel[8]] > cb)
-                          if (im[idx + pixel[9]] > cb)
-                            if (im[idx + pixel[10]] > cb)
-                              if (im[idx + pixel[11]] > cb)
-                                if (im[idx + pixel[12]] > cb) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
+                        if (im[idx + pixel[15]] < c_b) {
+                        } else if (im[idx + pixel[6]] < c_b)
+                          if (im[idx + pixel[7]] < c_b)
+                            if (im[idx + pixel[8]] < c_b)
+                              if (im[idx + pixel[9]] < c_b)
+                                if (im[idx + pixel[10]] < c_b) {
+                                } else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else if (im[idx + pixel[5]] < c_b)
+                        if (im[idx + pixel[6]] < c_b)
+                          if (im[idx + pixel[7]] < c_b)
+                            if (im[idx + pixel[8]] < c_b)
+                              if (im[idx + pixel[9]] < c_b)
+                                if (im[idx + pixel[10]] < c_b) {
+                                } else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else if (im[idx + pixel[5]] > cb)
+                  if (im[idx + pixel[6]] > cb)
+                    if (im[idx + pixel[7]] > cb)
+                      if (im[idx + pixel[8]] > cb)
+                        if (im[idx + pixel[9]] > cb)
+                          if (im[idx + pixel[10]] > cb)
+                            if (im[idx + pixel[11]] > cb)
+                              if (im[idx + pixel[12]] > cb) {
+                              } else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
               else if (im[idx + pixel[4]] < c_b)
                 if (im[idx + pixel[5]] > cb)
                   if (im[idx + pixel[14]] > cb)
@@ -1861,25 +1243,16 @@ function fast9_detect(im, xsize, ysize, b) {
                             if (im[idx + pixel[11]] > cb)
                               if (im[idx + pixel[12]] > cb)
                                 if (im[idx + pixel[13]] > cb)
-                                  if (im[idx + pixel[6]] > cb) { }
-                                  else
-                                    if (im[idx + pixel[15]] > cb) { }
-                                    else
-                                      continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
+                                  if (im[idx + pixel[6]] > cb) {
+                                  } else if (im[idx + pixel[15]] > cb) {
+                                  } else continue;
+                                else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
                   else if (im[idx + pixel[14]] < c_b)
                     if (im[idx + pixel[12]] > cb)
                       if (im[idx + pixel[6]] > cb)
@@ -1888,72 +1261,47 @@ function fast9_detect(im, xsize, ysize, b) {
                             if (im[idx + pixel[9]] > cb)
                               if (im[idx + pixel[10]] > cb)
                                 if (im[idx + pixel[11]] > cb)
-                                  if (im[idx + pixel[13]] > cb) { }
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
+                                  if (im[idx + pixel[13]] > cb) {
+                                  } else continue;
+                                else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
                     else if (im[idx + pixel[12]] < c_b)
                       if (im[idx + pixel[13]] < c_b)
-                        if (im[idx + pixel[15]] < c_b) { }
-                        else
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b)
-                                if (im[idx + pixel[9]] < c_b)
-                                  if (im[idx + pixel[10]] < c_b)
-                                    if (im[idx + pixel[11]] < c_b) { }
-                                    else
-                                      continue;
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    if (im[idx + pixel[6]] > cb)
-                      if (im[idx + pixel[7]] > cb)
-                        if (im[idx + pixel[8]] > cb)
-                          if (im[idx + pixel[9]] > cb)
-                            if (im[idx + pixel[10]] > cb)
-                              if (im[idx + pixel[11]] > cb)
-                                if (im[idx + pixel[12]] > cb)
-                                  if (im[idx + pixel[13]] > cb) { }
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
+                        if (im[idx + pixel[15]] < c_b) {
+                        } else if (im[idx + pixel[6]] < c_b)
+                          if (im[idx + pixel[7]] < c_b)
+                            if (im[idx + pixel[8]] < c_b)
+                              if (im[idx + pixel[9]] < c_b)
+                                if (im[idx + pixel[10]] < c_b)
+                                  if (im[idx + pixel[11]] < c_b) {
+                                  } else continue;
+                                else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else if (im[idx + pixel[6]] > cb)
+                    if (im[idx + pixel[7]] > cb)
+                      if (im[idx + pixel[8]] > cb)
+                        if (im[idx + pixel[9]] > cb)
+                          if (im[idx + pixel[10]] > cb)
+                            if (im[idx + pixel[11]] > cb)
+                              if (im[idx + pixel[12]] > cb)
+                                if (im[idx + pixel[13]] > cb) {
+                                } else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
                 else if (im[idx + pixel[5]] < c_b)
                   if (im[idx + pixel[6]] > cb)
                     if (im[idx + pixel[15]] < c_b)
@@ -1964,52 +1312,34 @@ function fast9_detect(im, xsize, ysize, b) {
                               if (im[idx + pixel[10]] > cb)
                                 if (im[idx + pixel[11]] > cb)
                                   if (im[idx + pixel[12]] > cb)
-                                    if (im[idx + pixel[14]] > cb) { }
-                                    else
-                                      continue;
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
+                                    if (im[idx + pixel[14]] > cb) {
+                                    } else continue;
+                                  else continue;
+                                else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
                       else if (im[idx + pixel[13]] < c_b)
-                        if (im[idx + pixel[14]] < c_b) { }
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      if (im[idx + pixel[7]] > cb)
-                        if (im[idx + pixel[8]] > cb)
-                          if (im[idx + pixel[9]] > cb)
-                            if (im[idx + pixel[10]] > cb)
-                              if (im[idx + pixel[11]] > cb)
-                                if (im[idx + pixel[12]] > cb)
-                                  if (im[idx + pixel[13]] > cb)
-                                    if (im[idx + pixel[14]] > cb) { }
-                                    else
-                                      continue;
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
+                        if (im[idx + pixel[14]] < c_b) {
+                        } else continue;
+                      else continue;
+                    else if (im[idx + pixel[7]] > cb)
+                      if (im[idx + pixel[8]] > cb)
+                        if (im[idx + pixel[9]] > cb)
+                          if (im[idx + pixel[10]] > cb)
+                            if (im[idx + pixel[11]] > cb)
+                              if (im[idx + pixel[12]] > cb)
+                                if (im[idx + pixel[13]] > cb)
+                                  if (im[idx + pixel[14]] > cb) {
+                                  } else continue;
+                                else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
                   else if (im[idx + pixel[6]] < c_b)
                     if (im[idx + pixel[7]] > cb)
                       if (im[idx + pixel[14]] > cb)
@@ -2019,751 +1349,485 @@ function fast9_detect(im, xsize, ysize, b) {
                               if (im[idx + pixel[11]] > cb)
                                 if (im[idx + pixel[12]] > cb)
                                   if (im[idx + pixel[13]] > cb)
-                                    if (im[idx + pixel[15]] > cb) { }
-                                    else
-                                      continue;
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
+                                    if (im[idx + pixel[15]] > cb) {
+                                    } else continue;
+                                  else continue;
+                                else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
                       else if (im[idx + pixel[14]] < c_b)
-                        if (im[idx + pixel[15]] < c_b) { }
-                        else
-                          continue;
-                      else
-                        continue;
+                        if (im[idx + pixel[15]] < c_b) {
+                        } else continue;
+                      else continue;
                     else if (im[idx + pixel[7]] < c_b)
-                      if (im[idx + pixel[8]] < c_b) { }
-                      else
-                        if (im[idx + pixel[15]] < c_b) { }
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[14]] < c_b)
-                        if (im[idx + pixel[15]] < c_b) { }
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    if (im[idx + pixel[13]] > cb)
-                      if (im[idx + pixel[7]] > cb)
-                        if (im[idx + pixel[8]] > cb)
-                          if (im[idx + pixel[9]] > cb)
-                            if (im[idx + pixel[10]] > cb)
-                              if (im[idx + pixel[11]] > cb)
-                                if (im[idx + pixel[12]] > cb)
-                                  if (im[idx + pixel[14]] > cb)
-                                    if (im[idx + pixel[15]] > cb) { }
-                                    else
-                                      continue;
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else if (im[idx + pixel[13]] < c_b)
-                      if (im[idx + pixel[14]] < c_b)
-                        if (im[idx + pixel[15]] < c_b) { }
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                else
-                  if (im[idx + pixel[12]] > cb)
+                      if (im[idx + pixel[8]] < c_b) {
+                      } else if (im[idx + pixel[15]] < c_b) {
+                      } else continue;
+                    else if (im[idx + pixel[14]] < c_b)
+                      if (im[idx + pixel[15]] < c_b) {
+                      } else continue;
+                    else continue;
+                  else if (im[idx + pixel[13]] > cb)
                     if (im[idx + pixel[7]] > cb)
                       if (im[idx + pixel[8]] > cb)
                         if (im[idx + pixel[9]] > cb)
                           if (im[idx + pixel[10]] > cb)
                             if (im[idx + pixel[11]] > cb)
-                              if (im[idx + pixel[13]] > cb)
+                              if (im[idx + pixel[12]] > cb)
                                 if (im[idx + pixel[14]] > cb)
-                                  if (im[idx + pixel[6]] > cb) { }
-                                  else
-                                    if (im[idx + pixel[15]] > cb) { }
-                                    else
-                                      continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else if (im[idx + pixel[12]] < c_b)
-                    if (im[idx + pixel[13]] < c_b)
-                      if (im[idx + pixel[14]] < c_b)
-                        if (im[idx + pixel[15]] < c_b) { }
-                        else
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b)
-                                if (im[idx + pixel[9]] < c_b)
-                                  if (im[idx + pixel[10]] < c_b)
-                                    if (im[idx + pixel[11]] < c_b) { }
-                                    else
-                                      continue;
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
-              else
-                if (im[idx + pixel[11]] > cb)
+                                  if (im[idx + pixel[15]] > cb) {
+                                  } else continue;
+                                else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else if (im[idx + pixel[13]] < c_b)
+                    if (im[idx + pixel[14]] < c_b)
+                      if (im[idx + pixel[15]] < c_b) {
+                      } else continue;
+                    else continue;
+                  else continue;
+                else if (im[idx + pixel[12]] > cb)
                   if (im[idx + pixel[7]] > cb)
                     if (im[idx + pixel[8]] > cb)
                       if (im[idx + pixel[9]] > cb)
                         if (im[idx + pixel[10]] > cb)
-                          if (im[idx + pixel[12]] > cb)
+                          if (im[idx + pixel[11]] > cb)
                             if (im[idx + pixel[13]] > cb)
-                              if (im[idx + pixel[6]] > cb)
-                                if (im[idx + pixel[5]] > cb) { }
-                                else
-                                  if (im[idx + pixel[14]] > cb) { }
-                                  else
-                                    continue;
-                              else
-                                if (im[idx + pixel[14]] > cb)
-                                  if (im[idx + pixel[15]] > cb) { }
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
-                else if (im[idx + pixel[11]] < c_b)
-                  if (im[idx + pixel[12]] < c_b)
-                    if (im[idx + pixel[13]] < c_b)
-                      if (im[idx + pixel[14]] < c_b)
-                        if (im[idx + pixel[15]] < c_b) { }
-                        else
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b)
-                                if (im[idx + pixel[9]] < c_b)
-                                  if (im[idx + pixel[10]] < c_b) { }
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b)
-                                if (im[idx + pixel[9]] < c_b)
-                                  if (im[idx + pixel[10]] < c_b) { }
-                                  else
-                                    continue;
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      continue;
-                  else
-                    continue;
-                else
-                  continue;
-            else
-              if (im[idx + pixel[10]] > cb)
+                              if (im[idx + pixel[14]] > cb)
+                                if (im[idx + pixel[6]] > cb) {
+                                } else if (im[idx + pixel[15]] > cb) {
+                                } else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else if (im[idx + pixel[12]] < c_b)
+                  if (im[idx + pixel[13]] < c_b)
+                    if (im[idx + pixel[14]] < c_b)
+                      if (im[idx + pixel[15]] < c_b) {
+                      } else if (im[idx + pixel[6]] < c_b)
+                        if (im[idx + pixel[7]] < c_b)
+                          if (im[idx + pixel[8]] < c_b)
+                            if (im[idx + pixel[9]] < c_b)
+                              if (im[idx + pixel[10]] < c_b)
+                                if (im[idx + pixel[11]] < c_b) {
+                                } else continue;
+                              else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else if (im[idx + pixel[11]] > cb)
                 if (im[idx + pixel[7]] > cb)
                   if (im[idx + pixel[8]] > cb)
                     if (im[idx + pixel[9]] > cb)
-                      if (im[idx + pixel[11]] > cb)
+                      if (im[idx + pixel[10]] > cb)
                         if (im[idx + pixel[12]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[5]] > cb)
-                              if (im[idx + pixel[4]] > cb) { }
-                              else
-                                if (im[idx + pixel[13]] > cb) { }
-                                else
-                                  continue;
-                            else
-                              if (im[idx + pixel[13]] > cb)
-                                if (im[idx + pixel[14]] > cb) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                          else
-                            if (im[idx + pixel[13]] > cb)
-                              if (im[idx + pixel[14]] > cb)
-                                if (im[idx + pixel[15]] > cb) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
-                else
-                  continue;
+                          if (im[idx + pixel[13]] > cb)
+                            if (im[idx + pixel[6]] > cb)
+                              if (im[idx + pixel[5]] > cb) {
+                              } else if (im[idx + pixel[14]] > cb) {
+                              } else continue;
+                            else if (im[idx + pixel[14]] > cb)
+                              if (im[idx + pixel[15]] > cb) {
+                              } else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else if (im[idx + pixel[11]] < c_b)
+                if (im[idx + pixel[12]] < c_b)
+                  if (im[idx + pixel[13]] < c_b)
+                    if (im[idx + pixel[14]] < c_b)
+                      if (im[idx + pixel[15]] < c_b) {
+                      } else if (im[idx + pixel[6]] < c_b)
+                        if (im[idx + pixel[7]] < c_b)
+                          if (im[idx + pixel[8]] < c_b)
+                            if (im[idx + pixel[9]] < c_b)
+                              if (im[idx + pixel[10]] < c_b) {
+                              } else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[5]] < c_b)
+                      if (im[idx + pixel[6]] < c_b)
+                        if (im[idx + pixel[7]] < c_b)
+                          if (im[idx + pixel[8]] < c_b)
+                            if (im[idx + pixel[9]] < c_b)
+                              if (im[idx + pixel[10]] < c_b) {
+                              } else continue;
+                            else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else if (im[idx + pixel[10]] > cb)
+              if (im[idx + pixel[7]] > cb)
+                if (im[idx + pixel[8]] > cb)
+                  if (im[idx + pixel[9]] > cb)
+                    if (im[idx + pixel[11]] > cb)
+                      if (im[idx + pixel[12]] > cb)
+                        if (im[idx + pixel[6]] > cb)
+                          if (im[idx + pixel[5]] > cb)
+                            if (im[idx + pixel[4]] > cb) {
+                            } else if (im[idx + pixel[13]] > cb) {
+                            } else continue;
+                          else if (im[idx + pixel[13]] > cb)
+                            if (im[idx + pixel[14]] > cb) {
+                            } else continue;
+                          else continue;
+                        else if (im[idx + pixel[13]] > cb)
+                          if (im[idx + pixel[14]] > cb)
+                            if (im[idx + pixel[15]] > cb) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else if (im[idx + pixel[10]] < c_b)
+              if (im[idx + pixel[11]] < c_b)
+                if (im[idx + pixel[12]] < c_b)
+                  if (im[idx + pixel[13]] < c_b)
+                    if (im[idx + pixel[14]] < c_b)
+                      if (im[idx + pixel[15]] < c_b) {
+                      } else if (im[idx + pixel[6]] < c_b)
+                        if (im[idx + pixel[7]] < c_b)
+                          if (im[idx + pixel[8]] < c_b)
+                            if (im[idx + pixel[9]] < c_b) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[5]] < c_b)
+                      if (im[idx + pixel[6]] < c_b)
+                        if (im[idx + pixel[7]] < c_b)
+                          if (im[idx + pixel[8]] < c_b)
+                            if (im[idx + pixel[9]] < c_b) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else if (im[idx + pixel[4]] < c_b)
+                    if (im[idx + pixel[5]] < c_b)
+                      if (im[idx + pixel[6]] < c_b)
+                        if (im[idx + pixel[7]] < c_b)
+                          if (im[idx + pixel[8]] < c_b)
+                            if (im[idx + pixel[9]] < c_b) {
+                            } else continue;
+                          else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else continue;
+          else if (im[idx + pixel[9]] > cb)
+            if (im[idx + pixel[7]] > cb)
+              if (im[idx + pixel[8]] > cb)
+                if (im[idx + pixel[10]] > cb)
+                  if (im[idx + pixel[11]] > cb)
+                    if (im[idx + pixel[6]] > cb)
+                      if (im[idx + pixel[5]] > cb)
+                        if (im[idx + pixel[4]] > cb)
+                          if (im[idx + pixel[3]] > cb) {
+                          } else if (im[idx + pixel[12]] > cb) {
+                          } else continue;
+                        else if (im[idx + pixel[12]] > cb)
+                          if (im[idx + pixel[13]] > cb) {
+                          } else continue;
+                        else continue;
+                      else if (im[idx + pixel[12]] > cb)
+                        if (im[idx + pixel[13]] > cb)
+                          if (im[idx + pixel[14]] > cb) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[12]] > cb)
+                      if (im[idx + pixel[13]] > cb)
+                        if (im[idx + pixel[14]] > cb)
+                          if (im[idx + pixel[15]] > cb) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else continue;
+          else if (im[idx + pixel[9]] < c_b)
+            if (im[idx + pixel[10]] < c_b)
+              if (im[idx + pixel[11]] < c_b)
+                if (im[idx + pixel[12]] < c_b)
+                  if (im[idx + pixel[13]] < c_b)
+                    if (im[idx + pixel[14]] < c_b)
+                      if (im[idx + pixel[15]] < c_b) {
+                      } else if (im[idx + pixel[6]] < c_b)
+                        if (im[idx + pixel[7]] < c_b)
+                          if (im[idx + pixel[8]] < c_b) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else if (im[idx + pixel[5]] < c_b)
+                      if (im[idx + pixel[6]] < c_b)
+                        if (im[idx + pixel[7]] < c_b)
+                          if (im[idx + pixel[8]] < c_b) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else if (im[idx + pixel[4]] < c_b)
+                    if (im[idx + pixel[5]] < c_b)
+                      if (im[idx + pixel[6]] < c_b)
+                        if (im[idx + pixel[7]] < c_b)
+                          if (im[idx + pixel[8]] < c_b) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else if (im[idx + pixel[3]] < c_b)
+                  if (im[idx + pixel[4]] < c_b)
+                    if (im[idx + pixel[5]] < c_b)
+                      if (im[idx + pixel[6]] < c_b)
+                        if (im[idx + pixel[7]] < c_b)
+                          if (im[idx + pixel[8]] < c_b) {
+                          } else continue;
+                        else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else continue;
+          else continue;
+        else if (im[idx + pixel[8]] > cb)
+          if (im[idx + pixel[7]] > cb)
+            if (im[idx + pixel[9]] > cb)
+              if (im[idx + pixel[10]] > cb)
+                if (im[idx + pixel[6]] > cb)
+                  if (im[idx + pixel[5]] > cb)
+                    if (im[idx + pixel[4]] > cb)
+                      if (im[idx + pixel[3]] > cb)
+                        if (im[idx + pixel[2]] > cb) {
+                        } else if (im[idx + pixel[11]] > cb) {
+                        } else continue;
+                      else if (im[idx + pixel[11]] > cb)
+                        if (im[idx + pixel[12]] > cb) {
+                        } else continue;
+                      else continue;
+                    else if (im[idx + pixel[11]] > cb)
+                      if (im[idx + pixel[12]] > cb)
+                        if (im[idx + pixel[13]] > cb) {
+                        } else continue;
+                      else continue;
+                    else continue;
+                  else if (im[idx + pixel[11]] > cb)
+                    if (im[idx + pixel[12]] > cb)
+                      if (im[idx + pixel[13]] > cb)
+                        if (im[idx + pixel[14]] > cb) {
+                        } else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else if (im[idx + pixel[11]] > cb)
+                  if (im[idx + pixel[12]] > cb)
+                    if (im[idx + pixel[13]] > cb)
+                      if (im[idx + pixel[14]] > cb)
+                        if (im[idx + pixel[15]] > cb) {
+                        } else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else continue;
+          else continue;
+        else if (im[idx + pixel[8]] < c_b)
+          if (im[idx + pixel[9]] < c_b)
+            if (im[idx + pixel[10]] < c_b)
+              if (im[idx + pixel[11]] < c_b)
+                if (im[idx + pixel[12]] < c_b)
+                  if (im[idx + pixel[13]] < c_b)
+                    if (im[idx + pixel[14]] < c_b)
+                      if (im[idx + pixel[15]] < c_b) {
+                      } else if (im[idx + pixel[6]] < c_b)
+                        if (im[idx + pixel[7]] < c_b) {
+                        } else continue;
+                      else continue;
+                    else if (im[idx + pixel[5]] < c_b)
+                      if (im[idx + pixel[6]] < c_b)
+                        if (im[idx + pixel[7]] < c_b) {
+                        } else continue;
+                      else continue;
+                    else continue;
+                  else if (im[idx + pixel[4]] < c_b)
+                    if (im[idx + pixel[5]] < c_b)
+                      if (im[idx + pixel[6]] < c_b)
+                        if (im[idx + pixel[7]] < c_b) {
+                        } else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else if (im[idx + pixel[3]] < c_b)
+                  if (im[idx + pixel[4]] < c_b)
+                    if (im[idx + pixel[5]] < c_b)
+                      if (im[idx + pixel[6]] < c_b)
+                        if (im[idx + pixel[7]] < c_b) {
+                        } else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else if (im[idx + pixel[2]] < c_b)
+                if (im[idx + pixel[3]] < c_b)
+                  if (im[idx + pixel[4]] < c_b)
+                    if (im[idx + pixel[5]] < c_b)
+                      if (im[idx + pixel[6]] < c_b)
+                        if (im[idx + pixel[7]] < c_b) {
+                        } else continue;
+                      else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else continue;
+          else continue;
+        else continue;
+      else if (im[idx + pixel[7]] > cb)
+        if (im[idx + pixel[8]] > cb)
+          if (im[idx + pixel[9]] > cb)
+            if (im[idx + pixel[6]] > cb)
+              if (im[idx + pixel[5]] > cb)
+                if (im[idx + pixel[4]] > cb)
+                  if (im[idx + pixel[3]] > cb)
+                    if (im[idx + pixel[2]] > cb)
+                      if (im[idx + pixel[1]] > cb) {
+                      } else if (im[idx + pixel[10]] > cb) {
+                      } else continue;
+                    else if (im[idx + pixel[10]] > cb)
+                      if (im[idx + pixel[11]] > cb) {
+                      } else continue;
+                    else continue;
+                  else if (im[idx + pixel[10]] > cb)
+                    if (im[idx + pixel[11]] > cb)
+                      if (im[idx + pixel[12]] > cb) {
+                      } else continue;
+                    else continue;
+                  else continue;
+                else if (im[idx + pixel[10]] > cb)
+                  if (im[idx + pixel[11]] > cb)
+                    if (im[idx + pixel[12]] > cb)
+                      if (im[idx + pixel[13]] > cb) {
+                      } else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else if (im[idx + pixel[10]] > cb)
+                if (im[idx + pixel[11]] > cb)
+                  if (im[idx + pixel[12]] > cb)
+                    if (im[idx + pixel[13]] > cb)
+                      if (im[idx + pixel[14]] > cb) {
+                      } else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else if (im[idx + pixel[10]] > cb)
+              if (im[idx + pixel[11]] > cb)
+                if (im[idx + pixel[12]] > cb)
+                  if (im[idx + pixel[13]] > cb)
+                    if (im[idx + pixel[14]] > cb)
+                      if (im[idx + pixel[15]] > cb) {
+                      } else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else continue;
+          else continue;
+        else continue;
+      else if (im[idx + pixel[7]] < c_b)
+        if (im[idx + pixel[8]] < c_b)
+          if (im[idx + pixel[9]] < c_b)
+            if (im[idx + pixel[6]] < c_b)
+              if (im[idx + pixel[5]] < c_b)
+                if (im[idx + pixel[4]] < c_b)
+                  if (im[idx + pixel[3]] < c_b)
+                    if (im[idx + pixel[2]] < c_b)
+                      if (im[idx + pixel[1]] < c_b) {
+                      } else if (im[idx + pixel[10]] < c_b) {
+                      } else continue;
+                    else if (im[idx + pixel[10]] < c_b)
+                      if (im[idx + pixel[11]] < c_b) {
+                      } else continue;
+                    else continue;
+                  else if (im[idx + pixel[10]] < c_b)
+                    if (im[idx + pixel[11]] < c_b)
+                      if (im[idx + pixel[12]] < c_b) {
+                      } else continue;
+                    else continue;
+                  else continue;
+                else if (im[idx + pixel[10]] < c_b)
+                  if (im[idx + pixel[11]] < c_b)
+                    if (im[idx + pixel[12]] < c_b)
+                      if (im[idx + pixel[13]] < c_b) {
+                      } else continue;
+                    else continue;
+                  else continue;
+                else continue;
               else if (im[idx + pixel[10]] < c_b)
                 if (im[idx + pixel[11]] < c_b)
                   if (im[idx + pixel[12]] < c_b)
                     if (im[idx + pixel[13]] < c_b)
-                      if (im[idx + pixel[14]] < c_b)
-                        if (im[idx + pixel[15]] < c_b) { }
-                        else
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b)
-                                if (im[idx + pixel[9]] < c_b) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b)
-                                if (im[idx + pixel[9]] < c_b) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[4]] < c_b)
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b)
-                                if (im[idx + pixel[9]] < c_b) { }
-                                else
-                                  continue;
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    continue;
-                else
-                  continue;
-              else
-                continue;
-          else
-            if (im[idx + pixel[9]] > cb)
-              if (im[idx + pixel[7]] > cb)
-                if (im[idx + pixel[8]] > cb)
-                  if (im[idx + pixel[10]] > cb)
-                    if (im[idx + pixel[11]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[4]] > cb)
-                            if (im[idx + pixel[3]] > cb) { }
-                            else
-                              if (im[idx + pixel[12]] > cb) { }
-                              else
-                                continue;
-                          else
-                            if (im[idx + pixel[12]] > cb)
-                              if (im[idx + pixel[13]] > cb) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                        else
-                          if (im[idx + pixel[12]] > cb)
-                            if (im[idx + pixel[13]] > cb)
-                              if (im[idx + pixel[14]] > cb) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[12]] > cb)
-                          if (im[idx + pixel[13]] > cb)
-                            if (im[idx + pixel[14]] > cb)
-                              if (im[idx + pixel[15]] > cb) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      continue;
-                  else
-                    continue;
-                else
-                  continue;
-              else
-                continue;
-            else if (im[idx + pixel[9]] < c_b)
-              if (im[idx + pixel[10]] < c_b)
-                if (im[idx + pixel[11]] < c_b)
-                  if (im[idx + pixel[12]] < c_b)
-                    if (im[idx + pixel[13]] < c_b)
-                      if (im[idx + pixel[14]] < c_b)
-                        if (im[idx + pixel[15]] < c_b) { }
-                        else
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[4]] < c_b)
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    if (im[idx + pixel[3]] < c_b)
-                      if (im[idx + pixel[4]] < c_b)
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b)
-                              if (im[idx + pixel[8]] < c_b) { }
-                              else
-                                continue;
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                else
-                  continue;
-              else
-                continue;
-            else
-              continue;
-        else
-          if (im[idx + pixel[8]] > cb)
-            if (im[idx + pixel[7]] > cb)
-              if (im[idx + pixel[9]] > cb)
-                if (im[idx + pixel[10]] > cb)
-                  if (im[idx + pixel[6]] > cb)
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[4]] > cb)
-                        if (im[idx + pixel[3]] > cb)
-                          if (im[idx + pixel[2]] > cb) { }
-                          else
-                            if (im[idx + pixel[11]] > cb) { }
-                            else
-                              continue;
-                        else
-                          if (im[idx + pixel[11]] > cb)
-                            if (im[idx + pixel[12]] > cb) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[11]] > cb)
-                          if (im[idx + pixel[12]] > cb)
-                            if (im[idx + pixel[13]] > cb) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[11]] > cb)
-                        if (im[idx + pixel[12]] > cb)
-                          if (im[idx + pixel[13]] > cb)
-                            if (im[idx + pixel[14]] > cb) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    if (im[idx + pixel[11]] > cb)
-                      if (im[idx + pixel[12]] > cb)
-                        if (im[idx + pixel[13]] > cb)
-                          if (im[idx + pixel[14]] > cb)
-                            if (im[idx + pixel[15]] > cb) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                else
-                  continue;
-              else
-                continue;
-            else
-              continue;
-          else if (im[idx + pixel[8]] < c_b)
-            if (im[idx + pixel[9]] < c_b)
-              if (im[idx + pixel[10]] < c_b)
-                if (im[idx + pixel[11]] < c_b)
-                  if (im[idx + pixel[12]] < c_b)
-                    if (im[idx + pixel[13]] < c_b)
-                      if (im[idx + pixel[14]] < c_b)
-                        if (im[idx + pixel[15]] < c_b) { }
-                        else
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[4]] < c_b)
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    if (im[idx + pixel[3]] < c_b)
-                      if (im[idx + pixel[4]] < c_b)
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                else
-                  if (im[idx + pixel[2]] < c_b)
-                    if (im[idx + pixel[3]] < c_b)
-                      if (im[idx + pixel[4]] < c_b)
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[7]] < c_b) { }
-                            else
-                              continue;
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
-              else
-                continue;
-            else
-              continue;
-          else
-            continue;
-      else
-        if (im[idx + pixel[7]] > cb)
-          if (im[idx + pixel[8]] > cb)
-            if (im[idx + pixel[9]] > cb)
-              if (im[idx + pixel[6]] > cb)
-                if (im[idx + pixel[5]] > cb)
-                  if (im[idx + pixel[4]] > cb)
-                    if (im[idx + pixel[3]] > cb)
-                      if (im[idx + pixel[2]] > cb)
-                        if (im[idx + pixel[1]] > cb) { }
-                        else
-                          if (im[idx + pixel[10]] > cb) { }
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[10]] > cb)
-                          if (im[idx + pixel[11]] > cb) { }
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[10]] > cb)
-                        if (im[idx + pixel[11]] > cb)
-                          if (im[idx + pixel[12]] > cb) { }
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    if (im[idx + pixel[10]] > cb)
-                      if (im[idx + pixel[11]] > cb)
-                        if (im[idx + pixel[12]] > cb)
-                          if (im[idx + pixel[13]] > cb) { }
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                else
-                  if (im[idx + pixel[10]] > cb)
-                    if (im[idx + pixel[11]] > cb)
-                      if (im[idx + pixel[12]] > cb)
-                        if (im[idx + pixel[13]] > cb)
-                          if (im[idx + pixel[14]] > cb) { }
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
-              else
-                if (im[idx + pixel[10]] > cb)
-                  if (im[idx + pixel[11]] > cb)
-                    if (im[idx + pixel[12]] > cb)
-                      if (im[idx + pixel[13]] > cb)
-                        if (im[idx + pixel[14]] > cb)
-                          if (im[idx + pixel[15]] > cb) { }
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
-                else
-                  continue;
-            else
-              continue;
-          else
-            continue;
-        else if (im[idx + pixel[7]] < c_b)
-          if (im[idx + pixel[8]] < c_b)
-            if (im[idx + pixel[9]] < c_b)
-              if (im[idx + pixel[6]] < c_b)
-                if (im[idx + pixel[5]] < c_b)
-                  if (im[idx + pixel[4]] < c_b)
-                    if (im[idx + pixel[3]] < c_b)
-                      if (im[idx + pixel[2]] < c_b)
-                        if (im[idx + pixel[1]] < c_b) { }
-                        else
-                          if (im[idx + pixel[10]] < c_b) { }
-                          else
-                            continue;
-                      else
-                        if (im[idx + pixel[10]] < c_b)
-                          if (im[idx + pixel[11]] < c_b) { }
-                          else
-                            continue;
-                        else
-                          continue;
-                    else
-                      if (im[idx + pixel[10]] < c_b)
-                        if (im[idx + pixel[11]] < c_b)
-                          if (im[idx + pixel[12]] < c_b) { }
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                  else
-                    if (im[idx + pixel[10]] < c_b)
-                      if (im[idx + pixel[11]] < c_b)
-                        if (im[idx + pixel[12]] < c_b)
-                          if (im[idx + pixel[13]] < c_b) { }
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                else
-                  if (im[idx + pixel[10]] < c_b)
-                    if (im[idx + pixel[11]] < c_b)
-                      if (im[idx + pixel[12]] < c_b)
-                        if (im[idx + pixel[13]] < c_b)
-                          if (im[idx + pixel[14]] < c_b) { }
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
-              else
-                if (im[idx + pixel[10]] < c_b)
-                  if (im[idx + pixel[11]] < c_b)
-                    if (im[idx + pixel[12]] < c_b)
-                      if (im[idx + pixel[13]] < c_b)
-                        if (im[idx + pixel[14]] < c_b)
-                          if (im[idx + pixel[15]] < c_b) { }
-                          else
-                            continue;
-                        else
-                          continue;
-                      else
-                        continue;
-                    else
-                      continue;
-                  else
-                    continue;
-                else
-                  continue;
-            else
-              continue;
-          else
-            continue;
-        else
-          continue;
+                      if (im[idx + pixel[14]] < c_b) {
+                      } else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else if (im[idx + pixel[10]] < c_b)
+              if (im[idx + pixel[11]] < c_b)
+                if (im[idx + pixel[12]] < c_b)
+                  if (im[idx + pixel[13]] < c_b)
+                    if (im[idx + pixel[14]] < c_b)
+                      if (im[idx + pixel[15]] < c_b) {
+                      } else continue;
+                    else continue;
+                  else continue;
+                else continue;
+              else continue;
+            else continue;
+          else continue;
+        else continue;
+      else continue;
 
       corners.push({
         x,
-        y
+        y,
       });
     }
   }
@@ -2806,7 +1870,6 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
   const cb = im[idx] + b;
   const c_b = im[idx] - b;
 
-
   if (im[idx + pixel[0]] > cb)
     if (im[idx + pixel[1]] > cb)
       if (im[idx + pixel[2]] > cb)
@@ -2815,19 +1878,13 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
             if (im[idx + pixel[5]] > cb)
               if (im[idx + pixel[6]] > cb)
                 if (im[idx + pixel[7]] > cb)
-                  if (im[idx + pixel[8]] > cb)
-                    return true;
-                  else
-                    if (im[idx + pixel[15]] > cb)
-                      return true;
-                    else
-                      return false;
+                  if (im[idx + pixel[8]] > cb) return true;
+                  else if (im[idx + pixel[15]] > cb) return true;
+                  else return false;
                 else if (im[idx + pixel[7]] < c_b)
                   if (im[idx + pixel[14]] > cb)
-                    if (im[idx + pixel[15]] > cb)
-                      return true;
-                    else
-                      return false;
+                    if (im[idx + pixel[15]] > cb) return true;
+                    else return false;
                   else if (im[idx + pixel[14]] < c_b)
                     if (im[idx + pixel[8]] < c_b)
                       if (im[idx + pixel[9]] < c_b)
@@ -2835,39 +1892,24 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
                           if (im[idx + pixel[11]] < c_b)
                             if (im[idx + pixel[12]] < c_b)
                               if (im[idx + pixel[13]] < c_b)
-                                if (im[idx + pixel[15]] < c_b)
-                                  return true;
-                                else
-                                  return false;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  if (im[idx + pixel[14]] > cb)
-                    if (im[idx + pixel[15]] > cb)
-                      return true;
-                    else
-                      return false;
-                  else
-                    return false;
+                                if (im[idx + pixel[15]] < c_b) return true;
+                                else return false;
+                              else return false;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[14]] > cb)
+                  if (im[idx + pixel[15]] > cb) return true;
+                  else return false;
+                else return false;
               else if (im[idx + pixel[6]] < c_b)
                 if (im[idx + pixel[15]] > cb)
                   if (im[idx + pixel[13]] > cb)
-                    if (im[idx + pixel[14]] > cb)
-                      return true;
-                    else
-                      return false;
+                    if (im[idx + pixel[14]] > cb) return true;
+                    else return false;
                   else if (im[idx + pixel[13]] < c_b)
                     if (im[idx + pixel[7]] < c_b)
                       if (im[idx + pixel[8]] < c_b)
@@ -2875,115 +1917,72 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
                           if (im[idx + pixel[10]] < c_b)
                             if (im[idx + pixel[11]] < c_b)
                               if (im[idx + pixel[12]] < c_b)
-                                if (im[idx + pixel[14]] < c_b)
-                                  return true;
-                                else
-                                  return false;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  if (im[idx + pixel[7]] < c_b)
-                    if (im[idx + pixel[8]] < c_b)
-                      if (im[idx + pixel[9]] < c_b)
-                        if (im[idx + pixel[10]] < c_b)
-                          if (im[idx + pixel[11]] < c_b)
-                            if (im[idx + pixel[12]] < c_b)
-                              if (im[idx + pixel[13]] < c_b)
-                                if (im[idx + pixel[14]] < c_b)
-                                  return true;
-                                else
-                                  return false;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                if (im[idx + pixel[13]] > cb)
-                  if (im[idx + pixel[14]] > cb)
-                    if (im[idx + pixel[15]] > cb)
-                      return true;
-                    else
-                      return false;
-                  else
-                    return false;
-                else if (im[idx + pixel[13]] < c_b)
-                  if (im[idx + pixel[7]] < c_b)
-                    if (im[idx + pixel[8]] < c_b)
-                      if (im[idx + pixel[9]] < c_b)
-                        if (im[idx + pixel[10]] < c_b)
-                          if (im[idx + pixel[11]] < c_b)
-                            if (im[idx + pixel[12]] < c_b)
-                              if (im[idx + pixel[14]] < c_b)
-                                if (im[idx + pixel[15]] < c_b)
-                                  return true;
-                                else
-                                  return false;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
+                                if (im[idx + pixel[14]] < c_b) return true;
+                                else return false;
+                              else return false;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[7]] < c_b)
+                  if (im[idx + pixel[8]] < c_b)
+                    if (im[idx + pixel[9]] < c_b)
+                      if (im[idx + pixel[10]] < c_b)
+                        if (im[idx + pixel[11]] < c_b)
+                          if (im[idx + pixel[12]] < c_b)
+                            if (im[idx + pixel[13]] < c_b)
+                              if (im[idx + pixel[14]] < c_b) return true;
+                              else return false;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[13]] > cb)
+                if (im[idx + pixel[14]] > cb)
+                  if (im[idx + pixel[15]] > cb) return true;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[13]] < c_b)
+                if (im[idx + pixel[7]] < c_b)
+                  if (im[idx + pixel[8]] < c_b)
+                    if (im[idx + pixel[9]] < c_b)
+                      if (im[idx + pixel[10]] < c_b)
+                        if (im[idx + pixel[11]] < c_b)
+                          if (im[idx + pixel[12]] < c_b)
+                            if (im[idx + pixel[14]] < c_b)
+                              if (im[idx + pixel[15]] < c_b) return true;
+                              else return false;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
             else if (im[idx + pixel[5]] < c_b)
               if (im[idx + pixel[14]] > cb)
                 if (im[idx + pixel[12]] > cb)
                   if (im[idx + pixel[13]] > cb)
-                    if (im[idx + pixel[15]] > cb)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            if (im[idx + pixel[9]] > cb)
-                              if (im[idx + pixel[10]] > cb)
-                                if (im[idx + pixel[11]] > cb)
-                                  return true;
-                                else
-                                  return false;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    return false;
+                    if (im[idx + pixel[15]] > cb) return true;
+                    else if (im[idx + pixel[6]] > cb)
+                      if (im[idx + pixel[7]] > cb)
+                        if (im[idx + pixel[8]] > cb)
+                          if (im[idx + pixel[9]] > cb)
+                            if (im[idx + pixel[10]] > cb)
+                              if (im[idx + pixel[11]] > cb) return true;
+                              else return false;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
                 else if (im[idx + pixel[12]] < c_b)
                   if (im[idx + pixel[6]] < c_b)
                     if (im[idx + pixel[7]] < c_b)
@@ -2991,24 +1990,15 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
                         if (im[idx + pixel[9]] < c_b)
                           if (im[idx + pixel[10]] < c_b)
                             if (im[idx + pixel[11]] < c_b)
-                              if (im[idx + pixel[13]] < c_b)
-                                return true;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
+                              if (im[idx + pixel[13]] < c_b) return true;
+                              else return false;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
               else if (im[idx + pixel[14]] < c_b)
                 if (im[idx + pixel[7]] < c_b)
                   if (im[idx + pixel[8]] < c_b)
@@ -3017,160 +2007,98 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
                         if (im[idx + pixel[11]] < c_b)
                           if (im[idx + pixel[12]] < c_b)
                             if (im[idx + pixel[13]] < c_b)
-                              if (im[idx + pixel[6]] < c_b)
-                                return true;
-                              else
-                                if (im[idx + pixel[15]] < c_b)
-                                  return true;
-                                else
-                                  return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                if (im[idx + pixel[6]] < c_b)
-                  if (im[idx + pixel[7]] < c_b)
-                    if (im[idx + pixel[8]] < c_b)
-                      if (im[idx + pixel[9]] < c_b)
-                        if (im[idx + pixel[10]] < c_b)
-                          if (im[idx + pixel[11]] < c_b)
-                            if (im[idx + pixel[12]] < c_b)
-                              if (im[idx + pixel[13]] < c_b)
-                                return true;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-            else
-              if (im[idx + pixel[12]] > cb)
-                if (im[idx + pixel[13]] > cb)
-                  if (im[idx + pixel[14]] > cb)
-                    if (im[idx + pixel[15]] > cb)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            if (im[idx + pixel[9]] > cb)
-                              if (im[idx + pixel[10]] > cb)
-                                if (im[idx + pixel[11]] > cb)
-                                  return true;
-                                else
-                                  return false;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else if (im[idx + pixel[12]] < c_b)
+                              if (im[idx + pixel[6]] < c_b) return true;
+                              else if (im[idx + pixel[15]] < c_b) return true;
+                              else return false;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[6]] < c_b)
                 if (im[idx + pixel[7]] < c_b)
                   if (im[idx + pixel[8]] < c_b)
                     if (im[idx + pixel[9]] < c_b)
                       if (im[idx + pixel[10]] < c_b)
                         if (im[idx + pixel[11]] < c_b)
-                          if (im[idx + pixel[13]] < c_b)
-                            if (im[idx + pixel[14]] < c_b)
-                              if (im[idx + pixel[6]] < c_b)
-                                return true;
-                              else
-                                if (im[idx + pixel[15]] < c_b)
-                                  return true;
-                                else
-                                  return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
+                          if (im[idx + pixel[12]] < c_b)
+                            if (im[idx + pixel[13]] < c_b) return true;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else if (im[idx + pixel[12]] > cb)
+              if (im[idx + pixel[13]] > cb)
+                if (im[idx + pixel[14]] > cb)
+                  if (im[idx + pixel[15]] > cb) return true;
+                  else if (im[idx + pixel[6]] > cb)
+                    if (im[idx + pixel[7]] > cb)
+                      if (im[idx + pixel[8]] > cb)
+                        if (im[idx + pixel[9]] > cb)
+                          if (im[idx + pixel[10]] > cb)
+                            if (im[idx + pixel[11]] > cb) return true;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else if (im[idx + pixel[12]] < c_b)
+              if (im[idx + pixel[7]] < c_b)
+                if (im[idx + pixel[8]] < c_b)
+                  if (im[idx + pixel[9]] < c_b)
+                    if (im[idx + pixel[10]] < c_b)
+                      if (im[idx + pixel[11]] < c_b)
+                        if (im[idx + pixel[13]] < c_b)
+                          if (im[idx + pixel[14]] < c_b)
+                            if (im[idx + pixel[6]] < c_b) return true;
+                            else if (im[idx + pixel[15]] < c_b) return true;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
           else if (im[idx + pixel[4]] < c_b)
             if (im[idx + pixel[13]] > cb)
               if (im[idx + pixel[11]] > cb)
                 if (im[idx + pixel[12]] > cb)
                   if (im[idx + pixel[14]] > cb)
-                    if (im[idx + pixel[15]] > cb)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            if (im[idx + pixel[9]] > cb)
-                              if (im[idx + pixel[10]] > cb)
-                                return true;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            if (im[idx + pixel[9]] > cb)
-                              if (im[idx + pixel[10]] > cb)
-                                return true;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  return false;
+                    if (im[idx + pixel[15]] > cb) return true;
+                    else if (im[idx + pixel[6]] > cb)
+                      if (im[idx + pixel[7]] > cb)
+                        if (im[idx + pixel[8]] > cb)
+                          if (im[idx + pixel[9]] > cb)
+                            if (im[idx + pixel[10]] > cb) return true;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else if (im[idx + pixel[5]] > cb)
+                    if (im[idx + pixel[6]] > cb)
+                      if (im[idx + pixel[7]] > cb)
+                        if (im[idx + pixel[8]] > cb)
+                          if (im[idx + pixel[9]] > cb)
+                            if (im[idx + pixel[10]] > cb) return true;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
               else if (im[idx + pixel[11]] < c_b)
                 if (im[idx + pixel[5]] < c_b)
                   if (im[idx + pixel[6]] < c_b)
@@ -3178,24 +2106,15 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
                       if (im[idx + pixel[8]] < c_b)
                         if (im[idx + pixel[9]] < c_b)
                           if (im[idx + pixel[10]] < c_b)
-                            if (im[idx + pixel[12]] < c_b)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
+                            if (im[idx + pixel[12]] < c_b) return true;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
             else if (im[idx + pixel[13]] < c_b)
               if (im[idx + pixel[7]] < c_b)
                 if (im[idx + pixel[8]] < c_b)
@@ -3204,207 +2123,125 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
                       if (im[idx + pixel[11]] < c_b)
                         if (im[idx + pixel[12]] < c_b)
                           if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[5]] < c_b)
-                              return true;
-                            else
-                              if (im[idx + pixel[14]] < c_b)
-                                return true;
-                              else
-                                return false;
-                          else
-                            if (im[idx + pixel[14]] < c_b)
-                              if (im[idx + pixel[15]] < c_b)
-                                return true;
-                              else
-                                return false;
-                            else
-                              return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
-            else
-              if (im[idx + pixel[5]] < c_b)
-                if (im[idx + pixel[6]] < c_b)
-                  if (im[idx + pixel[7]] < c_b)
-                    if (im[idx + pixel[8]] < c_b)
-                      if (im[idx + pixel[9]] < c_b)
-                        if (im[idx + pixel[10]] < c_b)
-                          if (im[idx + pixel[11]] < c_b)
-                            if (im[idx + pixel[12]] < c_b)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
-          else
-            if (im[idx + pixel[11]] > cb)
-              if (im[idx + pixel[12]] > cb)
-                if (im[idx + pixel[13]] > cb)
-                  if (im[idx + pixel[14]] > cb)
-                    if (im[idx + pixel[15]] > cb)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            if (im[idx + pixel[9]] > cb)
-                              if (im[idx + pixel[10]] > cb)
-                                return true;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            if (im[idx + pixel[9]] > cb)
-                              if (im[idx + pixel[10]] > cb)
-                                return true;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  return false;
-              else
-                return false;
-            else if (im[idx + pixel[11]] < c_b)
-              if (im[idx + pixel[7]] < c_b)
-                if (im[idx + pixel[8]] < c_b)
-                  if (im[idx + pixel[9]] < c_b)
-                    if (im[idx + pixel[10]] < c_b)
-                      if (im[idx + pixel[12]] < c_b)
-                        if (im[idx + pixel[13]] < c_b)
-                          if (im[idx + pixel[6]] < c_b)
-                            if (im[idx + pixel[5]] < c_b)
-                              return true;
-                            else
-                              if (im[idx + pixel[14]] < c_b)
-                                return true;
-                              else
-                                return false;
-                          else
-                            if (im[idx + pixel[14]] < c_b)
-                              if (im[idx + pixel[15]] < c_b)
-                                return true;
-                              else
-                                return false;
-                            else
-                              return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
-            else
-              return false;
+                            if (im[idx + pixel[5]] < c_b) return true;
+                            else if (im[idx + pixel[14]] < c_b) return true;
+                            else return false;
+                          else if (im[idx + pixel[14]] < c_b)
+                            if (im[idx + pixel[15]] < c_b) return true;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else if (im[idx + pixel[5]] < c_b)
+              if (im[idx + pixel[6]] < c_b)
+                if (im[idx + pixel[7]] < c_b)
+                  if (im[idx + pixel[8]] < c_b)
+                    if (im[idx + pixel[9]] < c_b)
+                      if (im[idx + pixel[10]] < c_b)
+                        if (im[idx + pixel[11]] < c_b)
+                          if (im[idx + pixel[12]] < c_b) return true;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else if (im[idx + pixel[11]] > cb)
+            if (im[idx + pixel[12]] > cb)
+              if (im[idx + pixel[13]] > cb)
+                if (im[idx + pixel[14]] > cb)
+                  if (im[idx + pixel[15]] > cb) return true;
+                  else if (im[idx + pixel[6]] > cb)
+                    if (im[idx + pixel[7]] > cb)
+                      if (im[idx + pixel[8]] > cb)
+                        if (im[idx + pixel[9]] > cb)
+                          if (im[idx + pixel[10]] > cb) return true;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[5]] > cb)
+                  if (im[idx + pixel[6]] > cb)
+                    if (im[idx + pixel[7]] > cb)
+                      if (im[idx + pixel[8]] > cb)
+                        if (im[idx + pixel[9]] > cb)
+                          if (im[idx + pixel[10]] > cb) return true;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else if (im[idx + pixel[11]] < c_b)
+            if (im[idx + pixel[7]] < c_b)
+              if (im[idx + pixel[8]] < c_b)
+                if (im[idx + pixel[9]] < c_b)
+                  if (im[idx + pixel[10]] < c_b)
+                    if (im[idx + pixel[12]] < c_b)
+                      if (im[idx + pixel[13]] < c_b)
+                        if (im[idx + pixel[6]] < c_b)
+                          if (im[idx + pixel[5]] < c_b) return true;
+                          else if (im[idx + pixel[14]] < c_b) return true;
+                          else return false;
+                        else if (im[idx + pixel[14]] < c_b)
+                          if (im[idx + pixel[15]] < c_b) return true;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
         else if (im[idx + pixel[3]] < c_b)
           if (im[idx + pixel[10]] > cb)
             if (im[idx + pixel[11]] > cb)
               if (im[idx + pixel[12]] > cb)
                 if (im[idx + pixel[13]] > cb)
                   if (im[idx + pixel[14]] > cb)
-                    if (im[idx + pixel[15]] > cb)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            if (im[idx + pixel[9]] > cb)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            if (im[idx + pixel[9]] > cb)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[4]] > cb)
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            if (im[idx + pixel[9]] > cb)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                return false;
-            else
-              return false;
+                    if (im[idx + pixel[15]] > cb) return true;
+                    else if (im[idx + pixel[6]] > cb)
+                      if (im[idx + pixel[7]] > cb)
+                        if (im[idx + pixel[8]] > cb)
+                          if (im[idx + pixel[9]] > cb) return true;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else if (im[idx + pixel[5]] > cb)
+                    if (im[idx + pixel[6]] > cb)
+                      if (im[idx + pixel[7]] > cb)
+                        if (im[idx + pixel[8]] > cb)
+                          if (im[idx + pixel[9]] > cb) return true;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[4]] > cb)
+                  if (im[idx + pixel[5]] > cb)
+                    if (im[idx + pixel[6]] > cb)
+                      if (im[idx + pixel[7]] > cb)
+                        if (im[idx + pixel[8]] > cb)
+                          if (im[idx + pixel[9]] > cb) return true;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
           else if (im[idx + pixel[10]] < c_b)
             if (im[idx + pixel[7]] < c_b)
               if (im[idx + pixel[8]] < c_b)
@@ -3412,160 +2249,95 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
                   if (im[idx + pixel[11]] < c_b)
                     if (im[idx + pixel[6]] < c_b)
                       if (im[idx + pixel[5]] < c_b)
-                        if (im[idx + pixel[4]] < c_b)
-                          return true;
-                        else
-                          if (im[idx + pixel[12]] < c_b)
-                            if (im[idx + pixel[13]] < c_b)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                      else
-                        if (im[idx + pixel[12]] < c_b)
-                          if (im[idx + pixel[13]] < c_b)
-                            if (im[idx + pixel[14]] < c_b)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                    else
-                      if (im[idx + pixel[12]] < c_b)
+                        if (im[idx + pixel[4]] < c_b) return true;
+                        else if (im[idx + pixel[12]] < c_b)
+                          if (im[idx + pixel[13]] < c_b) return true;
+                          else return false;
+                        else return false;
+                      else if (im[idx + pixel[12]] < c_b)
                         if (im[idx + pixel[13]] < c_b)
-                          if (im[idx + pixel[14]] < c_b)
-                            if (im[idx + pixel[15]] < c_b)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
-            else
-              return false;
-          else
-            return false;
-        else
-          if (im[idx + pixel[10]] > cb)
-            if (im[idx + pixel[11]] > cb)
-              if (im[idx + pixel[12]] > cb)
-                if (im[idx + pixel[13]] > cb)
-                  if (im[idx + pixel[14]] > cb)
-                    if (im[idx + pixel[15]] > cb)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            if (im[idx + pixel[9]] > cb)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            if (im[idx + pixel[9]] > cb)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[4]] > cb)
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            if (im[idx + pixel[9]] > cb)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                return false;
-            else
-              return false;
-          else if (im[idx + pixel[10]] < c_b)
-            if (im[idx + pixel[7]] < c_b)
-              if (im[idx + pixel[8]] < c_b)
-                if (im[idx + pixel[9]] < c_b)
-                  if (im[idx + pixel[11]] < c_b)
-                    if (im[idx + pixel[12]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[5]] < c_b)
-                          if (im[idx + pixel[4]] < c_b)
-                            return true;
-                          else
-                            if (im[idx + pixel[13]] < c_b)
-                              return true;
-                            else
-                              return false;
-                        else
-                          if (im[idx + pixel[13]] < c_b)
-                            if (im[idx + pixel[14]] < c_b)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                      else
-                        if (im[idx + pixel[13]] < c_b)
-                          if (im[idx + pixel[14]] < c_b)
-                            if (im[idx + pixel[15]] < c_b)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
-            else
-              return false;
-          else
-            return false;
+                          if (im[idx + pixel[14]] < c_b) return true;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else if (im[idx + pixel[12]] < c_b)
+                      if (im[idx + pixel[13]] < c_b)
+                        if (im[idx + pixel[14]] < c_b)
+                          if (im[idx + pixel[15]] < c_b) return true;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else if (im[idx + pixel[10]] > cb)
+          if (im[idx + pixel[11]] > cb)
+            if (im[idx + pixel[12]] > cb)
+              if (im[idx + pixel[13]] > cb)
+                if (im[idx + pixel[14]] > cb)
+                  if (im[idx + pixel[15]] > cb) return true;
+                  else if (im[idx + pixel[6]] > cb)
+                    if (im[idx + pixel[7]] > cb)
+                      if (im[idx + pixel[8]] > cb)
+                        if (im[idx + pixel[9]] > cb) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[5]] > cb)
+                  if (im[idx + pixel[6]] > cb)
+                    if (im[idx + pixel[7]] > cb)
+                      if (im[idx + pixel[8]] > cb)
+                        if (im[idx + pixel[9]] > cb) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[4]] > cb)
+                if (im[idx + pixel[5]] > cb)
+                  if (im[idx + pixel[6]] > cb)
+                    if (im[idx + pixel[7]] > cb)
+                      if (im[idx + pixel[8]] > cb)
+                        if (im[idx + pixel[9]] > cb) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else if (im[idx + pixel[10]] < c_b)
+          if (im[idx + pixel[7]] < c_b)
+            if (im[idx + pixel[8]] < c_b)
+              if (im[idx + pixel[9]] < c_b)
+                if (im[idx + pixel[11]] < c_b)
+                  if (im[idx + pixel[12]] < c_b)
+                    if (im[idx + pixel[6]] < c_b)
+                      if (im[idx + pixel[5]] < c_b)
+                        if (im[idx + pixel[4]] < c_b) return true;
+                        else if (im[idx + pixel[13]] < c_b) return true;
+                        else return false;
+                      else if (im[idx + pixel[13]] < c_b)
+                        if (im[idx + pixel[14]] < c_b) return true;
+                        else return false;
+                      else return false;
+                    else if (im[idx + pixel[13]] < c_b)
+                      if (im[idx + pixel[14]] < c_b)
+                        if (im[idx + pixel[15]] < c_b) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else return false;
       else if (im[idx + pixel[2]] < c_b)
         if (im[idx + pixel[9]] > cb)
           if (im[idx + pixel[10]] > cb)
@@ -3573,74 +2345,45 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
               if (im[idx + pixel[12]] > cb)
                 if (im[idx + pixel[13]] > cb)
                   if (im[idx + pixel[14]] > cb)
-                    if (im[idx + pixel[15]] > cb)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[4]] > cb)
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                if (im[idx + pixel[3]] > cb)
-                  if (im[idx + pixel[4]] > cb)
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-            else
-              return false;
-          else
-            return false;
+                    if (im[idx + pixel[15]] > cb) return true;
+                    else if (im[idx + pixel[6]] > cb)
+                      if (im[idx + pixel[7]] > cb)
+                        if (im[idx + pixel[8]] > cb) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else if (im[idx + pixel[5]] > cb)
+                    if (im[idx + pixel[6]] > cb)
+                      if (im[idx + pixel[7]] > cb)
+                        if (im[idx + pixel[8]] > cb) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[4]] > cb)
+                  if (im[idx + pixel[5]] > cb)
+                    if (im[idx + pixel[6]] > cb)
+                      if (im[idx + pixel[7]] > cb)
+                        if (im[idx + pixel[8]] > cb) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[3]] > cb)
+                if (im[idx + pixel[4]] > cb)
+                  if (im[idx + pixel[5]] > cb)
+                    if (im[idx + pixel[6]] > cb)
+                      if (im[idx + pixel[7]] > cb)
+                        if (im[idx + pixel[8]] > cb) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
         else if (im[idx + pixel[9]] < c_b)
           if (im[idx + pixel[7]] < c_b)
             if (im[idx + pixel[8]] < c_b)
@@ -3648,199 +2391,118 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
                 if (im[idx + pixel[6]] < c_b)
                   if (im[idx + pixel[5]] < c_b)
                     if (im[idx + pixel[4]] < c_b)
-                      if (im[idx + pixel[3]] < c_b)
-                        return true;
-                      else
-                        if (im[idx + pixel[11]] < c_b)
-                          if (im[idx + pixel[12]] < c_b)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                    else
-                      if (im[idx + pixel[11]] < c_b)
-                        if (im[idx + pixel[12]] < c_b)
-                          if (im[idx + pixel[13]] < c_b)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[11]] < c_b)
+                      if (im[idx + pixel[3]] < c_b) return true;
+                      else if (im[idx + pixel[11]] < c_b)
+                        if (im[idx + pixel[12]] < c_b) return true;
+                        else return false;
+                      else return false;
+                    else if (im[idx + pixel[11]] < c_b)
                       if (im[idx + pixel[12]] < c_b)
-                        if (im[idx + pixel[13]] < c_b)
-                          if (im[idx + pixel[14]] < c_b)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[11]] < c_b)
+                        if (im[idx + pixel[13]] < c_b) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else if (im[idx + pixel[11]] < c_b)
                     if (im[idx + pixel[12]] < c_b)
                       if (im[idx + pixel[13]] < c_b)
-                        if (im[idx + pixel[14]] < c_b)
-                          if (im[idx + pixel[15]] < c_b)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                return false;
-            else
-              return false;
-          else
-            return false;
-        else
-          return false;
-      else
-        if (im[idx + pixel[9]] > cb)
-          if (im[idx + pixel[10]] > cb)
-            if (im[idx + pixel[11]] > cb)
-              if (im[idx + pixel[12]] > cb)
-                if (im[idx + pixel[13]] > cb)
-                  if (im[idx + pixel[14]] > cb)
-                    if (im[idx + pixel[15]] > cb)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[4]] > cb)
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                if (im[idx + pixel[3]] > cb)
-                  if (im[idx + pixel[4]] > cb)
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          if (im[idx + pixel[8]] > cb)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-            else
-              return false;
-          else
-            return false;
-        else if (im[idx + pixel[9]] < c_b)
-          if (im[idx + pixel[7]] < c_b)
-            if (im[idx + pixel[8]] < c_b)
-              if (im[idx + pixel[10]] < c_b)
-                if (im[idx + pixel[11]] < c_b)
-                  if (im[idx + pixel[6]] < c_b)
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[4]] < c_b)
-                        if (im[idx + pixel[3]] < c_b)
-                          return true;
-                        else
-                          if (im[idx + pixel[12]] < c_b)
-                            return true;
-                          else
-                            return false;
-                      else
-                        if (im[idx + pixel[12]] < c_b)
-                          if (im[idx + pixel[13]] < c_b)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                    else
-                      if (im[idx + pixel[12]] < c_b)
-                        if (im[idx + pixel[13]] < c_b)
-                          if (im[idx + pixel[14]] < c_b)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[12]] < c_b)
-                      if (im[idx + pixel[13]] < c_b)
-                        if (im[idx + pixel[14]] < c_b)
-                          if (im[idx + pixel[15]] < c_b)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  return false;
-              else
-                return false;
-            else
-              return false;
-          else
-            return false;
-        else
-          return false;
+                        if (im[idx + pixel[14]] < c_b) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[11]] < c_b)
+                  if (im[idx + pixel[12]] < c_b)
+                    if (im[idx + pixel[13]] < c_b)
+                      if (im[idx + pixel[14]] < c_b)
+                        if (im[idx + pixel[15]] < c_b) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else return false;
+      else if (im[idx + pixel[9]] > cb)
+        if (im[idx + pixel[10]] > cb)
+          if (im[idx + pixel[11]] > cb)
+            if (im[idx + pixel[12]] > cb)
+              if (im[idx + pixel[13]] > cb)
+                if (im[idx + pixel[14]] > cb)
+                  if (im[idx + pixel[15]] > cb) return true;
+                  else if (im[idx + pixel[6]] > cb)
+                    if (im[idx + pixel[7]] > cb)
+                      if (im[idx + pixel[8]] > cb) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[5]] > cb)
+                  if (im[idx + pixel[6]] > cb)
+                    if (im[idx + pixel[7]] > cb)
+                      if (im[idx + pixel[8]] > cb) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[4]] > cb)
+                if (im[idx + pixel[5]] > cb)
+                  if (im[idx + pixel[6]] > cb)
+                    if (im[idx + pixel[7]] > cb)
+                      if (im[idx + pixel[8]] > cb) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else if (im[idx + pixel[3]] > cb)
+              if (im[idx + pixel[4]] > cb)
+                if (im[idx + pixel[5]] > cb)
+                  if (im[idx + pixel[6]] > cb)
+                    if (im[idx + pixel[7]] > cb)
+                      if (im[idx + pixel[8]] > cb) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else return false;
+      else if (im[idx + pixel[9]] < c_b)
+        if (im[idx + pixel[7]] < c_b)
+          if (im[idx + pixel[8]] < c_b)
+            if (im[idx + pixel[10]] < c_b)
+              if (im[idx + pixel[11]] < c_b)
+                if (im[idx + pixel[6]] < c_b)
+                  if (im[idx + pixel[5]] < c_b)
+                    if (im[idx + pixel[4]] < c_b)
+                      if (im[idx + pixel[3]] < c_b) return true;
+                      else if (im[idx + pixel[12]] < c_b) return true;
+                      else return false;
+                    else if (im[idx + pixel[12]] < c_b)
+                      if (im[idx + pixel[13]] < c_b) return true;
+                      else return false;
+                    else return false;
+                  else if (im[idx + pixel[12]] < c_b)
+                    if (im[idx + pixel[13]] < c_b)
+                      if (im[idx + pixel[14]] < c_b) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[12]] < c_b)
+                  if (im[idx + pixel[13]] < c_b)
+                    if (im[idx + pixel[14]] < c_b)
+                      if (im[idx + pixel[15]] < c_b) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else return false;
+      else return false;
     else if (im[idx + pixel[1]] < c_b)
       if (im[idx + pixel[8]] > cb)
         if (im[idx + pixel[9]] > cb)
@@ -3849,82 +2511,49 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
               if (im[idx + pixel[12]] > cb)
                 if (im[idx + pixel[13]] > cb)
                   if (im[idx + pixel[14]] > cb)
-                    if (im[idx + pixel[15]] > cb)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[4]] > cb)
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                if (im[idx + pixel[3]] > cb)
-                  if (im[idx + pixel[4]] > cb)
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-            else
-              if (im[idx + pixel[2]] > cb)
-                if (im[idx + pixel[3]] > cb)
-                  if (im[idx + pixel[4]] > cb)
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
-          else
-            return false;
-        else
-          return false;
+                    if (im[idx + pixel[15]] > cb) return true;
+                    else if (im[idx + pixel[6]] > cb)
+                      if (im[idx + pixel[7]] > cb) return true;
+                      else return false;
+                    else return false;
+                  else if (im[idx + pixel[5]] > cb)
+                    if (im[idx + pixel[6]] > cb)
+                      if (im[idx + pixel[7]] > cb) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[4]] > cb)
+                  if (im[idx + pixel[5]] > cb)
+                    if (im[idx + pixel[6]] > cb)
+                      if (im[idx + pixel[7]] > cb) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[3]] > cb)
+                if (im[idx + pixel[4]] > cb)
+                  if (im[idx + pixel[5]] > cb)
+                    if (im[idx + pixel[6]] > cb)
+                      if (im[idx + pixel[7]] > cb) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else if (im[idx + pixel[2]] > cb)
+              if (im[idx + pixel[3]] > cb)
+                if (im[idx + pixel[4]] > cb)
+                  if (im[idx + pixel[5]] > cb)
+                    if (im[idx + pixel[6]] > cb)
+                      if (im[idx + pixel[7]] > cb) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else return false;
       else if (im[idx + pixel[8]] < c_b)
         if (im[idx + pixel[7]] < c_b)
           if (im[idx + pixel[9]] < c_b)
@@ -3932,241 +2561,143 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
               if (im[idx + pixel[5]] < c_b)
                 if (im[idx + pixel[4]] < c_b)
                   if (im[idx + pixel[3]] < c_b)
-                    if (im[idx + pixel[2]] < c_b)
-                      return true;
-                    else
-                      if (im[idx + pixel[10]] < c_b)
-                        if (im[idx + pixel[11]] < c_b)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[10]] < c_b)
-                      if (im[idx + pixel[11]] < c_b)
-                        if (im[idx + pixel[12]] < c_b)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[10]] < c_b)
+                    if (im[idx + pixel[2]] < c_b) return true;
+                    else if (im[idx + pixel[10]] < c_b)
+                      if (im[idx + pixel[11]] < c_b) return true;
+                      else return false;
+                    else return false;
+                  else if (im[idx + pixel[10]] < c_b)
                     if (im[idx + pixel[11]] < c_b)
-                      if (im[idx + pixel[12]] < c_b)
-                        if (im[idx + pixel[13]] < c_b)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                if (im[idx + pixel[10]] < c_b)
+                      if (im[idx + pixel[12]] < c_b) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[10]] < c_b)
                   if (im[idx + pixel[11]] < c_b)
                     if (im[idx + pixel[12]] < c_b)
-                      if (im[idx + pixel[13]] < c_b)
-                        if (im[idx + pixel[14]] < c_b)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-            else
-              if (im[idx + pixel[10]] < c_b)
+                      if (im[idx + pixel[13]] < c_b) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[10]] < c_b)
                 if (im[idx + pixel[11]] < c_b)
                   if (im[idx + pixel[12]] < c_b)
                     if (im[idx + pixel[13]] < c_b)
-                      if (im[idx + pixel[14]] < c_b)
-                        if (im[idx + pixel[15]] < c_b)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
-          else
-            return false;
-        else
-          return false;
-      else
-        return false;
-    else
-      if (im[idx + pixel[8]] > cb)
-        if (im[idx + pixel[9]] > cb)
-          if (im[idx + pixel[10]] > cb)
-            if (im[idx + pixel[11]] > cb)
-              if (im[idx + pixel[12]] > cb)
-                if (im[idx + pixel[13]] > cb)
-                  if (im[idx + pixel[14]] > cb)
-                    if (im[idx + pixel[15]] > cb)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[4]] > cb)
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                if (im[idx + pixel[3]] > cb)
-                  if (im[idx + pixel[4]] > cb)
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-            else
-              if (im[idx + pixel[2]] > cb)
-                if (im[idx + pixel[3]] > cb)
-                  if (im[idx + pixel[4]] > cb)
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[7]] > cb)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
-          else
-            return false;
-        else
-          return false;
-      else if (im[idx + pixel[8]] < c_b)
-        if (im[idx + pixel[7]] < c_b)
-          if (im[idx + pixel[9]] < c_b)
-            if (im[idx + pixel[10]] < c_b)
-              if (im[idx + pixel[6]] < c_b)
-                if (im[idx + pixel[5]] < c_b)
-                  if (im[idx + pixel[4]] < c_b)
-                    if (im[idx + pixel[3]] < c_b)
-                      if (im[idx + pixel[2]] < c_b)
-                        return true;
-                      else
-                        if (im[idx + pixel[11]] < c_b)
-                          return true;
-                        else
-                          return false;
-                    else
-                      if (im[idx + pixel[11]] < c_b)
-                        if (im[idx + pixel[12]] < c_b)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[11]] < c_b)
-                      if (im[idx + pixel[12]] < c_b)
-                        if (im[idx + pixel[13]] < c_b)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[11]] < c_b)
-                    if (im[idx + pixel[12]] < c_b)
-                      if (im[idx + pixel[13]] < c_b)
-                        if (im[idx + pixel[14]] < c_b)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                if (im[idx + pixel[11]] < c_b)
+                      if (im[idx + pixel[14]] < c_b) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else if (im[idx + pixel[10]] < c_b)
+              if (im[idx + pixel[11]] < c_b)
+                if (im[idx + pixel[12]] < c_b)
+                  if (im[idx + pixel[13]] < c_b)
+                    if (im[idx + pixel[14]] < c_b)
+                      if (im[idx + pixel[15]] < c_b) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else return false;
+      else return false;
+    else if (im[idx + pixel[8]] > cb)
+      if (im[idx + pixel[9]] > cb)
+        if (im[idx + pixel[10]] > cb)
+          if (im[idx + pixel[11]] > cb)
+            if (im[idx + pixel[12]] > cb)
+              if (im[idx + pixel[13]] > cb)
+                if (im[idx + pixel[14]] > cb)
+                  if (im[idx + pixel[15]] > cb) return true;
+                  else if (im[idx + pixel[6]] > cb)
+                    if (im[idx + pixel[7]] > cb) return true;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[5]] > cb)
+                  if (im[idx + pixel[6]] > cb)
+                    if (im[idx + pixel[7]] > cb) return true;
+                    else return false;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[4]] > cb)
+                if (im[idx + pixel[5]] > cb)
+                  if (im[idx + pixel[6]] > cb)
+                    if (im[idx + pixel[7]] > cb) return true;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else if (im[idx + pixel[3]] > cb)
+              if (im[idx + pixel[4]] > cb)
+                if (im[idx + pixel[5]] > cb)
+                  if (im[idx + pixel[6]] > cb)
+                    if (im[idx + pixel[7]] > cb) return true;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else if (im[idx + pixel[2]] > cb)
+            if (im[idx + pixel[3]] > cb)
+              if (im[idx + pixel[4]] > cb)
+                if (im[idx + pixel[5]] > cb)
+                  if (im[idx + pixel[6]] > cb)
+                    if (im[idx + pixel[7]] > cb) return true;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else return false;
+      else return false;
+    else if (im[idx + pixel[8]] < c_b)
+      if (im[idx + pixel[7]] < c_b)
+        if (im[idx + pixel[9]] < c_b)
+          if (im[idx + pixel[10]] < c_b)
+            if (im[idx + pixel[6]] < c_b)
+              if (im[idx + pixel[5]] < c_b)
+                if (im[idx + pixel[4]] < c_b)
+                  if (im[idx + pixel[3]] < c_b)
+                    if (im[idx + pixel[2]] < c_b) return true;
+                    else if (im[idx + pixel[11]] < c_b) return true;
+                    else return false;
+                  else if (im[idx + pixel[11]] < c_b)
+                    if (im[idx + pixel[12]] < c_b) return true;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[11]] < c_b)
                   if (im[idx + pixel[12]] < c_b)
-                    if (im[idx + pixel[13]] < c_b)
-                      if (im[idx + pixel[14]] < c_b)
-                        if (im[idx + pixel[15]] < c_b)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-            else
-              return false;
-          else
-            return false;
-        else
-          return false;
-      else
-        return false;
+                    if (im[idx + pixel[13]] < c_b) return true;
+                    else return false;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[11]] < c_b)
+                if (im[idx + pixel[12]] < c_b)
+                  if (im[idx + pixel[13]] < c_b)
+                    if (im[idx + pixel[14]] < c_b) return true;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else if (im[idx + pixel[11]] < c_b)
+              if (im[idx + pixel[12]] < c_b)
+                if (im[idx + pixel[13]] < c_b)
+                  if (im[idx + pixel[14]] < c_b)
+                    if (im[idx + pixel[15]] < c_b) return true;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else return false;
+      else return false;
+    else return false;
   else if (im[idx + pixel[0]] < c_b)
     if (im[idx + pixel[1]] > cb)
       if (im[idx + pixel[8]] > cb)
@@ -4176,82 +2707,49 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
               if (im[idx + pixel[5]] > cb)
                 if (im[idx + pixel[4]] > cb)
                   if (im[idx + pixel[3]] > cb)
-                    if (im[idx + pixel[2]] > cb)
-                      return true;
-                    else
-                      if (im[idx + pixel[10]] > cb)
-                        if (im[idx + pixel[11]] > cb)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[10]] > cb)
-                      if (im[idx + pixel[11]] > cb)
-                        if (im[idx + pixel[12]] > cb)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[10]] > cb)
+                    if (im[idx + pixel[2]] > cb) return true;
+                    else if (im[idx + pixel[10]] > cb)
+                      if (im[idx + pixel[11]] > cb) return true;
+                      else return false;
+                    else return false;
+                  else if (im[idx + pixel[10]] > cb)
                     if (im[idx + pixel[11]] > cb)
-                      if (im[idx + pixel[12]] > cb)
-                        if (im[idx + pixel[13]] > cb)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                if (im[idx + pixel[10]] > cb)
+                      if (im[idx + pixel[12]] > cb) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[10]] > cb)
                   if (im[idx + pixel[11]] > cb)
                     if (im[idx + pixel[12]] > cb)
-                      if (im[idx + pixel[13]] > cb)
-                        if (im[idx + pixel[14]] > cb)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-            else
-              if (im[idx + pixel[10]] > cb)
+                      if (im[idx + pixel[13]] > cb) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[10]] > cb)
                 if (im[idx + pixel[11]] > cb)
                   if (im[idx + pixel[12]] > cb)
                     if (im[idx + pixel[13]] > cb)
-                      if (im[idx + pixel[14]] > cb)
-                        if (im[idx + pixel[15]] > cb)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
-          else
-            return false;
-        else
-          return false;
+                      if (im[idx + pixel[14]] > cb) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else if (im[idx + pixel[10]] > cb)
+              if (im[idx + pixel[11]] > cb)
+                if (im[idx + pixel[12]] > cb)
+                  if (im[idx + pixel[13]] > cb)
+                    if (im[idx + pixel[14]] > cb)
+                      if (im[idx + pixel[15]] > cb) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else return false;
       else if (im[idx + pixel[8]] < c_b)
         if (im[idx + pixel[9]] < c_b)
           if (im[idx + pixel[10]] < c_b)
@@ -4259,84 +2757,50 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
               if (im[idx + pixel[12]] < c_b)
                 if (im[idx + pixel[13]] < c_b)
                   if (im[idx + pixel[14]] < c_b)
-                    if (im[idx + pixel[15]] < c_b)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[4]] < c_b)
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                if (im[idx + pixel[3]] < c_b)
-                  if (im[idx + pixel[4]] < c_b)
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-            else
-              if (im[idx + pixel[2]] < c_b)
-                if (im[idx + pixel[3]] < c_b)
-                  if (im[idx + pixel[4]] < c_b)
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
-          else
-            return false;
-        else
-          return false;
-      else
-        return false;
+                    if (im[idx + pixel[15]] < c_b) return true;
+                    else if (im[idx + pixel[6]] < c_b)
+                      if (im[idx + pixel[7]] < c_b) return true;
+                      else return false;
+                    else return false;
+                  else if (im[idx + pixel[5]] < c_b)
+                    if (im[idx + pixel[6]] < c_b)
+                      if (im[idx + pixel[7]] < c_b) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[4]] < c_b)
+                  if (im[idx + pixel[5]] < c_b)
+                    if (im[idx + pixel[6]] < c_b)
+                      if (im[idx + pixel[7]] < c_b) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[3]] < c_b)
+                if (im[idx + pixel[4]] < c_b)
+                  if (im[idx + pixel[5]] < c_b)
+                    if (im[idx + pixel[6]] < c_b)
+                      if (im[idx + pixel[7]] < c_b) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else if (im[idx + pixel[2]] < c_b)
+              if (im[idx + pixel[3]] < c_b)
+                if (im[idx + pixel[4]] < c_b)
+                  if (im[idx + pixel[5]] < c_b)
+                    if (im[idx + pixel[6]] < c_b)
+                      if (im[idx + pixel[7]] < c_b) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else return false;
+      else return false;
     else if (im[idx + pixel[1]] < c_b)
       if (im[idx + pixel[2]] > cb)
         if (im[idx + pixel[9]] > cb)
@@ -4346,140 +2810,84 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
                 if (im[idx + pixel[6]] > cb)
                   if (im[idx + pixel[5]] > cb)
                     if (im[idx + pixel[4]] > cb)
-                      if (im[idx + pixel[3]] > cb)
-                        return true;
-                      else
-                        if (im[idx + pixel[11]] > cb)
-                          if (im[idx + pixel[12]] > cb)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                    else
-                      if (im[idx + pixel[11]] > cb)
-                        if (im[idx + pixel[12]] > cb)
-                          if (im[idx + pixel[13]] > cb)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[11]] > cb)
+                      if (im[idx + pixel[3]] > cb) return true;
+                      else if (im[idx + pixel[11]] > cb)
+                        if (im[idx + pixel[12]] > cb) return true;
+                        else return false;
+                      else return false;
+                    else if (im[idx + pixel[11]] > cb)
                       if (im[idx + pixel[12]] > cb)
-                        if (im[idx + pixel[13]] > cb)
-                          if (im[idx + pixel[14]] > cb)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[11]] > cb)
+                        if (im[idx + pixel[13]] > cb) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else if (im[idx + pixel[11]] > cb)
                     if (im[idx + pixel[12]] > cb)
                       if (im[idx + pixel[13]] > cb)
-                        if (im[idx + pixel[14]] > cb)
-                          if (im[idx + pixel[15]] > cb)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                return false;
-            else
-              return false;
-          else
-            return false;
+                        if (im[idx + pixel[14]] > cb) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[11]] > cb)
+                  if (im[idx + pixel[12]] > cb)
+                    if (im[idx + pixel[13]] > cb)
+                      if (im[idx + pixel[14]] > cb)
+                        if (im[idx + pixel[15]] > cb) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
         else if (im[idx + pixel[9]] < c_b)
           if (im[idx + pixel[10]] < c_b)
             if (im[idx + pixel[11]] < c_b)
               if (im[idx + pixel[12]] < c_b)
                 if (im[idx + pixel[13]] < c_b)
                   if (im[idx + pixel[14]] < c_b)
-                    if (im[idx + pixel[15]] < c_b)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[4]] < c_b)
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                if (im[idx + pixel[3]] < c_b)
-                  if (im[idx + pixel[4]] < c_b)
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-            else
-              return false;
-          else
-            return false;
-        else
-          return false;
+                    if (im[idx + pixel[15]] < c_b) return true;
+                    else if (im[idx + pixel[6]] < c_b)
+                      if (im[idx + pixel[7]] < c_b)
+                        if (im[idx + pixel[8]] < c_b) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else if (im[idx + pixel[5]] < c_b)
+                    if (im[idx + pixel[6]] < c_b)
+                      if (im[idx + pixel[7]] < c_b)
+                        if (im[idx + pixel[8]] < c_b) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[4]] < c_b)
+                  if (im[idx + pixel[5]] < c_b)
+                    if (im[idx + pixel[6]] < c_b)
+                      if (im[idx + pixel[7]] < c_b)
+                        if (im[idx + pixel[8]] < c_b) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[3]] < c_b)
+                if (im[idx + pixel[4]] < c_b)
+                  if (im[idx + pixel[5]] < c_b)
+                    if (im[idx + pixel[6]] < c_b)
+                      if (im[idx + pixel[7]] < c_b)
+                        if (im[idx + pixel[8]] < c_b) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else return false;
       else if (im[idx + pixel[2]] < c_b)
         if (im[idx + pixel[3]] > cb)
           if (im[idx + pixel[10]] > cb)
@@ -4489,113 +2897,68 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
                   if (im[idx + pixel[11]] > cb)
                     if (im[idx + pixel[6]] > cb)
                       if (im[idx + pixel[5]] > cb)
-                        if (im[idx + pixel[4]] > cb)
-                          return true;
-                        else
-                          if (im[idx + pixel[12]] > cb)
-                            if (im[idx + pixel[13]] > cb)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                      else
-                        if (im[idx + pixel[12]] > cb)
-                          if (im[idx + pixel[13]] > cb)
-                            if (im[idx + pixel[14]] > cb)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                    else
-                      if (im[idx + pixel[12]] > cb)
+                        if (im[idx + pixel[4]] > cb) return true;
+                        else if (im[idx + pixel[12]] > cb)
+                          if (im[idx + pixel[13]] > cb) return true;
+                          else return false;
+                        else return false;
+                      else if (im[idx + pixel[12]] > cb)
                         if (im[idx + pixel[13]] > cb)
-                          if (im[idx + pixel[14]] > cb)
-                            if (im[idx + pixel[15]] > cb)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
-            else
-              return false;
+                          if (im[idx + pixel[14]] > cb) return true;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else if (im[idx + pixel[12]] > cb)
+                      if (im[idx + pixel[13]] > cb)
+                        if (im[idx + pixel[14]] > cb)
+                          if (im[idx + pixel[15]] > cb) return true;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
           else if (im[idx + pixel[10]] < c_b)
             if (im[idx + pixel[11]] < c_b)
               if (im[idx + pixel[12]] < c_b)
                 if (im[idx + pixel[13]] < c_b)
                   if (im[idx + pixel[14]] < c_b)
-                    if (im[idx + pixel[15]] < c_b)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            if (im[idx + pixel[9]] < c_b)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            if (im[idx + pixel[9]] < c_b)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[4]] < c_b)
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            if (im[idx + pixel[9]] < c_b)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                return false;
-            else
-              return false;
-          else
-            return false;
+                    if (im[idx + pixel[15]] < c_b) return true;
+                    else if (im[idx + pixel[6]] < c_b)
+                      if (im[idx + pixel[7]] < c_b)
+                        if (im[idx + pixel[8]] < c_b)
+                          if (im[idx + pixel[9]] < c_b) return true;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else if (im[idx + pixel[5]] < c_b)
+                    if (im[idx + pixel[6]] < c_b)
+                      if (im[idx + pixel[7]] < c_b)
+                        if (im[idx + pixel[8]] < c_b)
+                          if (im[idx + pixel[9]] < c_b) return true;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[4]] < c_b)
+                  if (im[idx + pixel[5]] < c_b)
+                    if (im[idx + pixel[6]] < c_b)
+                      if (im[idx + pixel[7]] < c_b)
+                        if (im[idx + pixel[8]] < c_b)
+                          if (im[idx + pixel[9]] < c_b) return true;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
         else if (im[idx + pixel[3]] < c_b)
           if (im[idx + pixel[4]] > cb)
             if (im[idx + pixel[13]] > cb)
@@ -4606,33 +2969,19 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
                       if (im[idx + pixel[11]] > cb)
                         if (im[idx + pixel[12]] > cb)
                           if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[5]] > cb)
-                              return true;
-                            else
-                              if (im[idx + pixel[14]] > cb)
-                                return true;
-                              else
-                                return false;
-                          else
-                            if (im[idx + pixel[14]] > cb)
-                              if (im[idx + pixel[15]] > cb)
-                                return true;
-                              else
-                                return false;
-                            else
-                              return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
+                            if (im[idx + pixel[5]] > cb) return true;
+                            else if (im[idx + pixel[14]] > cb) return true;
+                            else return false;
+                          else if (im[idx + pixel[14]] > cb)
+                            if (im[idx + pixel[15]] > cb) return true;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
             else if (im[idx + pixel[13]] < c_b)
               if (im[idx + pixel[11]] > cb)
                 if (im[idx + pixel[5]] > cb)
@@ -4641,94 +2990,58 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
                       if (im[idx + pixel[8]] > cb)
                         if (im[idx + pixel[9]] > cb)
                           if (im[idx + pixel[10]] > cb)
-                            if (im[idx + pixel[12]] > cb)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
+                            if (im[idx + pixel[12]] > cb) return true;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
               else if (im[idx + pixel[11]] < c_b)
                 if (im[idx + pixel[12]] < c_b)
                   if (im[idx + pixel[14]] < c_b)
-                    if (im[idx + pixel[15]] < c_b)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            if (im[idx + pixel[9]] < c_b)
-                              if (im[idx + pixel[10]] < c_b)
-                                return true;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            if (im[idx + pixel[9]] < c_b)
-                              if (im[idx + pixel[10]] < c_b)
-                                return true;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  return false;
-              else
-                return false;
-            else
-              if (im[idx + pixel[5]] > cb)
-                if (im[idx + pixel[6]] > cb)
-                  if (im[idx + pixel[7]] > cb)
-                    if (im[idx + pixel[8]] > cb)
-                      if (im[idx + pixel[9]] > cb)
-                        if (im[idx + pixel[10]] > cb)
-                          if (im[idx + pixel[11]] > cb)
-                            if (im[idx + pixel[12]] > cb)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
+                    if (im[idx + pixel[15]] < c_b) return true;
+                    else if (im[idx + pixel[6]] < c_b)
+                      if (im[idx + pixel[7]] < c_b)
+                        if (im[idx + pixel[8]] < c_b)
+                          if (im[idx + pixel[9]] < c_b)
+                            if (im[idx + pixel[10]] < c_b) return true;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else if (im[idx + pixel[5]] < c_b)
+                    if (im[idx + pixel[6]] < c_b)
+                      if (im[idx + pixel[7]] < c_b)
+                        if (im[idx + pixel[8]] < c_b)
+                          if (im[idx + pixel[9]] < c_b)
+                            if (im[idx + pixel[10]] < c_b) return true;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else if (im[idx + pixel[5]] > cb)
+              if (im[idx + pixel[6]] > cb)
+                if (im[idx + pixel[7]] > cb)
+                  if (im[idx + pixel[8]] > cb)
+                    if (im[idx + pixel[9]] > cb)
+                      if (im[idx + pixel[10]] > cb)
+                        if (im[idx + pixel[11]] > cb)
+                          if (im[idx + pixel[12]] > cb) return true;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
           else if (im[idx + pixel[4]] < c_b)
             if (im[idx + pixel[5]] > cb)
               if (im[idx + pixel[14]] > cb)
@@ -4739,27 +3052,16 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
                         if (im[idx + pixel[11]] > cb)
                           if (im[idx + pixel[12]] > cb)
                             if (im[idx + pixel[13]] > cb)
-                              if (im[idx + pixel[6]] > cb)
-                                return true;
-                              else
-                                if (im[idx + pixel[15]] > cb)
-                                  return true;
-                                else
-                                  return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
+                              if (im[idx + pixel[6]] > cb) return true;
+                              else if (im[idx + pixel[15]] > cb) return true;
+                              else return false;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
               else if (im[idx + pixel[14]] < c_b)
                 if (im[idx + pixel[12]] > cb)
                   if (im[idx + pixel[6]] > cb)
@@ -4768,76 +3070,47 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
                         if (im[idx + pixel[9]] > cb)
                           if (im[idx + pixel[10]] > cb)
                             if (im[idx + pixel[11]] > cb)
-                              if (im[idx + pixel[13]] > cb)
-                                return true;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
+                              if (im[idx + pixel[13]] > cb) return true;
+                              else return false;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
                 else if (im[idx + pixel[12]] < c_b)
                   if (im[idx + pixel[13]] < c_b)
-                    if (im[idx + pixel[15]] < c_b)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            if (im[idx + pixel[9]] < c_b)
-                              if (im[idx + pixel[10]] < c_b)
-                                if (im[idx + pixel[11]] < c_b)
-                                  return true;
-                                else
-                                  return false;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                if (im[idx + pixel[6]] > cb)
-                  if (im[idx + pixel[7]] > cb)
-                    if (im[idx + pixel[8]] > cb)
-                      if (im[idx + pixel[9]] > cb)
-                        if (im[idx + pixel[10]] > cb)
-                          if (im[idx + pixel[11]] > cb)
-                            if (im[idx + pixel[12]] > cb)
-                              if (im[idx + pixel[13]] > cb)
-                                return true;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
+                    if (im[idx + pixel[15]] < c_b) return true;
+                    else if (im[idx + pixel[6]] < c_b)
+                      if (im[idx + pixel[7]] < c_b)
+                        if (im[idx + pixel[8]] < c_b)
+                          if (im[idx + pixel[9]] < c_b)
+                            if (im[idx + pixel[10]] < c_b)
+                              if (im[idx + pixel[11]] < c_b) return true;
+                              else return false;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[6]] > cb)
+                if (im[idx + pixel[7]] > cb)
+                  if (im[idx + pixel[8]] > cb)
+                    if (im[idx + pixel[9]] > cb)
+                      if (im[idx + pixel[10]] > cb)
+                        if (im[idx + pixel[11]] > cb)
+                          if (im[idx + pixel[12]] > cb)
+                            if (im[idx + pixel[13]] > cb) return true;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
             else if (im[idx + pixel[5]] < c_b)
               if (im[idx + pixel[6]] > cb)
                 if (im[idx + pixel[15]] < c_b)
@@ -4848,55 +3121,34 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
                           if (im[idx + pixel[10]] > cb)
                             if (im[idx + pixel[11]] > cb)
                               if (im[idx + pixel[12]] > cb)
-                                if (im[idx + pixel[14]] > cb)
-                                  return true;
-                                else
-                                  return false;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
+                                if (im[idx + pixel[14]] > cb) return true;
+                                else return false;
+                              else return false;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
                   else if (im[idx + pixel[13]] < c_b)
-                    if (im[idx + pixel[14]] < c_b)
-                      return true;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  if (im[idx + pixel[7]] > cb)
-                    if (im[idx + pixel[8]] > cb)
-                      if (im[idx + pixel[9]] > cb)
-                        if (im[idx + pixel[10]] > cb)
-                          if (im[idx + pixel[11]] > cb)
-                            if (im[idx + pixel[12]] > cb)
-                              if (im[idx + pixel[13]] > cb)
-                                if (im[idx + pixel[14]] > cb)
-                                  return true;
-                                else
-                                  return false;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
+                    if (im[idx + pixel[14]] < c_b) return true;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[7]] > cb)
+                  if (im[idx + pixel[8]] > cb)
+                    if (im[idx + pixel[9]] > cb)
+                      if (im[idx + pixel[10]] > cb)
+                        if (im[idx + pixel[11]] > cb)
+                          if (im[idx + pixel[12]] > cb)
+                            if (im[idx + pixel[13]] > cb)
+                              if (im[idx + pixel[14]] > cb) return true;
+                              else return false;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
               else if (im[idx + pixel[6]] < c_b)
                 if (im[idx + pixel[7]] > cb)
                   if (im[idx + pixel[14]] > cb)
@@ -4906,808 +3158,481 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
                           if (im[idx + pixel[11]] > cb)
                             if (im[idx + pixel[12]] > cb)
                               if (im[idx + pixel[13]] > cb)
-                                if (im[idx + pixel[15]] > cb)
-                                  return true;
-                                else
-                                  return false;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
+                                if (im[idx + pixel[15]] > cb) return true;
+                                else return false;
+                              else return false;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
                   else if (im[idx + pixel[14]] < c_b)
-                    if (im[idx + pixel[15]] < c_b)
-                      return true;
-                    else
-                      return false;
-                  else
-                    return false;
+                    if (im[idx + pixel[15]] < c_b) return true;
+                    else return false;
+                  else return false;
                 else if (im[idx + pixel[7]] < c_b)
-                  if (im[idx + pixel[8]] < c_b)
-                    return true;
-                  else
-                    if (im[idx + pixel[15]] < c_b)
-                      return true;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[14]] < c_b)
-                    if (im[idx + pixel[15]] < c_b)
-                      return true;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                if (im[idx + pixel[13]] > cb)
-                  if (im[idx + pixel[7]] > cb)
-                    if (im[idx + pixel[8]] > cb)
-                      if (im[idx + pixel[9]] > cb)
-                        if (im[idx + pixel[10]] > cb)
-                          if (im[idx + pixel[11]] > cb)
-                            if (im[idx + pixel[12]] > cb)
-                              if (im[idx + pixel[14]] > cb)
-                                if (im[idx + pixel[15]] > cb)
-                                  return true;
-                                else
-                                  return false;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else if (im[idx + pixel[13]] < c_b)
-                  if (im[idx + pixel[14]] < c_b)
-                    if (im[idx + pixel[15]] < c_b)
-                      return true;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-            else
-              if (im[idx + pixel[12]] > cb)
+                  if (im[idx + pixel[8]] < c_b) return true;
+                  else if (im[idx + pixel[15]] < c_b) return true;
+                  else return false;
+                else if (im[idx + pixel[14]] < c_b)
+                  if (im[idx + pixel[15]] < c_b) return true;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[13]] > cb)
                 if (im[idx + pixel[7]] > cb)
                   if (im[idx + pixel[8]] > cb)
                     if (im[idx + pixel[9]] > cb)
                       if (im[idx + pixel[10]] > cb)
                         if (im[idx + pixel[11]] > cb)
-                          if (im[idx + pixel[13]] > cb)
+                          if (im[idx + pixel[12]] > cb)
                             if (im[idx + pixel[14]] > cb)
-                              if (im[idx + pixel[6]] > cb)
-                                return true;
-                              else
-                                if (im[idx + pixel[15]] > cb)
-                                  return true;
-                                else
-                                  return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else if (im[idx + pixel[12]] < c_b)
-                if (im[idx + pixel[13]] < c_b)
-                  if (im[idx + pixel[14]] < c_b)
-                    if (im[idx + pixel[15]] < c_b)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            if (im[idx + pixel[9]] < c_b)
-                              if (im[idx + pixel[10]] < c_b)
-                                if (im[idx + pixel[11]] < c_b)
-                                  return true;
-                                else
-                                  return false;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
-          else
-            if (im[idx + pixel[11]] > cb)
+                              if (im[idx + pixel[15]] > cb) return true;
+                              else return false;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[13]] < c_b)
+                if (im[idx + pixel[14]] < c_b)
+                  if (im[idx + pixel[15]] < c_b) return true;
+                  else return false;
+                else return false;
+              else return false;
+            else if (im[idx + pixel[12]] > cb)
               if (im[idx + pixel[7]] > cb)
                 if (im[idx + pixel[8]] > cb)
                   if (im[idx + pixel[9]] > cb)
                     if (im[idx + pixel[10]] > cb)
-                      if (im[idx + pixel[12]] > cb)
+                      if (im[idx + pixel[11]] > cb)
                         if (im[idx + pixel[13]] > cb)
-                          if (im[idx + pixel[6]] > cb)
-                            if (im[idx + pixel[5]] > cb)
-                              return true;
-                            else
-                              if (im[idx + pixel[14]] > cb)
-                                return true;
-                              else
-                                return false;
-                          else
-                            if (im[idx + pixel[14]] > cb)
-                              if (im[idx + pixel[15]] > cb)
-                                return true;
-                              else
-                                return false;
-                            else
-                              return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
-            else if (im[idx + pixel[11]] < c_b)
-              if (im[idx + pixel[12]] < c_b)
-                if (im[idx + pixel[13]] < c_b)
-                  if (im[idx + pixel[14]] < c_b)
-                    if (im[idx + pixel[15]] < c_b)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            if (im[idx + pixel[9]] < c_b)
-                              if (im[idx + pixel[10]] < c_b)
-                                return true;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            if (im[idx + pixel[9]] < c_b)
-                              if (im[idx + pixel[10]] < c_b)
-                                return true;
-                              else
-                                return false;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  return false;
-              else
-                return false;
-            else
-              return false;
-        else
-          if (im[idx + pixel[10]] > cb)
+                          if (im[idx + pixel[14]] > cb)
+                            if (im[idx + pixel[6]] > cb) return true;
+                            else if (im[idx + pixel[15]] > cb) return true;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else if (im[idx + pixel[12]] < c_b)
+              if (im[idx + pixel[13]] < c_b)
+                if (im[idx + pixel[14]] < c_b)
+                  if (im[idx + pixel[15]] < c_b) return true;
+                  else if (im[idx + pixel[6]] < c_b)
+                    if (im[idx + pixel[7]] < c_b)
+                      if (im[idx + pixel[8]] < c_b)
+                        if (im[idx + pixel[9]] < c_b)
+                          if (im[idx + pixel[10]] < c_b)
+                            if (im[idx + pixel[11]] < c_b) return true;
+                            else return false;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else if (im[idx + pixel[11]] > cb)
             if (im[idx + pixel[7]] > cb)
               if (im[idx + pixel[8]] > cb)
                 if (im[idx + pixel[9]] > cb)
-                  if (im[idx + pixel[11]] > cb)
+                  if (im[idx + pixel[10]] > cb)
                     if (im[idx + pixel[12]] > cb)
-                      if (im[idx + pixel[6]] > cb)
-                        if (im[idx + pixel[5]] > cb)
-                          if (im[idx + pixel[4]] > cb)
-                            return true;
-                          else
-                            if (im[idx + pixel[13]] > cb)
-                              return true;
-                            else
-                              return false;
-                        else
-                          if (im[idx + pixel[13]] > cb)
-                            if (im[idx + pixel[14]] > cb)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                      else
-                        if (im[idx + pixel[13]] > cb)
-                          if (im[idx + pixel[14]] > cb)
-                            if (im[idx + pixel[15]] > cb)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
-            else
-              return false;
+                      if (im[idx + pixel[13]] > cb)
+                        if (im[idx + pixel[6]] > cb)
+                          if (im[idx + pixel[5]] > cb) return true;
+                          else if (im[idx + pixel[14]] > cb) return true;
+                          else return false;
+                        else if (im[idx + pixel[14]] > cb)
+                          if (im[idx + pixel[15]] > cb) return true;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else if (im[idx + pixel[11]] < c_b)
+            if (im[idx + pixel[12]] < c_b)
+              if (im[idx + pixel[13]] < c_b)
+                if (im[idx + pixel[14]] < c_b)
+                  if (im[idx + pixel[15]] < c_b) return true;
+                  else if (im[idx + pixel[6]] < c_b)
+                    if (im[idx + pixel[7]] < c_b)
+                      if (im[idx + pixel[8]] < c_b)
+                        if (im[idx + pixel[9]] < c_b)
+                          if (im[idx + pixel[10]] < c_b) return true;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[5]] < c_b)
+                  if (im[idx + pixel[6]] < c_b)
+                    if (im[idx + pixel[7]] < c_b)
+                      if (im[idx + pixel[8]] < c_b)
+                        if (im[idx + pixel[9]] < c_b)
+                          if (im[idx + pixel[10]] < c_b) return true;
+                          else return false;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else if (im[idx + pixel[10]] > cb)
+          if (im[idx + pixel[7]] > cb)
+            if (im[idx + pixel[8]] > cb)
+              if (im[idx + pixel[9]] > cb)
+                if (im[idx + pixel[11]] > cb)
+                  if (im[idx + pixel[12]] > cb)
+                    if (im[idx + pixel[6]] > cb)
+                      if (im[idx + pixel[5]] > cb)
+                        if (im[idx + pixel[4]] > cb) return true;
+                        else if (im[idx + pixel[13]] > cb) return true;
+                        else return false;
+                      else if (im[idx + pixel[13]] > cb)
+                        if (im[idx + pixel[14]] > cb) return true;
+                        else return false;
+                      else return false;
+                    else if (im[idx + pixel[13]] > cb)
+                      if (im[idx + pixel[14]] > cb)
+                        if (im[idx + pixel[15]] > cb) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else if (im[idx + pixel[10]] < c_b)
+          if (im[idx + pixel[11]] < c_b)
+            if (im[idx + pixel[12]] < c_b)
+              if (im[idx + pixel[13]] < c_b)
+                if (im[idx + pixel[14]] < c_b)
+                  if (im[idx + pixel[15]] < c_b) return true;
+                  else if (im[idx + pixel[6]] < c_b)
+                    if (im[idx + pixel[7]] < c_b)
+                      if (im[idx + pixel[8]] < c_b)
+                        if (im[idx + pixel[9]] < c_b) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[5]] < c_b)
+                  if (im[idx + pixel[6]] < c_b)
+                    if (im[idx + pixel[7]] < c_b)
+                      if (im[idx + pixel[8]] < c_b)
+                        if (im[idx + pixel[9]] < c_b) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[4]] < c_b)
+                if (im[idx + pixel[5]] < c_b)
+                  if (im[idx + pixel[6]] < c_b)
+                    if (im[idx + pixel[7]] < c_b)
+                      if (im[idx + pixel[8]] < c_b)
+                        if (im[idx + pixel[9]] < c_b) return true;
+                        else return false;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else return false;
+      else if (im[idx + pixel[9]] > cb)
+        if (im[idx + pixel[7]] > cb)
+          if (im[idx + pixel[8]] > cb)
+            if (im[idx + pixel[10]] > cb)
+              if (im[idx + pixel[11]] > cb)
+                if (im[idx + pixel[6]] > cb)
+                  if (im[idx + pixel[5]] > cb)
+                    if (im[idx + pixel[4]] > cb)
+                      if (im[idx + pixel[3]] > cb) return true;
+                      else if (im[idx + pixel[12]] > cb) return true;
+                      else return false;
+                    else if (im[idx + pixel[12]] > cb)
+                      if (im[idx + pixel[13]] > cb) return true;
+                      else return false;
+                    else return false;
+                  else if (im[idx + pixel[12]] > cb)
+                    if (im[idx + pixel[13]] > cb)
+                      if (im[idx + pixel[14]] > cb) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[12]] > cb)
+                  if (im[idx + pixel[13]] > cb)
+                    if (im[idx + pixel[14]] > cb)
+                      if (im[idx + pixel[15]] > cb) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else return false;
+      else if (im[idx + pixel[9]] < c_b)
+        if (im[idx + pixel[10]] < c_b)
+          if (im[idx + pixel[11]] < c_b)
+            if (im[idx + pixel[12]] < c_b)
+              if (im[idx + pixel[13]] < c_b)
+                if (im[idx + pixel[14]] < c_b)
+                  if (im[idx + pixel[15]] < c_b) return true;
+                  else if (im[idx + pixel[6]] < c_b)
+                    if (im[idx + pixel[7]] < c_b)
+                      if (im[idx + pixel[8]] < c_b) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[5]] < c_b)
+                  if (im[idx + pixel[6]] < c_b)
+                    if (im[idx + pixel[7]] < c_b)
+                      if (im[idx + pixel[8]] < c_b) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[4]] < c_b)
+                if (im[idx + pixel[5]] < c_b)
+                  if (im[idx + pixel[6]] < c_b)
+                    if (im[idx + pixel[7]] < c_b)
+                      if (im[idx + pixel[8]] < c_b) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else if (im[idx + pixel[3]] < c_b)
+              if (im[idx + pixel[4]] < c_b)
+                if (im[idx + pixel[5]] < c_b)
+                  if (im[idx + pixel[6]] < c_b)
+                    if (im[idx + pixel[7]] < c_b)
+                      if (im[idx + pixel[8]] < c_b) return true;
+                      else return false;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else return false;
+      else return false;
+    else if (im[idx + pixel[8]] > cb)
+      if (im[idx + pixel[7]] > cb)
+        if (im[idx + pixel[9]] > cb)
+          if (im[idx + pixel[10]] > cb)
+            if (im[idx + pixel[6]] > cb)
+              if (im[idx + pixel[5]] > cb)
+                if (im[idx + pixel[4]] > cb)
+                  if (im[idx + pixel[3]] > cb)
+                    if (im[idx + pixel[2]] > cb) return true;
+                    else if (im[idx + pixel[11]] > cb) return true;
+                    else return false;
+                  else if (im[idx + pixel[11]] > cb)
+                    if (im[idx + pixel[12]] > cb) return true;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[11]] > cb)
+                  if (im[idx + pixel[12]] > cb)
+                    if (im[idx + pixel[13]] > cb) return true;
+                    else return false;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[11]] > cb)
+                if (im[idx + pixel[12]] > cb)
+                  if (im[idx + pixel[13]] > cb)
+                    if (im[idx + pixel[14]] > cb) return true;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else if (im[idx + pixel[11]] > cb)
+              if (im[idx + pixel[12]] > cb)
+                if (im[idx + pixel[13]] > cb)
+                  if (im[idx + pixel[14]] > cb)
+                    if (im[idx + pixel[15]] > cb) return true;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else return false;
+      else return false;
+    else if (im[idx + pixel[8]] < c_b)
+      if (im[idx + pixel[9]] < c_b)
+        if (im[idx + pixel[10]] < c_b)
+          if (im[idx + pixel[11]] < c_b)
+            if (im[idx + pixel[12]] < c_b)
+              if (im[idx + pixel[13]] < c_b)
+                if (im[idx + pixel[14]] < c_b)
+                  if (im[idx + pixel[15]] < c_b) return true;
+                  else if (im[idx + pixel[6]] < c_b)
+                    if (im[idx + pixel[7]] < c_b) return true;
+                    else return false;
+                  else return false;
+                else if (im[idx + pixel[5]] < c_b)
+                  if (im[idx + pixel[6]] < c_b)
+                    if (im[idx + pixel[7]] < c_b) return true;
+                    else return false;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[4]] < c_b)
+                if (im[idx + pixel[5]] < c_b)
+                  if (im[idx + pixel[6]] < c_b)
+                    if (im[idx + pixel[7]] < c_b) return true;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else if (im[idx + pixel[3]] < c_b)
+              if (im[idx + pixel[4]] < c_b)
+                if (im[idx + pixel[5]] < c_b)
+                  if (im[idx + pixel[6]] < c_b)
+                    if (im[idx + pixel[7]] < c_b) return true;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else if (im[idx + pixel[2]] < c_b)
+            if (im[idx + pixel[3]] < c_b)
+              if (im[idx + pixel[4]] < c_b)
+                if (im[idx + pixel[5]] < c_b)
+                  if (im[idx + pixel[6]] < c_b)
+                    if (im[idx + pixel[7]] < c_b) return true;
+                    else return false;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else return false;
+      else return false;
+    else return false;
+  else if (im[idx + pixel[7]] > cb)
+    if (im[idx + pixel[8]] > cb)
+      if (im[idx + pixel[9]] > cb)
+        if (im[idx + pixel[6]] > cb)
+          if (im[idx + pixel[5]] > cb)
+            if (im[idx + pixel[4]] > cb)
+              if (im[idx + pixel[3]] > cb)
+                if (im[idx + pixel[2]] > cb)
+                  if (im[idx + pixel[1]] > cb) return true;
+                  else if (im[idx + pixel[10]] > cb) return true;
+                  else return false;
+                else if (im[idx + pixel[10]] > cb)
+                  if (im[idx + pixel[11]] > cb) return true;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[10]] > cb)
+                if (im[idx + pixel[11]] > cb)
+                  if (im[idx + pixel[12]] > cb) return true;
+                  else return false;
+                else return false;
+              else return false;
+            else if (im[idx + pixel[10]] > cb)
+              if (im[idx + pixel[11]] > cb)
+                if (im[idx + pixel[12]] > cb)
+                  if (im[idx + pixel[13]] > cb) return true;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else if (im[idx + pixel[10]] > cb)
+            if (im[idx + pixel[11]] > cb)
+              if (im[idx + pixel[12]] > cb)
+                if (im[idx + pixel[13]] > cb)
+                  if (im[idx + pixel[14]] > cb) return true;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else if (im[idx + pixel[10]] > cb)
+          if (im[idx + pixel[11]] > cb)
+            if (im[idx + pixel[12]] > cb)
+              if (im[idx + pixel[13]] > cb)
+                if (im[idx + pixel[14]] > cb)
+                  if (im[idx + pixel[15]] > cb) return true;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else return false;
+      else return false;
+    else return false;
+  else if (im[idx + pixel[7]] < c_b)
+    if (im[idx + pixel[8]] < c_b)
+      if (im[idx + pixel[9]] < c_b)
+        if (im[idx + pixel[6]] < c_b)
+          if (im[idx + pixel[5]] < c_b)
+            if (im[idx + pixel[4]] < c_b)
+              if (im[idx + pixel[3]] < c_b)
+                if (im[idx + pixel[2]] < c_b)
+                  if (im[idx + pixel[1]] < c_b) return true;
+                  else if (im[idx + pixel[10]] < c_b) return true;
+                  else return false;
+                else if (im[idx + pixel[10]] < c_b)
+                  if (im[idx + pixel[11]] < c_b) return true;
+                  else return false;
+                else return false;
+              else if (im[idx + pixel[10]] < c_b)
+                if (im[idx + pixel[11]] < c_b)
+                  if (im[idx + pixel[12]] < c_b) return true;
+                  else return false;
+                else return false;
+              else return false;
+            else if (im[idx + pixel[10]] < c_b)
+              if (im[idx + pixel[11]] < c_b)
+                if (im[idx + pixel[12]] < c_b)
+                  if (im[idx + pixel[13]] < c_b) return true;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
           else if (im[idx + pixel[10]] < c_b)
             if (im[idx + pixel[11]] < c_b)
               if (im[idx + pixel[12]] < c_b)
                 if (im[idx + pixel[13]] < c_b)
-                  if (im[idx + pixel[14]] < c_b)
-                    if (im[idx + pixel[15]] < c_b)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            if (im[idx + pixel[9]] < c_b)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            if (im[idx + pixel[9]] < c_b)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[4]] < c_b)
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            if (im[idx + pixel[9]] < c_b)
-                              return true;
-                            else
-                              return false;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                return false;
-            else
-              return false;
-          else
-            return false;
-      else
-        if (im[idx + pixel[9]] > cb)
-          if (im[idx + pixel[7]] > cb)
-            if (im[idx + pixel[8]] > cb)
-              if (im[idx + pixel[10]] > cb)
-                if (im[idx + pixel[11]] > cb)
-                  if (im[idx + pixel[6]] > cb)
-                    if (im[idx + pixel[5]] > cb)
-                      if (im[idx + pixel[4]] > cb)
-                        if (im[idx + pixel[3]] > cb)
-                          return true;
-                        else
-                          if (im[idx + pixel[12]] > cb)
-                            return true;
-                          else
-                            return false;
-                      else
-                        if (im[idx + pixel[12]] > cb)
-                          if (im[idx + pixel[13]] > cb)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                    else
-                      if (im[idx + pixel[12]] > cb)
-                        if (im[idx + pixel[13]] > cb)
-                          if (im[idx + pixel[14]] > cb)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[12]] > cb)
-                      if (im[idx + pixel[13]] > cb)
-                        if (im[idx + pixel[14]] > cb)
-                          if (im[idx + pixel[15]] > cb)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  return false;
-              else
-                return false;
-            else
-              return false;
-          else
-            return false;
-        else if (im[idx + pixel[9]] < c_b)
-          if (im[idx + pixel[10]] < c_b)
-            if (im[idx + pixel[11]] < c_b)
-              if (im[idx + pixel[12]] < c_b)
-                if (im[idx + pixel[13]] < c_b)
-                  if (im[idx + pixel[14]] < c_b)
-                    if (im[idx + pixel[15]] < c_b)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[4]] < c_b)
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                if (im[idx + pixel[3]] < c_b)
-                  if (im[idx + pixel[4]] < c_b)
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          if (im[idx + pixel[8]] < c_b)
-                            return true;
-                          else
-                            return false;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-            else
-              return false;
-          else
-            return false;
-        else
-          return false;
-    else
-      if (im[idx + pixel[8]] > cb)
-        if (im[idx + pixel[7]] > cb)
-          if (im[idx + pixel[9]] > cb)
-            if (im[idx + pixel[10]] > cb)
-              if (im[idx + pixel[6]] > cb)
-                if (im[idx + pixel[5]] > cb)
-                  if (im[idx + pixel[4]] > cb)
-                    if (im[idx + pixel[3]] > cb)
-                      if (im[idx + pixel[2]] > cb)
-                        return true;
-                      else
-                        if (im[idx + pixel[11]] > cb)
-                          return true;
-                        else
-                          return false;
-                    else
-                      if (im[idx + pixel[11]] > cb)
-                        if (im[idx + pixel[12]] > cb)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[11]] > cb)
-                      if (im[idx + pixel[12]] > cb)
-                        if (im[idx + pixel[13]] > cb)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[11]] > cb)
-                    if (im[idx + pixel[12]] > cb)
-                      if (im[idx + pixel[13]] > cb)
-                        if (im[idx + pixel[14]] > cb)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                if (im[idx + pixel[11]] > cb)
-                  if (im[idx + pixel[12]] > cb)
-                    if (im[idx + pixel[13]] > cb)
-                      if (im[idx + pixel[14]] > cb)
-                        if (im[idx + pixel[15]] > cb)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-            else
-              return false;
-          else
-            return false;
-        else
-          return false;
-      else if (im[idx + pixel[8]] < c_b)
-        if (im[idx + pixel[9]] < c_b)
-          if (im[idx + pixel[10]] < c_b)
-            if (im[idx + pixel[11]] < c_b)
-              if (im[idx + pixel[12]] < c_b)
-                if (im[idx + pixel[13]] < c_b)
-                  if (im[idx + pixel[14]] < c_b)
-                    if (im[idx + pixel[15]] < c_b)
-                      return true;
-                    else
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[4]] < c_b)
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                if (im[idx + pixel[3]] < c_b)
-                  if (im[idx + pixel[4]] < c_b)
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-            else
-              if (im[idx + pixel[2]] < c_b)
-                if (im[idx + pixel[3]] < c_b)
-                  if (im[idx + pixel[4]] < c_b)
-                    if (im[idx + pixel[5]] < c_b)
-                      if (im[idx + pixel[6]] < c_b)
-                        if (im[idx + pixel[7]] < c_b)
-                          return true;
-                        else
-                          return false;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
-          else
-            return false;
-        else
-          return false;
-      else
-        return false;
-  else
-    if (im[idx + pixel[7]] > cb)
-      if (im[idx + pixel[8]] > cb)
-        if (im[idx + pixel[9]] > cb)
-          if (im[idx + pixel[6]] > cb)
-            if (im[idx + pixel[5]] > cb)
-              if (im[idx + pixel[4]] > cb)
-                if (im[idx + pixel[3]] > cb)
-                  if (im[idx + pixel[2]] > cb)
-                    if (im[idx + pixel[1]] > cb)
-                      return true;
-                    else
-                      if (im[idx + pixel[10]] > cb)
-                        return true;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[10]] > cb)
-                      if (im[idx + pixel[11]] > cb)
-                        return true;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[10]] > cb)
-                    if (im[idx + pixel[11]] > cb)
-                      if (im[idx + pixel[12]] > cb)
-                        return true;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                if (im[idx + pixel[10]] > cb)
-                  if (im[idx + pixel[11]] > cb)
-                    if (im[idx + pixel[12]] > cb)
-                      if (im[idx + pixel[13]] > cb)
-                        return true;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-            else
-              if (im[idx + pixel[10]] > cb)
-                if (im[idx + pixel[11]] > cb)
-                  if (im[idx + pixel[12]] > cb)
-                    if (im[idx + pixel[13]] > cb)
-                      if (im[idx + pixel[14]] > cb)
-                        return true;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
-          else
-            if (im[idx + pixel[10]] > cb)
-              if (im[idx + pixel[11]] > cb)
-                if (im[idx + pixel[12]] > cb)
-                  if (im[idx + pixel[13]] > cb)
-                    if (im[idx + pixel[14]] > cb)
-                      if (im[idx + pixel[15]] > cb)
-                        return true;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
-            else
-              return false;
-        else
-          return false;
-      else
-        return false;
-    else if (im[idx + pixel[7]] < c_b)
-      if (im[idx + pixel[8]] < c_b)
-        if (im[idx + pixel[9]] < c_b)
-          if (im[idx + pixel[6]] < c_b)
-            if (im[idx + pixel[5]] < c_b)
-              if (im[idx + pixel[4]] < c_b)
-                if (im[idx + pixel[3]] < c_b)
-                  if (im[idx + pixel[2]] < c_b)
-                    if (im[idx + pixel[1]] < c_b)
-                      return true;
-                    else
-                      if (im[idx + pixel[10]] < c_b)
-                        return true;
-                      else
-                        return false;
-                  else
-                    if (im[idx + pixel[10]] < c_b)
-                      if (im[idx + pixel[11]] < c_b)
-                        return true;
-                      else
-                        return false;
-                    else
-                      return false;
-                else
-                  if (im[idx + pixel[10]] < c_b)
-                    if (im[idx + pixel[11]] < c_b)
-                      if (im[idx + pixel[12]] < c_b)
-                        return true;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-              else
-                if (im[idx + pixel[10]] < c_b)
-                  if (im[idx + pixel[11]] < c_b)
-                    if (im[idx + pixel[12]] < c_b)
-                      if (im[idx + pixel[13]] < c_b)
-                        return true;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-            else
-              if (im[idx + pixel[10]] < c_b)
-                if (im[idx + pixel[11]] < c_b)
-                  if (im[idx + pixel[12]] < c_b)
-                    if (im[idx + pixel[13]] < c_b)
-                      if (im[idx + pixel[14]] < c_b)
-                        return true;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
-          else
-            if (im[idx + pixel[10]] < c_b)
-              if (im[idx + pixel[11]] < c_b)
-                if (im[idx + pixel[12]] < c_b)
-                  if (im[idx + pixel[13]] < c_b)
-                    if (im[idx + pixel[14]] < c_b)
-                      if (im[idx + pixel[15]] < c_b)
-                        return true;
-                      else
-                        return false;
-                    else
-                      return false;
-                  else
-                    return false;
-                else
-                  return false;
-              else
-                return false;
-            else
-              return false;
-        else
-          return false;
-      else
-        return false;
-    else
-      return false;
+                  if (im[idx + pixel[14]] < c_b) return true;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else if (im[idx + pixel[10]] < c_b)
+          if (im[idx + pixel[11]] < c_b)
+            if (im[idx + pixel[12]] < c_b)
+              if (im[idx + pixel[13]] < c_b)
+                if (im[idx + pixel[14]] < c_b)
+                  if (im[idx + pixel[15]] < c_b) return true;
+                  else return false;
+                else return false;
+              else return false;
+            else return false;
+          else return false;
+        else return false;
+      else return false;
+    else return false;
+  else return false;
 }
 
 function fast9_corner_score(im, stride, y, x, pixel, bstart) {
@@ -5716,15 +3641,14 @@ function fast9_corner_score(im, stride, y, x, pixel, bstart) {
   let b = parseInt((bmax + bmin) / 2);
 
   /* Compute the score using binary search */
-  for (; ;) {
+  for (;;) {
     if (fast9_is_corner(im, stride, y, x, pixel, b)) {
       bmin = b;
     } else {
       bmax = b;
     }
 
-    if (bmin == bmax - 1 || bmin == bmax)
-      return bmin;
+    if (bmin == bmax - 1 || bmin == bmax) return bmin;
 
     b = parseInt((bmin + bmax) / 2);
   }
@@ -5736,14 +3660,14 @@ function nonmax_suppression(corners, scores) {
   const num_nonmax = 0;
   let last_row;
   let row_start;
-  let i; let j;
+  let i;
+  let j;
   let ret_nonmax = [];
 
   /* Point above points (roughly) to the pixel above the one of interest, if there
   is a feature there. */
   let point_above = 0;
   let point_below = 0;
-
 
   if (corners.length < 1) {
     return [];
@@ -5757,8 +3681,7 @@ function nonmax_suppression(corners, scores) {
   last_row = corners[corners.length - 1].y;
   row_start = new Array(last_row + 1);
 
-  for (i = 0; i < last_row + 1; i++)
-    row_start[i] = -1;
+  for (i = 0; i < last_row + 1; i++) row_start[i] = -1;
 
   {
     let prev_row = -1;
@@ -5781,7 +3704,7 @@ function nonmax_suppression(corners, scores) {
         continue;
 
     /* Check right */
-    if (i < (corners.length - 1))
+    if (i < corners.length - 1)
       if (corners[i + 1].x == pos.x + 1 && corners[i + 1].y == pos.y && scores[i + 1] >= score)
         continue;
 
@@ -5789,13 +3712,11 @@ function nonmax_suppression(corners, scores) {
     if (pos.y != 0 && row_start[pos.y - 1] != -1) {
       /* Make sure that current point_above is one
         row above. */
-      if (corners[point_above].y < pos.y - 1)
-        point_above = row_start[pos.y - 1];
+      if (corners[point_above].y < pos.y - 1) point_above = row_start[pos.y - 1];
 
       /* Make point_above point to the first of the pixels above the current point,
         if it exists. */
-      for (; corners[point_above].y < pos.y && corners[point_above].x < pos.x - 1; point_above++) { }
-
+      for (; corners[point_above].y < pos.y && corners[point_above].x < pos.x - 1; point_above++) {}
 
       for (j = point_above; corners[j].y < pos.y && corners[j].x <= pos.x + 1; j++) {
         var { x } = corners[j];
@@ -5804,20 +3725,29 @@ function nonmax_suppression(corners, scores) {
           break;
         }
       }
-
     }
 
     if (!skip) {
       /* Check below (if there is anything below) */
-      if (pos.y != last_row && row_start[pos.y + 1] != -1 && point_below < corners.length) /* Nothing below */ {
-        if (corners[point_below].y < pos.y + 1)
+      if (pos.y != last_row && row_start[pos.y + 1] != -1 && point_below < corners.length) {
+        /* Nothing below */ if (corners[point_below].y < pos.y + 1)
           point_below = row_start[pos.y + 1];
 
         /* Make point below point to one of the pixels belowthe current point, if it
            exists. */
-        for (; point_below < corners.length && corners[point_below].y == pos.y + 1 && corners[point_below].x < pos.x - 1; point_below++) { }
+        for (
+          ;
+          point_below < corners.length &&
+          corners[point_below].y == pos.y + 1 &&
+          corners[point_below].x < pos.x - 1;
+          point_below++
+        ) {}
 
-        for (j = point_below; j < corners.length && corners[j].y == pos.y + 1 && corners[j].x <= pos.x + 1; j++) {
+        for (
+          j = point_below;
+          j < corners.length && corners[j].y == pos.y + 1 && corners[j].x <= pos.x + 1;
+          j++
+        ) {
           var { x } = corners[j];
           if ((x == pos.x - 1 || x == pos.x || x == pos.x + 1) && scores[j] >= score) {
             skip = true;
@@ -5831,7 +3761,7 @@ function nonmax_suppression(corners, scores) {
       ret_nonmax.push({
         x: corners[i].x,
         y: corners[i].y,
-        score: scores[i]
+        score: scores[i],
       });
     }
   }

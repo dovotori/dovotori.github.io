@@ -31,7 +31,7 @@ export default class {
       this.viewBox,
       startPos,
       status,
-      this.endOfAnimation(this.cpt)
+      this.endOfAnimation(this.cpt),
     );
     this.cpt += 1;
   }

@@ -73,21 +73,22 @@ export default class {
     }
   }
 
-  renderInstancing(program, modeDessin, instanceCount) { // need draw buffers support
+  renderInstancing(program, modeDessin, instanceCount) {
+    // need draw buffers support
     if (this.locationKey === 'indices') {
       this.extension.drawElementsInstancedANGLE(
         modeDessin,
         this.count,
         this.gl.UNSIGNED_SHORT,
         0,
-        instanceCount
+        instanceCount,
       );
     } else {
       this.extension.drawArraysInstancedANGLE(
         modeDessin,
         0, // offset
         this.count, // num vertices per instance
-        instanceCount // num instances
+        instanceCount, // num instances
       );
     }
   }

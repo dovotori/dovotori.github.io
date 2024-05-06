@@ -12,11 +12,11 @@ const getDistortion = (progress, frequence, amplitude, time) => {
   const movementProgressFix = 0.02;
   return [
     Math.cos(progress * Math.PI * frequence[0] + time) * amplitude[0] -
-    Math.cos(movementProgressFix * Math.PI * frequence[0] + time) * amplitude[0],
+      Math.cos(movementProgressFix * Math.PI * frequence[0] + time) * amplitude[0],
     nsin(progress * Math.PI * frequence[1] + time) * amplitude[1] -
-    nsin(movementProgressFix * Math.PI * frequence[1] + time) * amplitude[1],
+      nsin(movementProgressFix * Math.PI * frequence[1] + time) * amplitude[1],
     nsin(progress * Math.PI * frequence[2] + time) * amplitude[2] -
-    nsin(movementProgressFix * Math.PI * frequence[2] + time) * amplitude[2],
+      nsin(movementProgressFix * Math.PI * frequence[2] + time) * amplitude[2],
   ];
 };
 
@@ -72,7 +72,7 @@ export default class extends Scene {
   getDistPos = (posZ) => {
     const { roadAmplitude, roadLength, roadFrequence } = this.config;
     return new Vec3(
-      ...getDistortion(posZ / roadLength, roadFrequence, roadAmplitude, this.posTime)
+      ...getDistortion(posZ / roadLength, roadFrequence, roadAmplitude, this.posTime),
     );
   };
 

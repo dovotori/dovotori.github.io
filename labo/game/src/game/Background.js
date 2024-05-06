@@ -41,7 +41,7 @@ export default class {
         0,
         this.levelSize.w,
         this.viewBox.w + inverseIdx * 10,
-        -inverseIdx * 10
+        -inverseIdx * 10,
       );
       const y = 10 + scale / 2;
       const color = mapFromRange(idx, 0, this.mountains.length, 255, 100);

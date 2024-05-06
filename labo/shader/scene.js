@@ -18,11 +18,11 @@ const getDistortion = (progress, frequence, amplitude, time) => {
   const movementProgressFix = 0.02;
   return new Vec3(
     Math.cos(progress * Math.PI * frequence.getX() + time) * amplitude.getX() -
-    Math.cos(movementProgressFix * Math.PI * frequence.getX() + time) * amplitude.getX(),
+      Math.cos(movementProgressFix * Math.PI * frequence.getX() + time) * amplitude.getX(),
     nsin(progress * Math.PI * frequence.getY() + time) * amplitude.getY() -
-    nsin(movementProgressFix * Math.PI * frequence.getY() + time) * amplitude.getY(),
+      nsin(movementProgressFix * Math.PI * frequence.getY() + time) * amplitude.getY(),
     nsin(progress * Math.PI * frequence.getZ() + time) * amplitude.getZ() -
-    nsin(movementProgressFix * Math.PI * frequence.getZ() + time) * amplitude.getZ()
+      nsin(movementProgressFix * Math.PI * frequence.getZ() + time) * amplitude.getZ(),
   );
 };
 
@@ -49,7 +49,10 @@ export default class extends Scene {
       Math.random() * 2.0 - 1.0,
     ]);
     const indices = Delaunay.triangulate(points);
-    const points3d = points.reduce((acc, cur) => [...acc, cur[0], cur[1], Math.random() * 2.0 - 1.0], []);
+    const points3d = points.reduce(
+      (acc, cur) => [...acc, cur[0], cur[1], Math.random() * 2.0 - 1.0],
+      [],
+    );
     this.vboDelaunay = new Primitive(gl, { position: points3d, indices });
     this.vboDelaunay.setModeDessin(gl.LINE_LOOP);
 
@@ -117,16 +120,16 @@ export default class extends Scene {
     this.mode = index;
 
     if (index === 2) {
-      this.message.style.display = "block";
+      this.message.style.display = 'block';
     } else {
-      this.message.style.display = "none";
+      this.message.style.display = 'none';
     }
   };
 
   destroy = () => {
     if (this.buttons) {
       this.buttons.forEach((button, index) =>
-        button.removeEventListener('click', () => this.onClickButton(index), false)
+        button.removeEventListener('click', () => this.onClickButton(index), false),
       );
     }
   };
@@ -180,7 +183,7 @@ export default class extends Scene {
         this.camera.setTarget(
           cameraTarget.getX(),
           this.roadPositionY + cameraTarget.getY(),
-          this.roadLength
+          this.roadLength,
         );
         this.camera.setPosition(cameraPos.getX(), this.roadPositionY + cameraPos.getY(), 0);
 

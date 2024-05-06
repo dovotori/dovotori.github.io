@@ -49,6 +49,6 @@ export default {
   fragment,
   attributes: ['position', 'texture', 'normale'],
   uniforms: ['projection', 'model', 'view', 'normalMatrix', 'type', 'resolution', 'posEye'].concat(
-    locationsPBR
+    locationsPBR,
   ),
 };

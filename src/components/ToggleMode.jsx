@@ -83,7 +83,7 @@ const ToggleMode = ({ isDarkMode, toggleTheme, texts }) => {
           <TransitionEffect isDarkMode={isDarkMode}>
             <Circle ref={refTransition} />
           </TransitionEffect>,
-          document.body
+          document.body,
         )}
     </>
   );

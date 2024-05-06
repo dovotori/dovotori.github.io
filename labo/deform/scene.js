@@ -103,21 +103,21 @@ export default class extends Scene {
 
   renderGlobe = (program, texData = null) => {
     const progBasic = this.mngProg.get('normale');
-    this.model.push()
+    this.model.push();
     this.model.scale(0.7);
     this.model.rotate(this.time * 0.1, 1, 1, 1);
     progBasic.setMatrix('model', this.model.get());
-    this.model.pop()
+    this.model.pop();
     this.simpleIcoSphere.render(progBasic.get());
 
-    this.model.push()
+    this.model.push();
     this.model.rotate(this.time * 0.02, 0, 1, 1);
     program.setMatrix('model', this.model.get());
     const normalMatrix = this.model.getMatrice3x3();
     normalMatrix.inverse();
     normalMatrix.transpose();
     program.setMatrix('normalMatrix', normalMatrix.get());
-    this.model.pop()
+    this.model.pop();
 
     program.setTexture(2, this.texture.get(), 'noiseMap');
     program.setTexture(3, this.mngTex.get('earth').get(), 'colorMap');

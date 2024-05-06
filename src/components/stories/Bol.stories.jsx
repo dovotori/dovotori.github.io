@@ -8,5 +8,5 @@ export default {
 const Template = (args) => <Bol {...args} />;
 export const Primary = Template.bind({});
 Primary.args = {
-  isSwitched: false
+  isSwitched: false,
 };

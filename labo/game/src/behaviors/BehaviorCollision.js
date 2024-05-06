@@ -147,7 +147,7 @@ class BehaviorCollision extends Behavior {
     if (!this.isCollision[direction] && isMovingOnDirection) {
       const { value: speed, step } = BehaviorCollision.determineStep(
         isAxeX ? this.speed.getX() : this.speed.getY(),
-        isAxeX ? tileSize.w : tileSize.h
+        isAxeX ? tileSize.w : tileSize.h,
       );
       const points = [];
       const testPoints = this.testPoints[direction];

@@ -39,7 +39,7 @@ class Tilemap {
       this.viewBox.x,
       this.viewBox.y,
       this.viewBox.w,
-      this.viewBox.h
+      this.viewBox.h,
     );
   }
 
@@ -70,7 +70,7 @@ class Tilemap {
             this.tile.setTranslate(
               translate.x - (centerX - 1) * 0.5,
               translate.y - (1 - scale.y),
-              z || 0
+              z || 0,
             );
           } else {
             this.tile.setTranslate(translate.x, translate.y, z || 0);

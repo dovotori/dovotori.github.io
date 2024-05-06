@@ -82,10 +82,10 @@ const Katakana = styled.h1`
   color: ${(p) => p.theme.text};
   line-height: 0.7;
   position: absolute;
-  font-size: ${(p) => p.$isHome ? "11em" : "8em"};
+  font-size: ${(p) => (p.$isHome ? '11em' : '8em')};
   top: 50%;
   left: 50%;
-  transform: translate3d(-50%,-50%, 0);
+  transform: translate3d(-50%, -50%, 0);
   width: 1.5em;
   text-shadow: none;
 
@@ -120,9 +120,9 @@ const CenterHorizontal = styled.div`
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
   z-index: 3;
-  `;
+`;
 
-const Text = styled.h4`  
+const Text = styled.h4`
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 0.4em;
@@ -151,22 +151,16 @@ const Signature = ({ className, isTouchDevice, hello, text, isHome = true }) => 
     <Wrap>
       <Pulse className="circle" count={count} />
       <Katakana $isTouch={isTouchDevice} $isHome={isHome}>
-        <StyledTypingMessage
-          message={isHome ? 'ドリアン' : 'はじめまして'}
-          isLoop
-          isVertical
-        />
+        <StyledTypingMessage message={isHome ? 'ドリアン' : 'はじめまして'} isLoop isVertical />
       </Katakana>
       <Absolute $isTouch={isTouchDevice}>
         <StyledLink to={isHome ? '/about' : '/'} className={className} title="about" onClick={add}>
           <Appear>
             {isTouchDevice ? (
               <StyledBol isSwitched={!isHome} />
-
             ) : (
               <StyledLabo slug="picto" $colorType={0} noBackground hasJs />
             )}
-
           </Appear>
           <CenterHorizontal $isTouch={isTouchDevice}>
             <Name $isTouch={isTouchDevice}>
@@ -181,7 +175,7 @@ const Signature = ({ className, isTouchDevice, hello, text, isHome = true }) => 
           </CenterHorizontal>
         </StyledLink>
       </Absolute>
-    </Wrap >
+    </Wrap>
   );
 };
 

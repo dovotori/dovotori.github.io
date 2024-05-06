@@ -55,9 +55,7 @@ module.exports = {
           to: `${BUILD_PATH}${BUILD_ASSET_PATH}`,
           globOptions: {
             dot: true,
-            ignore: [
-              `**/sw.js`,
-            ],
+            ignore: [`**/sw.js`],
           },
         },
         {
@@ -66,13 +64,11 @@ module.exports = {
         },
       ],
     }),
-    new SwCachePlugin(
-      {
-        cacheName: 'v1',
-        ignore: [/.*\.map$/],
-        include: ['/']
-      }
-    ),
+    new SwCachePlugin({
+      cacheName: 'v1',
+      ignore: [/.*\.map$/],
+      include: ['/'],
+    }),
     ...compression,
   ],
 };

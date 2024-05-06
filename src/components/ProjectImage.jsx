@@ -12,7 +12,9 @@ const StyledLazyImage = styled(LazyImage)`
   box-shadow: 0 0 2em ${(p) => p.theme.backgroundHighlight};
   opacity: ${(p) => (p.$isVisible ? 1 : 0)};
   transform: ${(p) => (p.$isVisible ? 'none' : 'translateY(20%)')};
-  transition: opacity 1s ${(p) => p.theme.elastic}, transform 1s ${(p) => p.theme.elastic},
+  transition:
+    opacity 1s ${(p) => p.theme.elastic},
+    transform 1s ${(p) => p.theme.elastic},
     box-shadow 800ms linear;
 `;
 

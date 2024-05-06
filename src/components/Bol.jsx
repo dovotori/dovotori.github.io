@@ -3,7 +3,7 @@ import { ReactComponent as BolSvg } from 'Assets/svg/bol2.svg';
 import { ReactComponent as BonzaiSvg } from 'Assets/svg/bonzai2.svg';
 import { useEffect, useRef } from 'react';
 import usePrevious from '../hooks/usePrevious';
-import { timeout } from "../utils";
+import { timeout } from '../utils';
 
 const GlobalStyle = createGlobalStyle`
 body[theme='light'] {
@@ -29,12 +29,12 @@ const revolution = keyframes`
 `;
 
 const Div = styled.div`
-  position:relative;
+  position: relative;
   width: 100%;
   height: 100%;
 
   svg {
-    position:absolute;
+    position: absolute;
     top: 50%;
     left: 50%;
     width: 100%;
@@ -126,7 +126,7 @@ const StyledBonzai = styled(BonzaiSvg)`
 
 const StyledBol = styled(BolSvg)`
   z-index: 2;
-  position:relative;
+  position: relative;
   .mode {
     fill: #333;
   }
@@ -187,7 +187,7 @@ const Bol = ({ className, isSwitched = false }) => {
   const previousIsSwitched = usePrevious(isSwitched);
 
   const animSvg = async (svg, isAppear = true) => {
-    const paths = svg.querySelectorAll("path");
+    const paths = svg.querySelectorAll('path');
     for (const p of paths) {
       if (isAppear) {
         p.classList.add('anim');
@@ -201,7 +201,7 @@ const Bol = ({ className, isSwitched = false }) => {
   useEffect(() => {
     if (ref.current) {
       const isFirstMount = previousIsSwitched === undefined;
-      svgs.current = ref.current.querySelectorAll("svg");
+      svgs.current = ref.current.querySelectorAll('svg');
       const cpt = isSwitched ? 1 : 0;
       const asyncExec = async () => {
         if (!isFirstMount) {
@@ -213,11 +213,12 @@ const Bol = ({ className, isSwitched = false }) => {
     }
   }, [isSwitched]);
 
-  return (<Div ref={ref} className={className}>
-    <GlobalStyle />
-    <StyledBol $colorType={0} />
-    <StyledBonzai />
-  </Div>
+  return (
+    <Div ref={ref} className={className}>
+      <GlobalStyle />
+      <StyledBol $colorType={0} />
+      <StyledBonzai />
+    </Div>
   );
 };
 

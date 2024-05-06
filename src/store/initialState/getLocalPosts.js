@@ -1,4 +1,4 @@
-import { CAT_DESIGN, CAT_CODE, CAT_BLOG } from '../../constants/categories';
+import { CAT_BLOG, CAT_CODE, CAT_DESIGN } from '../../constants/categories';
 import { Locales } from '../../constants/locales';
 
 const rawPosts = [
@@ -73,8 +73,7 @@ const rawPosts = [
       [Locales.FR]:
         "Proposition pour l'identité d'une exposition fictive sur les arts de rue et le graffiti.",
       [Locales.EN]: 'Visual identity for a fictive exhibition about street art.',
-      [Locales.JP]:
-        '発起は落書きとストリートアートの展示会のビジュアルアイデンティティです。',
+      [Locales.JP]: '発起は落書きとストリートアートの展示会のビジュアルアイデンティティです。',
     },
     images: 4,
   },
@@ -171,8 +170,7 @@ const rawPosts = [
         "Dispositif de jeu qui a pour ambition d'intégrer n'importe quel objet du quotidien pour influencer un espace virtuel.",
       [Locales.EN]:
         'Game installation which allow to usual objects to influence a virtual ecosystem.',
-      [Locales.JP]:
-        '此のゲーム機は仮想空間を影響するのためどれかの日常品を統合する。',
+      [Locales.JP]: '此のゲーム機は仮想空間を影響するのためどれかの日常品を統合する。',
     },
     images: 9,
   },
@@ -187,8 +185,7 @@ const rawPosts = [
       [Locales.FR]:
         "Élaboration d'une identité visuelle pour la biennale d'art contemporain de la ville du Havre.",
       [Locales.EN]: 'Visual identity for the city of Le Havre contemporary art biennial.',
-      [Locales.JP]:
-        'これは現代美術展のルアーブルために作ったビジュアルアイデンティティ。',
+      [Locales.JP]: 'これは現代美術展のルアーブルために作ったビジュアルアイデンティティ。',
     },
     images: 11,
   },
@@ -244,8 +241,7 @@ const rawPosts = [
         "Chargement et visualisation d'une scène 3d au format gltf 2.0 en webgl, en suivant les spécifications du Khronos group.",
       [Locales.EN]:
         'Parsing and visualization of a scene from gltf file format, following Khronos group specifications.',
-      [Locales.JP]:
-        'gltf 2.0のフォーマット3Dビューのローディングと視覚化をwebglで作る。',
+      [Locales.JP]: 'gltf 2.0のフォーマット3Dビューのローディングと視覚化をwebglで作る。',
     },
     labo: {
       hasJs: true,
@@ -356,15 +352,9 @@ const rawPosts = [
     title: { [Locales.FR]: 'Shader', [Locales.EN]: 'Shader', [Locales.JP]: 'シェーダー' },
     category: CAT_BLOG,
     description: {
-      [Locales.FR]: [
-        "Différentes expérimentations avec glsl.",
-      ],
-      [Locales.EN]: [
-        'Different experimentations with glsl.',
-      ],
-      [Locales.JP]: [
-        'glslをしながら、色々実験',
-      ],
+      [Locales.FR]: ['Différentes expérimentations avec glsl.'],
+      [Locales.EN]: ['Different experimentations with glsl.'],
+      [Locales.JP]: ['glslをしながら、色々実験'],
     },
     tags: [],
     date: 2020,
@@ -391,7 +381,7 @@ const rawPosts = [
   {
     id: 22,
     slug: 'race',
-    title: { [Locales.FR]: 'Course', [Locales.EN]: 'Race', [Locales.JP]: '人種' },
+    title: { [Locales.FR]: 'Course', [Locales.EN]: 'Race', [Locales.JP]: 'レース' },
     category: CAT_BLOG,
     tags: [],
     date: 2020,

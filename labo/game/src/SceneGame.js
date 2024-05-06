@@ -76,7 +76,7 @@ export default class extends Scene {
       });
 
       const boxes = Object.keys(this.interactives).map((id) =>
-        this.interactives[id].getCollisionBox()
+        this.interactives[id].getCollisionBox(),
       );
 
       this.background = new Background(viewBox, this.tilemap.getLevelSize());
@@ -94,7 +94,7 @@ export default class extends Scene {
     });
     this.collisions.clear();
     const boxes = Object.keys(this.interactives).map((id) =>
-      this.interactives[id].getCollisionBox()
+      this.interactives[id].getCollisionBox(),
     );
     this.collisions.addBoxes(boxes);
   }
@@ -180,7 +180,7 @@ export default class extends Scene {
       this.mngProg.get('spritePhong'),
       this.mngTex.get('level1'),
       this.mngObj.get('cubeTile'),
-      this.mngObj.get('tile')
+      this.mngObj.get('tile'),
     );
   }
 
@@ -189,7 +189,7 @@ export default class extends Scene {
       this.interactives[id].render(
         this.mngProg.get('sprite'),
         this.mngTex.get('heros'),
-        this.mngObj.get('tile')
+        this.mngObj.get('tile'),
       );
     });
     const { heros } = this.interactives;
@@ -197,7 +197,7 @@ export default class extends Scene {
     heros.renderBullets(
       this.mngProg.get('sprite'),
       this.mngTex.get('bullet'),
-      this.mngObj.get('tile')
+      this.mngObj.get('tile'),
     );
   }
 

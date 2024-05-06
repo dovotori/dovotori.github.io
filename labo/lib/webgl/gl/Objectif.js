@@ -26,7 +26,7 @@ export default class {
         this.target.getZ(),
         0,
         1,
-        0
+        0,
       );
   }
 

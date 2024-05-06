@@ -37,7 +37,7 @@ export default class {
       0,
       this.gl.ALPHA,
       this.gl.UNSIGNED_BYTE,
-      pixels
+      pixels,
     );
   }
 

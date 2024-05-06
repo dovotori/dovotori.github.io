@@ -13,7 +13,7 @@ export default class {
     this.gl.bufferData(
       this.gl.ARRAY_BUFFER,
       points, // type Uint8Array ou Float32Array...
-      this.modeCalcul
+      this.modeCalcul,
     );
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
   }

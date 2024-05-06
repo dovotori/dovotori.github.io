@@ -74,7 +74,7 @@ const getBufferDataFromAccessor = (buffers, bufferViews, accessor) => {
   const dataView = new DataView(
     buffers[bufferIndex],
     bufferViewByteOffset + accessorByteOffset,
-    bufferViewByteLength - accessorByteOffset
+    bufferViewByteLength - accessorByteOffset,
   );
   const numElement = getNumComponentPerType(type);
   const length = getLength(type, count);
@@ -147,7 +147,7 @@ const getVbos = (attributes, accessors, indices, targets) => {
         ...acc,
         [cur]: { ...accessor, size: getNumComponentPerType(accessor.type) },
       };
-    }, {})
+    }, {}),
   );
   if (newTargets) {
     newTargets = newTargets.reduce((acc, cur, index) => {
@@ -271,10 +271,10 @@ const getAnimations = (animations, nodes, accessors, meshes) => {
 const getImages = (images, accessors, buffers, bufferViews) =>
   images
     ? images.map(({ bufferView: bufferViewIndex, mimeType, name }) => {
-      const bufferView = bufferViews[bufferViewIndex];
-      const data = getImageBufferData(buffers, bufferView);
-      return { mimeType, name, data };
-    })
+        const bufferView = bufferViews[bufferViewIndex];
+        const data = getImageBufferData(buffers, bufferView);
+        return { mimeType, name, data };
+      })
     : null;
 
 const addChildrenToNode = (parent, nodes) => {
@@ -293,28 +293,29 @@ const organizeParenting = (nodes) => {
       children &&
       children.forEach((childIndex) => {
         indexNodeIsChild[childIndex] = true;
-      })
+      }),
   );
   const nodesWithChildren = nodes.map((node) => addChildrenToNode(node, nodes));
   return nodesWithChildren.filter((node, index) => indexNodeIsChild[index] === undefined);
 };
 
-const convertNodesToObject = (nodesArray) => nodesArray.reduce((acc, node) => {
-  const { name, children } = node;
-  acc[name] = node;
-  if (children) {
-    acc[name].children = convertNodesToObject(children);
-  }
-  return acc;
-}, {});
+const convertNodesToObject = (nodesArray) =>
+  nodesArray.reduce((acc, node) => {
+    const { name, children } = node;
+    acc[name] = node;
+    if (children) {
+      acc[name].children = convertNodesToObject(children);
+    }
+    return acc;
+  }, {});
 
 const markedAndNameNodes = (nodes, allJointsIds = []) => {
   const newNodes = nodes.map((node, index) => {
     let name = node.name || `node-${index}`;
-    let customType = "node";
+    let customType = 'node';
     if (allJointsIds.indexOf(index) !== -1) {
       name = node.name || `joint-${index}`;
-      customType = "joint";
+      customType = 'joint';
     }
     return { ...node, name, customType };
   });
@@ -363,7 +364,11 @@ export default class {
     if (newNodes) this.data.nodes = newNodes;
     if (newSkins) this.data.skins = newSkins;
     if (newMaterials) this.data.materials = newMaterials;
-    console.log('[Gltf custom data]', this.data, `\n${nodes.length} nodes\n${allJointsIds?.length || '0'} joints`);
+    console.log(
+      '[Gltf custom data]',
+      this.data,
+      `\n${nodes.length} nodes\n${allJointsIds?.length || '0'} joints`,
+    );
   }
 
   get() {

@@ -45,7 +45,7 @@ class ObjetGltf {
   renderNodeAndChildren = (node, program, model) => {
     let newModel = model;
     // apply only on mesh transformation, should exclude joint transformation/animation
-    if (node.customType !== "joint") {
+    if (node.customType !== 'joint') {
       newModel = this.setNodeModel(node, program, model);
       this.renderNode(node, program);
     }

@@ -7,7 +7,9 @@ const StyledLink = styled(Link)`
   padding: 1.5em 0 1.5em 2%;
   color: ${(p) => p.theme.getColor};
   ${(p) => p.theme.active};
-  transition: background-color 1000ms ease-out, color 1000ms ease-out;
+  transition:
+    background-color 1000ms ease-out,
+    color 1000ms ease-out;
   background-color: none;
   display: flex;
   align-items: center;

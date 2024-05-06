@@ -7,7 +7,13 @@ const ProjectCommon = (props) => {
   return (
     <>
       <ProjectNavigationContainer slug={slug} />
-      <ProjectHeader title={title} descriptions={descriptions} date={date} inverseTitle={inverseTitle} $colorType={$colorType} />
+      <ProjectHeader
+        title={title}
+        descriptions={descriptions}
+        date={date}
+        inverseTitle={inverseTitle}
+        $colorType={$colorType}
+      />
     </>
   );
 };

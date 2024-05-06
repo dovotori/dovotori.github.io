@@ -7,7 +7,6 @@ import ButtonBack from './ButtonBack';
 import Bloc from './Bloc';
 import { jiggle } from './Animations';
 
-
 const StyledSocialLinks = styled(SocialLinks)`
   margin: 10em 0;
   svg {

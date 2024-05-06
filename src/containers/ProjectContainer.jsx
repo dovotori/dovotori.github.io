@@ -8,10 +8,7 @@ import { getEntry } from '../selectors';
 const ProjectContainer = () => {
   const slug = useParams().slug || null;
   const entry = getEntry(slug);
-  return <Project
-    colorType={getColorType(entry.category)}
-    {...entry}
-  />;
+  return <Project colorType={getColorType(entry.category)} {...entry} />;
 };
 
 export default ProjectContainer;

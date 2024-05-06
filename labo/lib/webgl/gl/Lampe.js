@@ -28,7 +28,7 @@ export default class extends Objectif {
     this.position.set(
       Math.cos(time * 0.002) * (4.0 + offset),
       this.position.getY(),
-      Math.sin(time * 0.002) * (4.0 + offset)
+      Math.sin(time * 0.002) * (4.0 + offset),
     );
     this.lookAt();
     this.repere.update(this.position, this.sizeRepere);

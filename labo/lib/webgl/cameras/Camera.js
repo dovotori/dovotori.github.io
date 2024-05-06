@@ -41,7 +41,7 @@ export default class extends Objectif {
 
       this.position.getX(),
       Math.sin(time * 0.02) * (2.0 + offset),
-      this.position.getZ()
+      this.position.getZ(),
     );
     this.lookAt();
   }
@@ -92,7 +92,7 @@ export default class extends Objectif {
         this.target.getZ(),
         0,
         1,
-        0
+        0,
       );
   }
 }

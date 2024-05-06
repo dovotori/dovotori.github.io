@@ -13,7 +13,7 @@ export default class {
         new Line(gl, 20, {
           spring: 0.06 * i,
           friction: 0.85 + i * 0.02,
-        })
+        }),
     );
     this.mousePos = { x: 0, y: 0 };
     this.weight = 0; // new Target(0, 0.01);

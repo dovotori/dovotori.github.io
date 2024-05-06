@@ -68,7 +68,7 @@ export default class PersoBullets extends Perso {
         this.viewBox.x +
         (this.inverseX ? this.offsetAiming.invX : this.offsetAiming.x),
       this.behavior.getY() - this.viewBox.y - h + this.offsetAiming.y,
-      this.behavior.getZ()
+      this.behavior.getZ(),
     );
   }
 

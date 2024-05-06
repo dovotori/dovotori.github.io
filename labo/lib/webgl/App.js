@@ -1,10 +1,10 @@
+import Canvas from './gl/Canvas';
+import Controls from './io/Controls';
+import Keyboard from './io/Keyboard';
+import Mouse from './io/Mouse';
 import Loop from './logic/Loop';
 import ManagerAssets from './managers/ManagerAssets';
 import ManagerShaders from './managers/ManagerShaders';
-import Canvas from './gl/Canvas';
-import Keyboard from './io/Keyboard';
-import Controls from './io/Controls';
-import Mouse from './io/Mouse';
 import { capitalize, getEnvPath } from './utils';
 
 export default class {
@@ -45,7 +45,7 @@ export default class {
       support: this.canvas.getSupport(),
     };
     this.scene = new Scene(this.canvas.getContext(), finalConfig);
-    await this.scene.setupAssets(assets)
+    await this.scene.setupAssets(assets);
     if (this.scene.setup) {
       this.scene.setup();
     }
@@ -63,7 +63,7 @@ export default class {
             ...acc,
             [`callback${capitalize(cur)}`]: this.scene[`onMouse${capitalize(cur)}`],
           }),
-          {}
+          {},
         );
         const mouseContainer = domId ? document.querySelector(`#${domId}`) : container;
         this.mouse = new Mouse(mouseContainer, callbacks);
@@ -83,11 +83,14 @@ export default class {
     this.loop.start();
   }
 
-  resize = (e) => {
-    const container = e[0].target;
-    if (container) {
-      this.adaptCanvas(container);
-    }
+  resize = (entries) => {
+    window.requestAnimationFrame(() => {
+      if (!Array.isArray(entries) || !entries.length) return;
+      const container = entries[0].target;
+      if (container) {
+        this.adaptCanvas(container);
+      }
+    });
   };
 
   adaptCanvas = (container) => {
@@ -134,7 +137,7 @@ export default class {
     if (this.controls) {
       this.controls.destroy();
     }
-    if (this.controls) {
+    if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
   }

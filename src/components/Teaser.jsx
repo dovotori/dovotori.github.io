@@ -27,7 +27,9 @@ const StyledLink = styled(Link).attrs({
     return 'translateY(20%)';
   }};
   z-index: ${(p) => (p.$isVisible && p.$isHover && !p.$isTouchDevice ? 1 : 0)};
-  transition: opacity 1s ${(p) => p.theme.elastic}, transform 1s ${(p) => p.theme.elastic},
+  transition:
+    opacity 1s ${(p) => p.theme.elastic},
+    transform 1s ${(p) => p.theme.elastic},
     box-shadow 800ms linear;
 
   ${(p) => p.theme.active}
@@ -52,7 +54,7 @@ const Infos = styled.div`
   overflow: hidden;
   background: ${(p) => p.theme.getGradient};
   height: 100%;
-  `;
+`;
 
 const Title = styled.h3`
   position: absolute;
@@ -62,11 +64,13 @@ const Title = styled.h3`
   font-size: 10em;
   letter-spacing: 0.1em;
   opacity: ${(p) => (p.$isFocus ? 0.4 : 0)};
-  transition: opacity 1s ${(p) => p.theme.elastic}, transform 1s ${(p) => p.theme.elastic};
+  transition:
+    opacity 1s ${(p) => p.theme.elastic},
+    transform 1s ${(p) => p.theme.elastic};
   transform: ${(p) => (p.$isFocus ? 'translate3d(0, -50%, 0)' : 'translate3d(-100%, -50%, 0)')};
   z-index: 1;
   white-space: nowrap;
-  `;
+`;
 
 const Plus = styled(PlusIcon)`
   position: absolute;
@@ -76,7 +80,9 @@ const Plus = styled(PlusIcon)`
   height: 50%;
   fill: ${(p) => p.theme.getColor};
   opacity: ${(p) => (p.$isFocus ? 1 : 0)};
-  transition: opacity 1s ${(p) => p.theme.elastic}, transform 1s ${(p) => p.theme.elastic};
+  transition:
+    opacity 1s ${(p) => p.theme.elastic},
+    transform 1s ${(p) => p.theme.elastic};
   transform: ${(p) => (p.$isFocus ? 'none' : 'scale(0) rotate(45deg)')};
   z-index: 2;
 `;
@@ -85,7 +91,15 @@ const WrapLoader = styled.div`
   margin: 20px auto;
 `;
 
-const Teaser = ({ className, category, slug, title = '', currentHover, setCurrentHover = () => { }, isTouchDevice }) => {
+const Teaser = ({
+  className,
+  category,
+  slug,
+  title = '',
+  currentHover,
+  setCurrentHover = () => {},
+  isTouchDevice,
+}) => {
   const $colorType = getColorType(category);
   const [isHovered, setIsHovered] = useState(false);
   const [refInView, inView] = useInView({
@@ -134,10 +148,12 @@ const Teaser = ({ className, category, slug, title = '', currentHover, setCurren
           </WrapLoader>
         </StyledLazyImage>
       </Infos>
-      {!isTouchDevice ? <>
-        <Plus $isFocus={isHovered} $colorType={$colorType} />
-        <Title $isFocus={isHovered}>{title}</Title>
-      </> : null}
+      {!isTouchDevice ? (
+        <>
+          <Plus $isFocus={isHovered} $colorType={$colorType} />
+          <Title $isFocus={isHovered}>{title}</Title>
+        </>
+      ) : null}
     </StyledLink>
   );
 };

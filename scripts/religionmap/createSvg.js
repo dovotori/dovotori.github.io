@@ -84,7 +84,7 @@ const main = () => {
       .rotate([state.rotateLambda, state.rotatePhi, state.rotateGamma]);
 
     const filteredGeometries = geojson.objects.countries.geometries.filter(
-      (country) => country.id !== '010'
+      (country) => country.id !== '010',
     );
     const filteredCountries = { ...geojson.objects.countries, geometries: filteredGeometries };
 

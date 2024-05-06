@@ -30,7 +30,7 @@ export default class extends MeshSprite {
     this.setTranslate(
       this.behavior.getX() - this.viewBox.x + offsetX,
       this.behavior.getY() - this.viewBox.y - (1 - h) + (py || 0),
-      this.behavior.getZ()
+      this.behavior.getZ(),
     );
     program.setTexture(0, texture.get(), 'textureMap');
     program.setInt('inverseX', this.inverseX ? 1 : 0);
@@ -70,7 +70,7 @@ export default class extends MeshSprite {
       .set(
         this.behavior.getX() - this.viewBox.x,
         this.behavior.getY() - this.viewBox.y,
-        this.behavior.getZ()
+        this.behavior.getZ(),
       )
       .get();
   }

@@ -10,7 +10,7 @@ export const getRandomPointsInCube = (count) =>
       const z = Math.floor(Math.random() * 255);
       return [x, y, z, 255];
     },
-    []
+    [],
   ).flat();
 
 const getPointsInSphere = () => {
@@ -39,7 +39,7 @@ export const getRandomPointsInSphere = (count) =>
       const z = Math.floor(((point.z + 1) / 2) * 255);
       return [x, y, z, 255];
     },
-    []
+    [],
   ).flat();
 
 export const getGridPoints = (nbRows, nbColumns) => {

@@ -42,7 +42,7 @@
           e,
           t,
           n,
-          r
+          r,
         );
       }
       return n[o].exports;
@@ -295,7 +295,7 @@
                     geometry: geojson.geometry.geometries[i],
                     properties: geojson.properties,
                   },
-                  tolerance
+                  tolerance,
                 );
               }
               return;
@@ -479,7 +479,7 @@
                   x,
                   y,
                   tileTolerance,
-                  z === options.maxZoom
+                  z === options.maxZoom,
                 );
                 this.tileCoords.push({ z, x, y });
               }
@@ -700,7 +700,7 @@
                   tolerance,
                   noSimplify,
                   type === 'Polygon',
-                  i === 0
+                  i === 0,
                 );
               }
             } else if (type === 'MultiPolygon') {
@@ -719,8 +719,8 @@
                   type === 'Polygon' || type === 'MultiPolygon'
                     ? 3
                     : type === 'LineString' || type === 'MultiLineString'
-                    ? 2
-                    : 1,
+                      ? 2
+                      : 1,
                 tags: feature.tags || null,
               };
               if (feature.id !== null) {
@@ -892,6 +892,6 @@
       ],
     },
     {},
-    [4]
+    [4],
   )(4);
 });

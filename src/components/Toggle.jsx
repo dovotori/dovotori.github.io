@@ -40,7 +40,9 @@ const CheckBox = styled.input`
       width: 18px;
       height: 18px;
       margin-left: 21px;
-      transition: background-color 0.2s, margin-left 0.2s;
+      transition:
+        background-color 0.2s,
+        margin-left 0.2s;
     }
   }
 `;

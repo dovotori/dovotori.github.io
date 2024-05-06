@@ -1,15 +1,12 @@
 import { useEffect } from 'react';
-import {
-  useLocation,
-  Navigate
-} from 'react-router-dom';
+import { useLocation, Navigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setLang } from '../actions/device';
 
 import { Locales } from '../constants/locales';
 
 const haveLangRedirect = (str, lang) => str.indexOf(lang) !== -1;
-const getRedirect = (str) => str.length > 3 ? str.slice(3, str.length) : "/";
+const getRedirect = (str) => (str.length > 3 ? str.slice(3, str.length) : '/');
 
 export default () => {
   const location = useLocation();

@@ -72,7 +72,7 @@ class Mat4 {
       values[12],
       values[13],
       values[14],
-      values[15]
+      values[15],
     );
   }
 
@@ -87,7 +87,7 @@ class Mat4 {
       this.d[6],
       this.d[8],
       this.d[9],
-      this.d[10]
+      this.d[10],
     );
     return mat3;
   }
@@ -241,7 +241,7 @@ class Mat4 {
       0,
       0,
       near * far * rangeInv * 2,
-      0
+      0,
     );
     return this;
   }
@@ -263,7 +263,7 @@ class Mat4 {
       -(right + left) / (right - left),
       -(top + bottom) / (top - bottom),
       -(far + near) / (far - near),
-      1
+      1,
     );
     return this;
   }
@@ -354,7 +354,7 @@ class Mat4 {
       -(x0 * eyex + x1 * eyey + x2 * eyez),
       -(y0 * eyex + y1 * eyey + y2 * eyez),
       -(z0 * eyex + z1 * eyey + z2 * eyez),
-      1
+      1,
     );
     return this;
   }
@@ -420,7 +420,7 @@ class Mat4 {
       this.d[11],
       this.d[13],
       this.d[14],
-      this.d[15]
+      this.d[15],
     );
     const cofactor1 = Mat4.getCofacteur(
       this.d[4],
@@ -431,7 +431,7 @@ class Mat4 {
       this.d[11],
       this.d[12],
       this.d[14],
-      this.d[15]
+      this.d[15],
     );
     const cofactor2 = Mat4.getCofacteur(
       this.d[4],
@@ -442,7 +442,7 @@ class Mat4 {
       this.d[11],
       this.d[12],
       this.d[13],
-      this.d[15]
+      this.d[15],
     );
     const cofactor3 = Mat4.getCofacteur(
       this.d[4],
@@ -453,7 +453,7 @@ class Mat4 {
       this.d[10],
       this.d[12],
       this.d[13],
-      this.d[14]
+      this.d[14],
     );
 
     // get determinant
@@ -469,7 +469,7 @@ class Mat4 {
       this.d[11],
       this.d[13],
       this.d[14],
-      this.d[15]
+      this.d[15],
     );
     const cofactor5 = Mat4.getCofacteur(
       this.d[0],
@@ -480,7 +480,7 @@ class Mat4 {
       this.d[11],
       this.d[12],
       this.d[14],
-      this.d[15]
+      this.d[15],
     );
     const cofactor6 = Mat4.getCofacteur(
       this.d[0],
@@ -491,7 +491,7 @@ class Mat4 {
       this.d[11],
       this.d[12],
       this.d[13],
-      this.d[15]
+      this.d[15],
     );
     const cofactor7 = Mat4.getCofacteur(
       this.d[0],
@@ -502,7 +502,7 @@ class Mat4 {
       this.d[10],
       this.d[12],
       this.d[13],
-      this.d[14]
+      this.d[14],
     );
 
     const cofactor8 = Mat4.getCofacteur(
@@ -514,7 +514,7 @@ class Mat4 {
       this.d[7],
       this.d[13],
       this.d[14],
-      this.d[15]
+      this.d[15],
     );
     const cofactor9 = Mat4.getCofacteur(
       this.d[0],
@@ -525,7 +525,7 @@ class Mat4 {
       this.d[7],
       this.d[12],
       this.d[14],
-      this.d[15]
+      this.d[15],
     );
     const cofactor10 = Mat4.getCofacteur(
       this.d[0],
@@ -536,7 +536,7 @@ class Mat4 {
       this.d[7],
       this.d[12],
       this.d[13],
-      this.d[15]
+      this.d[15],
     );
     const cofactor11 = Mat4.getCofacteur(
       this.d[0],
@@ -547,7 +547,7 @@ class Mat4 {
       this.d[6],
       this.d[12],
       this.d[13],
-      this.d[14]
+      this.d[14],
     );
 
     const cofactor12 = Mat4.getCofacteur(
@@ -559,7 +559,7 @@ class Mat4 {
       this.d[7],
       this.d[9],
       this.d[10],
-      this.d[11]
+      this.d[11],
     );
     const cofactor13 = Mat4.getCofacteur(
       this.d[0],
@@ -570,7 +570,7 @@ class Mat4 {
       this.d[7],
       this.d[8],
       this.d[10],
-      this.d[11]
+      this.d[11],
     );
     const cofactor14 = Mat4.getCofacteur(
       this.d[0],
@@ -581,7 +581,7 @@ class Mat4 {
       this.d[7],
       this.d[8],
       this.d[9],
-      this.d[11]
+      this.d[11],
     );
     const cofactor15 = Mat4.getCofacteur(
       this.d[0],
@@ -592,7 +592,7 @@ class Mat4 {
       this.d[6],
       this.d[8],
       this.d[9],
-      this.d[10]
+      this.d[10],
     );
 
     const invDeterminant = 1.0 / determinant;
@@ -631,7 +631,7 @@ class Mat4 {
           this.d[11],
           this.d[13],
           this.d[14],
-          this.d[15]
+          this.d[15],
         ) -
       this.d[1] *
         Mat4.getCofacteur(
@@ -643,7 +643,7 @@ class Mat4 {
           this.d[11],
           this.d[12],
           this.d[14],
-          this.d[15]
+          this.d[15],
         ) +
       this.d[2] *
         Mat4.getCofacteur(
@@ -655,7 +655,7 @@ class Mat4 {
           this.d[11],
           this.d[12],
           this.d[13],
-          this.d[15]
+          this.d[15],
         ) -
       this.d[3] *
         Mat4.getCofacteur(
@@ -667,7 +667,7 @@ class Mat4 {
           this.d[10],
           this.d[12],
           this.d[13],
-          this.d[14]
+          this.d[14],
         )
     );
   }

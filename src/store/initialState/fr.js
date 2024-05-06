@@ -62,7 +62,7 @@ const initialState = {
           tasks: [
             "développement des évolutions de l'application de paris sportifs",
             "développement de l'application le Jeu de l'entraîneur",
-            "développement de la nouvelle version des Grilles",
+            'développement de la nouvelle version des Grilles',
           ],
         },
         {

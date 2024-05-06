@@ -25,7 +25,7 @@ const Circle = styled.div`
   background: linear-gradient(to right, #222, #333);
   transform-origin: center center;
   border-radius: 50%;
-  `;
+`;
 
 const CircleAnim = styled(Circle)`
   background: ${(p) => p.theme.primary};
@@ -66,9 +66,7 @@ const Pulse = ({ count }) => {
       <CircleAnim ref={ref} className={isModeTransition ? 'go' : ''}>
         {/* <path d="M0 2 L2 0 L4 2 L2 4Z" /> */}
       </CircleAnim>
-      <Circle>
-        {/* <path d="M0 2 L2 0 L4 2 L2 4Z" /> */}
-      </Circle>
+      <Circle>{/* <path d="M0 2 L2 0 L4 2 L2 4Z" /> */}</Circle>
     </>
   );
 };

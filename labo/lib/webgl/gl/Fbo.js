@@ -2,13 +2,7 @@ import TextureFbo from '../textures/TextureFbo';
 import TextureDepth from '../textures/TextureDepth';
 
 export default class {
-  constructor(
-    gl,
-    width = 1024,
-    height = 1024,
-    useDepth = false,
-    attachmentIdx = 0
-  ) {
+  constructor(gl, width = 1024, height = 1024, useDepth = false, attachmentIdx = 0) {
     this.gl = gl;
     this.buffer = this.gl.createFramebuffer();
     this.buffer.width = width;
@@ -16,15 +10,14 @@ export default class {
     this.clearColor = [0, 0, 0, 0];
     this.useDepth = useDepth;
 
-
-
     this.setup(attachmentIdx);
   }
 
   setup(attachmentIdx = 0) {
     this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.buffer);
 
-    const extension = this.gl.getExtension('WEBGL_draw_buffers') ||
+    const extension =
+      this.gl.getExtension('WEBGL_draw_buffers') ||
       this.gl.getExtension('GL_EXT_draw_buffers') ||
       this.gl.getExtension('EXT_draw_buffers');
 
@@ -40,7 +33,7 @@ export default class {
       attachement,
       this.gl.TEXTURE_2D,
       this.texture.get(),
-      0
+      0,
     );
 
     if (this.useDepth) {
@@ -51,7 +44,7 @@ export default class {
         this.gl.DEPTH_ATTACHMENT,
         this.gl.TEXTURE_2D,
         this.depthTexture.get(),
-        0
+        0,
       );
     }
 

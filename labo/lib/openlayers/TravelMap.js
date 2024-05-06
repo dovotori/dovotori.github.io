@@ -124,7 +124,7 @@ const getView = (points, defaultZoom) => {
       minY: acc.minY ? Math.min(acc.minY, coor[1]) : coor[1],
       maxY: acc.maxY ? Math.max(acc.maxY, coor[1]) : coor[1],
     }),
-    {}
+    {},
   );
 
   const centerX = extremes.minX + (extremes.maxX - extremes.minX) / 2;
@@ -155,7 +155,7 @@ const getMarkersLayer = (points) => {
         geometry: new Point(coor),
         text: label,
         offsetY,
-      })
+      }),
   );
 
   const style = new Style({
@@ -190,51 +190,53 @@ const getLineLayer = (points) => {
   });
 };
 
-const replacer = (moveX = 0, moveY = 0) => (key, value) => {
-  if (value?.geometry) {
-    let type;
-    const rawType = value.type;
-    let { geometry } = value;
+const replacer =
+  (moveX = 0, moveY = 0) =>
+  (key, value) => {
+    if (value?.geometry) {
+      let type;
+      const rawType = value.type;
+      let { geometry } = value;
 
-    if (moveX !== 0 || moveY !== 0) {
-      for (let i = 0; i < geometry.length; i++) {
-        for (let j = 0; j < geometry[i].length; j++) {
-          geometry[i][j] = [geometry[i][j][0] + moveX, geometry[i][j][1] + moveY];
+      if (moveX !== 0 || moveY !== 0) {
+        for (let i = 0; i < geometry.length; i++) {
+          for (let j = 0; j < geometry[i].length; j++) {
+            geometry[i][j] = [geometry[i][j][0] + moveX, geometry[i][j][1] + moveY];
+          }
         }
       }
-    }
 
-    if (rawType === 1) {
-      type = 'MultiPoint';
-      if (geometry.length === 1) {
-        type = 'Point';
-        geometry[0] = geometry;
+      if (rawType === 1) {
+        type = 'MultiPoint';
+        if (geometry.length === 1) {
+          type = 'Point';
+          geometry[0] = geometry;
+        }
+      } else if (rawType === 2) {
+        type = 'MultiLineString';
+        if (geometry.length === 1) {
+          type = 'LineString';
+          geometry[0] = geometry;
+        }
+      } else if (rawType === 3) {
+        type = 'Polygon';
+        if (geometry.length > 1) {
+          type = 'MultiPolygon';
+          geometry = [geometry];
+        }
       }
-    } else if (rawType === 2) {
-      type = 'MultiLineString';
-      if (geometry.length === 1) {
-        type = 'LineString';
-        geometry[0] = geometry;
-      }
-    } else if (rawType === 3) {
-      type = 'Polygon';
-      if (geometry.length > 1) {
-        type = 'MultiPolygon';
-        geometry = [geometry];
-      }
-    }
 
-    return {
-      type: 'Feature',
-      geometry: {
-        type,
-        coordinates: geometry,
-      },
-      properties: value.tags,
-    };
-  }
-  return value;
-};
+      return {
+        type: 'Feature',
+        geometry: {
+          type,
+          coordinates: geometry,
+        },
+        properties: value.tags,
+      };
+    }
+    return value;
+  };
 
 const getVectorMap = (json, format, highlightIso, colors) => {
   const tileIndex = geojsonvt(json, {
@@ -251,7 +253,7 @@ const getVectorMap = (json, format, highlightIso, colors) => {
           type: 'FeatureCollection',
           features: data ? data.features : [],
         },
-        replacer()
+        replacer(),
       );
       return `data:application/json;charset=UTF-8,${geojsonData}`;
     },
@@ -290,7 +292,7 @@ const getDecalVectorMap = (json, format, highlightIso, colors) => {
           type: 'FeatureCollection',
           features: data ? data.features : [],
         },
-        replacer(10, 10)
+        replacer(10, 10),
       );
       return `data:application/json;charset=UTF-8,${geojsonData}`;
     },

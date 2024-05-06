@@ -32,7 +32,7 @@ const Bloc = styled.div`
 `;
 
 const commonIcon = css`
-  display:block;
+  display: block;
   margin: 0 auto;
   padding: 0 2em;
   height: 4em;
@@ -85,7 +85,7 @@ const Category = styled.h3`
 `;
 
 const CategoryText = styled.span`
-  background:${(p) => p.theme.background};
+  background: ${(p) => p.theme.background};
   letter-spacing: 0.2em;
   position: absolute;
   top: 50%;
@@ -197,7 +197,11 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
       formation.items.length > 0 ? (
         <Bloc>
           <MarginLeft $isTouch={isTouchDevice}>
-            <Category><StyledAnimBar /><DiplomaIcon /><CategoryText>{formation.text}</CategoryText></Category>
+            <Category>
+              <StyledAnimBar />
+              <DiplomaIcon />
+              <CategoryText>{formation.text}</CategoryText>
+            </Category>
           </MarginLeft>
           {formation.items.map((item) => (
             <BlocJob key={item.text}>
@@ -215,7 +219,7 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
           ))}
         </Bloc>
       ) : null,
-    [formation, isTouchDevice]
+    [formation, isTouchDevice],
   );
 
   const renderJobs = useCallback(
@@ -223,7 +227,11 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
       jobs.items.length > 0 ? (
         <Bloc>
           <MarginLeft isTouch={isTouchDevice}>
-            <Category><StyledAnimBar /><TieIcon /><CategoryText>{jobs.text}</CategoryText></Category>
+            <Category>
+              <StyledAnimBar />
+              <TieIcon />
+              <CategoryText>{jobs.text}</CategoryText>
+            </Category>
           </MarginLeft>
           {jobs.items.map((item) => {
             const { startDate, endDate, text, tasks } = item;
@@ -251,7 +259,7 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
           })}
         </Bloc>
       ) : null,
-    [jobs, renderDate, isTouchDevice]
+    [jobs, renderDate, isTouchDevice],
   );
 
   const renderSkills = useCallback(
@@ -259,7 +267,11 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
       skills.items.length > 0 ? (
         <Bloc>
           <MarginLeft isTouch={isTouchDevice}>
-            <Category><StyledAnimBar /><SkillsIcon /><CategoryText>{skills.text}</CategoryText></Category>
+            <Category>
+              <StyledAnimBar />
+              <SkillsIcon />
+              <CategoryText>{skills.text}</CategoryText>
+            </Category>
           </MarginLeft>
           {chart && !isTouchDevice && <Chart data={chart} />}
           {(isTouchDevice || !chart) &&
@@ -299,7 +311,7 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
             ))}
         </Bloc>
       ) : null,
-    [skills, isTouchDevice]
+    [skills, isTouchDevice],
   );
 
   const renderHobbies = useCallback(
@@ -307,7 +319,11 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
       hobbies.items.length > 0 ? (
         <Bloc>
           <MarginLeft isTouch={isTouchDevice}>
-            <Category><StyledAnimBar /><ManetteIcon /><CategoryText>{hobbies.text}</CategoryText></Category>
+            <Category>
+              <StyledAnimBar />
+              <ManetteIcon />
+              <CategoryText>{hobbies.text}</CategoryText>
+            </Category>
             {hobbies.items.map((item) => {
               const { text, about } = item;
               return (
@@ -327,7 +343,7 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
           </MarginLeft>
         </Bloc>
       ) : null,
-    [hobbies, isTouchDevice]
+    [hobbies, isTouchDevice],
   );
 
   return (

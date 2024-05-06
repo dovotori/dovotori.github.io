@@ -20,7 +20,7 @@ export default class {
       0,
       this.gl.RGBA,
       this.gl.UNSIGNED_BYTE,
-      data
+      data,
     );
     this.setFilters();
     this.gl.bindTexture(this.gl.TEXTURE_2D, null);

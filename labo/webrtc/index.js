@@ -58,7 +58,7 @@ export default () => {
           button.innerHTML = 'Retry';
         }
       },
-      false
+      false,
     );
   }
 };

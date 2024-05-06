@@ -2,7 +2,7 @@ import Teaser from '../Teaser';
 
 export default {
   title: 'Components/Teaser',
-  component: Teaser
+  component: Teaser,
 };
 
 const Template = (args) => <Teaser {...args} />;

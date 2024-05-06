@@ -18,7 +18,8 @@ self.onmessage = async (e) => {
       }
       break;
     }
-    default: break;
+    default:
+      break;
   }
   self.postMessage({ type, id, payload: { assets }, config });
 };

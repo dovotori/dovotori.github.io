@@ -11,7 +11,7 @@ export default class extends Texture {
       0,
       this.gl.DEPTH_COMPONENT,
       this.gl.UNSIGNED_INT,
-      null
+      null,
     );
   }
 

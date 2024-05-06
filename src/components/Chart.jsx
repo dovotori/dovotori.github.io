@@ -51,7 +51,7 @@ const Chart = ({ className, data, showAllIcons = false }) => {
         setCurrentName(node.name);
       }
     },
-    [curretName]
+    [curretName],
   );
 
   const drawNodes = useCallback(
@@ -101,7 +101,7 @@ const Chart = ({ className, data, showAllIcons = false }) => {
         return returnValue;
       });
     },
-    [handleClickArc, showAllIcons]
+    [handleClickArc, showAllIcons],
   );
 
   return (

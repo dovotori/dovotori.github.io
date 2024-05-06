@@ -12,7 +12,7 @@ const initialState = {
   isTouch: isTouchDevice(),
   isDarkMode: storedDarkMode !== null ? storedDarkMode : true,
   lang: defaultLang,
-  category: -1
+  category: -1,
 };
 
 export default function device(state = initialState, action = {}) {
