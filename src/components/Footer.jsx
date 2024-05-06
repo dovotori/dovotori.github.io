@@ -74,7 +74,7 @@ const Line = styled.span`
   background: ${(p) => p.theme.text};
   z-index: 0;
   transition: transform 300ms ease-out;
-  transform: ${(p) => (p.isHighlight ? "none" : "scale(0)")};
+  transform: ${(p) => (p.$isHighlight ? "none" : "scale(0)")};
 `;
 
 const LineLeft = styled(Line)`
@@ -108,9 +108,12 @@ const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => (
     <Div>
       {availablesLang.map((availableLang) => (
         <Button key={availableLang.id} onClick={setLang(availableLang.id)}>
-          <LineLeft isHighlight={availableLang.id === lang} className="line" />
+          <LineLeft $isHighlight={availableLang.id === lang} className="line" />
           <SimpleSpan>&#8202;{availableLang.short}</SimpleSpan>
-          <LineRight isHighlight={availableLang.id === lang} className="line" />
+          <LineRight
+            $isHighlight={availableLang.id === lang}
+            className="line"
+          />
         </Button>
       ))}
     </Div>

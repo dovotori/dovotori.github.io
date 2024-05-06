@@ -75,7 +75,7 @@ const StyledAnimBar = styled(AnimBar)`
 `;
 
 const Category = styled.h3`
-  margin: 4em 0 2em;
+  margin: 10em 0 2em;
   text-transform: lowercase;
   font-weight: normal;
   color: ${(p) => p.theme.light};

@@ -24,8 +24,7 @@ const TeasersList = ({ entries, isTouchDevice, className }) => {
   const sortEntries = useMemo(
     () =>
       // concat very important, create a copy to avoid mutation on store
-      entries.concat().sort((a, b) => (a.date > b.date ? -1 : 1))
-    ,
+      entries.concat().sort((a, b) => (a.date > b.date ? -1 : 1)),
     [entries],
   );
   return (

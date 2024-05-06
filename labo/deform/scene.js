@@ -41,6 +41,9 @@ export default class extends Scene {
     const progCircle = this.mngProg.get("frequencyCircle");
     progCircle.setInt("length", this.fVbo.getCount());
     progCircle.setInt("maxfrequency", 256.0);
+
+    const progBasic = this.mngProg.get("color");
+    progBasic.setVector("color", [0.7, 0.2, 0.6, 0.2]);
   }
 
   setupControls = ({ ranges }) => {
@@ -57,7 +60,7 @@ export default class extends Scene {
       playbackRate.dom.addEventListener(
         "change",
         this.onChangePlaybackRate,
-        false,
+        false
       );
     }
   };
@@ -106,7 +109,7 @@ export default class extends Scene {
   }
 
   renderGlobe = (program, texData = null) => {
-    const progBasic = this.mngProg.get("normale");
+    const progBasic = this.mngProg.get("color");
     this.model.push();
     this.model.scale(0.7);
     this.model.rotate(this.time * 0.1, 1, 1, 1);
@@ -195,7 +198,7 @@ export default class extends Scene {
       playbackRate.dom.removeEventListener(
         "change",
         this.onChangePlaybackRate,
-        false,
+        false
       );
     }
 

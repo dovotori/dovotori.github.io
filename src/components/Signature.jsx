@@ -15,9 +15,8 @@ const fadeUp = keyframes`
 const Wrap = styled.div`
   position: relative;
   margin: 22vh auto;
-  display:flex;
+  display: flex;
   justify-content: center;
-}
 `;
 
 const StyledTypingMessage = styled(TypingMessage)`
@@ -60,7 +59,7 @@ const commonName = css`
   width: 100%;
   pointer-events: none;
   user-select: none;
-  ${(p) => p.isTouch && `text-align: center;`};
+  ${(p) => p.$isTouch && `text-align: center;`};
   ${(p) => p.theme.media.mobile`text-align: center;`};
 `;
 
@@ -82,7 +81,7 @@ const Katakana = styled.h1`
   color: ${(p) => p.theme.text};
   line-height: 0.7;
   position: absolute;
-  font-size: ${(p) => (p.isHome ? "11em" : "8em")};
+  font-size: ${(p) => (p.$isHome ? "11em" : "8em")};
   top: 50%;
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
@@ -156,14 +155,14 @@ const Signature = ({
   return (
     <Wrap>
       <Pulse className="circle" count={count} />
-      <Katakana isTouch={isTouchDevice} isHome={isHome}>
+      <Katakana $isTouch={isTouchDevice} $isHome={isHome}>
         <StyledTypingMessage
           message={isHome ? "ドリアン" : "はじめまして"}
           isLoop
           isVertical
         />
       </Katakana>
-      <Absolute isTouch={isTouchDevice}>
+      <Absolute $isTouch={isTouchDevice}>
         <StyledLink
           to={isHome ? "/about" : "/"}
           className={className}
@@ -177,8 +176,8 @@ const Signature = ({
               <StyledLabo slug="picto" $colorType={0} noBackground hasJs />
             )}
           </Appear>
-          <CenterHorizontal isTouch={isTouchDevice}>
-            <Name isTouch={isTouchDevice}>
+          <CenterHorizontal $isTouch={isTouchDevice}>
+            <Name $isTouch={isTouchDevice}>
               <StyledTypingMessage
                 message={isHome ? "dorian" : hello}
                 firstMessage="ドリアン"

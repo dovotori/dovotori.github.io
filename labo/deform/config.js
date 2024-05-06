@@ -3,7 +3,7 @@ export default {
   slug: "deform",
   MAIN_PROG,
   shaders: [
-    "/camera/normale.js",
+    "/camera/color.js",
     "/camera/frequencyCircle.js",
     "/camera/frequencyGrid.js",
     `/camera/${MAIN_PROG}.js`,

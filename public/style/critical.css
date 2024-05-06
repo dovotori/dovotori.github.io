@@ -48,7 +48,6 @@ body,
 body {
   line-height: 1.6;
   background-color: #222;
-  overflow-x: hidden;
   color: #fff;
   font-size: 14px;
   direction: ltr;

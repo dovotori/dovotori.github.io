@@ -38,7 +38,7 @@ self.addEventListener("fetch", (event) => {
           // Return the network response
           return fetchedResponse;
         });
-      })
-    )
+      }),
+    ),
   );
 });

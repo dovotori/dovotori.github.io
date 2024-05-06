@@ -14,7 +14,7 @@ const WrapTexte = styled.div`
 `;
 
 const Description = styled.div`
-  background: ${(p) => p.theme.backgroundHighlight};
+  box-shadow: 0 1em 2em rgba(0,0,0,0.2);
   color: ${(p) => p.theme.light};
   width: 100%;
   max-width: ${TEXT_WIDTH}px;
@@ -59,22 +59,8 @@ const Bar = styled.div`
   background: ${(p) => p.theme.getGradient};
 `;
 
-const InvTitle = styled.span`
-  position: absolute;
-  top: -0.2em;
-  left: -0.2em;
-  font-size: 4em;
-  font-weight: 800;
-  z-index: -1;
-  background: ${(p) => p.theme.softGradient};
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: none;
-`;
-
 const ProjectHeader = ({
   title,
-  inverseTitle,
   descriptions,
   date,
   $colorType,
@@ -84,7 +70,6 @@ const ProjectHeader = ({
       {date && <Date $colorType={$colorType}>{date}</Date>}
       {title && (
         <StyledTitle $colorType={$colorType}>
-          <InvTitle>{inverseTitle}</InvTitle>
           <StyledTypingMessage message={title} />
         </StyledTitle>
       )}

@@ -165,7 +165,7 @@ export default class extends Scene {
     this.gl.disable(this.gl.DEPTH_TEST);
     const program = this.mngProg.get("tunnelrace");
     program.setFloat("flipY", -1);
-    // program.setFloat('time', this.time * 0.005 + this.posTime * 5.0);
+    // program.setFloat("time", this.time * 0.005 + this.posTime * 5.0);
     program.setFloat("time", this.time * 0.001);
     this.screen.render(program.get());
     this.gl.enable(this.gl.DEPTH_TEST);

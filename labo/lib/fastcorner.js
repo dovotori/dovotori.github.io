@@ -1864,7 +1864,7 @@ function fast9_score(im, xsize, ysize, corners, b) {
       corners[n].y,
       corners[n].x,
       pixel,
-      b
+      b,
     );
   // corners[n].score = fast9_corner_score(im, stride, corners[n].y, corners[n].x, pixel, b);
 

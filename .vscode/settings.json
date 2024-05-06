@@ -11,6 +11,6 @@
     "**/node_modules": true
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "always"
-  },
+    // "source.fixAll.eslint": "always"
+  }
 }

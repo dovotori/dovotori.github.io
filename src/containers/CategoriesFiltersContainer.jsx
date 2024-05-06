@@ -17,9 +17,6 @@ export default () => {
   );
 
   return (
-    <CategoriesFilters
-      selected={categoryId}
-      categories={filterCategories}
-    />
+    <CategoriesFilters selected={categoryId} categories={filterCategories} />
   );
 };

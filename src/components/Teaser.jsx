@@ -27,8 +27,10 @@ const StyledLink = styled(Link).attrs({
     return "translateY(20%)";
   }};
   z-index: ${(p) => (p.$isVisible && p.$isHover && !p.$isTouchDevice ? 1 : 0)};
-  transition: opacity 1s ${(p) => p.theme.elastic},
-    transform 1s ${(p) => p.theme.elastic}, box-shadow 800ms linear;
+  transition:
+    opacity 1s ${(p) => p.theme.elastic},
+    transform 1s ${(p) => p.theme.elastic},
+    box-shadow 800ms linear;
 
   ${(p) => p.theme.active}
   ${(p) => p.theme.media.mobile`margin: 0.5em auto; width: 100%; height: auto;`}
@@ -62,7 +64,8 @@ const Title = styled.h3`
   font-size: 10em;
   letter-spacing: 0.1em;
   opacity: ${(p) => (p.$isFocus ? 0.4 : 0)};
-  transition: opacity 1s ${(p) => p.theme.elastic},
+  transition:
+    opacity 1s ${(p) => p.theme.elastic},
     transform 1s ${(p) => p.theme.elastic};
   transform: ${(p) =>
     p.$isFocus ? "translate3d(0, -50%, 0)" : "translate3d(-100%, -50%, 0)"};
@@ -78,7 +81,8 @@ const Plus = styled(PlusIcon)`
   height: 50%;
   fill: ${(p) => p.theme.getColor};
   opacity: ${(p) => (p.$isFocus ? 1 : 0)};
-  transition: opacity 1s ${(p) => p.theme.elastic},
+  transition:
+    opacity 1s ${(p) => p.theme.elastic},
     transform 1s ${(p) => p.theme.elastic};
   transform: ${(p) => (p.$isFocus ? "none" : "scale(0) rotate(45deg)")};
   z-index: 2;

@@ -1,5 +1,6 @@
 export const downloadSVG = (svg, selector, prefix) => {
   const element = document.querySelector(selector);
+  if (!element) return;
   element.download = `${prefix}${Date.now()}.svg`;
   const serializer = new XMLSerializer();
   let source = serializer.serializeToString(svg);

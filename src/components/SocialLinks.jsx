@@ -23,7 +23,9 @@ const Wrap = styled.div`
 const StyledMail = styled(Mail)`
   color: ${(p) => p.theme.light};
   .toOpen {
-    transition: transform 300ms ease-out, color 300ms ease-out;
+    transition:
+      transform 300ms ease-out,
+      color 300ms ease-out;
   }
   &:hover .toOpen {
     transform: rotate3d(1, 0, 0, 170deg);

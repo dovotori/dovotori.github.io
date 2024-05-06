@@ -1,15 +1,6 @@
 {
-  "extends": [
-    "airbnb",
-    "prettier",
-    "eslint:recommended"
-  ],
-  "plugins": [
-    "react",
-    "jsx-a11y",
-    "import",
-    "jest"
-  ],
+  "extends": ["airbnb", "prettier", "eslint:recommended"],
+  "plugins": ["react", "jsx-a11y", "import", "jest"],
   "parser": "@babel/eslint-parser",
   "parserOptions": {
     "sourceType": "module",
@@ -32,7 +23,7 @@
     "src/store/initialState/"
   ],
   "rules": {
-    "react/react-in-jsx-scope": "off",
+    "react/react-in-jsx-scope": 0,
     "react/prop-types": 0,
     "react/display-name": 0,
     "react/function-component-definition": 0,

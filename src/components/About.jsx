@@ -27,10 +27,8 @@ const WrapContent = styled.div`
 `;
 
 const BlocDescription = styled.div`
-  background: ${(p) => p.theme.softGradient};
   padding: 2em;
-  border-radius: 1em;
-  box-shadow: 0 0 2em ${(p) => p.theme.backgroundHighlight};
+  box-shadow: 0 1em 2em rgba(0,0,0,0.2);
 `;
 
 const Description = styled.p`
@@ -45,7 +43,7 @@ const StyledButtonBack = styled(ButtonBack)`
 `;
 
 const Link = styled.a`
-  margin-top: ${(p) => (!p.isTouch ? 0 : "10em")};
+  margin-top: ${(p) => (!p.$isTouch ? 0 : "10em")};
   display: flex;
   justify-content: flex-end;
 `;
@@ -66,6 +64,7 @@ const Quote = styled.div`
 
 const StyledQuoteIcon = styled(QuoteIcon)`
   margin-right: 0.2em;
+  margin-bottom: -1.5em;
   stroke: ${(p) => p.theme.primary};
   height: 4em;
 `;
@@ -78,7 +77,7 @@ const Center = styled.div`
 const About = ({ hello, isTouchDevice }) => (
   <Wrap>
     <WrapContent>
-      <Link href={`mailto:${process.env.MAIL}`} isTouch={isTouchDevice}>
+      <Link href={`mailto:${process.env.MAIL}`} $isTouch={isTouchDevice}>
         <Quote>
           <StyledQuoteIcon />
           <StyledQuoteIcon />
@@ -92,7 +91,7 @@ const About = ({ hello, isTouchDevice }) => (
       <CvContainer />
       <StyledSocialLinks />
       <Center>
-        <StyledButtonBack isTouch={isTouchDevice} />
+        <StyledButtonBack $isTouch={isTouchDevice} />
       </Center>
     </WrapContent>
   </Wrap>

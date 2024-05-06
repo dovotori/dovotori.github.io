@@ -98,7 +98,7 @@ const computeDelaunay = ({ data, width, height, threshold }) => {
       y1,
       x2,
       y2,
-      width
+      width,
     );
     coors.push({ x0, y0, x1, y1, x2, y2, color });
   }

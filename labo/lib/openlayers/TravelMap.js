@@ -192,54 +192,54 @@ const getLineLayer = (points) => {
 
 const replacer =
   (moveX = 0, moveY = 0) =>
-    (key, value) => {
-      if (value?.geometry) {
-        let type;
-        const rawType = value.type;
-        let { geometry } = value;
+  (key, value) => {
+    if (value?.geometry) {
+      let type;
+      const rawType = value.type;
+      let { geometry } = value;
 
-        if (moveX !== 0 || moveY !== 0) {
-          for (let i = 0; i < geometry.length; i++) {
-            for (let j = 0; j < geometry[i].length; j++) {
-              geometry[i][j] = [
-                geometry[i][j][0] + moveX,
-                geometry[i][j][1] + moveY,
-              ];
-            }
+      if (moveX !== 0 || moveY !== 0) {
+        for (let i = 0; i < geometry.length; i++) {
+          for (let j = 0; j < geometry[i].length; j++) {
+            geometry[i][j] = [
+              geometry[i][j][0] + moveX,
+              geometry[i][j][1] + moveY,
+            ];
           }
         }
-
-        if (rawType === 1) {
-          type = "MultiPoint";
-          if (geometry.length === 1) {
-            type = "Point";
-            geometry[0] = geometry;
-          }
-        } else if (rawType === 2) {
-          type = "MultiLineString";
-          if (geometry.length === 1) {
-            type = "LineString";
-            geometry[0] = geometry;
-          }
-        } else if (rawType === 3) {
-          type = "Polygon";
-          if (geometry.length > 1) {
-            type = "MultiPolygon";
-            geometry = [geometry];
-          }
-        }
-
-        return {
-          type: "Feature",
-          geometry: {
-            type,
-            coordinates: geometry,
-          },
-          properties: value.tags,
-        };
       }
-      return value;
-    };
+
+      if (rawType === 1) {
+        type = "MultiPoint";
+        if (geometry.length === 1) {
+          type = "Point";
+          geometry[0] = geometry;
+        }
+      } else if (rawType === 2) {
+        type = "MultiLineString";
+        if (geometry.length === 1) {
+          type = "LineString";
+          geometry[0] = geometry;
+        }
+      } else if (rawType === 3) {
+        type = "Polygon";
+        if (geometry.length > 1) {
+          type = "MultiPolygon";
+          geometry = [geometry];
+        }
+      }
+
+      return {
+        type: "Feature",
+        geometry: {
+          type,
+          coordinates: geometry,
+        },
+        properties: value.tags,
+      };
+    }
+    return value;
+  };
 
 const getVectorMap = (json, format, highlightIso, colors) => {
   const tileIndex = geojsonvt(json, {

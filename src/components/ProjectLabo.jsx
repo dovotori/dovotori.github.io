@@ -37,7 +37,7 @@ const LoadedTransition = styled.div`
   height: 100%;
   background: ${(p) => p.theme.getGradient};
   transform-origin: center 100%;
-  ${(p) => (p.isLoaded ? animationLoad : "")};
+  ${(p) => (p.$isLoaded ? animationLoad : "")};
 `;
 
 const StyledLabo = styled(Labo)`
@@ -83,7 +83,7 @@ const ProjecLabo = (props) => {
     <Wrap className={className}>
       <StyledLabo slug={slug} onLoad={onLoad} hasHtml={hasHtml} hasJs={hasJs} />
       {!noBackground && (
-        <LoadedTransition $colorType={colorType} isLoaded={isLoaded} />
+        <LoadedTransition $colorType={colorType} $isLoaded={isLoaded} />
       )}
       {!isLoaded && <Loader $colorType={colorType} />}
     </Wrap>

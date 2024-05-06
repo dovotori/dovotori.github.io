@@ -104,11 +104,16 @@ class App {
     container.appendChild(this.canvas.get());
   }
 
-  resize = (e) => {
-    const container = e[0].target;
-    if (container) {
-      this.adaptCanvas(container);
-    }
+  resize = (entries) => {
+    window.requestAnimationFrame(() => {
+      if (!Array.isArray(entries) || !entries.length) {
+        return;
+      }
+      const container = entries[0].target;
+      if (container) {
+        this.adaptCanvas(container);
+      }
+    });
   };
 
   adaptCanvas = (container) => {

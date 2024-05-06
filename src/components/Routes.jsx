@@ -25,7 +25,6 @@ const Arrow = styled(BackArrow)`
 const MinHeight = styled.div`
   min-height: 100vh;
   width: 100%;
-  overflow-x: hidden;
 `;
 
 const renderRoute = (route) => {
@@ -46,7 +45,7 @@ const Center = styled.div`
   position: relative;
   margin: 0 auto;
   max-width: 700px;
-  ${(p) => p.hide && `visibility: hidden; pointer-events: none;`}
+  ${(p) => p.$isHide && `visibility: hidden; pointer-events: none;`}
 `;
 
 const BackButton = () => {
@@ -54,7 +53,7 @@ const BackButton = () => {
   const labelBack = useSelector((state) => state.content.back);
   return (
     <Center
-      hide={
+      $isHide={
         location.pathname === "/" ||
         location.pathname.indexOf("/category/") !== -1
       }

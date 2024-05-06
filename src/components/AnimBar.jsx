@@ -13,7 +13,6 @@ const move = keyframes`
   100% {
     transform: none;
   }
-}
 `;
 
 const Bar = styled.div`

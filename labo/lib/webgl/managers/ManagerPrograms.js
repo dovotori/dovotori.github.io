@@ -29,7 +29,7 @@ export default class {
       this.programs[item.name] = item.prog;
     }
 
-    console.log("programs", performance.now() - startTime);
+    console.log(`programs perf ${performance.now() - startTime}ms`);
     this.updateResolution(resolution.width, resolution.height);
   }
 

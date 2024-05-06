@@ -42,7 +42,7 @@
           e,
           t,
           n,
-          r
+          r,
         );
       }
       return n[o].exports;
@@ -125,7 +125,7 @@
                 }
 
                 clipped.push(
-                  createFeature(feature.id, type, newGeometry, feature.tags)
+                  createFeature(feature.id, type, newGeometry, feature.tags),
                 );
               }
             }
@@ -297,7 +297,7 @@
                     geometry: geojson.geometry.geometries[i],
                     properties: geojson.properties,
                   },
-                  tolerance
+                  tolerance,
                 );
               }
               return;
@@ -306,7 +306,7 @@
             }
 
             features.push(
-              createFeature(geojson.id, type, geometry, geojson.properties)
+              createFeature(geojson.id, type, geometry, geojson.properties),
             );
           }
 
@@ -438,7 +438,7 @@
           function GeoJSONVT(data, options) {
             options = this.options = extend(
               Object.create(this.options),
-              options
+              options,
             );
 
             if (options.maxZoom < 0 || options.maxZoom > 24)
@@ -447,7 +447,7 @@
             const z2 = 1 << options.maxZoom; // 2^z
             let features = convert(
               data,
-              options.tolerance / (z2 * options.extent)
+              options.tolerance / (z2 * options.extent),
             );
 
             this.tiles = {};
@@ -476,7 +476,7 @@
             y,
             cz,
             cx,
-            cy
+            cy,
           ) {
             const stack = [features, z, x, y];
             const { options } = this;
@@ -503,7 +503,7 @@
                   x,
                   y,
                   tileTolerance,
-                  z === options.maxZoom
+                  z === options.maxZoom,
                 );
                 this.tileCoords.push({ z, x, y });
               }
@@ -557,7 +557,7 @@
                 x + k3,
                 0,
                 tile.minX,
-                tile.maxX
+                tile.maxX,
               );
               right = clip(
                 features,
@@ -566,7 +566,7 @@
                 x + k4,
                 0,
                 tile.minX,
-                tile.maxX
+                tile.maxX,
               );
               features = null;
 
@@ -750,7 +750,7 @@
                 tolerance,
                 noSimplify,
                 false,
-                false
+                false,
               );
             } else if (type === "MultiLineString" || type === "Polygon") {
               for (i = 0; i < geom.length; i++) {
@@ -761,7 +761,7 @@
                   tolerance,
                   noSimplify,
                   type === "Polygon",
-                  i === 0
+                  i === 0,
                 );
               }
             } else if (type === "MultiPolygon") {
@@ -775,7 +775,7 @@
                     tolerance,
                     noSimplify,
                     true,
-                    i === 0
+                    i === 0,
                   );
                 }
               }
@@ -788,8 +788,8 @@
                   type === "Polygon" || type === "MultiPolygon"
                     ? 3
                     : type === "LineString" || type === "MultiLineString"
-                    ? 2
-                    : 1,
+                      ? 2
+                      : 1,
                 tags: feature.tags || null,
               };
               if (feature.id !== null) {
@@ -806,7 +806,7 @@
             tolerance,
             noSimplify,
             isPolygon,
-            isOuter
+            isOuter,
           ) {
             const sqTolerance = tolerance * tolerance;
 
@@ -884,7 +884,7 @@
               if (type === 1) {
                 for (j = 0; j < geom.length; j += 2) {
                   feature.geometry.push(
-                    transformPoint(geom[j], geom[j + 1], extent, z2, tx, ty)
+                    transformPoint(geom[j], geom[j + 1], extent, z2, tx, ty),
                   );
                 }
               } else {
@@ -898,8 +898,8 @@
                         extent,
                         z2,
                         tx,
-                        ty
-                      )
+                        ty,
+                      ),
                     );
                   }
                   feature.geometry.push(ring);
@@ -969,7 +969,7 @@
                   const newPolygon = [];
                   for (let k = 0; k < feature.geometry[j].length; k++) {
                     newPolygon.push(
-                      shiftCoords(feature.geometry[j][k], offset)
+                      shiftCoords(feature.geometry[j][k], offset),
                     );
                   }
                   newGeometry.push(newPolygon);
@@ -977,7 +977,7 @@
               }
 
               newFeatures.push(
-                createFeature(feature.id, type, newGeometry, feature.tags)
+                createFeature(feature.id, type, newGeometry, feature.tags),
               );
             }
 
@@ -998,6 +998,6 @@
       ],
     },
     {},
-    [4]
+    [4],
   )(4);
 });

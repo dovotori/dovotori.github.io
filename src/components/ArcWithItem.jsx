@@ -9,7 +9,9 @@ const Wrap = styled.g`
 
   & > path {
     transform: none;
-    transition: transform 300ms ease-out, opacity 2s ease-out;
+    transition:
+      transform 300ms ease-out,
+      opacity 2s ease-out;
     transform-origin: center center;
   }
 
