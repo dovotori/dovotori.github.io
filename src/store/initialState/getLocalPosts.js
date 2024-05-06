@@ -466,7 +466,7 @@ const rawPosts = [
     title: {
       [Locales.FR]: "Course",
       [Locales.EN]: "Race",
-      [Locales.JP]: "人種",
+      [Locales.JP]: "レース",
     },
     category: CAT_BLOG,
     tags: [],
