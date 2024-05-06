@@ -142,11 +142,11 @@ const Level = styled.span`
 `;
 
 const Clear = styled.div`
-  ${(p) => !p.isTouch && 'position: relative; overflow: hidden; display: flex;'};
+  ${(p) => !p.$isTouch && 'position: relative; overflow: hidden; display: flex;'};
 `;
 
 const MarginLeft = styled.div`
-  margin: ${(p) => !p.isTouch && '0 0 0 20%'};
+  margin: ${(p) => !p.$isTouch && '0 0 0 20%'};
 `;
 
 const FloatLeft = styled.div`
@@ -157,12 +157,12 @@ const FloatLeft = styled.div`
 `;
 
 const FloatRight = styled.div`
-  ${(p) => !p.isTouch && 'width: 80%;'};
+  ${(p) => !p.$isTouch && 'width: 80%;'};
 `;
 
 const FloatRightTwoCol = styled.div`
   ${(p) =>
-    p.isTouch &&
+    p.$isTouch &&
     `
     @media (min-width: 400px) {
       display: grid;
@@ -196,17 +196,17 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
     () =>
       formation.items.length > 0 ? (
         <Bloc>
-          <MarginLeft isTouch={isTouchDevice}>
+          <MarginLeft $isTouch={isTouchDevice}>
             <Category><StyledAnimBar /><DiplomaIcon /><CategoryText>{formation.text}</CategoryText></Category>
           </MarginLeft>
           {formation.items.map((item) => (
             <BlocJob key={item.text}>
               <Line>
-                <Clear isTouch={isTouchDevice}>
-                  <FloatLeft isTouch={isTouchDevice}>
-                    <Date isTouch={isTouchDevice}>{item.date}</Date>
+                <Clear $isTouch={isTouchDevice}>
+                  <FloatLeft $isTouch={isTouchDevice}>
+                    <Date $isTouch={isTouchDevice}>{item.date}</Date>
                   </FloatLeft>
-                  <FloatRight isTouch={isTouchDevice}>
+                  <FloatRight $isTouch={isTouchDevice}>
                     <Text>{item.text}</Text>
                   </FloatRight>
                 </Clear>

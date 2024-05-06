@@ -37,14 +37,15 @@ const Center = styled.div`
   position: relative;
   margin: 0 auto;
   max-width: 700px;
-  ${(p) => p.hide && `visibility: hidden; pointer-events: none;`}
+  ${(p) => p.$isHide && `visibility: hidden; pointer-events: none;`}
 `;
 
 const BackButton = () => {
   const location = useLocation();
   const labelBack = useSelector((state) => state.content.back);
+  const isHide = location.pathname === '/' || location.pathname.indexOf('/category/') !== -1;
   return (
-    <Center hide={location.pathname === '/' || location.pathname.indexOf('/category/') !== -1}>
+    <Center $isHide={isHide}>
       <ButtonNavigation to="/" label={labelBack} $colorType={0}>
         <Arrow $colorType={0} />
         <Arrow $colorType={0} />

@@ -8,8 +8,8 @@ const Wrap = styled.div`
   overflow: hidden;
 `;
 const IMG = styled.img`
-  opacity: ${(p) => (p.loaded ? 1 : 0)};
-  visibility: ${(p) => (p.loaded ? 'visible' : 'hidden')};
+  opacity: ${(p) => (p.$isLoaded ? 1 : 0)};
+  visibility: ${(p) => (p.$isLoaded ? 'visible' : 'hidden')};
   transition: opacity 300ms ease-out;
   text-transform: lowercase;
   letter-spacing: 0.1em;
@@ -26,7 +26,7 @@ const LazyImage = forwardRef(
           alt={`_${alt}`}
           src={src}
           onLoad={hasLoaded}
-          loaded={isLoaded}
+          $isLoaded={isLoaded}
           width={width || 'auto'}
           height={height || 'auto'}
         />
