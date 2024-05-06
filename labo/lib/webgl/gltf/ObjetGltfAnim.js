@@ -95,12 +95,12 @@ class ObjectGltfAnim extends ObjetGltf {
         if (path === "rotation") {
           nodeAnimations[path] = ObjectGltfAnim.updateQuat(
             nodeAnimations[path],
-            time,
+            time
           );
         } else {
           nodeAnimations[path] = ObjectGltfAnim.updateVector(
             nodeAnimations[path],
-            time,
+            time
           );
         }
       });
@@ -123,7 +123,7 @@ class ObjectGltfAnim extends ObjetGltf {
         const next = output[index];
         const interpolationValue = sample.get();
         newAnimation.value = previous.map((previousValue, i) =>
-          lerp(interpolationValue, previousValue, next[i]),
+          lerp(interpolationValue, previousValue, next[i])
         );
       }
     } else {
@@ -143,7 +143,7 @@ class ObjectGltfAnim extends ObjetGltf {
         newAnimation.value = new Quaternion(...output[0]).toMatrix4();
       } else if (index > output.length - 1) {
         newAnimation.value = new Quaternion(
-          ...output[output.length - 1],
+          ...output[output.length - 1]
         ).toMatrix4();
       } else {
         const previous = output[index - 1];
@@ -152,7 +152,7 @@ class ObjectGltfAnim extends ObjetGltf {
         newAnimation.value = Quaternion.slerpArray(
           previous,
           next,
-          interpolationValue,
+          interpolationValue
         ).toMatrix4();
       }
     } else {
@@ -177,12 +177,12 @@ class ObjectGltfAnim extends ObjetGltf {
     }
     if (rotation || rotationAnimation) {
       localMatrix.multiply(
-        ObjectGltfAnim.getRotationMat(rotation, rotationAnimation),
+        ObjectGltfAnim.getRotationMat(rotation, rotationAnimation)
       );
     }
     if (translation || translationAnimation) {
       localMatrix.translate(
-        ...ObjectGltfAnim.getVector(translation, translationAnimation),
+        ...ObjectGltfAnim.getVector(translation, translationAnimation)
       );
     }
 
@@ -213,7 +213,7 @@ class ObjectGltfAnim extends ObjetGltf {
 
   static getRotationMat = (
     rotation = [0, 0, 0, 1],
-    rotationAnimation = null,
+    rotationAnimation = null
   ) => {
     if (rotationAnimation && rotationAnimation.value) {
       return rotationAnimation.value;

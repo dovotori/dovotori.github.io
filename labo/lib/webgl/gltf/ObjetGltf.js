@@ -46,7 +46,7 @@ class ObjetGltf {
     let newModel = model;
     // apply only on mesh transformation, should exclude joint transformation/animation
     if (node.customType !== "joint") {
-      newModel = ObjetGltf.setNodeModel(node, program, model);
+      newModel = this.setNodeModel(node, program, model);
       this.renderNode(node, program);
     }
     if (node.children) {
@@ -70,8 +70,8 @@ class ObjetGltf {
     });
   }
 
-  static setNodeModel = (node, program, model) => {
-    const localMatrix = ObjetGltf.handleLocalTransform(node);
+  setNodeModel = (node, program, model) => {
+    const localMatrix = this.handleLocalTransform(node);
     localMatrix.multiply(model);
     program.setMatrix("model", localMatrix.get());
 
@@ -96,7 +96,9 @@ class ObjetGltf {
       return new ObjetGltfPrimitive(gl, { vbos, material });
     });
 
-  static handleLocalTransform = (node) => {
+  // its a class parent method, its override by child class
+  // eslint-disable-next-line
+  handleLocalTransform = (node) => {
     const { translation, rotation, scale, matrix } = node;
 
     const localMatrix = new Mat4();
