@@ -3,7 +3,7 @@ import availablesLang from "../constants/locales";
 export const getSelectedCategory = (categories, category) => {
   if (category) {
     const match = Object.keys(categories).filter(
-      (id) => category === categories[id].slug,
+      (id) => category === categories[id].slug
     )[0];
     return match ? parseInt(match, 10) : null;
   }
@@ -52,7 +52,7 @@ export const parseCsv = (string) => {
         ...acc,
         [cur]: l[index] !== "" ? l[index] : null,
       }),
-      {},
+      {}
     );
   });
 };
@@ -97,11 +97,6 @@ export const storage = {
     return item !== null && item !== undefined ? JSON.parse(item) : null;
   },
 };
-
-export const chunkArray = (arr, size) =>
-  Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
-    arr.slice(i * size, i * size + size),
-  );
 
 export const later = (ms = 20) =>
   new Promise((resolve) => {

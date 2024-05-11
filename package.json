@@ -12,7 +12,7 @@
     "start": "webpack serve --config webpack/dev.js",
     "build": "webpack --config webpack/prod.js",
     "clean": "node scripts/cleanBuild.js",
-    "labo:start": "cross-env NAME=skin webpack serve --config webpack/labo.dev.js",
+    "labo:start": "cross-env NAME=webgpu webpack serve --config webpack/labo.dev.js",
     "labo:build": "webpack --config webpack/labo.prod.js",
     "local:server": "npx http-server build/ -p 8080 -b -g --cors",
     "prettier": "prettier --write \"{src,labo,webpack,scripts,public}/**/*.{js,jsx}\"",

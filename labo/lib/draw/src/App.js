@@ -1,11 +1,11 @@
-import Loop from "./logic/Loop";
+import Loop from "./core/Loop";
 import ManagerAssets from "./managers/ManagerAssets";
 import ManagerShaders from "./managers/ManagerShaders";
-import Canvas from "./gl/Canvas";
+import Canvas from "./core/Canvas";
 import Keyboard from "./io/Keyboard";
 import Controls from "./io/Controls";
 import Mouse from "./io/Mouse";
-import { capitalize, getEnvPath } from "./utils";
+import { capitalize, getEnvPath } from "../../utils";
 
 class App {
   constructor() {
@@ -17,28 +17,27 @@ class App {
     this.resizeObserver = null;
   }
 
-  async setup(Scene, config) {
+  async setup(Scene, config = {}) {
     const container = document.querySelector(`#${config.slug}`);
     if (!container) return;
 
     this.configRatio = window.innerHeight / document.body.offsetWidth;
 
     let assets = {};
-    if (config) {
-      this.configRatio = config.canvas.height / config.canvas.width;
+    this.configRatio = config.canvas.height / config.canvas.width;
 
-      if (config.assets) {
-        const am = new ManagerAssets(config.useWebGpu);
-        assets = await am.get(config.assets.map((path) => getEnvPath(path)));
-      }
+    if (config.assets) {
+      const am = new ManagerAssets(config.useWebGpu);
+      assets = await am.get(config.assets.map((path) => getEnvPath(path)));
+    }
 
-      if (config.shaders) {
-        const as = new ManagerShaders();
-        assets.shaders = await as.get(config.shaders);
-      }
+    if (config.shaders) {
+      const as = new ManagerShaders();
+      assets.shaders = await as.get(config.shaders);
     }
 
     this.canvas = new Canvas(config.useWebGpu);
+    await this.canvas.setup();
     const { width, height } = this.getCurrentSize(container);
     const supportConfig = this.canvas.getSupport();
     const finalConfig = {
@@ -52,12 +51,11 @@ class App {
     const isDrawWegpuUnsupported =
       config.useWebgpu && (!supportConfig.webgpu || !supportConfig.device);
     const shouldDisabled = isDrawBufferUnsupported || isDrawWegpuUnsupported;
-
     if (shouldDisabled) {
       const oups = document.createElement("p");
       oups.innerHTML = `
       <b>ご迷惑おかけして申し訳ありません。</b>
-      <br/>Sorry. Webgl draw buffers extension support problem occured.
+      <br/>Sorry. A support problem occured.
       <br/>Please try on a more recent device.
       `;
       oups.style.textAlign = "center";
@@ -68,37 +66,35 @@ class App {
 
     this.scene = new Scene(this.canvas.getContext(), finalConfig);
     await this.scene.setupAssets(assets);
-    if (this.scene.setup) {
-      this.scene.setup();
-    }
+    if (this.scene.setup) this.scene.setup();
     this.resizeObserver = new ResizeObserver(this.resize);
     this.resizeObserver.observe(container);
 
-    if (config) {
-      if (config.keyboard) {
-        this.keyboard = new Keyboard(config.keyboard);
-      }
-      if (config.mouse) {
-        const { events, domId } = config.mouse;
-        const callbacks = events.reduce(
-          (acc, cur) => ({
-            ...acc,
-            [`callback${capitalize(cur)}`]:
-              this.scene[`onMouse${capitalize(cur)}`],
-          }),
-          {}
-        );
-        const mouseContainer = domId
-          ? document.querySelector(`#${domId}`)
-          : container;
-        this.mouse = new Mouse(mouseContainer, callbacks);
-      }
-      if (config.controls) {
-        this.controls = new Controls(container, config.controls);
-        container.appendChild(this.controls.getDomItem());
-        if (config.controls.ranges && this.scene.setupControls) {
-          this.scene.setupControls({ ranges: this.controls.getRanges() });
-        }
+    if (config.keyboard) {
+      this.keyboard = new Keyboard(config.keyboard);
+    }
+
+    if (config.mouse) {
+      const { events, domId } = config.mouse;
+      const callbacks = events.reduce(
+        (acc, cur) => ({
+          ...acc,
+          [`callback${capitalize(cur)}`]:
+            this.scene[`onMouse${capitalize(cur)}`],
+        }),
+        {}
+      );
+      const mouseContainer = domId
+        ? document.querySelector(`#${domId}`)
+        : container;
+      this.mouse = new Mouse(mouseContainer, callbacks);
+    }
+
+    if (config.controls) {
+      this.controls = new Controls(container, config.controls);
+      container.appendChild(this.controls.getDomItem());
+      if (config.controls.ranges && this.scene.setupControls) {
+        this.scene.setupControls({ ranges: this.controls.getRanges() });
       }
     }
 
