@@ -9,6 +9,7 @@ import {
 import Camera from "../lib/draw/src/cameras/Camera";
 import Mat4 from "../lib/draw/src/maths/Mat4";
 import DualQuaternion from "../lib/draw/src/maths/DualQuaternion";
+import Animation from "../lib/draw/src/maths/Animation";
 
 class Scene {
   constructor(context, config) {
@@ -47,11 +48,15 @@ class Scene {
     const materials = gltf.get("materials");
     const nodes = gltf.get("nodes");
 
-    console.log({ assets, config: this.config, meshes, nodes, materials });
+    console.log({
+      assets,
+      config: this.config,
+      gltf,
+    });
 
     this.buffers = new Set();
     this.matrixBuffersMaps = new Map();
-    this.matIndexes = new Map();
+    this.materialIndexes = new Map();
 
     const meshBuffersMaps = new Map();
     for (const [key, mesh] of meshes) {
@@ -61,7 +66,7 @@ class Scene {
         const buffer = new BufferGltf();
         buffer.setup(device, primitive);
         this.buffers.add(buffer);
-        this.matIndexes.set(buffer, primitive.material);
+        this.materialIndexes.set(buffer, primitive.material);
         meshBuffers.push(buffer);
       }
       meshBuffersMaps.set(key, meshBuffers);
@@ -147,22 +152,27 @@ class Scene {
       uniforms.byteLength
     );
 
+    // animations
+    this.animations = new Animation(gltf.get("animations"), nodes);
+
     // for material
-    this.matBuffer = new BufferMaterial();
-    this.matBuffer.setup(device, materials, layoutMaterial);
+    this.materialBuffer = new BufferMaterial();
+    this.materialBuffer.setup(device, materials, layoutMaterial);
 
     this.nodes = new Map();
     for (const [key, node] of nodes) {
       const meshId = node.mesh;
-      if (meshId !== undefined) {
-        const transformBinfGroup = BufferTransform.setup(
-          device,
-          node,
-          layoutTransform
-        );
-        const buffers = meshBuffersMaps.get(meshId);
-        this.nodes.set(key, { transformBinfGroup, buffers });
-      }
+      if (meshId === undefined) continue;
+      const buffers = meshBuffersMaps.get(meshId);
+      const matrix = BufferTransform.getNodeMatrix(node);
+      this.nodes.set(key, {
+        name: node.name,
+        buffers,
+        matrix,
+        transformBindGroup: !this.animations.isNodeHasAnimation(key)
+          ? BufferTransform.setup(device, matrix, layoutTransform)
+          : undefined,
+      });
     }
   }
 
@@ -177,11 +187,16 @@ class Scene {
     quat.rotateY(time * 0.0005);
     // quat.rotateX(time * 0.001)
     this.model.multiply(quat.toMatrix4());
+
+    if (this.animations) {
+      this.animations.update(time);
+    }
   }
 
   render() {
     const device = this.context.getDevice();
     const encoder = device.createCommandEncoder();
+    const layoutTransform = this.pipeline.get().getBindGroupLayout(1);
 
     // camera update
     const projection = this.camera.getProjection().get();
@@ -216,10 +231,27 @@ class Scene {
     // should sort primitives by material
     for (const [key, node] of this.nodes) {
       node.buffers.forEach((buffer) => {
-        pass.setBindGroup(1, node.transformBinfGroup);
+        let transformBindGroup = node.transformBindGroup;
+        if (!transformBindGroup) {
+          // animations
+          const finalMatrix = this.animations.handleLocalTransform(key);
+          // const matrix = node.matrix;
+          // const finalMatrix = new Mat4();
+          // finalMatrix.setRaw(matrix.get());
+          // finalMatrix.translate(2, 0, 0);
+          transformBindGroup = BufferTransform.setup(
+            device,
+            finalMatrix,
+            layoutTransform
+          );
+        }
+
+        pass.setBindGroup(1, transformBindGroup);
         pass.setBindGroup(
           2,
-          this.matBuffer.getBindGroup(this.matIndexes.get(buffer) || 0)
+          this.materialBuffer.getBindGroup(
+            this.materialIndexes.get(buffer) || 0
+          )
         );
         pass.setVertexBuffer(0, buffer.getVertexBuffer());
         pass.setIndexBuffer(buffer.getIndexBuffer(), "uint16");

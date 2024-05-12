@@ -280,7 +280,7 @@ class LoadGltfForWebGpu {
     return newNodes;
   };
 
-  static getAnimationsPerNodes = (animations, nodes, accessors) => {
+  static getAnimationsPerNodes = (animations, accessors) => {
     const animationsPerNodes = new Map();
     if (animations) {
       animations.forEach(({ channels, samplers }) => {
@@ -294,18 +294,13 @@ class LoadGltfForWebGpu {
           const input = accessors[inputAccessorIndex];
           const output = accessors[outputAccessorIndex];
           const { node: nodeIndex, path } = target;
-          const node = nodes.get(nodeIndex);
 
-          // define output chunk length
-          let chunkLength = getNumComponentPerType(output.type);
-          if (node[path]) {
-            chunkLength = node[path].length;
-          }
-
-          const outputData = chunkArray(output.buffer, chunkLength);
+          const outputData = chunkArray(output.buffer, output.numElement);
+          const inputData = input.buffer;
+          console.log({ inputData, input });
           const newAnimItem = {
             path,
-            times: input.values,
+            times: inputData,
             output: outputData,
             interpolation,
           };
@@ -337,9 +332,7 @@ class LoadGltfForWebGpu {
 
     const animationsPerNodes = LoadGltfForWebGpu.getAnimationsPerNodes(
       animations,
-      newNodes,
-      layoutBuffers,
-      newMeshes
+      layoutBuffers
     );
     this.data = new Map();
     if (newMeshes) this.data.set("meshes", newMeshes);
