@@ -39,8 +39,6 @@ class Scene {
     const { width, height } = this.config.canvas;
     const format = this.context.getCanvasFormat();
 
-    console.log({ assets, config: this.config });
-
     const firstGltfName = Object.keys(assets.gltfs)[0];
     const gltf = assets.gltfs[firstGltfName];
 
@@ -49,7 +47,7 @@ class Scene {
     const materials = gltf.get("materials");
     const nodes = gltf.get("nodes");
 
-    console.log({ nodes, meshes });
+    console.log({ assets, config: this.config, meshes, nodes, materials });
 
     this.buffers = new Set();
     this.matrixBuffersMaps = new Map();
@@ -166,8 +164,6 @@ class Scene {
         this.nodes.set(key, { transformBinfGroup, buffers });
       }
     }
-
-    console.log(this.buffers, this.matIndexes, this.nodes);
   }
 
   update(time) {

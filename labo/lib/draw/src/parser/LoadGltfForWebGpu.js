@@ -5,6 +5,7 @@ import {
   getBufferDataFromLayout,
   getMixedInterleavedBufferData,
 } from "./GltfCommon";
+import { chunkArray } from "../../../utils";
 import { base64ToArrayBuffer } from "../../../utils/base64";
 
 class LoadGltfForWebGpu {
@@ -279,6 +280,47 @@ class LoadGltfForWebGpu {
     return newNodes;
   };
 
+  static getAnimationsPerNodes = (animations, nodes, accessors) => {
+    const animationsPerNodes = new Map();
+    if (animations) {
+      animations.forEach(({ channels, samplers }) => {
+        channels.forEach(({ target, sampler: samplerIndex }) => {
+          const {
+            input: inputAccessorIndex,
+            output: outputAccessorIndex,
+            interpolation,
+          } = samplers[samplerIndex];
+
+          const input = accessors[inputAccessorIndex];
+          const output = accessors[outputAccessorIndex];
+          const { node: nodeIndex, path } = target;
+          const node = nodes.get(nodeIndex);
+
+          // define output chunk length
+          let chunkLength = getNumComponentPerType(output.type);
+          if (node[path]) {
+            chunkLength = node[path].length;
+          }
+
+          const outputData = chunkArray(output.buffer, chunkLength);
+          const newAnimItem = {
+            path,
+            times: input.values,
+            output: outputData,
+            interpolation,
+          };
+          animationsPerNodes.set(
+            nodeIndex,
+            animationsPerNodes[nodeIndex]
+              ? [...animationsPerNodes[nodeIndex], newAnimItem]
+              : [newAnimItem]
+          );
+        });
+      });
+    }
+    return animationsPerNodes;
+  };
+
   constructor(rawText) {
     const gltf = JSON.parse(rawText);
     console.log({ gltf });
@@ -287,16 +329,24 @@ class LoadGltfForWebGpu {
 
   // attribute -> accesor -> bufferView -> buffer
   setup(gltf) {
-    const { meshes, materials, nodes } = gltf;
+    const { meshes, materials, nodes, animations } = gltf;
     const { layoutBuffers } = LoadGltfForWebGpu.getBuffersDataWebGpu(gltf);
     const newMeshes = LoadGltfForWebGpu.getMeshes(gltf, layoutBuffers);
     const newMaterials = new Set(materials);
+    const newNodes = LoadGltfForWebGpu.getNodes(nodes);
 
+    const animationsPerNodes = LoadGltfForWebGpu.getAnimationsPerNodes(
+      animations,
+      newNodes,
+      layoutBuffers,
+      newMeshes
+    );
     this.data = new Map();
     if (newMeshes) this.data.set("meshes", newMeshes);
-    this.data.set("nodes", LoadGltfForWebGpu.getNodes(nodes));
+    this.data.set("nodes", newNodes);
     this.data.set("materials", newMaterials);
     this.data.set("pipeline", LoadGltfForWebGpu.getPipelines(meshes));
+    this.data.set("animations", animationsPerNodes);
   }
 
   get() {
