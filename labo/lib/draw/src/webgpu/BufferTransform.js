@@ -1,8 +1,8 @@
 import Transform from "../maths/Transform";
 
 class BufferTransform {
-  static setup(device, transformMatrix, layout) {
-    const buffer = BufferTransform.setupOne(device, transformMatrix);
+  static setup(device, layout, bufferData) {
+    const buffer = BufferTransform.setupOne(device, bufferData);
     return device.createBindGroup({
       label: "bind group transform",
       layout,
@@ -15,16 +15,20 @@ class BufferTransform {
     });
   }
 
-  static setupOne(device, transformMatrix) {
+  static setupOne(device, bufferData) {
+    const { transformMatrix, pickingColor } = bufferData;
     const buffer = device.createBuffer({
-      size: Float32Array.BYTES_PER_ELEMENT * 16 * 2, // 1 4x4 mat + 1 3x3 mat
+      size: Float32Array.BYTES_PER_ELEMENT * 16 * 2, // 1 4x4 mat + 1 3x3 mat + 1 vec4
       usage: window.GPUBufferUsage.UNIFORM | window.GPUBufferUsage.COPY_DST,
       mappedAtCreation: true,
     });
-
     const bufferArray = new Float32Array(buffer.getMappedRange());
     const normalMatrix = Transform.getNormalMatrix(transformMatrix);
-    bufferArray.set([...transformMatrix.get(), ...normalMatrix.get()]);
+    bufferArray.set([
+      ...pickingColor,
+      ...transformMatrix.get(),
+      ...normalMatrix.get(),
+    ]);
     buffer.unmap();
     return buffer;
   }

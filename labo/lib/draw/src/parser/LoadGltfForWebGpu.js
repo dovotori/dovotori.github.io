@@ -297,7 +297,6 @@ class LoadGltfForWebGpu {
 
           const outputData = chunkArray(output.buffer, output.numElement);
           const inputData = input.buffer;
-          console.log({ inputData, input });
           const newAnimItem = {
             path,
             times: inputData,

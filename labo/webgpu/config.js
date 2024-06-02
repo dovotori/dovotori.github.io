@@ -1,7 +1,12 @@
 export default {
-  slug: 'webgpu',
-  shaders: ['/wgsl/vertex/v_gltf.js', '/wgsl/fragment/f_gltf.js'],
-  assets: ['/gltf/paysage.gltf'],
+  slug: "webgpu",
+  shaders: [
+    "/wgsl/vertex/v_gltf.js",
+    "/wgsl/fragment/f_gltf.js",
+    "/wgsl/vertex/v_picking.js",
+    "/wgsl/fragment/f_picking.js",
+  ],
+  assets: ["/gltf/paysage.gltf"],
   // assets: ['/gltf/head.gltf'],
   // assets: ['/gltf/headinterleaved.gltf'],
   canvas: {
@@ -33,7 +38,10 @@ export default {
     },
   ],
   controls: {
-    fullscreen: { buttonId: 'fullscreen-toggle-btn' },
+    fullscreen: { buttonId: "fullscreen-toggle-btn" },
   },
   useWebGpu: true,
-}
+  mouse: {
+    events: ["click"],
+  },
+};

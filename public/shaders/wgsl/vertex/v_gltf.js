@@ -9,6 +9,7 @@ struct CameraUniform {
 var<uniform> camera: CameraUniform;
 
 struct TransformUniform {
+  color_picking: vec4<f32>,
   model: mat4x4<f32>,
   normal_matrix: mat3x3<f32>,
 };
@@ -26,6 +27,7 @@ struct VertexOutput {
   @builtin(position) clip_position: vec4<f32>,
   @location(0) world_position: vec3f,
   @location(1) world_normal: vec3f,
+  @location(2) color_picking: vec4f,
 }
 
 @vertex
@@ -37,8 +39,10 @@ fn v_main(
 
   out.world_position = world_position.xyz;
   out.world_normal = transform.normal_matrix * in.normale;
+  out.color_picking = transform.color_picking;
 
   out.clip_position = camera.projection * camera.view * camera.model * world_position;
+
   return out;
 }
 `;

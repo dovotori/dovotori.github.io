@@ -11,6 +11,13 @@ import Mat4 from "../lib/draw/src/maths/Mat4";
 import DualQuaternion from "../lib/draw/src/maths/DualQuaternion";
 import Animation from "../lib/draw/src/maths/Animation";
 
+const BindGroups = {
+  CAMERA: 0,
+  TRANSFORM: 1,
+  MATERIAL: 2,
+  LIGHT: 3,
+};
+
 class Scene {
   constructor(context, config) {
     this.context = context;
@@ -20,6 +27,7 @@ class Scene {
     this.camera = new Camera(config.camera);
     this.camera.perspective(width, height);
     this.textures = new Textures();
+    this.canvasSize = { width: 0, height: 0 };
 
     this.model = new Mat4();
     this.model.identity();
@@ -38,6 +46,7 @@ class Scene {
     }, {});
 
     const { width, height } = this.config.canvas;
+    this.canvasSize = { width, height };
     const format = this.context.getCanvasFormat();
 
     const firstGltfName = Object.keys(assets.gltfs)[0];
@@ -74,6 +83,12 @@ class Scene {
 
     const [firstBuffer] = this.buffers;
 
+    console.log({
+      firstBuffer,
+      pipeLineData,
+      pixelRatio: window.devicePixelRatio,
+    });
+
     this.pipeline = new Pipeline();
     await this.pipeline.setup(
       device,
@@ -89,10 +104,18 @@ class Scene {
     });
     this.pipeline.setupRenderPassDescriptor();
 
-    const layoutCamera = this.pipeline.get().getBindGroupLayout(0);
-    const layoutTransform = this.pipeline.get().getBindGroupLayout(1);
-    const layoutMaterial = this.pipeline.get().getBindGroupLayout(2);
-    const layoutLights = this.pipeline.get().getBindGroupLayout(3);
+    const layoutCamera = this.pipeline
+      .get()
+      .getBindGroupLayout(BindGroups.CAMERA);
+    const layoutTransform = this.pipeline
+      .get()
+      .getBindGroupLayout(BindGroups.TRANSFORM);
+    const layoutMaterial = this.pipeline
+      .get()
+      .getBindGroupLayout(BindGroups.MATERIAL);
+    const layoutLights = this.pipeline
+      .get()
+      .getBindGroupLayout(BindGroups.LIGHT);
 
     // for camera
     const uniformCameraBufferSize =
@@ -160,20 +183,73 @@ class Scene {
     this.materialBuffer.setup(device, materials, layoutMaterial);
 
     this.nodes = new Map();
+    let colorIndex = 1;
     for (const [key, node] of nodes) {
       const meshId = node.mesh;
       if (meshId === undefined) continue;
       const buffers = meshBuffersMaps.get(meshId);
       const matrix = BufferTransform.getNodeMatrix(node);
+
+      const pickingColor = [
+        ((colorIndex >> 0) & 0xff) / 0xff,
+        ((colorIndex >> 8) & 0xff) / 0xff,
+        ((colorIndex >> 16) & 0xff) / 0xff,
+        ((colorIndex >> 24) & 0xff) / 0xff,
+      ];
+
       this.nodes.set(key, {
         name: node.name,
         buffers,
         matrix,
+        pickingColor,
         transformBindGroup: !this.animations.isNodeHasAnimation(key)
-          ? BufferTransform.setup(device, matrix, layoutTransform)
+          ? BufferTransform.setup(device, layoutTransform, {
+              transformMatrix: matrix,
+              pickingColor,
+            })
           : undefined,
       });
+      colorIndex++;
     }
+
+    this.setupPicking(device, programs, format);
+  }
+
+  setupPicking(device, programs, format) {
+    this.pickingPipeline = device.createRenderPipeline({
+      vertex: {
+        module: programs.v_picking.get(),
+        entryPoint: "v_main",
+      },
+      fragment: {
+        module: programs.f_picking.get(),
+        entryPoint: "f_main",
+        targets: [
+          {
+            format,
+          },
+        ],
+      },
+      // depthStencil: this.depthTexture.depthState(),
+      primitive: {
+        topology: "triangle-list",
+      },
+      layout: "auto",
+    });
+
+    this.pickingColorTexture = device.createTexture({
+      format: "rgba32float",
+      size: this.canvasSize,
+      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
+    });
+
+    this.pickBufferSize = 16;
+
+    this.pickDestinationBuffer = device.createBuffer({
+      label: "pickDestination",
+      usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
+      size: this.pickBufferSize,
+    });
   }
 
   update(time) {
@@ -196,7 +272,6 @@ class Scene {
   render() {
     const device = this.context.getDevice();
     const encoder = device.createCommandEncoder();
-    const layoutTransform = this.pipeline.get().getBindGroupLayout(1);
 
     // camera update
     const projection = this.camera.getProjection().get();
@@ -225,8 +300,22 @@ class Scene {
     // After devide.getEncodeur().beginRenderPass()
 
     pass.setPipeline(this.pipeline.get());
-    pass.setBindGroup(0, this.uniformCameraBindGroup);
-    pass.setBindGroup(3, this.uniformLightsBindGroup);
+    pass.setBindGroup(BindGroups.CAMERA, this.uniformCameraBindGroup);
+    pass.setBindGroup(BindGroups.LIGHT, this.uniformLightsBindGroup);
+
+    this.drawModel(device, pass);
+
+    // before pass.end()
+    pass.end();
+
+    // const commandBuffer = this.devide.getEncodeur().finish()
+    // device.queue.submit([commandBuffer])
+    // Finish the command buffer and immediately submit it.
+    device.queue.submit([encoder.finish()]);
+  }
+
+  drawModel(device, pass) {
+    const layoutTransform = this.pipeline.get().getBindGroupLayout(1);
 
     // should sort primitives by material
     for (const [key, node] of this.nodes) {
@@ -239,16 +328,15 @@ class Scene {
           // const finalMatrix = new Mat4();
           // finalMatrix.setRaw(matrix.get());
           // finalMatrix.translate(2, 0, 0);
-          transformBindGroup = BufferTransform.setup(
-            device,
-            finalMatrix,
-            layoutTransform
-          );
+          transformBindGroup = BufferTransform.setup(device, layoutTransform, {
+            transformMatrix: finalMatrix,
+            pickingColor: node.pickingColor,
+          });
         }
 
-        pass.setBindGroup(1, transformBindGroup);
+        pass.setBindGroup(BindGroups.TRANSFORM, transformBindGroup);
         pass.setBindGroup(
-          2,
+          BindGroups.MATERIAL,
           this.materialBuffer.getBindGroup(
             this.materialIndexes.get(buffer) || 0
           )
@@ -258,17 +346,10 @@ class Scene {
         pass.drawIndexed(buffer.getIndexCount());
       });
     }
-
-    // before pass.end()
-    pass.end();
-
-    // const commandBuffer = this.devide.getEncodeur().finish()
-    // device.queue.submit([commandBuffer])
-    // Finish the command buffer and immediately submit it.
-    device.queue.submit([encoder.finish()]);
   }
 
   resize(size) {
+    this.canvasSize = size;
     this.textures.setup(
       this.context.getDevice(),
       this.context.getCanvasFormat(),
@@ -276,6 +357,79 @@ class Scene {
       size
     );
   }
+
+  onMouseClick = async (e) => {
+    await this.pick(e.pos.x, e.pos.y);
+  };
+
+  pick = async (x, y) => {
+    // https://webglfundamentals.org/webgl/lessons/webgl-picking.html
+    // https://github.com/ghadeeras/ghadeeras.github.io/blob/master/src/scalar-field/picker.gpu.ts
+    const device = this.context.getDevice();
+    const encoder = device.createCommandEncoder();
+
+    const renderPassDescriptor = {
+      label: "mousePick",
+      colorAttachments: [
+        {
+          view: null,
+          // resolveTarget: null, // context.getCurrentTexture().createView(),
+          clearValue: { r: 0, g: 0, b: 0, a: 0 },
+          loadOp: "clear", // 'load' -> draw hover / 'clear'
+          storeOp: "store", // 'store' -> save // 'discard' maybe for save in tex
+        },
+      ],
+    };
+
+    renderPassDescriptor.colorAttachments[0].view =
+      this.pickingColorTexture.createView();
+
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+
+    pass.setPipeline(this.pickingPipeline);
+    pass.setBindGroup(BindGroups.CAMERA, this.uniformCameraBindGroup);
+
+    this.drawModel(device, pass);
+
+    const origin = {
+      x,
+      y,
+    };
+
+    console.log(origin);
+
+    encoder.copyTextureToBuffer(
+      {
+        texture: this.pickingColorTexture,
+        origin,
+      },
+      {
+        buffer: this.pickDestinationBuffer,
+        bytesPerRow: 256,
+      },
+      {
+        width: 1,
+        height: 1,
+      }
+    );
+
+    pass.end();
+
+    device.queue.submit([encoder.finish()]);
+
+    await this.pickDestinationBuffer.mapAsync(
+      GPUMapMode.READ,
+      0, // Offset
+      this.pickBufferSize // Length
+    );
+    const copyArrayBuffer = this.pickDestinationBuffer.getMappedRange(
+      0,
+      this.pickBufferSize
+    );
+    const data = copyArrayBuffer.slice(0);
+    this.pickDestinationBuffer.unmap();
+    console.log(new Float32Array(data));
+  };
 }
 
 export default Scene;
