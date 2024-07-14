@@ -85,6 +85,8 @@ class Pipeline {
   getRenderPassDescriptor = () => this.renderPassDescriptor;
 
   getDepthTextureFormat = () => this.depthTextureFormat;
+
+  getBindGroupLayout = (index) => this.pipeline.getBindGroupLayout(index);
 }
 
 export default Pipeline;
