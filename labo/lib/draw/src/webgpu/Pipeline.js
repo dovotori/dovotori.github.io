@@ -1,3 +1,5 @@
+import { blend } from "./constants";
+
 class Pipeline {
   constructor() {
     this.pipeline = null;
@@ -5,33 +7,22 @@ class Pipeline {
     this.depthTextureFormat = "depth32float";
   }
 
-  async setup(device, vertex, fragment, config, buffersLayout, canvasFormat) {
+  async setup(device, program, config, buffersLayout, canvasFormat) {
     const descriptor = {
       label: "Gltf pipeline",
       layout: "auto",
       vertex: {
-        module: vertex,
+        module: program.vertex,
         entryPoint: "v_main",
         buffers: buffersLayout,
       },
       fragment: {
-        module: fragment,
+        module: program.fragment,
         entryPoint: "f_main",
         targets: [
           {
             format: canvasFormat,
-            // alpha blend behavior
-            blend: {
-              color: {
-                srcFactor: "src-alpha",
-                dstFactor: "one-minus-src-alpha",
-              },
-              alpha: {
-                // This just prevents the canvas from having alpha "holes" in it.
-                srcFactor: "one",
-                dstFactor: "one",
-              },
-            },
+            blend,
           },
         ],
       },
@@ -51,7 +42,7 @@ class Pipeline {
   setupRenderPassDescriptor = () => {
     // renderpass descriptor
     this.renderPassDescriptor = {
-      label: "gltf",
+      label: "GltfPassDescriptor",
       colorAttachments: [
         {
           view: null,
@@ -66,7 +57,6 @@ class Pipeline {
         depthClearValue: 1.0,
         depthLoadOp: "clear",
         depthStoreOp: "store",
-
         stencilClearValue: 0,
         // stencilLoadOp: 'clear',
         // stencilStoreOp: 'store',
@@ -75,8 +65,8 @@ class Pipeline {
   };
 
   update = (currentView, renderTargetView, depthTextureView) => {
-    this.renderPassDescriptor.colorAttachments[0].view = renderTargetView;
     this.renderPassDescriptor.colorAttachments[0].resolveTarget = currentView;
+    this.renderPassDescriptor.colorAttachments[0].view = renderTargetView;
     this.renderPassDescriptor.depthStencilAttachment.view = depthTextureView;
   };
 

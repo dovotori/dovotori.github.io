@@ -5,6 +5,8 @@ export default {
     "/wgsl/fragment/f_gltf.js",
     "/wgsl/vertex/v_picking.js",
     "/wgsl/fragment/f_picking.js",
+    "/wgsl/vertex/v_debug_tex.js",
+    "/wgsl/fragment/f_debug_tex.js",
   ],
   assets: ["/gltf/paysage.gltf"],
   // assets: ['/gltf/head.gltf'],
@@ -19,6 +21,7 @@ export default {
     near: 1,
     far: 200,
     angle: 60,
+    // ortho: { left: -100, right: 100, bottom: -100, top: 100 },
   },
   lampes: [
     {

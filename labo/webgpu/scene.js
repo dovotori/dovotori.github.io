@@ -1,9 +1,9 @@
 import {
   Program,
-  BufferTransform,
-  PipelineTextures,
   GltfPipeline,
   GltfBindGroups,
+  Picking,
+  DebugTexture,
 } from "../lib/draw/src/webgpu";
 import Camera from "../lib/draw/src/cameras/Camera";
 import Mat4 from "../lib/draw/src/maths/Mat4";
@@ -17,13 +17,15 @@ class Scene {
     const { width, height } = this.config.canvas;
     this.camera = new Camera(config.camera);
     this.camera.perspective(width, height);
-    this.textures = new PipelineTextures();
+
     this.canvasSize = { width, height };
 
     this.model = new Mat4();
     this.model.identity();
 
     this.gltfPipeline = new GltfPipeline(context, config);
+    this.picking = new Picking(this.context);
+    this.debug = new DebugTexture(this.context);
   }
 
   setup() {}
@@ -124,10 +126,22 @@ class Scene {
       gltf,
     });
 
-    await this.gltfPipeline.setup(gltf, {
-      vertex: programs.v_gltf.get(),
-      fragment: programs.f_gltf.get(),
-    });
+    this.debug.setup(
+      {
+        vertex: programs.v_debug_tex.get(),
+        fragment: programs.f_debug_tex.get(),
+      },
+      this.canvasSize
+    );
+
+    await this.gltfPipeline.setup(
+      gltf,
+      {
+        vertex: programs.v_gltf.get(),
+        fragment: programs.f_gltf.get(),
+      },
+      this.canvasSize
+    );
 
     this.uniformCamera = this.setupCamera(
       this.gltfPipeline.getBindGroupLayout(GltfBindGroups.CAMERA)
@@ -137,21 +151,27 @@ class Scene {
       this.gltfPipeline.getBindGroupLayout(GltfBindGroups.LIGHT)
     );
 
-    this.textures.setup(
-      device,
-      this.context.getCanvasFormat(),
-      this.canvasSize
+    // PICKING
+    await this.picking.setup(
+      {
+        vertex: programs.v_picking.get(),
+        fragment: programs.f_picking.get(),
+      },
+      this.canvasSize,
+      [this.gltfPipeline.getFirstBufferLayout()]
     );
 
-    // this.picking = new Picking(
-    //   this.context,
-    //   this.drawModelForPicking,
-    //   this.uniformCameraBindGroup,
-    //   this.uniformCameraBuffer
-    // );
-    // await this.picking.setup(programs, this.canvasSize, [
-    //   firstBuffer.getLayout(),
-    // ]);
+    this.pickingUniformCamera = this.setupCamera(
+      this.picking.getBindGroupLayout(GltfBindGroups.CAMERA)
+    );
+
+    this.picking.setTransformBindGroups(
+      this.gltfPipeline.buildTransformBindGroups(
+        this.picking.getBindGroupLayout(GltfBindGroups.TRANSFORM)
+      )
+    );
+
+    this.debug.setTexture(this.picking.getColorTexture());
   }
 
   update(time) {
@@ -168,10 +188,6 @@ class Scene {
 
     this.gltfPipeline.updateAnimations(time);
   }
-
-  // renderPicking() {
-  //   this.picking.pick(this.camera, this.model, 0, 0);
-  // }
 
   updateCameraUniforms(cameraBindBuffer) {
     const device = this.context.getDevice();
@@ -190,31 +206,37 @@ class Scene {
     );
   }
 
+  // render() {
+  //   this.updateCameraUniforms(this.pickingUniformCamera.buffer);
+  //   this.picking.render(
+  //     this.pickingUniformCamera.bindGroup,
+  //     this.gltfPipeline.getNodes(),
+  //     this.gltfPipeline.getAnimations()
+  //   );
+  // }
+
   render() {
     const device = this.context.getDevice();
 
     this.updateCameraUniforms(this.uniformCamera.buffer);
+    this.gltfPipeline.update();
 
-    this.gltfPipeline.update(
-      this.context.getCurrentTexture().createView(),
-      this.textures.getRenderTargetView(),
-      this.textures.getDepthTextureView()
-    );
-    // this.pipeline.update(this.context.getCurrentTexture().createView())
-    const encoder = device.createCommandEncoder();
+    const encoder = device.createCommandEncoder({
+      label: "GltfCommandEncoder",
+    });
     const pass = encoder.beginRenderPass(
       this.gltfPipeline.getRenderPassDescriptor()
     );
 
-    // After devide.getEncodeur().beginRenderPass()
-
     pass.setPipeline(this.gltfPipeline.get());
+    // bind group are defined in shader code ex: @group(0) @binding(0)
     pass.setBindGroup(GltfBindGroups.CAMERA, this.uniformCamera.bindGroup);
     pass.setBindGroup(GltfBindGroups.LIGHT, this.uniformLights.bindGroup);
 
     this.gltfPipeline.drawModel(device, pass);
 
-    // before pass.end()
+    this.debug.render(pass);
+
     pass.end();
 
     // const commandBuffer = this.devide.getEncodeur().finish()
@@ -225,15 +247,18 @@ class Scene {
 
   resize(size) {
     this.canvasSize = size;
-    this.textures.setup(
-      this.context.getDevice(),
-      this.context.getCanvasFormat(),
-      size
-    );
+    this.gltfPipeline.resize(size);
+    this.picking.resize(size);
   }
 
   onMouseClick = async (e) => {
-    await this.picking.pick(e.pos.x, e.pos.y);
+    this.updateCameraUniforms(this.pickingUniformCamera.buffer);
+    await this.picking.pick(
+      e.pos,
+      this.pickingUniformCamera.bindGroup,
+      this.gltfPipeline.getNodes(),
+      this.gltfPipeline.getAnimations()
+    );
   };
 }
 

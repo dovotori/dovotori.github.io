@@ -12,10 +12,10 @@ class PipelineTextures {
     this.setupDepth(device, depthFormat, size);
   }
 
-  resize = (device, format, depthFormat, size) => {
+  resize = (device, format, size, depthFormat = "depth32float") => {
     this.renderTarget.destroy();
     this.depthTexture.destroy();
-    this.setup(device, format, depthFormat, size);
+    this.setup(device, format, size, depthFormat);
   };
 
   setupRender = (device, format, { width, height }) => {
@@ -24,9 +24,11 @@ class PipelineTextures {
       size: [width, height],
       sampleCount: this.sampleCount,
       format,
-      usage: window.GPUTextureUsage.RENDER_ATTACHMENT,
+      usage: GPUTextureUsage.RENDER_ATTACHMENT,
     });
-    this.renderTargetView = this.renderTarget.createView();
+    this.renderTargetView = this.renderTarget.createView({
+      label: "SceneTextureView",
+    });
   };
 
   setupDepth = (device, format, { width, height }) => {
@@ -35,13 +37,15 @@ class PipelineTextures {
       sampleCount: this.sampleCount,
       format,
       usage:
-        window.GPUTextureUsage.RENDER_ATTACHMENT |
-        window.GPUTextureUsage.TEXTURE_BINDING,
+        GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
     });
-    this.depthTextureView = this.depthTexture.createView();
+    this.depthTextureView = this.depthTexture.createView({
+      label: "SceneDepthTextureView",
+    });
   };
 
   getRenderTargetView = () => this.renderTargetView;
+  getRenderTarget = () => this.renderTarget;
   getDepthTextureView = () => this.depthTextureView;
 }
 

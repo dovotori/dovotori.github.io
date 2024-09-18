@@ -5,7 +5,7 @@ struct FragInput {
 
 @fragment
 fn f_main(in: FragInput) -> @location(0) vec4f {
-  // return in.color_picking;
-  return vec4(in.color_picking.xyz, 1.0);
+  // return vec4(in.color_picking.xyz, 1.0);
+  return in.color_picking;
 }
 `;

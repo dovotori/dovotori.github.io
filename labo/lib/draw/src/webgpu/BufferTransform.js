@@ -4,7 +4,7 @@ class BufferTransform {
   static setup(device, layout, bufferData) {
     const buffer = BufferTransform.setupOne(device, bufferData);
     return device.createBindGroup({
-      label: "bind group transform",
+      label: "NodeTransformBindGroup",
       layout,
       entries: [
         {
