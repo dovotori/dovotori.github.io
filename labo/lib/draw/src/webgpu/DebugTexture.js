@@ -50,6 +50,7 @@ export class DebugTexture {
     this.updateTexture();
 
     this.bindGroup = device.createBindGroup({
+      label: "main texture bind group",
       layout: this.pipeline.getBindGroupLayout(0),
       entries: [
         { binding: 0, resource: device.createSampler() },
@@ -78,6 +79,7 @@ export class DebugTexture {
   setTexture(texture) {
     const device = this.context.getDevice();
     this.bindGroup = device.createBindGroup({
+      label: "debug texture bind group",
       layout: this.pipeline.getBindGroupLayout(0),
       entries: [
         { binding: 0, resource: device.createSampler() },

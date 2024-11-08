@@ -9,6 +9,9 @@ import Camera from "../lib/draw/src/cameras/Camera";
 import Mat4 from "../lib/draw/src/maths/Mat4";
 import DualQuaternion from "../lib/draw/src/maths/DualQuaternion";
 
+// to see the color change f_picking with alpha to 1
+const DEBUG_PICKING = false;
+
 class Scene {
   constructor(context, config) {
     this.context = context;
@@ -25,7 +28,7 @@ class Scene {
 
     this.gltfPipeline = new GltfPipeline(context, config);
     this.picking = new Picking(this.context);
-    this.debug = new DebugTexture(this.context);
+    // this.debug = new DebugTexture(this.context);
   }
 
   setup() {}
@@ -126,30 +129,40 @@ class Scene {
       gltf,
     });
 
-    this.debug.setup(
-      {
-        vertex: programs.v_debug_tex.get(),
-        fragment: programs.f_debug_tex.get(),
-      },
-      this.canvasSize
-    );
+    // this.debug.setup(
+    //   {
+    //     vertex: programs.v_debug_tex.get(),
+    //     fragment: programs.f_debug_tex.get(),
+    //   },
+    //   this.canvasSize
+    // );
+
+    const program = DEBUG_PICKING
+      ? {
+          vertex: programs.v_picking.get(),
+          fragment: programs.f_picking.get(),
+        }
+      : {
+          vertex: programs.v_gltf.get(),
+          fragment: programs.f_gltf.get(),
+        };
 
     await this.gltfPipeline.setup(
       gltf,
-      {
-        vertex: programs.v_gltf.get(),
-        fragment: programs.f_gltf.get(),
-      },
-      this.canvasSize
+      program,
+      this.canvasSize,
+      DEBUG_PICKING
     );
 
     this.uniformCamera = this.setupCamera(
       this.gltfPipeline.getBindGroupLayout(GltfBindGroups.CAMERA)
     );
 
-    this.uniformLights = this.setupLights(
-      this.gltfPipeline.getBindGroupLayout(GltfBindGroups.LIGHT)
-    );
+    if (!DEBUG_PICKING) {
+      this.uniformLights = this.setupLights(
+        this.gltfPipeline.getBindGroupLayout(GltfBindGroups.LIGHT)
+      );
+    }
 
     // PICKING
     await this.picking.setup(
@@ -171,7 +184,7 @@ class Scene {
       )
     );
 
-    this.debug.setTexture(this.picking.getColorTexture());
+    // this.debug.setTexture(this.picking.getColorTexture());
   }
 
   update(time) {
@@ -182,7 +195,7 @@ class Scene {
 
     this.model.identity();
     const quat = new DualQuaternion();
-    quat.rotateY(time * 0.0005);
+    quat.rotateY(time * 0.00001);
     // quat.rotateX(time * 0.001)
     this.model.multiply(quat.toMatrix4());
 
@@ -231,11 +244,14 @@ class Scene {
     pass.setPipeline(this.gltfPipeline.get());
     // bind group are defined in shader code ex: @group(0) @binding(0)
     pass.setBindGroup(GltfBindGroups.CAMERA, this.uniformCamera.bindGroup);
-    pass.setBindGroup(GltfBindGroups.LIGHT, this.uniformLights.bindGroup);
 
-    this.gltfPipeline.drawModel(device, pass);
+    if (!DEBUG_PICKING) {
+      pass.setBindGroup(GltfBindGroups.LIGHT, this.uniformLights.bindGroup);
+    }
 
-    this.debug.render(pass);
+    this.gltfPipeline.drawModel(device, pass, DEBUG_PICKING);
+
+    // this.debug.render(pass);
 
     pass.end();
 
@@ -253,12 +269,23 @@ class Scene {
 
   onMouseClick = async (e) => {
     this.updateCameraUniforms(this.pickingUniformCamera.buffer);
+    // TODO to fix the first call is late
     await this.picking.pick(
       e.pos,
       this.pickingUniformCamera.bindGroup,
       this.gltfPipeline.getNodes(),
       this.gltfPipeline.getAnimations()
     );
+    const pickingColor = await this.picking.pick(
+      e.pos,
+      this.pickingUniformCamera.bindGroup,
+      this.gltfPipeline.getNodes(),
+      this.gltfPipeline.getAnimations()
+    );
+    const test = [Number.parseFloat(pickingColor[0]).toFixed(2), 0, 0, 1];
+
+    const node = this.gltfPipeline.getByPickColor(test.join(","));
+    console.log({ pickingColor, node });
   };
 }
 

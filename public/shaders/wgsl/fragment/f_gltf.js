@@ -2,6 +2,7 @@ export default `
 struct CameraUniform {
   projection: mat4x4<f32>,
   view: mat4x4<f32>,
+  model: mat4x4<f32>,
   position: vec3<f32>,
 };
 @group(0) @binding(0)
@@ -16,7 +17,11 @@ struct MaterialUniform {
 
 @group(2) @binding(0) var<uniform> material : MaterialUniform;
 
-struct PointLight { position: vec3f, color: vec3f, intensity: f32 }
+struct PointLight {
+  position: vec3f, 
+  color: vec3f, 
+  intensity: f32,
+};
 @group(3) @binding(0) var<storage> lights: array<PointLight>;
 
 fn number_of_lights() -> u32 {

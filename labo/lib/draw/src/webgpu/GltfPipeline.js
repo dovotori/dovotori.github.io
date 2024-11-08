@@ -1,5 +1,4 @@
 import Animation from "../maths/Animation";
-import Mat4 from "../maths/Mat4";
 import BufferGltf from "./BufferGltf";
 import BufferMaterial from "./BufferMaterial";
 import BufferTransform from "./BufferTransform";
@@ -21,7 +20,7 @@ export class GltfPipeline {
     this.textures = new PipelineTextures();
   }
 
-  async setup(gltf, program, canvasSize) {
+  async setup(gltf, program, canvasSize, isDebug = false) {
     const device = this.context.getDevice();
 
     const nodes = gltf.get("nodes");
@@ -59,12 +58,14 @@ export class GltfPipeline {
     this.animations = new Animation(gltf.get("animations"), nodes);
 
     // for material
-    this.materialBuffer = new BufferMaterial();
-    this.materialBuffer.setup(
-      device,
-      gltf.get("materials"),
-      this.getBindGroupLayout(GltfBindGroups.MATERIAL)
-    );
+    if (!isDebug) {
+      this.materialBuffer = new BufferMaterial();
+      this.materialBuffer.setup(
+        device,
+        gltf.get("materials"),
+        this.getBindGroupLayout(GltfBindGroups.MATERIAL)
+      );
+    }
 
     this.buildNodes(nodes, meshBuffersMaps);
     this.transformBinGroups = this.buildTransformBindGroups(
@@ -111,7 +112,9 @@ export class GltfPipeline {
 
   buildNodes(nodes, meshBuffersMaps) {
     this.nodes = new Map();
-    let colorIndex = 1;
+    this.nodesPerColorPicking = new Map();
+    // let colorIndex = 1;
+    let colorIndex = 0;
     for (const [key, _node] of nodes) {
       const node = GltfPipeline.handleInstancing(_node, nodes);
       const meshId = node.mesh;
@@ -123,12 +126,14 @@ export class GltfPipeline {
         matrix.multiply(BufferTransform.getNodeMatrix(node.instanceTransform));
       }
 
-      const pickingColor = [
-        ((colorIndex >> 0) & 0xff) / 0xff,
-        ((colorIndex >> 8) & 0xff) / 0xff,
-        ((colorIndex >> 16) & 0xff) / 0xff,
-        ((colorIndex >> 24) & 0xff) / 0xff,
-      ];
+      // const pickingColor = [
+      //   ((colorIndex >> 0) & 0xff) / 0xff,
+      //   ((colorIndex >> 8) & 0xff) / 0xff,
+      //   ((colorIndex >> 16) & 0xff) / 0xff,
+      //   ((colorIndex >> 24) & 0xff) / 0xff,
+      // ];
+
+      const pickingColor = [Number.parseFloat(colorIndex).toFixed(2), 0, 0, 1];
 
       this.nodes.set(key, {
         name: node.name,
@@ -136,7 +141,15 @@ export class GltfPipeline {
         matrix,
         pickingColor,
       });
-      colorIndex++;
+
+      console.log(node.name, pickingColor.join(","));
+      this.nodesPerColorPicking.set(pickingColor.join(","), {
+        key,
+        name: node.name,
+      });
+
+      // colorIndex++;
+      colorIndex += 0.01;
     }
   }
 
@@ -169,7 +182,7 @@ export class GltfPipeline {
     );
   }
 
-  drawModel = (device, pass) => {
+  drawModel = (device, pass, isDebug = false) => {
     // should sort primitives by material
     for (const [key, node] of this.nodes) {
       node.buffers.forEach((buffer) => {
@@ -188,14 +201,20 @@ export class GltfPipeline {
         }
 
         pass.setBindGroup(GltfBindGroups.TRANSFORM, transformBindGroup);
-        pass.setBindGroup(
-          GltfBindGroups.MATERIAL,
-          this.materialBuffer.getBindGroup(
-            this.materialIndexes.get(buffer) || 0
-          )
-        );
+
+        // MAT
+        if (!isDebug) {
+          pass.setBindGroup(
+            GltfBindGroups.MATERIAL,
+            this.materialBuffer.getBindGroup(
+              this.materialIndexes.get(buffer) || 0
+            )
+          );
+        }
+
         pass.setVertexBuffer(0, buffer.getVertexBuffer());
         pass.setIndexBuffer(buffer.getIndexBuffer(), "uint16");
+
         pass.drawIndexed(buffer.getIndexCount());
       });
     }
@@ -219,4 +238,6 @@ export class GltfPipeline {
   getNodes = () => this.nodes;
   getAnimations = () => this.animations;
   getFirstBufferLayout = () => this.firstBufferLayout;
+
+  getByPickColor = (color) => this.nodesPerColorPicking.get(color);
 }

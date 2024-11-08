@@ -10,25 +10,27 @@ export class Picking {
     this.pipeline = undefined;
     this.colorTexture = undefined;
     this.textures = new PipelineTextures();
+    this.texSize = {
+      width: 1,
+      height: 1,
+    };
   }
 
   createTexture(size) {
     const device = this.context.getDevice();
     this.colorTexture = device.createTexture({
-      // format: "rgba32float",
-      // usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
+      label: "picking texture",
+      format: "rgba32float",
       size,
-      format: "rgba8unorm",
-      usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST,
+      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
     });
 
     this.depthTexture = device.createTexture({
-      format: "rgba32float",
+      label: "picking depth texture",
+      format: "depth32float",
       size,
-      usage:
-        GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+      usage: GPUTextureUsage.RENDER_ATTACHMENT,
     });
-    this.size = size;
   }
 
   async setup(program, canvasSize, buffersLayout) {
@@ -47,8 +49,7 @@ export class Picking {
         entryPoint: "f_main",
         targets: [
           {
-            format: this.context.getCanvasFormat(),
-            blend,
+            format: "rgba32float",
           },
         ],
       },
@@ -61,12 +62,9 @@ export class Picking {
         depthCompare: "less",
         format: "depth32float",
       },
-      // multisample: {
-      //   count: 4,
-      // },
     });
 
-    this.createTexture(canvasSize);
+    this.createTexture(this.texSize);
 
     this.destinationBuffer = device.createBuffer({
       label: "PickDestination",
@@ -79,7 +77,6 @@ export class Picking {
       colorAttachments: [
         {
           view: null,
-          resolveTarget: null, // context.getCurrentTexture().createView(),
           clearValue: { r: 0, g: 0, b: 0, a: 0 },
           loadOp: "clear", // 'load' -> draw hover / 'clear'
           storeOp: "store", // 'store' -> save // 'discard' maybe for save in tex
@@ -103,9 +100,6 @@ export class Picking {
       label: "PickingCommandEncoder",
     });
 
-    this.renderPassDescriptor.colorAttachments[0].resolveTarget = this.context
-      .getCurrentTexture()
-      .createView();
     this.renderPassDescriptor.colorAttachments[0].view =
       this.colorTexture.createView();
     this.renderPassDescriptor.depthStencilAttachment.view =
@@ -131,28 +125,31 @@ export class Picking {
       label: "PickingCommandEncoder",
     });
 
-    this.renderPassDescriptor.colorAttachments[0].resolveTarget = this.context
-      .getCurrentTexture()
-      .createView();
     this.renderPassDescriptor.colorAttachments[0].view =
       this.colorTexture.createView();
     this.renderPassDescriptor.depthStencilAttachment.view =
       this.depthTexture.createView();
 
     const pass = encoder.beginRenderPass(this.renderPassDescriptor);
-
     pass.setPipeline(this.pipeline);
     pass.setBindGroup(GltfBindGroups.CAMERA, uniformCameraBindGroup);
-
     this.drawModel(device, pass, nodes, animations);
+    pass.end();
 
+    // should be between pass end and encoder finish
+    const data = await this.capturePixel(origin, encoder);
+
+    device.queue.submit([encoder.finish()]);
+
+    return data;
+  };
+
+  // private
+  capturePixel = async (origin, encoder) => {
     encoder.copyTextureToBuffer(
       {
         texture: this.colorTexture,
-        origin: {
-          x: origin.x,
-          y: origin.y,
-        },
+        origin,
       },
       {
         buffer: this.destinationBuffer,
@@ -169,18 +166,19 @@ export class Picking {
       0, // Offset
       this.bufferSize // Length
     );
-    const copyArrayBuffer = this.destinationBuffer.getMappedRange(
-      0,
-      this.bufferSize
+
+    const mappedData = new Float32Array(
+      this.destinationBuffer.getMappedRange(0, this.bufferSize)
     );
-    const data = copyArrayBuffer.slice(0);
+
+    // need to copy data before the unmap (delete)
+    const data = [...mappedData];
+
     this.destinationBuffer.unmap();
 
-    console.log(new Float32Array(data), origin);
-
-    pass.end();
-
-    device.queue.submit([encoder.finish()]);
+    // it seems to have async problem, the 2nd click is accurate
+    console.log(data, origin);
+    return data; // mesh picking color
   };
 
   drawModel = (device, pass, nodes, animations) => {
@@ -216,6 +214,7 @@ export class Picking {
       size
     );
     this.createTexture(size);
+    this.texSize = size;
   };
 
   setTransformBindGroups(groups) {

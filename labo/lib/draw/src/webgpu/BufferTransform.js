@@ -15,8 +15,11 @@ class BufferTransform {
     });
   }
 
+  // https://webgpufundamentals.org/webgpu/lessons/webgpu-memory-layout.html
   static setupOne(device, bufferData) {
     const { transformMatrix, pickingColor } = bufferData;
+    // copy paste wgsl struct here to get the mapping
+    // https://webgpufundamentals.org/webgpu/lessons/resources/wgsl-offset-computer.html
     const buffer = device.createBuffer({
       size: Float32Array.BYTES_PER_ELEMENT * 16 * 2, // 1 4x4 mat + 1 3x3 mat + 1 vec4
       usage: window.GPUBufferUsage.UNIFORM | window.GPUBufferUsage.COPY_DST,
