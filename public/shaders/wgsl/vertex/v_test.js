@@ -24,4 +24,4 @@ fn v_main(
   out.cell = model.position.xy;
   return out;
 }
-`
+`;

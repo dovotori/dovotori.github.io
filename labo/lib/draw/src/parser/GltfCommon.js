@@ -104,7 +104,7 @@ const getBufferDataFromAccessor = (buffers, bufferViews, accessor) => {
   const dataView = new DataView(
     buffers[bufferIndex],
     bufferViewByteOffset + accessorByteOffset,
-    bufferViewByteLength - accessorByteOffset
+    bufferViewByteLength - accessorByteOffset,
   );
   const numElement = getNumComponentPerType(type);
   const length = numElement * count;
@@ -135,7 +135,7 @@ export const getBufferDataFromLayout = (buffers, layout) => {
 export const getMixedInterleavedBufferData = (
   buffers,
   bufferViews,
-  accessors
+  accessors,
 ) => {
   const arraysByComponentType = {};
   const bv = bufferViews[accessors[0].bufferView];

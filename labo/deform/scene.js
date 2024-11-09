@@ -60,7 +60,7 @@ export default class extends Scene {
       playbackRate.dom.addEventListener(
         "change",
         this.onChangePlaybackRate,
-        false
+        false,
       );
     }
   };
@@ -198,7 +198,7 @@ export default class extends Scene {
       playbackRate.dom.removeEventListener(
         "change",
         this.onChangePlaybackRate,
-        false
+        false,
       );
     }
 

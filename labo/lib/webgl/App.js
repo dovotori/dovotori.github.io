@@ -86,7 +86,7 @@ class App {
             [`callback${capitalize(cur)}`]:
               this.scene[`onMouse${capitalize(cur)}`],
           }),
-          {}
+          {},
         );
         const mouseContainer = domId
           ? document.querySelector(`#${domId}`)

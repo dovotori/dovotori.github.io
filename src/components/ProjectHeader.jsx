@@ -14,7 +14,7 @@ const WrapTexte = styled.div`
 `;
 
 const Description = styled.div`
-  box-shadow: 0 1em 2em rgba(0,0,0,0.2);
+  box-shadow: 0 1em 2em rgba(0, 0, 0, 0.2);
   color: ${(p) => p.theme.light};
   width: 100%;
   max-width: ${TEXT_WIDTH}px;
@@ -59,12 +59,7 @@ const Bar = styled.div`
   background: ${(p) => p.theme.getGradient};
 `;
 
-const ProjectHeader = ({
-  title,
-  descriptions,
-  date,
-  $colorType,
-}) => (
+const ProjectHeader = ({ title, descriptions, date, $colorType }) => (
   <WrapContent>
     <WrapTexte>
       {date && <Date $colorType={$colorType}>{date}</Date>}

@@ -85,7 +85,7 @@ class Animation {
         const next = output[index];
         const interpolationValue = sample.get();
         newAnimation.value = previous.map((previousValue, i) =>
-          lerp(interpolationValue, previousValue, next[i])
+          lerp(interpolationValue, previousValue, next[i]),
         );
       }
     } else {
@@ -105,7 +105,7 @@ class Animation {
         newAnimation.value = new Quaternion(...output[0]).toMatrix4();
       } else if (index > output.length - 1) {
         newAnimation.value = new Quaternion(
-          ...output[output.length - 1]
+          ...output[output.length - 1],
         ).toMatrix4();
       } else {
         const previous = output[index - 1];
@@ -114,7 +114,7 @@ class Animation {
         newAnimation.value = Quaternion.slerpArray(
           previous,
           next,
-          interpolationValue
+          interpolationValue,
         ).toMatrix4();
       }
     } else {
@@ -139,12 +139,12 @@ class Animation {
     }
     if (rotation || rotationAnimation) {
       localMatrix.multiply(
-        Animation.getRotationMat(rotation, rotationAnimation)
+        Animation.getRotationMat(rotation, rotationAnimation),
       );
     }
     if (translation || translationAnimation) {
       localMatrix.translate(
-        ...Animation.getVector(translation, translationAnimation)
+        ...Animation.getVector(translation, translationAnimation),
       );
     }
 
@@ -176,7 +176,7 @@ class Animation {
 
   static getRotationMat = (
     rotation = [0, 0, 0, 1],
-    rotationAnimation = null
+    rotationAnimation = null,
   ) => {
     if (rotationAnimation && rotationAnimation.value) {
       return rotationAnimation.value;

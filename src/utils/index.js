@@ -3,7 +3,7 @@ import availablesLang from "../constants/locales";
 export const getSelectedCategory = (categories, category) => {
   if (category) {
     const match = Object.keys(categories).filter(
-      (id) => category === categories[id].slug
+      (id) => category === categories[id].slug,
     )[0];
     return match ? parseInt(match, 10) : null;
   }
@@ -52,7 +52,7 @@ export const parseCsv = (string) => {
         ...acc,
         [cur]: l[index] !== "" ? l[index] : null,
       }),
-      {}
+      {},
     );
   });
 };

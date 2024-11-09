@@ -10,7 +10,7 @@ class Mouse {
       callbackMove,
       callbackWheel,
       callbackClick,
-    }
+    },
   ) {
     this.div = div;
     this.callbackDrag = callbackDrag || null;

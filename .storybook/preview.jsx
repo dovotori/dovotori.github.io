@@ -1,8 +1,8 @@
-import { ThemeProvider } from 'styled-components';
-import { HashRouter as Router } from 'react-router-dom';
-import { dark } from '../src/themes/theme';
+import { ThemeProvider } from "styled-components";
+import { HashRouter as Router } from "react-router-dom";
+import { dark } from "../src/themes/theme";
 
-import '../public/style/critical.css'
+import "../public/style/critical.css";
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -12,7 +12,7 @@ export const parameters = {
       date: /Date$/,
     },
   },
-}
+};
 
 export const decorators = [
   (Story) => (

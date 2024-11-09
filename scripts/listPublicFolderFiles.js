@@ -10,7 +10,7 @@ let list = "";
 const listFolderRecursive = async (folderPath, parentFolder) => {
   if (fs.existsSync(folderPath)) {
     const files = fs.readdirSync(folderPath);
-    // eslint-disable-next-line
+     
     for await (const file of files) {
       const curPath = path.join(folderPath, file);
       if (fs.lstatSync(curPath).isDirectory()) {

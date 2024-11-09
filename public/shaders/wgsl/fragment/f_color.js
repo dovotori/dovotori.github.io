@@ -7,4 +7,4 @@ struct FragInput {
 fn f_main(input: FragInput) -> @location(0) vec4f {
   return vec4f(input.color, 1);
 }
-`
+`;

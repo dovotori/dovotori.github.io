@@ -1,14 +1,14 @@
-import TextureImage from '../textures/TextureImage'
+import TextureImage from "../textures/TextureImage";
 
 export default class {
   constructor(gl, textures, config = {}) {
-    this.textures = {}
+    this.textures = {};
     Object.keys(textures).forEach((name) => {
-      this.textures[name] = new TextureImage(gl, textures[name], config[name])
-    })
+      this.textures[name] = new TextureImage(gl, textures[name], config[name]);
+    });
   }
 
   get(id) {
-    return this.textures[id]
+    return this.textures[id];
   }
 }

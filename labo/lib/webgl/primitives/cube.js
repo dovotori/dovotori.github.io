@@ -1,4 +1,4 @@
-/* eslint-disable */
+ 
 export default {
   // Create a cube
   //    v6----- v5

@@ -50,7 +50,7 @@ export class GltfPipeline {
       program,
       gltf.get("pipeline"),
       [this.firstBufferLayout], // we used the first layout because its fit all the mesh
-      this.context.getCanvasFormat()
+      this.context.getCanvasFormat(),
     );
     this.pipeline.setupRenderPassDescriptor();
 
@@ -63,13 +63,13 @@ export class GltfPipeline {
       this.materialBuffer.setup(
         device,
         gltf.get("materials"),
-        this.getBindGroupLayout(GltfBindGroups.MATERIAL)
+        this.getBindGroupLayout(GltfBindGroups.MATERIAL),
       );
     }
 
     this.buildNodes(nodes, meshBuffersMaps);
     this.transformBinGroups = this.buildTransformBindGroups(
-      this.getBindGroupLayout(GltfBindGroups.TRANSFORM)
+      this.getBindGroupLayout(GltfBindGroups.TRANSFORM),
     );
 
     this.textures.setup(device, this.context.getCanvasFormat(), canvasSize);
@@ -178,7 +178,7 @@ export class GltfPipeline {
     this.pipeline.update(
       this.context.getCurrentTexture().createView(),
       this.textures.getRenderTargetView(),
-      this.textures.getDepthTextureView()
+      this.textures.getDepthTextureView(),
     );
   }
 
@@ -196,7 +196,7 @@ export class GltfPipeline {
             {
               transformMatrix: finalMatrix,
               pickingColor: node.pickingColor,
-            }
+            },
           );
         }
 
@@ -207,8 +207,8 @@ export class GltfPipeline {
           pass.setBindGroup(
             GltfBindGroups.MATERIAL,
             this.materialBuffer.getBindGroup(
-              this.materialIndexes.get(buffer) || 0
-            )
+              this.materialIndexes.get(buffer) || 0,
+            ),
           );
         }
 
@@ -224,7 +224,7 @@ export class GltfPipeline {
     this.textures.resize(
       this.context.getDevice(),
       this.context.getCanvasFormat(),
-      size
+      size,
     );
   };
 

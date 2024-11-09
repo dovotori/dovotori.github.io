@@ -3,7 +3,6 @@ import {
   GltfPipeline,
   GltfBindGroups,
   Picking,
-  DebugTexture,
 } from "../lib/draw/src/webgpu";
 import Camera from "../lib/draw/src/cameras/Camera";
 import Mat4 from "../lib/draw/src/maths/Mat4";

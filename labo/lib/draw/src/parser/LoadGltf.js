@@ -35,7 +35,7 @@ const getVbos = (attributes, accessors, indices, targets) => {
         ...acc,
         [cur]: { ...accessor, size: getNumComponentPerType(accessor.type) },
       };
-    }, {})
+    }, {}),
   );
   if (newTargets) {
     newTargets = newTargets.reduce((acc, cur, index) => {
@@ -107,7 +107,7 @@ const getSkins = (skins, nodes, accessors) => {
               if (currentJoint.children) {
                 currentJoint.children = processChildren(
                   currentJoint.children,
-                  tmpArray
+                  tmpArray,
                 );
               }
               const { id, ...rest } = currentJoint;
@@ -116,7 +116,7 @@ const getSkins = (skins, nodes, accessors) => {
             return { joints: hierarchyJoints };
           }
           return null;
-        }
+        },
       )
       .filter((k) => k);
   }
@@ -177,7 +177,7 @@ const addChildrenToNode = (parent, nodes) => {
   const { children } = parent;
   if (children) {
     const newChildren = children.map((nodeId) =>
-      addChildrenToNode(nodes[nodeId], nodes)
+      addChildrenToNode(nodes[nodeId], nodes),
     );
     return { ...parent, children: newChildren };
   }
@@ -191,11 +191,11 @@ const organizeParenting = (nodes) => {
       children &&
       children.forEach((childIndex) => {
         indexNodeIsChild[childIndex] = true;
-      })
+      }),
   );
   const nodesWithChildren = nodes.map((node) => addChildrenToNode(node, nodes));
   return nodesWithChildren.filter(
-    (node, index) => indexNodeIsChild[index] === undefined
+    (node, index) => indexNodeIsChild[index] === undefined,
   );
 };
 
@@ -232,7 +232,7 @@ export default class {
     const { newBuffers, newAccessors } = getBuffersData(JsonData);
     const allJointsIds = skins?.reduce(
       (acc, skin) => acc.concat(skin.joints),
-      []
+      [],
     );
     const markedNodes = markedAndNameNodes(nodes, allJointsIds);
 
@@ -241,7 +241,7 @@ export default class {
       animations,
       markedNodes,
       newAccessors,
-      meshes
+      meshes,
     );
     Object.keys(animationsPerNodes).forEach((nodeIndex) => {
       markedNodes[nodeIndex].animations = animationsPerNodes[nodeIndex];
@@ -272,7 +272,7 @@ export default class {
     console.log(
       "[Gltf custom data]",
       this.data,
-      `\n${nodes.length} nodes\n${allJointsIds?.length || "0"} joints`
+      `\n${nodes.length} nodes\n${allJointsIds?.length || "0"} joints`,
     );
   }
 

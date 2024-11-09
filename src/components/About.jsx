@@ -28,7 +28,7 @@ const WrapContent = styled.div`
 
 const BlocDescription = styled.div`
   padding: 2em;
-  box-shadow: 0 1em 2em rgba(0,0,0,0.2);
+  box-shadow: 0 1em 2em rgba(0, 0, 0, 0.2);
 `;
 
 const Description = styled.p`

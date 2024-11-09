@@ -1,16 +1,20 @@
-import Vec3 from '../maths/Vec3'
-import Mat4 from '../maths/Mat4'
+import Vec3 from "../maths/Vec3";
+import Mat4 from "../maths/Mat4";
 
 export default class {
   constructor(config) {
-    this.position = new Vec3(config.position.x, config.position.y, config.position.z)
-    this.target = new Vec3(0.0, 0.0, 0.0)
-    this.view = new Mat4()
+    this.position = new Vec3(
+      config.position.x,
+      config.position.y,
+      config.position.z,
+    );
+    this.target = new Vec3(0.0, 0.0, 0.0);
+    this.view = new Mat4();
     if (config.ortho) {
-      const { left, right, bottom, top } = config.ortho
-      const { near, far } = config
-      this.ortho = new Mat4()
-      this.ortho.ortho(left, right, bottom, top, near, far)
+      const { left, right, bottom, top } = config.ortho;
+      const { near, far } = config;
+      this.ortho = new Mat4();
+      this.ortho.ortho(left, right, bottom, top, near, far);
     }
   }
 
@@ -27,51 +31,51 @@ export default class {
         0,
         1,
         0,
-      )
+      );
   }
 
   getView() {
-    return this.view
+    return this.view;
   }
 
   getPosition() {
-    return this.position.get()
+    return this.position.get();
   }
 
   getPositionVec3() {
-    return this.position
+    return this.position;
   }
 
   getTarget() {
-    return this.target.get()
+    return this.target.get();
   }
 
   getModel() {
-    return this.repere.getModel()
+    return this.repere.getModel();
   }
 
   getOrtho() {
-    return this.ortho
+    return this.ortho;
   }
 
   addToPosition(x, y, z) {
-    this.position.addXYZ(x, y, z)
-    this.lookAt()
+    this.position.addXYZ(x, y, z);
+    this.lookAt();
   }
 
   setPosition(x = null, y = null, z = null) {
-    const newX = x !== null ? x : this.position.getX()
-    const newY = y !== null ? y : this.position.getY()
-    const newZ = z !== null ? z : this.position.getZ()
-    this.position.set(newX, newY, newZ)
-    this.lookAt()
+    const newX = x !== null ? x : this.position.getX();
+    const newY = y !== null ? y : this.position.getY();
+    const newZ = z !== null ? z : this.position.getZ();
+    this.position.set(newX, newY, newZ);
+    this.lookAt();
   }
 
   setTarget(x, y, z) {
-    this.target.set(x, y, z)
+    this.target.set(x, y, z);
   }
 
   setTargetVec3(v) {
-    this.target.equal(v)
+    this.target.equal(v);
   }
 }

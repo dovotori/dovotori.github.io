@@ -18,8 +18,7 @@ function detect(im, width, height, threshold, nonmax) {
   const corners = fast9_detect(im, width, height, threshold);
   const scores = fast9_score(im, width, height, corners, threshold);
   if (nonmax) {
-    var nonmax = nonmax_suppression(corners, scores);
-    return nonmax;
+    return nonmax_suppression(corners, scores);
   }
   for (let i = 0; i < corners.length; i++) {
     corners[i].score = scores[i];
@@ -31,7 +30,6 @@ function detect(im, width, height, threshold, nonmax) {
 
 function fast9_detect(im, xsize, ysize, b) {
   const corners = [];
-  const rsize = 512;
   const pixel = new Array(16);
   let x;
   let y;
@@ -1864,7 +1862,7 @@ function fast9_score(im, xsize, ysize, corners, b) {
       corners[n].y,
       corners[n].x,
       pixel,
-      b,
+      b
     );
   // corners[n].score = fast9_corner_score(im, stride, corners[n].y, corners[n].x, pixel, b);
 

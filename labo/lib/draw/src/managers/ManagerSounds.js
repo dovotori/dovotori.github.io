@@ -1,15 +1,15 @@
-import Audio from '../io/Audio'
+import Audio from "../io/Audio";
 
 export default class {
   constructor(audios) {
-    this.audios = {}
+    this.audios = {};
 
     Object.keys(audios).forEach((name) => {
-      this.audios[name] = new Audio(audios[name])
-    })
+      this.audios[name] = new Audio(audios[name]);
+    });
   }
 
   get(id) {
-    return this.audios[id]
+    return this.audios[id];
   }
 }

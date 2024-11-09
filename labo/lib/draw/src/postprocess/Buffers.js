@@ -1,33 +1,33 @@
-import Fbo from '../gl/Fbo'
+import Fbo from "../gl/Fbo";
 // import PingPongBuffer from './PingPongBuffer';
 
 export default class {
   constructor(gl, width = 1024, height = 1024, useDepth = false) {
-    this.gl = gl
-    this.fboColorDepth = new Fbo(gl, width, height, useDepth)
-    this.fboNormal = new Fbo(gl, width, height, useDepth)
-    this.fboPosition = new Fbo(gl, width, height, useDepth)
+    this.gl = gl;
+    this.fboColorDepth = new Fbo(gl, width, height, useDepth);
+    this.fboNormal = new Fbo(gl, width, height, useDepth);
+    this.fboPosition = new Fbo(gl, width, height, useDepth);
     // this.ppbShadow = new PingPongBuffer(gl, width, height, useDepth);
     // this.fboShadow = new Fbo(gl, width, height, useDepth);
-    this.width = width
-    this.height = height
+    this.width = width;
+    this.height = height;
   }
 
   generateTextures(renderScene, program) {
-    program.setInt('type', 0)
-    this.fboColorDepth.start()
-    renderScene(program)
-    this.fboColorDepth.end()
+    program.setInt("type", 0);
+    this.fboColorDepth.start();
+    renderScene(program);
+    this.fboColorDepth.end();
 
-    program.setInt('type', 1)
-    this.fboNormal.start()
-    renderScene(program)
-    this.fboNormal.end()
+    program.setInt("type", 1);
+    this.fboNormal.start();
+    renderScene(program);
+    this.fboNormal.end();
 
-    program.setInt('type', 2)
-    this.fboPosition.start()
-    renderScene(program)
-    this.fboPosition.end()
+    program.setInt("type", 2);
+    this.fboPosition.start();
+    renderScene(program);
+    this.fboPosition.end();
   }
 
   // generateShadow(renderScene, program, lampe) {
@@ -41,19 +41,19 @@ export default class {
   // }
 
   getColorTexture() {
-    return this.fboColorDepth.getTexture()
+    return this.fboColorDepth.getTexture();
   }
 
   getDepthTexture() {
-    return this.fboColorDepth.getDepthTexture()
+    return this.fboColorDepth.getDepthTexture();
   }
 
   getNormalTexture() {
-    return this.fboNormal.getTexture()
+    return this.fboNormal.getTexture();
   }
 
   getPositionTexture() {
-    return this.fboPosition.getTexture()
+    return this.fboPosition.getTexture();
   }
 
   // getShadowTexture() {

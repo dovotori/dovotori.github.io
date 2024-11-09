@@ -158,17 +158,17 @@ export class Picking {
       {
         width: 1,
         height: 1,
-      }
+      },
     );
 
     await this.destinationBuffer.mapAsync(
       GPUMapMode.READ,
       0, // Offset
-      this.bufferSize // Length
+      this.bufferSize, // Length
     );
 
     const mappedData = new Float32Array(
-      this.destinationBuffer.getMappedRange(0, this.bufferSize)
+      this.destinationBuffer.getMappedRange(0, this.bufferSize),
     );
 
     // need to copy data before the unmap (delete)
@@ -195,7 +195,7 @@ export class Picking {
             {
               transformMatrix: finalMatrix,
               pickingColor: node.pickingColor,
-            }
+            },
           );
         }
 
@@ -211,7 +211,7 @@ export class Picking {
     this.textures.resize(
       this.context.getDevice(),
       this.context.getCanvasFormat(),
-      size
+      size,
     );
     this.createTexture(size);
     this.texSize = size;

@@ -27,7 +27,7 @@ export default class extends Blur {
       const sample = new Vec3(
         random(-1.0, 1.0),
         random(-1.0, 1.0),
-        random(0.0, 1.0)
+        random(0.0, 1.0),
       )
         .normalise()
         .multiplyNumber(random(0.0, 1.0))

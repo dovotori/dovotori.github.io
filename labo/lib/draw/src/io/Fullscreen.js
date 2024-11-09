@@ -1,120 +1,128 @@
 class Fullscreen {
   constructor(domScene) {
-    this.domItem = domScene
-    this.isFullscreen = false
+    this.domItem = domScene;
+    this.isFullscreen = false;
     this.support = !!(
       document.exitFullscreen ||
       document.msExitFullscreen ||
       document.mozCancelFullScreen ||
       document.webkitExitFullscreen
-    )
+    );
 
-    this.button = document.createElement('button')
-    this.button.id = 'fullscreen-toggle-btn'
+    this.button = document.createElement("button");
+    this.button.id = "fullscreen-toggle-btn";
     this.button.innerHTML = `
 <svg viewbox="0 0 100 100">
   <path d="M 0 40 L 0 0 L 40 0 L 40 10 L 10 10 L 10 40 Z"></path>
   <path d="M 60 100 L 100 100 L 100 60 L 90 60 L 90 90 L 60 90 Z"></path>
 </svg>
-    `
+    `;
 
-    this.button.addEventListener('click', this.toggle, false)
+    this.button.addEventListener("click", this.toggle, false);
 
-    this.listen()
+    this.listen();
   }
 
   enter = () => {
     if (this.support) {
-      this.isFullscreen = true
+      this.isFullscreen = true;
       if (this.domItem.requestFullscreen) {
-        this.domItem.requestFullscreen()
+        this.domItem.requestFullscreen();
       } else if (this.domItem.msRequestFullscreen) {
-        this.domItem.msRequestFullscreen()
+        this.domItem.msRequestFullscreen();
       } else if (this.domItem.mozRequestFullScreen) {
-        this.domItem.mozRequestFullScreen()
+        this.domItem.mozRequestFullScreen();
       } else if (this.domItem.webkitRequestFullscreen) {
-        this.domItem.webkitRequestFullscreen()
+        this.domItem.webkitRequestFullscreen();
       }
     }
-  }
+  };
 
   exit = () => {
     if (this.support) {
       if (document.exitFullscreen) {
-        document.exitFullscreen()
+        document.exitFullscreen();
       } else if (document.msExitFullscreen) {
-        document.msExitFullscreen()
+        document.msExitFullscreen();
       } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen()
+        document.mozCancelFullScreen();
       } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen()
+        document.webkitExitFullscreen();
       }
     }
-  }
+  };
 
   listen = () => {
     if (this.support) {
       if (document.exitFullscreen) {
-        document.addEventListener('fullscreenchange', this.onChange, false)
+        document.addEventListener("fullscreenchange", this.onChange, false);
       } else if (document.msExitFullscreen) {
-        document.addEventListener('MSFullscreenChange', this.onChange, false)
+        document.addEventListener("MSFullscreenChange", this.onChange, false);
       } else if (document.mozCancelFullScreen) {
-        document.addEventListener('mozfullscreenchange', this.onChange, false)
+        document.addEventListener("mozfullscreenchange", this.onChange, false);
       } else if (document.webkitExitFullscreen) {
-        document.addEventListener('webkitfullscreenchange', this.onChange, false)
+        document.addEventListener(
+          "webkitfullscreenchange",
+          this.onChange,
+          false,
+        );
       }
     }
-  }
+  };
 
   onChange = () => {
     if (this.domItem) {
       if (Fullscreen.isOnFullscreen()) {
-        this.domItem.setAttribute('data-fullscreen', true)
-        this.isFullscreen = true
+        this.domItem.setAttribute("data-fullscreen", true);
+        this.isFullscreen = true;
       } else {
-        this.domItem.removeAttribute('data-fullscreen')
-        this.isFullscreen = false
+        this.domItem.removeAttribute("data-fullscreen");
+        this.isFullscreen = false;
       }
     }
-  }
+  };
 
-  static isOnFullscreen = () => !!document.fullscreenElement
+  static isOnFullscreen = () => !!document.fullscreenElement;
 
   toggle = () => {
     if (this.isFullscreen) {
-      this.exit()
+      this.exit();
     } else {
-      this.enter()
+      this.enter();
     }
-  }
+  };
 
   destroy() {
     if (this.button) {
-      this.button.removeEventListener('click', this.toggle, false)
+      this.button.removeEventListener("click", this.toggle, false);
     }
 
     if (this.support) {
       if (document.exitFullscreen) {
-        document.removeEventListener('fullscreenchange', this.onExit, false)
+        document.removeEventListener("fullscreenchange", this.onExit, false);
       } else if (document.msExitFullscreen) {
-        document.removeEventListener('MSFullscreenChange', this.onExit, false)
+        document.removeEventListener("MSFullscreenChange", this.onExit, false);
       } else if (document.mozCancelFullScreen) {
-        document.removeEventListener('mozfullscreenchange', this.onExit, false)
+        document.removeEventListener("mozfullscreenchange", this.onExit, false);
       } else if (document.webkitExitFullscreen) {
-        document.removeEventListener('webkitfullscreenchange', this.onExit, false)
+        document.removeEventListener(
+          "webkitfullscreenchange",
+          this.onExit,
+          false,
+        );
       }
     }
   }
 
-  getButton = () => this.button
+  getButton = () => this.button;
 
   get() {
-    return this.isFullscreen
+    return this.isFullscreen;
   }
 
   getSupport() {
-    return this.support
+    return this.support;
   }
 }
 
-export default Fullscreen
+export default Fullscreen;

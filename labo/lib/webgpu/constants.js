@@ -4,4 +4,4 @@ export const BindGroupLayouts = {
   TRANSFORM: 1,
   MATERIAL: 2,
   LIGHTS: 3,
-}
+};

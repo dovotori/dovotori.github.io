@@ -71,7 +71,7 @@ export class DebugTexture {
     const textureData = new Uint8Array(
       Array.from({ length: this.size.height })
         .map(() => Array.from({ length: this.size.width }).map(getRandonCase))
-        .flat(2)
+        .flat(2),
     );
     return textureData;
   }
@@ -94,7 +94,7 @@ export class DebugTexture {
       { texture: this.texture },
       this.setData(),
       { bytesPerRow: this.size.width * 4 },
-      this.size
+      this.size,
     );
   }
 

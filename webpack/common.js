@@ -102,7 +102,7 @@ const getHtml = async (name) => {
   try {
     html = (await utils.readFile(htmlPath, "utf8")) || "";
   } catch (e) {
-    console.log("no html find to be inject in template");
+    console.log("no html find to be inject in template", e);
   }
   return html;
 };

@@ -9,4 +9,4 @@ fn vertexMain(@location(0) pos: vec2f) ->
 fn fragmentMain() -> @location(0) vec4f {
   return vec4f(1, 0, 0, 1);
 }
-`
+`;

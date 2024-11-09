@@ -1,7 +1,7 @@
 class AudioNode extends AudioWorkletNode {
   constructor(context) {
-    super(context, 'deform-worklet-processor')
+    super(context, "deform-worklet-processor");
   }
 }
 
-export default AudioNode
+export default AudioNode;

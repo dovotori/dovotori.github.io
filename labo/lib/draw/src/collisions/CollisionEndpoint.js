@@ -1,28 +1,28 @@
 export default class {
   constructor() {
-    this.value = null
-    this.isMin = false
-    this.ownerId = null
+    this.value = null;
+    this.isMin = false;
+    this.ownerId = null;
   }
 
   setup(isMin, id) {
-    this.isMin = isMin
-    this.ownerId = id // box owner id
+    this.isMin = isMin;
+    this.ownerId = id; // box owner id
   }
 
   set(v) {
-    this.value = v
+    this.value = v;
   }
 
   get() {
-    return this.value
+    return this.value;
   }
 
   getID() {
-    return this.ownerId
+    return this.ownerId;
   }
 
   isMinimum() {
-    return this.isMin
+    return this.isMin;
   }
 }

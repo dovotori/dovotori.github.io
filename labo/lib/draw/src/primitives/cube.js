@@ -1,4 +1,4 @@
-/* eslint-disable */
+ 
 export default {
   // Create a cube
   //    v6----- v5
@@ -180,4 +180,4 @@ export default {
     0,
     1, // v4-v7-v6-v5 back
   ],
-}
+};

@@ -55,7 +55,7 @@ exports.readCsv = (url) =>
 const deleteFolderRecursive = async (folderPath) => {
   if (fs.existsSync(folderPath)) {
     const files = fs.readdirSync(folderPath);
-    // eslint-disable-next-line
+     
     for await (const file of files) {
       const curPath = path.join(folderPath, file);
       if (fs.lstatSync(curPath).isDirectory()) {

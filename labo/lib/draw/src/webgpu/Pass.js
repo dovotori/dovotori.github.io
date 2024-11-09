@@ -38,4 +38,4 @@ class Pass {
   getRenderPassDescriptor = () => this.renderPassDescriptor;
 }
 
-export default Pipeline;
+export default Pass;

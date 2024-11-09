@@ -97,7 +97,7 @@ class ObjetGltf {
     });
 
   // its a class parent method, its override by child class
-  // eslint-disable-next-line
+   
   handleLocalTransform = (node) => {
     const { translation, rotation, scale, matrix } = node;
 

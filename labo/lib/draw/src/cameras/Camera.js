@@ -1,32 +1,34 @@
-import Vec3 from '../maths/Vec3'
-import Mat4 from '../maths/Mat4'
-import Objectif from './Objectif'
+import Vec3 from "../maths/Vec3";
+import Mat4 from "../maths/Mat4";
+import Objectif from "./Objectif";
 
 export default class extends Objectif {
   constructor(config) {
-    super(config)
-    this.target = new Vec3(config.target.x, config.target.y, config.target.z)
+    super(config);
+    this.target = new Vec3(config.target.x, config.target.y, config.target.z);
 
     // MATRICES
-    this.matIdentity = new Mat4()
-    this.projection = new Mat4()
-    this.projection.identity()
+    this.matIdentity = new Mat4();
+    this.projection = new Mat4();
+    this.projection.identity();
 
-    this.near = config.near || 1.0
-    this.far = config.far || 100.0
+    this.near = config.near || 1.0;
+    this.far = config.far || 100.0;
 
-    this.angle = config.angle || 50
-    this.matIdentity.identity()
+    this.angle = config.angle || 50;
+    this.matIdentity.identity();
 
-    this.lookAt()
+    this.lookAt();
   }
 
   update() {
-    this.lookAt()
+    this.lookAt();
   }
 
   perspective(w, h) {
-    this.projection.identity().perspective(this.angle, w / h, this.near, this.far)
+    this.projection
+      .identity()
+      .perspective(this.angle, w / h, this.near, this.far);
     // .ortho(-1.0, 1.0, -1.0, 1.0, this.near, this.far);
   }
 
@@ -42,45 +44,45 @@ export default class extends Objectif {
       this.position.getX(),
       Math.sin(time * 0.02) * (2.0 + offset),
       this.position.getZ(),
-    )
-    this.lookAt()
+    );
+    this.lookAt();
   }
 
   setNearFar(near, far) {
-    this.near = near
-    this.far = far
+    this.near = near;
+    this.far = far;
   }
 
   setAngle(value) {
-    this.angle = value
+    this.angle = value;
   }
 
   getProjection() {
-    return this.projection
+    return this.projection;
   }
 
   getIdentity() {
-    return this.matIdentity
+    return this.matIdentity;
   }
 
   getNearFar() {
-    return [this.near, this.far]
+    return [this.near, this.far];
   }
 
   getNear() {
-    return this.near
+    return this.near;
   }
 
   getFar() {
-    return this.far
+    return this.far;
   }
 
   getAngle() {
-    return this.angle
+    return this.angle;
   }
 
   getReflectViewMatrix(waterLevel = 0) {
-    const distanceY = 2 * (this.position.getY() - waterLevel)
+    const distanceY = 2 * (this.position.getY() - waterLevel);
     return new Mat4()
       .identity()
       .lookAt(
@@ -93,6 +95,6 @@ export default class extends Objectif {
         0,
         1,
         0,
-      )
+      );
   }
 }

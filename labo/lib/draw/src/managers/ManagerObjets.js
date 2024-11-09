@@ -1,14 +1,18 @@
-import Objet from '../gl/ObjetObj'
+import Objet from "../gl/ObjetObj";
 
 export default class {
   constructor(gl, objets, materials = null) {
-    this.objets = {}
+    this.objets = {};
     Object.keys(objets).forEach((name) => {
-      this.objets[name] = new Objet(gl, objets[name], materials && materials[name])
-    })
+      this.objets[name] = new Objet(
+        gl,
+        objets[name],
+        materials && materials[name],
+      );
+    });
   }
 
   get(id) {
-    return this.objets[id]
+    return this.objets[id];
   }
 }
