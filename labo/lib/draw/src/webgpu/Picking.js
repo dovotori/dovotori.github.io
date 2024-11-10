@@ -41,9 +41,14 @@ export class Picking {
     const addColorLayout = [
       buffersLayout[0],
       {
-        format: "float32",
-        offset: 0,
-        shaderLocation: 0,
+        arrayStride: 8,
+        attributes: [
+          {
+            format: "float32",
+            offset: 0,
+            shaderLocation: 0,
+          },
+        ],
       },
     ];
 

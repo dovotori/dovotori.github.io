@@ -45,20 +45,32 @@ export class GltfPipeline {
         this.materialIndexes.set(buffer, primitive.material);
         meshBuffers.push(buffer);
 
-        if (key === 12) {
-          const nbTrianglesFaces = primitive.bufferIndex.length / 3;
-          const pickingColorFacesIndexValues = Array.from({
-            length: nbTrianglesFaces,
-          })
-            .fill(0)
-            .map((_, i) => {
-              const colorValue = pixelToPickingColor(i);
-              facesPerColorPicking.set(i, colorValue);
-              return Number.parseFloat(colorValue);
-            });
+        // face color pick
+        const nbTrianglesFaces = primitive.bufferIndex.length / 3;
+        const colorPerIndex = new Array();
+        const pickingColorFacesIndexValues = Array.from({
+          length: nbTrianglesFaces,
+        })
+          .fill(0)
+          .map((_, i) => {
+            const colorValue = pixelToPickingColor(i);
+            facesPerColorPicking.set(i, colorValue);
+            const floatValue = Number.parseFloat(colorValue);
+            colorPerIndex.push([floatValue, floatValue, floatValue]); // x3 for each triangle vertex
+            return floatValue;
+          });
 
-          console.log({ pickingColorFacesIndexValues, nbTrianglesFaces });
+        if (key === 12) {
+          // billboard poteau
+
+          console.log({
+            pickingColorFacesIndexValues,
+            nbTrianglesFaces,
+            colorPerIndex,
+          });
         }
+
+        buffer.setupFaceColorPick(device, colorPerIndex);
       }
       meshBuffersMaps.set(key, meshBuffers);
     }
