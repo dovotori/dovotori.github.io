@@ -31,7 +31,6 @@ fn number_of_lights() -> u32 {
 struct FragInput {
   @location(0) world_position: vec3f,
   @location(1) world_normal: vec3f,
-  @location(2) color_picking: vec4f,
 };
 
 @fragment

@@ -1,5 +1,4 @@
 import Quaternion from "./Quaternion";
-import Animation from "./Animation";
 import Mat4 from "./Mat4";
 
 class Transform {

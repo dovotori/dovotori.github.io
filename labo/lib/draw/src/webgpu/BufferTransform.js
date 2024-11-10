@@ -18,20 +18,25 @@ class BufferTransform {
   // https://webgpufundamentals.org/webgpu/lessons/webgpu-memory-layout.html
   static setupOne(device, bufferData) {
     const { transformMatrix, pickingColor } = bufferData;
+
     // copy paste wgsl struct here to get the mapping
     // https://webgpufundamentals.org/webgpu/lessons/resources/wgsl-offset-computer.html
     const buffer = device.createBuffer({
-      size: Float32Array.BYTES_PER_ELEMENT * 16 * 2, // 1 4x4 mat + 1 3x3 mat + 1 vec4
+      size: Float32Array.BYTES_PER_ELEMENT * 16 * 2, // 1 4x4 mat + 1 3x3 mat + 1 vec4  (use the space of 2 mat4, but may not use all space)
       usage: window.GPUBufferUsage.UNIFORM | window.GPUBufferUsage.COPY_DST,
       mappedAtCreation: true,
     });
     const bufferArray = new Float32Array(buffer.getMappedRange());
     const normalMatrix = Transform.getNormalMatrix(transformMatrix);
-    bufferArray.set([
-      ...pickingColor,
+
+    // order is important , should be the same than vertex uniform structure
+    const data = [
       ...transformMatrix.get(),
       ...normalMatrix.get(),
-    ]);
+      ...(pickingColor ?? []), // use in picking shader
+    ];
+
+    bufferArray.set(data);
     buffer.unmap();
     return buffer;
   }

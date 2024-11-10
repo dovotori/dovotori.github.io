@@ -194,7 +194,7 @@ class Scene {
 
     this.model.identity();
     const quat = new DualQuaternion();
-    quat.rotateY(time * 0.00001);
+    quat.rotateY(time * 0.0001);
     // quat.rotateX(time * 0.001)
     this.model.multiply(quat.toMatrix4());
 
@@ -272,18 +272,17 @@ class Scene {
     await this.picking.pick(
       e.pos,
       this.pickingUniformCamera.bindGroup,
-      this.gltfPipeline.getNodes(),
+      this.gltfPipeline.getDrawNodes(),
       this.gltfPipeline.getAnimations()
     );
     const pickingColor = await this.picking.pick(
       e.pos,
       this.pickingUniformCamera.bindGroup,
-      this.gltfPipeline.getNodes(),
+      this.gltfPipeline.getDrawNodes(),
       this.gltfPipeline.getAnimations()
     );
-    const test = [Number.parseFloat(pickingColor[0]).toFixed(2), 0, 0, 1];
 
-    const node = this.gltfPipeline.getByPickColor(test.join(","));
+    const node = this.gltfPipeline.getByPickColor(pickingColor);
     console.log({ pickingColor, node });
   };
 }

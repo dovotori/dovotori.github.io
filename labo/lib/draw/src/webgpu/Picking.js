@@ -1,5 +1,4 @@
 import BufferTransform from "./BufferTransform";
-import { blend } from "./constants";
 import { GltfBindGroups } from "./GltfPipeline";
 import PipelineTextures from "./PipelineTextures";
 
@@ -35,6 +34,18 @@ export class Picking {
 
   async setup(program, canvasSize, buffersLayout) {
     const device = this.context.getDevice();
+
+    console.log(buffersLayout);
+    // TODO should insert face picking color info space in layout
+    // shoulkd match vertex attribute structures
+    const addColorLayout = [
+      buffersLayout[0],
+      {
+        format: "float32",
+        offset: 0,
+        shaderLocation: 0,
+      },
+    ];
 
     this.pipeline = await device.createRenderPipelineAsync({
       label: "PickingPipeline",
@@ -158,17 +169,17 @@ export class Picking {
       {
         width: 1,
         height: 1,
-      },
+      }
     );
 
     await this.destinationBuffer.mapAsync(
       GPUMapMode.READ,
       0, // Offset
-      this.bufferSize, // Length
+      this.bufferSize // Length
     );
 
     const mappedData = new Float32Array(
-      this.destinationBuffer.getMappedRange(0, this.bufferSize),
+      this.destinationBuffer.getMappedRange(0, this.bufferSize)
     );
 
     // need to copy data before the unmap (delete)
@@ -178,7 +189,7 @@ export class Picking {
 
     // it seems to have async problem, the 2nd click is accurate
     console.log(data, origin);
-    return data; // mesh picking color
+    return [getNodePickingColor(data[0]), 0, 0, 1];
   };
 
   drawModel = (device, pass, nodes, animations) => {
@@ -195,7 +206,7 @@ export class Picking {
             {
               transformMatrix: finalMatrix,
               pickingColor: node.pickingColor,
-            },
+            }
           );
         }
 
@@ -211,7 +222,7 @@ export class Picking {
     this.textures.resize(
       this.context.getDevice(),
       this.context.getCanvasFormat(),
-      size,
+      size
     );
     this.createTexture(size);
     this.texSize = size;
@@ -225,3 +236,14 @@ export class Picking {
 
   getColorTexture = () => this.colorTexture;
 }
+
+const PICKING_FLOAT = 0.000001;
+
+export const pixelToPickingColor = (index) => {
+  const colorIndex = PICKING_FLOAT + index * PICKING_FLOAT;
+  return getNodePickingColor(colorIndex);
+};
+
+export const getNodePickingColor = (pixelValue) => {
+  return Number.parseFloat(pixelValue).toFixed(6);
+};

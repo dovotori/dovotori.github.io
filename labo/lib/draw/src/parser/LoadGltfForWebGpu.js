@@ -91,7 +91,7 @@ class LoadGltfForWebGpu {
   static getBuffersDataWebGpu = (gltf) => {
     const { buffers, accessors, bufferViews } = gltf;
     const newBuffers = buffers?.map((buffer) =>
-      base64ToArrayBuffer(buffer.uri),
+      base64ToArrayBuffer(buffer.uri)
     );
 
     const layoutBuffers = {};
@@ -105,7 +105,7 @@ class LoadGltfForWebGpu {
       if (layoutBuffers[layoutIndex]) {
         if (layoutBuffers[layoutIndex].count !== count) {
           throw new Error(
-            "Really weird gltf interleaved with different count on accessors",
+            "Really weird gltf interleaved with different count on accessors"
           );
         }
         if (layoutBuffers[layoutIndex].componentType !== componentType) {
@@ -132,12 +132,12 @@ class LoadGltfForWebGpu {
       const layout = layoutBuffers[layoutKey];
       if (layout.mixTypes) {
         const layoutAccessors = layout.accessorsIndexes.map(
-          (id) => accessors[id],
+          (id) => accessors[id]
         );
         layout.buffer = getMixedInterleavedBufferData(
           newBuffers,
           bufferViews,
-          layoutAccessors,
+          layoutAccessors
         );
       } else {
         layout.buffer = getBufferDataFromLayout(newBuffers, layout);
@@ -181,7 +181,7 @@ class LoadGltfForWebGpu {
         const sortLocations = Object.keys(attributes)
           .map((attribName) => {
             const shaderLocationName = getGlslProgramLocationsMappedName(
-              attribName.toLowerCase(),
+              attribName.toLowerCase()
             );
             const shaderLocation =
               LoadGltfForWebGpu.getShaderLocationFromName(shaderLocationName);
@@ -216,7 +216,7 @@ class LoadGltfForWebGpu {
               format,
               offset: offset || 0,
             };
-          },
+          }
         );
 
         if (isNotInterleaved) {
@@ -248,7 +248,7 @@ class LoadGltfForWebGpu {
 
   static getPipelines = (meshes) => {
     const topology = LoadGltfForWebGpu.gpuPrimitiveTopologyForMode(
-      meshes[0].primitives[0].mode,
+      meshes[0].primitives[0].mode
     );
     return {
       topology,
@@ -256,18 +256,32 @@ class LoadGltfForWebGpu {
     };
   };
 
+  // INSTANCING if node have one children and don't have a mesh and have a transform
+  static isInstanceNode(node) {
+    const {
+      rotation: nodeRotation,
+      translation: nodeTranslation,
+      scale: nodeScale,
+    } = node;
+    return (
+      node.children?.length === 1 &&
+      node.mesh === undefined &&
+      (!!nodeTranslation || !!nodeRotation || !!nodeScale)
+    );
+  }
+
   static getNodes = (nodes) => {
     const newNodes = new Map();
     nodes.map((node, i) => newNodes.set(i, node));
-    // set parenting
     for (const [nodeId, node] of newNodes) {
+      // set parenting
       node.children?.forEach((childId) => {
         const newChild = newNodes.get(childId);
         newNodes.set(childId, { ...newChild, parent: nodeId });
       });
     }
-    // set path
     for (const [nodeId, node] of newNodes) {
+      // set path
       let path = node.parent;
       const paths = [nodeId]; // first is self
       while (path !== undefined) {
@@ -276,7 +290,16 @@ class LoadGltfForWebGpu {
         path = parent.parent;
       }
       newNodes.set(nodeId, { ...node, paths });
+
+      // mark instance
+      if (LoadGltfForWebGpu.isInstanceNode(node)) {
+        const refNodeId = node.children[0];
+        const refNode = newNodes.get(refNodeId);
+        newNodes.set(nodeId, { ...node, isInstance: true });
+        newNodes.set(refNodeId, { ...refNode, isInstanceRef: true });
+      }
     }
+
     return newNodes;
   };
 
@@ -307,7 +330,7 @@ class LoadGltfForWebGpu {
             nodeIndex,
             animationsPerNodes[nodeIndex]
               ? [...animationsPerNodes[nodeIndex], newAnimItem]
-              : [newAnimItem],
+              : [newAnimItem]
           );
         });
       });
@@ -331,7 +354,7 @@ class LoadGltfForWebGpu {
 
     const animationsPerNodes = LoadGltfForWebGpu.getAnimationsPerNodes(
       animations,
-      layoutBuffers,
+      layoutBuffers
     );
     this.data = new Map();
     if (newMeshes) this.data.set("meshes", newMeshes);

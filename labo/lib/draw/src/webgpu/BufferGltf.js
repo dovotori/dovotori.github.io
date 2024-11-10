@@ -3,6 +3,8 @@ class BufferGltf {
     this.vertex = null;
     this.indexes = null;
     this.layout = null;
+
+    this.faceColor = null;
   }
 
   setup(device, primitive) {
@@ -25,9 +27,9 @@ class BufferGltf {
       usage: window.GPUBufferUsage.VERTEX | window.GPUBufferUsage.COPY_DST,
     });
 
-    const mappedBufferArray = new Float32Array(this.vertex.getMappedRange());
+    const mappedBufferArray = new Float32Array(this.vertex.getMappedRange()); // position vec3 / normal vec3 / tex v2
     mappedBufferArray.set(
-      new Float32Array(bufferVertex, 0, this.vertex.byteLength),
+      new Float32Array(bufferVertex, 0, this.vertex.byteLength)
     );
     this.vertex.unmap();
 
@@ -41,7 +43,7 @@ class BufferGltf {
 
     const mappedBufferArray2 = new Uint16Array(this.indexes.getMappedRange());
     mappedBufferArray2.set(
-      new Uint16Array(bufferIndex, 0, this.indexes.byteLength),
+      new Uint16Array(bufferIndex, 0, this.indexes.byteLength)
     );
     this.indexes.unmap();
 
@@ -50,6 +52,21 @@ class BufferGltf {
       attributes,
     };
   }
+
+  setupFaceColorPick = (data) => {
+    // this.faceColor = device.createBuffer({
+    //   label: "face color buffer",
+    //   // size: bufferVertex.byteLength,
+    //   size: Math.ceil(bufferVertex.byteLength / 4) * 4,
+    //   mappedAtCreation: true,
+    //   usage: window.GPUBufferUsage.VERTEX | window.GPUBufferUsage.COPY_DST,
+    // });
+    // const mappedBufferArray3 = new Float32Array(this.faceColor.getMappedRange()); // color float
+    // mappedBufferArray3.set(
+    //   new Float32Array()
+    // );
+    // this.faceColor.unmap();
+  };
 
   getVertexBuffer = () => this.vertex;
 

@@ -10,9 +10,9 @@ struct CameraUniform {
 var<uniform> camera: CameraUniform;
 
 struct TransformUniform {
-  color_picking: vec4<f32>,
   model: mat4x4<f32>,
   normal_matrix: mat3x3<f32>,
+  color_picking: vec4<f32>,
 };
 
 @group(1) @binding(0)

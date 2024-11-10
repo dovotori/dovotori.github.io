@@ -2,6 +2,7 @@ import Animation from "../maths/Animation";
 import BufferGltf from "./BufferGltf";
 import BufferMaterial from "./BufferMaterial";
 import BufferTransform from "./BufferTransform";
+import { pixelToPickingColor } from "./Picking";
 import Pipeline from "./Pipeline";
 import PipelineTextures from "./PipelineTextures";
 
@@ -24,13 +25,18 @@ export class GltfPipeline {
     const device = this.context.getDevice();
 
     const nodes = gltf.get("nodes");
+    this.nodes = nodes;
 
     this.matrixBuffersMaps = new Map();
     this.materialIndexes = new Map();
 
+    console.log(gltf.get("meshes"));
+
     const meshBuffersMaps = new Map();
+    this.facesPerMeshPerColorPicking = new Map();
     for (const [key, mesh] of gltf.get("meshes")) {
       let meshBuffers = [];
+      const facesPerColorPicking = new Map();
       for (let primitive of mesh.primitives) {
         // attributes.length // 2 position/ normale // 3 position/normale/texture
         // a buffer store data of a mesh with the same material
@@ -38,6 +44,21 @@ export class GltfPipeline {
         buffer.setup(device, primitive);
         this.materialIndexes.set(buffer, primitive.material);
         meshBuffers.push(buffer);
+
+        if (key === 12) {
+          const nbTrianglesFaces = primitive.bufferIndex.length / 3;
+          const pickingColorFacesIndexValues = Array.from({
+            length: nbTrianglesFaces,
+          })
+            .fill(0)
+            .map((_, i) => {
+              const colorValue = pixelToPickingColor(i);
+              facesPerColorPicking.set(i, colorValue);
+              return Number.parseFloat(colorValue);
+            });
+
+          console.log({ pickingColorFacesIndexValues, nbTrianglesFaces });
+        }
       }
       meshBuffersMaps.set(key, meshBuffers);
     }
@@ -50,7 +71,7 @@ export class GltfPipeline {
       program,
       gltf.get("pipeline"),
       [this.firstBufferLayout], // we used the first layout because its fit all the mesh
-      this.context.getCanvasFormat(),
+      this.context.getCanvasFormat()
     );
     this.pipeline.setupRenderPassDescriptor();
 
@@ -63,68 +84,48 @@ export class GltfPipeline {
       this.materialBuffer.setup(
         device,
         gltf.get("materials"),
-        this.getBindGroupLayout(GltfBindGroups.MATERIAL),
+        this.getBindGroupLayout(GltfBindGroups.MATERIAL)
       );
     }
 
     this.buildNodes(nodes, meshBuffersMaps);
     this.transformBinGroups = this.buildTransformBindGroups(
-      this.getBindGroupLayout(GltfBindGroups.TRANSFORM),
+      this.getBindGroupLayout(GltfBindGroups.TRANSFORM)
     );
 
     this.textures.setup(device, this.context.getCanvasFormat(), canvasSize);
   }
 
-  // INSTANCING if node have one children and don't have a mesh and have a transform
-  static isInstanceNode(node) {
-    const {
-      rotation: nodeRotation,
-      translation: nodeTranslation,
-      scale: nodeScale,
-    } = node;
-    return (
-      node.children?.length === 1 &&
-      node.mesh === undefined &&
-      (!!nodeTranslation || !!nodeRotation || !!nodeScale)
-    );
+  static getMatrix(node, nodes) {
+    if (node.isInstance) {
+      const refNode = nodes.get(node.children[0]);
+      const matrix = BufferTransform.getNodeMatrix(refNode);
+      const matrixInstance = BufferTransform.getNodeMatrix(node);
+      return matrix.multiply(matrixInstance);
+    }
+    return BufferTransform.getNodeMatrix(node);
   }
 
-  static handleInstancing(node, nodes) {
-    if (GltfPipeline.isInstanceNode(node)) {
+  static getMeshId(node, nodes) {
+    if (node.isInstance) {
       const refNode = nodes.get(node.children[0]);
-      const newNode = {
-        ...node,
-        mesh: refNode.mesh,
-        translation: refNode.translation,
-        scale: refNode.scale,
-        rotation: refNode.rotation,
-        matrix: refNode.matrix,
-        instanceTransform: {
-          translation: node.translation,
-          scale: node.scale,
-          rotation: node.rotation,
-        },
-      };
-      return newNode;
+      return refNode.mesh;
     }
-    return node;
+    return node.mesh;
   }
 
   buildNodes(nodes, meshBuffersMaps) {
-    this.nodes = new Map();
+    this.nodesToDraw = new Map();
     this.nodesPerColorPicking = new Map();
-    // let colorIndex = 1;
-    let colorIndex = 0;
-    for (const [key, _node] of nodes) {
-      const node = GltfPipeline.handleInstancing(_node, nodes);
-      const meshId = node.mesh;
-      if (meshId === undefined) continue;
-      const buffers = meshBuffersMaps.get(meshId);
-      const matrix = BufferTransform.getNodeMatrix(node);
 
-      if (node.instanceTransform) {
-        matrix.multiply(BufferTransform.getNodeMatrix(node.instanceTransform));
-      }
+    let index = 0;
+    for (const [key, node] of nodes) {
+      const meshId = GltfPipeline.getMeshId(node, nodes);
+
+      if (meshId === undefined || node.isInstanceRef) continue;
+
+      const matrix = GltfPipeline.getMatrix(node, nodes);
+      const buffers = meshBuffersMaps.get(meshId);
 
       // const pickingColor = [
       //   ((colorIndex >> 0) & 0xff) / 0xff,
@@ -133,34 +134,29 @@ export class GltfPipeline {
       //   ((colorIndex >> 24) & 0xff) / 0xff,
       // ];
 
-      const pickingColor = [Number.parseFloat(colorIndex).toFixed(2), 0, 0, 1];
+      const pickingColor = pixelToPickingColor(index);
 
-      this.nodes.set(key, {
+      this.nodesToDraw.set(key, {
         name: node.name,
         buffers,
         matrix,
-        pickingColor,
+        pickingColor: [Number.parseFloat(pickingColor), 0, 0, 1], // TODO can be only a float
       });
 
-      console.log(node.name, pickingColor.join(","));
-      this.nodesPerColorPicking.set(pickingColor.join(","), {
-        key,
-        name: node.name,
-      });
-
-      // colorIndex++;
-      colorIndex += 0.01;
+      this.nodesPerColorPicking.set(pickingColor, key);
+      index++;
     }
+    console.log(this.nodesToDraw);
   }
 
   buildTransformBindGroups(layoutTransform) {
     const device = this.context.getDevice();
     const groups = new Map();
-    for (const [key, node] of this.nodes) {
+    for (const [key, node] of this.nodesToDraw) {
       const transformBindGroup = !this.animations.isNodeHasAnimation(key)
         ? BufferTransform.setup(device, layoutTransform, {
             transformMatrix: node.matrix,
-            pickingColor: node.pickingColor,
+            // pickingColor: node.pickingColor, // TODO should only send this to picking pipeline
           })
         : undefined;
       groups.set(key, transformBindGroup);
@@ -178,13 +174,13 @@ export class GltfPipeline {
     this.pipeline.update(
       this.context.getCurrentTexture().createView(),
       this.textures.getRenderTargetView(),
-      this.textures.getDepthTextureView(),
+      this.textures.getDepthTextureView()
     );
   }
 
   drawModel = (device, pass, isDebug = false) => {
     // should sort primitives by material
-    for (const [key, node] of this.nodes) {
+    for (const [key, node] of this.nodesToDraw) {
       node.buffers.forEach((buffer) => {
         let transformBindGroup = this.transformBinGroups.get(key);
         if (!transformBindGroup) {
@@ -196,7 +192,7 @@ export class GltfPipeline {
             {
               transformMatrix: finalMatrix,
               pickingColor: node.pickingColor,
-            },
+            }
           );
         }
 
@@ -207,8 +203,8 @@ export class GltfPipeline {
           pass.setBindGroup(
             GltfBindGroups.MATERIAL,
             this.materialBuffer.getBindGroup(
-              this.materialIndexes.get(buffer) || 0,
-            ),
+              this.materialIndexes.get(buffer) || 0
+            )
           );
         }
 
@@ -224,7 +220,7 @@ export class GltfPipeline {
     this.textures.resize(
       this.context.getDevice(),
       this.context.getCanvasFormat(),
-      size,
+      size
     );
   };
 
@@ -235,9 +231,16 @@ export class GltfPipeline {
 
   get = () => this.pipeline.get();
 
-  getNodes = () => this.nodes;
+  getDrawNodes = () => this.nodesToDraw;
   getAnimations = () => this.animations;
   getFirstBufferLayout = () => this.firstBufferLayout;
 
-  getByPickColor = (color) => this.nodesPerColorPicking.get(color);
+  getByPickColor = (color) => {
+    console.log({ color });
+    const nodeId = this.nodesPerColorPicking.get(color[0]);
+    const node = this.nodes.get(nodeId);
+    const drawNode = this.nodesToDraw.get(nodeId);
+    console.log({ node, drawNode });
+    return node;
+  };
 }
