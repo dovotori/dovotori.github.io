@@ -34,9 +34,11 @@ export class GltfPipeline {
 
     const meshBuffersMaps = new Map();
     this.facesPerMeshPerColorPicking = new Map();
+
     for (const [key, mesh] of gltf.get("meshes")) {
       let meshBuffers = [];
       const facesPerColorPicking = new Map();
+
       for (let primitive of mesh.primitives) {
         // attributes.length // 2 position/ normale // 3 position/normale/texture
         // a buffer store data of a mesh with the same material
@@ -53,7 +55,7 @@ export class GltfPipeline {
           .fill(0)
           .map((_, i) => {
             const colorValue = pixelToPickingColor(i);
-            facesPerColorPicking.set(i, colorValue);
+            facesPerColorPicking.set(colorValue, i);
             return Number.parseFloat(colorValue);
           });
         const colorPerIndex = pickingColorFacesIndexValues.flatMap((v) => [
@@ -70,20 +72,37 @@ export class GltfPipeline {
             colorPerIndex,
           });
         }
-
         buffer.setupFaceColorPick(device, colorPerIndex);
       }
+      this.facesPerMeshPerColorPicking.set(key, facesPerColorPicking);
       meshBuffersMaps.set(key, meshBuffers);
     }
 
-    const [firstBuffer] = Array.from(meshBuffersMaps.values())[0];
+    const [firstBuffer] = Array.from(meshBuffersMaps.values())[0]; // we used the first layout because its fit all the mesh
     this.firstBufferLayout = firstBuffer.getLayout();
+
+    let buffersLayout = [this.firstBufferLayout];
+
+    if (isDebug) {
+      const addFaceColorLayout = {
+        arrayStride: 8,
+        attributes: [
+          {
+            format: "float32",
+            offset: 0,
+            shaderLocation: 3,
+          },
+        ],
+      };
+
+      buffersLayout.push(addFaceColorLayout);
+    }
 
     await this.pipeline.setup(
       device,
       program,
       gltf.get("pipeline"),
-      [this.firstBufferLayout], // we used the first layout because its fit all the mesh
+      buffersLayout,
       this.context.getCanvasFormat()
     );
     this.pipeline.setupRenderPassDescriptor();
@@ -204,7 +223,7 @@ export class GltfPipeline {
             this.getBindGroupLayout(GltfBindGroups.TRANSFORM),
             {
               transformMatrix: finalMatrix,
-              pickingColor: isDebug ? node.pickingColor : [],
+              pickingColor: isDebug ? node.pickingColor : undefined,
             }
           );
         }
@@ -222,6 +241,11 @@ export class GltfPipeline {
         }
 
         pass.setVertexBuffer(0, buffer.getVertexBuffer());
+
+        if (isDebug) {
+          pass.setVertexBuffer(1, buffer.getFaceColorBuffer());
+        }
+
         pass.setIndexBuffer(buffer.getIndexBuffer(), "uint16");
 
         pass.drawIndexed(buffer.getIndexCount());
@@ -252,6 +276,14 @@ export class GltfPipeline {
     const nodeId = this.nodesPerColorPicking.get(color[0]);
     const node = this.nodes.get(nodeId);
     const drawNode = this.nodesToDraw.get(nodeId);
+    if (node) {
+      const faceColors = this.facesPerMeshPerColorPicking.get(node.mesh);
+      if (faceColors) {
+        const faceIndex = faceColors.get(color[1]);
+        console.log({ faceIndex }, color[1], Array.from(faceColors.keys()));
+      }
+      console.log({ faceColors });
+    }
     console.log({ color, node, drawNode });
     return node;
   };

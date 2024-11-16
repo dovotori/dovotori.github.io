@@ -35,17 +35,23 @@ export class Picking {
   async setup(program, canvasSize, buffersLayout) {
     const device = this.context.getDevice();
 
-    console.log(buffersLayout);
+    let buffers = buffersLayout;
     // TODO should insert face picking color info space in layout
-    // shoulkd match vertex attribute structures
-    const addColorLayout = [
-      buffersLayout[0],
-      {
-        format: "float32",
-        offset: 0,
-        shaderLocation: 3,
-      },
-    ];
+    // should match vertex attribute structures
+    const addFaceColorLayout = {
+      arrayStride: 8,
+      attributes: [
+        {
+          format: "float32",
+          offset: 0,
+          shaderLocation: 3,
+        },
+      ],
+    };
+
+    buffers.push(addFaceColorLayout);
+
+    console.log(buffers);
 
     this.pipeline = await device.createRenderPipelineAsync({
       label: "PickingPipeline",
@@ -53,8 +59,7 @@ export class Picking {
       vertex: {
         module: program.vertex,
         entryPoint: "v_main",
-        // buffers: buffersLayout,
-        buffers: addColorLayout,
+        buffers,
       },
       fragment: {
         module: program.fragment,
@@ -190,7 +195,7 @@ export class Picking {
 
     // it seems to have async problem, the 2nd click is accurate
     console.log(data, origin);
-    return [getNodePickingColor(data[0]), 0, 0, 1];
+    return [getNodePickingColor(data[0]), getNodePickingColor(data[1]), 0, 1];
   };
 
   drawModel = (device, pass, nodes, animations) => {
@@ -239,7 +244,7 @@ export class Picking {
   getColorTexture = () => this.colorTexture;
 }
 
-const PICKING_FLOAT = 0.001;
+const PICKING_FLOAT = 0.000001;
 
 export const pixelToPickingColor = (index) => {
   const colorIndex = PICKING_FLOAT + index * PICKING_FLOAT;
@@ -247,5 +252,5 @@ export const pixelToPickingColor = (index) => {
 };
 
 export const getNodePickingColor = (pixelValue) => {
-  return Number.parseFloat(pixelValue).toFixed(3);
+  return Number.parseFloat(pixelValue).toFixed(6);
 };

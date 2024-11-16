@@ -37,7 +37,8 @@ fn v_main(
   var out: VertexOutput;
   var world_position: vec4<f32> = transform.model * vec4<f32>(in.position, 1.0);
 
-  out.color_picking = transform.color_picking;
+  // out.color_picking = transform.color_picking;
+  out.color_picking = vec4(transform.color_picking.x, in.faceColor, 0.0, 1.0);
 
   out.clip_position = camera.projection * camera.view * camera.model * world_position;
 
