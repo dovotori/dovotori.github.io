@@ -43,7 +43,7 @@ export class Picking {
       {
         format: "float32",
         offset: 0,
-        shaderLocation: 0,
+        shaderLocation: 3,
       },
     ];
 
@@ -53,7 +53,8 @@ export class Picking {
       vertex: {
         module: program.vertex,
         entryPoint: "v_main",
-        buffers: buffersLayout,
+        // buffers: buffersLayout,
+        buffers: addColorLayout,
       },
       fragment: {
         module: program.fragment,
@@ -212,6 +213,7 @@ export class Picking {
 
         pass.setBindGroup(GltfBindGroups.TRANSFORM, transformBindGroup);
         pass.setVertexBuffer(0, buffer.getVertexBuffer());
+        pass.setVertexBuffer(1, buffer.getFaceColorBuffer());
         pass.setIndexBuffer(buffer.getIndexBuffer(), "uint16");
         pass.drawIndexed(buffer.getIndexCount());
       });

@@ -63,13 +63,15 @@ class BufferGltf {
     const mappedBufferArray3 = new Float32Array(
       this.faceColor.getMappedRange()
     ); // color float
-    mappedBufferArray3.set(new Float32Array());
+    mappedBufferArray3.set(data);
     this.faceColor.unmap();
   };
 
   getVertexBuffer = () => this.vertex;
 
   getIndexBuffer = () => this.indexes;
+
+  getFaceColorBuffer = () => this.faceColor;
 
   getLayout = () => this.layout;
 
