@@ -27,12 +27,28 @@ class BufferTransform {
       mappedAtCreation: true,
     });
     const bufferArray = new Float32Array(buffer.getMappedRange());
-    const normalMatrix = Transform.getNormalMatrix(transformMatrix);
+    const normalMatrix = Transform.getNormalMatrix(transformMatrix).get();
+
+    const nm = [
+      normalMatrix[0],
+      normalMatrix[1],
+      normalMatrix[2],
+      0,
+      normalMatrix[3],
+      normalMatrix[4],
+      normalMatrix[5],
+      0,
+
+      normalMatrix[6],
+      normalMatrix[7],
+      normalMatrix[8],
+      0,
+    ];
 
     // order is important , should be the same than vertex uniform structure
     const data = [
       ...transformMatrix.get(),
-      ...normalMatrix.get(),
+      ...nm,
       ...(pickingColor ?? []), // use in picking shader
     ];
 

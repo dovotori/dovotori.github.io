@@ -26,7 +26,6 @@ struct VertexOutput {
   @builtin(position) clip_position: vec4<f32>,
   @location(0) world_position: vec3f,
   @location(1) world_normal: vec3f,
-  @location(2) color_picking: vec4f,
 }
 
 @vertex

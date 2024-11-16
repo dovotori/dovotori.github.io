@@ -53,19 +53,18 @@ class BufferGltf {
     };
   }
 
-  setupFaceColorPick = (data) => {
-    // this.faceColor = device.createBuffer({
-    //   label: "face color buffer",
-    //   // size: bufferVertex.byteLength,
-    //   size: Math.ceil(bufferVertex.byteLength / 4) * 4,
-    //   mappedAtCreation: true,
-    //   usage: window.GPUBufferUsage.VERTEX | window.GPUBufferUsage.COPY_DST,
-    // });
-    // const mappedBufferArray3 = new Float32Array(this.faceColor.getMappedRange()); // color float
-    // mappedBufferArray3.set(
-    //   new Float32Array()
-    // );
-    // this.faceColor.unmap();
+  setupFaceColorPick = (device, data) => {
+    this.faceColor = device.createBuffer({
+      label: "face color buffer",
+      size: Float32Array.BYTES_PER_ELEMENT * data.length,
+      mappedAtCreation: true,
+      usage: window.GPUBufferUsage.VERTEX | window.GPUBufferUsage.COPY_DST,
+    });
+    const mappedBufferArray3 = new Float32Array(
+      this.faceColor.getMappedRange()
+    ); // color float
+    mappedBufferArray3.set(new Float32Array());
+    this.faceColor.unmap();
   };
 
   getVertexBuffer = () => this.vertex;

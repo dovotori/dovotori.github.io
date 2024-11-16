@@ -146,7 +146,7 @@ export class GltfPipeline {
       this.nodesPerColorPicking.set(pickingColor, key);
       index++;
     }
-    console.log(this.nodesToDraw);
+    console.log("drawNodes", this.nodesToDraw);
   }
 
   buildTransformBindGroups(layoutTransform) {
@@ -156,7 +156,7 @@ export class GltfPipeline {
       const transformBindGroup = !this.animations.isNodeHasAnimation(key)
         ? BufferTransform.setup(device, layoutTransform, {
             transformMatrix: node.matrix,
-            // pickingColor: node.pickingColor, // TODO should only send this to picking pipeline
+            pickingColor: node.pickingColor, // TODO should only send this to picking pipeline
           })
         : undefined;
       groups.set(key, transformBindGroup);
@@ -191,7 +191,7 @@ export class GltfPipeline {
             this.getBindGroupLayout(GltfBindGroups.TRANSFORM),
             {
               transformMatrix: finalMatrix,
-              pickingColor: node.pickingColor,
+              pickingColor: isDebug ? node.pickingColor : [],
             }
           );
         }
@@ -236,11 +236,10 @@ export class GltfPipeline {
   getFirstBufferLayout = () => this.firstBufferLayout;
 
   getByPickColor = (color) => {
-    console.log({ color });
     const nodeId = this.nodesPerColorPicking.get(color[0]);
     const node = this.nodes.get(nodeId);
     const drawNode = this.nodesToDraw.get(nodeId);
-    console.log({ node, drawNode });
+    console.log({ color, node, drawNode });
     return node;
   };
 }

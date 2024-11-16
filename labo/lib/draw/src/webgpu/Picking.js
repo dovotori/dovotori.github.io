@@ -237,7 +237,7 @@ export class Picking {
   getColorTexture = () => this.colorTexture;
 }
 
-const PICKING_FLOAT = 0.000001;
+const PICKING_FLOAT = 0.001;
 
 export const pixelToPickingColor = (index) => {
   const colorIndex = PICKING_FLOAT + index * PICKING_FLOAT;
@@ -245,5 +245,5 @@ export const pixelToPickingColor = (index) => {
 };
 
 export const getNodePickingColor = (pixelValue) => {
-  return Number.parseFloat(pixelValue).toFixed(6);
+  return Number.parseFloat(pixelValue).toFixed(3);
 };
