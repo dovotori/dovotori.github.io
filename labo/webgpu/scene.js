@@ -7,6 +7,7 @@ import {
 import Camera from "../lib/draw/src/cameras/Camera";
 import Mat4 from "../lib/draw/src/maths/Mat4";
 import DualQuaternion from "../lib/draw/src/maths/DualQuaternion";
+import { IndexedDb } from "../lib/indexeddb";
 
 // to see the color change f_picking with alpha to 1
 const DEBUG_PICKING = false;
@@ -146,6 +147,7 @@ class Scene {
           fragment: programs.f_gltf.get(),
         };
 
+    await this.gltfPipeline.setupDb(new IndexedDb("gltf", "faces"));
     await this.gltfPipeline.setup(
       gltf,
       program,
@@ -282,7 +284,7 @@ class Scene {
       this.gltfPipeline.getAnimations()
     );
 
-    const node = this.gltfPipeline.getByPickColor(pickingColor);
+    const node = await this.gltfPipeline.getByPickColor(pickingColor);
     console.log({ pickingColor, node });
   };
 }

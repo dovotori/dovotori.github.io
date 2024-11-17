@@ -19,6 +19,13 @@ export class GltfPipeline {
     this.config = config;
     this.pipeline = new Pipeline();
     this.textures = new PipelineTextures();
+
+    this.db = null;
+  }
+
+  async setupDb(db) {
+    this.db = db;
+    await this.db.setup();
   }
 
   async setup(gltf, program, canvasSize, isDebug = false) {
@@ -35,10 +42,15 @@ export class GltfPipeline {
     const meshBuffersMaps = new Map();
     this.facesPerMeshPerColorPicking = new Map();
 
+    const dataToSotore = [];
+
     for (const [key, mesh] of gltf.get("meshes")) {
       let meshBuffers = [];
       const facesPerColorPicking = new Map();
 
+      let meshFaceIndex = 0; // use this index because mesh can have multiple primitives
+
+      // a mesh can have multiple primitives because the material is different
       for (let primitive of mesh.primitives) {
         // attributes.length // 2 position/ normale // 3 position/normale/texture
         // a buffer store data of a mesh with the same material
@@ -47,35 +59,63 @@ export class GltfPipeline {
         this.materialIndexes.set(buffer, primitive.material);
         meshBuffers.push(buffer);
 
-        // face color pick
+        // FACE COLOR
+        // map index vertices position
+
         const nbTrianglesFaces = primitive.bufferIndex.length / 3;
-        const pickingColorFacesIndexValues = Array.from({
-          length: nbTrianglesFaces,
-        })
-          .fill(0)
-          .map((_, i) => {
-            const colorValue = pixelToPickingColor(i);
-            facesPerColorPicking.set(colorValue, i);
-            return Number.parseFloat(colorValue);
-          });
-        const colorPerIndex = pickingColorFacesIndexValues.flatMap((v) => [
-          v,
-          v,
-          v,
-        ]);
+        const colorPerFace = [];
+
+        const indexPositionsMap = this.db?.isStoreExist()
+          ? GltfPipeline.getIndiceVerticesMap(primitive)
+          : null;
+
+        for (let cFace = 0; cFace < nbTrianglesFaces; cFace++) {
+          // don't compute if already exist
+          if (indexPositionsMap) {
+            // to retrieve face vertices when picking
+            const indexPos = cFace * 3;
+            const id0 = primitive.bufferIndex.at(indexPos);
+            const id1 = primitive.bufferIndex.at(indexPos + 1);
+            const id2 = primitive.bufferIndex.at(indexPos + 2);
+            const pos0 = indexPositionsMap.get(id0);
+            const pos1 = indexPositionsMap.get(id1);
+            const pos2 = indexPositionsMap.get(id2);
+            if (key === 12) {
+              console.log([id0, id1, id2], [pos0, pos1, pos2]);
+            }
+            dataToSotore.push({
+              meshIdIndex: `${key}-${meshFaceIndex}`,
+              vertices: [pos0, pos1, pos2],
+            });
+          }
+
+          // to retrieve face index when picking
+          const colorValue = pixelToPickingColor(meshFaceIndex);
+          facesPerColorPicking.set(colorValue, meshFaceIndex);
+          meshFaceIndex++;
+
+          // for buffer
+          const floatingValue = Number.parseFloat(colorValue);
+          colorPerFace.push(floatingValue, floatingValue, floatingValue); // x3 for all 3 positions of the face
+        }
 
         if (key === 12) {
           // billboard poteau
           console.log({
-            pickingColorFacesIndexValues,
             nbTrianglesFaces,
-            colorPerIndex,
+            colorPerFace,
           });
         }
-        buffer.setupFaceColorPick(device, colorPerIndex);
+
+        buffer.setupFaceColorPick(device, colorPerFace);
       }
+
       this.facesPerMeshPerColorPicking.set(key, facesPerColorPicking);
       meshBuffersMaps.set(key, meshBuffers);
+    }
+
+    if (this.db && dataToSotore.length) {
+      await this.db.upsertData(dataToSotore);
     }
 
     const [firstBuffer] = Array.from(meshBuffersMaps.values())[0]; // we used the first layout because its fit all the mesh
@@ -128,6 +168,23 @@ export class GltfPipeline {
     this.textures.setup(device, this.context.getCanvasFormat(), canvasSize);
   }
 
+  static getIndiceVerticesMap(primitive) {
+    const indexPositionsMap = new Map();
+    const nbFloatStride =
+      primitive.arrayStride / Float32Array.BYTES_PER_ELEMENT;
+    const nbIndex = primitive.bufferVertex.length / nbFloatStride;
+
+    for (let i = 0; i < nbIndex; i++) {
+      const arrIndex = i * nbFloatStride;
+      const p0 = primitive.bufferVertex.at(arrIndex);
+      const p1 = primitive.bufferVertex.at(arrIndex + 1);
+      const p2 = primitive.bufferVertex.at(arrIndex + 2);
+      const position = [p0, p1, p2];
+      indexPositionsMap.set(i, position);
+    }
+    return indexPositionsMap;
+  }
+
   static getMatrix(node, nodes) {
     if (node.isInstance) {
       const refNode = nodes.get(node.children[0]);
@@ -166,6 +223,7 @@ export class GltfPipeline {
       //   ((colorIndex >> 24) & 0xff) / 0xff,
       // ];
 
+      // MESH COLOR
       const pickingColor = pixelToPickingColor(index);
 
       this.nodesToDraw.set(key, {
@@ -272,7 +330,7 @@ export class GltfPipeline {
   getAnimations = () => this.animations;
   getFirstBufferLayout = () => this.firstBufferLayout;
 
-  getByPickColor = (color) => {
+  getByPickColor = async (color) => {
     const nodeId = this.nodesPerColorPicking.get(color[0]);
     const node = this.nodes.get(nodeId);
     const drawNode = this.nodesToDraw.get(nodeId);
@@ -281,6 +339,11 @@ export class GltfPipeline {
       if (faceColors) {
         const faceIndex = faceColors.get(color[1]);
         console.log({ faceIndex }, color[1], Array.from(faceColors.keys()));
+
+        if (this.db) {
+          const positions = await this.db.getData(`${node.mesh}-${faceIndex}`);
+          console.log({ positions });
+        }
       }
       console.log({ faceColors });
     }
