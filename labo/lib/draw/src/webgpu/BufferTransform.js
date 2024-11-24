@@ -56,10 +56,6 @@ class BufferTransform {
     buffer.unmap();
     return buffer;
   }
-
-  static getNodeMatrix(node) {
-    return Transform.get(node);
-  }
 }
 
 export default BufferTransform;

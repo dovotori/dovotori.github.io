@@ -1,4 +1,7 @@
 import Animation from "../maths/Animation";
+import Mat4 from "../maths/Mat4";
+import Transform from "../maths/Transform";
+import Vec3 from "../maths/Vec3";
 import BufferGltf from "./BufferGltf";
 import BufferMaterial from "./BufferMaterial";
 import BufferTransform from "./BufferTransform";
@@ -37,8 +40,6 @@ export class GltfPipeline {
     this.matrixBuffersMaps = new Map();
     this.materialIndexes = new Map();
 
-    console.log(gltf.get("meshes"));
-
     const meshBuffersMaps = new Map();
     this.facesPerMeshPerColorPicking = new Map();
 
@@ -65,7 +66,7 @@ export class GltfPipeline {
         const nbTrianglesFaces = primitive.bufferIndex.length / 3;
         const colorPerFace = [];
 
-        const indexPositionsMap = this.db?.isStoreExist()
+        const indexPositionsMap = this.db
           ? GltfPipeline.getIndiceVerticesMap(primitive)
           : null;
 
@@ -84,6 +85,7 @@ export class GltfPipeline {
               console.log([id0, id1, id2], [pos0, pos1, pos2]);
             }
             dataToSotore.push({
+              // db
               meshIdIndex: `${key}-${meshFaceIndex}`,
               vertices: [pos0, pos1, pos2],
             });
@@ -115,7 +117,7 @@ export class GltfPipeline {
     }
 
     if (this.db && dataToSotore.length) {
-      await this.db.upsertData(dataToSotore);
+      await this.db.addFacesData(dataToSotore);
     }
 
     const [firstBuffer] = Array.from(meshBuffersMaps.values())[0]; // we used the first layout because its fit all the mesh
@@ -166,6 +168,18 @@ export class GltfPipeline {
     );
 
     this.textures.setup(device, this.context.getCanvasFormat(), canvasSize);
+
+    const matricesToSaved = this.db ? [] : null;
+    if (matricesToSaved) {
+      for (const [key, node] of this.nodesToDraw) {
+        matricesToSaved.push({
+          meshId: key,
+          matrix: node.matrix.get(),
+        });
+      }
+      console.log({ matricesToSaved });
+      await this.db.addNodeMatricesData(matricesToSaved);
+    }
   }
 
   static getIndiceVerticesMap(primitive) {
@@ -188,11 +202,11 @@ export class GltfPipeline {
   static getMatrix(node, nodes) {
     if (node.isInstance) {
       const refNode = nodes.get(node.children[0]);
-      const matrix = BufferTransform.getNodeMatrix(refNode);
-      const matrixInstance = BufferTransform.getNodeMatrix(node);
+      const matrix = Transform.get(refNode);
+      const matrixInstance = Transform.get(node);
       return matrix.multiply(matrixInstance);
     }
-    return BufferTransform.getNodeMatrix(node);
+    return Transform.get(node);
   }
 
   static getMeshId(node, nodes) {
@@ -334,20 +348,34 @@ export class GltfPipeline {
     const nodeId = this.nodesPerColorPicking.get(color[0]);
     const node = this.nodes.get(nodeId);
     const drawNode = this.nodesToDraw.get(nodeId);
+    let pos = undefined;
+    let matrix = undefined;
     if (node) {
+      const matrixData = await this.db.getMeshMatrixData(node.mesh);
+      console.log({ matrixData });
       const faceColors = this.facesPerMeshPerColorPicking.get(node.mesh);
       if (faceColors) {
         const faceIndex = faceColors.get(color[1]);
         console.log({ faceIndex }, color[1], Array.from(faceColors.keys()));
 
         if (this.db) {
-          const positions = await this.db.getData(`${node.mesh}-${faceIndex}`);
+          const positions = await this.db.getMeshFaceData(
+            `${node.mesh}-${faceIndex}`
+          );
           console.log({ positions });
+          if (positions && matrixData) {
+            const p1 = positions.vertices[0];
+            const matrixD = matrixData.matrix;
+            pos = new Vec3(p1[0], p1[1], p1[2]);
+            matrix = new Mat4();
+            matrix.setRaw(matrixD);
+            console.log({ p1, matrix, pos });
+          }
         }
       }
       console.log({ faceColors });
     }
     console.log({ color, node, drawNode });
-    return node;
+    return { pos, node, matrix };
   };
 }

@@ -1,9 +1,8 @@
 export class IndexedDb {
-  constructor(dbName, tableName) {
+  constructor(dbName) {
     this.db = null;
     this.dbName = dbName;
-    this.objectStoreName = tableName;
-    this.alreadyExist = false;
+    this.objectStoreAlreadyExist = {};
   }
 
   deleteDb() {
@@ -20,7 +19,7 @@ export class IndexedDb {
     });
   }
 
-  setup() {
+  setup(tables) {
     return new Promise((resolve, reject) => {
       const request = window.indexedDB.open(this.dbName);
 
@@ -33,35 +32,39 @@ export class IndexedDb {
       request.onupgradeneeded = (e) => {
         this.db = e.target.result;
 
-        const objectStore = this.db.createObjectStore(this.objectStoreName, {
-          keyPath: "meshIdIndex",
-        });
+        tables.forEach((table) => {
+          const objectStore = this.db.createObjectStore(table.name, {
+            keyPath: table.keyPath,
+          });
 
-        // Create an index to search by meshIdIndex.
-        objectStore.createIndex("meshIdIndex", "meshIdIndex", {
-          unique: true,
+          // Create an index to search by meshIdIndex.
+          objectStore.createIndex(table.keyPath, table.keyPath, {
+            unique: table.unique,
+          });
         });
       };
 
       request.onsuccess = (e) => {
         this.db = e.target.result;
-        if (this.db.objectStoreNames.contains(this.objectStoreName)) {
-          this.alreadyExist = true;
-        }
+
+        tables.forEach((table) => {
+          if (this.db.objectStoreNames.contains(table.name)) {
+            this.objectStoreAlreadyExist[table.name] = true;
+          }
+        });
+
         resolve();
       };
     });
   }
 
-  upsertData(data) {
+  upsertData(objectStoreName, data) {
     return new Promise((resolve, reject) => {
       if (!this.db) {
         reject("db is not yet defined.");
       }
-      const transaction = this.db.transaction(
-        [this.objectStoreName],
-        "readwrite"
-      );
+      console.log({ objectStoreName, data });
+      const transaction = this.db.transaction([objectStoreName], "readwrite");
 
       transaction.oncomplete = (event) => {
         resolve(event);
@@ -71,7 +74,7 @@ export class IndexedDb {
         reject(event);
       };
 
-      const objectStore = transaction.objectStore(this.objectStoreName);
+      const objectStore = transaction.objectStore(objectStoreName);
       data.forEach((d) => {
         const request = objectStore.put(d);
         request.onsuccess = () => {};
@@ -82,21 +85,21 @@ export class IndexedDb {
     });
   }
 
-  getData(faceId) {
+  getData(objectStoreName, keyPath) {
     return new Promise((resolve, reject) => {
-      const transaction = this.db.transaction([this.objectStoreName]); // read only
-      const objectStore = transaction.objectStore(this.objectStoreName);
-      const request = objectStore.get(faceId);
+      const transaction = this.db.transaction([objectStoreName]); // read only
+      const objectStore = transaction.objectStore(objectStoreName);
+      const request = objectStore.get(keyPath);
       request.onerror = (e) => {
         reject(e);
       };
-      request.onsuccess = (e) => {
+      request.onsuccess = () => {
         resolve(request.result);
       };
     });
   }
 
-  isStoreExist() {
-    return this.alreadyExist;
+  isStoreExist(objectStoreName) {
+    return this.objectStoreAlreadyExist[objectStoreName] ?? false;
   }
 }

@@ -96,6 +96,11 @@ export class DebugPipeline {
       },
     });
 
+    this.setTransform(4, 4, 4);
+  };
+
+  setTransform(x, y, z) {
+    const device = this.context.getDevice();
     const bufferUniform = device.createBuffer({
       size: Float32Array.BYTES_PER_ELEMENT * 16,
       usage: window.GPUBufferUsage.UNIFORM | window.GPUBufferUsage.COPY_DST,
@@ -104,9 +109,7 @@ export class DebugPipeline {
 
     const bufferArray = new Float32Array(bufferUniform.getMappedRange());
     const model = new Mat4();
-    model.identity();
-    model.scale(0.1);
-    model.translate(4, 4, 4);
+    model.identity().scale(0.1).translate(x, y, z);
     bufferArray.set(model.get());
     bufferUniform.unmap();
 
@@ -120,7 +123,7 @@ export class DebugPipeline {
         },
       ],
     });
-  };
+  }
 
   render = (pass, uniformCameraBindGroup) => {
     pass.setPipeline(this.pipeline);
