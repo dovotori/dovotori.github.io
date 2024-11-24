@@ -7,6 +7,8 @@ export default {
     "/wgsl/fragment/f_picking.js",
     "/wgsl/vertex/v_debug_tex.js",
     "/wgsl/fragment/f_debug_tex.js",
+    "/wgsl/vertex/v_model_camera.js",
+    "/wgsl/fragment/f_simple.js",
   ],
   assets: ["/gltf/paysage.gltf"],
   // assets: ['/gltf/head.gltf'],

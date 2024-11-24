@@ -125,7 +125,7 @@ export class GltfPipeline {
 
     if (isDebug) {
       const addFaceColorLayout = {
-        arrayStride: 8,
+        arrayStride: Float32Array.BYTES_PER_ELEMENT,
         attributes: [
           {
             format: "float32",

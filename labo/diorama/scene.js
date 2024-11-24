@@ -3,7 +3,7 @@ import Primitive from "../lib/webgl/gl/Primitive";
 import Mat4 from "../lib/webgl/maths/Mat4";
 import Vec3 from "../lib/webgl/maths/Vec3";
 import Spring from "../lib/webgl/maths/Spring";
-import getTerrain from "../lib/webgl/primitives/terrain";
+import getTerrain from "../lib/draw/primitives/terrain";
 import TextureClouds from "../lib/webgl/textures/TextureClouds";
 import { hexToRgb } from "../lib/webgl/utils/color";
 import Fbo from "../lib/webgl/gl/Fbo";
@@ -79,7 +79,7 @@ class TerrainScene extends Scene {
 
     this.vbo = new Primitive(
       gl,
-      getTerrain(width, height, { withThick: true, thicknessY: -0.1 }),
+      getTerrain(width, height, { withThick: true, thicknessY: -0.1 })
     );
     this.vbo.setModeDessin(gl.TRIANGLE_STRIP);
 
@@ -115,7 +115,7 @@ class TerrainScene extends Scene {
       const { r, g, b } = hexToRgb(hex);
       progTerrain.setVector(
         `colors[${i}]`,
-        [r, g, b].map((c) => c / 255),
+        [r, g, b].map((c) => c / 255)
       );
     });
 
@@ -228,11 +228,11 @@ class TerrainScene extends Scene {
     progTerrain.setFloat("refractPass", 0);
     progTerrain.setMatrix(
       "view",
-      this.camera.getReflectViewMatrix(this.config.terrain.waterLevel).get(),
+      this.camera.getReflectViewMatrix(this.config.terrain.waterLevel).get()
     );
     progThrees.setMatrix(
       "view",
-      this.camera.getReflectViewMatrix(this.config.terrain.waterLevel).get(),
+      this.camera.getReflectViewMatrix(this.config.terrain.waterLevel).get()
     );
     this.fbo.start();
     this.vbo.render(progTerrain.get());

@@ -11,8 +11,8 @@ import Vec3 from "../lib/webgl/maths/Vec3";
 import {
   getGridPerlinPoints,
   getGridPoints,
-} from "../lib/webgl/primitives/particules";
-import { getPoints, getIndices } from "../lib/webgl/primitives/grid";
+} from "../lib/draw/primitives/particules";
+import { getPoints, getIndices } from "../lib/draw/primitives/grid";
 import { mapFromRange } from "../lib/webgl/utils/numbers";
 
 const nsin = (val) => Math.sin(val) * 0.5 + 0.5;
@@ -28,7 +28,7 @@ const getDistortion = (progress, frequence, amplitude, time) => {
         amplitude.getY(),
     nsin(progress * Math.PI * frequence.getZ() + time) * amplitude.getZ() -
       nsin(movementProgressFix * Math.PI * frequence.getZ() + time) *
-        amplitude.getZ(),
+        amplitude.getZ()
   );
 };
 
@@ -42,7 +42,7 @@ export default class extends Scene {
     this.vboGrid = new Primitive(
       gl,
       { position: this.grid.getPositions() },
-      true,
+      true
     );
     this.vboGrid.setModeDessin(gl.POINTS);
 
@@ -50,7 +50,7 @@ export default class extends Scene {
     this.vboMigration = new Primitive(
       gl,
       { position: this.migration.getPositions() },
-      true,
+      true
     );
     this.vboMigration.setModeDessin(gl.POINTS);
 
@@ -65,7 +65,7 @@ export default class extends Scene {
     const indices = Delaunay.triangulate(points);
     const points3d = points.reduce(
       (acc, cur) => [...acc, cur[0], cur[1], Math.random() * 2.0 - 1.0],
-      [],
+      []
     );
     this.vboDelaunay = new Primitive(gl, { position: points3d, indices });
     this.vboDelaunay.setModeDessin(gl.LINE_LOOP);
@@ -132,7 +132,7 @@ export default class extends Scene {
       button.addEventListener(
         "click",
         (e) => this.onClickButton(e.target, index),
-        false,
+        false
       );
     });
   };
@@ -155,8 +155,8 @@ export default class extends Scene {
         button.removeEventListener(
           "click",
           () => this.onClickButton(index),
-          false,
-        ),
+          false
+        )
       );
     }
   };
@@ -193,7 +193,7 @@ export default class extends Scene {
           -1,
           1,
           0,
-          1,
+          1
         );
         this.particules.compute(this.mngProg.get("pass1Morph"), newTime);
         this.resizeViewport();
@@ -214,24 +214,24 @@ export default class extends Scene {
           0.0,
           this.roadFrequence,
           this.roadAmplitude,
-          time,
+          time
         );
         const cameraTarget = getDistortion(
           0.2,
           this.roadFrequence,
           this.roadAmplitude,
-          time,
+          time
         );
 
         this.camera.setTarget(
           cameraTarget.getX(),
           this.roadPositionY + cameraTarget.getY(),
-          this.roadLength,
+          this.roadLength
         );
         this.camera.setPosition(
           cameraPos.getX(),
           this.roadPositionY + cameraPos.getY(),
-          0,
+          0
         );
 
         const program = this.mngProg.get("road");

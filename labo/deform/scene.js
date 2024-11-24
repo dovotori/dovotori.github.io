@@ -10,7 +10,7 @@ import DualQuaternion from "../lib/webgl/maths/DualQuaternion";
 import { degToRad } from "../lib/webgl/utils/numbers";
 import UpdateVbo from "../lib/webgl/vbos/UpdateVbo";
 import FixVbo from "../lib/webgl/vbos/FixVbo";
-import getIcoSphere from "../lib/webgl/primitives/icosphere";
+import getIcoSphere from "../lib/draw/primitives/icosphere";
 
 export default class extends Scene {
   setup() {
@@ -60,7 +60,7 @@ export default class extends Scene {
       playbackRate.dom.addEventListener(
         "change",
         this.onChangePlaybackRate,
-        false,
+        false
       );
     }
   };
@@ -198,7 +198,7 @@ export default class extends Scene {
       playbackRate.dom.removeEventListener(
         "change",
         this.onChangePlaybackRate,
-        false,
+        false
       );
     }
 

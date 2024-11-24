@@ -6,4 +6,3 @@ export { default as Pipeline } from "./Pipeline";
 export { default as Program } from "./Program";
 export { default as Device } from "./Device";
 export { default as Context } from "./Context";
-export { default as Textures } from "./Textures";

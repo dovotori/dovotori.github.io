@@ -8,6 +8,7 @@ import Camera from "../lib/draw/src/cameras/Camera";
 import Mat4 from "../lib/draw/src/maths/Mat4";
 import DualQuaternion from "../lib/draw/src/maths/DualQuaternion";
 import { IndexedDb } from "../lib/indexeddb";
+import { DebugPipeline } from "../lib/draw/src/webgpu/DebugPipeline";
 
 // to see the color change f_picking with alpha to 1
 const DEBUG_PICKING = false;
@@ -27,8 +28,10 @@ class Scene {
     this.model.identity();
 
     this.gltfPipeline = new GltfPipeline(context, config);
-    this.picking = new Picking(this.context);
-    // this.debug = new DebugTexture(this.context);
+    this.picking = new Picking(context);
+    // this.debug = new DebugTexture(context);
+
+    this.debugCube = new DebugPipeline(context);
   }
 
   setup() {}
@@ -185,6 +188,15 @@ class Scene {
       )
     );
 
+    // DEBUG CUBE
+    await this.debugCube.setup({
+      vertex: programs.v_model_camera.get(),
+      fragment: programs.f_simple.get(),
+    });
+    this.debugUniformCamera = this.setupCamera(
+      this.debugCube.getBindGroupLayout(GltfBindGroups.CAMERA)
+    );
+
     // this.debug.setTexture(this.picking.getColorTexture());
   }
 
@@ -233,6 +245,8 @@ class Scene {
     const device = this.context.getDevice();
 
     this.updateCameraUniforms(this.uniformCamera.buffer);
+    this.updateCameraUniforms(this.debugUniformCamera.buffer);
+
     this.gltfPipeline.update();
 
     const encoder = device.createCommandEncoder({
@@ -251,7 +265,7 @@ class Scene {
     }
 
     this.gltfPipeline.drawModel(device, pass, DEBUG_PICKING);
-
+    this.debugCube.render(pass, this.debugUniformCamera.bindGroup);
     // this.debug.render(pass);
 
     pass.end();
