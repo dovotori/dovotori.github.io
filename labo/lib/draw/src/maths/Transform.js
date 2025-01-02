@@ -8,7 +8,8 @@ class Transform {
   };
 
   static getNormalMatrix = (localMatrix) => {
-    const normalMatrix = localMatrix.getMatrice3x3();
+    const normalMatrix = localMatrix.getPureRotationMatrix();
+    // not sure when to inverse (with rotation create wrong normales)
     normalMatrix.inverse(); // erreur quand scale a 0
     normalMatrix.transpose();
     return normalMatrix;

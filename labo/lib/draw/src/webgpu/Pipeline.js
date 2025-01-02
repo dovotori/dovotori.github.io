@@ -21,13 +21,6 @@ class Pipeline {
       bindGroupLayouts,
     });
 
-    console.log({
-      program,
-      config,
-      buffersLayout,
-      bindGroupLayouts,
-    });
-
     const descriptor = {
       label: "Gltf pipeline",
       layout: pipelineLayout,

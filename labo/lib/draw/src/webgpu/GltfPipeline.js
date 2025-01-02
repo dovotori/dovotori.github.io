@@ -209,11 +209,16 @@ export class GltfPipeline {
   }
 
   static getMatrix(node, nodes) {
-    if (node.isInstance) {
-      const refNode = nodes.get(node.children[0]);
-      const matrix = Transform.get(refNode);
-      const matrixInstance = Transform.get(node);
-      return matrix.multiply(matrixInstance);
+    if (node.parent) {
+      const matrix = Transform.get(node);
+      // can have order problem with deep nest ?
+      node.paths.forEach((nodeId) => {
+        const refNode = nodes.get(nodeId);
+        const refMatrix = Transform.get(refNode);
+        matrix.multiply(refMatrix);
+      });
+
+      return matrix;
     }
     return Transform.get(node);
   }
@@ -234,7 +239,13 @@ export class GltfPipeline {
     for (const [key, node] of nodes) {
       const meshId = GltfPipeline.getMeshId(node, nodes);
 
-      if (meshId === undefined || node.isInstanceRef) continue;
+      if (
+        meshId === undefined ||
+        node.isInstanceRef ||
+        (!node.isInstance && node.children) // remove parent, we used children to draw with pats to apply ancestor matrix
+      ) {
+        continue; // isInstanceRef problem with color picking ?
+      }
 
       const matrix = GltfPipeline.getMatrix(node, nodes);
       const buffers = meshBuffersMaps.get(meshId);
@@ -272,6 +283,7 @@ export class GltfPipeline {
             pickingColor: node.pickingColor, // TODO should only send this to picking pipeline
           })
         : undefined;
+
       groups.set(key, transformBindGroup);
     }
     return groups;
@@ -294,6 +306,7 @@ export class GltfPipeline {
   drawModel = (device, pass, isDebug = false) => {
     // should sort primitives by material
     for (const [key, node] of this.nodesToDraw) {
+      // if (!["Hautvent.002", "billboard"].includes(node.name)) continue;
       node.buffers.forEach((buffer) => {
         let transformBindGroup = this.transformBinGroups.get(key);
         if (!transformBindGroup) {
@@ -305,7 +318,8 @@ export class GltfPipeline {
             {
               transformMatrix: finalMatrix,
               pickingColor: isDebug ? node.pickingColor : undefined,
-            }
+            },
+            node.name
           );
         }
 

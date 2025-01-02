@@ -19,7 +19,8 @@ export default {
     height: 1024,
   },
   camera: {
-    position: { x: 0, y: 4, z: 30 },
+    // position: { x: 0, y: 4, z: 10 },
+    position: { x: 0, y: 4, z: 20 },
     target: { x: 0, y: 0, z: 0 },
     near: 1,
     far: 200,
@@ -29,7 +30,7 @@ export default {
   lampes: [
     {
       type: 0,
-      position: { x: 0.5, y: 4, z: 0.3 },
+      position: { x: 10, y: 20, z: -10 },
       ambiant: [1, 0.5, 0.8],
       diffuse: [1, 0.9, 0.9],
       specular: [1, 1, 1],
@@ -38,7 +39,7 @@ export default {
     },
     {
       type: 0,
-      position: { x: -2, y: 4, z: -0.2 },
+      position: { x: -10, y: 20, z: 10 },
       ambiant: [0.6, 1, 0.8],
       strength: 1.2,
     },

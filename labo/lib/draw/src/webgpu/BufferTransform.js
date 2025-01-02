@@ -1,8 +1,8 @@
 import Transform from "../maths/Transform";
 
 class BufferTransform {
-  static setup(device, layout, bufferData) {
-    const buffer = BufferTransform.setupOne(device, bufferData);
+  static setup(device, layout, bufferData, debugName) {
+    const buffer = BufferTransform.setupOne(device, bufferData, debugName);
     return device.createBindGroup({
       label: "NodeTransformBindGroup",
       layout,
@@ -16,7 +16,7 @@ class BufferTransform {
   }
 
   // https://webgpufundamentals.org/webgpu/lessons/webgpu-memory-layout.html
-  static setupOne(device, bufferData) {
+  static setupOne(device, bufferData, debugName) {
     const { transformMatrix, pickingColor } = bufferData;
 
     // copy paste wgsl struct here to get the mapping
@@ -38,7 +38,6 @@ class BufferTransform {
       normalMatrix[4],
       normalMatrix[5],
       0,
-
       normalMatrix[6],
       normalMatrix[7],
       normalMatrix[8],

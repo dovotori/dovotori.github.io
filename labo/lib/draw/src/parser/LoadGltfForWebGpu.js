@@ -115,8 +115,6 @@ class LoadGltfForWebGpu {
 
     const layoutBuffers = new Map();
 
-    console.log({ accessors });
-
     accessors?.forEach((accessor, index) => {
       const layoutIndex = accessor.bufferView;
       const { count, componentType, type } = accessor;
@@ -266,6 +264,7 @@ class LoadGltfForWebGpu {
 
       newMeshes.set(id, {
         primitives: newPrimitives,
+        name: mesh.name,
       });
     });
     return newMeshes;
@@ -281,20 +280,6 @@ class LoadGltfForWebGpu {
     };
   };
 
-  // INSTANCING if node have one children and don't have a mesh and have a transform
-  static isInstanceNode(node) {
-    const {
-      rotation: nodeRotation,
-      translation: nodeTranslation,
-      scale: nodeScale,
-    } = node;
-    return (
-      node.children?.length === 1 &&
-      node.mesh === undefined &&
-      (!!nodeTranslation || !!nodeRotation || !!nodeScale)
-    );
-  }
-
   static getNodes = (nodes) => {
     const newNodes = new Map();
     nodes.map((node, i) => newNodes.set(i, node));
@@ -308,21 +293,14 @@ class LoadGltfForWebGpu {
     for (const [nodeId, node] of newNodes) {
       // set path
       let path = node.parent;
-      const paths = [nodeId]; // first is self
+      // const paths = [nodeId]; // first is self
+      const paths = []; // only parent / no self (as instance)
       while (path !== undefined) {
         paths.push(path);
         const parent = newNodes.get(path);
         path = parent.parent;
       }
       newNodes.set(nodeId, { ...node, paths });
-
-      // mark instance
-      if (LoadGltfForWebGpu.isInstanceNode(node)) {
-        const refNodeId = node.children[0];
-        const refNode = newNodes.get(refNodeId);
-        newNodes.set(nodeId, { ...node, isInstance: true });
-        newNodes.set(refNodeId, { ...refNode, isInstanceRef: true });
-      }
     }
 
     return newNodes;

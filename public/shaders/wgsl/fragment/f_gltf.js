@@ -34,7 +34,6 @@ struct FragInput {
   @location(0) world_position: vec3f,
   @location(1) world_normal: vec3f,
   @location(2) texture: vec2f,
-  @location(3) normale: vec3f,
 };
 
 @fragment
@@ -64,9 +63,11 @@ fn f_main(in: FragInput) -> @location(0) vec4f {
 
   result /= vec4(f32(countLights)).xyz;
 
+  // result = color.xyz;
+
   // result = textureSample(baseColorTexture, baseColorSampler, in.texture).xyz;
   // result = vec3(in.texture, 0.0);
-  // result = in.normale;
+  // result = in.world_normal;
 
   return vec4(result, 1.0);
 }
