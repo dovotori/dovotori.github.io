@@ -4,8 +4,9 @@ import {
   getArrayType,
   getBufferDataFromLayout,
   getMixedInterleavedBufferData,
+  getBufferDataFromTexture,
 } from "./GltfCommon";
-import { chunkArray } from "../../../utils";
+import { asyncLoadImage, chunkArray } from "../../../utils";
 import { base64ToArrayBuffer } from "../../../utils/base64";
 
 class LoadGltfForWebGpu {
@@ -88,13 +89,32 @@ class LoadGltfForWebGpu {
   // if interleave multiple accessors = 1 bufferview (called layout)
   // if interleave should have same componentType and count on accessors
 
-  static getBuffersDataWebGpu = (gltf) => {
+  static getBuffersDataWebGpu = async (gltf, matTextures) => {
     const { buffers, accessors, bufferViews } = gltf;
     const newBuffers = buffers?.map((buffer) =>
       base64ToArrayBuffer(buffer.uri)
     );
 
-    const layoutBuffers = {};
+    const textureBuffers = new Map();
+
+    matTextures.forEach(async (texData, texIndex) => {
+      const bufferViewIndex = texData.image.bufferView;
+      const bufferView = bufferViews[bufferViewIndex];
+
+      const buffer = getBufferDataFromTexture(newBuffers, bufferView);
+
+      const blob = new Blob([buffer], { type: texData.image.mimeType });
+      const imageData = await createImageBitmap(blob);
+
+      textureBuffers.set(texIndex, {
+        buffer,
+        ...texData,
+        imageData,
+      });
+    });
+
+    const layoutBuffers = new Map();
+
     accessors?.forEach((accessor, index) => {
       const layoutIndex = accessor.bufferView;
       const { count, componentType, type } = accessor;
@@ -102,22 +122,23 @@ class LoadGltfForWebGpu {
       const numElement = getNumComponentPerType(type);
       const length = numElement * count;
 
-      if (layoutBuffers[layoutIndex]) {
-        if (layoutBuffers[layoutIndex].count !== count) {
+      if (layoutBuffers.has(layoutIndex)) {
+        const layout = layoutBuffers.get(layoutIndex);
+        if (layout.count !== count) {
           throw new Error(
             "Really weird gltf interleaved with different count on accessors"
           );
         }
-        if (layoutBuffers[layoutIndex].componentType !== componentType) {
+        if (layout.componentType !== componentType) {
           console.warn("strange gltf interleaved of diffrent type or count");
           // in this case, i think we should split the buffer between vertex and index
-          layoutBuffers[layoutIndex].mixTypes = true;
+          layout.mixTypes = true;
         }
-        layoutBuffers[layoutIndex].numElement += numElement;
-        layoutBuffers[layoutIndex].length += length;
-        layoutBuffers[layoutIndex].accessorsIndexes.push(index);
+        layout.numElement += numElement;
+        layout.length += length;
+        layout.accessorsIndexes.push(index);
       } else {
-        layoutBuffers[layoutIndex] = {
+        const layout = {
           count,
           componentType,
           numElement,
@@ -125,11 +146,11 @@ class LoadGltfForWebGpu {
           accessorsIndexes: [index],
           ...bufferView,
         };
+        layoutBuffers.set(layoutIndex, layout);
       }
     });
 
-    Object.keys(layoutBuffers).forEach((layoutKey) => {
-      const layout = layoutBuffers[layoutKey];
+    layoutBuffers.forEach((layout) => {
       if (layout.mixTypes) {
         const layoutAccessors = layout.accessorsIndexes.map(
           (id) => accessors[id]
@@ -144,7 +165,7 @@ class LoadGltfForWebGpu {
       }
     });
 
-    return { layoutBuffers };
+    return { layoutBuffers, textureBuffers };
   };
 
   static getMeshes = (gltf, layoutBuffers) => {
@@ -157,13 +178,15 @@ class LoadGltfForWebGpu {
 
         const firstAttribute = attributes[Object.keys(attributes)[0]];
         const firstAccessor = accessors[firstAttribute];
-        const vertexLayoutBuffer = layoutBuffers[firstAccessor.bufferView];
+        const vertexLayoutBuffer = layoutBuffers.get(firstAccessor.bufferView);
 
         const isNotInterleaved =
           vertexLayoutBuffer.accessorsIndexes.length === 1;
 
         const indicesAccessor = accessors[indices];
-        const indicesLayoutBuffer = layoutBuffers[indicesAccessor.bufferView];
+        const indicesLayoutBuffer = layoutBuffers.get(
+          indicesAccessor.bufferView
+        );
 
         // LAYOUT ATTRIBUTES
         let previousOffset = 0;
@@ -197,7 +220,7 @@ class LoadGltfForWebGpu {
             const format = LoadGltfForWebGpu.gpuFormatForAccessor(accessor);
 
             if (isNotInterleaved) {
-              const layoutBuffer = layoutBuffers[accessor.bufferView];
+              const layoutBuffer = layoutBuffers.get(accessor.bufferView);
               offset += previousOffset;
               previousOffset =
                 layoutBuffer.numElement * arrayType.BYTES_PER_ELEMENT;
@@ -303,7 +326,7 @@ class LoadGltfForWebGpu {
     return newNodes;
   };
 
-  static getAnimationsPerNodes = (animations, accessors) => {
+  static getAnimationsPerNodes = (animations, layoutBuffers) => {
     const animationsPerNodes = new Map();
     if (animations) {
       animations.forEach(({ channels, samplers }) => {
@@ -314,8 +337,8 @@ class LoadGltfForWebGpu {
             interpolation,
           } = samplers[samplerIndex];
 
-          const input = accessors[inputAccessorIndex];
-          const output = accessors[outputAccessorIndex];
+          const input = layoutBuffers.get(inputAccessorIndex);
+          const output = layoutBuffers.get(outputAccessorIndex);
           const { node: nodeIndex, path } = target;
 
           const outputData = chunkArray(output.buffer, output.numElement);
@@ -338,34 +361,66 @@ class LoadGltfForWebGpu {
     return animationsPerNodes;
   };
 
-  constructor(rawText) {
+  static getMaterials(materials, textures, samplers, images) {
+    const matTextures = new Map();
+    const newMaterials = new Map();
+
+    materials.forEach((material, matIndex) => {
+      if (material.pbrMetallicRoughness?.baseColorTexture) {
+        const texIndex = material.pbrMetallicRoughness.baseColorTexture.index;
+        // has embedded texture
+        const texture = textures[texIndex];
+        const imageIndex = texture?.source;
+        const samplerIndex = texture?.sampler;
+        const image = images[imageIndex];
+        const sampler = samplers[samplerIndex];
+        matTextures.set(texIndex, {
+          image,
+          sampler,
+        });
+      }
+      newMaterials.set(matIndex, material);
+    });
+
+    return {
+      newMaterials,
+      matTextures,
+    };
+  }
+
+  static async load(rawText) {
     const gltf = JSON.parse(rawText);
     console.log({ gltf });
-    this.setup(gltf);
+    return await this.parse(gltf);
   }
 
   // attribute -> accesor -> bufferView -> buffer
-  setup(gltf) {
-    const { meshes, materials, nodes, animations } = gltf;
-    const { layoutBuffers } = LoadGltfForWebGpu.getBuffersDataWebGpu(gltf);
+  static async parse(gltf) {
+    const { meshes, nodes, animations, materials, textures, samplers, images } =
+      gltf;
+    const { newMaterials, matTextures } = LoadGltfForWebGpu.getMaterials(
+      materials,
+      textures,
+      samplers,
+      images
+    );
+    const { layoutBuffers, textureBuffers } =
+      await LoadGltfForWebGpu.getBuffersDataWebGpu(gltf, matTextures);
     const newMeshes = LoadGltfForWebGpu.getMeshes(gltf, layoutBuffers);
-    const newMaterials = new Set(materials);
     const newNodes = LoadGltfForWebGpu.getNodes(nodes);
 
     const animationsPerNodes = LoadGltfForWebGpu.getAnimationsPerNodes(
       animations,
       layoutBuffers
     );
-    this.data = new Map();
-    if (newMeshes) this.data.set("meshes", newMeshes);
-    this.data.set("nodes", newNodes);
-    this.data.set("materials", newMaterials);
-    this.data.set("pipeline", LoadGltfForWebGpu.getPipelines(meshes));
-    this.data.set("animations", animationsPerNodes);
-  }
-
-  get() {
-    return this.data;
+    const data = new Map();
+    if (newMeshes) data.set("meshes", newMeshes);
+    data.set("nodes", newNodes);
+    data.set("materials", newMaterials);
+    data.set("pipeline", LoadGltfForWebGpu.getPipelines(meshes));
+    data.set("animations", animationsPerNodes);
+    data.set("textures", textureBuffers);
+    return data;
   }
 }
 

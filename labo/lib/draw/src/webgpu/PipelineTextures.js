@@ -4,7 +4,7 @@ class PipelineTextures {
     this.renderTargetView = null;
     this.depthTexture = null;
     this.depthTextureView = null;
-    this.sampleCount = 4; // ??
+    this.sampleCount = 4; // ?? Pipeline multisample, should get from pipeline
   }
 
   setup(device, format, size, depthFormat = "depth32float") {
@@ -45,7 +45,6 @@ class PipelineTextures {
   };
 
   getRenderTargetView = () => this.renderTargetView;
-  getRenderTarget = () => this.renderTarget;
   getDepthTextureView = () => this.depthTextureView;
 }
 

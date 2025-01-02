@@ -51,9 +51,9 @@ class ManagerAssets {
   static load3dGltfWebGpu = (path, info) =>
     fetch(path)
       .then((response) => response.text())
-      .then((response) => {
-        const gltf = new LoadGltfForWebGpu(response);
-        return { data: gltf.get(), info };
+      .then(async (response) => {
+        const gltf = await LoadGltfForWebGpu.load(response);
+        return { data: gltf, info };
       });
 
   static loadImage(path, info) {

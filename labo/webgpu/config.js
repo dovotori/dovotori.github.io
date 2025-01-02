@@ -11,6 +11,7 @@ export default {
     "/wgsl/fragment/f_simple.js",
   ],
   assets: ["/gltf/paysage.gltf"],
+  // assets: ["/gltf/paysage9-testTex.gltf"],
   // assets: ['/gltf/head.gltf'],
   // assets: ['/gltf/headinterleaved.gltf'],
   canvas: {

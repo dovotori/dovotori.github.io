@@ -1,6 +1,6 @@
+import { random } from "../../../utils/numbers";
 import Vec3 from "../maths/Vec3";
 import Node from "./Node";
-import { random } from "../../numbers";
 
 const MAX_SPEED = 0.01;
 const MAX_STRENGTH = 0.1;

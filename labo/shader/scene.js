@@ -11,8 +11,8 @@ import Vec3 from "../lib/webgl/maths/Vec3";
 import {
   getGridPerlinPoints,
   getGridPoints,
-} from "../lib/draw/primitives/particules";
-import { getPoints, getIndices } from "../lib/draw/primitives/grid";
+} from "../lib/draw/src/primitives/particules";
+import { getPoints, getIndices } from "../lib/draw/src/primitives/grid";
 import { mapFromRange } from "../lib/webgl/utils/numbers";
 
 const nsin = (val) => Math.sin(val) * 0.5 + 0.5;

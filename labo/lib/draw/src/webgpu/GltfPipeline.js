@@ -140,12 +140,20 @@ export class GltfPipeline {
       buffersLayout.push(addFaceColorLayout);
     }
 
+    this.buildBindGroupLayouts(device);
+
     await this.pipeline.setup(
       device,
       program,
       gltf.get("pipeline"),
       buffersLayout,
-      this.context.getCanvasFormat()
+      this.context.getCanvasFormat(),
+      [
+        this.bindGroupLayouts[GltfBindGroups.CAMERA],
+        this.bindGroupLayouts[GltfBindGroups.TRANSFORM],
+        this.bindGroupLayouts[GltfBindGroups.MATERIAL],
+        this.bindGroupLayouts[GltfBindGroups.LIGHT],
+      ]
     );
     this.pipeline.setupRenderPassDescriptor();
 
@@ -155,10 +163,11 @@ export class GltfPipeline {
     // for material
     if (!isDebug) {
       this.materialBuffer = new BufferMaterial();
-      this.materialBuffer.setup(
+      await this.materialBuffer.setup(
         device,
+        this.getBindGroupLayout(GltfBindGroups.MATERIAL),
         gltf.get("materials"),
-        this.getBindGroupLayout(GltfBindGroups.MATERIAL)
+        gltf.get("textures")
       );
     }
 
@@ -333,8 +342,87 @@ export class GltfPipeline {
     );
   };
 
-  getBindGroupLayout = (bindGroupType) =>
-    this.pipeline.getBindGroupLayout(bindGroupType);
+  // generate from https://webgpufundamentals.org/webgpu/lessons/resources/wgsl-offset-computer.html
+  buildBindGroupLayouts = (device) => {
+    const cameraUniformBindGroupLayout = device.createBindGroupLayout({
+      label: "Camera Uniform Bind Group Layout",
+      entries: [
+        {
+          binding: 0,
+          visibility: GPUShaderStage.VERTEX | GPUShaderStage.FRAGMENT,
+          buffer: {
+            type: "uniform",
+            hasDynamicOffset: false,
+            minBindingSize: 208,
+          },
+        },
+      ],
+    });
+
+    const transformUniformBindGroupLayout = device.createBindGroupLayout({
+      label: "Transform Uniform Bind Group Layout",
+      entries: [
+        {
+          binding: 0,
+          visibility: GPUShaderStage.VERTEX,
+          buffer: {
+            type: "uniform",
+            hasDynamicOffset: false,
+            minBindingSize: 112,
+          },
+        },
+      ],
+    });
+
+    const materialUniformBindGroupLayout = device.createBindGroupLayout({
+      label: "Material Uniform Bind Group Layout",
+      entries: [
+        {
+          binding: 0,
+          visibility: GPUShaderStage.FRAGMENT,
+          buffer: {
+            type: "uniform",
+            hasDynamicOffset: false,
+            minBindingSize: 48,
+          },
+        },
+        {
+          binding: 1,
+          visibility: GPUShaderStage.FRAGMENT,
+          sampler: {},
+        },
+        {
+          binding: 2,
+          visibility: GPUShaderStage.FRAGMENT,
+          texture: {},
+        },
+      ],
+    });
+
+    const lightsStorageBindGroupLayout = device.createBindGroupLayout({
+      label: "Lights Storage Bind Group Layout",
+      entries: [
+        {
+          binding: 0,
+          visibility: GPUShaderStage.FRAGMENT,
+          buffer: {
+            type: "read-only-storage",
+            hasDynamicOffset: false,
+            minBindingSize: 0,
+          },
+        },
+      ],
+    });
+
+    this.bindGroupLayouts = {
+      [GltfBindGroups.CAMERA]: cameraUniformBindGroupLayout,
+      [GltfBindGroups.TRANSFORM]: transformUniformBindGroupLayout,
+      [GltfBindGroups.MATERIAL]: materialUniformBindGroupLayout,
+      [GltfBindGroups.LIGHT]: lightsStorageBindGroupLayout,
+    };
+  };
+
+  getBindGroupLayout = (bindGroupType) => this.bindGroupLayouts[bindGroupType];
 
   getRenderPassDescriptor = () => this.pipeline.getRenderPassDescriptor();
 

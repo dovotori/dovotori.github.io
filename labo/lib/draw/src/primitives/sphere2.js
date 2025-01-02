@@ -2,11 +2,11 @@
 // https://dev.to/ndesmic/webgl-3d-engine-from-scratch-part-6-procedural-sphere-generation-29bf
 
 import {
-  latLngToCartesian,
   inverseLerp,
-  TWO_PI,
+  latLngToCartesian,
   QUARTER_TURN,
-} from "../../numbers";
+  TWO_PI,
+} from "../../../utils/numbers";
 
 export default (density) => {
   const radsPerUnit = Math.PI / density;

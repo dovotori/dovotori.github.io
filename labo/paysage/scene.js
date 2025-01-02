@@ -6,7 +6,7 @@ import DualQuaternion from "../lib/webgl/maths/DualQuaternion";
 import { degToRad } from "../lib/webgl/utils/numbers";
 import Primitive from "../lib/webgl/gl/Primitive";
 import Buffers from "../lib/webgl/postprocess/Buffers";
-import primitive from "../lib/draw/primitives/plane";
+import primitive from "../lib/draw/src/primitives/plane";
 
 export default class extends Scene {
   constructor(gl, config) {

@@ -3,7 +3,7 @@ import Primitive from "../lib/webgl/gl/Primitive";
 import Mat4 from "../lib/webgl/maths/Mat4";
 import Vec3 from "../lib/webgl/maths/Vec3";
 import Spring from "../lib/webgl/maths/Spring";
-import getTerrain from "../lib/draw/primitives/terrain";
+import getTerrain from "../lib/draw/src/primitives/terrain";
 import TextureClouds from "../lib/webgl/textures/TextureClouds";
 import { hexToRgb } from "../lib/webgl/utils/color";
 import Fbo from "../lib/webgl/gl/Fbo";

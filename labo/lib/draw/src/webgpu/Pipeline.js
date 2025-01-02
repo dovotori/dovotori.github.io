@@ -1,16 +1,36 @@
 import { blend } from "./constants";
 
 class Pipeline {
-  constructor() {
+  constructor(sampleCount = 4, depthTextureFormat = "depth32float") {
     this.pipeline = null;
     this.renderPassDescriptor = null;
-    this.depthTextureFormat = "depth32float";
+    this.depthTextureFormat = depthTextureFormat;
+    this.sampleCount = sampleCount;
   }
 
-  async setup(device, program, config, buffersLayout, canvasFormat) {
+  async setup(
+    device,
+    program,
+    config,
+    buffersLayout,
+    canvasFormat,
+    bindGroupLayouts
+  ) {
+    const pipelineLayout = device.createPipelineLayout({
+      label: "Pipeline layout",
+      bindGroupLayouts,
+    });
+
+    console.log({
+      program,
+      config,
+      buffersLayout,
+      bindGroupLayouts,
+    });
+
     const descriptor = {
       label: "Gltf pipeline",
-      layout: "auto",
+      layout: pipelineLayout,
       vertex: {
         module: program.vertex,
         entryPoint: "v_main",
@@ -33,7 +53,7 @@ class Pipeline {
         format: this.depthTextureFormat,
       },
       multisample: {
-        count: 4,
+        count: this.sampleCount,
       },
     };
     this.pipeline = await device.createRenderPipelineAsync(descriptor);
@@ -42,7 +62,7 @@ class Pipeline {
   setupRenderPassDescriptor = () => {
     // renderpass descriptor
     this.renderPassDescriptor = {
-      label: "GltfPassDescriptor",
+      label: "Gltf Pass Descriptor",
       colorAttachments: [
         {
           view: null,
@@ -76,7 +96,10 @@ class Pipeline {
 
   getDepthTextureFormat = () => this.depthTextureFormat;
 
-  getBindGroupLayout = (index) => this.pipeline.getBindGroupLayout(index);
+  // work only with compute pipeline
+  // getBindGroupLayout = (index) => {
+  //   return this.pipeline.getBindGroupLayout(index);
+  // };
 }
 
 export default Pipeline;

@@ -3,7 +3,7 @@ import Screen from "../lib/webgl/gl/Screen";
 import Primitive from "../lib/webgl/gl/Primitive";
 import Mat4 from "../lib/webgl/maths/Mat4";
 import Vec3 from "../lib/webgl/maths/Vec3";
-import { getPoints, getIndices } from "../lib/draw/primitives/grid";
+import { getPoints, getIndices } from "../lib/draw/src/primitives/grid";
 import Target from "../lib/webgl/maths/Target";
 
 const nsin = (val) => Math.sin(val) * 0.5 + 0.5;

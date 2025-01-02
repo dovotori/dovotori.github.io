@@ -26,6 +26,8 @@ struct VertexOutput {
   @builtin(position) clip_position: vec4<f32>,
   @location(0) world_position: vec3f,
   @location(1) world_normal: vec3f,
+  @location(2) texture: vec2f,
+  @location(3) normale: vec3f,
 }
 
 @vertex
@@ -39,6 +41,8 @@ fn v_main(
   out.world_normal = transform.normal_matrix * in.normale;
 
   out.clip_position = camera.projection * camera.view * camera.model * world_position;
+  out.texture = in.texture;
+  out.normale = in.normale;
 
   return out;
 }

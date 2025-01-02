@@ -3,7 +3,7 @@ import Primitive from "../gl/Primitive";
 import Fbo from "../gl/Fbo";
 import Screen from "../gl/Screen";
 import { get2DGridTexturePoints } from "../primitives/particules";
-import { nearestNextPowerOf2 } from "../../numbers";
+import { nearestNextPowerOf2 } from "../../../utils/numbers";
 
 export const getTextureSizeFromPoints = (points) => {
   const powerOfTwo = nearestNextPowerOf2(points.length);

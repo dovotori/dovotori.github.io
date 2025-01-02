@@ -90,16 +90,24 @@ export const parseCsv = (str) => {
         ...acc,
         [cur]: l[index] !== "" ? l[index] : null,
       }),
-      {},
+      {}
     );
   });
 };
 
 export const chunkArray = (arr, size) =>
   Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
-    arr.slice(i * size, i * size + size),
+    arr.slice(i * size, i * size + size)
   );
 
 export const getEnvPath = (path) => {
   return `${process.env.ASSET_PATH || ""}${path}`;
 };
+
+export const asyncLoadImage = (url) =>
+  new Promise((resolve, reject) => {
+    const img = new Image();
+    img.addEventListener("load", () => resolve(img));
+    img.addEventListener("error", (e) => reject(e));
+    img.src = url;
+  });

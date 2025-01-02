@@ -10,7 +10,7 @@ import DualQuaternion from "../lib/webgl/maths/DualQuaternion";
 import { degToRad } from "../lib/webgl/utils/numbers";
 import UpdateVbo from "../lib/webgl/vbos/UpdateVbo";
 import FixVbo from "../lib/webgl/vbos/FixVbo";
-import getIcoSphere from "../lib/draw/primitives/icosphere";
+import getIcoSphere from "../lib/draw/src/primitives/icosphere";
 
 export default class extends Scene {
   setup() {

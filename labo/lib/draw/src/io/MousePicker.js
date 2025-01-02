@@ -1,6 +1,6 @@
-import { mapFromRange } from "../../numbers";
 import Vec4 from "../maths/Vec4";
 import Mat4 from "../maths/Mat4";
+import { mapFromRange } from "../../../utils/numbers";
 
 export default class {
   constructor() {

@@ -1,4 +1,4 @@
-import { mapFromRange } from "../../numbers";
+import { mapFromRange } from "../../../utils/numbers";
 import Attractor from "./Attractor";
 import Node from "./Node";
 
@@ -8,7 +8,7 @@ export default class {
     this.nbColumns = nbColumns || nbRows;
     this.nodes = Array.from(
       { length: this.nbRows * this.nbColumns },
-      () => new Node({ withRebond: true, withSlowDown: false }),
+      () => new Node({ withRebond: true, withSlowDown: false })
     );
     this.attractor = new Attractor();
     this.attractor.setPosition(0, 0, 0);
@@ -38,7 +38,7 @@ export default class {
   getPositions() {
     return this.nodes.reduce(
       (acc, node) => [...node.getPosition().get(), ...acc],
-      [],
+      []
     );
   }
 }

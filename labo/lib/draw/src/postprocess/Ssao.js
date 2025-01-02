@@ -1,7 +1,7 @@
 import Blur from "./Blur";
 import Vec3 from "../maths/Vec3";
 import { lerp } from "../../easing";
-import { random } from "../../numbers";
+import { random } from "../../../utils/numbers";
 
 export default class extends Blur {
   constructor(gl, config, programs = {}) {
@@ -27,7 +27,7 @@ export default class extends Blur {
       const sample = new Vec3(
         random(-1.0, 1.0),
         random(-1.0, 1.0),
-        random(0.0, 1.0),
+        random(0.0, 1.0)
       )
         .normalise()
         .multiplyNumber(random(0.0, 1.0))

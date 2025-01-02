@@ -16,6 +16,8 @@ struct MaterialUniform {
 };
 
 @group(2) @binding(0) var<uniform> material : MaterialUniform;
+@group(2) @binding(1) var baseColorSampler: sampler;
+@group(2) @binding(2) var baseColorTexture: texture_2d<f32>;
 
 struct PointLight {
   position: vec3f, 
@@ -31,6 +33,8 @@ fn number_of_lights() -> u32 {
 struct FragInput {
   @location(0) world_position: vec3f,
   @location(1) world_normal: vec3f,
+  @location(2) texture: vec2f,
+  @location(3) normale: vec3f,
 };
 
 @fragment
@@ -59,6 +63,10 @@ fn f_main(in: FragInput) -> @location(0) vec4f {
   }
 
   result /= vec4(f32(countLights)).xyz;
+
+  // result = textureSample(baseColorTexture, baseColorSampler, in.texture).xyz;
+  // result = vec3(in.texture, 0.0);
+  // result = in.normale;
 
   return vec4(result, 1.0);
 }

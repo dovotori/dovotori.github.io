@@ -104,7 +104,7 @@ const getBufferDataFromAccessor = (buffers, bufferViews, accessor) => {
   const dataView = new DataView(
     buffers[bufferIndex],
     bufferViewByteOffset + accessorByteOffset,
-    bufferViewByteLength - accessorByteOffset,
+    bufferViewByteLength - accessorByteOffset
   );
   const numElement = getNumComponentPerType(type);
   const length = numElement * count;
@@ -132,10 +132,32 @@ export const getBufferDataFromLayout = (buffers, layout) => {
     : null;
 };
 
+export const getBufferDataFromTexture = (buffers, bufferView) => {
+  const {
+    buffer: bufferIndex,
+    byteLength: bufferViewByteLength,
+    byteOffset: bufferViewByteOffset = 0,
+    byteStride,
+  } = bufferView;
+  const dataView = new DataView(
+    buffers[bufferIndex],
+    bufferViewByteOffset,
+    bufferViewByteLength
+  );
+  const numElement = 4; // RBGA
+  const length = bufferViewByteLength / Uint8Array.BYTES_PER_ELEMENT;
+  const count = length / numElement;
+  const componentType = 5121; // uint8
+  const converterMethod = getConvertMethod(componentType);
+  return converterMethod
+    ? converterMethod(dataView, length, count, numElement, byteStride)
+    : null;
+};
+
 export const getMixedInterleavedBufferData = (
   buffers,
   bufferViews,
-  accessors,
+  accessors
 ) => {
   const arraysByComponentType = {};
   const bv = bufferViews[accessors[0].bufferView];

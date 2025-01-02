@@ -205,7 +205,7 @@ export default async () => {
   const { data: initialData } = context.getImageData(0, 0, width, height);
   initialDataImage = initialData;
   webworker = new WebWorker(
-    new Worker(new URL("/public/worker/delaunayworker.js", import.meta.url)),
+    new Worker(new URL("/public/worker/delaunayworker.js", import.meta.url))
   );
   webworker.setMessageListener(endProcess);
   startDelaunayProcess(initialData, rangeThreshold.value);
