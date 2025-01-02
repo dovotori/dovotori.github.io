@@ -10,6 +10,7 @@ class Transform {
   static getNormalMatrix = (localMatrix) => {
     const normalMatrix = localMatrix.getPureRotationMatrix();
     // not sure when to inverse (with rotation create wrong normales)
+    // TODO negative scale fuck normal, maybe can remove sign of scale
     normalMatrix.inverse(); // erreur quand scale a 0
     normalMatrix.transpose();
     return normalMatrix;

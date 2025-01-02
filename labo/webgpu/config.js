@@ -19,8 +19,7 @@ export default {
     height: 1024,
   },
   camera: {
-    // position: { x: 0, y: 4, z: 10 },
-    position: { x: 0, y: 4, z: 20 },
+    position: { x: 0, y: 4, z: 30 },
     target: { x: 0, y: 0, z: 0 },
     near: 1,
     far: 200,

@@ -171,7 +171,7 @@ export class GltfPipeline {
       );
     }
 
-    this.buildNodes(nodes, meshBuffersMaps);
+    this.buildDrawNodes(nodes, meshBuffersMaps);
     this.transformBinGroups = this.buildTransformBindGroups(
       this.getBindGroupLayout(GltfBindGroups.TRANSFORM)
     );
@@ -208,17 +208,44 @@ export class GltfPipeline {
     return indexPositionsMap;
   }
 
-  static getMatrix(node, nodes) {
+  static getAbsoluteMatrix(key, nodes) {
+    const node = nodes.get(key);
+    if (!node) {
+      throw Error("node not found in getAbsoluteMatrix");
+    }
     if (node.parent) {
       const matrix = Transform.get(node);
-      // can have order problem with deep nest ?
       node.paths.forEach((nodeId) => {
         const refNode = nodes.get(nodeId);
         const refMatrix = Transform.get(refNode);
         matrix.multiply(refMatrix);
       });
-
       return matrix;
+    }
+    return Transform.get(node);
+  }
+
+  getAbsoluteAnimatedMatrix(key) {
+    const node = this.nodes.get(key);
+    if (!node) {
+      throw Error("node not found in getAbsoluteMatrix");
+    }
+    if (node.parent) {
+      const matrix = Transform.get(node);
+      node.paths.forEach((nodeId) => {
+        if (this.animations.isNodeHasAnimation(nodeId)) {
+          const animMatrix = this.animations.handleLocalTransform(nodeId);
+          matrix.multiply(animMatrix);
+        } else {
+          const refNode = this.nodes.get(nodeId);
+          const refMatrix = Transform.get(refNode);
+          matrix.multiply(refMatrix);
+        }
+      });
+      return matrix;
+    }
+    if (this.animations.isNodeHasAnimation(key)) {
+      return this.animations.handleLocalTransform(key);
     }
     return Transform.get(node);
   }
@@ -231,7 +258,7 @@ export class GltfPipeline {
     return node.mesh;
   }
 
-  buildNodes(nodes, meshBuffersMaps) {
+  buildDrawNodes(nodes, meshBuffersMaps) {
     this.nodesToDraw = new Map();
     this.nodesPerColorPicking = new Map();
 
@@ -247,8 +274,12 @@ export class GltfPipeline {
         continue; // isInstanceRef problem with color picking ?
       }
 
-      const matrix = GltfPipeline.getMatrix(node, nodes);
+      const matrix = GltfPipeline.getAbsoluteMatrix(key, nodes);
       const buffers = meshBuffersMaps.get(meshId);
+
+      const hasAnimation =
+        this.animations.isNodeHasAnimation(key) ||
+        node.paths?.some(this.animations.isNodeHasAnimation);
 
       // const pickingColor = [
       //   ((colorIndex >> 0) & 0xff) / 0xff,
@@ -265,6 +296,7 @@ export class GltfPipeline {
         buffers,
         matrix,
         pickingColor: [Number.parseFloat(pickingColor), 0, 0, 1], // TODO can be only a float
+        hasAnimation,
       });
 
       this.nodesPerColorPicking.set(pickingColor, key);
@@ -277,7 +309,7 @@ export class GltfPipeline {
     const device = this.context.getDevice();
     const groups = new Map();
     for (const [key, node] of this.nodesToDraw) {
-      const transformBindGroup = !this.animations.isNodeHasAnimation(key)
+      const transformBindGroup = !node.hasAnimation
         ? BufferTransform.setup(device, layoutTransform, {
             transformMatrix: node.matrix,
             pickingColor: node.pickingColor, // TODO should only send this to picking pipeline
@@ -307,16 +339,18 @@ export class GltfPipeline {
     // should sort primitives by material
     for (const [key, node] of this.nodesToDraw) {
       // if (!["Hautvent.002", "billboard"].includes(node.name)) continue;
+      // if (!["pale1", "pale2", "pale3", "pale4", "pale5"].includes(node.name))
+      //   continue;
       node.buffers.forEach((buffer) => {
         let transformBindGroup = this.transformBinGroups.get(key);
         if (!transformBindGroup) {
           // animations
-          const finalMatrix = this.animations.handleLocalTransform(key);
+          const animMatrix = this.getAbsoluteAnimatedMatrix(key);
           transformBindGroup = BufferTransform.setup(
             device,
             this.getBindGroupLayout(GltfBindGroups.TRANSFORM),
             {
-              transformMatrix: finalMatrix,
+              transformMatrix: animMatrix,
               pickingColor: isDebug ? node.pickingColor : undefined,
             },
             node.name
