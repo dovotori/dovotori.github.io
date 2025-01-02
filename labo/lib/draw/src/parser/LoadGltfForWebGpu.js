@@ -115,6 +115,8 @@ class LoadGltfForWebGpu {
 
     const layoutBuffers = new Map();
 
+    console.log({ accessors });
+
     accessors?.forEach((accessor, index) => {
       const layoutIndex = accessor.bufferView;
       const { count, componentType, type } = accessor;
@@ -326,7 +328,8 @@ class LoadGltfForWebGpu {
     return newNodes;
   };
 
-  static getAnimationsPerNodes = (animations, layoutBuffers) => {
+  static getAnimationsPerNodes = (gltf, layoutBuffers) => {
+    const { animations, accessors } = gltf;
     const animationsPerNodes = new Map();
     if (animations) {
       animations.forEach(({ channels, samplers }) => {
@@ -337,8 +340,11 @@ class LoadGltfForWebGpu {
             interpolation,
           } = samplers[samplerIndex];
 
-          const input = layoutBuffers.get(inputAccessorIndex);
-          const output = layoutBuffers.get(outputAccessorIndex);
+          const inAccessor = accessors[inputAccessorIndex];
+          const outAccessor = accessors[outputAccessorIndex];
+
+          const input = layoutBuffers.get(inAccessor.bufferView);
+          const output = layoutBuffers.get(outAccessor.bufferView);
           const { node: nodeIndex, path } = target;
 
           const outputData = chunkArray(output.buffer, output.numElement);
@@ -396,8 +402,7 @@ class LoadGltfForWebGpu {
 
   // attribute -> accesor -> bufferView -> buffer
   static async parse(gltf) {
-    const { meshes, nodes, animations, materials, textures, samplers, images } =
-      gltf;
+    const { meshes, nodes, materials, textures, samplers, images } = gltf;
     const { newMaterials, matTextures } = LoadGltfForWebGpu.getMaterials(
       materials,
       textures,
@@ -410,7 +415,7 @@ class LoadGltfForWebGpu {
     const newNodes = LoadGltfForWebGpu.getNodes(nodes);
 
     const animationsPerNodes = LoadGltfForWebGpu.getAnimationsPerNodes(
-      animations,
+      gltf,
       layoutBuffers
     );
     const data = new Map();
