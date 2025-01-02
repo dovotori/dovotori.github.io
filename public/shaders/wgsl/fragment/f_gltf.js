@@ -39,6 +39,13 @@ struct FragInput {
 @fragment
 fn f_main(in: FragInput) -> @location(0) vec4f {
   var color = material.baseColorFactor;
+
+  var baseColorTex = textureSample(baseColorTexture, baseColorSampler, in.texture);
+  // if it is not the red 1 pixel texture we display the texture
+  if (!all(baseColorTex == vec4(1.0, 0.0, 0.0, 1.0))) {
+    color = baseColorTex;
+  }
+
   var countLights = number_of_lights();
 
   let ambient_strength = 0.1;
@@ -64,8 +71,6 @@ fn f_main(in: FragInput) -> @location(0) vec4f {
   result /= vec4(f32(countLights)).xyz;
 
   // result = color.xyz;
-
-  // result = textureSample(baseColorTexture, baseColorSampler, in.texture).xyz;
   // result = vec3(in.texture, 0.0);
   // result = in.world_normal;
 
