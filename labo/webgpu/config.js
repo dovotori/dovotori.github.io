@@ -18,13 +18,21 @@ export default {
     width: 1024,
     height: 1024,
   },
+  // camera: {
+  //   // perspective
+  //   position: { x: 0, y: 4, z: 30 },
+  //   target: { x: 0, y: 0, z: 0 },
+  //   near: 1,
+  //   far: 60,
+  //   angle: 60,
+  // },
   camera: {
-    position: { x: 0, y: 4, z: 30 },
+    // ortho
+    position: { x: 0, y: 4, z: 20 },
     target: { x: 0, y: 0, z: 0 },
     near: 1,
-    far: 200,
-    angle: 60,
-    // ortho: { left: -100, right: 100, bottom: -100, top: 100 },
+    far: 100,
+    ortho: { left: -20, right: 20, bottom: -20, top: 20 },
   },
   lampes: [
     {

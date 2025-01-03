@@ -218,7 +218,7 @@ class Scene {
   updateCameraUniforms(cameraBindBuffer) {
     const device = this.context.getDevice();
 
-    const projection = this.camera.getProjection().get();
+    const projection = this.camera.getModeProjection().get();
     const view = this.camera.getView().get();
     const uniforms = new Float32Array(
       projection.concat(view, this.model.get(), this.camera.getPosition())

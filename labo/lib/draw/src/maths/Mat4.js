@@ -289,6 +289,41 @@ class Mat4 {
     return this;
   }
 
+  // https://github.com/mrdoob/three.js/issues/20276
+  orthoWebGpu(left, right, bottom, top, near, far) {
+    const w = 1.0 / (right - left);
+    const h = 1.0 / (top - bottom);
+    const p = 1.0 / (far - near);
+
+    const x = (right + left) * w;
+    const y = (top + bottom) * h;
+    const z = -near * p;
+
+    this.set(
+      2 * w,
+      0,
+      0,
+      0,
+
+      0,
+      2 * h,
+      0,
+      0,
+
+      0,
+      0,
+      -1 * p,
+      0,
+
+      -x,
+      -y,
+      -z,
+      1
+    );
+
+    return this;
+  }
+
   lookAt(e0, e1, e2, c0, c1, c2, a0, a1, a2) {
     let x0;
     let x1;

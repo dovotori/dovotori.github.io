@@ -5,17 +5,16 @@ import Objectif from "./Objectif";
 export default class extends Objectif {
   constructor(config) {
     super(config);
-    this.target = new Vec3(config.target.x, config.target.y, config.target.z);
 
     // MATRICES
     this.matIdentity = new Mat4();
     this.projection = new Mat4();
     this.projection.identity();
 
-    this.near = config.near || 1.0;
-    this.far = config.far || 100.0;
+    this.near = config.near ?? 1.0;
+    this.far = config.far ?? 100.0;
 
-    this.angle = config.angle || 50;
+    this.angle = config.angle ?? 50;
     this.matIdentity.identity();
 
     this.lookAt();
@@ -29,7 +28,6 @@ export default class extends Objectif {
     this.projection
       .identity()
       .perspective(this.angle, w / h, this.near, this.far);
-    // .ortho(-1.0, 1.0, -1.0, 1.0, this.near, this.far);
   }
 
   move(time, offset = 0) {
@@ -43,7 +41,7 @@ export default class extends Objectif {
 
       this.position.getX(),
       Math.sin(time * 0.02) * (2.0 + offset),
-      this.position.getZ(),
+      this.position.getZ()
     );
     this.lookAt();
   }
@@ -55,6 +53,10 @@ export default class extends Objectif {
 
   setAngle(value) {
     this.angle = value;
+  }
+
+  getModeProjection() {
+    return this.ortho ?? this.projection;
   }
 
   getProjection() {
@@ -94,7 +96,7 @@ export default class extends Objectif {
         this.target.getZ(),
         0,
         1,
-        0,
+        0
       );
   }
 }

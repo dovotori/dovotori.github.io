@@ -1,10 +1,10 @@
 class PipelineTextures {
-  constructor() {
+  constructor(sampleCount = 4) {
     this.renderTarget = null;
     this.renderTargetView = null;
     this.depthTexture = null;
     this.depthTextureView = null;
-    this.sampleCount = 4; // ?? Pipeline multisample, should get from pipeline
+    this.sampleCount = sampleCount; // ?? Pipeline multisample, should get from pipeline
   }
 
   setup(device, format, size, depthFormat = "depth32float") {

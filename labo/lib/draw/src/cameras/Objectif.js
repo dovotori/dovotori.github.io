@@ -6,15 +6,18 @@ export default class {
     this.position = new Vec3(
       config.position.x,
       config.position.y,
-      config.position.z,
+      config.position.z
     );
-    this.target = new Vec3(0.0, 0.0, 0.0);
+    this.target = new Vec3(
+      config.target.x ?? 0,
+      config.target.y ?? 0,
+      config.target.z ?? 0
+    );
     this.view = new Mat4();
     if (config.ortho) {
       const { left, right, bottom, top } = config.ortho;
       const { near, far } = config;
-      this.ortho = new Mat4();
-      this.ortho.ortho(left, right, bottom, top, near, far);
+      this.ortho = new Mat4().orthoWebGpu(left, right, bottom, top, near, far);
     }
   }
 
@@ -30,7 +33,7 @@ export default class {
         this.target.getZ(),
         0,
         1,
-        0,
+        0
       );
   }
 
