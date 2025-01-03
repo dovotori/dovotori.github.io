@@ -13,9 +13,33 @@ export class DebugTexture {
   setup(program, size) {
     this.size = size;
     const device = this.context.getDevice();
+
+    const ufBindGroupLayout = device.createBindGroupLayout({
+      label: "unfilterable-bgl",
+      entries: [
+        {
+          binding: 0,
+          visibility: GPUShaderStage.FRAGMENT,
+          sampler: {
+            type: "non-filtering", // <---------
+          },
+        },
+        {
+          binding: 1,
+          visibility: GPUShaderStage.FRAGMENT,
+          texture: {
+            sampleType: "unfilterable-float", // <---------
+          },
+        },
+      ],
+    });
+
     this.pipeline = device.createRenderPipeline({
       label: "DebugTexturePipeline",
-      layout: "auto",
+      layout: device.createPipelineLayout({
+        bindGroupLayouts: [ufBindGroupLayout],
+      }),
+      // layout: "auto",
       vertex: {
         module: program.vertex,
         entryPoint: "v_main",
@@ -40,38 +64,42 @@ export class DebugTexture {
       },
     });
 
-    this.texture = device.createTexture({
-      label: "DebugTextureTexture",
-      size: this.size,
-      format: "rgba8unorm",
-      usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST,
-    });
+    // this.texture = device.createTexture({
+    //   label: "DebugTextureTexture",
+    //   size: this.size,
+    //   format: "rgba8unorm",
+    //   usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST,
+    // });
 
-    this.updateTexture();
+    // this.updateTexture();
 
-    this.bindGroup = device.createBindGroup({
-      label: "main texture bind group",
-      layout: this.pipeline.getBindGroupLayout(0),
-      entries: [
-        { binding: 0, resource: device.createSampler() },
-        { binding: 1, resource: this.texture.createView() },
-      ],
-    });
+    // this.bindGroup = device.createBindGroup({
+    //   label: "debug texture bind group",
+    //   layout: this.pipeline.getBindGroupLayout(0),
+    //   entries: [
+    //     {
+    //       binding: 0,
+    //       resource: device.createSampler(),
+    //     },
+    //     { binding: 1, resource: textureView },
+    //     // { binding: 1, resource: this.texture.createView() },
+    //   ],
+    // });
   }
 
   setData() {
-    const _ = [255, 0, 0, 255]; // red
+    const r = [255, 0, 0, 255]; // red
     const y = [255, 255, 0, 255]; // yellow
     const b = [0, 0, 255, 255]; // blue
 
     const getRandonCase = () => {
-      return [_, y, b][Math.floor(Math.random() * 3)];
+      return [r, y, b][Math.floor(Math.random() * 3)];
     };
 
     const textureData = new Uint8Array(
       Array.from({ length: this.size.height })
         .map(() => Array.from({ length: this.size.width }).map(getRandonCase))
-        .flat(2),
+        .flat(2)
     );
     return textureData;
   }
@@ -94,7 +122,7 @@ export class DebugTexture {
       { texture: this.texture },
       this.setData(),
       { bytesPerRow: this.size.width * 4 },
-      this.size,
+      this.size
     );
   }
 

@@ -1,5 +1,8 @@
-import BufferTransform from "./BufferTransform";
-import { GltfBindGroups } from "./GltfPipeline";
+import {
+  buildBindGroupLayouts,
+  buildPickingBindGroupLayouts,
+  GltfBindGroups,
+} from "./GltfPipelineBindGroupLayout";
 import PipelineTextures from "./PipelineTextures";
 
 export class Picking {
@@ -53,9 +56,17 @@ export class Picking {
 
     console.log(buffers);
 
+    const bindGroupLayouts = buildPickingBindGroupLayouts(device);
+
     this.pipeline = await device.createRenderPipelineAsync({
       label: "PickingPipeline",
-      layout: "auto",
+      layout: device.createPipelineLayout({
+        label: "Picking Pipeline layout",
+        bindGroupLayouts: [
+          bindGroupLayouts[GltfBindGroups.CAMERA],
+          bindGroupLayouts[GltfBindGroups.TRANSFORM],
+        ],
+      }),
       vertex: {
         module: program.vertex,
         entryPoint: "v_main",
@@ -90,7 +101,7 @@ export class Picking {
     });
 
     this.renderPassDescriptor = {
-      label: "MousePick",
+      label: "MousePickRenderPass",
       colorAttachments: [
         {
           view: null,
@@ -111,7 +122,11 @@ export class Picking {
     this.textures.setup(device, this.context.getCanvasFormat(), canvasSize);
   }
 
-  render = (uniformCameraBindGroup, nodes, animations) => {
+  setDrawModel(drawModel) {
+    this.drawModel = drawModel;
+  }
+
+  render = (uniformCameraBindGroup) => {
     const device = this.context.getDevice();
     const encoder = device.createCommandEncoder({
       label: "PickingCommandEncoder",
@@ -127,7 +142,11 @@ export class Picking {
     pass.setPipeline(this.pipeline);
     pass.setBindGroup(GltfBindGroups.CAMERA, uniformCameraBindGroup);
 
-    this.drawModel(device, pass, nodes, animations);
+    if (this.drawModel) {
+      this.drawModel(device, pass);
+    } else {
+      console.warn("drawModel not define for picking");
+    }
 
     pass.end();
 
@@ -204,16 +223,18 @@ export class Picking {
       node.buffers.forEach((buffer) => {
         let transformBindGroup = this.transformBinGroups.get(key);
         if (!transformBindGroup) {
-          // animations
-          const finalMatrix = animations.handleLocalTransform(key);
-          transformBindGroup = BufferTransform.setup(
-            device,
-            this.getBindGroupLayout(GltfBindGroups.TRANSFORM),
-            {
-              transformMatrix: finalMatrix,
-              pickingColor: node.pickingColor,
-            }
-          );
+          return;
+
+          // animations TODO need a way to share info from GltfPipeline
+          // const finalMatrix = animations.handleLocalTransform(key); // TODO need to update or pass
+          // transformBindGroup = BufferTransform.setup(
+          //   device,
+          //   this.getBindGroupLayout(GltfBindGroups.TRANSFORM),
+          //   {
+          //     transformMatrix: finalMatrix,
+          //     pickingColor: node.pickingColor,
+          //   }
+          // );
         }
 
         pass.setBindGroup(GltfBindGroups.TRANSFORM, transformBindGroup);

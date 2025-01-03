@@ -7,6 +7,8 @@ struct CameraUniform {
 };
 @group(0) @binding(0)
 var<uniform> camera: CameraUniform;
+@group(0) @binding(1)
+var<uniform> shadowProjection: mat4x4<f32>;
 
 struct TransformUniform {
   model: mat4x4<f32>,
@@ -27,6 +29,8 @@ struct VertexOutput {
   @location(0) world_position: vec3f,
   @location(1) world_normal: vec3f,
   @location(2) texture: vec2f,
+  @location(3) camera_position: vec3f,
+  @location(4) shadow_pos: vec3<f32>,
 }
 
 @vertex
@@ -41,6 +45,11 @@ fn v_main(
 
   out.clip_position = camera.projection * camera.view * camera.model * world_position;
   out.texture = in.texture;
+  out.camera_position = camera.position;
+
+  var posFromLight: vec4<f32> = shadowProjection * camera.model * world_position;
+  // Convert shadowPos XY to (0, 1) to fit texture UV
+  out.shadow_pos = vec3<f32>(posFromLight.xy * vec2<f32>(0.5, -0.5) + vec2<f32>(0.5, 0.5), posFromLight.z);
 
   return out;
 }

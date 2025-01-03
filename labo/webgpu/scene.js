@@ -3,12 +3,15 @@ import {
   GltfPipeline,
   GltfBindGroups,
   Picking,
+  Shadow,
+  DebugTexture,
 } from "../lib/draw/src/webgpu";
 import Camera from "../lib/draw/src/cameras/Camera";
 import Mat4 from "../lib/draw/src/maths/Mat4";
 import DualQuaternion from "../lib/draw/src/maths/DualQuaternion";
 import { DebugPipeline } from "../lib/draw/src/webgpu/DebugPipeline";
 import { GltfDb } from "./GltfDb";
+import Objectif from "../lib/draw/src/cameras/Objectif";
 
 // to see the color change f_picking with alpha to 1
 const DEBUG_PICKING = false;
@@ -29,7 +32,11 @@ class Scene {
 
     this.gltfPipeline = new GltfPipeline(context, config);
     this.picking = new Picking(context);
-    // this.debug = new DebugTexture(context);
+    this.shadow = new Shadow(context);
+    this.debug = new DebugTexture(context);
+
+    this.lampe = new Objectif(config.lampes[0]);
+    this.lampe.lookAt();
 
     this.debugCube = new DebugPipeline(context);
   }
@@ -37,32 +44,49 @@ class Scene {
   setup() {}
 
   // should create one for each pipeline
-  setupCamera(layout) {
+  setupCamera(layout, withLight) {
     const device = this.context.getDevice();
-    // for camera
-    const size = Float32Array.BYTES_PER_ELEMENT * (16 * 3 + 4); // 4x4 matrix view + projection + model + vec3
 
     const buffer = device.createBuffer({
-      size,
+      size: Float32Array.BYTES_PER_ELEMENT * (16 * 3 + 4), // 4x4 matrix view + projection + model + vec3,
       usage: window.GPUBufferUsage.UNIFORM | window.GPUBufferUsage.COPY_DST,
     });
+
+    const entries = [
+      {
+        binding: 0,
+        resource: {
+          buffer,
+        },
+      },
+    ];
+
+    let bufferLightProj;
+    if (withLight) {
+      bufferLightProj = device.createBuffer({
+        label: "LightProjBuffer",
+        size: Float32Array.BYTES_PER_ELEMENT * 16,
+        usage: window.GPUBufferUsage.UNIFORM | window.GPUBufferUsage.COPY_DST,
+      });
+
+      entries.push({
+        binding: 1,
+        resource: {
+          buffer: bufferLightProj,
+        },
+      });
+    }
 
     const bindGroup = device.createBindGroup({
       label: "CameraUniforms",
       layout,
-      entries: [
-        {
-          binding: 0,
-          resource: {
-            buffer,
-          },
-        },
-      ],
+      entries,
     });
 
     return {
       buffer,
       bindGroup,
+      bufferLightProj,
     };
   }
 
@@ -132,14 +156,6 @@ class Scene {
       gltf,
     });
 
-    // this.debug.setup(
-    //   {
-    //     vertex: programs.v_debug_tex.get(),
-    //     fragment: programs.f_debug_tex.get(),
-    //   },
-    //   this.canvasSize
-    // );
-
     const program = DEBUG_PICKING
       ? {
           vertex: programs.v_picking.get(),
@@ -150,16 +166,29 @@ class Scene {
           fragment: programs.f_gltf.get(),
         };
 
+    // SHADOW
+    await this.shadow.setup(
+      {
+        vertex: programs.v_shadow_depth.get(),
+      },
+      [this.gltfPipeline.getFirstBufferLayout()]
+    );
+
     await this.gltfPipeline.setupDb(new GltfDb("gltf"));
     await this.gltfPipeline.setup(
       gltf,
       program,
       this.canvasSize,
+      this.shadow.getShadowMapBindGroupEntries(
+        device,
+        this.lampe.getPosition()
+      ),
       DEBUG_PICKING
     );
 
     this.uniformCamera = this.setupCamera(
-      this.gltfPipeline.getBindGroupLayout(GltfBindGroups.CAMERA)
+      this.gltfPipeline.getBindGroupLayout(GltfBindGroups.CAMERA),
+      true
     );
 
     if (!DEBUG_PICKING) {
@@ -188,6 +217,17 @@ class Scene {
       )
     );
 
+    // need ortho, in the position of light
+    this.shadowUniformCamera = this.setupCamera(
+      this.shadow.getBindGroupLayout(GltfBindGroups.CAMERA)
+    );
+
+    this.shadow.setTransformBindGroups(
+      this.gltfPipeline.buildTransformBindGroups(
+        this.shadow.getBindGroupLayout(GltfBindGroups.TRANSFORM)
+      )
+    );
+
     // DEBUG CUBE
     await this.debugCube.setup({
       vertex: programs.v_model_camera.get(),
@@ -197,7 +237,23 @@ class Scene {
       this.debugCube.getBindGroupLayout(GltfBindGroups.CAMERA)
     );
 
+    const lampePos = this.lampe.getPositionVec3();
+    this.debugCube.setTransform(
+      lampePos.getX(),
+      lampePos.getY(),
+      lampePos.getZ()
+    );
+
+    this.debug.setup(
+      {
+        vertex: programs.v_debug_tex.get(),
+        fragment: programs.f_debug_tex.get(),
+      },
+      // this.canvasSize,
+      this.shadow.getSize()
+    );
     // this.debug.setTexture(this.picking.getColorTexture());
+    this.debug.setTexture(this.shadow.getDepthTexture());
   }
 
   update(time) {
@@ -215,13 +271,47 @@ class Scene {
     this.gltfPipeline.updateAnimations(time);
   }
 
-  updateCameraUniforms(cameraBindBuffer) {
+  updateCameraUniforms(cameraBuffer, lightProjBuffer) {
     const device = this.context.getDevice();
 
     const projection = this.camera.getModeProjection().get();
     const view = this.camera.getView().get();
+
+    const uniforms = new Float32Array(16 * 3 + 3); // 16 elements for projection, 16 for view, 16 for model, 3 for camera position
+    uniforms.set(projection, 0);
+    uniforms.set(view, 16);
+    uniforms.set(this.model.get(), 32);
+    uniforms.set(this.camera.getPosition(), 48);
+
+    device.queue.writeBuffer(
+      cameraBuffer,
+      0,
+      uniforms.buffer,
+      uniforms.byteOffset,
+      uniforms.byteLength
+    );
+    if (lightProjBuffer) {
+      const newMat = new Mat4().setFromArray(this.lampe.getView().get()); // need a new one, multiply lampe ortho will directly mutate the matrix
+      const uniformsLightProj = new Float32Array(16);
+      uniformsLightProj.set(newMat.multiply(this.lampe.getOrtho()).get(), 0);
+      device.queue.writeBuffer(
+        lightProjBuffer,
+        0, // offset
+        uniformsLightProj.buffer,
+        uniformsLightProj.byteOffset,
+        uniformsLightProj.byteLength
+      );
+    }
+  }
+
+  // for shadow
+  updateCameraUniformsWithLight(cameraBindBuffer) {
+    const device = this.context.getDevice();
+
+    const projection = this.lampe.getOrtho().get();
+    const view = this.lampe.getView().get();
     const uniforms = new Float32Array(
-      projection.concat(view, this.model.get(), this.camera.getPosition())
+      projection.concat(view, this.model.get(), this.lampe.getPosition())
     );
     device.queue.writeBuffer(
       cameraBindBuffer,
@@ -244,10 +334,14 @@ class Scene {
   render() {
     const device = this.context.getDevice();
 
-    this.updateCameraUniforms(this.uniformCamera.buffer);
-    this.updateCameraUniforms(this.debugUniformCamera.buffer);
-
     this.gltfPipeline.update();
+
+    this.renderShadowDepthPass();
+
+    this.updateCameraUniforms(
+      this.uniformCamera.buffer,
+      this.uniformCamera.bufferLightProj
+    );
 
     const encoder = device.createCommandEncoder({
       label: "GltfCommandEncoder",
@@ -265,6 +359,8 @@ class Scene {
     }
 
     this.gltfPipeline.drawModel(device, pass, DEBUG_PICKING);
+
+    this.updateCameraUniforms(this.debugUniformCamera.buffer);
     this.debugCube.render(pass, this.debugUniformCamera.bindGroup);
     // this.debug.render(pass);
 
@@ -274,6 +370,15 @@ class Scene {
     // device.queue.submit([commandBuffer])
     // Finish the command buffer and immediately submit it.
     device.queue.submit([encoder.finish()]);
+  }
+
+  renderShadowDepthPass() {
+    this.updateCameraUniformsWithLight(this.shadowUniformCamera.buffer);
+    this.shadow.render(
+      this.shadowUniformCamera.bindGroup,
+      this.gltfPipeline.getDrawNodes(),
+      this.gltfPipeline.getAnimations()
+    );
   }
 
   resize(size) {

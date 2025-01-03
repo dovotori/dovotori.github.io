@@ -1,13 +1,4 @@
 export default `
-struct CameraUniform {
-  projection: mat4x4<f32>,
-  view: mat4x4<f32>,
-  model: mat4x4<f32>,
-  position: vec3<f32>,
-};
-@group(0) @binding(0)
-var<uniform> camera: CameraUniform;
-
 struct MaterialUniform {
   baseColorFactor: vec4f,
   emissiveFactor: vec3f,
@@ -18,6 +9,9 @@ struct MaterialUniform {
 @group(2) @binding(0) var<uniform> material : MaterialUniform;
 @group(2) @binding(1) var baseColorSampler: sampler;
 @group(2) @binding(2) var baseColorTexture: texture_2d<f32>;
+@group(2) @binding(3) var depthMapSampler: sampler_comparison;
+@group(2) @binding(4) var depthMapTexture: texture_depth_2d;
+@group(2) @binding(5) var<uniform> lightPos: vec3f;
 
 struct PointLight {
   position: vec3f, 
@@ -34,6 +28,8 @@ struct FragInput {
   @location(0) world_position: vec3f,
   @location(1) world_normal: vec3f,
   @location(2) texture: vec2f,
+  @location(3) camera_position: vec3f,
+  @location(4) shadow_pos: vec3<f32>,
 };
 
 @fragment
@@ -49,7 +45,7 @@ fn f_main(in: FragInput) -> @location(0) vec4f {
   var countLights = number_of_lights();
 
   let ambient_strength = 0.1;
-  let view_dir = normalize(camera.position - in.world_position);
+  let view_dir = normalize(in.camera_position - in.world_position);
   
   var result: vec3<f32> = vec3(0., 0., 0.);
 
@@ -69,6 +65,32 @@ fn f_main(in: FragInput) -> @location(0) vec4f {
   }
 
   result /= vec4(f32(countLights)).xyz;
+
+
+ // SHADOW
+  let diffuse: f32 = max(dot(normalize(lightPos.xyz), in.world_normal), 0.0);
+  var shadow : f32 = 0.0;
+  // apply Percentage-closer filtering (PCF)
+  // sample nearest 9 texels to smooth result
+  let size = f32(textureDimensions(depthMapTexture).x);
+  for (var y : i32 = -1 ; y <= 1 ; y = y + 1) {
+    for (var x : i32 = -1 ; x <= 1 ; x = x + 1) {
+      let offset = vec2<f32>(f32(x) / size, f32(y) / size);
+      shadow = shadow + textureSampleCompare(
+        depthMapTexture, 
+        depthMapSampler,
+        in.shadow_pos.xy + offset, 
+        in.shadow_pos.z - 0.005  // apply a small bias to avoid acne
+      );
+    }
+  }
+  shadow = shadow / 9.0;
+  // ambient + diffuse * shadow
+  let lightFactor = min(0.3 + shadow * diffuse, 1.0);
+  result *= lightFactor;
+
+
+  // var shadow: f32 = textureSampleCompare(depthMapTexture, depthMapSampler, in.shadow_pos.xy, in.shadow_pos.z - .01);
 
   // result = color.xyz;
   // result = vec3(in.texture, 0.0);

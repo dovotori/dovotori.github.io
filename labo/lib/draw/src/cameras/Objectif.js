@@ -18,6 +18,7 @@ export default class {
       const { left, right, bottom, top } = config.ortho;
       const { near, far } = config;
       this.ortho = new Mat4().orthoWebGpu(left, right, bottom, top, near, far);
+      // this.ortho = new Mat4().ortho(left, right, bottom, top, near, far);
     }
   }
 

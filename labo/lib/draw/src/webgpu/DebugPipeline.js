@@ -1,7 +1,7 @@
 import Mat4 from "../maths/Mat4";
 import cube from "../primitives/cube";
 import { blend } from "./constants";
-import { GltfBindGroups } from "./GltfPipeline";
+import { GltfBindGroups } from "./GltfPipelineBindGroupLayout";
 
 /*
   to remember:

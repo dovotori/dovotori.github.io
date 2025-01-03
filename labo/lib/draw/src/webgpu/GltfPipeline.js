@@ -5,16 +5,13 @@ import Vec3 from "../maths/Vec3";
 import BufferGltf from "./BufferGltf";
 import BufferMaterial from "./BufferMaterial";
 import BufferTransform from "./BufferTransform";
+import {
+  buildBindGroupLayouts,
+  GltfBindGroups,
+} from "./GltfPipelineBindGroupLayout";
 import { pixelToPickingColor } from "./Picking";
 import Pipeline from "./Pipeline";
 import PipelineTextures from "./PipelineTextures";
-
-export const GltfBindGroups = {
-  CAMERA: 0,
-  TRANSFORM: 1,
-  MATERIAL: 2,
-  LIGHT: 3,
-};
 
 export class GltfPipeline {
   constructor(context, config) {
@@ -31,7 +28,13 @@ export class GltfPipeline {
     await this.db.setup();
   }
 
-  async setup(gltf, program, canvasSize, isDebug = false) {
+  async setup(
+    gltf,
+    program,
+    canvasSize,
+    depthMapBingGroupEntries,
+    isDebug = false
+  ) {
     const device = this.context.getDevice();
 
     const nodes = gltf.get("nodes");
@@ -120,7 +123,7 @@ export class GltfPipeline {
       await this.db.addFacesData(dataToSotore);
     }
 
-    const [firstBuffer] = Array.from(meshBuffersMaps.values())[0]; // we used the first layout because its fit all the mesh
+    const firstBuffer = meshBuffersMaps.values().next().value[0]; // we used the first layout because its fit all the mesh
     this.firstBufferLayout = firstBuffer.getLayout();
 
     let buffersLayout = [this.firstBufferLayout];
@@ -140,7 +143,7 @@ export class GltfPipeline {
       buffersLayout.push(addFaceColorLayout);
     }
 
-    this.buildBindGroupLayouts(device);
+    this.bindGroupLayouts = buildBindGroupLayouts(device);
 
     await this.pipeline.setup(
       device,
@@ -158,6 +161,7 @@ export class GltfPipeline {
     this.pipeline.setupRenderPassDescriptor();
 
     // animations
+    // TODO should put this outside
     this.animations = new Animation(gltf.get("animations"), nodes);
 
     // for material
@@ -167,11 +171,12 @@ export class GltfPipeline {
         device,
         this.getBindGroupLayout(GltfBindGroups.MATERIAL),
         gltf.get("materials"),
-        gltf.get("textures")
+        gltf.get("textures"),
+        depthMapBingGroupEntries
       );
     }
 
-    this.buildDrawNodes(nodes, meshBuffersMaps);
+    this.buildDrawNodes(nodes, meshBuffersMaps); // TODO should put node and drawNodes outside as animation to call renderModel on other pipeline
     this.transformBinGroups = this.buildTransformBindGroups(
       this.getBindGroupLayout(GltfBindGroups.TRANSFORM)
     );
@@ -388,86 +393,6 @@ export class GltfPipeline {
       this.context.getCanvasFormat(),
       size
     );
-  };
-
-  // generate from https://webgpufundamentals.org/webgpu/lessons/resources/wgsl-offset-computer.html
-  buildBindGroupLayouts = (device) => {
-    const cameraUniformBindGroupLayout = device.createBindGroupLayout({
-      label: "Camera Uniform Bind Group Layout",
-      entries: [
-        {
-          binding: 0,
-          visibility: GPUShaderStage.VERTEX | GPUShaderStage.FRAGMENT,
-          buffer: {
-            type: "uniform",
-            hasDynamicOffset: false,
-            minBindingSize: 208,
-          },
-        },
-      ],
-    });
-
-    const transformUniformBindGroupLayout = device.createBindGroupLayout({
-      label: "Transform Uniform Bind Group Layout",
-      entries: [
-        {
-          binding: 0,
-          visibility: GPUShaderStage.VERTEX,
-          buffer: {
-            type: "uniform",
-            hasDynamicOffset: false,
-            minBindingSize: 112,
-          },
-        },
-      ],
-    });
-
-    const materialUniformBindGroupLayout = device.createBindGroupLayout({
-      label: "Material Uniform Bind Group Layout",
-      entries: [
-        {
-          binding: 0,
-          visibility: GPUShaderStage.FRAGMENT,
-          buffer: {
-            type: "uniform",
-            hasDynamicOffset: false,
-            minBindingSize: 48,
-          },
-        },
-        {
-          binding: 1,
-          visibility: GPUShaderStage.FRAGMENT,
-          sampler: {},
-        },
-        {
-          binding: 2,
-          visibility: GPUShaderStage.FRAGMENT,
-          texture: {},
-        },
-      ],
-    });
-
-    const lightsStorageBindGroupLayout = device.createBindGroupLayout({
-      label: "Lights Storage Bind Group Layout",
-      entries: [
-        {
-          binding: 0,
-          visibility: GPUShaderStage.FRAGMENT,
-          buffer: {
-            type: "read-only-storage",
-            hasDynamicOffset: false,
-            minBindingSize: 0,
-          },
-        },
-      ],
-    });
-
-    this.bindGroupLayouts = {
-      [GltfBindGroups.CAMERA]: cameraUniformBindGroupLayout,
-      [GltfBindGroups.TRANSFORM]: transformUniformBindGroupLayout,
-      [GltfBindGroups.MATERIAL]: materialUniformBindGroupLayout,
-      [GltfBindGroups.LIGHT]: lightsStorageBindGroupLayout,
-    };
   };
 
   getBindGroupLayout = (bindGroupType) => this.bindGroupLayouts[bindGroupType];

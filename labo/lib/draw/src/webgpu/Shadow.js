@@ -1,59 +1,57 @@
-import BufferTransform from "./BufferTransform";
-import { GltfBindGroups } from "./GltfPipeline";
-import PipelineTextures from "./PipelineTextures";
+import {
+  buildShadowBindGroupLayouts,
+  GltfBindGroups,
+} from "./GltfPipelineBindGroupLayout";
 
 export class Shadow {
   constructor(context) {
     this.context = context;
-    this.bufferSize = 16; // 1 pixel color value 4 * 4
     this.pipeline = undefined;
-    this.colorTexture = undefined;
-    this.textures = new PipelineTextures();
     this.texSize = {
       width: 2048,
       height: 2048,
     };
+    this.textureDepthView;
   }
 
-  createTexture(size) {
-    const device = this.context.getDevice();
-    this.colorTexture = device.createTexture({
-      label: "picking texture",
-      format: "rgba32float",
-      size,
-      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
-    });
-
-    this.depthTexture = device.createTexture({
-      label: "picking depth texture",
-      format: "depth32float",
-      size,
-      usage:
-        GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
-    });
-  }
-
-  async setup(program, canvasSize, buffersLayout) {
+  async setup(program, buffersLayout) {
     const device = this.context.getDevice();
 
-    let buffers = buffersLayout;
+    const tmpLayout = [
+      {
+        arrayStride: 32,
+        attributes: [
+          {
+            shaderLocation: 0,
+            format: "float32x3",
+            offset: 0,
+          },
+          {
+            shaderLocation: 1,
+            format: "float32x3",
+            offset: 12,
+          },
+          {
+            shaderLocation: 2,
+            format: "float32x2",
+            offset: 24,
+          },
+        ],
+      },
+    ];
+
+    const bindGroupLayouts = buildShadowBindGroupLayouts(device);
 
     this.pipeline = await device.createRenderPipelineAsync({
       label: "ShadowPipeline",
-      layout: "auto",
+      layout: device.createPipelineLayout({
+        label: "Shadow Pipeline layout",
+        bindGroupLayouts,
+      }),
       vertex: {
         module: program.vertex,
         entryPoint: "v_main",
-        buffers,
-      },
-      fragment: {
-        module: program.fragment,
-        entryPoint: "f_main",
-        targets: [
-          {
-            format: "rgba32float",
-          },
-        ],
+        buffers: tmpLayout,
       },
       primitive: {
         topology: "triangle-list",
@@ -66,46 +64,38 @@ export class Shadow {
       },
     });
 
-    this.createTexture(this.texSize);
+    this.depthTexture = device.createTexture({
+      label: "shadow depth texture",
+      size: { width: 2048, height: 2048, depthOrArrayLayers: 1 },
+      format: "depth32float", // Depth texture format
+      usage:
+        GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+    });
 
-    this.destinationBuffer = device.createBuffer({
-      label: "PickDestination",
-      size: this.bufferSize,
-      usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
+    this.textureDepthView = this.depthTexture.createView({
+      dimension: "2d", // Specifies the texture dimension (2D texture)
+      format: "depth32float", // Depth format
+      aspect: "depth-only", // Correct aspect for depth textures
     });
 
     this.renderPassDescriptor = {
-      label: "MousePick",
-      colorAttachments: [
-        {
-          view: null,
-          clearValue: { r: 0, g: 0, b: 0, a: 0 },
-          loadOp: "clear", // 'load' -> draw hover / 'clear'
-          storeOp: "store", // 'store' -> save // 'discard' maybe for save in tex
-        },
-      ],
+      label: "Shadow render pass",
+      colorAttachments: [], // no fragment shader, we just want depth map
       depthStencilAttachment: {
-        view: null,
+        view: this.textureDepthView,
         depthClearValue: 1.0,
         depthLoadOp: "clear",
         depthStoreOp: "store",
         stencilClearValue: 0,
       },
     };
-
-    this.textures.setup(device, this.context.getCanvasFormat(), canvasSize);
   }
 
   render = (uniformCameraBindGroup, nodes, animations) => {
     const device = this.context.getDevice();
     const encoder = device.createCommandEncoder({
-      label: "PickingCommandEncoder",
+      label: "ShadowCommandEncoder",
     });
-
-    this.renderPassDescriptor.colorAttachments[0].view =
-      this.colorTexture.createView();
-    this.renderPassDescriptor.depthStencilAttachment.view =
-      this.depthTexture.createView();
 
     const pass = encoder.beginRenderPass(this.renderPassDescriptor);
 
@@ -117,70 +107,6 @@ export class Shadow {
     pass.end();
 
     device.queue.submit([encoder.finish()]);
-  };
-
-  // https://webglfundamentals.org/webgl/lessons/webgl-picking.html
-  // https://github.com/ghadeeras/ghadeeras.github.io/blob/master/src/scalar-field/picker.gpu.ts
-  pick = async (origin, uniformCameraBindGroup, nodes, animations) => {
-    const device = this.context.getDevice();
-    const encoder = device.createCommandEncoder({
-      label: "PickingCommandEncoder",
-    });
-
-    this.renderPassDescriptor.colorAttachments[0].view =
-      this.colorTexture.createView();
-    this.renderPassDescriptor.depthStencilAttachment.view =
-      this.depthTexture.createView();
-
-    const pass = encoder.beginRenderPass(this.renderPassDescriptor);
-    pass.setPipeline(this.pipeline);
-    pass.setBindGroup(GltfBindGroups.CAMERA, uniformCameraBindGroup);
-    this.drawModel(device, pass, nodes, animations);
-    pass.end();
-
-    // should be between pass end and encoder finish
-    const data = await this.capturePixel(origin, encoder);
-
-    device.queue.submit([encoder.finish()]);
-
-    return data;
-  };
-
-  // private
-  capturePixel = async (origin, encoder) => {
-    encoder.copyTextureToBuffer(
-      {
-        texture: this.colorTexture,
-        origin,
-      },
-      {
-        buffer: this.destinationBuffer,
-        bytesPerRow: 256,
-      },
-      {
-        width: 1,
-        height: 1,
-      }
-    );
-
-    await this.destinationBuffer.mapAsync(
-      GPUMapMode.READ,
-      0, // Offset
-      this.bufferSize // Length
-    );
-
-    const mappedData = new Float32Array(
-      this.destinationBuffer.getMappedRange(0, this.bufferSize)
-    );
-
-    // need to copy data before the unmap (delete)
-    const data = [...mappedData];
-
-    this.destinationBuffer.unmap();
-
-    // it seems to have async problem, the 2nd click is accurate
-    console.log(data, origin);
-    return [getNodePickingColor(data[0]), getNodePickingColor(data[1]), 0, 1];
   };
 
   drawModel = (device, pass, nodes, animations) => {
@@ -189,16 +115,17 @@ export class Shadow {
       node.buffers.forEach((buffer) => {
         let transformBindGroup = this.transformBinGroups.get(key);
         if (!transformBindGroup) {
+          return;
           // animations
-          const finalMatrix = animations.handleLocalTransform(key);
-          transformBindGroup = BufferTransform.setup(
-            device,
-            this.getBindGroupLayout(GltfBindGroups.TRANSFORM),
-            {
-              transformMatrix: finalMatrix,
-              pickingColor: node.pickingColor,
-            }
-          );
+          // const finalMatrix = animations.handleLocalTransform(key); // TODO need to update or pass
+          // transformBindGroup = BufferTransform.setup(
+          //   device,
+          //   this.getBindGroupLayout(GltfBindGroups.TRANSFORM),
+          //   {
+          //     transformMatrix: finalMatrix,
+          //     pickingColor: node.pickingColor,
+          //   }
+          // );
         }
 
         pass.setBindGroup(GltfBindGroups.TRANSFORM, transformBindGroup);
@@ -210,32 +137,49 @@ export class Shadow {
     }
   };
 
-  resize = (size) => {
-    this.textures.resize(
-      this.context.getDevice(),
-      this.context.getCanvasFormat(),
-      size
-    );
-    this.createTexture(size);
-    this.texSize = size;
-  };
-
   setTransformBindGroups(groups) {
     this.transformBinGroups = groups;
   }
 
   getBindGroupLayout = (index) => this.pipeline.getBindGroupLayout(index);
 
-  getColorTexture = () => this.colorTexture;
+  getDepthTexture = () => this.depthTexture;
+  getDepthTextureView = () => this.textureDepthView;
+  getSize = () => this.texSize;
+
+  getShadowMapBindGroupEntries(device, lightPosition) {
+    const buffer = device.createBuffer({
+      label: "LightPositionBuffer",
+      size: 3 * Float32Array.BYTES_PER_ELEMENT,
+      usage: window.GPUBufferUsage.UNIFORM | window.GPUBufferUsage.COPY_DST,
+      mappedAtCreation: true,
+    });
+
+    const bufferArray = new Float32Array(buffer.getMappedRange());
+    bufferArray.set(lightPosition);
+    buffer.unmap();
+
+    return [
+      {
+        binding: 3,
+        resource: device.createSampler({
+          magFilter: "nearest",
+          minFilter: "nearest",
+          mipmapFilter: "nearest",
+          compare: "less", // For shadow mapping (depth comparison)
+          addressModeU: "clamp-to-edge",
+          addressModeV: "clamp-to-edge",
+          addressModeW: "clamp-to-edge",
+        }),
+      },
+      {
+        binding: 4,
+        resource: this.textureDepthView,
+      },
+      {
+        binding: 5,
+        resource: { buffer },
+      },
+    ];
+  }
 }
-
-const PICKING_FLOAT = 0.000001;
-
-export const pixelToPickingColor = (index) => {
-  const colorIndex = PICKING_FLOAT + index * PICKING_FLOAT;
-  return getNodePickingColor(colorIndex);
-};
-
-export const getNodePickingColor = (pixelValue) => {
-  return Number.parseFloat(pixelValue).toFixed(6);
-};

@@ -12,7 +12,7 @@ class BufferMaterial {
     this.bindGroups = new Map();
   }
 
-  async setup(device, layout, materials, textures) {
+  async setup(device, layout, materials, textures, depthMapBingGroupEntries) {
     console.log({ layout, materials, textures });
 
     const empty = await this.setupEmptyTexture(device);
@@ -43,6 +43,8 @@ class BufferMaterial {
           { binding: 2, resource: empty.textureView }
         );
       }
+
+      entries.push(...depthMapBingGroupEntries);
 
       this.bindGroups.set(
         i,

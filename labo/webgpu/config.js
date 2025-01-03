@@ -6,6 +6,7 @@ export default {
     "/wgsl/vertex/v_picking.js",
     "/wgsl/fragment/f_picking.js",
     "/wgsl/vertex/v_debug_tex.js",
+    "/wgsl/vertex/v_shadow_depth.js",
     "/wgsl/fragment/f_debug_tex.js",
     "/wgsl/vertex/v_model_camera.js",
     "/wgsl/fragment/f_simple.js",
@@ -18,31 +19,35 @@ export default {
     width: 1024,
     height: 1024,
   },
-  // camera: {
-  //   // perspective
-  //   position: { x: 0, y: 4, z: 30 },
-  //   target: { x: 0, y: 0, z: 0 },
-  //   near: 1,
-  //   far: 60,
-  //   angle: 60,
-  // },
   camera: {
-    // ortho
-    position: { x: 0, y: 4, z: 20 },
+    // perspective
+    position: { x: 0, y: 4, z: 30 },
     target: { x: 0, y: 0, z: 0 },
     near: 1,
-    far: 100,
-    ortho: { left: -20, right: 20, bottom: -20, top: 20 },
+    far: 60,
+    angle: 60,
   },
+  // camera: {
+  //   // ortho
+  //   position: { x: 0, y: 4, z: 20 },
+  //   target: { x: 0, y: 0, z: 0 },
+  //   near: 1,
+  //   far: 100,
+  //   ortho: { left: -20, right: 20, bottom: -20, top: 20 },
+  // },
   lampes: [
     {
       type: 0,
-      position: { x: 10, y: 20, z: -10 },
+      position: { x: -20, y: 20, z: -2 },
+      target: { x: 0, y: 0, z: 0 },
       ambiant: [1, 0.5, 0.8],
       diffuse: [1, 0.9, 0.9],
       specular: [1, 1, 1],
       strength: 1,
       brillance: 1,
+      near: 1,
+      far: 40,
+      ortho: { left: -15, right: 15, bottom: -15, top: 15 },
     },
     {
       type: 0,

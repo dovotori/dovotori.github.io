@@ -1,4 +1,3 @@
-import Vec3 from "../maths/Vec3";
 import Mat4 from "../maths/Mat4";
 import Objectif from "./Objectif";
 

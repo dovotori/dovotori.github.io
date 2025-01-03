@@ -9,4 +9,6 @@ export { default as Context } from "./Context";
 export { default as PipelineTextures } from "./PipelineTextures";
 export * from "./GltfPipeline";
 export * from "./Picking";
+export * from "./Shadow";
 export * from "./DebugTexture";
+export * from "./GltfPipelineBindGroupLayout";
