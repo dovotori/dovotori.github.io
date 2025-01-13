@@ -104,6 +104,12 @@ export class GltfPipeline {
           colorPerFace.push(floatingValue, floatingValue, floatingValue); // x3 for all 3 positions of the face
         }
 
+        buffer.setupForFaces(device, primitive, colorPerFace);
+
+        if (mesh.name === "billboard") {
+          console.log("+++", nbTrianglesFaces, primitive);
+        }
+
         if (key === 12) {
           // billboard poteau
           console.log({
@@ -112,7 +118,9 @@ export class GltfPipeline {
           });
         }
 
-        buffer.setupFaceColorPick(device, colorPerFace);
+        // the problem is that for a plane with 2 triangles (4 vertices),
+        // i expected to pass 6 times into the vertex shader (one per index) but it pass only one per vertice so 4
+        buffer.setupFaceColorPick(device, [0, 0, 0, 0]);
       }
 
       this.facesPerMeshPerColorPicking.set(key, facesPerColorPicking);
@@ -128,19 +136,24 @@ export class GltfPipeline {
 
     let buffersLayout = [this.firstBufferLayout];
 
-    if (isDebug) {
-      const addFaceColorLayout = {
-        arrayStride: Float32Array.BYTES_PER_ELEMENT,
-        attributes: [
-          {
-            format: "float32",
-            offset: 0,
-            shaderLocation: 3,
-          },
-        ],
-      };
+    console.log({ firstBuffer: this.firstBufferLayout });
 
-      buffersLayout.push(addFaceColorLayout);
+    if (isDebug) {
+      // buffer faces
+      buffersLayout = [
+        {
+          arrayStride:
+            this.firstBufferLayout.arrayStride + Float32Array.BYTES_PER_ELEMENT,
+          attributes: [
+            ...this.firstBufferLayout.attributes,
+            {
+              format: "float32",
+              offset: 32,
+              shaderLocation: 3,
+            },
+          ],
+        },
+      ];
     }
 
     this.bindGroupLayouts = buildBindGroupLayouts(device);
@@ -165,16 +178,14 @@ export class GltfPipeline {
     this.animations = new Animation(gltf.get("animations"), nodes);
 
     // for material
-    if (!isDebug) {
-      this.materialBuffer = new BufferMaterial();
-      await this.materialBuffer.setup(
-        device,
-        this.getBindGroupLayout(GltfBindGroups.MATERIAL),
-        gltf.get("materials"),
-        gltf.get("textures"),
-        depthMapBingGroupEntries
-      );
-    }
+    this.materialBuffer = new BufferMaterial();
+    await this.materialBuffer.setup(
+      device,
+      this.getBindGroupLayout(GltfBindGroups.MATERIAL),
+      gltf.get("materials"),
+      gltf.get("textures"),
+      depthMapBingGroupEntries
+    );
 
     this.buildDrawNodes(nodes, meshBuffersMaps); // TODO should put node and drawNodes outside as animation to call renderModel on other pipeline
     this.transformBinGroups = this.buildTransformBindGroups(
@@ -286,13 +297,6 @@ export class GltfPipeline {
         this.animations.isNodeHasAnimation(key) ||
         node.paths?.some(this.animations.isNodeHasAnimation);
 
-      // const pickingColor = [
-      //   ((colorIndex >> 0) & 0xff) / 0xff,
-      //   ((colorIndex >> 8) & 0xff) / 0xff,
-      //   ((colorIndex >> 16) & 0xff) / 0xff,
-      //   ((colorIndex >> 24) & 0xff) / 0xff,
-      // ];
-
       // MESH COLOR
       const pickingColor = pixelToPickingColor(index);
 
@@ -344,8 +348,7 @@ export class GltfPipeline {
     // should sort primitives by material
     for (const [key, node] of this.nodesToDraw) {
       // if (!["Hautvent.002", "billboard"].includes(node.name)) continue;
-      // if (!["pale1", "pale2", "pale3", "pale4", "pale5"].includes(node.name))
-      //   continue;
+
       node.buffers.forEach((buffer) => {
         let transformBindGroup = this.transformBinGroups.get(key);
         if (!transformBindGroup) {
@@ -365,24 +368,21 @@ export class GltfPipeline {
         pass.setBindGroup(GltfBindGroups.TRANSFORM, transformBindGroup);
 
         // MAT
+        pass.setBindGroup(
+          GltfBindGroups.MATERIAL,
+          this.materialBuffer.getBindGroup(
+            this.materialIndexes.get(buffer) || 0
+          )
+        );
+
         if (!isDebug) {
-          pass.setBindGroup(
-            GltfBindGroups.MATERIAL,
-            this.materialBuffer.getBindGroup(
-              this.materialIndexes.get(buffer) || 0
-            )
-          );
+          pass.setVertexBuffer(0, buffer.getVertexBuffer());
+          pass.setIndexBuffer(buffer.getIndexBuffer(), "uint16");
+          pass.drawIndexed(buffer.getIndexCount(), 1, 0);
+        } else {
+          pass.setVertexBuffer(0, buffer.getFaceBuffer());
+          pass.draw(buffer.getFaceBufferCount());
         }
-
-        pass.setVertexBuffer(0, buffer.getVertexBuffer());
-
-        if (isDebug) {
-          pass.setVertexBuffer(1, buffer.getFaceColorBuffer());
-        }
-
-        pass.setIndexBuffer(buffer.getIndexBuffer(), "uint16");
-
-        pass.drawIndexed(buffer.getIndexCount());
       });
     }
   };
@@ -409,34 +409,31 @@ export class GltfPipeline {
     const nodeId = this.nodesPerColorPicking.get(color[0]);
     const node = this.nodes.get(nodeId);
     const drawNode = this.nodesToDraw.get(nodeId);
-    let pos = undefined;
+
+    let positions = undefined;
     let matrix = undefined;
+
     if (node) {
       const matrixData = await this.db.getMeshMatrixData(node.mesh);
-      console.log({ matrixData });
+      if (matrixData) {
+        const matrixD = matrixData.matrix;
+        matrix = new Mat4();
+        matrix.setRaw(matrixD);
+      }
+
+      console.log({ matrixData, drawNode });
       const faceColors = this.facesPerMeshPerColorPicking.get(node.mesh);
       if (faceColors) {
         const faceIndex = faceColors.get(color[1]);
-        console.log({ faceIndex }, color[1], Array.from(faceColors.keys()));
-
-        if (this.db) {
-          const positions = await this.db.getMeshFaceData(
-            `${node.mesh}-${faceIndex}`
-          );
-          console.log({ positions });
-          if (positions && matrixData) {
-            const p1 = positions.vertices[0];
-            const matrixD = matrixData.matrix;
-            pos = new Vec3(p1[0], p1[1], p1[2]);
-            matrix = new Mat4();
-            matrix.setRaw(matrixD);
-            console.log({ p1, matrix, pos });
-          }
+        console.log({ faceIndex }, color, faceColors);
+        const faceData = await this.db.getMeshFaceData(
+          `${node.mesh}-${faceIndex}`
+        );
+        if (faceData) {
+          positions = faceData.vertices;
         }
       }
-      console.log({ faceColors });
     }
-    console.log({ color, node, drawNode });
-    return { pos, node, matrix };
+    return { positions, node, matrix };
   };
 }

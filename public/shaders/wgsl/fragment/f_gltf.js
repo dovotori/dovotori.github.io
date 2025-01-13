@@ -30,6 +30,8 @@ struct FragInput {
   @location(2) texture: vec2f,
   @location(3) camera_position: vec3f,
   @location(4) shadow_pos: vec3<f32>,
+  @location(5) picking_color: vec4<f32>,
+  @location(6) face_color: f32,
 };
 
 @fragment
@@ -51,7 +53,8 @@ fn f_main(in: FragInput) -> @location(0) vec4f {
 
   for(var i: u32 = 0; i < countLights; i++) {
     let light = lights[i];
-    let ambient_color = light.color * ambient_strength;
+    let ambient_color = light.color * light.intensity;
+    
     let light_dir = normalize(light.position - in.world_position);
     let half_dir = normalize(view_dir + light_dir);
     
@@ -95,6 +98,9 @@ fn f_main(in: FragInput) -> @location(0) vec4f {
   // result = color.xyz;
   // result = vec3(in.texture, 0.0);
   // result = in.world_normal;
+
+  result = vec3(in.face_color);
+  // result = in.picking_color.xyz;
 
   return vec4(result, 1.0);
 }

@@ -38,23 +38,39 @@ export class Picking {
   async setup(program, canvasSize, buffersLayout) {
     const device = this.context.getDevice();
 
-    let buffers = buffersLayout;
-    // TODO should insert face picking color info space in layout
-    // should match vertex attribute structures
-    const addFaceColorLayout = {
-      arrayStride: 8,
-      attributes: [
-        {
-          format: "float32",
-          offset: 0,
-          shaderLocation: 3,
-        },
-      ],
-    };
+    // const buffers = buffersLayout;
+    // // TODO should insert face picking color info space in layout
+    // // should match vertex attribute structures
+    // const addFaceColorLayout = {
+    //   arrayStride: 8,
+    //   attributes: [
+    //     {
+    //       format: "float32",
+    //       offset: 0,
+    //       shaderLocation: 3,
+    //     },
+    //   ],
+    // };
 
-    buffers.push(addFaceColorLayout);
+    // buffers.push(addFaceColorLayout);
 
-    console.log(buffers);
+    // face color
+    const buffers = [
+      {
+        arrayStride:
+          buffersLayout[0].arrayStride + Float32Array.BYTES_PER_ELEMENT,
+        attributes: [
+          ...buffersLayout[0].attributes,
+          {
+            format: "float32",
+            offset: 32,
+            shaderLocation: 3,
+          },
+        ],
+      },
+    ];
+
+    console.log({ buffers });
 
     const bindGroupLayouts = buildPickingBindGroupLayouts(device);
 
@@ -238,10 +254,12 @@ export class Picking {
         }
 
         pass.setBindGroup(GltfBindGroups.TRANSFORM, transformBindGroup);
-        pass.setVertexBuffer(0, buffer.getVertexBuffer());
-        pass.setVertexBuffer(1, buffer.getFaceColorBuffer());
-        pass.setIndexBuffer(buffer.getIndexBuffer(), "uint16");
-        pass.drawIndexed(buffer.getIndexCount());
+        // pass.setVertexBuffer(0, buffer.getVertexBuffer());
+        // pass.setVertexBuffer(1, buffer.getFaceColorBuffer());
+        // pass.setIndexBuffer(buffer.getIndexBuffer(), "uint16");
+        // pass.drawIndexed(buffer.getIndexCount());
+        pass.setVertexBuffer(0, buffer.getFaceBuffer());
+        pass.draw(buffer.getFaceBufferCount());
       });
     }
   };
@@ -266,8 +284,15 @@ export class Picking {
 }
 
 const PICKING_FLOAT = 0.000001;
+// const PICKING_FLOAT = 0.001;
 
 export const pixelToPickingColor = (index) => {
+  // const pickingColor = [
+  //   ((colorIndex >> 0) & 0xff) / 0xff,
+  //   ((colorIndex >> 8) & 0xff) / 0xff,
+  //   ((colorIndex >> 16) & 0xff) / 0xff,
+  //   ((colorIndex >> 24) & 0xff) / 0xff,
+  // ];
   const colorIndex = PICKING_FLOAT + index * PICKING_FLOAT;
   return getNodePickingColor(colorIndex);
 };

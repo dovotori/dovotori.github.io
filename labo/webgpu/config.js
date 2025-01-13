@@ -13,6 +13,7 @@ export default {
   ],
   // assets: ["/gltf/paysage.gltf"],
   assets: ["/gltf/paysage9-testTex.gltf"],
+  // assets: ["/gltf/plane.gltf"],
   // assets: ["/gltf/head.gltf"],
   // assets: ['/gltf/headinterleaved.gltf'],
   canvas: {
@@ -40,10 +41,10 @@ export default {
       type: 0,
       position: { x: -20, y: 20, z: -2 },
       target: { x: 0, y: 0, z: 0 },
-      ambiant: [1, 0.5, 0.8],
-      diffuse: [1, 0.9, 0.9],
+      ambiant: [1, 1, 0.2],
+      diffuse: [1, 1, 1],
       specular: [1, 1, 1],
-      strength: 1,
+      strength: 2,
       brillance: 1,
       near: 1,
       far: 40,
@@ -52,8 +53,8 @@ export default {
     {
       type: 0,
       position: { x: -10, y: 20, z: 10 },
-      ambiant: [0.6, 1, 0.8],
-      strength: 1.2,
+      ambiant: [1, 0.2, 0.3],
+      strength: 1,
     },
   ],
   controls: {

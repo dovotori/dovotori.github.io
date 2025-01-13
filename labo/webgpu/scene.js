@@ -12,9 +12,11 @@ import DualQuaternion from "../lib/draw/src/maths/DualQuaternion";
 import { DebugPipeline } from "../lib/draw/src/webgpu/DebugPipeline";
 import { GltfDb } from "./GltfDb";
 import Objectif from "../lib/draw/src/cameras/Objectif";
+import Vec3 from "../lib/draw/src/maths/Vec3";
+import Vec4 from "../lib/webgl/maths/Vec4";
 
 // to see the color change f_picking with alpha to 1
-const DEBUG_PICKING = false;
+const DEBUG_PICKING = true;
 
 class Scene {
   constructor(context, config) {
@@ -96,6 +98,7 @@ class Scene {
     const size = Float32Array.BYTES_PER_ELEMENT * 8 * this.config.lampes.length; // vec3 * 2 + 1
 
     const buffer = device.createBuffer({
+      label: "Light Storage Buffer",
       size,
       usage: window.GPUBufferUsage.STORAGE | window.GPUBufferUsage.COPY_DST,
     });
@@ -103,9 +106,16 @@ class Scene {
     // because it didnt update, we set it directly here
     const array = [];
     this.config.lampes.forEach((lampe) => {
-      array.push(lampe.position.x, lampe.position.x, lampe.position.z);
-      array.push(...lampe.ambiant);
-      array.push(lampe.strength);
+      const t = [
+        lampe.position.x,
+        lampe.position.y,
+        lampe.position.z,
+        0, // pad
+        ...lampe.ambiant,
+        lampe.strength,
+      ];
+      console.log(t);
+      array.push(...t);
     });
 
     const uniforms = new Float32Array(array);
@@ -156,15 +166,10 @@ class Scene {
       gltf,
     });
 
-    const program = DEBUG_PICKING
-      ? {
-          vertex: programs.v_picking.get(),
-          fragment: programs.f_picking.get(),
-        }
-      : {
-          vertex: programs.v_gltf.get(),
-          fragment: programs.f_gltf.get(),
-        };
+    const program = {
+      vertex: programs.v_gltf.get(),
+      fragment: programs.f_gltf.get(),
+    };
 
     // SHADOW
     await this.shadow.setup(
@@ -185,17 +190,14 @@ class Scene {
       ),
       DEBUG_PICKING
     );
-
     this.uniformCamera = this.setupCamera(
       this.gltfPipeline.getBindGroupLayout(GltfBindGroups.CAMERA),
       true
     );
 
-    if (!DEBUG_PICKING) {
-      this.uniformLights = this.setupLights(
-        this.gltfPipeline.getBindGroupLayout(GltfBindGroups.LIGHT)
-      );
-    }
+    this.uniformLights = this.setupLights(
+      this.gltfPipeline.getBindGroupLayout(GltfBindGroups.LIGHT)
+    );
 
     // PICKING
     await this.picking.setup(
@@ -237,11 +239,21 @@ class Scene {
       this.debugCube.getBindGroupLayout(GltfBindGroups.CAMERA)
     );
 
-    const lampePos = this.lampe.getPositionVec3();
+    // const lampePos = this.lampe.getPositionVec3();
+    // this.debugCube.setTransform(
+    //   lampePos.getX(),
+    //   lampePos.getY(),
+    //   lampePos.getZ()
+    // );
+
+    // biilboard mesh 20 node 44
     this.debugCube.setTransform(
-      lampePos.getX(),
-      lampePos.getY(),
-      lampePos.getZ()
+      // -0.4425056576728821,
+      // 1.8546216487884521,
+      // 3.563035011291504
+      -0.4425056576728821,
+      1.8546216487884521,
+      -0.8446273803710938
     );
 
     this.debug.setup(
@@ -265,7 +277,7 @@ class Scene {
     this.model.identity();
     const quat = new DualQuaternion();
     quat.rotateY(time * 0.0001);
-    // quat.rotateX(time * 0.001)
+    // quat.rotateX(time * 0.001);
     this.model.multiply(quat.toMatrix4());
 
     this.gltfPipeline.updateAnimations(time);
@@ -354,9 +366,7 @@ class Scene {
     // bind group are defined in shader code ex: @group(0) @binding(0)
     pass.setBindGroup(GltfBindGroups.CAMERA, this.uniformCamera.bindGroup);
 
-    if (!DEBUG_PICKING) {
-      pass.setBindGroup(GltfBindGroups.LIGHT, this.uniformLights.bindGroup);
-    }
+    pass.setBindGroup(GltfBindGroups.LIGHT, this.uniformLights.bindGroup);
 
     this.gltfPipeline.drawModel(device, pass, DEBUG_PICKING);
 
@@ -403,20 +413,31 @@ class Scene {
       this.gltfPipeline.getAnimations()
     );
 
-    const { node, pos, matrix } =
+    const { node, positions, matrix } =
       await this.gltfPipeline.getByPickColor(pickingColor);
-    console.log({ pickingColor, node, pos, matrix });
-    if (pos && matrix) {
-      const proj = this.camera.getProjection();
-      const view = this.camera.getView();
-      const model = this.model;
-      let fMat = new Mat4();
-      fMat.setFromArray(proj.get());
-      fMat.multiply(view);
-      fMat.multiply(model);
-      fMat.multiply(matrix);
-      pos.multiplyMatrix(fMat);
-      this.debugCube.setTransform(pos.getX(), pos.getY(), pos.getZ());
+
+    const mousePosRel = {
+      x: (e.pos.x / e.size.width) * 2 - 1,
+      y: (e.pos.y / e.size.height) * 2 - 1,
+    };
+
+    const proj = this.camera.getProjection();
+    const view = this.camera.getView();
+    const invProjMat = new Mat4().setFromArray(proj.get()).inverse();
+    const invViewMat = new Mat4().setFromArray(view.get()).inverse();
+
+    const rayClip = new Vec4(mousePosRel.x, mousePosRel.y, -1, 1);
+    const rayEye = rayClip.multiplyMatrix4(invProjMat);
+    rayEye.set(rayEye.getX(), rayEye.getY(), -1, 0);
+
+    const rayWorld = rayEye.multiplyMatrix4(invViewMat).normalise();
+    console.log({ node, mousePosRel, rayWorld });
+
+    if (positions && matrix) {
+      // let fMat = new Mat4().setFromArray(matrix.get()).multiply(this.model);
+      // fMat.setFromArray(this.model.get()); //.multiply(matrix);
+      const pos = positions[0];
+      this.debugCube.setTransform(pos[0], pos[1], pos[2]);
     }
   };
 }

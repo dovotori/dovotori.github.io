@@ -67,6 +67,48 @@ class BufferGltf {
     this.faceColor.unmap();
   };
 
+  setupForFaces(device, primitive, colorPerFace) {
+    const { arrayStride, bufferVertex, bufferIndex, indexCount } = primitive;
+
+    const nbFloatPerVertex = arrayStride / Float32Array.BYTES_PER_ELEMENT;
+    const dataPerVertex = new Map();
+
+    let index = 0;
+    for (let i = 0; i < bufferVertex.length; i += nbFloatPerVertex, index++) {
+      dataPerVertex.set(index, bufferVertex.slice(i, i + nbFloatPerVertex));
+    }
+
+    const bufferData = [];
+    bufferIndex.forEach((index, i) => {
+      const color = colorPerFace[i];
+      const vertexData = [...dataPerVertex.get(index), color];
+      bufferData.push(...vertexData);
+    });
+
+    const buff = new Float32Array(bufferData);
+
+    this.faceBuffer = device.createBuffer({
+      label: "vertex buffer per face",
+      // size: bufferVertex.byteLength,
+      size: Math.ceil(buff.byteLength / 4) * 4,
+      mappedAtCreation: true,
+      usage: window.GPUBufferUsage.VERTEX | window.GPUBufferUsage.COPY_DST,
+    });
+
+    const mappedBufferArray = new Float32Array(
+      this.faceBuffer.getMappedRange()
+    ); // position vec3 / normal vec3 / tex v2 / face color f
+    mappedBufferArray.set(
+      new Float32Array(buff, 0, this.faceBuffer.byteLength)
+    );
+    this.faceBuffer.unmap();
+
+    this.faceDrawCount = indexCount;
+  }
+
+  getFaceBuffer = () => this.faceBuffer;
+  getFaceBufferCount = () => this.faceDrawCount;
+
   getVertexBuffer = () => this.vertex;
 
   getIndexBuffer = () => this.indexes;

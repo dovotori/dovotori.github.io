@@ -282,7 +282,7 @@ class LoadGltfForWebGpu {
 
   static getNodes = (nodes) => {
     const newNodes = new Map();
-    nodes.map((node, i) => newNodes.set(i, node));
+    nodes.forEach((node, i) => newNodes.set(i, node));
     for (const [nodeId, node] of newNodes) {
       // set parenting
       node.children?.forEach((childId) => {
@@ -349,7 +349,7 @@ class LoadGltfForWebGpu {
     const matTextures = new Map();
     const newMaterials = new Map();
 
-    materials.forEach((material, matIndex) => {
+    materials?.forEach((material, matIndex) => {
       if (material.pbrMetallicRoughness?.baseColorTexture) {
         const texIndex = material.pbrMetallicRoughness.baseColorTexture.index;
         // has embedded texture

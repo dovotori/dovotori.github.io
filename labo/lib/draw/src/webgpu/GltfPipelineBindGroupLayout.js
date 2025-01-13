@@ -42,7 +42,7 @@ export const buildBindGroupLayouts = (device) => {
         buffer: {
           type: "uniform",
           hasDynamicOffset: false,
-          minBindingSize: 112,
+          // minBindingSize: 112,
         },
       },
     ],
