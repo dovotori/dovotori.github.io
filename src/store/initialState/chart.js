@@ -8,11 +8,7 @@ export default {
       children: [
         {
           name: 'node',
-          value: 30,
-        },
-        {
-          name: 'php',
-          value: 5,
+          value: 40,
         },
         {
           name: 'mysql',
@@ -25,10 +21,6 @@ export default {
         {
           name: 'trpc',
           value: 20,
-        },
-        {
-          name: 'redis',
-          value: 5,
         },
       ],
     },
