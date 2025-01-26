@@ -115,7 +115,7 @@ class Vec3 {
     return new Vec3(
       this.d[1] * v.d[2] - this.d[2] * v.d[1],
       this.d[2] * v.d[0] - this.d[0] * v.d[2],
-      this.d[0] * v.d[1] - this.d[1] * v.d[0],
+      this.d[0] * v.d[1] - this.d[1] * v.d[0]
     );
   }
 
@@ -126,7 +126,7 @@ class Vec3 {
 
   length() {
     return Math.sqrt(
-      this.d[0] * this.d[0] + this.d[1] * this.d[1] + this.d[2] * this.d[2],
+      this.d[0] * this.d[0] + this.d[1] * this.d[1] + this.d[2] * this.d[2]
     );
   }
 
@@ -188,7 +188,7 @@ class Vec3 {
         matrice.d[5] * this.d[2],
       matrice.d[6] * this.d[0] +
         matrice.d[7] * this.d[1] +
-        matrice.d[8] * this.d[2],
+        matrice.d[8] * this.d[2]
     );
     return this;
   }
@@ -225,7 +225,7 @@ class Vec3 {
     return Math.sqrt(
       (v.d[0] - this.d[0]) * (v.d[0] - this.d[0]) +
         (v.d[1] - this.d[1]) * (v.d[1] - this.d[1]) +
-        (v.d[2] - this.d[2]) * (v.d[2] - this.d[2]),
+        (v.d[2] - this.d[2]) * (v.d[2] - this.d[2])
     );
   }
 

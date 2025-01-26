@@ -14,6 +14,7 @@ import { GltfDb } from "./GltfDb";
 import Objectif from "../lib/draw/src/cameras/Objectif";
 import Vec3 from "../lib/draw/src/maths/Vec3";
 import Vec4 from "../lib/webgl/maths/Vec4";
+import { intersectRayWithPlane } from "../lib/draw/src/maths/intersection";
 
 // to see the color change f_picking with alpha to 1
 const DEBUG_PICKING = true;
@@ -427,17 +428,38 @@ class Scene {
     const invViewMat = new Mat4().setFromArray(view.get()).inverse();
 
     const rayClip = new Vec4(mousePosRel.x, mousePosRel.y, -1, 1);
-    const rayEye = rayClip.multiplyMatrix4(invProjMat);
+    const rayEye = rayClip.multiplyMatrix(invProjMat);
     rayEye.set(rayEye.getX(), rayEye.getY(), -1, 0);
 
-    const rayWorld = rayEye.multiplyMatrix4(invViewMat).normalise();
+    const rayWorld = rayEye.multiplyMatrix(invViewMat).normalise();
+
     console.log({ node, mousePosRel, rayWorld });
 
     if (positions && matrix) {
       // let fMat = new Mat4().setFromArray(matrix.get()).multiply(this.model);
       // fMat.setFromArray(this.model.get()); //.multiply(matrix);
       const pos = positions[0];
-      this.debugCube.setTransform(pos[0], pos[1], pos[2]);
+
+      const p1 = new Vec3(positions[1][0], positions[1][1], positions[1][2]);
+      const p2 = new Vec3(positions[2][0], positions[2][1], positions[2][2]);
+      const normal = new Vec3(
+        positions[0][0],
+        positions[0][1],
+        positions[0][2]
+      ).computeNormal(p1, p2);
+
+      const intersectionPoint = intersectRayWithPlane(
+        this.camera.getPositionVec3(),
+        new Vec3(rayWorld.getX(), rayWorld.getY(), rayWorld.getZ()),
+        p1,
+        normal
+      );
+      console.log({ pos, normal, intersectionPoint });
+      this.debugCube.setTransform(
+        intersectionPoint.getX(),
+        intersectionPoint.getY(),
+        intersectionPoint.getZ()
+      );
     }
   };
 }
