@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdovotori=self.webpackChunkdovotori||[]).push([[6278],{36278:(o,d,i)=>{i.r(d),i.d(d,{default:()=>t});const t='<div id="picto"></div>'}}]);

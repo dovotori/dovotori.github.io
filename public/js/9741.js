@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdovotori=self.webpackChunkdovotori||[]).push([[9741],{19741:(e,t,c)=>{c.r(t),c.d(t,{capitalize:()=>a,chunkArray:()=>r,getEnvPath:()=>h});const r=(e,t)=>Array.from({length:Math.ceil(e.length/t)},((c,r)=>e.slice(r*t,r*t+t))),a=e=>e.charAt(0).toUpperCase()+e.slice(1),h=e=>`/public${e}`}}]);
