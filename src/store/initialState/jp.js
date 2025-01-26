@@ -1,7 +1,7 @@
 import { Locales } from '../../constants/locales';
-import getLocalPosts from './getLocalPosts';
-import getLocalCategories from './getLocalCategories';
 import chart from './chart';
+import getLocalCategories from './getLocalCategories';
+import getLocalPosts from './getLocalPosts';
 
 const initialState = {
   categories: getLocalCategories(Locales.JP),
@@ -56,10 +56,23 @@ const initialState = {
       text: '職歴',
       items: [
         {
+          startDate: 2022,
+          endDate: 2025,
+          text: 'Scene株式会社でフロントエンドの開発者',
+          tasks: [
+            '組立説明書アプリケーションのために複数の3D機能を開発',
+            'データの正確性を確保するために、ピクセル比較を使用したエンドツーエンドテストを実装',
+          ],
+        },
+        {
           startDate: 2016,
           endDate: 2022,
           text: 'Winamaxというスポーツ賭け事会社でフロントエンドの開発者',
-          tasks: [''],
+          tasks: [
+            'ベッティングWebアプリケーションの開発',
+            'ファンタジースポーツWebアプリケーションの開発',
+            '新しいグリッドアプリケーションの開発',
+          ],
         },
         {
           startDate: 2014,
@@ -135,7 +148,7 @@ const initialState = {
           items: [
             { text: 'フランス語', level: '母語' },
             { text: '英語', level: '読んで話しました' },
-            { text: '日本語', level: '日本語能力試験N4' },
+            { text: '日本語', level: '日本語能力試験Ｎ3、Ｎ2勉強中' },
           ],
         },
       ],

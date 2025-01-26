@@ -1,11 +1,11 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 import { ReactComponent as QuoteIcon } from 'Assets/svg/quote.svg';
-import SocialLinks from './SocialLinks';
 import CvContainer from '../containers/CvContainer';
-import ButtonBack from './ButtonBack';
-import Bloc from './Bloc';
 import { jiggle } from './Animations';
+import Bloc from './Bloc';
+import ButtonBack from './ButtonBack';
+import SocialLinks from './SocialLinks';
 
 const StyledSocialLinks = styled(SocialLinks)`
   margin: 10em 0;
@@ -86,7 +86,6 @@ const About = ({ hello, isTouchDevice }) => (
         {hello.description.map((text) => (
           <Description key={text}>{text}</Description>
         ))}
-        <Bar />
       </MarginLeft>
       <CvContainer />
       <MarginLeft isTouch={isTouchDevice}>

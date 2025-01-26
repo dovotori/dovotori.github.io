@@ -1,7 +1,7 @@
 import { Locales } from '../../constants/locales';
-import getLocalPosts from './getLocalPosts';
-import getLocalCategories from './getLocalCategories';
 import chart from './chart';
+import getLocalCategories from './getLocalCategories';
+import getLocalPosts from './getLocalPosts';
 
 const initialState = {
   categories: getLocalCategories(Locales.FR),
@@ -56,9 +56,20 @@ const initialState = {
       text: 'Experiences',
       items: [
         {
+          startDate: 2022,
+          endDate: 2025,
+          text: 'Développeur Front-end au sein de Scene',
+          location: 'Tokyo, Japon',
+          tasks: [
+            'développement de multiple features 3d pour une application de guide de montage industrielle',
+            "implementation de tests end-to-end basés sur la comparaison de pixels pour assurer l'intégrité des données clientes",
+          ],
+        },
+        {
           startDate: 2016,
           endDate: 2022,
           text: 'Développeur Front-end au sein de Winamax',
+          location: 'Paris, France',
           tasks: [
             "développement des évolutions de l'application de paris sportifs",
             "développement de l'application le Jeu de l'entraîneur",
@@ -69,6 +80,7 @@ const initialState = {
           startDate: 2014,
           endDate: 2016,
           text: 'Co-gérant de l’entreprise de Web design Pix 21, responsable du design et du développement web',
+          location: 'Paris, France',
           tasks: [
             'développement et déploiement de sites internet',
             'conception / mise en page / gestion d’impression de documents de communication',
@@ -80,6 +92,7 @@ const initialState = {
           startDate: 2013,
           endDate: 2014,
           text: 'Graphiste au sein de l’association Reporters sans frontières',
+          location: 'Paris, France',
           tasks: [
             'réalisation de cartes intéractives en ligne',
             'conception / mise en page de rapports et de documents de communication',
@@ -89,6 +102,7 @@ const initialState = {
           startDate: 2012,
           endDate: 2012,
           text: 'Semestre au laboratoire de recherche Ideas Lab au CEA de Grenoble',
+          location: 'Grenoble, France',
           tasks: [
             'recherche et prototypages autour de technologies innovantes',
             'travail collaboratif avec des ingénieurs',
@@ -98,6 +112,7 @@ const initialState = {
           startDate: 2009,
           endDate: 2009,
           text: 'Stage puis missions au sein de l’atelier des Giboulées, agence  de conseil et création graphique',
+          location: 'Paris, France',
           tasks: [
             'conception / mise en page / suivi d’impression de documents de communication',
             "participation à l'élaboration du cahiers des charges avec le client",
@@ -140,7 +155,7 @@ const initialState = {
           text: 'langues',
           items: [
             { text: 'Anglais', level: 'lu et parlé' },
-            { text: 'Japonais', level: 'JLPT N4, étudie le N3' },
+            { text: 'Japonais', level: 'JLPT N3, étudie le N4' },
           ],
         },
       ],

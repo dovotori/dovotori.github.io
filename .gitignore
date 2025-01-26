@@ -3,3 +3,4 @@ node_modules/
 build/
 cert.pem
 key.pem
+coverage/

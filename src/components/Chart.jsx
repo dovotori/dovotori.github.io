@@ -15,8 +15,12 @@ const CONCENTRIC_MARGIN = 4;
 const Svg = styled.svg`
   margin-top: -5em;
 
-  .dev path {
+  .front path {
     stroke: ${(p) => p.theme.text};
+  }
+
+  .back path {
+    stroke: ${(p) => p.theme.midl};
   }
 
   .design path {

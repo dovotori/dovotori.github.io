@@ -1,7 +1,7 @@
 import { Locales } from '../../constants/locales';
-import getLocalPosts from './getLocalPosts';
-import getLocalCategories from './getLocalCategories';
 import chart from './chart';
+import getLocalCategories from './getLocalCategories';
+import getLocalPosts from './getLocalPosts';
 
 const initialState = {
   categories: getLocalCategories(Locales.EN),
@@ -64,6 +64,16 @@ const initialState = {
     jobs: {
       text: 'Jobs',
       items: [
+        {
+          startDate: 2022,
+          endDate: 2025,
+          text: 'Front-end developer at Scene',
+          location: 'Tokyo, Japan',
+          tasks: [
+            'developed multiple 3D features for an assembly instructions application',
+            'implemented end-to-end testing using pixel comparison to ensure data accuracy',
+          ],
+        },
         {
           startDate: 2016,
           endDate: 2022,
@@ -139,7 +149,7 @@ const initialState = {
           items: [
             { text: 'French', level: 'native' },
             { text: 'English', level: 'read and talked' },
-            { text: 'Japanese', level: 'JLPT N4, learning N3' },
+            { text: 'Japanese', level: 'JLPT N3, learning N2' },
           ],
         },
       ],

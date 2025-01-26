@@ -3,20 +3,60 @@ export default {
   value: 100,
   children: [
     {
-      name: 'dev',
-      value: 70,
+      name: 'back',
+      value: 30,
       children: [
         {
-          name: 'php',
-          value: 10,
+          name: 'node',
+          value: 30,
         },
         {
+          name: 'php',
+          value: 5,
+        },
+        {
+          name: 'mysql',
+          value: 20,
+        },
+        {
+          name: 'postgresql',
+          value: 20,
+        },
+        {
+          name: 'trpc',
+          value: 20,
+        },
+        {
+          name: 'redis',
+          value: 5,
+        },
+      ],
+    },
+    {
+      name: 'front',
+      value: 50,
+      children: [
+        {
           name: 'js',
-          value: 70,
+          value: 80,
           children: [
             {
-              name: 'node',
-              value: 10,
+              name: '3d',
+              value: '10',
+              children: [
+                {
+                  name: 'webgl',
+                  value: 33,
+                },
+                {
+                  name: 'webgpu',
+                  value: 33,
+                },
+                {
+                  name: 'babylon',
+                  value: 33,
+                },
+              ],
             },
             {
               name: 'react',
@@ -24,15 +64,11 @@ export default {
             },
             {
               name: 'redux',
-              value: 20,
-            },
-            {
-              name: 'webgl',
               value: 10,
             },
             {
               name: 'd3',
-              value: 10,
+              value: 30,
             },
             {
               name: 'env',
@@ -40,19 +76,31 @@ export default {
               children: [
                 {
                   name: 'flow',
-                  value: 30,
+                  value: 14,
                 },
                 {
                   name: 'jest',
-                  value: 30,
+                  value: 15,
                 },
                 {
                   name: 'webpack',
-                  value: 20,
+                  value: 14,
                 },
                 {
                   name: 'gitlab',
-                  value: 20,
+                  value: 14,
+                },
+                {
+                  name: 'typescript',
+                  value: 14,
+                },
+                {
+                  name: 'playwright',
+                  value: 14,
+                },
+                {
+                  name: 'vite',
+                  value: 15,
                 },
               ],
             },
@@ -70,15 +118,19 @@ export default {
     },
     {
       name: 'design',
-      value: 30,
+      value: 20,
       children: [
         {
           name: 'blender',
-          value: 50,
+          value: 33,
         },
         {
           name: 'inkscape',
-          value: 50,
+          value: 33,
+        },
+        {
+          name: 'figma',
+          value: 33,
         },
       ],
     },
