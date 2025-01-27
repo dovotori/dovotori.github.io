@@ -2,7 +2,7 @@
   border-radius: 0;
   margin: 0;
   padding: 4px;
-  border: solid 1px #ccc;
+  border: solid 2px var(--project-color);
 }
 
 #fullscreen-toggle-btn:hover svg,
