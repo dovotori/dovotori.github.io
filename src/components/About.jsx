@@ -35,7 +35,7 @@ const Description = styled.p`
 `;
 
 const MarginLeft = styled.div`
-  margin: ${(p) => !p.$isTouch && '0 0 0 20%'};
+  margin: ${(p) => !p.isTouch && '0 0 0 20%'};
 `;
 
 const StyledButtonBack = styled(ButtonBack)`
@@ -43,7 +43,7 @@ const StyledButtonBack = styled(ButtonBack)`
 `;
 
 const Link = styled.a`
-  margin-top: ${(p) => (!p.$isTouch ? 0 : '10em')};
+  margin-top: ${(p) => (!p.isTouch ? 0 : '10em')};
   display: flex;
   justify-content: flex-end;
 `;
@@ -76,7 +76,7 @@ const Center = styled.div`
 const About = ({ hello, isTouchDevice }) => (
   <Wrap>
     <WrapContent>
-      <MarginLeft $isTouch={isTouchDevice}>
+      <MarginLeft isTouch={isTouchDevice}>
         <Link href={`mailto:${process.env.MAIL}`} isTouch={isTouchDevice}>
           <Quote>
             <StyledQuoteIcon />

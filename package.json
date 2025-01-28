@@ -24,7 +24,7 @@
     "docker:run:dev": "docker run --name dovotori_client_dev -p 8080:8080 -d --rm dovotori_client_dev:latest",
     "docker:build:prod": "docker build --no-cache --target client_prod --tag dovotori_client_prod:latest .",
     "docker:run:prod": "docker run --name dovotori_client_prod --rm dovotori_client_prod:latest",
-    "deploy": "gh-pages -d build --remote github",
+    "deploy": "gh-pages -d build --remote origin",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },

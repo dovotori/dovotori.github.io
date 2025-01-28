@@ -1,15 +1,15 @@
-import { Route, HashRouter as Router, Routes, Navigate, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import { Navigate, Route, HashRouter as Router, Routes, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { ReactComponent as BackArrow } from 'Assets/svg/arrow.svg';
-import TransitionRoute from './TransitionRoute';
-import ButtonNavigation from './ButtonNavigation';
+import routes from '../constants/routes';
 import FooterContainer from '../containers/FooterContainer';
 import ProjectCommonContainer from '../containers/ProjectCommonContainer';
 import SignatureContainer from '../containers/SignatureContainer';
-import routes from '../constants/routes';
 import { getIsTouchDevice } from '../selectors';
+import ButtonNavigation from './ButtonNavigation';
+import TransitionRoute from './TransitionRoute';
 
 const Arrow = styled(BackArrow)`
   height: 1em;
@@ -68,7 +68,7 @@ const MainRoutes = () => {
             <Route path="/" exact element={<Common />} />
             <Route path="/project/:slug" exact element={<ProjectCommonContainer />} />
           </Routes>
-          <TransitionRoute $isTouchDevice={isTouchDevice}>
+          <TransitionRoute isTouchDevice={isTouchDevice}>
             {routes.map(renderRoute)}
             <Route path="*" element={<RedirectionHome />} />
           </TransitionRoute>

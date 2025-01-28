@@ -1,11 +1,11 @@
-import { useEffect, useCallback, useState, useMemo } from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { ReactComponent as PlusIcon } from 'Assets/svg/plus.svg';
+import { getColorType, getTeaserPath } from '../utils';
 import LazyImage from './LazyImage';
-import { getTeaserPath, getColorType } from '../utils';
 import Loader from './Loader';
 
 const StyledLink = styled(Link).attrs({
@@ -22,11 +22,11 @@ const StyledLink = styled(Link).attrs({
   border-radius: 0.4em;
   transform: ${(p) => {
     if (p.$isVisible) {
-      return p.$isHover && !p.$isTouchDevice ? 'scale(1.2)' : 'none';
+      return p.$isHover && !p.isTouchDevice ? 'scale(1.2)' : 'none';
     }
     return 'translateY(20%)';
   }};
-  z-index: ${(p) => (p.$isVisible && p.$isHover && !p.$isTouchDevice ? 1 : 0)};
+  z-index: ${(p) => (p.$isVisible && p.$isHover && !p.isTouchDevice ? 1 : 0)};
   transition:
     opacity 1s ${(p) => p.theme.elastic},
     transform 1s ${(p) => p.theme.elastic},
@@ -132,7 +132,7 @@ const Teaser = ({
       $isVisible={inView}
       title={slug}
       $isHover={isHovered}
-      $isTouchDevice={isTouchDevice}
+      isTouchDevice={isTouchDevice}
     >
       <Infos $colorType={$colorType}>
         <StyledLazyImage

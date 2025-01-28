@@ -1,11 +1,11 @@
-import { useState, useCallback } from 'react';
-import styled, { keyframes, css } from 'styled-components';
+import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
+import styled, { css, keyframes } from 'styled-components';
 
 import Bol from './Bol';
 import ProjectLabo from './ProjectLabo';
-import TypingMessage from './TypingMessage';
 import Pulse from './Pulse';
+import TypingMessage from './TypingMessage';
 
 const fadeUp = keyframes`
   0% { transform: scale(0.8); opacity: 0; }
@@ -60,7 +60,7 @@ const commonName = css`
   width: 100%;
   pointer-events: none;
   user-select: none;
-  ${(p) => p.$isTouch && `text-align: center;`};
+  ${(p) => p.isTouch && `text-align: center;`};
   ${(p) => p.theme.media.mobile`text-align: center;`};
 `;
 
@@ -108,7 +108,7 @@ const common = css`
 `;
 
 const Absolute = styled.div`
-  ${(p) => p.$isTouch && `${common}`}
+  ${(p) => p.isTouch && `${common}`}
   ${(p) => p.theme.media.mobile`
     ${common}
   `}
@@ -150,10 +150,10 @@ const Signature = ({ className, isTouchDevice, hello, text, isHome = true }) => 
   return (
     <Wrap>
       <Pulse className="circle" count={count} />
-      <Katakana $isTouch={isTouchDevice} $isHome={isHome}>
+      <Katakana isTouch={isTouchDevice} $isHome={isHome}>
         <StyledTypingMessage message={isHome ? 'ドリアン' : 'はじめまして'} isLoop isVertical />
       </Katakana>
-      <Absolute $isTouch={isTouchDevice}>
+      <Absolute isTouch={isTouchDevice}>
         <StyledLink to={isHome ? '/about' : '/'} className={className} title="about" onClick={add}>
           <Appear>
             {isTouchDevice ? (
@@ -162,8 +162,8 @@ const Signature = ({ className, isTouchDevice, hello, text, isHome = true }) => 
               <StyledLabo slug="picto" $colorType={0} noBackground hasJs />
             )}
           </Appear>
-          <CenterHorizontal $isTouch={isTouchDevice}>
-            <Name $isTouch={isTouchDevice}>
+          <CenterHorizontal isTouch={isTouchDevice}>
+            <Name isTouch={isTouchDevice}>
               <StyledTypingMessage
                 message={isHome ? 'dorian' : hello}
                 firstMessage="ドリアン"

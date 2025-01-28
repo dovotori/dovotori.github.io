@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 import Teaser from './Teaser';
@@ -23,7 +23,7 @@ const TeasersList = ({ entries, isTouchDevice, className }) => {
   const [currentHover, setCurrentHover] = useState('');
   const sortEntries = useMemo(() => entries.sort((a, b) => (a.date > b.date ? -1 : 1)), [entries]);
   return (
-    <Wrap className={className} $isTouchDevice={isTouchDevice}>
+    <Wrap className={className} isTouchDevice={isTouchDevice}>
       {sortEntries.map((item, index) => (
         <StyledTeaser
           key={item.id}
@@ -33,7 +33,7 @@ const TeasersList = ({ entries, isTouchDevice, className }) => {
           index={index}
           currentHover={currentHover}
           setCurrentHover={setCurrentHover}
-          $isTouchDevice={isTouchDevice}
+          isTouchDevice={isTouchDevice}
         />
       ))}
     </Wrap>
