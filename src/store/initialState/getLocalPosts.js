@@ -402,6 +402,21 @@ const rawPosts = [
       noBackground: true,
     },
   },
+  {
+    id: 24,
+    slug: 'webgpu',
+    title: {
+      [Locales.FR]: 'Webgpu',
+      [Locales.EN]: 'Webgpu',
+      [Locales.JP]: 'Webgpu',
+    },
+    category: CAT_CODE,
+    tags: [],
+    date: 2024,
+    labo: {
+      hasJs: true,
+    },
+  },
 ];
 
 export default (locale) => {

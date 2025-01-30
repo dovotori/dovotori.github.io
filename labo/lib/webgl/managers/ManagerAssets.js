@@ -1,9 +1,10 @@
-import LoadObj from '../parser/LoadObj';
-import LoadMat from '../parser/LoadMat';
 import LoadGltf from '../parser/LoadGltf';
+import LoadGltfForWebGpu from '../parser/LoadGltfForWebGpu';
+import LoadMat from '../parser/LoadMat';
+import LoadObj from '../parser/LoadObj';
 
 class ManagerAssets {
-  constructor() {
+  constructor(isWebgpu) {
     this.assets = {
       textures: {},
       objets: {},
@@ -12,6 +13,7 @@ class ManagerAssets {
       gltfs: {},
       sounds: {},
     };
+    this.isWebgpu = isWebgpu;
   }
 
   static getInfo(path) {
@@ -44,6 +46,14 @@ class ManagerAssets {
         return { data: gltf.get(), info };
       });
 
+  static load3dGltfWebGpu = (path, info) =>
+    fetch(path)
+      .then((response) => response.text())
+      .then(async (response) => {
+        const gltf = await LoadGltfForWebGpu.load(response);
+        return { data: gltf, info };
+      });
+
   static loadImage(path, info) {
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -71,7 +81,9 @@ class ManagerAssets {
         case 'obj':
           return ManagerAssets.load3dObj(path, info);
         case 'gltf':
-          return ManagerAssets.load3dGltf(path, info);
+          return this.isWebgpu
+            ? ManagerAssets.load3dGltfWebGpu(path, info)
+            : ManagerAssets.load3dGltf(path, info);
         case 'mtl':
           return ManagerAssets.loadMaterial(path, info);
         case 'mp3':

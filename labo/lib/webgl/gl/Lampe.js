@@ -1,7 +1,7 @@
-import Objectif from './Objectif';
-import Fbo from './Fbo';
-import MeshRepere from '../meshes/MeshRepere';
+import Objectif from '../cameras/Objectif';
 import Vec3 from '../maths/Vec3';
+import MeshRepere from '../meshes/MeshRepere';
+import Fbo from './Fbo';
 
 export default class extends Objectif {
   constructor(gl, config, width = 1024, height = 1024, useDepth = false) {

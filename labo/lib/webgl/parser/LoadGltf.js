@@ -1,86 +1,11 @@
-import {
-  base64ToArrayBuffer,
-  dataViewToUint8,
-  dataViewToUint16,
-  dataViewToFloat32,
-} from '../utils/base64';
 import { chunkArray } from '../utils';
-
-const acessorsTypes = {
-  SCALAR: 'SCALAR',
-  VEC2: 'VEC2',
-  VEC3: 'VEC3',
-  VEC4: 'VEC4',
-  MAT2: 'MAT2',
-  MAT3: 'MAT3',
-  MAT4: 'MAT4',
-};
-
-export const getNumComponentPerType = (type) => {
-  switch (type) {
-    case acessorsTypes.VEC2:
-      return 2;
-    case acessorsTypes.VEC3:
-      return 3;
-    case acessorsTypes.VEC4:
-      return 4;
-    case acessorsTypes.MAT2:
-      return 4;
-    case acessorsTypes.MAT3:
-      return 9;
-    case acessorsTypes.MAT4:
-      return 16;
-    case acessorsTypes.SCALAR:
-    default:
-      return 1;
-  }
-};
-
-const getLength = (type, count) => {
-  const numElement = getNumComponentPerType(type);
-  return numElement * count;
-};
-
-const getConvertMethod = (componentType) => {
-  switch (componentType) {
-    case 5123: // UNSIGNED_SHORT
-      return dataViewToUint16;
-    case 5126: // FLOAT
-      return dataViewToFloat32;
-    case 5121: // UNSIGNED_BYTE / Uint8Array
-      return dataViewToUint8; // for joints
-    case 5120: // BYTE / Int8Array
-    case 5122: // SHORT / Int16Array
-    case 5125: // UNSIGNED_INT / Uint32Array
-    default:
-      return null;
-  }
-};
-
-const getBufferDataFromAccessor = (buffers, bufferViews, accessor) => {
-  const {
-    bufferView: bufferViewIndex,
-    componentType,
-    count,
-    type,
-    byteOffset: accessorByteOffset = 0,
-  } = accessor;
-  const {
-    buffer: bufferIndex,
-    byteLength: bufferViewByteLength,
-    byteOffset: bufferViewByteOffset = 0,
-    byteStride,
-  } = bufferViews[bufferViewIndex];
-  const dataView = new DataView(
-    buffers[bufferIndex],
-    bufferViewByteOffset + accessorByteOffset,
-    bufferViewByteLength - accessorByteOffset,
-  );
-  const numElement = getNumComponentPerType(type);
-  const length = getLength(type, count);
-  const converterMethod = getConvertMethod(componentType);
-  return converterMethod ? converterMethod(dataView, length, count, numElement, byteStride) : null;
-};
+import { dataViewToUint8 } from '../utils/base64';
+import {
+  getBuffersData,
+  getGlslProgramLocationsMappedName,
+  getMaterial,
+  getNumComponentPerType,
+} from './GltfCommon';
 
 const getImageBufferData = (buffers, bufferView) => {
   const { buffer: bufferIndex, byteOffset, byteLength } = bufferView;
@@ -88,51 +13,7 @@ const getImageBufferData = (buffers, bufferView) => {
   return dataViewToUint8(dataView, byteLength);
 };
 
-const getGlslProgramMappedName = (gltfName) => {
-  switch (gltfName) {
-    case 'normal':
-      return 'normale';
-    case 'texcoord_0':
-      return 'texture';
-    case 'baseColorFactor':
-      return 'color';
-    case 'metallicFactor':
-      return 'metal';
-    case 'roughnessFactor':
-      return 'rough';
-    case 'joints_0':
-      return 'joint';
-    case 'weights_0':
-      return 'weight';
-    default:
-      return gltfName;
-  }
-};
-
-const formatMaterial = (gltfMaterial) =>
-  Object.keys(gltfMaterial).reduce((acc, cur) => {
-    const name = getGlslProgramMappedName(cur);
-    return { ...acc, [name]: gltfMaterial[cur] };
-  }, []);
-
 const VBO_ATTRIBUTES = ['position', 'normale', 'texture', 'joint', 'weight', 'tangent'];
-
-const getMaterial = (material, images) => {
-  let finalMaterial = {};
-  if (material) {
-    finalMaterial = {
-      ...formatMaterial(material.pbrMetallicRoughness),
-      name: material.name,
-    };
-
-    if (material.normalTexture) {
-      const normalMap = images[material.normalTexture.index];
-      finalMaterial.normalMap = normalMap || undefined;
-    }
-  }
-
-  return Object.keys(finalMaterial).length > 0 ? finalMaterial : undefined;
-};
 
 const getVbos = (attributes, accessors, indices, targets) => {
   const indicesAcc = accessors[indices];
@@ -152,7 +33,7 @@ const getVbos = (attributes, accessors, indices, targets) => {
   if (newTargets) {
     newTargets = newTargets.reduce((acc, cur, index) => {
       const newFormatTargets = Object.keys(cur).reduce((a, c) => {
-        const finalName = getGlslProgramMappedName(c.toLowerCase());
+        const finalName = getGlslProgramLocationsMappedName(c.toLowerCase());
         return { ...a, [`target${finalName}${index}`]: cur[c] };
       }, {});
       return { ...acc, ...newFormatTargets };
@@ -161,7 +42,7 @@ const getVbos = (attributes, accessors, indices, targets) => {
   }
 
   return Object.keys(attributes).reduce((a, c) => {
-    const finalName = getGlslProgramMappedName(c.toLowerCase());
+    const finalName = getGlslProgramLocationsMappedName(c.toLowerCase());
     if (VBO_ATTRIBUTES.indexOf(finalName) === -1) return a;
     const accessorIndex = attributes[c];
     const accessor = accessors[accessorIndex];
@@ -268,7 +149,7 @@ const getAnimations = (animations, nodes, accessors, meshes) => {
   return animationsPerNodes;
 };
 
-const getImages = (images, accessors, buffers, bufferViews) =>
+const getImages = (images, buffers, bufferViews) =>
   images
     ? images.map(({ bufferView: bufferViewIndex, mimeType, name }) => {
         const bufferView = bufferViews[bufferViewIndex];
@@ -325,15 +206,10 @@ const markedAndNameNodes = (nodes, allJointsIds = []) => {
 export default class {
   constructor(rawText) {
     const JsonData = JSON.parse(rawText);
-    const { animations, buffers, bufferViews, accessors, skins, nodes, meshes, materials, images } =
-      JsonData;
+    console.log({ JsonData });
+    const { animations, bufferViews, skins, nodes, meshes, materials, images } = JsonData;
 
-    const newBuffers = buffers?.map((buffer) => base64ToArrayBuffer(buffer.uri));
-
-    const newAccessors = accessors?.map((accessor) => ({
-      ...accessor,
-      values: getBufferDataFromAccessor(newBuffers, bufferViews, accessor),
-    }));
+    const { newBuffers, newAccessors } = getBuffersData(JsonData);
     const allJointsIds = skins?.reduce((acc, skin) => acc.concat(skin.joints), []);
     const markedNodes = markedAndNameNodes(nodes, allJointsIds);
 
@@ -352,8 +228,7 @@ export default class {
       return finalMesh;
     });
 
-    const newImages = getImages(images, newAccessors, newBuffers, bufferViews);
-
+    const newImages = getImages(images, newBuffers, bufferViews);
     const newMaterials = materials && materials.map((material) => getMaterial(material, newImages));
 
     let newNodes = organizeParenting(markedNodes);
