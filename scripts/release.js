@@ -3,8 +3,20 @@ const fs = require('fs');
 const semver = require('semver');
 const pkg = require('../package.json');
 
+function getCurrentBranch() {
+  return execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
+}
+
 async function release() {
   try {
+    // Check if on master branch
+    const currentBranch = getCurrentBranch();
+    if (currentBranch !== 'master') {
+      console.error('❌ Releases can only be created from the master branch');
+      console.error(`Current branch is: ${currentBranch}`);
+      process.exit(1);
+    }
+
     // 1. Bump version
     const newVersion = semver.inc(pkg.version, 'patch');
     pkg.version = newVersion;
