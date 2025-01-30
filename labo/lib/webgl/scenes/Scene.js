@@ -1,12 +1,12 @@
-import ManagerTextures from '../managers/ManagerTextures';
+import ManagerGltfs from '../managers/ManagerGltfs';
 import ManagerObjets from '../managers/ManagerObjets';
 import ManagerPrograms from '../managers/ManagerPrograms';
-import ManagerGltfs from '../managers/ManagerGltfs';
 import ManagerSounds from '../managers/ManagerSounds';
-import PostProcess from '../postprocess/PostProcess';
+import ManagerTextures from '../managers/ManagerTextures';
 import Bloom from '../postprocess/Bloom';
-import Ssao from '../postprocess/Ssao';
+import PostProcess from '../postprocess/PostProcess';
 import Shadow from '../postprocess/Shadow';
+import Ssao from '../postprocess/Ssao';
 
 export default class {
   constructor(gl, config) {
@@ -80,13 +80,6 @@ export default class {
       this.mngSound = new ManagerSounds(assets.sounds);
     }
     this.resizeViewport();
-
-    const shouldDisabled = config.useDrawBuffer && !config.support.drawBuffers;
-    if (shouldDisabled) {
-      const domElem = document.querySelector(`#${config.slug}`);
-      domElem.parentNode.style.minHeight = 'auto';
-      domElem.remove();
-    }
   }
 
   canUseDepth() {
