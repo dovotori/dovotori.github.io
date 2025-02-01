@@ -1,4 +1,4 @@
-import Tag from '../src/Tag'
+import Tag from '../Tag'
 
 const Categories = {
   CAT: 0,

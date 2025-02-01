@@ -8,7 +8,7 @@ const Wrap = styled.span`
   color: ${(p) => p.theme.text};
   white-space: nowrap;
   margin: 0;
-  border-bottom: solid 1px ${(p) => p.theme.getColor ?? p.theme.primary};
+  border-bottom: solid 2px ${(p) => p.theme.getColor ?? p.theme.primary};
 `
 
 // const StyledLogotype = styled(Logotype)`

@@ -1,18 +1,29 @@
+import webpack from 'webpack';
+
 const { alias } = require('../webpack/common');
 const path = require('path');
 const pathToInlineSvg = path.resolve(__dirname, '../public/svg/');
 
-module.exports = {
-  "stories": ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
-  "addons": ["@storybook/addon-links", "@storybook/addon-essentials", "@storybook/addon-interactions"],
-  "framework": "@storybook/react",
-  core: {
-    builder: "webpack5"
+/** @type { import('@storybook/react-webpack5').StorybookConfig } */
+const config = {
+  stories: [
+    '../src/components/stories/*.mdx',
+    '../src/components/stories/*.stories.@(js|jsx|mjs|ts|tsx)',
+  ],
+  addons: [
+    '@storybook/addon-webpack5-compiler-swc',
+    '@storybook/addon-onboarding',
+    '@storybook/addon-essentials',
+    '@chromatic-com/storybook',
+    '@storybook/addon-interactions',
+  ],
+  framework: {
+    name: '@storybook/react-webpack5',
   },
   webpackFinal: async (config) => {
     config.resolve.alias = alias;
     const rules = config.module.rules;
-    const fileLoaderRule = rules.find(rule => rule.test.test('.svg'));
+    const fileLoaderRule = rules.find((rule) => rule.test.test('.svg'));
     fileLoaderRule.exclude = pathToInlineSvg;
     rules.push({
       test: /\.svg$/,
@@ -23,13 +34,19 @@ module.exports = {
           options: {
             icon: true,
             svgo: false,
-          }
+          },
         },
         {
           loader: 'url-loader',
         },
       ],
     });
+    config.plugins.push(
+      new webpack.ProvidePlugin({
+        React: 'react',
+      }),
+    );
     return config;
   },
 };
+export default config;

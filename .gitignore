@@ -4,3 +4,4 @@ build/
 cert.pem
 key.pem
 coverage/
+*storybook.log
