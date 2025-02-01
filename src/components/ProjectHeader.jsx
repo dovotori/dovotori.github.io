@@ -63,7 +63,7 @@ const Bar = styled.div`
 const A = styled.a`
   font-size: 0.8em;
   color: ${(p) => p.theme.getColor};
-`
+`;
 
 const ProjectHeader = ({ title, inverseTitle, descriptions, tags, date, link, $colorType }) => (
   <WrapContent>
@@ -74,7 +74,7 @@ const ProjectHeader = ({ title, inverseTitle, descriptions, tags, date, link, $c
           <StyledTypingMessage message={title} />
         </StyledTitle>
       )}
-       {descriptions || tags || link ? (
+      {descriptions || tags || link ? (
         <>
           <Bar $colorType={$colorType} />
           <Description>
@@ -83,7 +83,7 @@ const ProjectHeader = ({ title, inverseTitle, descriptions, tags, date, link, $c
               <Text key={text}>{text}</Text>
             ))}
             {link ? (
-              <A href={link} target='_blank' rel='noreferrer' $colorType={$colorType}>
+              <A href={link} target="_blank" rel="noreferrer" $colorType={$colorType}>
                 {textSite}
               </A>
             ) : null}

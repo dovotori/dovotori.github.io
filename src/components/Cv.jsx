@@ -11,7 +11,7 @@ import AnimBar from './AnimBar';
 import Chart from './Chart';
 
 const StyledChart = styled(Chart)`
-position: relative;
+  position: relative;
   z-index: 2;
 `;
 

@@ -1,9 +1,9 @@
-import { blend } from "./constants";
+import { blend } from './constants';
 
 export class DebugTexture {
   constructor(context) {
     this.context = context;
-    this.depthTextureFormat = "depth32float";
+    this.depthTextureFormat = 'depth32float';
     this.size = {
       width: 5,
       height: 7,
@@ -15,38 +15,38 @@ export class DebugTexture {
     const device = this.context.getDevice();
 
     const ufBindGroupLayout = device.createBindGroupLayout({
-      label: "unfilterable-bgl",
+      label: 'unfilterable-bgl',
       entries: [
         {
           binding: 0,
           visibility: GPUShaderStage.FRAGMENT,
           sampler: {
-            type: "non-filtering", // <---------
+            type: 'non-filtering', // <---------
           },
         },
         {
           binding: 1,
           visibility: GPUShaderStage.FRAGMENT,
           texture: {
-            sampleType: "unfilterable-float", // <---------
+            sampleType: 'unfilterable-float', // <---------
           },
         },
       ],
     });
 
     this.pipeline = device.createRenderPipeline({
-      label: "DebugTexturePipeline",
+      label: 'DebugTexturePipeline',
       layout: device.createPipelineLayout({
         bindGroupLayouts: [ufBindGroupLayout],
       }),
       // layout: "auto",
       vertex: {
         module: program.vertex,
-        entryPoint: "v_main",
+        entryPoint: 'v_main',
       },
       fragment: {
         module: program.fragment,
-        entryPoint: "f_main",
+        entryPoint: 'f_main',
         targets: [
           {
             format: this.context.getCanvasFormat(),
@@ -56,7 +56,7 @@ export class DebugTexture {
       },
       depthStencil: {
         depthWriteEnabled: true,
-        depthCompare: "less",
+        depthCompare: 'less',
         format: this.depthTextureFormat,
       },
       multisample: {
@@ -99,7 +99,7 @@ export class DebugTexture {
     const textureData = new Uint8Array(
       Array.from({ length: this.size.height })
         .map(() => Array.from({ length: this.size.width }).map(getRandonCase))
-        .flat(2)
+        .flat(2),
     );
     return textureData;
   }
@@ -107,7 +107,7 @@ export class DebugTexture {
   setTexture(texture) {
     const device = this.context.getDevice();
     this.bindGroup = device.createBindGroup({
-      label: "debug texture bind group",
+      label: 'debug texture bind group',
       layout: this.pipeline.getBindGroupLayout(0),
       entries: [
         { binding: 0, resource: device.createSampler() },
@@ -122,7 +122,7 @@ export class DebugTexture {
       { texture: this.texture },
       this.setData(),
       { bytesPerRow: this.size.width * 4 },
-      this.size
+      this.size,
     );
   }
 

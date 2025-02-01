@@ -1,7 +1,4 @@
-import {
-  buildShadowBindGroupLayouts,
-  GltfBindGroups,
-} from "./GltfPipelineBindGroupLayout";
+import { buildShadowBindGroupLayouts, GltfBindGroups } from './GltfPipelineBindGroupLayout';
 
 export class Shadow {
   constructor(context) {
@@ -23,17 +20,17 @@ export class Shadow {
         attributes: [
           {
             shaderLocation: 0,
-            format: "float32x3",
+            format: 'float32x3',
             offset: 0,
           },
           {
             shaderLocation: 1,
-            format: "float32x3",
+            format: 'float32x3',
             offset: 12,
           },
           {
             shaderLocation: 2,
-            format: "float32x2",
+            format: 'float32x2',
             offset: 24,
           },
         ],
@@ -43,49 +40,48 @@ export class Shadow {
     const bindGroupLayouts = buildShadowBindGroupLayouts(device);
 
     this.pipeline = await device.createRenderPipelineAsync({
-      label: "ShadowPipeline",
+      label: 'ShadowPipeline',
       layout: device.createPipelineLayout({
-        label: "Shadow Pipeline layout",
+        label: 'Shadow Pipeline layout',
         bindGroupLayouts,
       }),
       vertex: {
         module: program.vertex,
-        entryPoint: "v_main",
+        entryPoint: 'v_main',
         buffers: tmpLayout,
       },
       primitive: {
-        topology: "triangle-list",
-        cullMode: "back",
+        topology: 'triangle-list',
+        cullMode: 'back',
       },
       depthStencil: {
         depthWriteEnabled: true,
-        depthCompare: "less",
-        format: "depth32float",
+        depthCompare: 'less',
+        format: 'depth32float',
       },
     });
 
     this.depthTexture = device.createTexture({
-      label: "shadow depth texture",
+      label: 'shadow depth texture',
       size: { width: 2048, height: 2048, depthOrArrayLayers: 1 },
-      format: "depth32float", // Depth texture format
-      usage:
-        GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+      format: 'depth32float', // Depth texture format
+      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
     });
 
     this.textureDepthView = this.depthTexture.createView({
-      dimension: "2d", // Specifies the texture dimension (2D texture)
-      format: "depth32float", // Depth format
-      aspect: "depth-only", // Correct aspect for depth textures
+      dimension: '2d', // Specifies the texture dimension (2D texture)
+      format: 'depth32float', // Depth format
+      aspect: 'depth-only', // Correct aspect for depth textures
     });
 
     this.renderPassDescriptor = {
-      label: "Shadow render pass",
+      label: 'Shadow render pass',
       colorAttachments: [], // no fragment shader, we just want depth map
       depthStencilAttachment: {
         view: this.textureDepthView,
         depthClearValue: 1.0,
-        depthLoadOp: "clear",
-        depthStoreOp: "store",
+        depthLoadOp: 'clear',
+        depthStoreOp: 'store',
         stencilClearValue: 0,
       },
     };
@@ -94,7 +90,7 @@ export class Shadow {
   render = (uniformCameraBindGroup, nodes, animations) => {
     const device = this.context.getDevice();
     const encoder = device.createCommandEncoder({
-      label: "ShadowCommandEncoder",
+      label: 'ShadowCommandEncoder',
     });
 
     const pass = encoder.beginRenderPass(this.renderPassDescriptor);
@@ -131,7 +127,7 @@ export class Shadow {
         pass.setBindGroup(GltfBindGroups.TRANSFORM, transformBindGroup);
         pass.setVertexBuffer(0, buffer.getVertexBuffer());
         pass.setVertexBuffer(1, buffer.getFaceColorBuffer());
-        pass.setIndexBuffer(buffer.getIndexBuffer(), "uint16");
+        pass.setIndexBuffer(buffer.getIndexBuffer(), 'uint16');
         pass.drawIndexed(buffer.getIndexCount());
       });
     }
@@ -149,7 +145,7 @@ export class Shadow {
 
   getShadowMapBindGroupEntries(device, lightPosition) {
     const buffer = device.createBuffer({
-      label: "LightPositionBuffer",
+      label: 'LightPositionBuffer',
       size: 3 * Float32Array.BYTES_PER_ELEMENT,
       usage: window.GPUBufferUsage.UNIFORM | window.GPUBufferUsage.COPY_DST,
       mappedAtCreation: true,
@@ -163,13 +159,13 @@ export class Shadow {
       {
         binding: 3,
         resource: device.createSampler({
-          magFilter: "nearest",
-          minFilter: "nearest",
-          mipmapFilter: "nearest",
-          compare: "less", // For shadow mapping (depth comparison)
-          addressModeU: "clamp-to-edge",
-          addressModeV: "clamp-to-edge",
-          addressModeW: "clamp-to-edge",
+          magFilter: 'nearest',
+          minFilter: 'nearest',
+          mipmapFilter: 'nearest',
+          compare: 'less', // For shadow mapping (depth comparison)
+          addressModeU: 'clamp-to-edge',
+          addressModeV: 'clamp-to-edge',
+          addressModeW: 'clamp-to-edge',
         }),
       },
       {

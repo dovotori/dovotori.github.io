@@ -1,10 +1,10 @@
-import Transform from "../maths/Transform";
+import Transform from '../maths/Transform';
 
 class BufferTransform {
   static setup(device, layout, bufferData, debugName) {
     const buffer = BufferTransform.setupOne(device, bufferData, debugName);
     return device.createBindGroup({
-      label: "NodeTransformBindGroup",
+      label: 'NodeTransformBindGroup',
       layout,
       entries: [
         {

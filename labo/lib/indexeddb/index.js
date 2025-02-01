@@ -61,10 +61,10 @@ export class IndexedDb {
   upsertData(objectStoreName, data) {
     return new Promise((resolve, reject) => {
       if (!this.db) {
-        reject("db is not yet defined.");
+        reject('db is not yet defined.');
       }
       console.log({ objectStoreName, data });
-      const transaction = this.db.transaction([objectStoreName], "readwrite");
+      const transaction = this.db.transaction([objectStoreName], 'readwrite');
 
       transaction.oncomplete = (event) => {
         resolve(event);
