@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components';
 import { ReactComponent as Skills } from 'Assets/svg/chimie.svg';
 import * as icons from 'Assets/svg/cv';
 import { ReactComponent as Diploma } from 'Assets/svg/diploma.svg';
-import { ReactComponent as Manette } from 'Assets/svg/manette.svg';
+import { ReactComponent as Manette } from 'Assets/svg/manette2.svg';
 import { ReactComponent as Tie } from 'Assets/svg/tie.svg';
 import AnimBar from './AnimBar';
 import Chart from './Chart';

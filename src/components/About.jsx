@@ -49,15 +49,8 @@ const Link = styled.a`
 `;
 
 const Quote = styled.div`
-  :hover {
+  &:hover svg {
     animation: ${jiggle} 1s linear;
-  }
-
-  svg {
-    color: transparent;
-  }
-
-  :hover svg {
     color: ${(p) => p.theme.primaryDark};
   }
 `;
@@ -66,6 +59,7 @@ const StyledQuoteIcon = styled(QuoteIcon)`
   margin-right: 0.2em;
   stroke: ${(p) => p.theme.primary};
   height: 4em;
+  color: transparent;
 `;
 
 const Center = styled.div`
@@ -80,6 +74,8 @@ const About = ({ hello, isTouchDevice }) => (
         <Link href={`mailto:${process.env.MAIL}`} isTouch={isTouchDevice}>
           <Quote>
             <StyledQuoteIcon />
+          </Quote>
+          <Quote>
             <StyledQuoteIcon />
           </Quote>
         </Link>
