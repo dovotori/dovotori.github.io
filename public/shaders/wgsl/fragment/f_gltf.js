@@ -99,7 +99,7 @@ fn f_main(in: FragInput) -> @location(0) vec4f {
   // result = vec3(in.texture, 0.0);
   // result = in.world_normal;
 
-  result = vec3(in.face_color);
+  // result = vec3(in.face_color);
   // result = in.picking_color.xyz;
 
   return vec4(result, 1.0);

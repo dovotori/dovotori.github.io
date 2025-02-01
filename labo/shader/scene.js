@@ -1,15 +1,15 @@
-import Scene from '../lib/webgl/scenes/SceneCamera';
-import Screen from '../lib/webgl/gl/Screen';
-import LinesTrail from '../lib/webgl/lines/LinesTrail';
-import Grid from '../lib/webgl/particules/Grid';
-import Migration from '../lib/webgl/particules/Migration';
-import GpuParticules from '../lib/webgl/particules/GpuParticules';
 import Delaunay from '../lib/delaunay';
 import Primitive from '../lib/webgl/gl/Primitive';
+import Screen from '../lib/webgl/gl/Screen';
+import LinesTrail from '../lib/webgl/lines/LinesTrail';
 import Mat4 from '../lib/webgl/maths/Mat4';
 import Vec3 from '../lib/webgl/maths/Vec3';
+import GpuParticules from '../lib/webgl/particules/GpuParticules';
+import Grid from '../lib/webgl/particules/Grid';
+import Migration from '../lib/webgl/particules/Migration';
+import { getIndices, getPoints } from '../lib/webgl/primitives/grid';
 import { getGridPerlinPoints, getGridPoints } from '../lib/webgl/primitives/particules';
-import { getPoints, getIndices } from '../lib/webgl/primitives/grid';
+import Scene from '../lib/webgl/scenes/SceneCamera';
 import { mapFromRange } from '../lib/webgl/utils/numbers';
 
 const nsin = (val) => Math.sin(val) * 0.5 + 0.5;
@@ -110,7 +110,9 @@ export default class extends Scene {
     this.message = document.querySelector('#message');
     this.buttons = document.querySelectorAll('.mode');
     this.buttons.forEach((button, index) => {
-      button.addEventListener('click', (e) => this.onClickButton(e.target, index), false);
+      button.addEventListener('click', (e) => {
+        this.onClickButton(e.target, index);
+      });
     });
   };
 

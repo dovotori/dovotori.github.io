@@ -1,37 +1,39 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import useFetchLabo from '../hooks/useFetchLabo';
 
 const Labo = ({ className, slug, hasHtml = false, hasJs = false, onLoad = null }) => {
   const { js, html, isLoaded } = useFetchLabo(slug, hasHtml, hasJs);
+  const ref = useRef();
 
   useEffect(() => {
-    if (isLoaded) {
-      const runJs = async () => {
-        try {
-          if (js) {
-            await js.default();
-          }
-        } catch (e) {
-          console.error(e);
+    if (!isLoaded) return;
+    (async () => {
+      try {
+        if (html) {
+          ref.current.innerHTML = html.default;
         }
-        if (onLoad) {
-          onLoad();
+        if (js) {
+          await js.default();
         }
-      };
-      runJs();
-    }
+      } catch (e) {
+        console.error(e);
+      }
+      if (onLoad) {
+        onLoad();
+      }
+    })();
+
     return () => {
-      if (js && js.destroy && typeof js.destroy === 'function') {
+      if (js?.destroy && typeof js.destroy === 'function') {
         js.destroy();
       }
     };
-  }, [isLoaded, js]);
+  }, [isLoaded, js, html]);
 
   return (
     <div key={slug} className={className} id={slug}>
-      {/* eslint-disable-next-line react/no-danger */}
-      {html && <div dangerouslySetInnerHTML={{ __html: html.default }} />}
+      <div ref={ref} />
     </div>
   );
 };

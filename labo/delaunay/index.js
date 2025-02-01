@@ -1,6 +1,6 @@
-import * as selectfile from './selectfile';
-import { downloadSVG } from '../utils';
 import WebWorker from '../lib/WebWorker';
+import { downloadSVG } from '../utils';
+import * as selectfile from './selectfile';
 
 import 'Assets/style/controls.css';
 import 'Assets/style/range-input.css';
@@ -120,6 +120,7 @@ const loadImage = (url) =>
   new Promise((resolve) => {
     const img = new Image();
     img.addEventListener('load', () => resolve(img));
+    console.log(url);
     img.src = url;
   });
 
