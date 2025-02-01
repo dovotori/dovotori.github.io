@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+import TagsList from './TagsList';
 import TypingMessage from './TypingMessage';
 
 const TEXT_WIDTH = 400;
@@ -59,7 +60,12 @@ const Bar = styled.div`
   background: ${(p) => p.theme.getGradient};
 `;
 
-const ProjectHeader = ({ title, inverseTitle, descriptions, date, $colorType }) => (
+const A = styled.a`
+  font-size: 0.8em;
+  color: ${(p) => p.theme.getColor};
+`
+
+const ProjectHeader = ({ title, inverseTitle, descriptions, tags, date, link, $colorType }) => (
   <WrapContent>
     <WrapTexte>
       {date && <Date $colorType={$colorType}>{date}</Date>}
@@ -68,16 +74,22 @@ const ProjectHeader = ({ title, inverseTitle, descriptions, date, $colorType }) 
           <StyledTypingMessage message={title} />
         </StyledTitle>
       )}
-      {descriptions && (
+       {descriptions || tags || link ? (
         <>
           <Bar $colorType={$colorType} />
           <Description>
-            {descriptions.map((text) => (
+            {tags?.length ? <TagsList tags={tags} /> : null}
+            {descriptions?.map((text) => (
               <Text key={text}>{text}</Text>
             ))}
+            {link ? (
+              <A href={link} target='_blank' rel='noreferrer' $colorType={$colorType}>
+                {textSite}
+              </A>
+            ) : null}
           </Description>
         </>
-      )}
+      ) : null}
     </WrapTexte>
   </WrapContent>
 );

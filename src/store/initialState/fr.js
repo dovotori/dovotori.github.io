@@ -2,10 +2,12 @@ import { Locales } from '../../constants/locales';
 import chart from './chart';
 import getLocalCategories from './getLocalCategories';
 import getLocalPosts from './getLocalPosts';
+import getLocalTags from './getLocalTags';
 
 const initialState = {
   categories: getLocalCategories(Locales.FR),
   entries: getLocalPosts(Locales.FR),
+  tags: getLocalTags(Locales.FR),
   hello: {
     title: 'Dorian Ratovo',
     text: 'Front End developer',

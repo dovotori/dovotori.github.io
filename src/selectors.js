@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 
 export const getCategories = () => useSelector((state) => state.content.categories);
+export const getTags = () => useSelector((state) => state.content.tags);
 export const getEntries = () => useSelector((state) => state.content.entries);
 export const getIsTouchDevice = () => useSelector((state) => state.device.isTouch);
 export const getIsDarkMode = () => useSelector((state) => state.device.isDarkMode);
