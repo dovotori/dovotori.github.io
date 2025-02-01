@@ -2,18 +2,11 @@ import { Locales } from '../../constants/locales';
 import chart from './chart';
 import getLocalCategories from './getLocalCategories';
 import getLocalPosts from './getLocalPosts';
+import getLocalTags from './getLocalTags';
 
 const initialState = {
   categories: getLocalCategories(Locales.EN),
-  tags: {
-    0: 'javascript',
-    1: 'd3.js',
-    2: 'OpenCV',
-    3: 'processing',
-    4: 'openNI',
-    5: 'Kinect',
-    6: 'WebGL',
-  },
+  tags: getLocalTags(Locales.EN),
   entries: getLocalPosts(Locales.EN),
   hello: {
     title: 'Dorian Ratovo',

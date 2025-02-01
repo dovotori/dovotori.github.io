@@ -1,13 +1,18 @@
 import { CAT_BLOG, CAT_CODE, CAT_DESIGN } from '../../constants/categories';
 import { Locales } from '../../constants/locales';
+import * as Tags from '../../constants/tags';
 
 const rawPosts = [
   {
     id: 0,
     slug: 'netmap',
-    title: { [Locales.FR]: 'Net Map', [Locales.EN]: 'Net Map', [Locales.JP]: 'ネットマップ' },
+    title: {
+      [Locales.FR]: 'Net Map',
+      [Locales.EN]: 'Net Map',
+      [Locales.JP]: 'ネットマップ',
+    },
     category: CAT_CODE,
-    tags: [],
+    tags: [Tags.TAG_JS, Tags.TAG_D3, Tags.TAG_SVG],
     date: 2014,
     description: {
       [Locales.FR]: [
@@ -29,9 +34,13 @@ const rawPosts = [
   {
     id: 1,
     slug: 'religionmap',
-    title: { [Locales.FR]: 'Religion Map', [Locales.EN]: 'Religion Map', [Locales.JP]: '宗教地図' },
-    category: CAT_DESIGN,
-    tags: [],
+    title: {
+      [Locales.FR]: 'Religion Map',
+      [Locales.EN]: 'Religion Map',
+      [Locales.JP]: '宗教地図',
+    },
+    category: CAT_CODE,
+    tags: [Tags.TAG_JS, Tags.TAG_D3, Tags.TAG_SVG],
     date: 2014,
     description: {
       [Locales.FR]:
@@ -49,9 +58,13 @@ const rawPosts = [
   {
     id: 2,
     slug: 'barason',
-    title: { [Locales.FR]: 'Bar à son', [Locales.EN]: 'Sound pub', [Locales.JP]: 'バラソン' },
+    title: {
+      [Locales.FR]: 'Bar à son',
+      [Locales.EN]: 'Sound pub',
+      [Locales.JP]: 'バラソン',
+    },
     category: CAT_CODE,
-    tags: [],
+    tags: [Tags.TAG_PROCESSING, Tags.TAG_KINECT],
     date: 2013,
     description: {
       [Locales.FR]:
@@ -65,9 +78,13 @@ const rawPosts = [
   {
     id: 3,
     slug: 'camouflage',
-    title: { [Locales.FR]: 'Camouflage', [Locales.EN]: 'Camouflage', [Locales.JP]: '迷彩' },
+    title: {
+      [Locales.FR]: 'Camouflage',
+      [Locales.EN]: 'Camouflage',
+      [Locales.JP]: '迷彩',
+    },
     category: CAT_DESIGN,
-    tags: [],
+    tags: [Tags.TAG_INDESIGN, Tags.TAG_PHOTOSHOP],
     date: 2009,
     description: {
       [Locales.FR]:
@@ -86,7 +103,7 @@ const rawPosts = [
       [Locales.JP]: 'アイデンティティ',
     },
     category: CAT_DESIGN,
-    tags: [],
+    tags: [Tags.TAG_INDESIGN, Tags.TAG_PHOTOSHOP],
     date: 2014,
     description: {
       [Locales.FR]: 'Identités visuelles pour différentes marques.',
@@ -98,23 +115,32 @@ const rawPosts = [
   {
     id: 5,
     slug: 'electro',
-    title: { [Locales.FR]: 'Electro', [Locales.EN]: 'Electro', [Locales.JP]: 'エレクトロ' },
+    title: {
+      [Locales.FR]: 'Electro',
+      [Locales.EN]: 'Electro',
+      [Locales.JP]: 'エレクトロ',
+    },
     category: CAT_DESIGN,
-    tags: [],
+    tags: [Tags.TAG_WORDPRESS, Tags.TAG_PHP, Tags.TAG_JS, Tags.TAG_HTML, Tags.TAG_CSS],
     date: 2013,
     description: {
       [Locales.FR]: "Site de l'artiste audiovisuel Alex Augier.",
       [Locales.EN]: "Audiovisual artist Alex Augier's website.",
       [Locales.JP]: '視聴覚の美術家のサイトAlex Augier。',
     },
+    website: 'https://www.alexaugier.com',
     images: 2,
   },
   {
     id: 6,
     slug: 'soap',
-    title: { [Locales.FR]: 'Usine à savon', [Locales.EN]: 'Soap', [Locales.JP]: 'ソープ' },
+    title: {
+      [Locales.FR]: 'Usine à savon',
+      [Locales.EN]: 'Soap',
+      [Locales.JP]: 'ソープ',
+    },
     category: CAT_DESIGN,
-    tags: [],
+    tags: [Tags.TAG_INDESIGN, Tags.TAG_PHOTOSHOP, Tags.TAG_SVG],
     date: 2009,
     description: {
       [Locales.FR]:
@@ -129,9 +155,13 @@ const rawPosts = [
   {
     id: 7,
     slug: 'weiwei',
-    title: { [Locales.FR]: 'Wei Wei', [Locales.EN]: 'Wei Wei', [Locales.JP]: 'ウェイウェイ' },
+    title: {
+      [Locales.FR]: 'Wei Wei',
+      [Locales.EN]: 'Wei Wei',
+      [Locales.JP]: 'ウェイウェイ',
+    },
     category: CAT_DESIGN,
-    tags: [],
+    tags: [Tags.TAG_INDESIGN, Tags.TAG_PHOTOSHOP],
     date: 2014,
     description: {
       [Locales.FR]:
@@ -146,9 +176,13 @@ const rawPosts = [
   {
     id: 8,
     slug: 'presse',
-    title: { [Locales.FR]: 'Presse', [Locales.EN]: 'Press', [Locales.JP]: 'プレス' },
+    title: {
+      [Locales.FR]: 'Presse',
+      [Locales.EN]: 'Press',
+      [Locales.JP]: 'プレス',
+    },
     category: CAT_DESIGN,
-    tags: [],
+    tags: [Tags.TAG_INDESIGN, Tags.TAG_PHOTOSHOP],
     date: 2014,
     description: {
       [Locales.FR]:
@@ -161,9 +195,13 @@ const rawPosts = [
   {
     id: 9,
     slug: 'distraction',
-    title: { [Locales.FR]: 'Distraction', [Locales.EN]: 'Distraction', [Locales.JP]: '歓楽' },
+    title: {
+      [Locales.FR]: 'Distraction',
+      [Locales.EN]: 'Distraction',
+      [Locales.JP]: '歓楽',
+    },
     category: CAT_CODE,
-    tags: [],
+    tags: [Tags.TAG_KINECT, Tags.TAG_PROCESSING, Tags.TAG_INDESIGN, Tags.TAG_PHOTOSHOP],
     date: 2013,
     description: {
       [Locales.FR]:
@@ -177,9 +215,13 @@ const rawPosts = [
   {
     id: 10,
     slug: 'havre',
-    title: { [Locales.FR]: 'Havre', [Locales.EN]: 'Le Havre', [Locales.JP]: 'ルアーブル' },
+    title: {
+      [Locales.FR]: 'Havre',
+      [Locales.EN]: 'Le Havre',
+      [Locales.JP]: 'ルアーブル',
+    },
     category: CAT_DESIGN,
-    tags: [],
+    tags: [Tags.TAG_INDESIGN, Tags.TAG_PHOTOSHOP, Tags.TAG_PHOTO],
     date: 2009,
     description: {
       [Locales.FR]:
@@ -192,9 +234,13 @@ const rawPosts = [
   {
     id: 11,
     slug: 'depardon',
-    title: { [Locales.FR]: 'Depardon', [Locales.EN]: 'Depardon', [Locales.JP]: 'デパルドン' },
+    title: {
+      [Locales.FR]: 'Depardon',
+      [Locales.EN]: 'Depardon',
+      [Locales.JP]: 'デパルドン',
+    },
     category: CAT_DESIGN,
-    tags: [],
+    tags: [Tags.TAG_INDESIGN, Tags.TAG_PHOTOSHOP, Tags.TAG_PHOTO],
     date: 2009,
     description: {
       [Locales.FR]:
@@ -209,9 +255,20 @@ const rawPosts = [
   {
     id: 12,
     slug: 'game',
-    title: { [Locales.FR]: 'Jeu', [Locales.EN]: 'Game', [Locales.JP]: 'ゲーム' },
-    category: CAT_BLOG,
-    tags: [],
+    title: {
+      [Locales.FR]: 'Jeu',
+      [Locales.EN]: 'Game',
+      [Locales.JP]: 'ゲーム',
+    },
+    category: CAT_CODE,
+    tags: [
+      Tags.TAG_JS,
+      Tags.TAG_WEBGL,
+      Tags.TAG_GLSL,
+      Tags.TAG_CONTEXT_2D,
+      Tags.TAG_INKSCAPE,
+      Tags.TAG_EXPERIMENTAL,
+    ],
     date: 2016,
     description: {
       [Locales.FR]: [
@@ -232,9 +289,13 @@ const rawPosts = [
   {
     id: 13,
     slug: 'paysage',
-    title: { [Locales.FR]: 'Paysage', [Locales.EN]: 'Landscape', [Locales.JP]: '景色' },
+    title: {
+      [Locales.FR]: 'Paysage',
+      [Locales.EN]: 'Landscape',
+      [Locales.JP]: '景色',
+    },
     category: CAT_CODE,
-    tags: [],
+    tags: [Tags.TAG_WEBGL, Tags.TAG_GLSL, Tags.TAG_BLENDER, Tags.TAG_GLTF, Tags.TAG_EXPERIMENTAL],
     date: 2019,
     description: {
       [Locales.FR]:
@@ -250,24 +311,53 @@ const rawPosts = [
   {
     id: 14,
     slug: 'sport',
-    title: { [Locales.FR]: 'Sport', [Locales.EN]: 'Sport', [Locales.JP]: 'スポーツ' },
+    title: {
+      [Locales.FR]: 'Sport',
+      [Locales.EN]: 'Sport',
+      [Locales.JP]: 'スポーツ',
+    },
     category: CAT_CODE,
-    tags: [],
+    tags: [
+      Tags.TAG_REACT,
+      Tags.TAG_REDUX,
+      Tags.TAG_GIT,
+      Tags.TAG_JEST,
+      Tags.TAG_REACT_TESTING,
+      Tags.TAG_WEBPACK,
+      Tags.TAG_FLOW,
+      Tags.TAG_ESLINT,
+      Tags.TAG_AGILE,
+      Tags.TAG_KANBAN,
+      Tags.TAG_NODE,
+      Tags.TAG_STORYBOOK,
+      Tags.TAG_SPINE,
+      Tags.TAG_STYLED_COMPONENTS,
+    ],
     date: 2020,
     description: {
       [Locales.FR]:
         "Developpement sur l'application de paris sportifs au sein de l'entreprise Winamax.",
-      [Locales.EN]: 'Work on Winamax betting application.',
+      [Locales.EN]: [
+        'Worked on Winamax sports betting application.',
+        'Implemented unit and integration tests.',
+        'Developed components and associated documentation on an isolated environment with Storybook.',
+        'Collaborated with designers and illustrators to implement UI/UX details.',
+      ],
       [Locales.JP]: 'ギャンブルのスポーツをWinamax会社で開発しました。',
     },
+    website: 'https://winamax.fr/paris-sportifs',
     images: 11,
   },
   {
     id: 15,
     slug: 'japon',
-    title: { [Locales.FR]: 'Japon', [Locales.EN]: 'Japan', [Locales.JP]: '日本' },
+    title: {
+      [Locales.FR]: 'Japon',
+      [Locales.EN]: 'Japan',
+      [Locales.JP]: '日本',
+    },
     category: CAT_BLOG,
-    tags: [],
+    tags: [Tags.TAG_TRAVEL, Tags.TAG_PHOTO, Tags.TAG_OL],
     date: 2017,
     description: {
       [Locales.FR]: 'Quelques souvenirs du Japon.',
@@ -282,9 +372,13 @@ const rawPosts = [
   {
     id: 16,
     slug: 'norway',
-    title: { [Locales.FR]: 'Norvege', [Locales.EN]: 'Norway', [Locales.JP]: 'ノルウェー' },
+    title: {
+      [Locales.FR]: 'Norvege',
+      [Locales.EN]: 'Norway',
+      [Locales.JP]: 'ノルウェー',
+    },
     category: CAT_BLOG,
-    tags: [],
+    tags: [Tags.TAG_TRAVEL, Tags.TAG_PHOTO, Tags.TAG_OL],
     date: 2018,
     description: {
       [Locales.FR]: 'Quelques souvenirs de Norvège.',
@@ -296,36 +390,52 @@ const rawPosts = [
     },
     images: 16,
   },
-  // {
-  //   id: 17,
-  //   slug: "hongkong",
-  //   title: { [Locales.FR]: "Hong Kong", [Locales.EN]: "Hong Kong", [Locales.JP]: "香港" },
-  //   category: CAT_BLOG,
-  //   tags: [],
-  //   date: 2019,
-  //   description: { [Locales.FR]:
-  //   "Quelques souvenirs de Hong Kong.", [Locales.EN]: "Some memories of Hong Kong.", [Locales.JP]: "香港 の 思い出。" },
-  //   sources: "",
-  //   images: 19
-  // },
-  // {
-  //   id: 18,
-  //   slug: "budapest",
-  //   title: { [Locales.FR]: "Budapest", [Locales.EN]: "Budapest", [Locales.JP]: "ブダペスト" },
-  //   category: CAT_BLOG,
-  //   tags: [],
-  //   date: 2019,
-  //   description: { [Locales.FR]:
-  //   "Quelques souvenirs de Budapest.", [Locales.EN]: "Some memories of Budapest.", [Locales.JP]: "ブダペスト の 思い出。" },
-  //   sources: "",
-  //   images: 13
-  // },
+  {
+    id: 17,
+    slug: 'hongkong',
+    title: { [Locales.FR]: 'Hong Kong', [Locales.EN]: 'Hong Kong', [Locales.JP]: '香港' },
+    category: CAT_BLOG,
+    tags: [Tags.TAG_TRAVEL, Tags.TAG_PHOTO],
+    date: 2019,
+    description: {
+      [Locales.FR]: 'Quelques souvenirs de Hong Kong.',
+      [Locales.EN]: 'Some memories of Hong Kong.',
+      [Locales.JP]: '香港 の 思い出。',
+    },
+    sources: '',
+    images: 19,
+  },
+  {
+    id: 18,
+    slug: 'budapest',
+    title: { [Locales.FR]: 'Budapest', [Locales.EN]: 'Budapest', [Locales.JP]: 'ブダペスト' },
+    category: CAT_BLOG,
+    tags: [Tags.TAG_TRAVEL, Tags.TAG_PHOTO],
+    date: 2019,
+    description: {
+      [Locales.FR]: 'Quelques souvenirs de Budapest.',
+      [Locales.EN]: 'Some memories of Budapest.',
+      [Locales.JP]: 'ブダペスト の 思い出。',
+    },
+    sources: '',
+    images: 9,
+  },
   {
     id: 19,
     slug: 'deform',
-    title: { [Locales.FR]: 'Déformation', [Locales.EN]: 'Deform', [Locales.JP]: '歪み' },
-    category: CAT_BLOG,
-    tags: [],
+    title: {
+      [Locales.FR]: 'Déformation',
+      [Locales.EN]: 'Deform',
+      [Locales.JP]: '歪み',
+    },
+    category: CAT_CODE,
+    tags: [
+      Tags.TAG_WEBGL,
+      Tags.TAG_GLSL,
+      Tags.TAG_CONTEXT_AUDIO,
+      Tags.TAG_GLTF,
+      Tags.TAG_EXPERIMENTAL,
+    ],
     date: 2020,
     description: {
       [Locales.FR]: [
@@ -349,28 +459,34 @@ const rawPosts = [
   {
     id: 20,
     slug: 'shader',
-    title: { [Locales.FR]: 'Shader', [Locales.EN]: 'Shader', [Locales.JP]: 'シェーダー' },
-    category: CAT_BLOG,
+    title: {
+      [Locales.FR]: 'Shader',
+      [Locales.EN]: 'Shader',
+      [Locales.JP]: 'シェーダー',
+    },
+    category: CAT_CODE,
     description: {
       [Locales.FR]: ['Différentes expérimentations avec glsl.'],
       [Locales.EN]: ['Different experimentations with glsl.'],
       [Locales.JP]: ['glslをしながら、色々実験'],
     },
-    tags: [],
+    tags: [Tags.TAG_WEBGL, Tags.TAG_GLSL, Tags.TAG_EXPERIMENTAL],
     date: 2020,
     labo: {
       hasJs: true,
       hasHtml: true,
-      noBackground: true,
     },
-    images: 3,
   },
   {
     id: 21,
     slug: 'diorama',
-    title: { [Locales.FR]: 'Diorama', [Locales.EN]: 'Diorama', [Locales.JP]: 'ジオラマ' },
-    category: CAT_BLOG,
-    tags: [],
+    title: {
+      [Locales.FR]: 'Diorama',
+      [Locales.EN]: 'Diorama',
+      [Locales.JP]: 'ジオラマ',
+    },
+    category: CAT_CODE,
+    tags: [Tags.TAG_WEBGL, Tags.TAG_GLSL, Tags.TAG_BLENDER, Tags.TAG_GLTF, Tags.TAG_EXPERIMENTAL],
     date: 2020,
     labo: {
       hasJs: true,
@@ -381,9 +497,13 @@ const rawPosts = [
   {
     id: 22,
     slug: 'race',
-    title: { [Locales.FR]: 'Course', [Locales.EN]: 'Race', [Locales.JP]: 'レース' },
-    category: CAT_BLOG,
-    tags: [],
+    title: {
+      [Locales.FR]: 'Course',
+      [Locales.EN]: 'Race',
+      [Locales.JP]: 'レース',
+    },
+    category: CAT_CODE,
+    tags: [Tags.TAG_WEBGL, Tags.TAG_GLSL, Tags.TAG_BLENDER, Tags.TAG_GLTF, Tags.TAG_EXPERIMENTAL],
     date: 2020,
     labo: {
       hasJs: true,
@@ -392,9 +512,13 @@ const rawPosts = [
   {
     id: 23,
     slug: 'delaunay',
-    title: { [Locales.FR]: 'Delaunay', [Locales.EN]: 'Delaunay', [Locales.JP]: 'ドロネー' },
+    title: {
+      [Locales.FR]: 'Delaunay',
+      [Locales.EN]: 'Delaunay',
+      [Locales.JP]: 'ドロネー',
+    },
     category: CAT_CODE,
-    tags: [],
+    tags: [Tags.TAG_JS, Tags.TAG_CONTEXT_2D, Tags.TAG_SVG, Tags.TAG_EXPERIMENTAL],
     date: 2022,
     labo: {
       hasJs: true,

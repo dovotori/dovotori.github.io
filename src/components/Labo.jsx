@@ -25,6 +25,9 @@ const Labo = ({ className, slug, hasHtml = false, hasJs = false, onLoad = null }
     })();
 
     return () => {
+      if (ref.current) {
+        ref.current.innerHTML = '';
+      }
       if (js?.destroy && typeof js.destroy === 'function') {
         js.destroy();
       }
