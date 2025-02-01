@@ -19,7 +19,6 @@ const StyledLink = styled(Link).attrs({
   height: 100px;
   opacity: 1;
   box-shadow: 0 0 1em ${(p) => p.theme.backgroundHighlight};
-  border-radius: 0.4em;
   transform: ${(p) => {
     if (p.$isVisible) {
       return p.$isHover && !p.isTouchDevice ? 'scale(1.2)' : 'none';

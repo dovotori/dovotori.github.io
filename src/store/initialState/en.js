@@ -22,7 +22,7 @@ const initialState = {
     about: 'Hi!',
     bulle: 'See more',
     description: [
-      'After graphic design studies, i was impressed by web possibilities and start to learn on my own.',
+      'After graphic design studies, I was impressed by web possibilities and start to learn on my own.',
       'Javascript became my perfect tool to experiment especially 2D and 3D web api.',
       'I worked at different companies to confront my knowledges with professional needs and continue to experiment on personal projects.',
     ],
