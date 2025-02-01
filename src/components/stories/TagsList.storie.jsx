@@ -1,4 +1,4 @@
-import TagsList from '../src/TagsList'
+import TagsList from '../TagsList'
 
 export default {
   title: 'Components/TagsList',

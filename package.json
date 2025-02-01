@@ -26,8 +26,8 @@
     "docker:run:prod": "docker run --name dovotori_client_prod --rm dovotori_client_prod:latest",
     "deploy": "gh-pages -d build --remote origin",
     "release": "node scripts/release.js",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "storybook": "storybook dev -p 6006 --no-open",
+    "build-storybook": "storybook build"
   },
   "engines": {
     "node": ">=22.1.0"
@@ -68,15 +68,17 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.26.5",
+    "@chromatic-com/storybook": "^3.2.4",
     "@storybook/addon-actions": "^8.5.2",
     "@storybook/addon-essentials": "^8.5.2",
     "@storybook/addon-interactions": "^8.5.2",
     "@storybook/addon-links": "^8.5.2",
-    "@storybook/builder-webpack4": "^6.5.16",
-    "@storybook/builder-webpack5": "^8.5.2",
-    "@storybook/manager-webpack4": "^6.5.16",
-    "@storybook/manager-webpack5": "^6.5.16",
+    "@storybook/addon-onboarding": "^8.5.2",
+    "@storybook/addon-webpack5-compiler-swc": "^2.0.0",
+    "@storybook/blocks": "^8.5.2",
     "@storybook/react": "^8.5.2",
+    "@storybook/react-webpack5": "^8.5.2",
+    "@storybook/test": "^8.5.2",
     "@storybook/testing-library": "^0.2.2",
     "babel-jest": "^29.7.0",
     "compression-webpack-plugin": "^11.1.0",
@@ -95,6 +97,7 @@
     "semver": "^7.7.0",
     "simple-peer": "^9.11.1",
     "socket.io-client": "^4.8.1",
+    "storybook": "^8.5.2",
     "webpack-bundle-analyzer": "^4.10.2",
     "webpack-dev-server": "^5.2.0",
     "webrtc-adapter": "^9.0.1"
