@@ -17,7 +17,6 @@ const Wrap = styled.div`
   text-align: left;
   color: ${(p) => p.theme.light};
   overflow: hidden;
-  border-radius: 0.4em;
 
   img {
     width: 100%;
