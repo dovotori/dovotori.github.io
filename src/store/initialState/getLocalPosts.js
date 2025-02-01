@@ -128,7 +128,16 @@ const rawPosts = [
       [Locales.EN]: "Audiovisual artist Alex Augier's website.",
       [Locales.JP]: '視聴覚の美術家のサイトAlex Augier。',
     },
-    link: 'https://www.alexaugier.com',
+    links: [
+      {
+        url: 'https://www.alexaugier.com',
+        label: {
+          [Locales.FR]: 'site',
+          [Locales.EN]: 'site',
+          [Locales.JP]: 'ウエブサイト',
+        },
+      },
+    ],
     images: 2,
   },
   {
@@ -345,7 +354,16 @@ const rawPosts = [
       ],
       [Locales.JP]: 'ギャンブルのスポーツをWinamax会社で開発しました。',
     },
-    link: 'https://winamax.fr/paris-sportifs',
+    links: [
+      {
+        url: 'https://winamax.fr/paris-sportifs',
+        label: {
+          [Locales.FR]: 'site',
+          [Locales.EN]: 'site',
+          [Locales.JP]: 'ウエブサイト',
+        },
+      },
+    ],
     images: 11,
   },
   {
@@ -553,6 +571,7 @@ export default (locale) => {
         title: post.title[locale],
         inverseTitle: post.title[inverseLocale],
         description,
+        links: post.links && post.links.map((link) => ({ ...link, label: link.label[locale] })),
       };
     }
     return {

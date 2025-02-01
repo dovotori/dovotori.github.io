@@ -171,6 +171,7 @@ const initialState = {
   lightMode: 'light',
   next: 'Next',
   previous: 'Previous',
+  site: 'site',
 };
 
 export default initialState;

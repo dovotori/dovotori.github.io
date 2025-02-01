@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
+import { ReactComponent as LinkSvg } from 'Assets/svg/externalLink.svg';
 import TagsList from './TagsList';
 import TypingMessage from './TypingMessage';
-
-const TEXT_WIDTH = 400;
 
 const WrapContent = styled.div`
   margin: 0 auto;
@@ -15,10 +14,8 @@ const WrapTexte = styled.div`
 `;
 
 const Description = styled.div`
-  background: ${(p) => p.theme.backgroundHighlight};
   color: ${(p) => p.theme.light};
   width: 100%;
-  max-width: ${TEXT_WIDTH}px;
   padding: 10px;
 
   ${(p) => p.theme.media.tablet`
@@ -27,7 +24,7 @@ const Description = styled.div`
 `;
 
 const Text = styled.p`
-  margin: 0 0 10px 0;
+  margin: 10px 0;
   width: 100%;
 `;
 
@@ -54,18 +51,29 @@ const StyledTypingMessage = styled(TypingMessage)``;
 
 const Bar = styled.div`
   width: 100%;
-  max-width: 400px;
   height: 1px;
   margin: 0;
   background: ${(p) => p.theme.getGradient};
 `;
 
+const StyledTagsList = styled(TagsList)`
+  margin: 1.4em 0;
+`;
+
 const A = styled.a`
-  font-size: 0.8em;
   color: ${(p) => p.theme.getColor};
 `;
 
-const ProjectHeader = ({ title, inverseTitle, descriptions, tags, date, link, $colorType }) => (
+const LinkIcon = styled(LinkSvg)`
+  stroke: ${(p) => p.theme.getColor};
+  fill: none;
+  width: 1em;
+  height: 1em;
+  margin-left: 0.5em;
+  transform: translateY(1px);
+`;
+
+const ProjectHeader = ({ title, inverseTitle, descriptions, tags, date, links, textSite, $colorType }) => (
   <WrapContent>
     <WrapTexte>
       {date && <Date $colorType={$colorType}>{date}</Date>}
@@ -78,15 +86,16 @@ const ProjectHeader = ({ title, inverseTitle, descriptions, tags, date, link, $c
         <>
           <Bar $colorType={$colorType} />
           <Description>
-            {tags?.length ? <TagsList tags={tags} /> : null}
             {descriptions?.map((text) => (
               <Text key={text}>{text}</Text>
             ))}
-            {link ? (
-              <A href={link} target="_blank" rel="noreferrer" $colorType={$colorType}>
-                {textSite}
+            {tags?.length ? <StyledTagsList tags={tags} /> : null}
+            {links ? links.map(link => (
+              <A key={link.url} href={link.url} target="_blank" rel="noreferrer" $colorType={$colorType}>
+                {link.label}
+                <LinkIcon $colorType={$colorType} />
               </A>
-            ) : null}
+            )) : null}
           </Description>
         </>
       ) : null}

@@ -2,7 +2,7 @@ import ProjectNavigationContainer from '../containers/ProjectNavigationContainer
 import ProjectHeader from './ProjectHeader';
 
 const ProjectCommon = (props) => {
-  const { slug, title, inverseTitle, description, tags, date, link, $colorType } = props;
+  const { slug, title, inverseTitle, description, tags, date, links, $colorType } = props;
   const descriptions = description && (Array.isArray(description) ? description : [description]);
   return (
     <>
@@ -11,7 +11,7 @@ const ProjectCommon = (props) => {
         title={title}
         descriptions={descriptions}
         tags={tags}
-        link={link}
+        links={links}
         date={date}
         inverseTitle={inverseTitle}
         $colorType={$colorType}
