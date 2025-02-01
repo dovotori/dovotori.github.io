@@ -1,7 +1,7 @@
-import styled, { keyframes, createGlobalStyle } from 'styled-components';
 import { ReactComponent as BolSvg } from 'Assets/svg/bol2.svg';
 import { ReactComponent as BonzaiSvg } from 'Assets/svg/bonzai2.svg';
 import { useEffect, useRef } from 'react';
+import styled, { createGlobalStyle, keyframes } from 'styled-components';
 import usePrevious from '../hooks/usePrevious';
 import { timeout } from '../utils';
 

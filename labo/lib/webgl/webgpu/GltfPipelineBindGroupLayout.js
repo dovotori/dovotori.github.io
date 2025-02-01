@@ -11,13 +11,13 @@ export const GltfBindGroups = {
 // generate from https://webgpufundamentals.org/webgpu/lessons/resources/wgsl-offset-computer.html
 export const buildBindGroupLayouts = (device) => {
   const cameraUniformBindGroupLayout = device.createBindGroupLayout({
-    label: "Camera Uniform Bind Group Layout",
+    label: 'Camera Uniform Bind Group Layout',
     entries: [
       {
         binding: 0,
         visibility: GPUShaderStage.VERTEX,
         buffer: {
-          type: "uniform",
+          type: 'uniform',
           hasDynamicOffset: false,
           minBindingSize: 208,
         },
@@ -26,7 +26,7 @@ export const buildBindGroupLayouts = (device) => {
         binding: 1,
         visibility: GPUShaderStage.VERTEX,
         buffer: {
-          type: "uniform",
+          type: 'uniform',
           hasDynamicOffset: false,
         },
       },
@@ -34,13 +34,13 @@ export const buildBindGroupLayouts = (device) => {
   });
 
   const transformUniformBindGroupLayout = device.createBindGroupLayout({
-    label: "Transform Uniform Bind Group Layout",
+    label: 'Transform Uniform Bind Group Layout',
     entries: [
       {
         binding: 0,
         visibility: GPUShaderStage.VERTEX,
         buffer: {
-          type: "uniform",
+          type: 'uniform',
           hasDynamicOffset: false,
           // minBindingSize: 112,
         },
@@ -49,13 +49,13 @@ export const buildBindGroupLayouts = (device) => {
   });
 
   const materialUniformBindGroupLayout = device.createBindGroupLayout({
-    label: "Material Uniform Bind Group Layout",
+    label: 'Material Uniform Bind Group Layout',
     entries: [
       {
         binding: 0,
         visibility: GPUShaderStage.FRAGMENT,
         buffer: {
-          type: "uniform",
+          type: 'uniform',
           hasDynamicOffset: false,
           minBindingSize: 48,
         },
@@ -73,31 +73,31 @@ export const buildBindGroupLayouts = (device) => {
       {
         binding: 3,
         visibility: GPUShaderStage.FRAGMENT,
-        sampler: { type: "comparison" }, // Comparison sampler
+        sampler: { type: 'comparison' }, // Comparison sampler
       },
       {
         binding: 4,
         visibility: GPUShaderStage.FRAGMENT,
-        texture: { sampleType: "depth", viewDimension: "2d" }, // Depth texture
+        texture: { sampleType: 'depth', viewDimension: '2d' }, // Depth texture
       },
       {
         binding: 5,
         visibility: GPUShaderStage.FRAGMENT,
         buffer: {
-          type: "uniform",
+          type: 'uniform',
         },
       },
     ],
   });
 
   const lightsStorageBindGroupLayout = device.createBindGroupLayout({
-    label: "Lights Storage Bind Group Layout",
+    label: 'Lights Storage Bind Group Layout',
     entries: [
       {
         binding: 0,
         visibility: GPUShaderStage.FRAGMENT,
         buffer: {
-          type: "read-only-storage",
+          type: 'read-only-storage',
           hasDynamicOffset: false,
           minBindingSize: 0,
         },
@@ -115,13 +115,13 @@ export const buildBindGroupLayouts = (device) => {
 
 export const buildShadowBindGroupLayouts = (device) => {
   const cameraUniformBindGroupLayout = device.createBindGroupLayout({
-    label: "Shadow Camera Uniform Bind Group Layout",
+    label: 'Shadow Camera Uniform Bind Group Layout',
     entries: [
       {
         binding: 0,
         visibility: GPUShaderStage.VERTEX | GPUShaderStage.FRAGMENT,
         buffer: {
-          type: "uniform",
+          type: 'uniform',
           hasDynamicOffset: false,
           minBindingSize: 208,
         },
@@ -130,13 +130,13 @@ export const buildShadowBindGroupLayouts = (device) => {
   });
 
   const transformUniformBindGroupLayout = device.createBindGroupLayout({
-    label: "Shadow Transform Uniform Bind Group Layout",
+    label: 'Shadow Transform Uniform Bind Group Layout',
     entries: [
       {
         binding: 0,
         visibility: GPUShaderStage.VERTEX,
         buffer: {
-          type: "uniform",
+          type: 'uniform',
           hasDynamicOffset: false,
           minBindingSize: 112,
         },
@@ -148,13 +148,13 @@ export const buildShadowBindGroupLayouts = (device) => {
 
 export const buildPickingBindGroupLayouts = (device) => {
   const cameraUniformBindGroupLayout = device.createBindGroupLayout({
-    label: "Picking Camera Uniform Bind Group Layout",
+    label: 'Picking Camera Uniform Bind Group Layout',
     entries: [
       {
         binding: 0,
         visibility: GPUShaderStage.VERTEX | GPUShaderStage.FRAGMENT,
         buffer: {
-          type: "uniform",
+          type: 'uniform',
           hasDynamicOffset: false,
           minBindingSize: 208,
         },
@@ -163,13 +163,13 @@ export const buildPickingBindGroupLayouts = (device) => {
   });
 
   const transformUniformBindGroupLayout = device.createBindGroupLayout({
-    label: "Picking Transform Uniform Bind Group Layout",
+    label: 'Picking Transform Uniform Bind Group Layout',
     entries: [
       {
         binding: 0,
         visibility: GPUShaderStage.VERTEX,
         buffer: {
-          type: "uniform",
+          type: 'uniform',
           hasDynamicOffset: false,
           minBindingSize: 128,
         },

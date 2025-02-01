@@ -2,12 +2,7 @@
 // rayDirection: The direction of the ray (Vector3)
 // planePoint: A point on the plane (Vector3)
 // planeNormal: The normal of the plane (Vector3)
-export function intersectRayWithPlane(
-  rayOrigin,
-  rayDirection,
-  planePoint,
-  planeNormal
-) {
+export function intersectRayWithPlane(rayOrigin, rayDirection, planePoint, planeNormal) {
   // Compute the dot product of the plane normal and ray direction
   const dotProduct = planeNormal.dot(rayDirection);
 
@@ -29,10 +24,7 @@ export function intersectRayWithPlane(
   }
 
   // Compute the intersection point
-  const intersectionPoint = rayDirection
-    .clone()
-    .multiplyNumber(t)
-    .add(rayOrigin);
+  const intersectionPoint = rayDirection.clone().multiplyNumber(t).add(rayOrigin);
 
   return intersectionPoint;
 }

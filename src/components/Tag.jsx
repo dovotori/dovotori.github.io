@@ -9,7 +9,7 @@ const Wrap = styled.span`
   white-space: nowrap;
   margin: 0;
   border-bottom: solid 2px ${(p) => p.theme.getColor ?? p.theme.primary};
-`
+`;
 
 // const StyledLogotype = styled(Logotype)`
 //   display: inline-block;
@@ -25,5 +25,5 @@ export default ({ className, label, category, picto, hidePicto = true }) => {
       {/* {picto && !hidePicto ? <StyledLogotype name={picto} /> : null} */}
       {label}
     </Wrap>
-  )
-}
+  );
+};

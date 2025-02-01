@@ -1,18 +1,18 @@
 export default {
-  slug: "webgpu",
+  slug: 'webgpu',
   shaders: [
-    "/wgsl/vertex/v_gltf.js",
-    "/wgsl/fragment/f_gltf.js",
-    "/wgsl/vertex/v_picking.js",
-    "/wgsl/fragment/f_picking.js",
-    "/wgsl/vertex/v_debug_tex.js",
-    "/wgsl/vertex/v_shadow_depth.js",
-    "/wgsl/fragment/f_debug_tex.js",
-    "/wgsl/vertex/v_model_camera.js",
-    "/wgsl/fragment/f_simple.js",
+    '/wgsl/vertex/v_gltf.js',
+    '/wgsl/fragment/f_gltf.js',
+    '/wgsl/vertex/v_picking.js',
+    '/wgsl/fragment/f_picking.js',
+    '/wgsl/vertex/v_debug_tex.js',
+    '/wgsl/vertex/v_shadow_depth.js',
+    '/wgsl/fragment/f_debug_tex.js',
+    '/wgsl/vertex/v_model_camera.js',
+    '/wgsl/fragment/f_simple.js',
   ],
   // assets: ["/gltf/paysage.gltf"],
-  assets: ["/gltf/paysage9-testTex.gltf"],
+  assets: ['/gltf/paysage9-testTex.gltf'],
   // assets: ["/gltf/plane.gltf"],
   // assets: ["/gltf/head.gltf"],
   // assets: ['/gltf/headinterleaved.gltf'],
@@ -58,11 +58,11 @@ export default {
     },
   ],
   controls: {
-    fullscreen: { buttonId: "fullscreen-toggle-btn" },
+    fullscreen: { buttonId: 'fullscreen-toggle-btn' },
   },
   useWebGpu: true,
   mouse: {
-    events: ["click"],
+    events: ['click'],
   },
 };
 /*

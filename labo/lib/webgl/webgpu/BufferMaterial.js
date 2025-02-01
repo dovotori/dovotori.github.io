@@ -29,18 +29,13 @@ class BufferMaterial {
 
       // has embedded texture
       if (material.pbrMetallicRoughness.baseColorTexture) {
-        const texture = textures.get(
-          material.pbrMetallicRoughness.baseColorTexture.index
-        );
+        const texture = textures.get(material.pbrMetallicRoughness.baseColorTexture.index);
         const { sampler, textureView } = this.setupTexture(device, texture);
-        entries.push(
-          { binding: 1, resource: sampler },
-          { binding: 2, resource: textureView }
-        );
+        entries.push({ binding: 1, resource: sampler }, { binding: 2, resource: textureView });
       } else {
         entries.push(
           { binding: 1, resource: empty.sampler },
-          { binding: 2, resource: empty.textureView }
+          { binding: 2, resource: empty.textureView },
         );
       }
 
@@ -49,10 +44,10 @@ class BufferMaterial {
       this.bindGroups.set(
         i,
         device.createBindGroup({
-          label: "bind group material",
+          label: 'bind group material',
           layout,
           entries,
-        })
+        }),
       );
       i++;
     }
@@ -67,19 +62,11 @@ class BufferMaterial {
 
     const bufferArray = new Float32Array(buffer.getMappedRange());
 
-    const baseColorFactor = material.pbrMetallicRoughness?.baseColorFactor || [
-      1, 1, 1, 1,
-    ];
+    const baseColorFactor = material.pbrMetallicRoughness?.baseColorFactor || [1, 1, 1, 1];
     const emissiveFactor = material.emissiveFactor || [1, 1, 1];
     const metallicFactor = material.pbrMetallicRoughness?.metallicFactor ?? 0.5;
-    const roughnessFactor =
-      material.pbrMetallicRoughness?.roughnessFactor ?? 0.5;
-    const array = [
-      ...baseColorFactor,
-      ...emissiveFactor,
-      metallicFactor,
-      roughnessFactor,
-    ];
+    const roughnessFactor = material.pbrMetallicRoughness?.roughnessFactor ?? 0.5;
+    const array = [...baseColorFactor, ...emissiveFactor, metallicFactor, roughnessFactor];
     bufferArray.set(array);
 
     buffer.unmap();
@@ -90,20 +77,16 @@ class BufferMaterial {
   setupTexture(device, tex) {
     const size = [tex.imageData.width, tex.imageData.height];
     const texture = device.createTexture({
-      label: "Material base color texture",
+      label: 'Material base color texture',
       size,
-      format: "rgba8unorm",
+      format: 'rgba8unorm',
       usage:
         GPUTextureUsage.TEXTURE_BINDING |
         GPUTextureUsage.COPY_DST |
         GPUTextureUsage.RENDER_ATTACHMENT,
     });
 
-    device.queue.copyExternalImageToTexture(
-      { source: tex.imageData },
-      { texture },
-      size
-    );
+    device.queue.copyExternalImageToTexture({ source: tex.imageData }, { texture }, size);
 
     // const img = new Image();
     // img.src = window.URL.createObjectURL(tex.blob);
@@ -111,17 +94,17 @@ class BufferMaterial {
 
     return {
       sampler: device.createSampler({
-        addressModeU: "repeat",
-        addressModeV: "repeat",
-        magFilter: "linear", // tex.sampler.mafFilter
-        minFilter: "nearest", // tex.sampler.minFilter
-        mipmapFilter: "nearest",
+        addressModeU: 'repeat',
+        addressModeV: 'repeat',
+        magFilter: 'linear', // tex.sampler.mafFilter
+        minFilter: 'nearest', // tex.sampler.minFilter
+        mipmapFilter: 'nearest',
         maxAnisotropy: 1,
       }),
       textureView: texture.createView({
-        format: "rgba8unorm",
-        dimension: "2d",
-        aspect: "all",
+        format: 'rgba8unorm',
+        dimension: '2d',
+        aspect: 'all',
       }),
     };
   }
@@ -138,20 +121,16 @@ class BufferMaterial {
     const size = [imageData.width, imageData.height];
 
     const texture = device.createTexture({
-      label: "Material empty texture",
+      label: 'Material empty texture',
       size,
-      format: "rgba8unorm",
+      format: 'rgba8unorm',
       usage:
         GPUTextureUsage.TEXTURE_BINDING |
         GPUTextureUsage.COPY_DST |
         GPUTextureUsage.RENDER_ATTACHMENT,
     });
 
-    device.queue.copyExternalImageToTexture(
-      { source: imageBitmap },
-      { texture },
-      size
-    );
+    device.queue.copyExternalImageToTexture({ source: imageBitmap }, { texture }, size);
 
     return {
       sampler: device.createSampler(),

@@ -17,7 +17,6 @@ const Wrap = styled.div`
   margin: 22vh auto;
   display:flex;
   justify-content: center;
-}
 `;
 
 const StyledTypingMessage = styled(TypingMessage)`

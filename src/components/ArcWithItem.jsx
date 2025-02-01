@@ -72,7 +72,7 @@ const ArcWithItem = ({
   );
 
   return (
-    <Wrap className={className} onClick={onClick} noHoverAnim={noHoverAnim } data-depth={depth}>
+    <Wrap className={className} onClick={onClick} noHoverAnim={noHoverAnim} data-depth={depth}>
       <StyledArc
         x={x}
         y={y}
