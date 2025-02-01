@@ -128,7 +128,7 @@ const rawPosts = [
       [Locales.EN]: "Audiovisual artist Alex Augier's website.",
       [Locales.JP]: '視聴覚の美術家のサイトAlex Augier。',
     },
-    website: 'https://www.alexaugier.com',
+    link: 'https://www.alexaugier.com',
     images: 2,
   },
   {
@@ -345,7 +345,7 @@ const rawPosts = [
       ],
       [Locales.JP]: 'ギャンブルのスポーツをWinamax会社で開発しました。',
     },
-    website: 'https://winamax.fr/paris-sportifs',
+    link: 'https://winamax.fr/paris-sportifs',
     images: 11,
   },
   {
