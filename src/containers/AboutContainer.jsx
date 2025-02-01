@@ -2,14 +2,8 @@ import { useSelector } from 'react-redux';
 
 import About from '../components/About';
 
-const mapStateToProps = (state) => ({
-  hello: state.content.hello,
-  isTouchDevice: state.device.isTouch,
-});
-
 const Container = () => {
-  const { hello, isTouchDevice } = useSelector(mapStateToProps);
-  return <About hello={hello} isTouchDevice={isTouchDevice} />;
+  return <About hello={useSelector(state =>  state.content.hello)} isTouchDevice={useSelector(state => state.device.isTouch)} />;
 };
 
 export default Container;

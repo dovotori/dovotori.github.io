@@ -157,7 +157,7 @@ class App {
     if (this.controls) {
       this.controls.destroy();
     }
-    if (this.controls) {
+    if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
   }
