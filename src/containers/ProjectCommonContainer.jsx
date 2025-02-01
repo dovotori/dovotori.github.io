@@ -20,7 +20,7 @@ const ProjectCommonContainer = () => {
       date={entry.date}
       inverseTitle={entry.inverseTitle}
       tags={entry.tags.map((tag) => tags[tag])}
-      link={entry.link}
+      links={entry.links}
     />
   );
 };
