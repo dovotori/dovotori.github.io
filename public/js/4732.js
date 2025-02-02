@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdovotori=self.webpackChunkdovotori||[]).push([[4732],{54732:(n,o,e)=>{e.r(o),e.d(o,{default:()=>i});const i="\n@group(0) @binding(0)\nvar<uniform> projection: mat4x4<f32>;\n\n@vertex\nfn v_main(@location(0) pos: vec2f) ->\n  @builtin(position) vec4f {\n  return projection * vec4f(pos, 0, 1);\n}\n"}}]);

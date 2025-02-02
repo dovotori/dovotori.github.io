@@ -65,6 +65,7 @@ body,
 button,
 a,
 h1,
+input,
 html:lang(jp) .numbers {
   font-family: 'typo', 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, FreeSans, sans-serif;
 }

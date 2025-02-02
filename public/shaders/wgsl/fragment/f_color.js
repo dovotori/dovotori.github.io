@@ -1,0 +1,1 @@
+export default"\nstruct FragInput {\n  @location(0) color: vec3f,\n};\n\n@fragment\nfn f_main(input: FragInput) -> @location(0) vec4f {\n  return vec4f(input.color, 1);\n}\n";

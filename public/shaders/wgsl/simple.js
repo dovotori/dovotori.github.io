@@ -1,0 +1,1 @@
+export default"\n@vertex\nfn vertexMain(@location(0) pos: vec2f) ->\n  @builtin(position) vec4f {\n  return vec4f(pos, 0, 1);\n}\n\n@fragment\nfn fragmentMain() -> @location(0) vec4f {\n  return vec4f(1, 0, 0, 1);\n}\n";
