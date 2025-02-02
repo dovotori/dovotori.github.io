@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-import { ReactComponent as Linkedin } from 'Assets/svg/cv/linkedin.svg';
-import { ReactComponent as Gitlab } from 'Assets/svg/cv/gitlab.svg';
-import { ReactComponent as Github } from 'Assets/svg/cv/github.svg';
+import { ReactComponent as Github } from 'Assets/svg/github.svg';
+import { ReactComponent as Gitlab } from 'Assets/svg/gitlab.svg';
+import { ReactComponent as Linkedin } from 'Assets/svg/linkedin.svg';
 import { ReactComponent as Mail } from 'Assets/svg/mail.svg';
 
 const Wrap = styled.div`

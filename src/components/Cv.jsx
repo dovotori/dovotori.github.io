@@ -77,6 +77,7 @@ const StyledAnimBar = styled(AnimBar)`
   position: absolute;
   top: calc(50% - 1px);
   left: 0;
+  z-index: 1;
 `;
 
 const Category = styled.h3`
@@ -115,6 +116,7 @@ const Date = styled.span.attrs({ className: 'numbers' })`
   ${(p) => !p.isTouch && 'text-align: right; width: 100%; '};
   font-size: 0.8em;
   line-height: 2;
+  z-index: 0;
 `;
 
 const WrapSvg = styled.div`
@@ -172,7 +174,7 @@ const FloatRightTwoCol = styled.div`
     @media (min-width: 400px) {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      grid-gap: 2%;
+      grid-gap: 0% 2%;
       margin-bottom: 4%;
     }
   `};
@@ -183,10 +185,10 @@ const TwoCol = styled.div`
 `;
 
 const TwoColFloat = styled(TwoCol)`
-  ${(p) => !p.isTouch && 'float: left;'};
+  margin: ${p => p.noMargin ? 0 : 0.5}em 0;
 `;
 
-const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies }) => {
+const Cv = ({ className, formation, isTouchDevice, jobs, skills, hobbies }) => {
   const renderDate = useCallback((start, end) => {
     if (start === 0) {
       return 'now';
@@ -269,46 +271,26 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
 
   const renderSkills = useCallback(
     () =>
-      skills.items.length > 0 ? (
+      skills.children.length > 0 ? (
         <Bloc>
           <MarginLeft isTouch={isTouchDevice}>
             <Category>
               <StyledAnimBar />
               <SkillsIcon />
-              <CategoryText>{skills.text}</CategoryText>
+              <CategoryText>{skills.label}</CategoryText>
             </Category>
           </MarginLeft>
-          {!isTouchDevice && <StyledChart data={chart} />}
+          {!isTouchDevice && <StyledChart data={skills} />}
           {isTouchDevice &&
-            skills.items.map((item) => (
+            skills.children.map((item) => (
               <BlocJob key={item.text}>
                 <Line>
                   <Clear isTouch={isTouchDevice}>
                     <FloatLeft isTouch={isTouchDevice}>
-                      <Date isTouch={isTouchDevice}>{item.text}</Date>
+                      <Date isTouch={isTouchDevice}>{item.label}</Date>
                     </FloatLeft>
                     <FloatRightTwoCol isTouch={isTouchDevice}>
-                      {item.items.map((subitem) => {
-                        const Svg = subitem.picto ? styledIcons[subitem.picto] : null;
-                        return (
-                          <TwoColFloat isTouch={isTouchDevice} key={subitem.text}>
-                            <Line noMarginTop>
-                              {Svg ? (
-                                <WrapSvg>
-                                  <ColSvg isTouch={isTouchDevice}>
-                                    <Svg />
-                                  </ColSvg>
-                                  <Text>{subitem.text}</Text>
-                                </WrapSvg>
-                              ) : (
-                                <Text>{subitem.text}</Text>
-                              )}
-
-                              <Level>{subitem.level}</Level>
-                            </Line>
-                          </TwoColFloat>
-                        );
-                      })}
+                      {renderItem(item, isTouchDevice)}
                     </FloatRightTwoCol>
                   </Clear>
                 </Line>
@@ -362,3 +344,32 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
 };
 
 export default Cv;
+
+
+const SkillLine = ({item, isTouchDevice}) => {
+  const Svg = item.id ? styledIcons[item.id] : null;
+  if (!Svg && item.children) return null;
+  return (
+    <TwoColFloat isTouch={isTouchDevice} noMargin={!Svg}>
+      <Line noMarginTop>
+        {Svg ? (
+          <WrapSvg>
+            <ColSvg isTouch={isTouchDevice}>
+              <Svg />
+            </ColSvg>
+            <Text>{item.label}</Text>
+          </WrapSvg>
+        ) : (
+          <Text>{item.label}</Text>
+        )}
+        {item.level ? <Level>{item.level}</Level> : null}
+      </Line>
+    </TwoColFloat>
+  );
+}
+
+const renderItem = (item, isTouchDevice) => {
+  return (<><SkillLine item={item} isTouchDevice={isTouchDevice}/>
+  {item.children && item.children.map((subitem) => renderItem(subitem, isTouchDevice))}
+  </>);
+}  

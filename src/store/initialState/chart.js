@@ -1,97 +1,134 @@
+import { Locales } from '../../constants/locales';
+
 export default {
-  name: 'skills',
+  id: 'skills',
+  label: {
+    [Locales.FR]: 'Compétences',
+    [Locales.EN]: 'Skills',
+    [Locales.JP]: 'スキル',
+  },
   value: 100,
   children: [
     {
-      name: 'back',
+      label: {
+        [Locales.FR]: 'Backend',
+        [Locales.EN]: 'Backend',
+        [Locales.JP]: 'バックエンド',
+      },
+      id: 'backend',
       value: 30,
       children: [
         {
-          name: 'node',
+          id: 'node',
+          label: 'Node.js',
           value: 40,
         },
         {
-          name: 'mysql',
+          id: 'mysql',
+          label: 'MySQL',
           value: 20,
         },
         {
-          name: 'postgresql',
+          id: 'postgresql',
+          label: 'PostgreSQL',
           value: 20,
         },
         {
-          name: 'trpc',
+          id: 'trpc',
+          label: 'tRpc',
           value: 20,
         },
       ],
     },
     {
-      name: 'front',
+      id: 'frontend',
+      label: {
+        [Locales.FR]: 'Frontend',
+        [Locales.EN]: 'Frontend',
+        [Locales.JP]: 'フロントエンド',
+      },
       value: 50,
       children: [
         {
-          name: 'js',
+          id: 'js',
+          label: 'JavaScript',
           value: 80,
           children: [
             {
-              name: '3d',
+              id: '3d',
+              label: '3D',
               value: '10',
               children: [
                 {
-                  name: 'webgl',
+                  id: 'webgl',
+                  label: 'WebGL',
                   value: 33,
                 },
                 {
-                  name: 'webgpu',
+                  id: 'webgpu',
+                  label: 'WebGPU',
                   value: 33,
                 },
                 {
-                  name: 'babylon',
+                  id: 'babylon',
+                  label: 'Babylon.js',
                   value: 33,
                 },
               ],
             },
             {
-              name: 'react',
+              id: 'react',
+              label: 'React',
               value: 20,
             },
             {
-              name: 'redux',
+              id: 'redux',
+              label: 'Redux',
               value: 10,
             },
             {
-              name: 'd3',
+              id: 'd3',
+              label: 'd3.js',
               value: 30,
             },
             {
-              name: 'env',
+              id: 'env',
+              label: 'Environnement',
               value: 30,
               children: [
                 {
-                  name: 'flow',
+                  id: 'flow',
+                  label: 'Flow',
                   value: 14,
                 },
                 {
-                  name: 'jest',
+                  id: 'jest',
+                  label: 'Jest',
                   value: 15,
                 },
                 {
-                  name: 'webpack',
+                  id: 'webpack',
+                  label: 'Webpack',
                   value: 14,
                 },
                 {
-                  name: 'gitlab',
+                  id: 'gitlab',
+                  label: 'Gitlab',
                   value: 14,
                 },
                 {
-                  name: 'typescript',
+                  id: 'typescript',
+                  label: 'TypeScript',
                   value: 14,
                 },
                 {
-                  name: 'playwright',
+                  id: 'playwright',
+                  label: 'Playwright',
                   value: 14,
                 },
                 {
-                  name: 'vite',
+                  id: 'vite',
+                  label: 'Vite',
                   value: 15,
                 },
               ],
@@ -99,30 +136,85 @@ export default {
           ],
         },
         {
-          name: 'html',
+          id: 'html',
+          label: 'HTML5',
           value: 10,
         },
         {
-          name: 'css',
+          id: 'css',
+          label: 'CSS3',
           value: 10,
         },
       ],
     },
     {
-      name: 'design',
+      id: 'design',
+      label: {
+        [Locales.FR]: 'Design',
+        [Locales.EN]: 'Design',
+        [Locales.JP]: 'デザイン',
+      },
       value: 20,
       children: [
         {
-          name: 'blender',
+          id: 'blender',
+          label: 'Blender',
           value: 33,
         },
         {
-          name: 'inkscape',
+          id: 'inkscape',
+          label: 'Inkscape',
           value: 33,
         },
         {
-          name: 'figma',
+          id: 'figma',
+          label: 'Figma',
           value: 33,
+        },
+      ],
+    },
+    {
+      label: {
+        [Locales.FR]: 'Langues',
+        [Locales.EN]: 'Languages',
+        [Locales.JP]: '言語',
+      },
+      children: [
+        {
+          label: {
+            [Locales.FR]: 'Français',
+            [Locales.EN]: 'French',
+            [Locales.JP]: 'フランス語',
+          },
+          level: {
+            [Locales.FR]: 'Langue maternelle',
+            [Locales.EN]: 'Native language',
+            [Locales.JP]: '母国語',
+          },
+        },
+        {
+          label: {
+            [Locales.FR]: 'Anglais',
+            [Locales.EN]: 'English',
+            [Locales.JP]: '英語',
+          },
+          level: {
+            [Locales.FR]: 'Courant',
+            [Locales.EN]: 'Fluent',
+            [Locales.JP]: '流暢',
+          },
+        },
+        {
+          label: {
+            [Locales.FR]: 'Japonais',
+            [Locales.EN]: 'Japanese',
+            [Locales.JP]: '日本語',
+          },
+          level: {
+            [Locales.FR]: 'JLPT N3',
+            [Locales.EN]: 'JLPT N3',
+            [Locales.JP]: 'JLPT N3',
+          },
         },
       ],
     },

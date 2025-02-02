@@ -1,7 +1,7 @@
 import { Locales } from '../../constants/locales';
-import chart from './chart';
 import getLocalCategories from './getLocalCategories';
 import getLocalPosts from './getLocalPosts';
+import getLocalSkills from './getLocalSkills';
 import getLocalTags from './getLocalTags';
 
 const initialState = {
@@ -122,46 +122,7 @@ const initialState = {
         },
       ],
     },
-    skills: {
-      text: 'Aptitudes',
-      items: [
-        {
-          text: 'dev',
-          items: [
-            { text: 'Javascript', level: '', picto: 'js' },
-            { text: 'Nodejs', level: '', picto: 'node' },
-            { text: 'React', level: '', picto: 'react' },
-            { text: 'Redux', level: '', picto: 'redux' },
-            { text: 'HTML5', level: '', picto: 'html' },
-            { text: 'CSS3', level: '', picto: 'css' },
-            { text: 'd3.js', level: '', picto: 'd3' },
-            { text: 'WebGL', level: '', picto: 'webgl' },
-            { text: 'Php', level: '', picto: 'php' },
-            { text: 'Flow', level: '', picto: 'flow' },
-            { text: 'Jest', level: '', picto: 'jest' },
-            { text: 'Webpack', level: '', picto: 'webpack' },
-          ],
-        },
-        {
-          text: 'image & édition',
-          items: [
-            { text: 'Photoshop', level: '' },
-            { text: 'Illustrator', level: '' },
-            { text: 'InDesign', level: '' },
-            { text: 'Blender', level: '' },
-            { text: 'Inkscape', level: '' },
-            { text: 'Gimp', level: '' },
-          ],
-        },
-        {
-          text: 'langues',
-          items: [
-            { text: 'Anglais', level: 'lu et parlé' },
-            { text: 'Japonais', level: 'JLPT N3, étudie le N4' },
-          ],
-        },
-      ],
-    },
+    skills: getLocalSkills(Locales.FR),
     hobbies: {
       text: 'Intérêts',
       items: [
@@ -181,7 +142,6 @@ const initialState = {
         },
       ],
     },
-    chart,
   },
   back: 'Retour',
   darkMode: 'sombre',

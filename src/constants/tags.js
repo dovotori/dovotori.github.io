@@ -39,3 +39,5 @@ export const TAG_FIGMA = 37;
 export const TAG_ESLINT = 38;
 export const TAG_KANBAN = 39;
 export const TAG_AGILE = 40;
+export const TAG_WEBGPU = 41;
+export const TAG_WGSL = 42;

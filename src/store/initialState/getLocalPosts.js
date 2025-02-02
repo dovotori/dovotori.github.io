@@ -553,8 +553,13 @@ const rawPosts = [
       [Locales.JP]: 'Webgpu',
     },
     category: CAT_CODE,
-    tags: [],
-    date: 2024,
+    tags: [Tags.TAG_WEBGPU, Tags.TAG_WGSL, Tags.TAG_BLENDER, Tags.TAG_GLTF, Tags.TAG_EXPERIMENTAL],
+    description: {
+      [Locales.FR]: ['Adaptation de mon petit moteur 3d webgl vers webgpu.'],
+      [Locales.EN]: ['Adaptation of my small 3d engine from webgl to webgpu.'],
+      [Locales.JP]: ['私の小さな3DエンジンをWebGLからWebGPUに変換しました。'],
+    },
+    date: 2025,
     labo: {
       hasJs: true,
     },

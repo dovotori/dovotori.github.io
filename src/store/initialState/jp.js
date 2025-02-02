@@ -1,7 +1,7 @@
 import { Locales } from '../../constants/locales';
-import chart from './chart';
 import getLocalCategories from './getLocalCategories';
 import getLocalPosts from './getLocalPosts';
+import getLocalSkills from './getLocalSkills';
 import getLocalTags from './getLocalTags';
 
 const initialState = {
@@ -113,48 +113,7 @@ const initialState = {
         },
       ],
     },
-    skills: {
-      text: '使用スキル',
-      items: [
-        {
-          text: 'dev',
-          items: [
-            { text: 'Javascript', level: '', picto: 'js' },
-            { text: 'Nodejs', level: '', picto: 'node' },
-            { text: 'React', level: '', picto: 'react' },
-            { text: 'Redux', level: '', picto: 'redux' },
-            { text: 'HTML5', level: '', picto: 'html' },
-            { text: 'CSS3', level: '', picto: 'css' },
-            { text: 'd3.js', level: '', picto: 'd3' },
-            { text: 'WebGL', level: '', picto: 'webgl' },
-            { text: 'Php', level: '', picto: 'php' },
-            { text: 'Flow', level: '', picto: 'flow' },
-            { text: 'Jest', level: '', picto: 'jest' },
-            { text: 'Webpack', level: '', picto: 'webpack' },
-          ],
-        },
-        {
-          text: 'イメージ&編集',
-          items: [
-            { text: 'Figma', level: '' },
-            { text: 'Photoshop', level: '' },
-            { text: 'Illustrator', level: '' },
-            { text: 'InDesign', level: '' },
-            { text: 'Blender', level: '' },
-            { text: 'Inkscape', level: '' },
-            { text: 'Gimp', level: '' },
-          ],
-        },
-        {
-          text: '語',
-          items: [
-            { text: 'フランス語', level: '母語' },
-            { text: '英語', level: '読んで話しました' },
-            { text: '日本語', level: '日本語能力試験Ｎ3、Ｎ2勉強中' },
-          ],
-        },
-      ],
-    },
+    skills: getLocalSkills(Locales.JP),
     hobbies: {
       text: '趣味',
       items: [
@@ -166,7 +125,6 @@ const initialState = {
         },
       ],
     },
-    chart,
   },
   back: '戻る',
   darkMode: '暗い',
