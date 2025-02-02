@@ -188,7 +188,6 @@ const initialState = {
   lightMode: 'clair',
   next: 'Suivant',
   previous: 'Précédent',
-  site: 'site',
 };
 
 export default initialState;

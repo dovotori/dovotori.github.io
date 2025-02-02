@@ -2,11 +2,11 @@ import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-import { ReactComponent as Skills } from 'Assets/svg/chimie.svg';
+import { ReactComponent as Skills } from 'Assets/svg/chimie2.svg';
 import * as icons from 'Assets/svg/cv';
-import { ReactComponent as Diploma } from 'Assets/svg/diploma.svg';
-import { ReactComponent as Manette } from 'Assets/svg/manette2.svg';
-import { ReactComponent as Tie } from 'Assets/svg/tie.svg';
+import { ReactComponent as Diploma } from 'Assets/svg/diploma3.svg';
+import { ReactComponent as Manette } from 'Assets/svg/manette.svg';
+import { ReactComponent as Tie } from 'Assets/svg/tie3.svg';
 import AnimBar from './AnimBar';
 import Chart from './Chart';
 
@@ -278,8 +278,8 @@ const Cv = ({ className, formation, isTouchDevice, chart, jobs, skills, hobbies 
               <CategoryText>{skills.text}</CategoryText>
             </Category>
           </MarginLeft>
-          {chart && !isTouchDevice && <StyledChart data={chart} />}
-          {(isTouchDevice || !chart) &&
+          {!isTouchDevice && <StyledChart data={chart} />}
+          {isTouchDevice &&
             skills.items.map((item) => (
               <BlocJob key={item.text}>
                 <Line>
