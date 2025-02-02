@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
-import * as svgs from 'Assets/svg/cv2';
+import * as svgs from 'Assets/svg/cv';
 import { mapFromRange } from '../utils';
 import ArcWithItem from './ArcWithItem';
 
@@ -15,11 +15,11 @@ const CONCENTRIC_MARGIN = 4;
 const Svg = styled.svg`
   margin-top: -5em;
 
-  .front path {
+  .frontend path {
     stroke: ${(p) => p.theme.text};
   }
 
-  .back path {
+  .backend path {
     stroke: ${(p) => p.theme.midl};
   }
 
@@ -32,9 +32,6 @@ const Svg = styled.svg`
     stroke: none;
     fill: ${(p) => p.theme.background};
   }
-  text {
-    font-size: 0.7em;
-  }
 `;
 
 const StyledArcWithItem = styled(ArcWithItem)`
@@ -43,19 +40,19 @@ const StyledArcWithItem = styled(ArcWithItem)`
 `;
 
 const Chart = ({ className, data, showAllIcons = false }) => {
-  const [curretName, setCurrentName] = useState(data.name);
+  const [currentId, setCurrentId] = useState(data.id);
 
   const handleClickArc = useCallback(
     (node, parent) => (e) => {
       e.stopPropagation();
-      const goBack = node.name === curretName;
+      const goBack = node.id === currentId;
       if (goBack) {
-        setCurrentName(parent.name);
+        setCurrentId(parent.id);
       } else if (node.children) {
-        setCurrentName(node.name);
+        setCurrentId(node.id);
       }
     },
-    [curretName],
+    [currentId],
   );
 
   const drawNodes = useCallback(
@@ -63,8 +60,8 @@ const Chart = ({ className, data, showAllIcons = false }) => {
       let currentStartAngle = parentStart;
       const radius = CENTER_WIDTH + depth * (STROKE_WIDTH + CONCENTRIC_MARGIN);
       return node.children.map((child) => {
-        const { value, name } = child;
-        const isActive = current === data.name || current === name;
+        const { value, id, label } = child;
+        const isActive = current === data.id || current === id;
         let angle = 0;
         let newEnd = parentAngle;
         let image = null;
@@ -72,18 +69,18 @@ const Chart = ({ className, data, showAllIcons = false }) => {
         let nextCurrent = current;
         const childHasChildren = !!child.children;
         if (isActive) {
-          const isFirst = current !== data.name && depth === 1;
+          const isFirst = current !== data.id && depth === 1;
           angle = isFirst ? parentAngle : mapFromRange(value, 0, 100, 0, parentAngle);
           newEnd = isFirst ? parentAngle : mapFromRange(value, 0, 100, 0, parentAngle);
-          image = svgs[name] || null;
+          image = svgs[id] || null;
           newDepth = depth + 1;
-          nextCurrent = data.name;
+          nextCurrent = data.id;
         }
         const returnValue = (
           <StyledArcWithItem
-            key={name}
+            key={id}
             angle={angle}
-            className={name}
+            className={id}
             noHoverAnim={!childHasChildren}
             onClick={handleClickArc(child, node)}
             x={x}
@@ -94,7 +91,7 @@ const Chart = ({ className, data, showAllIcons = false }) => {
             depth={depth}
             Picto={image}
             margin={MARGIN}
-            name={name}
+            name={label}
             showIcon={showAllIcons}
           >
             {childHasChildren &&
@@ -110,7 +107,16 @@ const Chart = ({ className, data, showAllIcons = false }) => {
 
   return (
     <Svg className={`${className} chart`} viewBox={`0 0 ${WIDTH} ${WIDTH}`}>
-      <g>{drawNodes(curretName, WIDTH / 2, WIDTH / 2, data)}</g>
+      <defs>
+        <filter x="0" y="0" width="1" height="1" id="solid">
+          <feFlood flood-color="#fff" result="bg" />
+          <feMerge>
+            <feMergeNode in="bg"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <g>{drawNodes(currentId, WIDTH / 2, WIDTH / 2, data)}</g>
     </Svg>
   );
 };

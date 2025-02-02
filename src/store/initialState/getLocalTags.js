@@ -220,6 +220,16 @@ const tags = {
     label: 'Agile',
     categoryId: CAT_CODE,
   },
+  [Tags.TAG_WEBGPU]: {
+    slug: 'webgpu',
+    label: 'WebGPU',
+    categoryId: CAT_CODE,
+  },
+  [Tags.TAG_WGSL]: {
+    slug: 'wgsl',
+    label: 'Wgsl',
+    categoryId: CAT_CODE,
+  },
 };
 
 export default (locale) =>

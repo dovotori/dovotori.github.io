@@ -1,7 +1,7 @@
 import { Locales } from '../../constants/locales';
-import chart from './chart';
 import getLocalCategories from './getLocalCategories';
 import getLocalPosts from './getLocalPosts';
+import getLocalSkills from './getLocalSkills';
 import getLocalTags from './getLocalTags';
 
 const initialState = {
@@ -106,47 +106,7 @@ const initialState = {
         },
       ],
     },
-    skills: {
-      text: 'Skills',
-      items: [
-        {
-          text: 'dev',
-          items: [
-            { text: 'Javascript', level: '', picto: 'js' },
-            { text: 'Nodejs', level: '', picto: 'node' },
-            { text: 'React', level: '', picto: 'react' },
-            { text: 'Redux', level: '', picto: 'redux' },
-            { text: 'HTML5', level: '', picto: 'html' },
-            { text: 'CSS3', level: '', picto: 'css' },
-            { text: 'd3.js', level: '', picto: 'd3' },
-            { text: 'WebGL', level: '', picto: 'webgl' },
-            { text: 'Php', level: '', picto: 'php' },
-            { text: 'Flow', level: '', picto: 'flow' },
-            { text: 'Jest', level: '', picto: 'jest' },
-            { text: 'Webpack', level: '', picto: 'webpack' },
-          ],
-        },
-        {
-          text: 'image & edition',
-          items: [
-            { text: 'Photoshop', level: '' },
-            { text: 'Illustrator', level: '' },
-            { text: 'InDesign', level: '' },
-            { text: 'Blender', level: '' },
-            { text: 'Inkscape', level: '' },
-            { text: 'Gimp', level: '' },
-          ],
-        },
-        {
-          text: 'languages',
-          items: [
-            { text: 'French', level: 'native' },
-            { text: 'English', level: 'read and talked' },
-            { text: 'Japanese', level: 'JLPT N3, learning N2' },
-          ],
-        },
-      ],
-    },
+    skills: getLocalSkills(Locales.EN),
     hobbies: {
       text: 'Interests',
       items: [
@@ -164,7 +124,6 @@ const initialState = {
         },
       ],
     },
-    chart,
   },
   back: 'Back',
   darkMode: 'dark',
