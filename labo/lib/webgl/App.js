@@ -46,19 +46,25 @@ class App {
       support: supportConfig,
     };
 
-    const isDrawBufferUnsupported = config.useDrawBuffer && !supportConfig.drawBuffers;
+    const isDrawBufferUnsupported = !!config.useDrawBuffer && !supportConfig.drawBuffers;
     const isDrawWegpuUnsupported =
-      config.useWebgpu && (!supportConfig.webgpu || !supportConfig.device);
+      !!config.useWebGpu && (!supportConfig.webgpu || !supportConfig.device);
     const shouldDisabled = isDrawBufferUnsupported || isDrawWegpuUnsupported;
+
     if (shouldDisabled) {
       const oups = document.createElement('p');
       oups.innerHTML = `
       <b>ご迷惑おかけして申し訳ありません。</b>
       <br/>Sorry. A support problem occured.
-      <br/>Please try on a more recent device.
+      <br/>Your browser does not support ${config.useWebgpu ? 'WebGPU' : 'WebGL'} or one of the required features.
       `;
+      oups.style.position = 'absolute';
+      oups.style.top = '50%';
+      oups.style.left = '50%';
+      oups.style.transform = 'translate(-50%, -50%)';
       oups.style.textAlign = 'center';
-      oups.style.margin = '20px auto';
+      oups.style.color = 'white';
+      oups.style.textShadow = '1px 1px 1px rgba(0,0,0,0.5)';
       container.appendChild(oups);
       return;
     }
