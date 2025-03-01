@@ -13,7 +13,7 @@ import {
   Program,
   Shadow,
 } from '../lib/webgl/webgpu';
-import { DebugPipeline } from '../lib/webgl/webgpu/DebugPipeline';
+// import { DebugPipeline } from '../lib/webgl/webgpu/DebugPipeline';
 import { GltfDb } from './GltfDb';
 
 // to see the color change f_picking with alpha to 1
@@ -41,7 +41,7 @@ class Scene {
     this.lampe = new Objectif(config.lampes[0]);
     this.lampe.lookAt();
 
-    this.debugCube = new DebugPipeline(context);
+    // this.debugCube = new DebugPipeline(context);
   }
 
   setup() {}
@@ -115,7 +115,6 @@ class Scene {
         ...lampe.ambiant,
         lampe.strength,
       ];
-      console.log(t);
       array.push(...t);
     });
 
@@ -223,13 +222,13 @@ class Scene {
     );
 
     // DEBUG CUBE
-    await this.debugCube.setup({
-      vertex: programs.v_model_camera.get(),
-      fragment: programs.f_simple.get(),
-    });
-    this.debugUniformCamera = this.setupCamera(
-      this.debugCube.getBindGroupLayout(GltfBindGroups.CAMERA),
-    );
+    // await this.debugCube.setup({
+    //   vertex: programs.v_model_camera.get(),
+    //   fragment: programs.f_simple.get(),
+    // });
+    // this.debugUniformCamera = this.setupCamera(
+    //   this.debugCube.getBindGroupLayout(GltfBindGroups.CAMERA),
+    // );
 
     // const lampePos = this.lampe.getPositionVec3();
     // this.debugCube.setTransform(
@@ -238,15 +237,12 @@ class Scene {
     //   lampePos.getZ()
     // );
 
-    // biilboard mesh 20 node 44
-    this.debugCube.setTransform(
-      // -0.4425056576728821,
-      // 1.8546216487884521,
-      // 3.563035011291504
-      -0.4425056576728821,
-      1.8546216487884521,
-      -0.8446273803710938,
-    );
+    // billboard mesh 20 node 44
+    // this.debugCube.setTransform(
+    //   -0.4425056576728821,
+    //   1.8546216487884521,
+    //   -0.8446273803710938,
+    // );
 
     this.debug.setup(
       {
@@ -357,8 +353,8 @@ class Scene {
 
     this.gltfPipeline.drawModel(device, pass, DEBUG_PICKING);
 
-    this.updateCameraUniforms(this.debugUniformCamera.buffer);
-    this.debugCube.render(pass, this.debugUniformCamera.bindGroup);
+    // this.updateCameraUniforms(this.debugUniformCamera.buffer);
+    // this.debugCube.render(pass, this.debugUniformCamera.bindGroup);
     // this.debug.render(pass);
 
     pass.end();
@@ -418,7 +414,7 @@ class Scene {
 
     const rayWorld = rayEye.multiplyMatrix(invViewMat).normalise();
 
-    console.log({ node, mousePosRel, rayWorld });
+    // console.log({ node, mousePosRel, rayWorld });
 
     if (positions && matrix) {
       // let fMat = new Mat4().setFromArray(matrix.get()).multiply(this.model);
@@ -438,12 +434,12 @@ class Scene {
         p1,
         normal,
       );
-      console.log({ pos, normal, intersectionPoint });
-      this.debugCube.setTransform(
-        intersectionPoint.getX(),
-        intersectionPoint.getY(),
-        intersectionPoint.getZ(),
-      );
+      // console.log({ pos, normal, intersectionPoint });
+      // this.debugCube.setTransform(
+      //   intersectionPoint.getX(),
+      //   intersectionPoint.getY(),
+      //   intersectionPoint.getZ(),
+      // );
     }
   };
 }

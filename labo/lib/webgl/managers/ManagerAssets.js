@@ -50,7 +50,10 @@ class ManagerAssets {
     fetch(path)
       .then((response) => response.text())
       .then(async (response) => {
-        const gltf = await LoadGltfForWebGpu.load(response);
+        const gltf = await LoadGltfForWebGpu.load(
+          response,
+          path.slice(0, path.lastIndexOf('/') + 1),
+        );
         return { data: gltf, info };
       });
 

@@ -91,7 +91,12 @@ class LoadGltfForWebGpu {
 
   static getBuffersDataWebGpu = async (gltf, matTextures) => {
     const { buffers, accessors, bufferViews } = gltf;
-    const newBuffers = buffers?.map((buffer) => base64ToArrayBuffer(buffer.uri));
+    const newBuffers = buffers?.map((buffer) => {
+      if (buffer.uri?.startsWith('data:')) {
+        return base64ToArrayBuffer(buffer.uri);
+      }
+      return buffer; // direct buffer from .bin files
+    });
 
     const textureBuffers = new Map();
 
@@ -352,10 +357,21 @@ class LoadGltfForWebGpu {
     };
   }
 
-  static async load(rawText) {
+  static async load(rawText, folderPath) {
     const gltf = JSON.parse(rawText);
-    console.log({ gltf });
-    return await this.parse(gltf);
+    const buffers = await LoadGltfForWebGpu.fetchBuffers(gltf.buffers, folderPath);
+    return await this.parse({ ...gltf, buffers });
+  }
+
+  static async fetchBuffers(buffers, folderPath) {
+    return await Promise.all(
+      buffers.map((b) => {
+        if (b.uri.endsWith('.bin')) {
+          return fetch(folderPath + b.uri).then((res) => res.arrayBuffer());
+        }
+        return b;
+      }),
+    );
   }
 
   // attribute -> accesor -> bufferView -> buffer

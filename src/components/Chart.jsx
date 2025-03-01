@@ -59,7 +59,7 @@ const Chart = ({ className, data, showAllIcons = false }) => {
     (current, x, y, node, depth = 1, parentStart = 0, parentAngle = 360) => {
       let currentStartAngle = parentStart;
       const radius = CENTER_WIDTH + depth * (STROKE_WIDTH + CONCENTRIC_MARGIN);
-      return node.children.map((child) => {
+      return node.children.filter(child => child.id !== undefined).map((child) => {
         const { value, id, label } = child;
         const isActive = current === data.id || current === id;
         let angle = 0;
