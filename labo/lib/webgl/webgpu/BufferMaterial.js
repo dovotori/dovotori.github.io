@@ -15,6 +15,10 @@ class BufferMaterial {
   async setup(device, layout, materials, textures, depthMapBingGroupEntries) {
     console.log({ layout, materials, textures });
 
+    if (materials.size === 0) {
+      throw new Error('No materials found');
+    }
+
     const empty = await this.setupEmptyTexture(device);
 
     let i = 0;
