@@ -71,6 +71,10 @@ const ArcWithItem = ({
     [startAngle, angle],
   );
 
+  if (isNaN(endAngle)) {
+    return null;
+  }
+
   return (
     <Wrap className={className} onClick={onClick} noHoverAnim={noHoverAnim} data-depth={depth}>
       <StyledArc

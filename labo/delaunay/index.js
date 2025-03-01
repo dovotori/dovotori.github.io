@@ -120,7 +120,6 @@ const loadImage = (url) =>
   new Promise((resolve) => {
     const img = new Image();
     img.addEventListener('load', () => resolve(img));
-    console.log(url);
     img.src = url;
   });
 
