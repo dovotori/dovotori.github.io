@@ -17,7 +17,7 @@ import {
 import { GltfDb } from './GltfDb';
 
 // to see the color change f_picking with alpha to 1
-const DEBUG_PICKING = true;
+const DEBUG_PICKING = false;
 
 class Scene {
   constructor(context, config) {

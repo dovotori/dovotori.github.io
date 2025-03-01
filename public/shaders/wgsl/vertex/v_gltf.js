@@ -23,7 +23,7 @@ struct VertexInput {
   @location(1) normale: vec3<f32>,
   @location(2) texture: vec2<f32>,
   // @location(3) tangent: vec4<f32>,
-  @location(3) faceColor: f32,
+  // @location(3) faceColor: f32,
 }
 
 struct VertexOutput {
@@ -34,7 +34,7 @@ struct VertexOutput {
   @location(3) camera_position: vec3f,
   @location(4) shadow_pos: vec3<f32>,
   @location(5) picking_color: vec4<f32>,
-  @location(6) face_color: f32,
+  // @location(6) face_color: f32,
 }
 
 @vertex
@@ -56,7 +56,7 @@ fn v_main(
   out.shadow_pos = vec3<f32>(posFromLight.xy * vec2<f32>(0.5, -0.5) + vec2<f32>(0.5, 0.5), posFromLight.z);
 
   out.picking_color = transform.picking_color;
-  out.face_color = in.faceColor;
+  // out.face_color = in.faceColor;
 
   return out;
 }

@@ -31,7 +31,7 @@ struct FragInput {
   @location(3) camera_position: vec3f,
   @location(4) shadow_pos: vec3<f32>,
   @location(5) picking_color: vec4<f32>,
-  @location(6) face_color: f32,
+  // @location(6) face_color: f32,
 };
 
 @fragment
