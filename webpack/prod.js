@@ -65,9 +65,33 @@ module.exports = {
       ],
     }),
     new SwCachePlugin({
-      cacheName: 'v1',
+      cacheName: `v${config.version}`,
       ignore: [/.*\.map$/],
       include: ['/'],
+      additionalCode: `
+    // App version: ${config.version}
+    const APP_VERSION = '${config.version}';
+    
+    // Force update on new versions
+    self.addEventListener('install', event => self.skipWaiting());
+    self.addEventListener('activate', event => {
+      // Clean up old caches
+      event.waitUntil(
+        caches.keys().then(cacheNames => {
+          return Promise.all(
+            cacheNames.map(cacheName => {
+              if (cacheName !== 'v${config.version}') {
+                return caches.delete(cacheName);
+              }
+            })
+          );
+        })
+      );
+      
+      // Take control of uncontrolled clients
+      return self.clients.claim();
+    });
+  `,
     }),
     ...compression,
   ],
