@@ -22,6 +22,9 @@ async function release() {
     pkg.version = newVersion;
     fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2));
 
+    execSync('git fetch');
+    execSync('git pull origin master');
+
     // 2. Generate changelog
     execSync('npm run changelog');
 
