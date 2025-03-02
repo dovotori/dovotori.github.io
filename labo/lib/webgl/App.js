@@ -56,7 +56,7 @@ class App {
       oups.innerHTML = `
       <b>ご迷惑おかけして申し訳ありません。</b>
       <br/>Sorry. A support problem occured.
-      <br/>Your browser does not support ${config.useWebgpu ? 'WebGPU' : 'WebGL'} or one of the required features.
+      <br/>Your browser does not support ${config.useWebGpu ? 'WebGPU' : 'WebGL'} or one of the required features.
       `;
       oups.style.position = 'absolute';
       oups.style.top = '50%';

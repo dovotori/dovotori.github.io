@@ -1,5 +1,5 @@
-import Program from '../gl/Program';
 import { later } from '../../../utils';
+import Program from '../gl/Program';
 
 export default class {
   constructor() {
@@ -29,7 +29,7 @@ export default class {
       this.programs[item.name] = item.prog;
     }
 
-    console.log('programs', performance.now() - startTime);
+    console.log('programs creation time', performance.now() - startTime);
     this.updateResolution(resolution.width, resolution.height);
   }
 
