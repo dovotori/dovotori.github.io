@@ -564,6 +564,28 @@ const rawPosts = [
       hasJs: true,
     },
   },
+  {
+    id: 25,
+    slug: 'repulsor',
+    title: {
+      [Locales.FR]: 'Repulsor',
+      [Locales.EN]: 'Repulsor',
+      [Locales.JP]: 'Repulsor',
+    },
+    category: CAT_CODE,
+    tags: [Tags.TAG_SVG],
+    description: {
+      [Locales.FR]: ['Animation depuis un svg.'],
+      [Locales.EN]: ['Animation from svg.'],
+      [Locales.JP]: ['svgからのアニメーション。'],
+    },
+    date: 2025,
+    labo: {
+      hasJs: true,
+      hasHtml: true,
+      noBackground: true,
+    },
+  },
 ];
 
 export default (locale) => {
