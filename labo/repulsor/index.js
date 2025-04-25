@@ -51,7 +51,6 @@ export default async () => {
     for (let i = 0; i < points.length; i += 2) {
       fixPoints[i] = points[i] * scale;
       fixPoints[i + 1] = points[i + 1] * scale;
-      console.log(points[i], points[i + 1]);
     }
 
     const data = setupNodes(fixPoints);
