@@ -8,6 +8,7 @@ ParsingSvg.prototype.setup = function (svg) {
 
   this.isLoaded = false;
   this.points = [];
+  let cptPoints = 0;
 
   for (let i = 0; i < paths.length; i++) {
     let string = paths[i].getAttribute('d');
@@ -87,13 +88,13 @@ ParsingSvg.prototype.setup = function (svg) {
           break;
       }
 
-      let cptPoints = 0;
-      for (let k = 0; k < partiesPropres[j].length; k++) {
+      const coors = partiesPropres[j];
+      for (let k = 0; k < coors.length; k++) {
         if (k % multipleDe == multipleDe - 1 || k % multipleDe == multipleDe - 2) {
           if (!isRelatif || cptPoints < 2) {
-            this.points[cptPoints] = partiesPropres[j][k];
+            this.points[cptPoints] = coors[k];
           } else {
-            this.points[cptPoints] = this.points[cptPoints - 2] + partiesPropres[j][k];
+            this.points[cptPoints] = this.points[cptPoints - 2] + coors[k];
           }
           cptPoints++;
         }

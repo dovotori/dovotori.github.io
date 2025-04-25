@@ -37,34 +37,28 @@ export default async () => {
     const svgDom = embedElem.getSVGDocument();
     const svg = svgDom.getElementsByTagName('svg')[0];
 
-    svgSize = {
-      width: parseFloat(svg.getAttribute('width')),
-      height: parseFloat(svg.getAttribute('height')),
-    };
-
-    const scale = 1; // canvas.height / svgSize.height;
     proportionnelleDistance = mapFromRange(Math.min(canvas.width, canvas.height), 0, 10000, 0, 800);
 
     const points = setupPoints(svg);
 
-    const svgHalfWidth = svgSize.width / 2;
-    const svgHalfHeight = svgSize.height / 2;
+    const svgSize = {
+      width: parseFloat(svg.getAttribute('width')),
+      height: parseFloat(svg.getAttribute('height')),
+    };
+
+    const scale = canvas.width / svgSize.width;
+
     for (let i = 0; i < points.length; i += 2) {
-      let x = mapFromRange(points[i], -svgHalfWidth, svgHalfWidth, 0, canvas.width);
-      let y = mapFromRange(points[i + 1], -svgHalfHeight, svgHalfHeight, 0, canvas.height);
-
-      x -= HALF_POINT_SIZE;
-      y -= HALF_POINT_SIZE;
-
-      fixPoints[i] = x * scale;
-      fixPoints[i + 1] = y * scale;
+      fixPoints[i] = points[i] * scale;
+      fixPoints[i + 1] = points[i + 1] * scale;
+      console.log(points[i], points[i + 1]);
     }
 
     const data = setupNodes(fixPoints);
     nodes = data.nodes;
     springs = data.springs;
 
-    window.addEventListener('mousemove', mouseEcran, false);
+    window.addEventListener('mousemove', onMouseMove, false);
     windowRequestHome = window.requestAnimationFrame(drawHome);
   };
   embedElem.src = getEnvPath('/svg/cubeClean.svg');
@@ -91,10 +85,14 @@ function setupNodes(points) {
   return { nodes, springs };
 }
 
-function mouseEcran(event) {
+function onMouseMove(event) {
   event.preventDefault();
-  const x = event.clientX;
-  const y = window.pageYOffset + event.clientY;
+  const box = canvas.getBoundingClientRect();
+  let x = event.clientX - box.left;
+  let y = event.clientY - box.top;
+  x = mapFromRange(x, 0, canvas.offsetWidth, 0, canvas.width);
+  y = mapFromRange(y, 0, canvas.offsetHeight, 0, canvas.height);
+
   attractor.setPosition(x, y, 0);
 }
 
@@ -103,9 +101,7 @@ function drawHome() {
   const milli = now - lastFrame;
 
   if (milli > FPS) {
-    //context.clearRect ( 0 , 0 , canvas.width , canvas.height );
-    context.fillStyle = 'rgba(0, 0, 0, 0.6)';
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.clearRect(0, 0, canvas.width, canvas.height);
 
     drawForme();
     lastFrame = now;
@@ -142,8 +138,8 @@ function drawPoints() {
     context.fillRect(x, y, 1, 1);
 
     // moving
-    const movX = nodes[cptNodes].position.x;
-    const movY = nodes[cptNodes].position.y;
+    const movX = nodes[cptNodes].position.x - HALF_POINT_SIZE;
+    const movY = nodes[cptNodes].position.y - HALF_POINT_SIZE;
     context.fillRect(movX, movY, POINT_SIZE, POINT_SIZE);
 
     // line between fix and moving
@@ -161,6 +157,7 @@ function drawPoints() {
 function drawLiaisonProche(i) {
   const limiteDistance =
     proportionnelleDistance + Math.cos(cptHome) * (proportionnelleDistance / 8);
+
   cptHome += 0.0001;
 
   for (let j = 0; j < nodes.length; j++) {
