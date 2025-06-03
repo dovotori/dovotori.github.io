@@ -5,27 +5,19 @@ import Mat4 from '../lib/webgl/maths/Mat4';
 import Vec3 from '../lib/webgl/maths/Vec3';
 import Vec4 from '../lib/webgl/maths/Vec4';
 import { intersectRayWithPlane } from '../lib/webgl/maths/intersection';
-import {
-  DebugTexture,
-  GltfBindGroups,
-  GltfPipeline,
-  Picking,
-  Program,
-  Shadow,
-} from '../lib/webgl/webgpu';
-import { WebGPUComputer } from '../lib/webgpucompute';
+import { DebugTexture, GltfBindGroups, GltfPipeline, Picking, Shadow } from '../lib/webgl/webgpu';
+import WebgpuScene from '../lib/webgl/webgpu/WebgpuScene';
 // import { DebugPipeline } from '../lib/webgl/webgpu/DebugPipeline';
 import { GltfDb } from './GltfDb';
 
 // to see the color change f_picking with alpha to 1
 const DEBUG_PICKING = false;
 
-class Scene {
+export default class Scene extends WebgpuScene {
   constructor(context, config) {
-    this.context = context;
-    this.config = config;
+    super(context, config);
     this.time = 0;
-    const { width, height } = this.config.canvas;
+    const { width, height } = config.canvas;
     this.camera = new Camera(config.camera);
     this.camera.perspective(width, height);
 
@@ -44,8 +36,6 @@ class Scene {
 
     // this.debugCube = new DebugPipeline(context);
   }
-
-  setup() {}
 
   // should create one for each pipeline
   setupCamera(layout, withLight) {
@@ -143,14 +133,8 @@ class Scene {
   }
 
   async setupAssets(assets) {
+    const { programs } = await super.setupAssets(assets);
     const device = this.context.getDevice();
-
-    const programs = Object.keys(assets.shaders).reduce((acc, cur) => {
-      const shader = new Program();
-      shader.setup(device, cur, assets.shaders[cur]);
-      acc[cur] = shader;
-      return acc;
-    }, {});
 
     const firstGltfName = Object.keys(assets.gltfs)[0];
     const gltf = assets.gltfs[firstGltfName];
@@ -446,8 +430,6 @@ class Scene {
     }
   };
 }
-
-export default Scene;
 
 const sum10wgsl = `
 @group(0) @binding(0) var<storage, read> data: array<f32>;
