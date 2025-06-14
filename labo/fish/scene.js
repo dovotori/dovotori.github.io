@@ -1,4 +1,5 @@
 import WebgpuScene from '../lib/webgl/webgpu/WebgpuScene.js';
+import { Compute } from './compute.js';
 
 export default class Scene extends WebgpuScene {
   constructor(context, config) {
@@ -8,18 +9,24 @@ export default class Scene extends WebgpuScene {
   async setupAssets(assets) {
     const { programs } = await super.setupAssets(assets);
 
-    const nodes = [0, 0, 0, 0];
-    const data = new Float32Array(nodes);
+    // anti clock wise important (- -> bottom)
+    // point haut -> point bas -> decalage vers la droite -> point haut -> point bas...
+    const vertices = new Float32Array([0, 0.5, 0, 0, 0.5, 0.5, 0.5, 0]);
+
+    this.pointCount = vertices.length / 2;
 
     const device = this.context.getDevice();
-    this.vertex = device.createBuffer({
+
+    this.vertexBuffer = device.createBuffer({
       label: 'vertex buffer',
-      size: data.byteLength,
+      size: vertices.byteLength,
       usage: window.GPUBufferUsage.VERTEX | window.GPUBufferUsage.COPY_DST,
     });
 
+    device.queue.writeBuffer(this.vertexBuffer, /*bufferOffset=*/ 0, vertices);
+
     const vertexBufferLayout = {
-      arrayStride: 8,
+      arrayStride: 8, // (Float32Array.BYTES_PER_ELEMENT = 4) * 2 XY
       attributes: [
         {
           format: 'float32x2',
@@ -49,7 +56,20 @@ export default class Scene extends WebgpuScene {
           },
         ],
       },
+      primitive: {
+        topology: 'triangle-strip',
+        cullMode: 'back',
+      },
     });
+
+    this.compute = new Compute();
+    await this.compute.init(100);
+  }
+
+  update() {
+    super.update();
+
+    this.compute.run();
   }
 
   render() {
@@ -73,9 +93,14 @@ export default class Scene extends WebgpuScene {
     });
     pass.setPipeline(this.pipeline);
 
+    pass.setVertexBuffer(0, this.vertexBuffer);
+    pass.draw(this.pointCount);
+
     pass.end();
     device.queue.submit([encoder.finish()]);
   }
+
+  resize(size) {}
 
   destroy() {
     super.destroy();
