@@ -1,6 +1,6 @@
 export default {
   slug: 'particule',
-  shaders: ['/wgsl/fragment/f_fish.js', '/wgsl/vertex/v_fish.js'],
+  shaders: ['/wgsl/fragment/f_particule.js', '/wgsl/vertex/v_particule.js'],
   canvas: {
     width: 1024,
     height: 1024,
