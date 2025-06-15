@@ -5,7 +5,7 @@ const NUM_WORKGROUPS = 1000;
 const NUM_PARTICLES = WORKGROUP_SIZE * NUM_WORKGROUPS;
 const PARTICLE_SIZE = 2;
 
-const shader = `struct Mass {
+const computeShader = `struct Mass {
     position1: vec4f,
     position2: vec4f,
     position3: vec4f,
@@ -27,9 +27,11 @@ fn main(@builtin(global_invocation_id) global_id: vec3u) {
     var massVec = mass.position1.xyz - position;
     var massDist2 = max(0.01, dot(massVec, massVec));
     var acceleration = mass.factor1 * normalize(massVec) / massDist2;
+
     massVec = mass.position2.xyz - position;
     massDist2 = max(0.01, dot(massVec, massVec));
     acceleration += mass.factor2 * normalize(massVec) / massDist2;
+
     massVec = mass.position3.xyz - position;
     massDist2 = max(0.01, dot(massVec, massVec));
     acceleration += mass.factor3 * normalize(massVec) / massDist2;
@@ -54,8 +56,10 @@ export default class Scene extends WebgpuScene {
 
     const device = this.context.getDevice();
 
+    const positionArrayStride = Float32Array.BYTES_PER_ELEMENT * 4;
     this.positionBuffer = device.createBuffer({
-      size: 16 * NUM_PARTICLES,
+      size: positionArrayStride * NUM_PARTICLES, // 16 * NUM_PARTICLES
+      label: 'particules position buffer',
       usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST | GPUBufferUsage.STORAGE,
     });
     const positionBufferData = new Float32Array(NUM_PARTICLES * 4);
@@ -67,8 +71,10 @@ export default class Scene extends WebgpuScene {
     }
     device.queue.writeBuffer(this.positionBuffer, 0, positionBufferData);
 
+    const velocityArrayStride = Float32Array.BYTES_PER_ELEMENT * 4;
     this.velocityBuffer = device.createBuffer({
-      size: 16 * NUM_PARTICLES,
+      size: velocityArrayStride * NUM_PARTICLES, // 16 * NUM_PARTICLES
+      label: 'particules velocity buffer',
       usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST | GPUBufferUsage.STORAGE,
     });
     const velocityBufferData = new Float32Array(NUM_PARTICLES * 4);
@@ -81,18 +87,20 @@ export default class Scene extends WebgpuScene {
     device.queue.writeBuffer(this.velocityBuffer, 0, velocityBufferData);
 
     const computeShaderModule = device.createShaderModule({
-      code: shader,
+      code: computeShader,
       label: 'Compute Shader',
     });
 
     this.computePipeline = device.createComputePipeline({
       layout: 'auto',
+      label: 'Compute Pipeline',
       compute: {
         module: computeShaderModule,
         entryPoint: 'main',
       },
     });
 
+    // Attractors points + factors
     const computeUniformData = new Float32Array([
       Math.random() * 2.0 - 1.0,
       Math.random() * 2.0 - 1.0,
@@ -114,6 +122,7 @@ export default class Scene extends WebgpuScene {
 
     const computeUniformBuffer = device.createBuffer({
       size: computeUniformData.byteLength,
+      label: 'attractors compute uniform buffer',
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
 
@@ -121,6 +130,7 @@ export default class Scene extends WebgpuScene {
 
     this.computeBindGroup = device.createBindGroup({
       layout: this.computePipeline.getBindGroupLayout(0),
+      label: 'Compute Bind Group',
       entries: [
         {
           binding: 0,
@@ -143,23 +153,28 @@ export default class Scene extends WebgpuScene {
       ],
     });
 
-    this.computePassDescription = {};
+    this.computePassDescription = {
+      label: 'Compute Pass description',
+    };
 
     ////////////// RENDER PIPELINE //////////////
-
     this.vertexBuffer = device.createBuffer({
-      size: 32,
+      size: Float32Array.BYTES_PER_ELEMENT * 8,
+      label: 'screen quad vertex buffer',
       usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
     });
 
     device.queue.writeBuffer(
       this.vertexBuffer,
       0,
+      // 4 2d points to draw a screen squad with triangle strip
       new Float32Array([-1.0, -1.0, 1.0, -1.0, -1.0, 1.0, 1.0, 1.0]),
     );
 
+    const colorArrayStride = Uint8Array.BYTES_PER_ELEMENT * 4; // 4 bytes per color component
     this.colorBuffer = device.createBuffer({
-      size: 4 * NUM_PARTICLES,
+      size: colorArrayStride * NUM_PARTICLES,
+      label: 'particules color buffer',
       usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
     });
 
@@ -179,6 +194,7 @@ export default class Scene extends WebgpuScene {
         entryPoint: 'v_main',
         buffers: [
           {
+            // vertexPosition
             arrayStride: 8,
             attributes: [
               {
@@ -189,7 +205,8 @@ export default class Scene extends WebgpuScene {
             ],
           },
           {
-            arrayStride: 4,
+            // particules color
+            arrayStride: colorArrayStride,
             stepMode: 'instance',
             attributes: [
               {
@@ -200,7 +217,8 @@ export default class Scene extends WebgpuScene {
             ],
           },
           {
-            arrayStride: 16,
+            // particules position
+            arrayStride: positionArrayStride,
             stepMode: 'instance',
             attributes: [
               {
@@ -241,16 +259,11 @@ export default class Scene extends WebgpuScene {
     });
 
     // Rendering uniform buffer
-    const vertexUniformBuffer = device.createBuffer({
-      size: 16,
+    this.vertexUniformBuffer = device.createBuffer({
+      size: 16, // Float32Array.BYTES_PER_ELEMENT * 3 but need to align to 16 bytes
+      label: 'vertex uniform buffer',
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
-
-    device.queue.writeBuffer(
-      vertexUniformBuffer,
-      0,
-      new Float32Array([this.canvasSize.width, this.canvasSize.height, PARTICLE_SIZE]),
-    );
 
     this.vertexUniformBindGroup = device.createBindGroup({
       layout: this.renderPipeline.getBindGroupLayout(0),
@@ -258,14 +271,30 @@ export default class Scene extends WebgpuScene {
         {
           binding: 0,
           resource: {
-            buffer: vertexUniformBuffer,
+            buffer: this.vertexUniformBuffer,
           },
         },
       ],
     });
 
-    // Render pass description
-    let msaaTexture = device.createTexture({
+    this.resize(this.canvasSize);
+  }
+
+  resize(size) {
+    this.canvasSize = size;
+    const device = this.context.getDevice();
+
+    device.queue.writeBuffer(
+      this.vertexUniformBuffer,
+      0,
+      new Float32Array([this.canvasSize.width, this.canvasSize.height, PARTICLE_SIZE]),
+    );
+
+    if (this.msaaTexture) {
+      this.msaaTexture.destroy();
+    }
+
+    this.msaaTexture = device.createTexture({
       label: 'msaa texture',
       size: [this.canvasSize.width, this.canvasSize.height],
       format: this.context.getCanvasFormat(),
@@ -276,7 +305,7 @@ export default class Scene extends WebgpuScene {
     this.renderPassDescription = {
       colorAttachments: [
         {
-          view: msaaTexture.createView(),
+          view: this.msaaTexture.createView(),
           resolveTarget: this.context.getCurrentTexture().createView(),
           loadOp: 'clear',
           storeOp: 'store',
@@ -322,10 +351,6 @@ export default class Scene extends WebgpuScene {
     renderPass.end();
 
     device.queue.submit([commandEncoder.finish()]);
-  }
-
-  resize(size) {
-    this.canvasSize = size;
   }
 
   destroy() {

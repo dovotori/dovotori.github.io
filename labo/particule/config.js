@@ -6,4 +6,7 @@ export default {
     height: 1024,
   },
   useWebGpu: true,
+  controls: {
+    fullscreen: { buttonId: 'fullscreen-toggle-btn' },
+  },
 };

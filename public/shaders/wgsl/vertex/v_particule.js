@@ -3,7 +3,7 @@ export default `struct VertexUniforms {
     particleSize: f32
 };
 
-struct VSOut {
+struct VertexOutput {
     @builtin(position) clipPosition: vec4f,
     @location(0) color: vec4f
 };
@@ -15,10 +15,10 @@ fn v_main(
     @location(0) vertexPosition: vec2f,
     @location(1) color: vec4f,
     @location(2) position: vec3f
-) -> VSOut {
-    var vsOut: VSOut;
-    vsOut.clipPosition = vec4f(vertexPosition * vertexUniforms.particleSize / vertexUniforms.screenDimensions + position.xy, position.z, 1.0);
-    vsOut.color = color;
+) -> VertexOutput {
+    var out: VertexOutput;
+    out.clipPosition = vec4f(vertexPosition * vertexUniforms.particleSize / vertexUniforms.screenDimensions + position.xy, position.z, 1.0);
+    out.color = color;
 
-    return vsOut;
+    return out;
 }`;
