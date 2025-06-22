@@ -1,14 +1,13 @@
 import Camera from '../lib/webgl/cameras/Camera';
 import Mat4 from '../lib/webgl/maths/Mat4.js';
+import PipelineTextures from '../lib/webgl/webgpu/PipelineTextures.js';
 import WebgpuScene from '../lib/webgl/webgpu/WebgpuScene.js';
 import * as box from './box';
 
-// const WORKGROUP_SIZE = 64;
-// const NUM_WORKGROUPS = 1000;
-// const NUM_PARTICLES = WORKGROUP_SIZE * NUM_WORKGROUPS;
-// const PARTICLE_SIZE = 2;
-const NUM = 150000;
-const MAX = 300000;
+const WORKGROUP_SIZE = 256; // 1 - 256 // depend on computer limitations
+const NUM_WORKGROUPS = 10;
+const NUM_PARTICLES = WORKGROUP_SIZE * NUM_WORKGROUPS;
+const PARTICLE_SIZE = 40;
 
 const computeShader = `@group(0) @binding(0) var<storage, read> input: array<f32, 7>;
 @group(0) @binding(1) var<storage, read_write> velocity: array<vec4<f32>>;
@@ -16,15 +15,15 @@ const computeShader = `@group(0) @binding(0) var<storage, read> input: array<f32
 @group(0) @binding(3) var<uniform> projection : mat4x4<f32>;
 @group(0) @binding(4) var<storage, read_write> mvp : array<mat4x4<f32>>;
 
-const size = u32(128);
-@compute @workgroup_size(size)
+@compute @workgroup_size(${WORKGROUP_SIZE})
 fn main(
     @builtin(global_invocation_id) GlobalInvocationID : vec3<u32>
 ) {
     var index = GlobalInvocationID.x;
     if(index >= u32(input[0])){
-        return;
+      return;
     }
+
     var xMin = input[1];
     var xMax = input[2];
     var yMin = input[3];
@@ -33,6 +32,7 @@ fn main(
     var zMax = input[6];
     var pos = modelView[index][3];
     var vel = velocity[index];
+    
     // change x
     pos.x += vel.x;
     if(pos.x < xMin){
@@ -42,15 +42,17 @@ fn main(
         pos.x = xMax;
         vel.x = -vel.x;
     }
+    
     // change y
     pos.y += vel.y;
     if(pos.y < yMin){
         pos.y = yMin;
         vel.y = -vel.y;
-    }else if(pos.y > yMax){
+    } else if(pos.y > yMax){
         pos.y = yMax;
         vel.y = -vel.y;
     }
+    
     // change z
     pos.z += vel.z;
     if(pos.z < zMin){
@@ -60,10 +62,13 @@ fn main(
         pos.z = zMax;
         vel.z = -vel.z;
     }
+    
     // update velocity
     velocity[index] = vel;
+    
     // update position in modelView matrix
     modelView[index][3] = pos;
+    
     // update mvp
     mvp[index] = projection * modelView[index];
 }`;
@@ -77,12 +82,18 @@ export default class Scene extends WebgpuScene {
 
     this.camera = new Camera(config.camera);
     this.camera.perspective(width, height);
+
+    this.model = new Mat4();
+
+    this.textures = new PipelineTextures();
   }
 
   async setupAssets(assets) {
     const { programs } = await super.setupAssets(assets);
 
     const device = this.context.getDevice();
+
+    this.textures.setup(device, this.context.getCanvasFormat(), this.canvasSize, 'depth24plus');
 
     const computeShaderModule = device.createShaderModule({
       code: computeShader,
@@ -116,52 +127,54 @@ export default class Scene extends WebgpuScene {
 
     const modelBuffer = device.createBuffer({
       label: 'GPUBuffer store MAX model matrix',
-      size: 4 * 4 * 4 * MAX, // mat4x4 x float32 x MAX
+      size: Float32Array.BYTES_PER_ELEMENT * 4 * 4 * NUM_PARTICLES, // mat4x4 x float32 x MAX
       usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
-    const projectionBuffer = device.createBuffer({
+    this.projectionBuffer = device.createBuffer({
       label: 'GPUBuffer store camera projection',
-      size: 4 * 4 * 4, // mat4x4 x float32
+      size: Float32Array.BYTES_PER_ELEMENT * 4 * 4, // mat4x4 x float32
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
     const mvpBuffer = device.createBuffer({
       label: 'GPUBuffer store MAX MVP',
-      size: 4 * 4 * 4 * MAX, // mat4x4 x float32 x MAX
+      size: Float32Array.BYTES_PER_ELEMENT * 4 * 4 * NUM_PARTICLES, // mat4x4 x float32 x MAX
       usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
     const velocityBuffer = device.createBuffer({
       label: 'GPUBuffer store MAX velocity',
-      size: 4 * 4 * MAX, // 4 position x float32 x MAX
+      size: Float32Array.BYTES_PER_ELEMENT * 4 * NUM_PARTICLES, // 4 position x float32 x MAX
       usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
     const inputBuffer = device.createBuffer({
       label: 'GPUBuffer store input vars',
-      size: 7 * 4, // float32 * 7
+      size: Float32Array.BYTES_PER_ELEMENT * 7, // float32 * 7
       usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
 
     // setup camera once
     device.queue.writeBuffer(
-      projectionBuffer,
+      this.projectionBuffer,
       0,
       new Float32Array(this.camera.getViewProjection().get()),
     );
+
+    this.model.identity();
 
     /////////////////////////////////////////////
     //////////////// DATA ///////////////////////
     /////////////////////////////////////////////
 
-    const inputArray = new Float32Array([NUM, -500, 500, -250, 250, -500, 500]); // count, xmin/max, ymin/max, zmin/max
-    const modelArray = new Float32Array(MAX * 4 * 4);
-    const velocityArray = new Float32Array(MAX * 4);
-    for (let i = 0; i < MAX; i++) {
+    const inputArray = new Float32Array([NUM_PARTICLES, -500, 500, -250, 250, -500, 500]); // count, xmin/max, ymin/max, zmin/max
+    const modelArray = new Float32Array(NUM_PARTICLES * 4 * 4);
+    const velocityArray = new Float32Array(NUM_PARTICLES * 4);
+    for (let i = 0; i < NUM_PARTICLES; i++) {
       const x = Math.random() * 1000 - 500;
       const y = Math.random() * 500 - 250;
       const z = Math.random() * 1000 - 500;
 
       const modelMatrix = new Mat4();
       modelMatrix.identity();
-      modelMatrix.scale(2, 2, 2); // scale to make the box visible
+      modelMatrix.scale(PARTICLE_SIZE);
       modelMatrix.translate(x, y, z);
       modelArray.set(modelMatrix.get(), i * 4 * 4);
 
@@ -232,7 +245,7 @@ export default class Scene extends WebgpuScene {
       depthStencil: {
         depthWriteEnabled: true,
         depthCompare: 'less',
-        format: 'depth24plus',
+        format: this.textures.getDepthFormat(),
       },
     });
 
@@ -275,7 +288,7 @@ export default class Scene extends WebgpuScene {
         {
           binding: 3,
           resource: {
-            buffer: projectionBuffer,
+            buffer: this.projectionBuffer,
           },
         },
         {
@@ -287,7 +300,7 @@ export default class Scene extends WebgpuScene {
       ],
     });
 
-    this.computePassDescription = {
+    this.computePassDescriptor = {
       label: 'Compute Pass description',
     };
 
@@ -298,48 +311,44 @@ export default class Scene extends WebgpuScene {
     this.canvasSize = size;
     const device = this.context.getDevice();
 
-    const depthTexture = device.createTexture({
-      label: 'Depth Texture',
-      size: [this.canvasSize.width, this.canvasSize.height],
-      format: 'depth24plus',
-      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
-      sampleCount: 4,
-    });
-    this.depthView = depthTexture.createView();
-
-    if (this.msaaTexture) {
-      this.msaaTexture.destroy();
-    }
-
-    this.msaaTexture = device.createTexture({
-      label: 'msaa texture',
-      size: [this.canvasSize.width, this.canvasSize.height],
-      format: this.context.getCanvasFormat(),
-      usage: GPUTextureUsage.RENDER_ATTACHMENT,
-      sampleCount: 4,
-    });
-
-    this.renderPassDescription = {
+    this.renderPassDescriptor = {
       colorAttachments: [
         {
-          view: this.msaaTexture.createView(),
+          view: null,
           resolveTarget: this.context.getCurrentTexture().createView(),
-          clearValue: { r: 0, g: 0, b: 0, a: 1.0 },
+          clearValue: { r: 0, g: 0, b: 0, a: 0 },
           loadOp: 'clear',
           storeOp: 'store',
         },
       ],
       depthStencilAttachment: {
-        view: this.depthView,
+        view: null,
         depthClearValue: 1.0,
         depthLoadOp: 'clear',
         depthStoreOp: 'store',
       },
     };
+
+    this.textures.resize(device, this.context.getCanvasFormat(), size);
   }
 
   update() {
     super.update();
+
+    this.model.identity();
+    this.model.rotate(this.time, 0, 1, 0);
+    this.model.multiply(this.camera.getViewProjection());
+
+    const device = this.context.getDevice();
+    device.queue.writeBuffer(this.projectionBuffer, 0, new Float32Array(this.model.get()));
+
+    // update render pass descriptor texture views
+    const currentView = this.context.getCurrentTexture().createView();
+    const renderTargetView = this.textures.getRenderTargetView();
+    const depthTextureView = this.textures.getDepthTextureView();
+    this.renderPassDescriptor.colorAttachments[0].resolveTarget = currentView;
+    this.renderPassDescriptor.colorAttachments[0].view = renderTargetView;
+    this.renderPassDescriptor.depthStencilAttachment.view = depthTextureView;
   }
 
   render() {
@@ -349,22 +358,18 @@ export default class Scene extends WebgpuScene {
 
     const commandEncoder = device.createCommandEncoder();
 
-    const computePass = commandEncoder.beginComputePass(this.computePassDescription);
+    const computePass = commandEncoder.beginComputePass(this.computePassDescriptor);
     computePass.setPipeline(this.computePipeline);
     computePass.setBindGroup(0, this.computeGroup);
-    computePass.dispatchWorkgroups(Math.ceil(NUM / 128));
+    computePass.dispatchWorkgroups(NUM_WORKGROUPS); // Math.ceil(NUM_PARTICLES / WORKGROUP_SIZE)
     computePass.end();
 
-    this.renderPassDescription.colorAttachments[0].resolveTarget = this.context
-      .getCurrentTexture()
-      .createView();
-
-    const renderPass = commandEncoder.beginRenderPass(this.renderPassDescription);
+    const renderPass = commandEncoder.beginRenderPass(this.renderPassDescriptor);
     renderPass.setPipeline(this.renderPipeline);
     renderPass.setVertexBuffer(0, this.vertexBuffer);
     renderPass.setIndexBuffer(this.indexBuffer, 'uint16');
     renderPass.setBindGroup(0, this.renderGroup);
-    renderPass.drawIndexed(box.indexCount, NUM);
+    renderPass.drawIndexed(box.indexCount, NUM_PARTICLES);
 
     renderPass.end();
 

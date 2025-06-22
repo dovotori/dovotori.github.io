@@ -4,6 +4,7 @@ export default class WebgpuScene {
   constructor(context, config) {
     this.context = context;
     this.config = config;
+    this.time = 0;
   }
 
   async setupAssets(assets) {
@@ -30,6 +31,7 @@ export default class WebgpuScene {
 
   update() {
     // Handle update logic if necessary
+    this.time++;
   }
 
   render() {

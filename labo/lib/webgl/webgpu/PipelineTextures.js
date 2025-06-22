@@ -5,17 +5,19 @@ class PipelineTextures {
     this.depthTexture = null;
     this.depthTextureView = null;
     this.sampleCount = sampleCount; // ?? Pipeline multisample, should get from pipeline
+    this.depthTextureFormat = 'depth32float'; // Default depth format
   }
 
   setup(device, format, size, depthFormat = 'depth32float') {
+    this.depthTextureFormat = depthFormat; // Set the depth format
     this.setupRender(device, format, size);
     this.setupDepth(device, depthFormat, size);
   }
 
-  resize = (device, format, size, depthFormat = 'depth32float') => {
+  resize = (device, format, size) => {
     this.renderTarget.destroy();
     this.depthTexture.destroy();
-    this.setup(device, format, size, depthFormat);
+    this.setup(device, format, size, this.depthTextureFormat);
   };
 
   setupRender = (device, format, { width, height }) => {
@@ -45,6 +47,8 @@ class PipelineTextures {
 
   getRenderTargetView = () => this.renderTargetView;
   getDepthTextureView = () => this.depthTextureView;
+
+  getDepthFormat = () => this.depthTextureFormat;
 }
 
 export default PipelineTextures;

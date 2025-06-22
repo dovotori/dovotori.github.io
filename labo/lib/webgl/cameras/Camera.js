@@ -61,7 +61,11 @@ export default class extends Objectif {
   }
 
   getViewProjection() {
-    return this.getView().multiply(this.getProjection());
+    const vp = new Mat4();
+    vp.identity();
+    vp.multiply(this.getView());
+    vp.multiply(this.getProjection());
+    return vp;
   }
 
   getIdentity() {
