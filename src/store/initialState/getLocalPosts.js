@@ -628,6 +628,27 @@ const rawPosts = [
       noBackground: true,
     },
   },
+  {
+    id: 28,
+    slug: 'particule3d',
+    title: {
+      [Locales.FR]: 'Particule 3d',
+      [Locales.EN]: '3d Particule',
+      [Locales.JP]: '3d粒子',
+    },
+    category: CAT_CODE,
+    tags: [Tags.TAG_JS],
+    description: {
+      [Locales.FR]: [''],
+      [Locales.EN]: [''],
+      [Locales.JP]: [''],
+    },
+    date: 2025,
+    labo: {
+      hasJs: true,
+      noBackground: true,
+    },
+  },
 ];
 
 export default (locale) => {

@@ -60,6 +60,10 @@ export default class extends Objectif {
     return this.projection;
   }
 
+  getViewProjection() {
+    return this.getView().multiply(this.getProjection());
+  }
+
   getIdentity() {
     return this.matIdentity;
   }

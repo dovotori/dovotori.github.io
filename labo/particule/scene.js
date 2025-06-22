@@ -157,9 +157,13 @@ export default class Scene extends WebgpuScene {
       label: 'Compute Pass description',
     };
 
+    /////////////////////////////////////////////
     ////////////// RENDER PIPELINE //////////////
+    /////////////////////////////////////////////
+
+    this.screenPointCount = 4; // 4 points to draw a screen quad
     this.vertexBuffer = device.createBuffer({
-      size: Float32Array.BYTES_PER_ELEMENT * 8,
+      size: Float32Array.BYTES_PER_ELEMENT * this.screenPointCount * 2, // 2 floats per point (x, y)
       label: 'screen quad vertex buffer',
       usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
     });
@@ -187,7 +191,7 @@ export default class Scene extends WebgpuScene {
     }
     device.queue.writeBuffer(this.colorBuffer, 0, colorBufferData);
 
-    this.renderPipeline = device.createRenderPipeline({
+    this.renderPipeline = await device.createRenderPipelineAsync({
       layout: 'auto',
       vertex: {
         module: programs.v_particule.get(),
@@ -347,7 +351,7 @@ export default class Scene extends WebgpuScene {
     renderPass.setVertexBuffer(2, this.positionBuffer);
     renderPass.setBindGroup(0, this.vertexUniformBindGroup);
 
-    renderPass.draw(4, NUM_PARTICLES);
+    renderPass.draw(this.screenPointCount, NUM_PARTICLES);
     renderPass.end();
 
     device.queue.submit([commandEncoder.finish()]);
