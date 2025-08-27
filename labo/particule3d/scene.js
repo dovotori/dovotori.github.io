@@ -1,5 +1,7 @@
 import Camera from '../lib/webgl/cameras/Camera';
 import Mat4 from '../lib/webgl/maths/Mat4.js';
+import { generateFace } from '../lib/webgl/utils/generateFace.js';
+import { CubeTexture } from '../lib/webgl/webgpu/CubeTexture.js';
 import PipelineTextures from '../lib/webgl/webgpu/PipelineTextures.js';
 import WebgpuScene from '../lib/webgl/webgpu/WebgpuScene.js';
 import * as box from './box';
@@ -91,6 +93,8 @@ export default class Scene extends WebgpuScene {
   async setupAssets(assets) {
     const { programs } = await super.setupAssets(assets);
 
+    console.log(assets.gltfs.sphere);
+
     const device = this.context.getDevice();
 
     this.textures.setup(device, this.context.getCanvasFormat(), this.canvasSize, 'depth24plus');
@@ -159,6 +163,26 @@ export default class Scene extends WebgpuScene {
     );
 
     this.model.identity();
+
+    /////////////////////////////////////////////
+    //////////// CUBE TEXTURES //////////////////
+    /////////////////////////////////////////////
+
+    const faceSize = 128;
+    const faceCanvases = [
+      { faceColor: '#F00', textColor: '#0FF', text: '+X' },
+      { faceColor: '#FF0', textColor: '#00F', text: '-X' },
+      { faceColor: '#0F0', textColor: '#F0F', text: '+Y' },
+      { faceColor: '#0FF', textColor: '#F00', text: '-Y' },
+      { faceColor: '#00F', textColor: '#FF0', text: '+Z' },
+      { faceColor: '#F0F', textColor: '#0F0', text: '-Z' },
+    ].map((faceInfo) => generateFace(faceSize, faceInfo));
+
+    this.cubeTexture = new CubeTexture(this.context);
+    this.cubeTexture.createTextureFromSources(device, faceCanvases, {
+      mips: true,
+      flipY: false,
+    });
 
     /////////////////////////////////////////////
     //////////////// DATA ///////////////////////
@@ -260,6 +284,8 @@ export default class Scene extends WebgpuScene {
             buffer: mvpBuffer,
           },
         },
+        { binding: 1, resource: this.cubeTexture.getSampler(device) },
+        { binding: 2, resource: this.cubeTexture.getView() },
       ],
     });
     // create bindGroup for computePass
