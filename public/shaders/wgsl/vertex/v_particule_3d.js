@@ -12,12 +12,13 @@ struct VertexOutput {
 fn v_main(
     @builtin(instance_index) index : u32,
     @location(0) position : vec4<f32>,
-    @location(1) uv : vec2<f32>
+    @location(1) normal : vec3<f32>,
+    @location(2) uv : vec2<f32>
 ) -> VertexOutput {
     var output : VertexOutput;
     output.Position = mvpMatrix[index] * position;
-    output.fragUV = uv;
     output.fragPosition = 0.5 * (position + vec4<f32>(1.0, 1.0, 1.0, 1.0));
-    output.fragNormal = normalize(position.xyz);
+    output.fragNormal = normalize(normal.xyz);
+    output.fragUV = uv;
     return output;
 }`;

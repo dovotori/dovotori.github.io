@@ -8,8 +8,9 @@ fn f_main(
     @location(1) fragPosition: vec4<f32>,
     @location(2) fragNormal: vec3<f32>
 ) -> @location(0) vec4<f32> {
-    var tex = textureSample(ourTexture, ourSampler, vec3<f32>(fragUV, -1.0));
-    return tex;
-    // return fragPosition;
+    var tex = textureSample(ourTexture, ourSampler, fragNormal);
+    // return tex;
+    return vec4<f32>(fragNormal, 1.0);
+    // return vec4<f32>(fragUV, 0.0, 1.0);
 }
 `;
