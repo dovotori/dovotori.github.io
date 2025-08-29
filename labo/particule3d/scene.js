@@ -180,9 +180,10 @@ export default class Scene extends WebgpuScene {
 
     this.cubeTexture = new CubeTexture(this.context);
     this.cubeTexture.createTextureFromSources(device, faceCanvases, {
-      mips: true,
+      // mips: true,
       flipY: false,
     });
+    // this.cubeTexture.createOne(device, faceCanvases, 1);
 
     /////////////////////////////////////////////
     //////////////// DATA ///////////////////////

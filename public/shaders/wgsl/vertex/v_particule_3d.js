@@ -18,7 +18,7 @@ fn v_main(
     var output : VertexOutput;
     output.Position = mvpMatrix[index] * position;
     output.fragPosition = 0.5 * (position + vec4<f32>(1.0, 1.0, 1.0, 1.0));
-    output.fragNormal = normalize(normal.xyz);
+    output.fragNormal = normalize(position.xyz);
     output.fragUV = uv;
     return output;
 }`;

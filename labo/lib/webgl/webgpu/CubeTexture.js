@@ -52,4 +52,26 @@ export class CubeTexture {
   getView() {
     return this.texture.createView({ dimension: 'cube' });
   }
+
+  createOne(device, sources, index = 0) {
+    const source = sources[index];
+    const texture = device.createTexture({
+      size: [source.width, source.height],
+      format: 'rgba8unorm',
+      usage:
+        GPUTextureUsage.TEXTURE_BINDING |
+        GPUTextureUsage.COPY_DST |
+        GPUTextureUsage.RENDER_ATTACHMENT,
+    });
+    device.queue.copyExternalImageToTexture(
+      { source, flipY: false },
+      { texture, origin: [0, 0, 0] },
+      { width: source.width, height: source.height },
+    );
+    this.texture = texture;
+  }
+
+  getOne() {
+    return this.texture.createView();
+  }
 }
