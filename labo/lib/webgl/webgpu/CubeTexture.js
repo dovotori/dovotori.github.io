@@ -71,7 +71,7 @@ export class CubeTexture {
     this.texture = texture;
   }
 
-  getOne() {
+  getViewOne() {
     return this.texture.createView();
   }
 }

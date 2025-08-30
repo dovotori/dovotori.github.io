@@ -1,6 +1,5 @@
 import Camera from '../lib/webgl/cameras/Camera';
 import Mat4 from '../lib/webgl/maths/Mat4.js';
-import { generateFace } from '../lib/webgl/utils/generateFace.js';
 import { CubeTexture } from '../lib/webgl/webgpu/CubeTexture.js';
 import PipelineTextures from '../lib/webgl/webgpu/PipelineTextures.js';
 import WebgpuScene from '../lib/webgl/webgpu/WebgpuScene.js';
@@ -11,11 +10,9 @@ const NUM_WORKGROUPS = 10;
 const NUM_PARTICLES = WORKGROUP_SIZE * NUM_WORKGROUPS;
 const PARTICLE_SIZE = 40;
 
-const computeShader = `@group(0) @binding(0) var<storage, read> input: array<f32, 7>;
+const computeShader = `@group(0) @binding(0) var<storage, read> input: array<f32, 7>; // [nbParticles, xMin, xMax, yMin, yMax, zMin, zMax]
 @group(0) @binding(1) var<storage, read_write> velocity: array<vec4<f32>>;
-@group(0) @binding(2) var<storage, read_write> modelView: array<mat4x4<f32>>;
-@group(0) @binding(3) var<uniform> projection : mat4x4<f32>;
-@group(0) @binding(4) var<storage, read_write> mvp : array<mat4x4<f32>>;
+@group(0) @binding(2) var<storage, read_write> model: array<mat4x4<f32>>;
 
 @compute @workgroup_size(${WORKGROUP_SIZE})
 fn main(
@@ -32,7 +29,7 @@ fn main(
     var yMax = input[4];
     var zMin = input[5];
     var zMax = input[6];
-    var pos = modelView[index][3];
+    var pos = model[index][3];
     var vel = velocity[index];
     
     // change x
@@ -68,11 +65,8 @@ fn main(
     // update velocity
     velocity[index] = vel;
     
-    // update position in modelView matrix
-    modelView[index][3] = pos;
-    
-    // update mvp
-    mvp[index] = projection * modelView[index];
+    // update position in model matrix
+    model[index][3] = pos;
 }`;
 
 export default class Scene extends WebgpuScene {
@@ -134,16 +128,6 @@ export default class Scene extends WebgpuScene {
       size: Float32Array.BYTES_PER_ELEMENT * 4 * 4 * NUM_PARTICLES, // mat4x4 x float32 x MAX
       usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
-    this.projectionBuffer = device.createBuffer({
-      label: 'GPUBuffer store camera projection',
-      size: Float32Array.BYTES_PER_ELEMENT * 4 * 4, // mat4x4 x float32
-      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
-    });
-    const mvpBuffer = device.createBuffer({
-      label: 'GPUBuffer store MAX MVP',
-      size: Float32Array.BYTES_PER_ELEMENT * 4 * 4 * NUM_PARTICLES, // mat4x4 x float32 x MAX
-      usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
-    });
     const velocityBuffer = device.createBuffer({
       label: 'GPUBuffer store MAX velocity',
       size: Float32Array.BYTES_PER_ELEMENT * 4 * NUM_PARTICLES, // 4 position x float32 x MAX
@@ -156,11 +140,34 @@ export default class Scene extends WebgpuScene {
     });
 
     // setup camera once
-    device.queue.writeBuffer(
-      this.projectionBuffer,
+    // this.projectionBuffer = device.createBuffer({
+    //   label: 'GPUBuffer store camera projection',
+    //   size: Float32Array.BYTES_PER_ELEMENT * 4 * 4, // mat4x4 x float32
+    //   usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    // });
+    // device.queue.writeBuffer(
+    //   this.projectionBuffer,
+    //   0,
+    //   new Float32Array(this.camera.getViewProjection().get()),
+    // );
+
+    const uniformBufferSize = (4 + 4 * 4) * Float32Array.BYTES_PER_ELEMENT; // mat4 + vec4
+    const uniformBuffer = device.createBuffer({
+      label: 'uniforms',
+      size: uniformBufferSize,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+    const uniformValues = new Float32Array(uniformBufferSize / 4);
+    const array = [
+      this.config.camera.position.x,
+      this.config.camera.position.y,
+      this.config.camera.position.z,
       0,
-      new Float32Array(this.camera.getViewProjection().get()),
-    );
+      ...this.camera.getViewProjection().get(),
+    ];
+    console.log('uniformValues', array);
+    uniformValues.set(array);
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
 
     this.model.identity();
 
@@ -169,21 +176,29 @@ export default class Scene extends WebgpuScene {
     /////////////////////////////////////////////
 
     const faceSize = 128;
+    // const faceCanvases = [
+    //   { faceColor: '#F00', textColor: '#0FF', text: '+X' },
+    //   { faceColor: '#FF0', textColor: '#00F', text: '-X' },
+    //   { faceColor: '#0F0', textColor: '#F0F', text: '+Y' },
+    //   { faceColor: '#0FF', textColor: '#F00', text: '-Y' },
+    //   { faceColor: '#00F', textColor: '#FF0', text: '+Z' },
+    //   { faceColor: '#F0F', textColor: '#0F0', text: '-Z' },
+    // ].map((faceInfo) => generateFace(faceSize, faceInfo));
     const faceCanvases = [
-      { faceColor: '#F00', textColor: '#0FF', text: '+X' },
-      { faceColor: '#FF0', textColor: '#00F', text: '-X' },
-      { faceColor: '#0F0', textColor: '#F0F', text: '+Y' },
-      { faceColor: '#0FF', textColor: '#F00', text: '-Y' },
-      { faceColor: '#00F', textColor: '#FF0', text: '+Z' },
-      { faceColor: '#F0F', textColor: '#0F0', text: '-Z' },
-    ].map((faceInfo) => generateFace(faceSize, faceInfo));
+      assets.textures['pos-x'],
+      assets.textures['neg-x'],
+      assets.textures['pos-y'],
+      assets.textures['neg-y'],
+      assets.textures['pos-z'],
+      assets.textures['neg-z'],
+    ];
 
-    this.cubeTexture = new CubeTexture(this.context);
-    this.cubeTexture.createTextureFromSources(device, faceCanvases, {
+    const cubeTexture = new CubeTexture(this.context);
+    cubeTexture.createTextureFromSources(device, faceCanvases, {
       // mips: true,
       flipY: false,
     });
-    // this.cubeTexture.createOne(device, faceCanvases, 1);
+    // cubeTexture.createOne(device, faceCanvases);
 
     /////////////////////////////////////////////
     //////////////// DATA ///////////////////////
@@ -282,13 +297,15 @@ export default class Scene extends WebgpuScene {
         {
           binding: 0,
           resource: {
-            buffer: mvpBuffer,
+            buffer: modelBuffer,
           },
         },
-        { binding: 1, resource: this.cubeTexture.getSampler(device) },
-        { binding: 2, resource: this.cubeTexture.getView() },
+        { binding: 1, resource: { buffer: uniformBuffer } },
+        { binding: 2, resource: cubeTexture.getSampler(device) },
+        { binding: 3, resource: cubeTexture.getView() },
       ],
     });
+
     // create bindGroup for computePass
     this.computeGroup = device.createBindGroup({
       label: 'Group for computePass',
@@ -310,18 +327,6 @@ export default class Scene extends WebgpuScene {
           binding: 2,
           resource: {
             buffer: modelBuffer,
-          },
-        },
-        {
-          binding: 3,
-          resource: {
-            buffer: this.projectionBuffer,
-          },
-        },
-        {
-          binding: 4,
-          resource: {
-            buffer: mvpBuffer,
           },
         },
       ],
@@ -365,9 +370,6 @@ export default class Scene extends WebgpuScene {
     this.model.identity();
     this.model.rotate(this.time, 0, 1, 0);
     this.model.multiply(this.camera.getViewProjection());
-
-    const device = this.context.getDevice();
-    device.queue.writeBuffer(this.projectionBuffer, 0, new Float32Array(this.model.get()));
 
     // update render pass descriptor texture views
     const currentView = this.context.getCurrentTexture().createView();

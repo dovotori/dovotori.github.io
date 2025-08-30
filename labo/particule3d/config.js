@@ -1,7 +1,15 @@
 export default {
   slug: 'particule3d',
   shaders: ['/wgsl/fragment/f_particule_3d.js', '/wgsl/vertex/v_particule_3d.js'],
-  assets: ['/gltf/sphere.gltf'],
+  assets: [
+    '/gltf/sphere.gltf',
+    '/textures/pos-x.jpg',
+    '/textures/neg-x.jpg',
+    '/textures/pos-y.jpg',
+    '/textures/neg-y.jpg',
+    '/textures/pos-z.jpg',
+    '/textures/neg-z.jpg',
+  ],
   canvas: {
     width: 1024,
     height: 1024,
