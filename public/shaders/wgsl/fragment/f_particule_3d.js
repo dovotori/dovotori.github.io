@@ -21,11 +21,17 @@ fn f_main(
     var norm = normalize(worldNormal);
     var eyeToSurfaceDir = normalize(worldPosition - uni.eye.xyz);
     var direction = reflect(eyeToSurfaceDir, norm);
-    var tex = textureSample(ourTexture, ourSampler, direction);
+    var tex = textureSample(ourTexture, ourSampler, direction * vec3f(1, 1, -1));
 
     // var tex = textureSample(ourTexture, ourSampler, fragUV);
     // var tex = textureSample(ourTexture, ourSampler, fragNormal);
+
     return tex;
+
+    // var specAverage = tex.r * 0.333 + tex.g * 0.333 + tex.b * 0.333;
+    // tex = vec4<f32>(vec3<f32>(specAverage), 1.0);
+    // var rgb = vec3<f32>(0.0, 0.0, 0.0);
+    // return mix(vec4<f32>(rgb, 1.0), tex, 0.5);
 
     // return vec4<f32>(worldPosition, 1.0);
     // return vec4<f32>(worldNormal, 1.0);

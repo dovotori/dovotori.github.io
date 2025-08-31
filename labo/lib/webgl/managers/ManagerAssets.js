@@ -80,6 +80,7 @@ class ManagerAssets {
         case 'jpeg':
         case 'png':
         case 'bmp':
+        case 'webp':
           return ManagerAssets.loadImage(path, info);
         case 'obj':
           return ManagerAssets.load3dObj(path, info);
@@ -101,6 +102,7 @@ class ManagerAssets {
           case 'jpg':
           case 'jpeg':
           case 'png':
+          case 'webp':
             this.assets.textures[item.info.name] = item.data;
             break;
           case 'bmp':

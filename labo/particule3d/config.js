@@ -3,12 +3,12 @@ export default {
   shaders: ['/wgsl/fragment/f_particule_3d.js', '/wgsl/vertex/v_particule_3d.js'],
   assets: [
     '/gltf/sphere.gltf',
-    '/textures/pos-x.jpg',
-    '/textures/neg-x.jpg',
-    '/textures/pos-y.jpg',
-    '/textures/neg-y.jpg',
-    '/textures/pos-z.jpg',
-    '/textures/neg-z.jpg',
+    '/textures/pos-x.webp',
+    '/textures/neg-x.webp',
+    '/textures/pos-y.webp',
+    '/textures/neg-y.webp',
+    '/textures/pos-z.webp',
+    '/textures/neg-z.webp',
   ],
   canvas: {
     width: 1024,

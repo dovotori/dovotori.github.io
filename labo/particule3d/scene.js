@@ -132,7 +132,7 @@ fn main(
 
     // Apply constant rotation around Y axis
     // let curRot = extractEulerYXZ(model[index]);
-    let rotMat = rotationXYZ(vec3<f32>(0.01, 0.02, 0.005)); // rotate around X and Z too
+    let rotMat = rotationXYZ(vec3<f32>(pos[0] * 0.00001, pos[1] * 0.00002, pos[2] * 0.00005)); // rotate around X and Z too
     model[index] = model[index] * rotMat;
 }`;
 
@@ -153,8 +153,6 @@ export default class Scene extends WebgpuScene {
 
   async setupAssets(assets) {
     const { programs } = await super.setupAssets(assets);
-
-    console.log(assets.gltfs.sphere);
 
     const device = this.context.getDevice();
 
@@ -206,18 +204,7 @@ export default class Scene extends WebgpuScene {
       usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
 
-    // setup camera once
-    // this.projectionBuffer = device.createBuffer({
-    //   label: 'GPUBuffer store camera projection',
-    //   size: Float32Array.BYTES_PER_ELEMENT * 4 * 4, // mat4x4 x float32
-    //   usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
-    // });
-    // device.queue.writeBuffer(
-    //   this.projectionBuffer,
-    //   0,
-    //   new Float32Array(this.camera.getViewProjection().get()),
-    // );
-
+    // setup once
     const uniformBufferSize = (4 + 4 * 4) * Float32Array.BYTES_PER_ELEMENT; // mat4 + vec4
     const uniformBuffer = device.createBuffer({
       label: 'uniforms',
@@ -232,7 +219,6 @@ export default class Scene extends WebgpuScene {
       0,
       ...this.camera.getViewProjection().get(),
     ];
-    console.log('uniformValues', array);
     uniformValues.set(array);
     device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
 
@@ -281,7 +267,7 @@ export default class Scene extends WebgpuScene {
 
       const modelMatrix = new Mat4();
       modelMatrix.identity();
-      modelMatrix.scale(PARTICLE_SIZE);
+      modelMatrix.scale((PARTICLE_SIZE / 2) * Math.random() + 10);
       modelMatrix.translate(x, y, z);
       modelArray.set(modelMatrix.get(), i * 4 * 4);
 
