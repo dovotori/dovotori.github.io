@@ -1,3 +1,4 @@
+import { parseGLB } from '../parser/GltfCommon';
 import LoadGltf from '../parser/LoadGltf';
 import LoadGltfForWebGpu from '../parser/LoadGltfForWebGpu';
 import LoadMat from '../parser/LoadMat';
@@ -48,12 +49,18 @@ class ManagerAssets {
 
   static load3dGltfWebGpu = (path, info) =>
     fetch(path)
-      .then((response) => response.text())
+      .then((response) => (info.ext === 'glb' ? response.arrayBuffer() : response.text()))
       .then(async (response) => {
-        const gltf = await LoadGltfForWebGpu.load(
-          response,
-          path.slice(0, path.lastIndexOf('/') + 1),
-        );
+        let data;
+        if (info.ext === 'glb') {
+          const glb = parseGLB(response);
+          data = glb.gltf;
+          console.log({ glb });
+        } else {
+          data = JSON.parse(response);
+        }
+        console.log({ data });
+        const gltf = await LoadGltfForWebGpu.load(data, path.slice(0, path.lastIndexOf('/') + 1));
         return { data: gltf, info };
       });
 
@@ -85,6 +92,7 @@ class ManagerAssets {
         case 'obj':
           return ManagerAssets.load3dObj(path, info);
         case 'gltf':
+        case 'glb':
           return this.isWebgpu
             ? ManagerAssets.load3dGltfWebGpu(path, info)
             : ManagerAssets.load3dGltf(path, info);

@@ -3,6 +3,7 @@ export default {
   shaders: ['/wgsl/fragment/f_particule_3d.js', '/wgsl/vertex/v_particule_3d.js'],
   assets: [
     '/gltf/sphere.gltf',
+    '/gltf/cube.glb',
     '/textures/pos-x.webp',
     '/textures/neg-x.webp',
     '/textures/pos-y.webp',

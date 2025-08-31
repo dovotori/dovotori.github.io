@@ -199,3 +199,28 @@ export const getMaterial = (material, images) => {
 
   return Object.keys(finalMaterial).length > 0 ? finalMaterial : undefined;
 };
+
+export function parseGLB(arrayBuffer) {
+  const dataView = new DataView(arrayBuffer);
+  // GLB header
+  const magic = dataView.getUint32(0, true);
+  const version = dataView.getUint32(4, true);
+  const length = dataView.getUint32(8, true);
+
+  if (magic !== 0x46546c67) throw new Error('Invalid GLB magic string');
+
+  // First chunk (JSON)
+  const jsonChunkLength = dataView.getUint32(12, true);
+  const jsonChunkType = dataView.getUint32(16, true);
+  const jsonChunkData = new Uint8Array(arrayBuffer, 20, jsonChunkLength);
+  const jsonText = new TextDecoder().decode(jsonChunkData);
+  const gltf = JSON.parse(jsonText);
+
+  // Second chunk (BIN)
+  const binChunkStart = 20 + jsonChunkLength;
+  const binChunkLength = dataView.getUint32(binChunkStart, true);
+  const binChunkType = dataView.getUint32(binChunkStart + 4, true);
+  const binChunkData = new Uint8Array(arrayBuffer, binChunkStart + 8, binChunkLength);
+
+  return { gltf, binChunkData, version, length, jsonChunkType, binChunkType };
+}

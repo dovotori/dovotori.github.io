@@ -3,12 +3,12 @@ import Mat4 from '../lib/webgl/maths/Mat4.js';
 import { CubeTexture } from '../lib/webgl/webgpu/CubeTexture.js';
 import PipelineTextures from '../lib/webgl/webgpu/PipelineTextures.js';
 import WebgpuScene from '../lib/webgl/webgpu/WebgpuScene.js';
-import * as box from './box';
 
 const WORKGROUP_SIZE = 256; // 1 - 256 // depend on computer limitations
 const NUM_WORKGROUPS = 10;
 const NUM_PARTICLES = WORKGROUP_SIZE * NUM_WORKGROUPS;
 const PARTICLE_SIZE = 40;
+const SPEED = 10.0;
 
 const computeShader = `@group(0) @binding(0) var<storage, read> input: array<f32, 7>; // [nbParticles, xMin, xMax, yMin, yMax, zMin, zMax]
 @group(0) @binding(1) var<storage, read_write> velocity: array<vec4<f32>>;
@@ -174,19 +174,22 @@ export default class Scene extends WebgpuScene {
 
     /////////////////////////////////////////////
 
+    const gltfPrimitive = Array.from(assets.gltfs.sphere.get('meshes').get(0).primitives)[0];
+    this.indexCount = gltfPrimitive.indexCount;
+
     // create vertex buffer
     this.vertexBuffer = device.createBuffer({
       label: 'GPUBuffer store vertex',
-      size: box.vertex.byteLength,
+      size: gltfPrimitive.bufferVertex.byteLength,
       usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
     });
-    device.queue.writeBuffer(this.vertexBuffer, 0, box.vertex);
+    device.queue.writeBuffer(this.vertexBuffer, 0, gltfPrimitive.bufferVertex);
     this.indexBuffer = device.createBuffer({
       label: 'GPUBuffer store index',
-      size: box.index.byteLength,
+      size: gltfPrimitive.bufferIndex.byteLength,
       usage: GPUBufferUsage.INDEX | GPUBufferUsage.COPY_DST,
     });
-    device.queue.writeBuffer(this.indexBuffer, 0, box.index);
+    device.queue.writeBuffer(this.indexBuffer, 0, gltfPrimitive.bufferIndex);
 
     const modelBuffer = device.createBuffer({
       label: 'GPUBuffer store MAX model matrix',
@@ -228,7 +231,7 @@ export default class Scene extends WebgpuScene {
     //////////// CUBE TEXTURES //////////////////
     /////////////////////////////////////////////
 
-    const faceSize = 128;
+    // const faceSize = 128;
     // const faceCanvases = [
     //   { faceColor: '#F00', textColor: '#0FF', text: '+X' },
     //   { faceColor: '#FF0', textColor: '#00F', text: '-X' },
@@ -271,9 +274,9 @@ export default class Scene extends WebgpuScene {
       modelMatrix.translate(x, y, z);
       modelArray.set(modelMatrix.get(), i * 4 * 4);
 
-      velocityArray[i * 4 + 0] = Math.random() - 0.5; // x
-      velocityArray[i * 4 + 1] = Math.random() - 0.5; // y
-      velocityArray[i * 4 + 2] = Math.random() - 0.5; // z
+      velocityArray[i * 4 + 0] = (Math.random() - 0.5) * SPEED; // x
+      velocityArray[i * 4 + 1] = (Math.random() - 0.5) * SPEED; // y
+      velocityArray[i * 4 + 2] = (Math.random() - 0.5) * SPEED; // z
       velocityArray[i * 4 + 3] = 1; // w
     }
     device.queue.writeBuffer(velocityBuffer, 0, velocityArray);
@@ -451,7 +454,7 @@ export default class Scene extends WebgpuScene {
     renderPass.setVertexBuffer(0, this.vertexBuffer);
     renderPass.setIndexBuffer(this.indexBuffer, 'uint16');
     renderPass.setBindGroup(0, this.renderGroup);
-    renderPass.drawIndexed(box.indexCount, NUM_PARTICLES);
+    renderPass.drawIndexed(this.indexCount, NUM_PARTICLES);
 
     renderPass.end();
 

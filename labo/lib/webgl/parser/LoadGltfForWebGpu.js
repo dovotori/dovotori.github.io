@@ -357,8 +357,7 @@ class LoadGltfForWebGpu {
     };
   }
 
-  static async load(rawText, folderPath) {
-    const gltf = JSON.parse(rawText);
+  static async load(gltf, folderPath) {
     const buffers = await LoadGltfForWebGpu.fetchBuffers(gltf.buffers, folderPath);
     return await this.parse({ ...gltf, buffers });
   }
@@ -366,7 +365,7 @@ class LoadGltfForWebGpu {
   static async fetchBuffers(buffers, folderPath) {
     return await Promise.all(
       buffers.map((b) => {
-        if (b.uri.endsWith('.bin')) {
+        if (b.uri?.endsWith('.bin')) {
           return fetch(folderPath + b.uri).then((res) => res.arrayBuffer());
         }
         return b;
