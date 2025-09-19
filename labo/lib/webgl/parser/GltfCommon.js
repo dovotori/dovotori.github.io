@@ -209,18 +209,49 @@ export function parseGLB(arrayBuffer) {
 
   if (magic !== 0x46546c67) throw new Error('Invalid GLB magic string');
 
-  // First chunk (JSON)
-  const jsonChunkLength = dataView.getUint32(12, true);
-  const jsonChunkType = dataView.getUint32(16, true);
-  const jsonChunkData = new Uint8Array(arrayBuffer, 20, jsonChunkLength);
-  const jsonText = new TextDecoder().decode(jsonChunkData);
-  const gltf = JSON.parse(jsonText);
+  // // First chunk (JSON)
+  // const jsonChunkLength = dataView.getUint32(12, true);
+  // const jsonChunkType = dataView.getUint32(16, true);
+  // const jsonChunkData = new Uint8Array(arrayBuffer, 20, jsonChunkLength);
+  // const jsonText = new TextDecoder().decode(jsonChunkData);
+  // const gltf = JSON.parse(jsonText);
 
-  // Second chunk (BIN)
-  const binChunkStart = 20 + jsonChunkLength;
-  const binChunkLength = dataView.getUint32(binChunkStart, true);
-  const binChunkType = dataView.getUint32(binChunkStart + 4, true);
-  const binChunkData = new Uint8Array(arrayBuffer, binChunkStart + 8, binChunkLength);
+  // // Second chunk (BIN)
+  // const binChunkStart = 20 + jsonChunkLength;
+  // const binChunkLength = dataView.getUint32(binChunkStart, true);
+  // const binChunkType = dataView.getUint32(binChunkStart + 4, true);
+  // const binChunkData = new Uint8Array(arrayBuffer, binChunkStart + 8, binChunkLength);
 
-  return { gltf, binChunkData, version, length, jsonChunkType, binChunkType };
+  // return { gltf, binChunkData, version, length, jsonChunkType, binChunkType };
+
+  let offset = 12;
+  let gltf = null;
+  let binChunkData = null;
+
+  // Parse chunks
+  while (offset < length) {
+    const chunkLength = dataView.getUint32(offset, true);
+    const chunkType = dataView.getUint32(offset + 4, true);
+    offset += 8;
+
+    if (chunkType === 0x4e4f534a) {
+      // 'JSON'
+      const jsonChunkData = new Uint8Array(arrayBuffer, offset, chunkLength);
+      const jsonText = new TextDecoder().decode(jsonChunkData);
+      gltf = JSON.parse(jsonText);
+    } else if (chunkType === 0x004e4942) {
+      // 'BIN'
+      binChunkData = arrayBuffer.slice(offset, offset + chunkLength);
+    }
+    // Ignore other chunk types
+    offset += chunkLength;
+  }
+
+  // Attach binChunkData to gltf.buffers[0] if present
+  if (gltf && binChunkData && gltf.buffers && gltf.buffers.length > 0) {
+    gltf.buffers[0].uri = undefined; // Remove uri, as data is now in buffer
+    gltf.buffers[0].data = binChunkData;
+  }
+
+  return { gltf, version, length };
 }

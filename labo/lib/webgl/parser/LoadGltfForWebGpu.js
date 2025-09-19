@@ -95,6 +95,9 @@ class LoadGltfForWebGpu {
       if (buffer.uri?.startsWith('data:')) {
         return base64ToArrayBuffer(buffer.uri);
       }
+      if (buffer.data) {
+        return buffer.data;
+      }
       return buffer; // direct buffer from .bin files
     });
 

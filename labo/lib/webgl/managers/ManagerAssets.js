@@ -120,6 +120,7 @@ class ManagerAssets {
             this.assets.objets[item.info.name] = item.data;
             break;
           case 'gltf':
+          case 'glb':
             this.assets.gltfs[item.info.name] = item.data;
             break;
           case 'mtl':
