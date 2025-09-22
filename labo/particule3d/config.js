@@ -1,6 +1,11 @@
 export default {
   slug: 'particule3d',
-  shaders: ['/wgsl/fragment/f_particule_3d.js', '/wgsl/vertex/v_particule_3d.js'],
+  shaders: [
+    '/wgsl/fragment/f_particule_3d.js',
+    '/wgsl/vertex/v_particule_3d.js',
+    '/wgsl/fragment/f_skybox.js',
+    '/wgsl/vertex/v_skybox.js',
+  ],
   assets: [
     '/gltf/sphere.gltf',
     '/gltf/cube.glb',

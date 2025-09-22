@@ -13,3 +13,4 @@ export { default as Pipeline } from './Pipeline';
 export { default as PipelineTextures } from './PipelineTextures';
 export { default as Program } from './Program';
 export * from './Shadow';
+export * from './Skybox';

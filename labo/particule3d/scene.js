@@ -2,6 +2,7 @@ import Camera from '../lib/webgl/cameras/Camera';
 import Mat4 from '../lib/webgl/maths/Mat4.js';
 import { CubeTexture } from '../lib/webgl/webgpu/CubeTexture.js';
 import PipelineTextures from '../lib/webgl/webgpu/PipelineTextures.js';
+import { Skybox } from '../lib/webgl/webgpu/Skybox.js';
 import WebgpuScene from '../lib/webgl/webgpu/WebgpuScene.js';
 
 const WORKGROUP_SIZE = 256; // 1 - 256 // depend on computer limitations
@@ -392,6 +393,13 @@ export default class Scene extends WebgpuScene {
       label: 'Compute Pass description',
     };
 
+    // SKYBOX
+    this.skybox = new Skybox(this.context);
+    this.skybox.setup(
+      { vertex: programs.v_skybox.get(), fragment: programs.f_skybox.get() },
+      cubeTexture,
+      this.textures.getDepthFormat(),
+    );
     this.resize(this.canvasSize);
   }
 
@@ -434,6 +442,9 @@ export default class Scene extends WebgpuScene {
     this.renderPassDescriptor.colorAttachments[0].resolveTarget = currentView;
     this.renderPassDescriptor.colorAttachments[0].view = renderTargetView;
     this.renderPassDescriptor.depthStencilAttachment.view = depthTextureView;
+
+    this.camera.moveAroundCeter(this.time * 0.01, this.config.camera.position.z);
+    this.skybox.updateCamera(this.camera);
   }
 
   render() {
@@ -441,7 +452,9 @@ export default class Scene extends WebgpuScene {
 
     const device = this.context.getDevice();
 
-    const commandEncoder = device.createCommandEncoder();
+    const commandEncoder = device.createCommandEncoder({
+      label: 'Command Encoder for render and compute passes',
+    });
 
     const computePass = commandEncoder.beginComputePass(this.computePassDescriptor);
     computePass.setPipeline(this.computePipeline);
@@ -449,12 +462,18 @@ export default class Scene extends WebgpuScene {
     computePass.dispatchWorkgroups(NUM_WORKGROUPS); // Math.ceil(NUM_PARTICLES / WORKGROUP_SIZE)
     computePass.end();
 
+    // same render pass for skybox and model
     const renderPass = commandEncoder.beginRenderPass(this.renderPassDescriptor);
+
     renderPass.setPipeline(this.renderPipeline);
     renderPass.setVertexBuffer(0, this.vertexBuffer);
     renderPass.setIndexBuffer(this.indexBuffer, 'uint16');
     renderPass.setBindGroup(0, this.renderGroup);
     renderPass.drawIndexed(this.indexCount, NUM_PARTICLES);
+
+    renderPass.setPipeline(this.skybox.getPipeline());
+    renderPass.setBindGroup(0, this.skybox.getBindGroup());
+    renderPass.draw(3);
 
     renderPass.end();
 
