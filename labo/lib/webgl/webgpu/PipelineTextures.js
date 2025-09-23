@@ -49,6 +49,8 @@ class PipelineTextures {
   getDepthTextureView = () => this.depthTextureView;
 
   getDepthFormat = () => this.depthTextureFormat;
+
+  getSampleCount = () => this.sampleCount;
 }
 
 export default PipelineTextures;

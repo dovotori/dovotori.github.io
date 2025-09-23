@@ -3,10 +3,11 @@ export default {
   shaders: [
     '/wgsl/fragment/f_particule_3d.js',
     '/wgsl/vertex/v_particule_3d.js',
-    '/wgsl/fragment/f_skybox.js',
-    '/wgsl/vertex/v_skybox.js',
+    '/wgsl/skybox.js',
+    '/wgsl/postprocess.js',
   ],
   assets: [
+    '/gltf/suzanne.glb',
     '/gltf/sphere.gltf',
     '/gltf/cube.glb',
     '/textures/pos-x.webp',

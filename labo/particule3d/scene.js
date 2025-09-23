@@ -2,13 +2,14 @@ import Camera from '../lib/webgl/cameras/Camera';
 import Mat4 from '../lib/webgl/maths/Mat4.js';
 import { CubeTexture } from '../lib/webgl/webgpu/CubeTexture.js';
 import PipelineTextures from '../lib/webgl/webgpu/PipelineTextures.js';
+import { PostProcess } from '../lib/webgl/webgpu/PostProcess.js';
 import { Skybox } from '../lib/webgl/webgpu/Skybox.js';
 import WebgpuScene from '../lib/webgl/webgpu/WebgpuScene.js';
 
-const WORKGROUP_SIZE = 256; // 1 - 256 // depend on computer limitations
+const WORKGROUP_SIZE = 1; // 1 - 256 // depend on computer limitations
 const NUM_WORKGROUPS = 10;
 const NUM_PARTICLES = WORKGROUP_SIZE * NUM_WORKGROUPS;
-const PARTICLE_SIZE = 40;
+const PARTICLE_SIZE = 200;
 const SPEED = 10.0;
 
 const computeShader = `@group(0) @binding(0) var<storage, read> input: array<f32, 7>; // [nbParticles, xMin, xMax, yMin, yMax, zMin, zMax]
@@ -149,7 +150,7 @@ export default class Scene extends WebgpuScene {
 
     this.model = new Mat4();
 
-    this.textures = new PipelineTextures();
+    this.textures = new PipelineTextures(1);
   }
 
   async setupAssets(assets) {
@@ -158,6 +159,10 @@ export default class Scene extends WebgpuScene {
     const device = this.context.getDevice();
 
     this.textures.setup(device, this.context.getCanvasFormat(), this.canvasSize, 'depth24plus');
+
+    // POST PROCESS
+    this.postProcess = new PostProcess(this.context);
+    this.postProcess.setup(programs.postprocess.get());
 
     const computeShaderModule = device.createShaderModule({
       code: computeShader,
@@ -175,7 +180,7 @@ export default class Scene extends WebgpuScene {
 
     /////////////////////////////////////////////
 
-    const gltfPrimitive = Array.from(assets.gltfs.cube.get('meshes').get(0).primitives)[0];
+    const gltfPrimitive = Array.from(assets.gltfs.suzanne.get('meshes').get(0).primitives)[0];
     this.indexCount = gltfPrimitive.indexCount;
 
     // create vertex buffer
@@ -325,12 +330,13 @@ export default class Scene extends WebgpuScene {
         entryPoint: 'f_main',
         targets: [
           {
-            format: this.context.getCanvasFormat(),
+            // format: this.context.getCanvasFormat(),
+            format: this.postProcess.getRenderTargetFormat(),
           },
         ],
       },
       multisample: {
-        count: 4,
+        count: this.textures.getSampleCount(),
       },
       primitive: {
         topology: 'triangle-list',
@@ -394,12 +400,8 @@ export default class Scene extends WebgpuScene {
     };
 
     // SKYBOX
-    this.skybox = new Skybox(this.context);
-    this.skybox.setup(
-      { vertex: programs.v_skybox.get(), fragment: programs.f_skybox.get() },
-      cubeTexture,
-      this.textures.getDepthFormat(),
-    );
+    this.skybox = new Skybox(this.context, this.textures.getSampleCount());
+    this.skybox.setup(programs.skybox.get(), cubeTexture, this.textures.getDepthFormat());
     this.resize(this.canvasSize);
   }
 
@@ -426,6 +428,7 @@ export default class Scene extends WebgpuScene {
     };
 
     this.textures.resize(device, this.context.getCanvasFormat(), size);
+    this.postProcess.resize(device, this.canvasSize);
   }
 
   update() {
@@ -437,14 +440,16 @@ export default class Scene extends WebgpuScene {
 
     // update render pass descriptor texture views
     const currentView = this.context.getCurrentTexture().createView();
-    const renderTargetView = this.textures.getRenderTargetView();
+    // const renderTargetView = this.textures.getRenderTargetView();
     const depthTextureView = this.textures.getDepthTextureView();
     this.renderPassDescriptor.colorAttachments[0].resolveTarget = currentView;
-    this.renderPassDescriptor.colorAttachments[0].view = renderTargetView;
+    // this.renderPassDescriptor.colorAttachments[0].view = renderTargetView;
+    this.renderPassDescriptor.colorAttachments[0].view = this.postProcess.getRenderTargetView();
     this.renderPassDescriptor.depthStencilAttachment.view = depthTextureView;
 
     this.camera.moveAroundCeter(this.time * 0.01, this.config.camera.position.z);
     this.skybox.updateCamera(this.camera);
+    this.postProcess.updateTexture(currentView);
   }
 
   render() {
@@ -473,9 +478,11 @@ export default class Scene extends WebgpuScene {
 
     renderPass.setPipeline(this.skybox.getPipeline());
     renderPass.setBindGroup(0, this.skybox.getBindGroup());
-    renderPass.draw(3);
+    renderPass.draw(3); // full screen triangle
 
     renderPass.end();
+
+    this.postProcess.render(commandEncoder);
 
     device.queue.submit([commandEncoder.finish()]);
   }

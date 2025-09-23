@@ -14,6 +14,5 @@ struct FragInput {
 @fragment fn f_main(input: FragInput) -> @location(0) vec4f {
   let t = uni.viewDirectionProjectionInverse * input.pos;
   return textureSample(ourTexture, ourSampler, normalize(t.xyz / t.w) * vec3f(1, 1, -1));
-  // return vec4(1.0, 0.0, 0.0, 1.0);
 }
 `;

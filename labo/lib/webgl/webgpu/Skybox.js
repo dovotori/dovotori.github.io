@@ -1,9 +1,10 @@
 import Mat4 from '../maths/Mat4';
 
 export class Skybox {
-  constructor(context) {
+  constructor(context, sampleCount = 4) {
     this.context = context;
     this.pipeline = undefined;
+    this.sampleCount = sampleCount;
   }
 
   setup(program, cubeTexture, depthFormat) {
@@ -14,11 +15,11 @@ export class Skybox {
       label: 'skybox no attributes',
       layout: 'auto',
       vertex: {
-        module: program.vertex,
+        module: program,
         entryPoint: 'v_main',
       },
       fragment: {
-        module: program.fragment,
+        module: program,
         entryPoint: 'f_main',
         targets: [{ format: presentationFormat }],
       },
@@ -28,7 +29,7 @@ export class Skybox {
         format: depthFormat,
       },
       multisample: {
-        count: 4,
+        count: this.sampleCount,
       },
     });
 

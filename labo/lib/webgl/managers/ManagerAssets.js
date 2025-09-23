@@ -55,11 +55,9 @@ class ManagerAssets {
         if (info.ext === 'glb') {
           const glb = parseGLB(response);
           data = glb.gltf;
-          console.log({ glb });
         } else {
           data = JSON.parse(response);
         }
-        console.log({ data });
         const gltf = await LoadGltfForWebGpu.load(data, path.slice(0, path.lastIndexOf('/') + 1));
         return { data: gltf, info };
       });

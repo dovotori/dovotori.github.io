@@ -11,6 +11,7 @@ export * from './GltfPipelineBindGroupLayout';
 export * from './Picking';
 export { default as Pipeline } from './Pipeline';
 export { default as PipelineTextures } from './PipelineTextures';
+export * from './PostProcess';
 export { default as Program } from './Program';
 export * from './Shadow';
 export * from './Skybox';
