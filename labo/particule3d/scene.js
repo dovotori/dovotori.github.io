@@ -5,138 +5,7 @@ import PipelineTextures from '../lib/webgl/webgpu/PipelineTextures.js';
 import { PostProcess } from '../lib/webgl/webgpu/PostProcess.js';
 import { Skybox } from '../lib/webgl/webgpu/Skybox.js';
 import WebgpuScene from '../lib/webgl/webgpu/WebgpuScene.js';
-
-const WORKGROUP_SIZE = 1; // 1 - 256 // depend on computer limitations
-const NUM_WORKGROUPS = 10;
-const NUM_PARTICLES = WORKGROUP_SIZE * NUM_WORKGROUPS;
-const PARTICLE_SIZE = 200;
-const SPEED = 10.0;
-
-const computeShader = `@group(0) @binding(0) var<storage, read> input: array<f32, 7>; // [nbParticles, xMin, xMax, yMin, yMax, zMin, zMax]
-@group(0) @binding(1) var<storage, read_write> velocity: array<vec4<f32>>;
-@group(0) @binding(2) var<storage, read_write> model: array<mat4x4<f32>>;
-
-// Generic rotation matrix from Euler angles (radians)
-// Order: Z (roll), Y (yaw), X (pitch)
-fn rotationXYZ(angles: vec3<f32>) -> mat4x4<f32> {
-  let cx = cos(angles.x);
-  let sx = sin(angles.x);
-  let cy = cos(angles.y);
-  let sy = sin(angles.y);
-  let cz = cos(angles.z);
-  let sz = sin(angles.z);
-
-  let rotX = mat4x4<f32>(
-    vec4<f32>(1.0, 0.0, 0.0, 0.0),
-    vec4<f32>(0.0, cx, -sx, 0.0),
-    vec4<f32>(0.0, sx, cx, 0.0),
-    vec4<f32>(0.0, 0.0, 0.0, 1.0)
-  );
-
-  let rotY = mat4x4<f32>(
-    vec4<f32>(cy, 0.0, sy, 0.0),
-    vec4<f32>(0.0, 1.0, 0.0, 0.0),
-    vec4<f32>(-sy, 0.0, cy, 0.0),
-    vec4<f32>(0.0, 0.0, 0.0, 1.0)
-  );
-
-  let rotZ = mat4x4<f32>(
-    vec4<f32>(cz, -sz, 0.0, 0.0),
-    vec4<f32>(sz, cz, 0.0, 0.0),
-    vec4<f32>(0.0, 0.0, 1.0, 0.0),
-    vec4<f32>(0.0, 0.0, 0.0, 1.0)
-  );
-
-  // Combined rotation: rotZ * rotY * rotX
-  return rotZ * rotY * rotX;
-}
-
-// Extracts Euler angles (YXZ order) from a 4x4 matrix
-fn extractEulerYXZ(m: mat4x4<f32>) -> vec3<f32> {
-    let m00 = m[0][0];
-    let m01 = m[0][1];
-    let m02 = m[0][2];
-    let m10 = m[1][0];
-    let m11 = m[1][1];
-    let m12 = m[1][2];
-    let m20 = m[2][0];
-    let m21 = m[2][1];
-    let m22 = m[2][2];
-
-    var y = asin(clamp(-m02, -1.0, 1.0));
-    var x: f32;
-    var z: f32;
-
-    if (abs(m02) < 0.99999) {
-        x = atan2(m12, m22);
-        z = atan2(m01, m00);
-    } else {
-        // Gimbal lock
-        x = atan2(-m21, m11);
-        z = 0.0;
-    }
-    return vec3<f32>(x, y, z);
-}
-
-@compute @workgroup_size(${WORKGROUP_SIZE})
-fn main(
-    @builtin(global_invocation_id) GlobalInvocationID : vec3<u32>
-) {
-    var index = GlobalInvocationID.x;
-    if(index >= u32(input[0])){
-      return;
-    }
-
-    var xMin = input[1];
-    var xMax = input[2];
-    var yMin = input[3];
-    var yMax = input[4];
-    var zMin = input[5];
-    var zMax = input[6];
-    var pos = model[index][3];
-    var vel = velocity[index];
-    
-    // change x
-    pos.x += vel.x;
-    if(pos.x < xMin){
-        pos.x = xMin;
-        vel.x = -vel.x;
-    }else if(pos.x > xMax){
-        pos.x = xMax;
-        vel.x = -vel.x;
-    }
-    
-    // change y
-    pos.y += vel.y;
-    if(pos.y < yMin){
-        pos.y = yMin;
-        vel.y = -vel.y;
-    } else if(pos.y > yMax){
-        pos.y = yMax;
-        vel.y = -vel.y;
-    }
-    
-    // change z
-    pos.z += vel.z;
-    if(pos.z < zMin){
-        pos.z = zMin;
-        vel.z = -vel.z;
-    }else if(pos.z > zMax){
-        pos.z = zMax;
-        vel.z = -vel.z;
-    }
-    
-    // update velocity
-    velocity[index] = vel;
-    
-    // update position in model matrix
-    model[index][3] = pos;
-
-    // Apply constant rotation around Y axis
-    // let curRot = extractEulerYXZ(model[index]);
-    let rotMat = rotationXYZ(vec3<f32>(pos[0] * 0.00001, pos[1] * 0.00002, pos[2] * 0.00005)); // rotate around X and Z too
-    model[index] = model[index] * rotMat;
-}`;
+import { getComputeShader } from './compute.js';
 
 export default class Scene extends WebgpuScene {
   constructor(context, config) {
@@ -149,6 +18,9 @@ export default class Scene extends WebgpuScene {
     this.camera.perspective(width, height);
 
     this.model = new Mat4();
+
+    this.numParticules =
+      this.config.particules.workgroupSize * this.config.particules.workgroupCount;
 
     this.textures = new PipelineTextures(1);
   }
@@ -165,7 +37,7 @@ export default class Scene extends WebgpuScene {
     this.postProcess.setup(programs.postprocess.get());
 
     const computeShaderModule = device.createShaderModule({
-      code: computeShader,
+      code: getComputeShader(this.config.particules.workgroupSize),
       label: 'Compute Shader',
     });
 
@@ -199,12 +71,12 @@ export default class Scene extends WebgpuScene {
 
     const modelBuffer = device.createBuffer({
       label: 'GPUBuffer store MAX model matrix',
-      size: Float32Array.BYTES_PER_ELEMENT * 4 * 4 * NUM_PARTICLES, // mat4x4 x float32 x MAX
+      size: Float32Array.BYTES_PER_ELEMENT * 4 * 4 * this.numParticules, // mat4x4 x float32 x MAX
       usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
     const velocityBuffer = device.createBuffer({
       label: 'GPUBuffer store MAX velocity',
-      size: Float32Array.BYTES_PER_ELEMENT * 4 * NUM_PARTICLES, // 4 position x float32 x MAX
+      size: Float32Array.BYTES_PER_ELEMENT * 4 * this.numParticules, // 4 position x float32 x MAX
       usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
     const inputBuffer = device.createBuffer({
@@ -266,23 +138,23 @@ export default class Scene extends WebgpuScene {
     //////////////// DATA ///////////////////////
     /////////////////////////////////////////////
 
-    const inputArray = new Float32Array([NUM_PARTICLES, -500, 500, -250, 250, -500, 500]); // count, xmin/max, ymin/max, zmin/max
-    const modelArray = new Float32Array(NUM_PARTICLES * 4 * 4);
-    const velocityArray = new Float32Array(NUM_PARTICLES * 4);
-    for (let i = 0; i < NUM_PARTICLES; i++) {
+    const inputArray = new Float32Array([this.numParticules, -500, 500, -250, 250, -500, 500]); // count, xmin/max, ymin/max, zmin/max
+    const modelArray = new Float32Array(this.numParticules * 4 * Float32Array.BYTES_PER_ELEMENT);
+    const velocityArray = new Float32Array(this.numParticules * Float32Array.BYTES_PER_ELEMENT);
+    for (let i = 0; i < this.numParticules; i++) {
       const x = Math.random() * 1000 - 500;
       const y = Math.random() * 500 - 250;
       const z = Math.random() * 1000 - 500;
 
       const modelMatrix = new Mat4();
       modelMatrix.identity();
-      modelMatrix.scale((PARTICLE_SIZE / 2) * Math.random() + 10);
+      modelMatrix.scale((this.config.particules.size / 2) * Math.random() + 10);
       modelMatrix.translate(x, y, z);
       modelArray.set(modelMatrix.get(), i * 4 * 4);
 
-      velocityArray[i * 4 + 0] = (Math.random() - 0.5) * SPEED; // x
-      velocityArray[i * 4 + 1] = (Math.random() - 0.5) * SPEED; // y
-      velocityArray[i * 4 + 2] = (Math.random() - 0.5) * SPEED; // z
+      velocityArray[i * 4 + 0] = (Math.random() - 0.5) * this.config.particules.speed; // x
+      velocityArray[i * 4 + 1] = (Math.random() - 0.5) * this.config.particules.speed; // y
+      velocityArray[i * 4 + 2] = (Math.random() - 0.5) * this.config.particules.speed; // z
       velocityArray[i * 4 + 3] = 1; // w
     }
     device.queue.writeBuffer(velocityBuffer, 0, velocityArray);
@@ -401,7 +273,12 @@ export default class Scene extends WebgpuScene {
 
     // SKYBOX
     this.skybox = new Skybox(this.context, this.textures.getSampleCount());
-    this.skybox.setup(programs.skybox.get(), cubeTexture, this.textures.getDepthFormat());
+    this.skybox.setup(
+      programs.skybox.get(),
+      cubeTexture,
+      this.postProcess.getRenderTargetFormat(),
+      this.textures.getDepthFormat(),
+    );
     this.resize(this.canvasSize);
   }
 
@@ -413,7 +290,7 @@ export default class Scene extends WebgpuScene {
       colorAttachments: [
         {
           view: null,
-          resolveTarget: this.context.getCurrentTexture().createView(),
+          // resolveTarget: this.context.getCurrentTexture().createView(),
           clearValue: { r: 0, g: 0, b: 0, a: 0 },
           loadOp: 'clear',
           storeOp: 'store',
@@ -442,7 +319,7 @@ export default class Scene extends WebgpuScene {
     const currentView = this.context.getCurrentTexture().createView();
     // const renderTargetView = this.textures.getRenderTargetView();
     const depthTextureView = this.textures.getDepthTextureView();
-    this.renderPassDescriptor.colorAttachments[0].resolveTarget = currentView;
+    // this.renderPassDescriptor.colorAttachments[0].resolveTarget = currentView; // use for multisampling
     // this.renderPassDescriptor.colorAttachments[0].view = renderTargetView;
     this.renderPassDescriptor.colorAttachments[0].view = this.postProcess.getRenderTargetView();
     this.renderPassDescriptor.depthStencilAttachment.view = depthTextureView;
@@ -464,7 +341,7 @@ export default class Scene extends WebgpuScene {
     const computePass = commandEncoder.beginComputePass(this.computePassDescriptor);
     computePass.setPipeline(this.computePipeline);
     computePass.setBindGroup(0, this.computeGroup);
-    computePass.dispatchWorkgroups(NUM_WORKGROUPS); // Math.ceil(NUM_PARTICLES / WORKGROUP_SIZE)
+    computePass.dispatchWorkgroups(this.config.particules.workgroupCount); // Math.ceil(NUM_PARTICLES / WORKGROUP_SIZE)
     computePass.end();
 
     // same render pass for skybox and model
@@ -474,7 +351,7 @@ export default class Scene extends WebgpuScene {
     renderPass.setVertexBuffer(0, this.vertexBuffer);
     renderPass.setIndexBuffer(this.indexBuffer, 'uint16');
     renderPass.setBindGroup(0, this.renderGroup);
-    renderPass.drawIndexed(this.indexCount, NUM_PARTICLES);
+    renderPass.drawIndexed(this.indexCount, this.numParticules);
 
     renderPass.setPipeline(this.skybox.getPipeline());
     renderPass.setBindGroup(0, this.skybox.getBindGroup());

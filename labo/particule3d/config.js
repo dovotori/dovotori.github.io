@@ -33,4 +33,10 @@ export default {
     far: 4000,
     angle: 60,
   },
+  particules: {
+    workgroupSize: 1, // 1 - 256 // depend on computer limitations
+    workgroupCount: 10,
+    size: 200,
+    speed: 10.0,
+  },
 };

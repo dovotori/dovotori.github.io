@@ -36,6 +36,7 @@ export class PostProcess {
 
   setupRenderTexture(device, canvasSize) {
     this.renderTarget = device.createTexture({
+      label: 'post process render target',
       size: canvasSize,
       format: this.renderTargetFormat,
       sampleCount: this.sampleCount,
