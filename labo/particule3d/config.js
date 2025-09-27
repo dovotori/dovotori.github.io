@@ -8,7 +8,7 @@ export default {
   ],
   assets: [
     '/gltf/suzanne.glb',
-    '/gltf/sphere.gltf',
+    '/gltf/smoothSphere.glb',
     '/gltf/cube.glb',
     '/textures/pos-x.webp',
     '/textures/neg-x.webp',

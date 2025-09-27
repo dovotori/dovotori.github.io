@@ -52,7 +52,7 @@ export default class Scene extends WebgpuScene {
 
     /////////////////////////////////////////////
 
-    const gltfPrimitive = Array.from(assets.gltfs.sphere.get('meshes').get(0).primitives)[0];
+    const gltfPrimitive = Array.from(assets.gltfs.smoothSphere.get('meshes').get(0).primitives)[0];
     this.indexCount = gltfPrimitive.indexCount;
 
     // create vertex buffer
