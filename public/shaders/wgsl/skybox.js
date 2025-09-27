@@ -35,7 +35,7 @@ struct FragInput {
 
 struct FragOutput {
   @location(0) color: vec4f,
-  @location(1) color2: vec4f,
+  @location(1) color2: vec4f, // not used but need to match pipeline targets
 };
 
 @fragment fn f_main(input: FragInput) -> FragOutput {

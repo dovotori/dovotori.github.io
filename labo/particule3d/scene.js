@@ -52,7 +52,7 @@ export default class Scene extends WebgpuScene {
 
     /////////////////////////////////////////////
 
-    const gltfPrimitive = Array.from(assets.gltfs.suzanne.get('meshes').get(0).primitives)[0];
+    const gltfPrimitive = Array.from(assets.gltfs.sphere.get('meshes').get(0).primitives)[0];
     this.indexCount = gltfPrimitive.indexCount;
 
     // create vertex buffer
@@ -85,23 +85,13 @@ export default class Scene extends WebgpuScene {
       usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
 
-    // setup once TODO because we move the camera should be update each frame
     const uniformBufferSize = (4 + 4 * 4) * Float32Array.BYTES_PER_ELEMENT; // mat4 + vec4
-    const uniformBuffer = device.createBuffer({
+    this.uniformBuffer = device.createBuffer({
       label: 'uniforms',
       size: uniformBufferSize,
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
-    const uniformValues = new Float32Array(uniformBufferSize / 4);
-    const array = [
-      this.config.camera.position.x,
-      this.config.camera.position.y,
-      this.config.camera.position.z,
-      0,
-      ...this.camera.getViewProjection().get(),
-    ];
-    uniformValues.set(array);
-    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+    this.uniformValues = new Float32Array(uniformBufferSize / 4);
 
     this.model.identity();
 
@@ -203,7 +193,7 @@ export default class Scene extends WebgpuScene {
         targets: [
           // can define multiple targets textures, to get color / depth or normal texture of your scene
           {
-            // format: this.context.getCanvasFormat(),
+            // format: this.context.getCanvasFormat(), // use when directly rendering to canvas context
             format: this.postProcess.getRenderTargetFormat(),
           },
           {
@@ -239,7 +229,7 @@ export default class Scene extends WebgpuScene {
             buffer: modelBuffer,
           },
         },
-        { binding: 1, resource: { buffer: uniformBuffer } },
+        { binding: 1, resource: { buffer: this.uniformBuffer } },
         { binding: 2, resource: cubeTexture.getSampler(device) },
         { binding: 3, resource: cubeTexture.getView() },
       ],
@@ -276,6 +266,7 @@ export default class Scene extends WebgpuScene {
     };
 
     this.renderPassDescriptor = {
+      // can define multiple targets textures, should match pipeline targets
       colorAttachments: [
         {
           view: null,
@@ -320,10 +311,15 @@ export default class Scene extends WebgpuScene {
 
   update() {
     super.update();
+    const device = this.context.getDevice();
 
     this.model.identity();
     this.model.rotate(this.time, 0, 1, 0);
     this.model.multiply(this.camera.getViewProjection());
+
+    const array = [...this.camera.getPosition(), 0, ...this.camera.getViewProjection().get()];
+    this.uniformValues.set(array);
+    device.queue.writeBuffer(this.uniformBuffer, 0, this.uniformValues);
 
     // update render pass descriptor texture views
     const currentView = this.context.getCurrentTexture().createView();

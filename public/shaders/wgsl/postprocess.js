@@ -27,6 +27,6 @@ struct VSOutput {
 @fragment fn f_main(fsInput: VSOutput) -> @location(0) vec4f {
   let color = textureSample(colorTex, samplerTex, fsInput.texcoord);
   let color2 = textureSample(normalTex, samplerTex, fsInput.texcoord);
-  return vec4f(color2);
+  return vec4f(color);
 }
 `;
