@@ -33,8 +33,17 @@ struct FragInput {
   @location(0) pos: vec4f,
 };
 
-@fragment fn f_main(input: FragInput) -> @location(0) vec4f {
+struct FragOutput {
+  @location(0) color: vec4f,
+  @location(1) color2: vec4f,
+};
+
+@fragment fn f_main(input: FragInput) -> FragOutput {
+  var out : FragOutput;
   let t = uni.viewDirectionProjectionInverse * input.pos;
-  return textureSample(ourTexture, ourSampler, normalize(t.xyz / t.w) * vec3f(1, 1, -1));
+  var color = textureSample(ourTexture, ourSampler, normalize(t.xyz / t.w) * vec3f(1, 1, -1));
+  out.color = color;
+  out.color2 = color;
+  return out;
 }
 `;

@@ -4,6 +4,11 @@ struct Uniform {
   viewProjection: mat4x4<f32>,
 };
 
+struct FragOutput {
+  @location(0) color: vec4f,
+  @location(1) normal: vec4f,
+};
+
 @binding(1) @group(0) var<uniform> uni: Uniform;
 @binding(2) @group(0) var ourSampler: sampler;
 // @binding(3) @group(0) var ourTexture: texture_2d<f32>;
@@ -16,7 +21,7 @@ fn f_main(
     @location(2) fragNormal: vec3<f32>,
     @location(3) worldPosition: vec3<f32>,
     @location(4) worldNormal: vec3<f32>
-) -> @location(0) vec4<f32> {
+) -> FragOutput {
  // reflect
     var norm = normalize(worldNormal);
     var eyeToSurfaceDir = normalize(worldPosition - uni.eye.xyz);
@@ -26,7 +31,12 @@ fn f_main(
     // var tex = textureSample(ourTexture, ourSampler, fragUV);
     // var tex = textureSample(ourTexture, ourSampler, fragNormal);
 
-    return tex;
+    var out: FragOutput;
+    out.color = tex;
+    out.normal = vec4(fragNormal, 1.0);
+    // out.fragDepth = fragPosition.z / fragPosition.w; // linearize depth
+
+    return out;
 
     // var specAverage = tex.r * 0.333 + tex.g * 0.333 + tex.b * 0.333;
     // tex = vec4<f32>(vec3<f32>(specAverage), 1.0);

@@ -27,7 +27,7 @@ export default class extends Objectif {
     this.projection.identity().perspective(this.angle, w / h, this.near, this.far);
   }
 
-  moveAroundCeter(time, offset = 0) {
+  moveAroundCenter(time, offset = 0) {
     this.position.set(
       Math.cos(time) * offset,
       Math.sin(time) * (2.0 + offset),

@@ -3,7 +3,8 @@ export class PostProcess {
     this.context = context;
     this.pipeline = undefined;
     this.renderTargetFormat = 'rgba8unorm';
-    this.sampleCount = 1; // should be 1 for a render target used as texture
+    this.sampleCount = 1; // should be 1 for a render target used as texture, multisample is allow only for canvas context texture
+    this.renderTargetsCount = 2;
   }
 
   setup(program) {
@@ -34,32 +35,38 @@ export class PostProcess {
     };
   }
 
-  setupRenderTexture(device, canvasSize) {
-    this.renderTarget = device.createTexture({
-      label: 'post process render target',
-      size: canvasSize,
-      format: this.renderTargetFormat,
-      sampleCount: this.sampleCount,
-      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
-    });
-    this.renderTargetView = this.renderTarget.createView();
+  setupRenderTextures(device, canvasSize) {
+    this.renderTargets = Array.from({ length: this.renderTargetsCount }).map((_, i) =>
+      device.createTexture({
+        label: `post process render target ${i}`,
+        size: canvasSize,
+        format: this.renderTargetFormat,
+        sampleCount: this.sampleCount,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+      }),
+    );
+    this.renderTargetViews = this.renderTargets.map((rT) => rT.createView());
 
     this.bindGroup = device.createBindGroup({
       label: 'post process bind group',
       layout: this.pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: this.renderTargetView },
-        { binding: 1, resource: this.sampler },
+        { binding: 0, resource: this.sampler },
+        ...this.renderTargets.map((_, i) => ({
+          binding: i + 1,
+          resource: this.renderTargetViews[i],
+        })),
       ],
     });
   }
 
   resize = (device, canvasSize) => {
-    this.renderTarget?.destroy();
-    this.setupRenderTexture(device, canvasSize);
+    this.renderTargets?.forEach((t) => t.destroy());
+    this.setupRenderTextures(device, canvasSize);
   };
 
   updateTexture(dstTextureView) {
+    // set the canvas context texture as the render target
     this.renderPassDescriptor.colorAttachments[0].view = dstTextureView;
   }
 
@@ -75,8 +82,8 @@ export class PostProcess {
     return this.pipeline;
   }
 
-  getRenderTargetView() {
-    return this.renderTargetView;
+  getRenderTargetView(index) {
+    return this.renderTargetViews[index];
   }
 
   getRenderTargetFormat() {

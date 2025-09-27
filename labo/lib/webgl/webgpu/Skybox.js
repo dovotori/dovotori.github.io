@@ -20,7 +20,7 @@ export class Skybox {
       fragment: {
         module: program,
         entryPoint: 'f_main',
-        targets: [{ format: targetFormat }],
+        targets: [{ format: targetFormat }, { format: targetFormat }],
       },
       depthStencil: {
         depthWriteEnabled: true,

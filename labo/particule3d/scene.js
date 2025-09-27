@@ -85,7 +85,7 @@ export default class Scene extends WebgpuScene {
       usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
 
-    // setup once
+    // setup once TODO because we move the camera should be update each frame
     const uniformBufferSize = (4 + 4 * 4) * Float32Array.BYTES_PER_ELEMENT; // mat4 + vec4
     const uniformBuffer = device.createBuffer({
       label: 'uniforms',
@@ -201,8 +201,12 @@ export default class Scene extends WebgpuScene {
         module: programs.f_particule_3d.get(),
         entryPoint: 'f_main',
         targets: [
+          // can define multiple targets textures, to get color / depth or normal texture of your scene
           {
             // format: this.context.getCanvasFormat(),
+            format: this.postProcess.getRenderTargetFormat(),
+          },
+          {
             format: this.postProcess.getRenderTargetFormat(),
           },
         ],
@@ -271,6 +275,30 @@ export default class Scene extends WebgpuScene {
       label: 'Compute Pass description',
     };
 
+    this.renderPassDescriptor = {
+      colorAttachments: [
+        {
+          view: null,
+          // resolveTarget: this.context.getCurrentTexture().createView(),
+          clearValue: { r: 0, g: 0, b: 0, a: 0 },
+          loadOp: 'clear',
+          storeOp: 'store',
+        },
+        {
+          view: null,
+          clearValue: { r: 0, g: 0, b: 0, a: 0 },
+          loadOp: 'clear',
+          storeOp: 'store',
+        },
+      ],
+      depthStencilAttachment: {
+        view: null,
+        depthClearValue: 1.0,
+        depthLoadOp: 'clear',
+        depthStoreOp: 'store',
+      },
+    };
+
     // SKYBOX
     this.skybox = new Skybox(this.context, this.textures.getSampleCount());
     this.skybox.setup(
@@ -285,24 +313,6 @@ export default class Scene extends WebgpuScene {
   resize(size) {
     this.canvasSize = size;
     const device = this.context.getDevice();
-
-    this.renderPassDescriptor = {
-      colorAttachments: [
-        {
-          view: null,
-          // resolveTarget: this.context.getCurrentTexture().createView(),
-          clearValue: { r: 0, g: 0, b: 0, a: 0 },
-          loadOp: 'clear',
-          storeOp: 'store',
-        },
-      ],
-      depthStencilAttachment: {
-        view: null,
-        depthClearValue: 1.0,
-        depthLoadOp: 'clear',
-        depthStoreOp: 'store',
-      },
-    };
 
     this.textures.resize(device, this.context.getCanvasFormat(), size);
     this.postProcess.resize(device, this.canvasSize);
@@ -321,12 +331,13 @@ export default class Scene extends WebgpuScene {
     const depthTextureView = this.textures.getDepthTextureView();
     // this.renderPassDescriptor.colorAttachments[0].resolveTarget = currentView; // use for multisampling
     // this.renderPassDescriptor.colorAttachments[0].view = renderTargetView;
-    this.renderPassDescriptor.colorAttachments[0].view = this.postProcess.getRenderTargetView();
+    this.renderPassDescriptor.colorAttachments[0].view = this.postProcess.getRenderTargetView(0);
+    this.renderPassDescriptor.colorAttachments[1].view = this.postProcess.getRenderTargetView(1);
     this.renderPassDescriptor.depthStencilAttachment.view = depthTextureView;
 
-    this.camera.moveAroundCeter(this.time * 0.01, this.config.camera.position.z);
+    this.camera.moveAroundCenter(this.time * 0.01, this.config.camera.position.z);
     this.skybox.updateCamera(this.camera);
-    this.postProcess.updateTexture(currentView);
+    this.postProcess.updateTexture(currentView, this.postProcess.getRenderTargetView());
   }
 
   render() {
