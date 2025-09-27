@@ -7,6 +7,7 @@ struct Uniform {
 struct FragOutput {
   @location(0) color: vec4f,
   @location(1) normal: vec4f,
+  @location(2) depth: vec4f,
 };
 
 @binding(1) @group(0) var<uniform> uni: Uniform;
@@ -34,7 +35,7 @@ fn f_main(
     var out: FragOutput;
     out.color = tex;
     out.normal = vec4(fragNormal, 1.0);
-    // out.fragDepth = fragPosition.z / fragPosition.w; // linearize depth
+    out.depth = vec4(vec3(fragPosition.z / fragPosition.w), 1.0); // linearize depth
 
     return out;
 

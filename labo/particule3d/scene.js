@@ -190,16 +190,13 @@ export default class Scene extends WebgpuScene {
       fragment: {
         module: programs.f_particule_3d.get(),
         entryPoint: 'f_main',
-        targets: [
-          // can define multiple targets textures, to get color / depth or normal texture of your scene
-          {
-            // format: this.context.getCanvasFormat(), // use when directly rendering to canvas context
-            format: this.postProcess.getRenderTargetFormat(),
-          },
-          {
-            format: this.postProcess.getRenderTargetFormat(),
-          },
-        ],
+        // can define multiple targets textures, to get color / depth or normal texture of your scene
+        targets: Array.from({ length: this.postProcess.getRenderTargetsCount() }).map(() => ({
+          format: this.postProcess.getRenderTargetFormat(),
+        })),
+        // [{
+        //   // format: this.context.getCanvasFormat(), // use when directly rendering to canvas context
+        // }],
       },
       multisample: {
         count: this.textures.getSampleCount(),
@@ -267,21 +264,23 @@ export default class Scene extends WebgpuScene {
 
     this.renderPassDescriptor = {
       // can define multiple targets textures, should match pipeline targets
-      colorAttachments: [
-        {
-          view: null,
-          // resolveTarget: this.context.getCurrentTexture().createView(),
-          clearValue: { r: 0, g: 0, b: 0, a: 0 },
-          loadOp: 'clear',
-          storeOp: 'store',
-        },
-        {
+      colorAttachments: Array.from({ length: this.postProcess.getRenderTargetsCount() }).map(
+        () => ({
           view: null,
           clearValue: { r: 0, g: 0, b: 0, a: 0 },
           loadOp: 'clear',
           storeOp: 'store',
-        },
-      ],
+        }),
+      ),
+      // [
+      //   {
+      //     view: null,
+      //     // resolveTarget: this.context.getCurrentTexture().createView(), // use for multisampling
+      //     clearValue: { r: 0, g: 0, b: 0, a: 0 },
+      //     loadOp: 'clear',
+      //     storeOp: 'store',
+      //   },
+      // ],
       depthStencilAttachment: {
         view: null,
         depthClearValue: 1.0,
@@ -295,7 +294,9 @@ export default class Scene extends WebgpuScene {
     this.skybox.setup(
       programs.skybox.get(),
       cubeTexture,
-      this.postProcess.getRenderTargetFormat(),
+      Array.from({ length: this.postProcess.getRenderTargetsCount() }).map(() => ({
+        format: this.postProcess.getRenderTargetFormat(),
+      })),
       this.textures.getDepthFormat(),
     );
     this.resize(this.canvasSize);
@@ -327,8 +328,10 @@ export default class Scene extends WebgpuScene {
     const depthTextureView = this.textures.getDepthTextureView();
     // this.renderPassDescriptor.colorAttachments[0].resolveTarget = currentView; // use for multisampling
     // this.renderPassDescriptor.colorAttachments[0].view = renderTargetView;
-    this.renderPassDescriptor.colorAttachments[0].view = this.postProcess.getRenderTargetView(0);
-    this.renderPassDescriptor.colorAttachments[1].view = this.postProcess.getRenderTargetView(1);
+
+    Array.from({ length: this.postProcess.getRenderTargetsCount() }).forEach((_, i) => {
+      this.renderPassDescriptor.colorAttachments[i].view = this.postProcess.getRenderTargetView(i);
+    });
     this.renderPassDescriptor.depthStencilAttachment.view = depthTextureView;
 
     this.camera.moveAroundCenter(this.time * 0.01, this.config.camera.position.z);

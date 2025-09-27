@@ -7,7 +7,7 @@ export class Skybox {
     this.sampleCount = sampleCount;
   }
 
-  setup(program, cubeTexture, targetFormat, depthFormat) {
+  setup(program, cubeTexture, targets, depthFormat) {
     const device = this.context.getDevice();
 
     this.pipeline = device.createRenderPipeline({
@@ -20,7 +20,7 @@ export class Skybox {
       fragment: {
         module: program,
         entryPoint: 'f_main',
-        targets: [{ format: targetFormat }, { format: targetFormat }],
+        targets,
       },
       depthStencil: {
         depthWriteEnabled: true,

@@ -4,7 +4,7 @@ export class PostProcess {
     this.pipeline = undefined;
     this.renderTargetFormat = 'rgba8unorm';
     this.sampleCount = 1; // should be 1 for a render target used as texture, multisample is allow only for canvas context texture
-    this.renderTargetsCount = 2;
+    this.renderTargetsCount = 3;
   }
 
   setup(program) {
@@ -88,5 +88,9 @@ export class PostProcess {
 
   getRenderTargetFormat() {
     return this.renderTargetFormat;
+  }
+
+  getRenderTargetsCount() {
+    return this.renderTargetsCount;
   }
 }

@@ -23,10 +23,12 @@ struct VSOutput {
 @group(0) @binding(0) var samplerTex: sampler;
 @group(0) @binding(1) var colorTex: texture_2d<f32>;
 @group(0) @binding(2) var normalTex: texture_2d<f32>;
+@group(0) @binding(3) var depthTex: texture_2d<f32>;
 
 @fragment fn f_main(fsInput: VSOutput) -> @location(0) vec4f {
   let color = textureSample(colorTex, samplerTex, fsInput.texcoord);
   let color2 = textureSample(normalTex, samplerTex, fsInput.texcoord);
+  let color3 = textureSample(depthTex, samplerTex, fsInput.texcoord);
   return vec4f(color);
 }
 `;
