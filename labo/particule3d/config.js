@@ -5,6 +5,7 @@ export default {
     '/wgsl/vertex/v_particule_3d.js',
     '/wgsl/skybox.js',
     '/wgsl/postprocess.js',
+    '/wgsl/gaussianBlur.js',
   ],
   assets: [
     '/gltf/suzanne.glb',
@@ -38,5 +39,21 @@ export default {
     workgroupCount: 10,
     size: 200,
     speed: 10.0,
+  },
+  postprocess: {
+    guassianBlurHorizontal: {
+      params: {
+        direction: [1, 0],
+        radius: 4,
+      },
+      programName: 'gaussianBlur',
+    },
+    guassianBlurVertical: {
+      params: {
+        direction: [0, 1],
+        radius: 4,
+      },
+      programName: 'gaussianBlur',
+    },
   },
 };

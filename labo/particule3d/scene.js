@@ -36,6 +36,11 @@ export default class Scene extends WebgpuScene {
     this.postProcess = new PostProcess(this.context);
     this.postProcess.setup(programs.postprocess.get());
 
+    Object.keys(this.config.postprocess).forEach((key) => {
+      const effect = this.config.postprocess[key];
+      this.postProcess.addEffect(key, programs[effect.programName].get(), effect.params);
+    });
+
     const computeShaderModule = device.createShaderModule({
       code: getComputeShader(this.config.particules.workgroupSize),
       label: 'Compute Shader',
@@ -323,10 +328,10 @@ export default class Scene extends WebgpuScene {
     device.queue.writeBuffer(this.uniformBuffer, 0, this.uniformValues);
 
     // update render pass descriptor texture views
-    const currentView = this.context.getCurrentTexture().createView();
+    const canvasCurrentView = this.context.getCurrentTexture().createView();
     // const renderTargetView = this.textures.getRenderTargetView();
     const depthTextureView = this.textures.getDepthTextureView();
-    // this.renderPassDescriptor.colorAttachments[0].resolveTarget = currentView; // use for multisampling
+    // this.renderPassDescriptor.colorAttachments[0].resolveTarget = canvasCurrentView; // use for multisampling
     // this.renderPassDescriptor.colorAttachments[0].view = renderTargetView;
 
     Array.from({ length: this.postProcess.getRenderTargetsCount() }).forEach((_, i) => {
@@ -336,7 +341,10 @@ export default class Scene extends WebgpuScene {
 
     this.camera.moveAroundCenter(this.time * 0.01, this.config.camera.position.z);
     this.skybox.updateCamera(this.camera);
-    this.postProcess.updateTexture(currentView, this.postProcess.getRenderTargetView());
+
+    const pingTargetView = this.postProcess.getPingPongTexture(true).createView();
+    this.postProcess.updateTexture(pingTargetView);
+    this.postProcess.updateEffectTextures(canvasCurrentView);
   }
 
   render() {
@@ -370,6 +378,8 @@ export default class Scene extends WebgpuScene {
     renderPass.end();
 
     this.postProcess.render(commandEncoder);
+
+    this.postProcess.renderEffects(commandEncoder);
 
     device.queue.submit([commandEncoder.finish()]);
   }
