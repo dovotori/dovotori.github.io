@@ -158,6 +158,10 @@ export class Shadow {
     return [
       {
         binding: 3,
+        resource: { buffer },
+      },
+      {
+        binding: 4,
         resource: device.createSampler({
           magFilter: 'nearest',
           minFilter: 'nearest',
@@ -169,12 +173,8 @@ export class Shadow {
         }),
       },
       {
-        binding: 4,
-        resource: this.textureDepthView,
-      },
-      {
         binding: 5,
-        resource: { buffer },
+        resource: this.textureDepthView,
       },
     ];
   }

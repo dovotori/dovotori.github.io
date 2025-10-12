@@ -13,7 +13,7 @@ export default {
   ],
   // assets: ['/gltf/paysage.gltf'],
   // assets: ['/gltf/distributedInstances.gltf'],
-  assets: ['/gltf/paysage9-testTex.gltf'],
+  assets: ['/gltf/paysage.glb'],
   // assets: ["/gltf/plane.gltf"],
   // assets: ["/gltf/head.gltf"],
   // assets: ['/gltf/headinterleaved.gltf'],
@@ -42,7 +42,7 @@ export default {
       type: 0,
       position: { x: -20, y: 20, z: -2 },
       target: { x: 0, y: 0, z: 0 },
-      ambiant: [1, 1, 0.2],
+      ambiant: [1, 1, 0.4],
       diffuse: [1, 1, 1],
       specular: [1, 1, 1],
       strength: 2,
@@ -54,7 +54,7 @@ export default {
     {
       type: 0,
       position: { x: -10, y: 20, z: 10 },
-      ambiant: [1, 0.2, 0.3],
+      ambiant: [1, 0.6, 0.8],
       strength: 1,
     },
   ],
@@ -66,81 +66,3 @@ export default {
     events: ['click'],
   },
 };
-/*
-
-GLTF
-// vert 
-struct CameraUniform {
-  projection: mat4x4<f32>,
-  view: mat4x4<f32>,
-  model: mat4x4<f32>,
-  position: vec3<f32>,
-};
-@group(0) @binding(0)
-var<uniform> camera: CameraUniform;
-
-struct TransformUniform {
-  color_picking: vec4<f32>,
-  model: mat4x4<f32>,
-  normal_matrix: mat3x3<f32>,
-};
-@group(1) @binding(0)
-var<uniform> transform: TransformUniform;
-
-struct VertexInput {
-  @location(0) position: vec3<f32>,
-  @location(1) normale: vec3<f32>,
-  @location(2) texture: vec2<f32>,
-  // @location(3) tangent: vec4<f32>,
-}
-
-// frag
-
-struct MaterialUniform {
-  baseColorFactor: vec4f,
-  emissiveFactor: vec3f,
-  roughnessFactor: f32,
-  metallicFactor: f32,
-};
-
-@group(2) @binding(0) var<uniform> material : MaterialUniform;
-
-struct PointLight {
-  position: vec3f, 
-  color: vec3f, 
-  intensity: f32,
-};
-@group(3) @binding(0) var<storage> lights: array<PointLight>;
-
-
-
-
-
-PICKING
-struct CameraUniform {
-  projection: mat4x4<f32>,
-  view: mat4x4<f32>,
-  model: mat4x4<f32>,
-  position: vec3<f32>,
-};
-
-@group(0) @binding(0)
-var<uniform> camera: CameraUniform;
-
-struct TransformUniform {
-  color_picking: vec4<f32>,
-  model: mat4x4<f32>,
-  normal_matrix: mat3x3<f32>,
-};
-
-@group(1) @binding(0)
-var<uniform> transform: TransformUniform;
-
-struct VertexInput {
-  @location(0) position: vec3<f32>,
-  @location(1) normale: vec3<f32>,
-  @location(2) texture: vec2<f32>,
-}
-
-
-*/

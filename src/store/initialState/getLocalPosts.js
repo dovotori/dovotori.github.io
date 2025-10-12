@@ -649,6 +649,27 @@ const rawPosts = [
       noBackground: true,
     },
   },
+  {
+    id: 29,
+    slug: 'rig',
+    title: {
+      [Locales.FR]: 'Rigging',
+      [Locales.EN]: 'Rigging',
+      [Locales.JP]: 'Rigging',
+    },
+    category: CAT_CODE,
+    tags: [Tags.TAG_JS],
+    description: {
+      [Locales.FR]: [''],
+      [Locales.EN]: [''],
+      [Locales.JP]: [''],
+    },
+    date: 2025,
+    labo: {
+      hasJs: true,
+      noBackground: true,
+    },
+  },
 ];
 
 export default (locale) => {

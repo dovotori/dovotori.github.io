@@ -43,7 +43,9 @@ class BufferMaterial {
         );
       }
 
-      entries.push(...depthMapBingGroupEntries);
+      if (depthMapBingGroupEntries) {
+        entries.push(...depthMapBingGroupEntries);
+      }
 
       this.bindGroups.set(
         i,

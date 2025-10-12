@@ -107,6 +107,12 @@ export class PostProcess {
   setupEffectSource(name, sourceTextureView) {
     const device = this.context.getDevice();
 
+    let buffers = {};
+    let entries = [
+      { binding: 0, resource: this.sampler },
+      { binding: 1, resource: sourceTextureView },
+    ];
+
     switch (name) {
       case 'guassianBlurVertical':
       case 'guassianBlurHorizontal': {
@@ -131,26 +137,49 @@ export class PostProcess {
         });
         device.queue.writeBuffer(texelSizeBuffer, 0, new Float32Array(texelSize));
 
-        this.effects.set(name, {
-          ...this.effects.get(name),
-          bindGroup: device.createBindGroup({
-            label: `Group for ${name}`,
-            layout: this.effects.get(name).pipeline.getBindGroupLayout(0),
-            entries: [
-              { binding: 0, resource: this.sampler },
-              { binding: 1, resource: sourceTextureView },
-              { binding: 2, resource: { buffer: directionBuffer } },
-              { binding: 3, resource: { buffer: texelSizeBuffer } },
-              { binding: 4, resource: { buffer: radiusBuffer } },
-            ],
-          }),
-          buffers: { radius: radiusBuffer, direction: directionBuffer },
+        entries.push(
+          ...[
+            { binding: 2, resource: { buffer: directionBuffer } },
+            { binding: 3, resource: { buffer: texelSizeBuffer } },
+            { binding: 4, resource: { buffer: radiusBuffer } },
+          ],
+        );
+        buffers = { radius: radiusBuffer, direction: directionBuffer };
+        break;
+      }
+      case 'bright': {
+        const thresholdBuffer = device.createBuffer({
+          label: 'threshold buffer',
+          size: 8,
+          usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
         });
+        const glowThresholdKneeBuffer = device.createBuffer({
+          label: 'glow threshold knee buffer',
+          size: 8,
+          usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+        });
+        entries.push(
+          ...[
+            { binding: 2, resource: { buffer: thresholdBuffer } },
+            { binding: 3, resource: { buffer: glowThresholdKneeBuffer } },
+          ],
+        );
+        buffers = { threshold: thresholdBuffer, glowThresholdKnee: glowThresholdKneeBuffer };
         break;
       }
       default:
         break;
     }
+
+    this.effects.set(name, {
+      ...this.effects.get(name),
+      bindGroup: device.createBindGroup({
+        label: `Group for ${name}`,
+        layout: this.effects.get(name).pipeline.getBindGroupLayout(0),
+        entries,
+      }),
+      buffers,
+    });
   }
 
   resize = (device, canvasSize) => {
@@ -213,12 +242,9 @@ export class PostProcess {
     const effect = this.effects.get(name);
     if (!effect) return;
     const device = this.context.getDevice();
-    device.queue.writeBuffer(effect.buffers.radius, 0, new Float32Array([effect.params.radius]));
-    device.queue.writeBuffer(
-      effect.buffers.direction,
-      0,
-      new Float32Array(effect.params.direction),
-    );
+    for (const key of Object.keys(effect.params)) {
+      device.queue.writeBuffer(effect.buffers[key], 0, new Float32Array(effect.params[key]));
+    }
   }
 
   renderEffect(name, encoder) {

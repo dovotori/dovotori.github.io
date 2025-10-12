@@ -9,7 +9,7 @@ export const GltfBindGroups = {
 };
 
 // generate from https://webgpufundamentals.org/webgpu/lessons/resources/wgsl-offset-computer.html
-export const buildBindGroupLayouts = (device) => {
+export const buildBindGroupLayouts = (device, withShadow = false) => {
   const cameraUniformBindGroupLayout = device.createBindGroupLayout({
     label: 'Camera Uniform Bind Group Layout',
     entries: [
@@ -48,46 +48,54 @@ export const buildBindGroupLayouts = (device) => {
     ],
   });
 
+  const materialUniformBindGroupEntries = [
+    {
+      binding: 0,
+      visibility: GPUShaderStage.FRAGMENT,
+      buffer: {
+        type: 'uniform',
+        hasDynamicOffset: false,
+        minBindingSize: 48,
+      },
+    },
+    {
+      binding: 1,
+      visibility: GPUShaderStage.FRAGMENT,
+      sampler: {},
+    },
+    {
+      binding: 2,
+      visibility: GPUShaderStage.FRAGMENT,
+      texture: {},
+    },
+  ];
+  if (withShadow) {
+    materialUniformBindGroupEntries.push(
+      ...[
+        {
+          binding: 3,
+          visibility: GPUShaderStage.FRAGMENT,
+          buffer: {
+            type: 'uniform', // posLight
+          },
+        },
+        {
+          binding: 4,
+          visibility: GPUShaderStage.FRAGMENT,
+          sampler: { type: 'comparison' }, // Comparison sampler
+        },
+        {
+          binding: 5,
+          visibility: GPUShaderStage.FRAGMENT,
+          texture: { sampleType: 'depth', viewDimension: '2d' }, // Depth texture
+        },
+      ],
+    );
+  }
+
   const materialUniformBindGroupLayout = device.createBindGroupLayout({
     label: 'Material Uniform Bind Group Layout',
-    entries: [
-      {
-        binding: 0,
-        visibility: GPUShaderStage.FRAGMENT,
-        buffer: {
-          type: 'uniform',
-          hasDynamicOffset: false,
-          minBindingSize: 48,
-        },
-      },
-      {
-        binding: 1,
-        visibility: GPUShaderStage.FRAGMENT,
-        sampler: {},
-      },
-      {
-        binding: 2,
-        visibility: GPUShaderStage.FRAGMENT,
-        texture: {},
-      },
-      {
-        binding: 3,
-        visibility: GPUShaderStage.FRAGMENT,
-        sampler: { type: 'comparison' }, // Comparison sampler
-      },
-      {
-        binding: 4,
-        visibility: GPUShaderStage.FRAGMENT,
-        texture: { sampleType: 'depth', viewDimension: '2d' }, // Depth texture
-      },
-      {
-        binding: 5,
-        visibility: GPUShaderStage.FRAGMENT,
-        buffer: {
-          type: 'uniform',
-        },
-      },
-    ],
+    entries: materialUniformBindGroupEntries,
   });
 
   const lightsStorageBindGroupLayout = device.createBindGroupLayout({

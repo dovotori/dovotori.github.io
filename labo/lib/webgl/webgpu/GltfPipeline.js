@@ -143,7 +143,7 @@ export class GltfPipeline {
       ];
     }
 
-    this.bindGroupLayouts = buildBindGroupLayouts(device);
+    this.bindGroupLayouts = buildBindGroupLayouts(device, depthMapBingGroupEntries !== undefined);
 
     await this.pipeline.setup(
       device,

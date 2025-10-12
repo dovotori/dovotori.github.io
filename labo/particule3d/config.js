@@ -6,6 +6,7 @@ export default {
     '/wgsl/skybox.js',
     '/wgsl/postprocess.js',
     '/wgsl/gaussianBlur.js',
+    '/wgsl/bright.js',
   ],
   assets: [
     '/gltf/suzanne.glb',
@@ -41,17 +42,24 @@ export default {
     speed: 10.0,
   },
   postprocess: {
+    bright: {
+      params: {
+        threshold: [0.2],
+        glowThresholdKnee: [0.3],
+      },
+      programName: 'bright',
+    },
     guassianBlurHorizontal: {
       params: {
         direction: [1, 0],
-        radius: 4,
+        radius: [4],
       },
       programName: 'gaussianBlur',
     },
     guassianBlurVertical: {
       params: {
         direction: [0, 1],
-        radius: 4,
+        radius: [4],
       },
       programName: 'gaussianBlur',
     },
