@@ -1,4 +1,4 @@
-import { forwardRef, useState, useCallback } from 'react';
+import { forwardRef, useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 import GlitchImage from './GlitchImage';
@@ -18,19 +18,25 @@ const IMG = styled.img`
 const LazyImage = forwardRef(
   ({ className, withGlitch, alt, width, height, children, src }, ref) => {
     const [isLoaded, setIsLoaded] = useState(false);
-    const hasLoaded = useCallback(() => setIsLoaded(true), [setIsLoaded]);
+    const [hasError, setHasError] = useState(false);
+    const onLoad = useCallback(() => setIsLoaded(true), []);
+    const onError = useCallback(() => {
+      setHasError(true);
+      setIsLoaded(true);
+    }, []);
 
     return (
       <Wrap ref={ref} className={className}>
-        <IMG
+        {!hasError && <IMG
           alt={`_${alt}`}
           src={src}
-          onLoad={hasLoaded}
+          onLoad={onLoad}
+          onError={onError}
           $isLoaded={isLoaded}
           width={width || 'auto'}
           height={height || 'auto'}
-        />
-        {isLoaded && withGlitch && <GlitchImage src={src} />}
+        />}
+        {!hasError && isLoaded && withGlitch && <GlitchImage src={src} />}
         {!isLoaded && children}
       </Wrap>
     );
