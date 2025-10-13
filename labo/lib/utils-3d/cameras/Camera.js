@@ -1,5 +1,5 @@
-import Mat4 from '../../utils/maths/Mat4';
-import Objectif from './Objectif';
+import Mat4 from "../../utils/maths/Mat4";
+import Objectif from "./Objectif";
 
 export default class extends Objectif {
   constructor(config) {
@@ -24,7 +24,9 @@ export default class extends Objectif {
   }
 
   perspective(w, h) {
-    this.projection.identity().perspective(this.angle, w / h, this.near, this.far);
+    this.projection
+      .identity()
+      .perspective(this.angle, w / h, this.near, this.far);
   }
 
   moveAroundCenter(time, offset = 0) {

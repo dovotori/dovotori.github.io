@@ -1,13 +1,15 @@
-import { hexToRgb } from '../../utils/color';
-import Line from './Line';
+import { hexToRgb } from "../../utils/color";
+import Line from "./Line";
 // import Target from '../maths/Target';
 
 export default class {
   constructor(gl) {
-    this.colors = ['#e09f7d', '#ef5d60', '#ec4067', '#a01a7d', '#311847'].map((hex) => {
-      const { r, g, b } = hexToRgb(hex);
-      return [r / 255, g / 255, b / 255];
-    });
+    this.colors = ["#e09f7d", "#ef5d60", "#ec4067", "#a01a7d", "#311847"].map(
+      (hex) => {
+        const { r, g, b } = hexToRgb(hex);
+        return [r / 255, g / 255, b / 255];
+      },
+    );
     this.lines = this.colors.map(
       (_, i) =>
         new Line(gl, 20, {
@@ -20,14 +22,14 @@ export default class {
   }
 
   update(program) {
-    program.setFloat('time', this.time);
+    program.setFloat("time", this.time);
     this.lines.forEach((line) => line.update(this.mousePos));
   }
 
   render(program) {
-    program.setFloat('weight', this.weight);
+    program.setFloat("weight", this.weight);
     this.lines.forEach((line, i) => {
-      program.setVector('color', this.colors[i]);
+      program.setVector("color", this.colors[i]);
       line.render(program.get());
     });
   }

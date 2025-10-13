@@ -1,9 +1,9 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import { ReactComponent as Github } from 'Assets/svg/github.svg';
-import { ReactComponent as Gitlab } from 'Assets/svg/gitlab.svg';
-import { ReactComponent as Linkedin } from 'Assets/svg/linkedin.svg';
-import { ReactComponent as Mail } from 'Assets/svg/mail.svg';
+import { ReactComponent as Github } from "Assets/svg/github.svg";
+import { ReactComponent as Gitlab } from "Assets/svg/gitlab.svg";
+import { ReactComponent as Linkedin } from "Assets/svg/linkedin.svg";
+import { ReactComponent as Mail } from "Assets/svg/mail.svg";
 
 const Wrap = styled.div`
   text-align: center;

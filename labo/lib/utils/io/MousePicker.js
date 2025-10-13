@@ -1,6 +1,6 @@
-import Mat4 from '../maths/Mat4';
-import Vec4 from '../maths/Vec4';
-import { mapFromRange } from '../utils/numbers';
+import Mat4 from "../maths/Mat4";
+import Vec4 from "../maths/Vec4";
+import { mapFromRange } from "../utils/numbers";
 
 export default class {
   constructor() {
@@ -14,7 +14,9 @@ export default class {
 
     const proj = new Mat4();
     proj.equal(camera.getProjection()).inverse();
-    this.rayon.equal(this.rayon.multiplyMatrix(proj)).set(this.rayon.x, this.rayon.y, -1.0, 0.0);
+    this.rayon
+      .equal(this.rayon.multiplyMatrix(proj))
+      .set(this.rayon.x, this.rayon.y, -1.0, 0.0);
 
     const view = new Mat4();
     view.equal(camera.getView()).inverse();

@@ -1,11 +1,11 @@
-import { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
-import styled, { css, keyframes } from 'styled-components';
+import { useCallback, useState } from "react";
+import { Link } from "react-router-dom";
+import styled, { css, keyframes } from "styled-components";
 
-import Bol from './Bol';
-import ProjectLabo from './ProjectLabo';
-import Pulse from './Pulse';
-import TypingMessage from './TypingMessage';
+import Bol from "./Bol";
+import ProjectLabo from "./ProjectLabo";
+import Pulse from "./Pulse";
+import TypingMessage from "./TypingMessage";
 
 const fadeUp = keyframes`
   0% { transform: scale(0.8); opacity: 0; }
@@ -81,7 +81,7 @@ const Katakana = styled.h1`
   color: ${(p) => p.theme.text};
   line-height: 0.7;
   position: absolute;
-  font-size: ${(p) => (p.$isHome ? '11em' : '8em')};
+  font-size: ${(p) => (p.$isHome ? "11em" : "8em")};
   top: 50%;
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
@@ -139,7 +139,13 @@ const StyledBol = styled(Bol)`
   z-index: 1;
 `;
 
-const Signature = ({ className, isTouchDevice, hello, text, isHome = true }) => {
+const Signature = ({
+  className,
+  isTouchDevice,
+  hello,
+  text,
+  isHome = true,
+}) => {
   const [count, setCount] = useState(0);
 
   const add = useCallback(() => {
@@ -150,10 +156,19 @@ const Signature = ({ className, isTouchDevice, hello, text, isHome = true }) => 
     <Wrap>
       <Pulse className="circle" count={count} />
       <Katakana isTouch={isTouchDevice} $isHome={isHome}>
-        <StyledTypingMessage message={isHome ? 'ドリアン' : 'はじめまして'} isLoop isVertical />
+        <StyledTypingMessage
+          message={isHome ? "ドリアン" : "はじめまして"}
+          isLoop
+          isVertical
+        />
       </Katakana>
       <Absolute isTouch={isTouchDevice}>
-        <StyledLink to={isHome ? '/about' : '/'} className={className} title="about" onClick={add}>
+        <StyledLink
+          to={isHome ? "/about" : "/"}
+          className={className}
+          title="about"
+          onClick={add}
+        >
           <Appear>
             {isTouchDevice ? (
               <StyledBol isSwitched={!isHome} />
@@ -164,7 +179,7 @@ const Signature = ({ className, isTouchDevice, hello, text, isHome = true }) => 
           <CenterHorizontal isTouch={isTouchDevice}>
             <Name isTouch={isTouchDevice}>
               <StyledTypingMessage
-                message={isHome ? 'dorian' : hello}
+                message={isHome ? "dorian" : hello}
                 firstMessage="ドリアン"
                 isLoop
                 isCenter

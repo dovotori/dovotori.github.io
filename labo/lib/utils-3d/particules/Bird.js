@@ -1,6 +1,6 @@
-import Vec3 from '../../utils/maths/Vec3';
-import { random } from '../../utils/numbers';
-import Node from './Node';
+import Vec3 from "../../utils/maths/Vec3";
+import { random } from "../../utils/numbers";
+import Node from "./Node";
 
 const MAX_SPEED = 0.01;
 const MAX_STRENGTH = 0.1;
@@ -20,7 +20,11 @@ export default class extends Node {
 
   seek = (cible) =>
     // ATTIRER PAR LA CIBLE
-    new Vec3().equal(cible).minus(this.position).multiplyNumber(MAX_SPEED).normalise();
+    new Vec3()
+      .equal(cible)
+      .minus(this.position)
+      .multiplyNumber(MAX_SPEED)
+      .normalise();
 
   seekSteering = (cible) => {
     // ATTIRER PAR LA CIBLE AVEC UN SMOOTH DE TRAJECTOIRE
@@ -56,11 +60,15 @@ export default class extends Node {
 
   flee = (cible) =>
     // FUIT LA CIBLE
-    new Vec3().equal(this.seek(cible)).multiplyNumber(-1);
+    new Vec3()
+      .equal(this.seek(cible))
+      .multiplyNumber(-1);
 
   fleeSteering = (cible) =>
     // FUIT LA CIBLE EN STEERING
-    new Vec3().equal(this.seekSteering(cible)).multiplyNumber(-1);
+    new Vec3()
+      .equal(this.seekSteering(cible))
+      .multiplyNumber(-1);
 
   // //////////////////////// GROUPE MOUV ///////////////////////////////////
 
@@ -90,7 +98,9 @@ export default class extends Node {
         // exclue soit meme
         // SEPARATION
         if (distance < RADIUS_SEPERATE) {
-          const ajoutForce = new Vec3().equal(this.position).minus(bird.getPosition());
+          const ajoutForce = new Vec3()
+            .equal(this.position)
+            .minus(bird.getPosition());
           ajoutForce.normalise();
           // plus le voisin est loin moins la force est importante
           ajoutForce.divideNumber(distance);
@@ -130,7 +140,10 @@ export default class extends Node {
     // ALIGNEMENT
     if (cptAlignement > 0) {
       // divise par le nombre de voisin
-      forceAlignement.divideNumber(cptAlignement).normalise().multiplyNumber(MAX_SPEED);
+      forceAlignement
+        .divideNumber(cptAlignement)
+        .normalise()
+        .multiplyNumber(MAX_SPEED);
 
       // steer
       forceAlignement.minus(this.speed).limiter(MAX_STRENGTH);

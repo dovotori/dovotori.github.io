@@ -1,9 +1,9 @@
-import { useInView } from 'react-intersection-observer';
-import styled from 'styled-components';
+import { useInView } from "react-intersection-observer";
+import styled from "styled-components";
 
-import { getProjectImagePath } from '../utils';
-import LazyImage from './LazyImage';
-import Loader from './Loader';
+import { getProjectImagePath } from "../utils";
+import LazyImage from "./LazyImage";
+import Loader from "./Loader";
 
 const StyledLazyImage = styled(LazyImage)`
   margin: 0 auto 10vh;
@@ -11,7 +11,7 @@ const StyledLazyImage = styled(LazyImage)`
   background: ${(p) => p.theme.getGradient};
   box-shadow: 0 0 2em ${(p) => p.theme.backgroundHighlight};
   opacity: ${(p) => (p.$isVisible ? 1 : 0)};
-  transform: ${(p) => (p.$isVisible ? 'none' : 'translateY(20%)')};
+  transform: ${(p) => (p.$isVisible ? "none" : "translateY(20%)")};
   transition:
     opacity 1s ${(p) => p.theme.elastic},
     transform 1s ${(p) => p.theme.elastic},

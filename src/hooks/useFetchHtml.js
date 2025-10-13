@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 const useFetchHtml = (name, hasHtml = true) => {
   const [pending, setPending] = useState(true);
@@ -25,7 +25,7 @@ const useFetchHtml = (name, hasHtml = true) => {
     } else {
       setPending(false);
     }
-  }, [name]);
+  }, [name, hasHtml]);
 
   return { pending, html, error };
 };

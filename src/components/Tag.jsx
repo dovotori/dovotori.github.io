@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { getColorType } from '../utils';
+import styled from "styled-components";
+import { getColorType } from "../utils";
 
 // import Logotype from './Logotype'
 

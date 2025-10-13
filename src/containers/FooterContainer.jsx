@@ -1,6 +1,6 @@
-import { setLang, toggleTheme } from '../actions/device';
-import Footer from '../components/Footer';
-import { getContent, getDispatch, getIsDarkMode, getlang } from '../selectors';
+import { setLang, toggleTheme } from "../actions/device";
+import Footer from "../components/Footer";
+import { getContent, getDispatch, getIsDarkMode, getlang } from "../selectors";
 
 export default () => {
   const dispatch = getDispatch();

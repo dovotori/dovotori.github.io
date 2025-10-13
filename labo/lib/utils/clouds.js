@@ -1,4 +1,4 @@
-import Vec3 from './maths/Vec3';
+import Vec3 from "./maths/Vec3";
 
 const getRandomSamplesOnGrid = (width, height, depth = null) => {
   const samples = [];
@@ -12,7 +12,11 @@ const getRandomSamplesOnGrid = (width, height, depth = null) => {
     for (let z = 0; z < depth; z++) {
       for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
-          samples.push([x + Math.random(), y + Math.random(), z + Math.random()]);
+          samples.push([
+            x + Math.random(),
+            y + Math.random(),
+            z + Math.random(),
+          ]);
         }
       }
     }
@@ -33,7 +37,9 @@ const find3DClosestDistanceFromSamples = (point, samples) => {
 };
 
 const get2Ddistance = (p1, p2) =>
-  Math.sqrt((p2[0] - p1[0]) * (p2[0] - p1[0]) + (p2[1] - p1[1]) * (p2[1] - p1[1]));
+  Math.sqrt(
+    (p2[0] - p1[0]) * (p2[0] - p1[0]) + (p2[1] - p1[1]) * (p2[1] - p1[1]),
+  );
 
 const find2DClosestDistanceFromSamples = (point, samples) =>
   Math.max(
@@ -116,7 +122,11 @@ const getSurroundingGridCase = (gridPos, sizes) => {
     for (let z = -1; z <= 1; z++) {
       for (let y = -1; y <= 1; y++) {
         for (let x = -1; x <= 1; x++) {
-          surroundingGridCase.push([gridPos[0] + x, gridPos[1] + y, gridPos[2] + z]);
+          surroundingGridCase.push([
+            gridPos[0] + x,
+            gridPos[1] + y,
+            gridPos[2] + z,
+          ]);
         }
       }
     }
@@ -132,7 +142,9 @@ const getSurroundingGridCase = (gridPos, sizes) => {
 
 export const getNearSamples = (gridPos, sizes, samples) => {
   const surroundingGridCase = getSurroundingGridCase(gridPos, sizes);
-  return surroundingGridCase.map((pos) => getSampleFromGridPos(pos, samples, sizes));
+  return surroundingGridCase.map((pos) =>
+    getSampleFromGridPos(pos, samples, sizes),
+  );
 };
 
 export const generate2DTexture = (width, height, resolution) => {
@@ -146,11 +158,17 @@ export const generate2DTexture = (width, height, resolution) => {
     for (let x = 0; x < width * resolution; x++) {
       const current = [x / resolution, y / resolution];
       const currentGridPos = current.map((c) => Math.floor(c));
-      if (gridPos[0] !== currentGridPos[0] || gridPos[1] !== currentGridPos[1]) {
+      if (
+        gridPos[0] !== currentGridPos[0] ||
+        gridPos[1] !== currentGridPos[1]
+      ) {
         gridPos = currentGridPos;
         samplesToCompare = getNearSamples(gridPos, sizes, samples);
       }
-      const closestDistance = find2DClosestDistanceFromSamples(current, samplesToCompare);
+      const closestDistance = find2DClosestDistanceFromSamples(
+        current,
+        samplesToCompare,
+      );
       values.push(closestDistance);
     }
   }
@@ -177,7 +195,10 @@ export const generate3DTexture = (width, height, depth, resolution) => {
           gridPos = currentGridPos;
           samplesToCompare = getNearSamples(gridPos, sizes, samples);
         }
-        const closestDistance = find3DClosestDistanceFromSamples(current, samplesToCompare);
+        const closestDistance = find3DClosestDistanceFromSamples(
+          current,
+          samplesToCompare,
+        );
         values.push(closestDistance);
       }
     }

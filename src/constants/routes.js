@@ -1,71 +1,71 @@
-import { lazy } from 'react';
+import { lazy } from "react";
 
-import LangRedirect from '../components/LangRedirect';
+import LangRedirect from "../components/LangRedirect";
 
-const About = lazy(() => import('../containers/AboutContainer'));
-const Project = lazy(() => import('../containers/ProjectContainer'));
-const Home = lazy(() => import('../components/Home'));
-const QrCode = lazy(() => import('../components/QrCode'));
+const About = lazy(() => import("../containers/AboutContainer"));
+const Project = lazy(() => import("../containers/ProjectContainer"));
+const Home = lazy(() => import("../components/Home"));
+const QrCode = lazy(() => import("../components/QrCode"));
 
 const routes = [
   {
-    path: '/en',
+    path: "/en",
     component: LangRedirect,
   },
   {
-    path: '/jp',
+    path: "/jp",
     component: LangRedirect,
   },
   {
-    path: '/fr',
+    path: "/fr",
     component: LangRedirect,
   },
   {
-    path: '/fr/about',
+    path: "/fr/about",
     component: LangRedirect,
   },
   {
-    path: '/en/about',
+    path: "/en/about",
     component: LangRedirect,
   },
   {
-    path: '/jp/about',
+    path: "/jp/about",
     component: LangRedirect,
   },
   {
-    path: '/fr/project/:slug',
+    path: "/fr/project/:slug",
     component: LangRedirect,
   },
   {
-    path: '/en/project/:slug',
+    path: "/en/project/:slug",
     component: LangRedirect,
   },
   {
-    path: '/jp/project/:slug',
+    path: "/jp/project/:slug",
     component: LangRedirect,
   },
   {
-    path: '/about',
+    path: "/about",
     component: About,
   },
   {
-    path: '/project/:slug',
+    path: "/project/:slug",
     component: Project,
   },
   {
-    path: '/category/:slug',
+    path: "/category/:slug",
     component: Home,
   },
   {
-    path: '/project/:slug',
+    path: "/project/:slug",
     component: Project,
   },
   {
-    path: '/qrcode',
+    path: "/qrcode",
     component: QrCode,
   },
   {
-    path: '/',
+    path: "/",
     component: Home,
   },
 ];

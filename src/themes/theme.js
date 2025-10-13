@@ -1,7 +1,7 @@
-import { css } from 'styled-components';
+import { css } from "styled-components";
 
-import stripes from 'Assets/img/stripes.png';
-import stripesWhite from 'Assets/img/stripesWhite.png';
+import stripes from "Assets/img/stripes.png";
+import stripesWhite from "Assets/img/stripesWhite.png";
 
 const getType = (p) => {
   const { colorType, $colorType } = p;
@@ -18,8 +18,8 @@ const hue = {
 };
 
 const common = {
-  elastic1: 'cubic-bezier(0.860, 0.000, 0.070, 1.000)',
-  elastic2: 'cubic-bezier(.75,-0.5,0,1.75)',
+  elastic1: "cubic-bezier(0.860, 0.000, 0.070, 1.000)",
+  elastic2: "cubic-bezier(.75,-0.5,0,1.75)",
   breakpoint: {
     tablet: 1020,
     mobile: 420,
@@ -45,10 +45,10 @@ const common = {
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   `,
-  primaryGradient: 'linear-gradient(to right, #006666, #a5ffd4)',
-  secondaryGradient: 'linear-gradient(to right, #FF4D4D,  #993D3D)',
-  tertiaryGradient: 'linear-gradient(to right, #514799, #4531d5)',
-  neutralGradient: 'linear-gradient(to right, #444,  #aaa)',
+  primaryGradient: "linear-gradient(to right, #006666, #a5ffd4)",
+  secondaryGradient: "linear-gradient(to right, #FF4D4D,  #993D3D)",
+  tertiaryGradient: "linear-gradient(to right, #514799, #4531d5)",
+  neutralGradient: "linear-gradient(to right, #444,  #aaa)",
   // gradient(315deg, #42d392 25%, #647eff); // vuejs
   // #5ba8c2
   // #8b9fcb
@@ -84,7 +84,7 @@ const common = {
     if (type === 2) {
       return p.theme.tertiary;
     }
-    return '#999';
+    return "#999";
   },
   getGradient: (p) => {
     const type = getType(p);
@@ -105,7 +105,7 @@ const common = {
     menu: 50,
     content: 10,
   },
-  active: '&:active { transform-origin: center; transform: scale(0.95); }',
+  active: "&:active { transform-origin: center; transform: scale(0.95); }",
 };
 
 export const dark = {
@@ -116,14 +116,14 @@ export const dark = {
   secondaryDark: `hsl(${hue.secondary}, 60%, 60%)`,
   tertiary: `hsl(${hue.tertiary}, 100%, 70%)`,
   tertiaryDark: `hsl(${hue.tertiary}, 100%, 60%)`,
-  background: '#222',
-  backgroundHighlight: '#000',
-  midl: '#666',
-  light: '#bbb',
-  text: '#fff',
+  background: "#222",
+  backgroundHighlight: "#000",
+  midl: "#666",
+  light: "#bbb",
+  text: "#fff",
   stripes: stripesWhite,
   isLight: false,
-  softGradient: 'linear-gradient(180deg, #111, #222)',
+  softGradient: "linear-gradient(180deg, #111, #222)",
 };
 
 export const light = {
@@ -134,12 +134,12 @@ export const light = {
   secondaryDark: `hsl(${hue.secondary}, 60%, 60%)`,
   tertiary: `hsl(${hue.tertiary}, 80%, 50%)`,
   tertiaryDark: `hsl(${hue.tertiary}, 100%, 60%)`,
-  background: '#fff',
-  backgroundHighlight: '#ddd',
-  midl: '#888',
-  light: '#222',
-  text: '#000',
+  background: "#fff",
+  backgroundHighlight: "#ddd",
+  midl: "#888",
+  light: "#222",
+  text: "#000",
   stripes,
   isLight: true,
-  softGradient: 'linear-gradient(180deg, #ccc, #fff)',
+  softGradient: "linear-gradient(180deg, #ccc, #fff)",
 };

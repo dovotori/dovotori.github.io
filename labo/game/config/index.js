@@ -9,47 +9,47 @@ import {
   UP,
   W,
   X,
-} from '../../lib/utils/constants/keyboard';
+} from "../../lib/utils/constants/keyboard";
 
-import spriteBullet from './sprites/bullet';
-import spriteFx from './sprites/fx';
-import spriteHeros from './sprites/heros';
-import spriteMonster from './sprites/monster';
-import spriteTiles from './sprites/tiles';
+import spriteBullet from "./sprites/bullet";
+import spriteFx from "./sprites/fx";
+import spriteHeros from "./sprites/heros";
+import spriteMonster from "./sprites/monster";
+import spriteTiles from "./sprites/tiles";
 
-import bulletConstants from './persos/bullet';
-import fxConstants from './persos/fx';
-import herosConstants from './persos/heros';
-import monsterConstants from './persos/monster';
+import bulletConstants from "./persos/bullet";
+import fxConstants from "./persos/fx";
+import herosConstants from "./persos/heros";
+import monsterConstants from "./persos/monster";
 
 export default {
-  slug: 'game',
+  slug: "game",
   assets: [
-    '/textures/heros.png',
-    '/textures/fx.png',
-    '/textures/bullet.png',
-    '/textures/level1.png',
-    '/textures/rocks.png',
-    '/textures/ground.png',
-    '/textures/clouds.png',
-    '/obj/tile.obj',
-    '/obj/cube.obj',
-    '/obj/cubeTile.obj',
-    '/levels/level3.bmp',
+    "/textures/heros.png",
+    "/textures/fx.png",
+    "/textures/bullet.png",
+    "/textures/level1.png",
+    "/textures/rocks.png",
+    "/textures/ground.png",
+    "/textures/clouds.png",
+    "/obj/tile.obj",
+    "/obj/cube.obj",
+    "/obj/cubeTile.obj",
+    "/levels/level3.bmp",
   ],
   shaders: [
-    '/camera/color.js',
-    '/camera/sprite.js',
-    '/camera/spritePhong.js',
-    '/camera/albedoPhong.js',
-    '/camera/background.js',
-    '/screen/fxaa.js',
-    '/screen/rgb.js',
-    '/screen/wave.js',
-    '/screen/blurDirection.js',
-    '/screen/pixel.js',
-    '/screen/screen.js',
-    '/screen/debug.js',
+    "/camera/color.js",
+    "/camera/sprite.js",
+    "/camera/spritePhong.js",
+    "/camera/albedoPhong.js",
+    "/camera/background.js",
+    "/screen/fxaa.js",
+    "/screen/rgb.js",
+    "/screen/wave.js",
+    "/screen/blurDirection.js",
+    "/screen/pixel.js",
+    "/screen/screen.js",
+    "/screen/debug.js",
   ],
   postprocess: true,
   camera: {
@@ -71,7 +71,7 @@ export default {
     },
   ],
   controls: {
-    fullscreen: { buttonId: 'fullscreen-toggle-btn' },
+    fullscreen: { buttonId: "fullscreen-toggle-btn" },
   },
   keyboard: {
     UP,
@@ -112,9 +112,9 @@ export default {
     },
     levels: [
       {
-        name: 'level 1',
+        name: "level 1",
         tilemap: {
-          texture: 'level3',
+          texture: "level3",
           tileSize: {
             w: 1,
             h: 1,
@@ -126,8 +126,8 @@ export default {
           sprites: spriteTiles,
         },
         interactives: {
-          heros: { type: 'heros', x: 4, y: 5, z: 0.1 },
-          'monster-1': { type: 'monster', x: 10, y: 4, z: 0.2 },
+          heros: { type: "heros", x: 4, y: 5, z: 0.1 },
+          "monster-1": { type: "monster", x: 10, y: 4, z: 0.2 },
         },
       },
     ],

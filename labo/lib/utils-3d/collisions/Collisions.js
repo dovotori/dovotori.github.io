@@ -1,4 +1,4 @@
-import CollisionSweepPrune from './CollisionSweepPrune';
+import CollisionSweepPrune from "./CollisionSweepPrune";
 
 class Collisions {
   constructor(boxes) {
@@ -8,31 +8,31 @@ class Collisions {
 
   get() {
     return this.collision.getPaires().reduce((acc, pair) => {
-      let type = 'SIMPLE';
+      let type = "SIMPLE";
       pair.sort();
       let on = pair[0];
       let from = pair[1];
       let bulletId = null;
 
-      const onIsBullet = on.indexOf('bullet') !== -1;
-      const fromIsBullet = from.indexOf('bullet') !== -1;
+      const onIsBullet = on.indexOf("bullet") !== -1;
+      const fromIsBullet = from.indexOf("bullet") !== -1;
       if (onIsBullet && fromIsBullet) {
         // 2 bullets we cancel collision
         return acc;
       }
 
       if (onIsBullet) {
-        type = 'SHOOT';
+        type = "SHOOT";
         bulletId = on;
-        const newFrom = on.split('-')[0];
+        const newFrom = on.split("-")[0];
         on = from;
         from = newFrom;
       } else if (fromIsBullet) {
-        type = 'SHOOT';
+        type = "SHOOT";
         bulletId = from;
-        [from] = from.split('-');
+        [from] = from.split("-");
       }
-      if (type === 'SHOOT' && on === from) {
+      if (type === "SHOOT" && on === from) {
         // friendly bullet, we cancel collision
         return acc;
       }

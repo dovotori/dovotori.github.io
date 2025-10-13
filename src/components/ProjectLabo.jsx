@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
-import styled, { css, keyframes } from 'styled-components';
+import { useCallback, useEffect, useState } from "react";
+import styled, { css, keyframes } from "styled-components";
 
-import Labo from './Labo';
-import Loader from './Loader';
+import Labo from "./Labo";
+import Loader from "./Loader";
 
 const loadTransition = keyframes`
   0% { transform: none; }
@@ -38,7 +38,7 @@ const LoadedTransition = styled.div`
   height: 100%;
   background: ${(p) => p.theme.getGradient};
   transform-origin: center 100%;
-  ${(p) => (p.$isLoaded ? animationLoad : '')};
+  ${(p) => (p.$isLoaded ? animationLoad : "")};
 `;
 
 const StyledLabo = styled(Labo)`
@@ -60,7 +60,14 @@ const StyledLabo = styled(Labo)`
 `;
 
 const ProjecLabo = (props) => {
-  const { colorType, className, slug, noBackground, hasJs = false, hasHtml = false } = props;
+  const {
+    colorType,
+    className,
+    slug,
+    noBackground,
+    hasJs = false,
+    hasHtml = false,
+  } = props;
   const [isLoaded, setIsLoaded] = useState(false);
 
   const onLoad = useCallback(() => {
@@ -74,7 +81,9 @@ const ProjecLabo = (props) => {
   return (
     <Wrap className={className}>
       <StyledLabo slug={slug} onLoad={onLoad} hasHtml={hasHtml} hasJs={hasJs} />
-      {!noBackground && <LoadedTransition $colorType={colorType} $isLoaded={isLoaded} />}
+      {!noBackground && (
+        <LoadedTransition $colorType={colorType} $isLoaded={isLoaded} />
+      )}
       {!isLoaded && <Loader $colorType={colorType} />}
     </Wrap>
   );

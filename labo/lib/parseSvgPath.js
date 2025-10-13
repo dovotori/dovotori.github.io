@@ -27,10 +27,10 @@ const parseSvgPath = (path) => {
     const parseArgs = parseValues(args);
 
     // overloaded moveTo
-    if (type === 'm' && parseArgs.length > 2) {
+    if (type === "m" && parseArgs.length > 2) {
       data.push([finalCommand].concat(parseArgs.splice(0, 2)));
-      type = 'l';
-      finalCommand = finalCommand === 'm' ? 'l' : 'L';
+      type = "l";
+      finalCommand = finalCommand === "m" ? "l" : "L";
     }
 
     while (true) {
@@ -38,7 +38,8 @@ const parseSvgPath = (path) => {
         parseArgs.unshift(finalCommand);
         return data.push(parseArgs);
       }
-      if (parseArgs.length < length[type]) throw new Error('malformed path data');
+      if (parseArgs.length < length[type])
+        throw new Error("malformed path data");
       data.push([finalCommand].concat(parseArgs.splice(0, length[type])));
     }
   });
@@ -51,19 +52,19 @@ export const getAbsoluteCoor = (path, inverseY = false) => {
   const inv = inverseY ? -1 : 1;
 
   return data.reduce((acc, cur) => {
-    if ((cur[0] === 'L' || cur[0] === 'M') && cur.length === 3) {
+    if ((cur[0] === "L" || cur[0] === "M") && cur.length === 3) {
       acc.push([cur[1], cur[2] * inv]);
-    } else if ((cur[0] === 'm' || cur[0] === 'l') && cur.length === 3) {
+    } else if ((cur[0] === "m" || cur[0] === "l") && cur.length === 3) {
       relPos.x += cur[1];
       relPos.y += cur[2] * inv;
       acc.push([relPos.x, relPos.y]);
-    } else if (cur[0] === 'v' && cur.length === 2) {
+    } else if (cur[0] === "v" && cur.length === 2) {
       relPos.y += cur[1] * inv;
       acc.push([relPos.x, relPos.y]);
-    } else if (cur[0] === 'h' && cur.length === 2) {
+    } else if (cur[0] === "h" && cur.length === 2) {
       relPos.x += cur[1];
       acc.push([relPos.x, relPos.y]);
-    } else if (cur[0] === 'z') {
+    } else if (cur[0] === "z") {
       relPos.x = 0;
       relPos.y = 0;
     }

@@ -1,5 +1,5 @@
 // based on ftp://ftp.cs.brown.edu/pub/techreports/05/cs05-14.pdf
-import { mapFromRange } from '../../utils/numbers';
+import { mapFromRange } from "../../utils/numbers";
 
 export const getPoints = (width, nbDoublesLines = 1) => {
   const points = [];

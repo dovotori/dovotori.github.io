@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState, useRef } from 'react';
-import styled, { keyframes } from 'styled-components';
+import { useCallback, useEffect, useState, useRef } from "react";
+import styled, { keyframes } from "styled-components";
 
 const pulse = keyframes`
   0%, 35%, 65%, 100% {
@@ -52,18 +52,18 @@ const Pulse = ({ count }) => {
 
   useEffect(() => {
     if (ref.current) {
-      ref.current.addEventListener('animationend', reset, false);
+      ref.current.addEventListener("animationend", reset, false);
     }
     return () => {
       if (ref.current) {
-        ref.current.removeEventListener('animationend', reset, false);
+        ref.current.removeEventListener("animationend", reset, false);
       }
     };
   }, []);
 
   return (
     <>
-      <CircleAnim ref={ref} className={isModeTransition ? 'go' : ''}>
+      <CircleAnim ref={ref} className={isModeTransition ? "go" : ""}>
         {/* <path d="M0 2 L2 0 L4 2 L2 4Z" /> */}
       </CircleAnim>
       <Circle>{/* <path d="M0 2 L2 0 L4 2 L2 4Z" /> */}</Circle>

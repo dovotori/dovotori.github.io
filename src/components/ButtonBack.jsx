@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
-import { ReactComponent as BackArrow } from 'Assets/svg/arrow.svg';
-import useHover from '../hooks/useHover';
+import { ReactComponent as BackArrow } from "Assets/svg/arrow.svg";
+import useHover from "../hooks/useHover";
 
 const LINK = styled(Link)`
   position: relative;
@@ -35,7 +35,7 @@ const Fill = styled.div`
   transition: transform 300ms ${(p) => p.theme.elastic};
   background: ${(p) => p.theme.backgroundHighlight};
   transform-origin: 100% 0;
-  transform: ${(p) => (p.$isFocus ? 'none' : 'scale(0, 1)')};
+  transform: ${(p) => (p.$isFocus ? "none" : "scale(0, 1)")};
 `;
 
 const Span = styled.span`
@@ -53,7 +53,7 @@ const ButtonBack = ({ to, className, $colorType, text }) => {
   const [hoverRef, isHovered] = useHover();
   return (
     <LINK
-      to={to || '/'}
+      to={to || "/"}
       className={className}
       $isFocus={isHovered}
       $colorType={$colorType}

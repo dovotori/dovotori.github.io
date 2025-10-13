@@ -1,8 +1,8 @@
-import { Suspense } from 'react';
-import { Routes } from 'react-router-dom';
+import { Suspense } from "react";
+import { Routes } from "react-router-dom";
 
-import Bloc from './Bloc';
-import Loader from './Loader';
+import Bloc from "./Bloc";
+import Loader from "./Loader";
 
 const renderLoader = () => (
   <Bloc>

@@ -1,4 +1,4 @@
-import ProcessBase from './ProcessBase';
+import ProcessBase from "./ProcessBase";
 
 export default class extends ProcessBase {
   constructor(gl, config, programs = {}) {
@@ -6,7 +6,8 @@ export default class extends ProcessBase {
 
     const configBlur = config.blur || {};
     this.blurSize = configBlur.size !== undefined ? configBlur.size : 0.6;
-    this.blurIntensity = configBlur.intensity !== undefined ? configBlur.intensity : 1.0;
+    this.blurIntensity =
+      configBlur.intensity !== undefined ? configBlur.intensity : 1.0;
   }
 
   // setBlur(direction, tex = null) {
@@ -32,8 +33,8 @@ export default class extends ProcessBase {
   setBlur(tex = null) {
     // ONE PASS
     const program = this.applyTexToProg(this.programs.blurOnePass, tex);
-    program.setFloat('size', this.blurSize);
-    program.setFloat('intensity', this.blurIntensity);
+    program.setFloat("size", this.blurSize);
+    program.setFloat("intensity", this.blurIntensity);
     this.renderToPingPong(program);
   }
 

@@ -1,16 +1,16 @@
-import getIcoSphere from '../lib/utils-3d/primitives/icosphere';
-import DualQuaternion from '../lib/utils/maths/DualQuaternion';
-import Mat4 from '../lib/utils/maths/Mat4';
-import Pulse from '../lib/utils/maths/Pulse';
-import Spring from '../lib/utils/maths/Spring';
-import Target from '../lib/utils/maths/Target';
-import { degToRad } from '../lib/utils/numbers';
-import Primitive from '../lib/webgl/gl/Primitive';
-import Scene from '../lib/webgl/scenes/SceneLampe';
-import TextureData from '../lib/webgl/textures/TextureData';
-import TexturePerlinNoise from '../lib/webgl/textures/TexturePerlinNoise';
-import FixVbo from '../lib/webgl/vbos/FixVbo';
-import UpdateVbo from '../lib/webgl/vbos/UpdateVbo';
+import getIcoSphere from "../lib/utils-3d/primitives/icosphere";
+import DualQuaternion from "../lib/utils/maths/DualQuaternion";
+import Mat4 from "../lib/utils/maths/Mat4";
+import Pulse from "../lib/utils/maths/Pulse";
+import Spring from "../lib/utils/maths/Spring";
+import Target from "../lib/utils/maths/Target";
+import { degToRad } from "../lib/utils/numbers";
+import Primitive from "../lib/webgl/gl/Primitive";
+import Scene from "../lib/webgl/scenes/SceneLampe";
+import TextureData from "../lib/webgl/textures/TextureData";
+import TexturePerlinNoise from "../lib/webgl/textures/TexturePerlinNoise";
+import FixVbo from "../lib/webgl/vbos/FixVbo";
+import UpdateVbo from "../lib/webgl/vbos/UpdateVbo";
 
 export default class extends Scene {
   setup() {
@@ -26,7 +26,7 @@ export default class extends Scene {
       x: 0,
       y: 0,
     };
-    const frequencyLength = this.mngSound.get('akira').getFrequencyLength();
+    const frequencyLength = this.mngSound.get("akira").getFrequencyLength();
     this.uVbo = new UpdateVbo(gl, frequencyLength);
     let indexes = new Array(frequencyLength);
     indexes.fill(0);
@@ -38,23 +38,27 @@ export default class extends Scene {
     this.simpleIcoSphere = new Primitive(gl, getIcoSphere(1, true));
     this.targetZ.set(1);
 
-    const progCircle = this.mngProg.get('frequencyCircle');
-    progCircle.setInt('length', this.fVbo.getCount());
-    progCircle.setInt('maxfrequency', 256.0);
+    const progCircle = this.mngProg.get("frequencyCircle");
+    progCircle.setInt("length", this.fVbo.getCount());
+    progCircle.setInt("maxfrequency", 256.0);
   }
 
   setupControls = ({ ranges }) => {
-    this.button = document.querySelector('.play-button');
-    this.sound = this.mngSound.get('akira');
+    this.button = document.querySelector(".play-button");
+    this.sound = this.mngSound.get("akira");
     if (this.button) {
-      this.button.addEventListener('click', this.togglePlay, false);
+      this.button.addEventListener("click", this.togglePlay, false);
     }
 
     this.ranges = ranges;
     if (this.config.controls) {
       const { volume, playbackRate } = this.ranges;
-      volume.dom.addEventListener('change', this.onChangeVolume, false);
-      playbackRate.dom.addEventListener('change', this.onChangePlaybackRate, false);
+      volume.dom.addEventListener("change", this.onChangeVolume, false);
+      playbackRate.dom.addEventListener(
+        "change",
+        this.onChangePlaybackRate,
+        false,
+      );
     }
   };
 
@@ -62,9 +66,9 @@ export default class extends Scene {
     if (this.sound && this.button) {
       this.sound.togglePause();
       if (!this.sound.getIsPause()) {
-        this.button.setAttribute('data-play', true);
+        this.button.setAttribute("data-play", true);
       } else {
-        this.button.removeAttribute('data-play');
+        this.button.removeAttribute("data-play");
       }
     }
   };
@@ -98,32 +102,32 @@ export default class extends Scene {
     this.model.scale(this.targetZ.get());
 
     const program = this.mngProg.get(this.config.MAIN_PROG);
-    program.setFloat('time', this.pulse.get());
+    program.setFloat("time", this.pulse.get());
   }
 
   renderGlobe = (program, texData = null) => {
-    const progBasic = this.mngProg.get('normale');
+    const progBasic = this.mngProg.get("normale");
     this.model.push();
     this.model.scale(0.7);
     this.model.rotate(this.time * 0.1, 1, 1, 1);
-    progBasic.setMatrix('model', this.model.get());
+    progBasic.setMatrix("model", this.model.get());
     this.model.pop();
     this.simpleIcoSphere.render(progBasic.get());
 
     this.model.push();
     this.model.rotate(this.time * 0.02, 0, 1, 1);
-    program.setMatrix('model', this.model.get());
+    program.setMatrix("model", this.model.get());
     const normalMatrix = this.model.getMatrice3x3();
     normalMatrix.inverse();
     normalMatrix.transpose();
-    program.setMatrix('normalMatrix', normalMatrix.get());
+    program.setMatrix("normalMatrix", normalMatrix.get());
     this.model.pop();
 
-    program.setTexture(2, this.texture.get(), 'noiseMap');
-    program.setTexture(3, this.mngTex.get('earth').get(), 'colorMap');
+    program.setTexture(2, this.texture.get(), "noiseMap");
+    program.setTexture(3, this.mngTex.get("earth").get(), "colorMap");
 
     if (texData) {
-      program.setTexture(5, texData.get(), 'displacementMap');
+      program.setTexture(5, texData.get(), "displacementMap");
     }
     this.icoSphere.render(program.get());
   };
@@ -131,20 +135,20 @@ export default class extends Scene {
   render() {
     super.render();
 
-    const amplitudes = this.mngSound.get('akira').getAmplitudes();
+    const amplitudes = this.mngSound.get("akira").getAmplitudes();
     const texData = new TextureData(this.gl, amplitudes);
 
     this.renderGlobe(this.mngProg.get(this.config.MAIN_PROG), texData);
 
-    const progCircle = this.mngProg.get('frequencyCircle');
+    const progCircle = this.mngProg.get("frequencyCircle");
     this.model.push();
     this.model.scale(1.0 + Math.cos(this.time * 0.001) * 0.2);
     this.model.rotate(this.time * 0.02, 0, 1, 0);
-    progCircle.setMatrix('model', this.model.get());
+    progCircle.setMatrix("model", this.model.get());
     this.model.pop();
 
-    this.uVbo.start(progCircle.get(), 'value', amplitudes);
-    this.fVbo.start(progCircle.get(), 'index');
+    this.uVbo.start(progCircle.get(), "value", amplitudes);
+    this.fVbo.start(progCircle.get(), "index");
     this.gl.drawArrays(this.gl.LINE_LOOP, 0, this.fVbo.getCount());
     this.uVbo.end();
     this.fVbo.end();
@@ -182,13 +186,17 @@ export default class extends Scene {
 
   destroy() {
     if (this.button) {
-      this.button.addEventListener('click', this.togglePlay, false);
+      this.button.addEventListener("click", this.togglePlay, false);
     }
 
     if (this.ranges) {
       const { volume, playbackRate } = this.ranges;
-      volume.dom.removeEventListener('change', this.onChangeVolume, false);
-      playbackRate.dom.removeEventListener('change', this.onChangePlaybackRate, false);
+      volume.dom.removeEventListener("change", this.onChangeVolume, false);
+      playbackRate.dom.removeEventListener(
+        "change",
+        this.onChangePlaybackRate,
+        false,
+      );
     }
 
     if (this.sound) {

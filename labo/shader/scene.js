@@ -1,16 +1,19 @@
-import Delaunay from '../lib/delaunay';
-import LinesTrail from '../lib/utils-3d/lines/LinesTrail';
-import Grid from '../lib/utils-3d/particules/Grid';
-import Migration from '../lib/utils-3d/particules/Migration';
-import { getIndices, getPoints } from '../lib/utils-3d/primitives/grid';
-import { getGridPerlinPoints, getGridPoints } from '../lib/utils-3d/primitives/particules';
-import Mat4 from '../lib/utils/maths/Mat4';
-import Vec3 from '../lib/utils/maths/Vec3';
-import { mapFromRange } from '../lib/utils/numbers';
-import GpuParticules from '../lib/webgl/gl/GpuParticules';
-import Primitive from '../lib/webgl/gl/Primitive';
-import Screen from '../lib/webgl/gl/Screen';
-import Scene from '../lib/webgl/scenes/SceneCamera';
+import Delaunay from "../lib/delaunay";
+import LinesTrail from "../lib/utils-3d/lines/LinesTrail";
+import Grid from "../lib/utils-3d/particules/Grid";
+import Migration from "../lib/utils-3d/particules/Migration";
+import { getIndices, getPoints } from "../lib/utils-3d/primitives/grid";
+import {
+  getGridPerlinPoints,
+  getGridPoints,
+} from "../lib/utils-3d/primitives/particules";
+import Mat4 from "../lib/utils/maths/Mat4";
+import Vec3 from "../lib/utils/maths/Vec3";
+import { mapFromRange } from "../lib/utils/numbers";
+import GpuParticules from "../lib/webgl/gl/GpuParticules";
+import Primitive from "../lib/webgl/gl/Primitive";
+import Screen from "../lib/webgl/gl/Screen";
+import Scene from "../lib/webgl/scenes/SceneCamera";
 
 const nsin = (val) => Math.sin(val) * 0.5 + 0.5;
 
@@ -18,11 +21,14 @@ const getDistortion = (progress, frequence, amplitude, time) => {
   const movementProgressFix = 0.02;
   return new Vec3(
     Math.cos(progress * Math.PI * frequence.getX() + time) * amplitude.getX() -
-      Math.cos(movementProgressFix * Math.PI * frequence.getX() + time) * amplitude.getX(),
+      Math.cos(movementProgressFix * Math.PI * frequence.getX() + time) *
+        amplitude.getX(),
     nsin(progress * Math.PI * frequence.getY() + time) * amplitude.getY() -
-      nsin(movementProgressFix * Math.PI * frequence.getY() + time) * amplitude.getY(),
+      nsin(movementProgressFix * Math.PI * frequence.getY() + time) *
+        amplitude.getY(),
     nsin(progress * Math.PI * frequence.getZ() + time) * amplitude.getZ() -
-      nsin(movementProgressFix * Math.PI * frequence.getZ() + time) * amplitude.getZ(),
+      nsin(movementProgressFix * Math.PI * frequence.getZ() + time) *
+        amplitude.getZ(),
   );
 };
 
@@ -33,16 +39,24 @@ export default class extends Scene {
     this.linesTrail = new LinesTrail(gl);
 
     this.grid = new Grid(40);
-    this.vboGrid = new Primitive(gl, { position: this.grid.getPositions() }, true);
+    this.vboGrid = new Primitive(
+      gl,
+      { position: this.grid.getPositions() },
+      true,
+    );
     this.vboGrid.setModeDessin(gl.POINTS);
 
     this.migration = new Migration(40);
-    this.vboMigration = new Primitive(gl, { position: this.migration.getPositions() }, true);
+    this.vboMigration = new Primitive(
+      gl,
+      { position: this.migration.getPositions() },
+      true,
+    );
     this.vboMigration.setModeDessin(gl.POINTS);
 
     this.particules = new GpuParticules(gl, 32, 32);
-    this.particules.addDataTexture('textureMap', getGridPerlinPoints(32, 32));
-    this.particules.addDataTexture('morphMap', getGridPoints(32, 32));
+    this.particules.addDataTexture("textureMap", getGridPerlinPoints(32, 32));
+    this.particules.addDataTexture("morphMap", getGridPoints(32, 32));
 
     const points = Array.from({ length: 40 }, () => [
       Math.random() * 2.0 - 1.0,
@@ -85,20 +99,22 @@ export default class extends Scene {
 
     const CIRCLE_VERTICES_COUNT = 256;
     const CIRCLES_COUNT = 10;
-    const indexes = new Array(CIRCLE_VERTICES_COUNT).fill(0).map((_, index) => index);
+    const indexes = new Array(CIRCLE_VERTICES_COUNT)
+      .fill(0)
+      .map((_, index) => index);
     this.circleVbo = new Primitive(gl, { index: indexes });
     this.circleVbo.setModeDessin(gl.LINE_LOOP);
-    const progCircle = this.mngProg.get('movingCircle');
-    progCircle.setInt('length', CIRCLE_VERTICES_COUNT);
-    progCircle.setInt('count', CIRCLES_COUNT);
-    progCircle.setVector('mouse', this.mousePos);
+    const progCircle = this.mngProg.get("movingCircle");
+    progCircle.setInt("length", CIRCLE_VERTICES_COUNT);
+    progCircle.setInt("count", CIRCLES_COUNT);
+    progCircle.setVector("mouse", this.mousePos);
 
     const pos = new Array(CIRCLES_COUNT).fill(0).map((_, index) => index);
     const offset = {
       componentType: gl.FLOAT,
       count: CIRCLES_COUNT,
       size: 1,
-      type: 'VEC3',
+      type: "VEC3",
       values: new Float32Array(pos),
     };
     this.circleVbo.addInstancingVbos(CIRCLES_COUNT, {
@@ -110,31 +126,35 @@ export default class extends Scene {
 
   setupControls = () => {
     this.mode = 0;
-    this.message = document.querySelector('#message');
-    this.buttons = document.querySelectorAll('.mode');
+    this.message = document.querySelector("#message");
+    this.buttons = document.querySelectorAll(".mode");
     this.buttons.forEach((button, index) => {
-      button.addEventListener('click', (e) => {
+      button.addEventListener("click", (e) => {
         this.onClickButton(e.target, index);
       });
     });
   };
 
   onClickButton = (button, index) => {
-    this.buttons.forEach((b) => b.removeAttribute('data-current'));
-    button.setAttribute('data-current', true);
+    this.buttons.forEach((b) => b.removeAttribute("data-current"));
+    button.setAttribute("data-current", true);
     this.mode = index;
 
     if (index === 2) {
-      this.message.style.display = 'block';
+      this.message.style.display = "block";
     } else {
-      this.message.style.display = 'none';
+      this.message.style.display = "none";
     }
   };
 
   destroy = () => {
     if (this.buttons) {
       this.buttons.forEach((button, index) =>
-        button.removeEventListener('click', () => this.onClickButton(index), false),
+        button.removeEventListener(
+          "click",
+          () => this.onClickButton(index),
+          false,
+        ),
       );
     }
   };
@@ -152,29 +172,35 @@ export default class extends Scene {
       case 3: {
         this.migration.update();
         this.vboMigration.update({ position: this.migration.getPositions() });
-        this.vboMigration.render(this.mngProg.get('point').get());
+        this.vboMigration.render(this.mngProg.get("point").get());
         break;
       }
       case 0: {
         this.model.rotate(this.time * 0.01, 0, 1, 0);
-        this.mngProg.get('basique3d').setMatrix('model', this.model.get());
+        this.mngProg.get("basique3d").setMatrix("model", this.model.get());
         this.bloom.start();
-        this.vboDelaunay.render(this.mngProg.get('basique3d').get());
+        this.vboDelaunay.render(this.mngProg.get("basique3d").get());
         this.bloom.end();
         this.bloom.render();
         break;
       }
       case 1: {
         this.model.rotate(this.time * 0.005, 0, 1, 0);
-        const newTime = mapFromRange(Math.cos(this.time * 0.01 * 0.05), -1, 1, 0, 1);
-        this.particules.compute(this.mngProg.get('pass1Morph'), newTime);
+        const newTime = mapFromRange(
+          Math.cos(this.time * 0.01 * 0.05),
+          -1,
+          1,
+          0,
+          1,
+        );
+        this.particules.compute(this.mngProg.get("pass1Morph"), newTime);
         this.resizeViewport();
-        this.mngProg.get('pass2Camera').setMatrix('model', this.model.get());
-        this.particules.render(this.mngProg.get('pass2Camera'));
+        this.mngProg.get("pass2Camera").setMatrix("model", this.model.get());
+        this.particules.render(this.mngProg.get("pass2Camera"));
         break;
       }
       case 2: {
-        const program = this.mngProg.get('line');
+        const program = this.mngProg.get("line");
         this.linesTrail.update(program);
         this.linesTrail.render(program);
         break;
@@ -182,42 +208,56 @@ export default class extends Scene {
       case 4: {
         const time = this.time * 0.005;
 
-        const cameraPos = getDistortion(0.0, this.roadFrequence, this.roadAmplitude, time);
-        const cameraTarget = getDistortion(0.2, this.roadFrequence, this.roadAmplitude, time);
+        const cameraPos = getDistortion(
+          0.0,
+          this.roadFrequence,
+          this.roadAmplitude,
+          time,
+        );
+        const cameraTarget = getDistortion(
+          0.2,
+          this.roadFrequence,
+          this.roadAmplitude,
+          time,
+        );
 
         this.camera.setTarget(
           cameraTarget.getX(),
           this.roadPositionY + cameraTarget.getY(),
           this.roadLength,
         );
-        this.camera.setPosition(cameraPos.getX(), this.roadPositionY + cameraPos.getY(), 0);
+        this.camera.setPosition(
+          cameraPos.getX(),
+          this.roadPositionY + cameraPos.getY(),
+          0,
+        );
 
-        const program = this.mngProg.get('road');
+        const program = this.mngProg.get("road");
         program.setProjectionView(this.camera);
-        program.setMatrix('model', this.model.get());
-        program.setFloat('time', time);
+        program.setMatrix("model", this.model.get());
+        program.setFloat("time", time);
 
-        program.setVector('frequence', this.roadFrequence.get());
-        program.setVector('amplitude', this.roadAmplitude.get());
+        program.setVector("frequence", this.roadFrequence.get());
+        program.setVector("amplitude", this.roadAmplitude.get());
 
-        program.setFloat('roadLength', this.roadLength);
+        program.setFloat("roadLength", this.roadLength);
         // this.road.render(program);
         this.roadVbo.render(program.get());
         break;
       }
       case 6: {
-        const program = this.mngProg.get('landscape');
-        program.setFloat('flipY', 1);
-        program.setFloat('time', this.time * 0.001);
+        const program = this.mngProg.get("landscape");
+        program.setFloat("flipY", 1);
+        program.setFloat("time", this.time * 0.001);
         this.screen.render(program.get());
         break;
       }
       case 7: {
         this.model.rotate(this.mousePos[0] * 40 - 20, 0, 1, 0);
-        const progCircle = this.mngProg.get('movingCircle');
-        progCircle.setMatrix('model', this.model.get());
-        progCircle.setFloat('time', this.time * 0.001);
-        progCircle.setVector('mouse', this.mousePos);
+        const progCircle = this.mngProg.get("movingCircle");
+        progCircle.setMatrix("model", this.model.get());
+        progCircle.setFloat("time", this.time * 0.001);
+        progCircle.setVector("mouse", this.mousePos);
         this.circleVbo.render(progCircle.get());
         break;
       }
@@ -225,7 +265,7 @@ export default class extends Scene {
       default: {
         this.grid.update();
         this.vboGrid.update({ position: this.grid.getPositions() });
-        this.vboGrid.render(this.mngProg.get('point').get());
+        this.vboGrid.render(this.mngProg.get("point").get());
         break;
       }
     }

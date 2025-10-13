@@ -1,10 +1,10 @@
 export default {
-  slug: 'fragment',
+  slug: "fragment",
   shaders: [
-    '/camera/vertexColor.js',
-    '/screen/blurOnePass.js',
-    '/screen/bloom.js',
-    '/screen/screen.js',
+    "/camera/vertexColor.js",
+    "/screen/blurOnePass.js",
+    "/screen/bloom.js",
+    "/screen/screen.js",
   ],
   postprocess: {
     bloom: {
@@ -29,6 +29,6 @@ export default {
     angle: 60,
   },
   controls: {
-    fullscreen: { buttonId: 'fullscreen-toggle-btn' },
+    fullscreen: { buttonId: "fullscreen-toggle-btn" },
   },
 };

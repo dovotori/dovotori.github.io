@@ -4,7 +4,7 @@ export default class {
     if (data) {
       this.create(data);
     }
-    this.extension = gl.getExtension('ANGLE_instanced_arrays');
+    this.extension = gl.getExtension("ANGLE_instanced_arrays");
   }
 
   create(data) {
@@ -19,7 +19,8 @@ export default class {
       isInstancing = false,
     } = data;
 
-    const bufferType = type !== 'SCALAR' ? this.gl.ARRAY_BUFFER : this.gl.ELEMENT_ARRAY_BUFFER;
+    const bufferType =
+      type !== "SCALAR" ? this.gl.ARRAY_BUFFER : this.gl.ELEMENT_ARRAY_BUFFER;
     this.vbo = this.gl.createBuffer();
     this.gl.bindBuffer(bufferType, this.vbo);
     this.gl.bufferData(bufferType, values, modeCalcul);
@@ -33,8 +34,15 @@ export default class {
   }
 
   enable(program) {
-    const { locationKey, vbo, componentType, size, bufferType, isInstancing = false } = this;
-    if (locationKey === 'indices') {
+    const {
+      locationKey,
+      vbo,
+      componentType,
+      size,
+      bufferType,
+      isInstancing = false,
+    } = this;
+    if (locationKey === "indices") {
       this.gl.bindBuffer(bufferType, vbo);
     } else {
       const location = program.locations[locationKey];
@@ -66,7 +74,7 @@ export default class {
   }
 
   render(program, modeDessin) {
-    if (this.locationKey === 'indices') {
+    if (this.locationKey === "indices") {
       this.gl.drawElements(modeDessin, this.count, this.componentType, 0);
     } else {
       this.gl.drawArrays(modeDessin, 0, this.count);
@@ -75,7 +83,7 @@ export default class {
 
   renderInstancing(program, modeDessin, instanceCount) {
     // need draw buffers support
-    if (this.locationKey === 'indices') {
+    if (this.locationKey === "indices") {
       this.extension.drawElementsInstancedANGLE(
         modeDessin,
         this.count,

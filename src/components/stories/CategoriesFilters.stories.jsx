@@ -1,7 +1,7 @@
-import CategoriesFilters from '../CategoriesFilters';
+import CategoriesFilters from "../CategoriesFilters";
 
 export default {
-  title: 'Components/CategoriesFilters',
+  title: "Components/CategoriesFilters",
   component: CategoriesFilters,
 };
 

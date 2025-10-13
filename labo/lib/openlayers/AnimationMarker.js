@@ -1,14 +1,15 @@
-import Feature from 'ol/Feature';
-import { Vector as VectorLayer } from 'ol/layer';
-import Point from 'ol/geom/Point';
-import VectorSource from 'ol/source/Vector';
-import { Circle as CircleStyle, Fill, Style, Icon } from 'ol/style';
+import Feature from "ol/Feature";
+import { Vector as VectorLayer } from "ol/layer";
+import Point from "ol/geom/Point";
+import VectorSource from "ol/source/Vector";
+import { Circle as CircleStyle, Fill, Style, Icon } from "ol/style";
 
-import house from 'Assets/svg/house.svg';
-import plane from 'Assets/svg/doubleplane.svg';
+import house from "Assets/svg/house.svg";
+import plane from "Assets/svg/doubleplane.svg";
 
 const mapFromRange = (valeur, minRef, maxRef, minDest, maxDest) => {
-  let result = minDest + ((valeur - minRef) * (maxDest - minDest)) / (maxRef - minRef);
+  let result =
+    minDest + ((valeur - minRef) * (maxDest - minDest)) / (maxRef - minRef);
   if (result < Math.min(minDest, maxDest)) {
     result = Math.min(minDest, maxDest);
   }
@@ -34,7 +35,7 @@ class AnimationMarker {
     this.iconStyle = icon;
 
     this.geoMarker = new Feature({
-      type: 'geoMarker',
+      type: "geoMarker",
       geometry: new Point(points[0].coor),
     });
 
@@ -54,7 +55,7 @@ class AnimationMarker {
     if (point.label) {
       const tooltip = document.querySelector(`.${point.label.toLowerCase()}`);
       if (tooltip) {
-        tooltip.style.transform = 'none';
+        tooltip.style.transform = "none";
       }
     }
   };
@@ -64,7 +65,7 @@ class AnimationMarker {
       if (label) {
         const tooltip = document.querySelector(`.${label.toLowerCase()}`);
         if (tooltip) {
-          tooltip.style.transform = index === 0 ? 'none' : 'scale(0)';
+          tooltip.style.transform = index === 0 ? "none" : "scale(0)";
         }
       }
     });
@@ -98,7 +99,7 @@ class AnimationMarker {
       inverse = true;
     }
 
-    if (this.points[this.step].picto === 'plane') {
+    if (this.points[this.step].picto === "plane") {
       this.geoMarker.setStyle(
         new Style({
           image: new Icon({
@@ -115,7 +116,10 @@ class AnimationMarker {
         new Style({
           image: new Icon({
             ...this.iconStyle,
-            offset: inverse && this.iconStyle.size ? [this.iconStyle.size[0], 0] : [0, 0],
+            offset:
+              inverse && this.iconStyle.size
+                ? [this.iconStyle.size[0], 0]
+                : [0, 0],
             rotation,
           }),
         }),
@@ -174,7 +178,7 @@ class AnimationMarker {
         this.animating = true;
         this.computeSpeedAndRotation();
         this.now = new Date().getTime();
-        this.vectorLayer.on('postrender', this.moveFeature);
+        this.vectorLayer.on("postrender", this.moveFeature);
       },
       isNewLoop ? this.DELAY_BETWEEN_LOOP : this.DELAY_BETWEEN_SEGMENT,
     );
@@ -196,7 +200,7 @@ class AnimationMarker {
       }),
     );
     this.animTooltip(this.points[this.step]);
-    this.vectorLayer.un('postrender', this.moveFeature);
+    this.vectorLayer.un("postrender", this.moveFeature);
   };
 
   getVectorLayer = () => this.vectorLayer;

@@ -1,14 +1,14 @@
-import { useMemo, useState } from 'react';
-import styled from 'styled-components';
+import { useMemo, useState } from "react";
+import styled from "styled-components";
 
-import Teaser from './Teaser';
+import Teaser from "./Teaser";
 
 const StyledTeaser = styled(Teaser)`
   transition-delay: ${(p) => p.index * 10}ms;
 `;
 
 const Wrap = styled.div.attrs({
-  className: 'teasers-list',
+  className: "teasers-list",
 })`
   display: flex;
   justify-content: center;
@@ -20,8 +20,11 @@ const Wrap = styled.div.attrs({
 `;
 
 const TeasersList = ({ entries, isTouchDevice, className }) => {
-  const [currentHover, setCurrentHover] = useState('');
-  const sortEntries = useMemo(() => entries.sort((a, b) => (a.date > b.date ? -1 : 1)), [entries]);
+  const [currentHover, setCurrentHover] = useState("");
+  const sortEntries = useMemo(
+    () => entries.sort((a, b) => (a.date > b.date ? -1 : 1)),
+    [entries],
+  );
   return (
     <Wrap className={className} isTouchDevice={isTouchDevice}>
       {sortEntries.map((item, index) => (

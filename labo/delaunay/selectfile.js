@@ -18,15 +18,15 @@ const dragLeave = (e) => {
 
 const resetError = () => {
   if (uploadLog) {
-    uploadLog.innerHTML = '';
-    uploadLog.style.display = 'none';
+    uploadLog.innerHTML = "";
+    uploadLog.style.display = "none";
   }
 };
 
 export const setError = (log) => {
   if (uploadLog) {
     uploadLog.innerHTML = log;
-    uploadLog.style.display = 'block';
+    uploadLog.style.display = "block";
   }
 };
 
@@ -45,22 +45,22 @@ export const setup = (handleFile) => {
     if (file) handleFile(file);
   };
 
-  dropbox = document.querySelector('#dropbox');
-  dropbox.addEventListener('dragenter', dragEnter);
-  dropbox.addEventListener('dragleave', dragLeave);
-  dropbox.addEventListener('dragover', stopPropa);
-  dropbox.addEventListener('drop', dropSelectFile);
+  dropbox = document.querySelector("#dropbox");
+  dropbox.addEventListener("dragenter", dragEnter);
+  dropbox.addEventListener("dragleave", dragLeave);
+  dropbox.addEventListener("dragover", stopPropa);
+  dropbox.addEventListener("drop", dropSelectFile);
 
-  const uploadInput = document.querySelector('#fileinput');
-  uploadInput.addEventListener('change', inputSelectFile);
+  const uploadInput = document.querySelector("#fileinput");
+  uploadInput.addEventListener("change", inputSelectFile);
 
-  uploadLog = document.querySelector('#filelog');
+  uploadLog = document.querySelector("#filelog");
 };
 
 export const destroy = () => {
   if (dropbox) {
-    dropbox.removeEventListener('dragenter', dragEnter);
-    dropbox.removeEventListener('dragleave', dragLeave);
-    dropbox.removeEventListener('dragover', stopPropa);
+    dropbox.removeEventListener("dragenter", dragEnter);
+    dropbox.removeEventListener("dragleave", dragLeave);
+    dropbox.removeEventListener("dragover", stopPropa);
   }
 };

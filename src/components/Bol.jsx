@@ -1,9 +1,9 @@
-import { ReactComponent as BolSvg } from 'Assets/svg/bol2.svg';
-import { ReactComponent as BonzaiSvg } from 'Assets/svg/bonzai2.svg';
-import { useEffect, useRef } from 'react';
-import styled, { createGlobalStyle, keyframes } from 'styled-components';
-import usePrevious from '../hooks/usePrevious';
-import { timeout } from '../utils';
+import { ReactComponent as BolSvg } from "Assets/svg/bol2.svg";
+import { ReactComponent as BonzaiSvg } from "Assets/svg/bonzai2.svg";
+import { useEffect, useRef } from "react";
+import styled, { createGlobalStyle, keyframes } from "styled-components";
+import usePrevious from "../hooks/usePrevious";
+import { timeout } from "../utils";
 
 const GlobalStyle = createGlobalStyle`
 body[theme='light'] {
@@ -187,12 +187,12 @@ const Bol = ({ className, isSwitched = false }) => {
   const previousIsSwitched = usePrevious(isSwitched);
 
   const animSvg = async (svg, isAppear = true) => {
-    const paths = svg.querySelectorAll('path');
+    const paths = svg.querySelectorAll("path");
     for (const p of paths) {
       if (isAppear) {
-        p.classList.add('anim');
+        p.classList.add("anim");
       } else {
-        p.classList.remove('anim');
+        p.classList.remove("anim");
       }
       await timeout(20);
     }
@@ -201,7 +201,7 @@ const Bol = ({ className, isSwitched = false }) => {
   useEffect(() => {
     if (ref.current) {
       const isFirstMount = previousIsSwitched === undefined;
-      svgs.current = ref.current.querySelectorAll('svg');
+      svgs.current = ref.current.querySelectorAll("svg");
       const cpt = isSwitched ? 1 : 0;
       const asyncExec = async () => {
         if (!isFirstMount) {

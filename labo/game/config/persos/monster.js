@@ -1,10 +1,10 @@
-const STAND = 'STAND';
-const RUN = 'RUN';
-const JUMP_DOWN = 'JUMP_DOWN';
-const DIE = 'DIE';
+const STAND = "STAND";
+const RUN = "RUN";
+const JUMP_DOWN = "JUMP_DOWN";
+const DIE = "DIE";
 
 export default {
-  id: 'monster',
+  id: "monster",
   x: 10,
   y: 4,
   z: 0.2,

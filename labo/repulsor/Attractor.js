@@ -1,4 +1,4 @@
-import { vec3 } from './vec3';
+import { vec3 } from "./vec3";
 
 export function Attractor() {
   this.position = new vec3(0, 0, 0);
@@ -31,7 +31,7 @@ Attractor.prototype.attract = function (node) {
 
   if (distance > 0 && distance < this.radius) {
     const s = distance / this.radius;
-    let force = 1 / Math.pow(s, 0.5 * this.ramp) - 1;
+    let force = 1 / s ** (0.5 * this.ramp) - 1;
     force = (this.strength * force) / this.radius;
 
     node.velocity.x += dx * force;

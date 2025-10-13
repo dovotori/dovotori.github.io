@@ -1,7 +1,7 @@
-import QrCode from '../QrCode';
+import QrCode from "../QrCode";
 
 export default {
-  title: 'Components/QrCode',
+  title: "Components/QrCode",
   component: QrCode,
 };
 

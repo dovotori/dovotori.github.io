@@ -1,20 +1,20 @@
-import { getEnvPath, mapFromRange } from '../../src/utils';
-import { Attractor } from './Attractor';
-import { Node } from './Node';
-import { ParsingSvg } from './ParsingSvg';
-import { Spring } from './Spring';
-import { vec3 } from './vec3';
+import { getEnvPath, mapFromRange } from "../../src/utils";
+import { Attractor } from "./Attractor";
+import { Node } from "./Node";
+import { ParsingSvg } from "./ParsingSvg";
+import { Spring } from "./Spring";
+import { vec3 } from "./vec3";
 
 const attractor = new Attractor();
 let canvas = null;
 let nodes = [];
 let springs = [];
-let fixPoints = [];
+const fixPoints = [];
 let cptHome = 0;
 let context = null;
 let proportionnelleDistance = 0;
 
-let svgSize = {
+const svgSize = {
   width: 0,
   height: 0,
 };
@@ -27,23 +27,29 @@ const POINT_SIZE = 2;
 const HALF_POINT_SIZE = POINT_SIZE / 2;
 
 export default async () => {
-  const embedElem = document.querySelector('#embed-svg');
-  canvas = document.querySelector('#canvas-svg');
+  const embedElem = document.querySelector("#embed-svg");
+  canvas = document.querySelector("#canvas-svg");
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-  context = canvas.getContext('2d');
+  context = canvas.getContext("2d");
 
   embedElem.onload = () => {
     const svgDom = embedElem.getSVGDocument();
-    const svg = svgDom.getElementsByTagName('svg')[0];
+    const svg = svgDom.getElementsByTagName("svg")[0];
 
-    proportionnelleDistance = mapFromRange(Math.min(canvas.width, canvas.height), 0, 10000, 0, 800);
+    proportionnelleDistance = mapFromRange(
+      Math.min(canvas.width, canvas.height),
+      0,
+      10000,
+      0,
+      800,
+    );
 
     const points = setupPoints(svg);
 
     const svgSize = {
-      width: parseFloat(svg.getAttribute('width')),
-      height: parseFloat(svg.getAttribute('height')),
+      width: parseFloat(svg.getAttribute("width")),
+      height: parseFloat(svg.getAttribute("height")),
     };
 
     const scale = canvas.width / svgSize.width;
@@ -57,10 +63,10 @@ export default async () => {
     nodes = data.nodes;
     springs = data.springs;
 
-    window.addEventListener('mousemove', onMouseMove, false);
+    window.addEventListener("mousemove", onMouseMove, false);
     windowRequestHome = window.requestAnimationFrame(drawHome);
   };
-  embedElem.src = getEnvPath('/svg/cubeClean.svg');
+  embedElem.src = getEnvPath("/svg/cubeClean.svg");
 
   // const svg = await fetch(getEnvPath('/svg/cubeClean.svg')).then((x) => x.text());
 };
@@ -110,7 +116,7 @@ function drawHome() {
 }
 
 function drawForme() {
-  context.fillStyle = '#fff';
+  context.fillStyle = "#fff";
 
   updatePoints();
   drawPoints();
@@ -142,7 +148,7 @@ function drawPoints() {
     context.fillRect(movX, movY, POINT_SIZE, POINT_SIZE);
 
     // line between fix and moving
-    context.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+    context.strokeStyle = "rgba(255, 255, 255, 0.8)";
     context.beginPath();
     context.moveTo(x, y);
     context.lineTo(movX, movY);
@@ -165,12 +171,18 @@ function drawLiaisonProche(i) {
     if (distance > 1 && distance < limiteDistance) {
       let opacite = 0;
       if (distance > limiteDistance / 2) {
-        opacite = mapFromRange(distance, limiteDistance / 2, limiteDistance, 1, 0.2);
+        opacite = mapFromRange(
+          distance,
+          limiteDistance / 2,
+          limiteDistance,
+          1,
+          0.2,
+        );
       } else {
         opacite = mapFromRange(distance, 0, limiteDistance / 2, 0.2, 1);
       }
 
-      context.strokeStyle = 'rgba(255, 255, 255, ' + opacite + ')';
+      context.strokeStyle = "rgba(255, 255, 255, " + opacite + ")";
       context.beginPath();
       context.moveTo(nodes[i].position.x, nodes[i].position.y);
       context.lineTo(nodes[j].position.x, nodes[j].position.y);
@@ -178,5 +190,5 @@ function drawLiaisonProche(i) {
     }
   }
 
-  context.strokeStyle = '#fff';
+  context.strokeStyle = "#fff";
 }

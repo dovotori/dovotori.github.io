@@ -15,7 +15,7 @@
 		"labo:start": "cross-env NAME=skin webpack serve --config webpack/labo.dev.js",
 		"labo:build": "webpack --config webpack/labo.prod.js",
 		"local:server": "npx http-server build/ -p 8080 -b -g --cors",
-		"lint": "npx prettier --write \"{src,labo,webpack,scripts,public}/**/*.{js,jsx}\"",
+		"lint": "biome lint --write & biome format --write",
 		"favicon": "node scripts/favicons.js",
 		"test": "jest --config=jest.config.js",
 		"upgrade": "npx npm-check-updates -u",
@@ -65,6 +65,7 @@
 	},
 	"devDependencies": {
 		"@babel/eslint-parser": "^7.26.5",
+		"@biomejs/biome": "2.2.5",
 		"@chromatic-com/storybook": "^3.2.4",
 		"@storybook/addon-actions": "^8.5.2",
 		"@storybook/addon-essentials": "^8.5.2",

@@ -8,8 +8,10 @@ export class CubeTexture {
     // Assume are sources all the same size so just use the first one for width and height
     const source = sources[0];
     this.texture = device.createTexture({
-      format: 'rgba8unorm',
-      mipLevelCount: options.mips ? this.numMipLevels(source.width, source.height) : 1,
+      format: "rgba8unorm",
+      mipLevelCount: options.mips
+        ? this.numMipLevels(source.width, source.height)
+        : 1,
       size: [source.width, source.height, sources.length],
       usage:
         GPUTextureUsage.TEXTURE_BINDING |
@@ -43,21 +45,21 @@ export class CubeTexture {
 
   getSampler(device) {
     return device.createSampler({
-      magFilter: 'linear',
-      minFilter: 'linear',
-      mipmapFilter: 'linear',
+      magFilter: "linear",
+      minFilter: "linear",
+      mipmapFilter: "linear",
     });
   }
 
   getView() {
-    return this.texture.createView({ dimension: 'cube' });
+    return this.texture.createView({ dimension: "cube" });
   }
 
   createOne(device, sources, index = 0) {
     const source = sources[index];
     const texture = device.createTexture({
       size: [source.width, source.height],
-      format: 'rgba8unorm',
+      format: "rgba8unorm",
       usage:
         GPUTextureUsage.TEXTURE_BINDING |
         GPUTextureUsage.COPY_DST |

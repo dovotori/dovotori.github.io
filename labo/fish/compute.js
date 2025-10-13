@@ -1,4 +1,4 @@
-import { WebGPUComputer } from './gpuComputer';
+import { WebGPUComputer } from "./gpuComputer";
 
 const sum10wgsl = `
 @group(0) @binding(0) var<storage, read> data: array<f32>;
@@ -44,7 +44,9 @@ export class Compute {
   async init(arrSize = 100) {
     this.webGPUComputer = await WebGPUComputer.init(update1wgsl);
 
-    const data = new Float32Array(Array.from({ length: arrSize }, () => Math.random()));
+    const data = new Float32Array(
+      Array.from({ length: arrSize }, () => Math.random()),
+    );
 
     this.dataBuffer = this.webGPUComputer.createBuffer(
       data.byteLength,
@@ -58,7 +60,10 @@ export class Compute {
       Math.ceil(this.workerGroups) * 4,
       GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
     );
-    this.bindGroup = this.webGPUComputer.createBindGroup([this.dataBuffer, this.resultBuffer]);
+    this.bindGroup = this.webGPUComputer.createBindGroup([
+      this.dataBuffer,
+      this.resultBuffer,
+    ]);
 
     // convert result to js
     this.readBuffer = this.webGPUComputer.createBuffer(
@@ -82,14 +87,16 @@ export class Compute {
     // this.webGPUComputer.writeToBuffer(this.dataBuffer, result);
     // this.readBuffer.unmap();
 
-    console.log('gpu result time ms', performance.now() - startTime);
+    console.log("gpu result time ms", performance.now() - startTime);
     // return result;
   }
 }
 
 export async function testHeavyCompute() {
   const arrSize = 100000;
-  const data = new Float32Array(Array.from({ length: arrSize }, () => Math.random()));
+  const data = new Float32Array(
+    Array.from({ length: arrSize }, () => Math.random()),
+  );
 
   // GPU run
   // multiple pass to sum a big quantity of data
@@ -106,7 +113,10 @@ export async function testHeavyCompute() {
       Math.ceil(data.length / 10) * 4,
       GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
     );
-    const bindGroup = webGPUComputer.createBindGroup([dataBuffer, resultBuffer]);
+    const bindGroup = webGPUComputer.createBindGroup([
+      dataBuffer,
+      resultBuffer,
+    ]);
 
     const readBuffer = webGPUComputer.createBuffer(
       Math.ceil(data.length / 10) * 4,
@@ -119,5 +129,5 @@ export async function testHeavyCompute() {
     data = new Float32Array(readBuffer.getMappedRange());
   }
 
-  console.log('gpu result time ms', performance.now() - startTime, data);
+  console.log("gpu result time ms", performance.now() - startTime, data);
 }

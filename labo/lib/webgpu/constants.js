@@ -9,12 +9,12 @@ export const BindGroupLayouts = {
 // alpha blend behavior
 export const blend = {
   color: {
-    srcFactor: 'src-alpha',
-    dstFactor: 'one-minus-src-alpha',
+    srcFactor: "src-alpha",
+    dstFactor: "one-minus-src-alpha",
   },
   alpha: {
     // This just prevents the canvas from having alpha "holes" in it.
-    srcFactor: 'one',
-    dstFactor: 'one',
+    srcFactor: "one",
+    dstFactor: "one",
   },
 };

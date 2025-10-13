@@ -1,6 +1,6 @@
-import { EPSILON } from '../constants/maths';
-import Mat3 from './Mat3';
-import Vec3 from './Vec3';
+import { EPSILON } from "../constants/maths";
+import Mat3 from "./Mat3";
+import Vec3 from "./Vec3";
 
 class Mat4 {
   constructor() {
@@ -133,14 +133,18 @@ class Mat4 {
   pop() {
     if (this.empilement > 0) {
       let cpt = 0;
-      for (let i = (this.empilement - 1) * 16; i < this.empilement * 16; i += 1) {
+      for (
+        let i = (this.empilement - 1) * 16;
+        i < this.empilement * 16;
+        i += 1
+      ) {
         this.d[cpt] = this.sauvegardePrecedente[i];
         this.sauvegardePrecedente[i] = null;
         cpt += 1;
       }
       this.empilement -= 1;
     } else {
-      console.error('pop de trop');
+      console.error("pop de trop");
     }
     return this;
   }
@@ -187,24 +191,35 @@ class Mat4 {
     const axe = new Vec3(x, y, z);
     axe.normalise();
 
-    rotation.d[0] = axe.d[0] * axe.d[0] * (1 - Math.cos(angleInRadians)) + Math.cos(angleInRadians);
+    rotation.d[0] =
+      axe.d[0] * axe.d[0] * (1 - Math.cos(angleInRadians)) +
+      Math.cos(angleInRadians);
     rotation.d[1] =
-      axe.d[0] * axe.d[1] * (1 - Math.cos(angleInRadians)) - axe.d[2] * Math.sin(angleInRadians);
+      axe.d[0] * axe.d[1] * (1 - Math.cos(angleInRadians)) -
+      axe.d[2] * Math.sin(angleInRadians);
     rotation.d[2] =
-      axe.d[0] * axe.d[2] * (1 - Math.cos(angleInRadians)) + axe.d[1] * Math.sin(angleInRadians);
+      axe.d[0] * axe.d[2] * (1 - Math.cos(angleInRadians)) +
+      axe.d[1] * Math.sin(angleInRadians);
 
     rotation.d[4] =
-      axe.d[0] * axe.d[1] * (1 - Math.cos(angleInRadians)) + axe.d[2] * Math.sin(angleInRadians);
-    rotation.d[5] = axe.d[1] * axe.d[1] * (1 - Math.cos(angleInRadians)) + Math.cos(angleInRadians);
+      axe.d[0] * axe.d[1] * (1 - Math.cos(angleInRadians)) +
+      axe.d[2] * Math.sin(angleInRadians);
+    rotation.d[5] =
+      axe.d[1] * axe.d[1] * (1 - Math.cos(angleInRadians)) +
+      Math.cos(angleInRadians);
     rotation.d[6] =
-      axe.d[1] * axe.d[2] * (1 - Math.cos(angleInRadians)) - axe.d[0] * Math.sin(angleInRadians);
+      axe.d[1] * axe.d[2] * (1 - Math.cos(angleInRadians)) -
+      axe.d[0] * Math.sin(angleInRadians);
 
     rotation.d[8] =
-      axe.d[0] * axe.d[2] * (1 - Math.cos(angleInRadians)) - axe.d[1] * Math.sin(angleInRadians);
+      axe.d[0] * axe.d[2] * (1 - Math.cos(angleInRadians)) -
+      axe.d[1] * Math.sin(angleInRadians);
     rotation.d[9] =
-      axe.d[1] * axe.d[2] * (1 - Math.cos(angleInRadians)) + axe.d[0] * Math.sin(angleInRadians);
+      axe.d[1] * axe.d[2] * (1 - Math.cos(angleInRadians)) +
+      axe.d[0] * Math.sin(angleInRadians);
     rotation.d[10] =
-      axe.d[2] * axe.d[2] * (1 - Math.cos(angleInRadians)) + Math.cos(angleInRadians);
+      axe.d[2] * axe.d[2] * (1 - Math.cos(angleInRadians)) +
+      Math.cos(angleInRadians);
 
     rotation.d[15] = 1.0;
 
@@ -459,7 +474,10 @@ class Mat4 {
 
     // get determinant
     const determinant =
-      this.d[0] * cofactor0 - this.d[1] * cofactor1 + this.d[2] * cofactor2 - this.d[3] * cofactor3;
+      this.d[0] * cofactor0 -
+      this.d[1] * cofactor1 +
+      this.d[2] * cofactor2 -
+      this.d[3] * cofactor3;
 
     const cofactor4 = Mat4.getCofacteur(
       this.d[1],
@@ -674,7 +692,11 @@ class Mat4 {
   }
 
   static getCofacteur(m0, m1, m2, m3, m4, m5, m6, m7, m8) {
-    return m0 * (m4 * m8 - m5 * m7) - m1 * (m3 * m8 - m5 * m6) + m2 * (m3 * m7 - m4 * m6);
+    return (
+      m0 * (m4 * m8 - m5 * m7) -
+      m1 * (m3 * m8 - m5 * m6) +
+      m2 * (m3 * m7 - m4 * m6)
+    );
   }
 }
 

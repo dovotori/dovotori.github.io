@@ -1,11 +1,11 @@
-import { chunkArray } from '../../utils';
-import { dataViewToUint8 } from '../../utils/base64';
+import { chunkArray } from "../../utils";
+import { dataViewToUint8 } from "../../utils/base64";
 import {
   getBuffersData,
   getGlslProgramLocationsMappedName,
   getMaterial,
   getNumComponentPerType,
-} from './GltfCommon';
+} from "./GltfCommon";
 
 const getImageBufferData = (buffers, bufferView) => {
   const { buffer: bufferIndex, byteOffset, byteLength } = bufferView;
@@ -13,7 +13,14 @@ const getImageBufferData = (buffers, bufferView) => {
   return dataViewToUint8(dataView, byteLength);
 };
 
-const VBO_ATTRIBUTES = ['position', 'normale', 'texture', 'joint', 'weight', 'tangent'];
+const VBO_ATTRIBUTES = [
+  "position",
+  "normale",
+  "texture",
+  "joint",
+  "weight",
+  "tangent",
+];
 
 const getVbos = (attributes, accessors, indices, targets) => {
   const indicesAcc = accessors[indices];
@@ -78,31 +85,39 @@ const getSkins = (skins, nodes, accessors) => {
   if (skins) {
     const indexedNodes = nodes.map((node, index) => ({ ...node, id: index }));
     newSkins = skins
-      .map(({ inverseBindMatrices: matriceAccessorIndex, joints: jointsNodesIndexes }) => {
-        let matrices = [];
-        if (matriceAccessorIndex) {
-          const rawMatrix = accessors[matriceAccessorIndex].values;
-          matrices = chunkArray(rawMatrix, 16);
-        }
-        if (jointsNodesIndexes) {
-          const joints = jointsNodesIndexes.map((nodeIndex, index) => ({
-            ...indexedNodes[nodeIndex],
-            invMatrix: matrices[index],
-          }));
-          const tmpArray = joints.slice();
-          const hierarchyJoints = [];
-          while (tmpArray.length !== 0) {
-            const currentJoint = tmpArray.shift();
-            if (currentJoint.children) {
-              currentJoint.children = processChildren(currentJoint.children, tmpArray);
-            }
-            const { id, ...rest } = currentJoint;
-            hierarchyJoints.push(rest);
+      .map(
+        ({
+          inverseBindMatrices: matriceAccessorIndex,
+          joints: jointsNodesIndexes,
+        }) => {
+          let matrices = [];
+          if (matriceAccessorIndex) {
+            const rawMatrix = accessors[matriceAccessorIndex].values;
+            matrices = chunkArray(rawMatrix, 16);
           }
-          return { joints: hierarchyJoints };
-        }
-        return null;
-      })
+          if (jointsNodesIndexes) {
+            const joints = jointsNodesIndexes.map((nodeIndex, index) => ({
+              ...indexedNodes[nodeIndex],
+              invMatrix: matrices[index],
+            }));
+            const tmpArray = joints.slice();
+            const hierarchyJoints = [];
+            while (tmpArray.length !== 0) {
+              const currentJoint = tmpArray.shift();
+              if (currentJoint.children) {
+                currentJoint.children = processChildren(
+                  currentJoint.children,
+                  tmpArray,
+                );
+              }
+              const { id, ...rest } = currentJoint;
+              hierarchyJoints.push(rest);
+            }
+            return { joints: hierarchyJoints };
+          }
+          return null;
+        },
+      )
       .filter((k) => k);
   }
   return newSkins;
@@ -129,7 +144,7 @@ const getAnimations = (animations, nodes, accessors, meshes) => {
           chunkLength = node[path].length;
         } else if (node.mesh && meshes[node.mesh][path]) {
           chunkLength = meshes[node.mesh][path].length;
-        } else if (path === 'scale') {
+        } else if (path === "scale") {
           chunkLength = 3;
         }
 
@@ -161,7 +176,9 @@ const getImages = (images, buffers, bufferViews) =>
 const addChildrenToNode = (parent, nodes) => {
   const { children } = parent;
   if (children) {
-    const newChildren = children.map((nodeId) => addChildrenToNode(nodes[nodeId], nodes));
+    const newChildren = children.map((nodeId) =>
+      addChildrenToNode(nodes[nodeId], nodes),
+    );
     return { ...parent, children: newChildren };
   }
   return parent;
@@ -177,7 +194,9 @@ const organizeParenting = (nodes) => {
       }),
   );
   const nodesWithChildren = nodes.map((node) => addChildrenToNode(node, nodes));
-  return nodesWithChildren.filter((node, index) => indexNodeIsChild[index] === undefined);
+  return nodesWithChildren.filter(
+    (node, index) => indexNodeIsChild[index] === undefined,
+  );
 };
 
 const convertNodesToObject = (nodesArray) =>
@@ -193,10 +212,10 @@ const convertNodesToObject = (nodesArray) =>
 const markedAndNameNodes = (nodes, allJointsIds = []) => {
   const newNodes = nodes.map((node, index) => {
     let name = node.name || `node-${index}`;
-    let customType = 'node';
+    let customType = "node";
     if (allJointsIds.indexOf(index) !== -1) {
       name = node.name || `joint-${index}`;
-      customType = 'joint';
+      customType = "joint";
     }
     return { ...node, name, customType };
   });
@@ -207,14 +226,23 @@ export default class {
   constructor(rawText) {
     const JsonData = JSON.parse(rawText);
     console.log({ JsonData });
-    const { animations, bufferViews, skins, nodes, meshes, materials, images } = JsonData;
+    const { animations, bufferViews, skins, nodes, meshes, materials, images } =
+      JsonData;
 
     const { newBuffers, newAccessors } = getBuffersData(JsonData);
-    const allJointsIds = skins?.reduce((acc, skin) => acc.concat(skin.joints), []);
+    const allJointsIds = skins?.reduce(
+      (acc, skin) => acc.concat(skin.joints),
+      [],
+    );
     const markedNodes = markedAndNameNodes(nodes, allJointsIds);
 
     // add animations to nodes
-    const animationsPerNodes = getAnimations(animations, markedNodes, newAccessors, meshes);
+    const animationsPerNodes = getAnimations(
+      animations,
+      markedNodes,
+      newAccessors,
+      meshes,
+    );
     Object.keys(animationsPerNodes).forEach((nodeIndex) => {
       markedNodes[nodeIndex].animations = animationsPerNodes[nodeIndex];
     });
@@ -229,7 +257,9 @@ export default class {
     });
 
     const newImages = getImages(images, newBuffers, bufferViews);
-    const newMaterials = materials && materials.map((material) => getMaterial(material, newImages));
+    const newMaterials =
+      materials &&
+      materials.map((material) => getMaterial(material, newImages));
 
     let newNodes = organizeParenting(markedNodes);
     newNodes = convertNodesToObject(newNodes);
@@ -240,9 +270,9 @@ export default class {
     if (newSkins) this.data.skins = newSkins;
     if (newMaterials) this.data.materials = newMaterials;
     console.log(
-      '[Gltf custom data]',
+      "[Gltf custom data]",
       this.data,
-      `\n${nodes.length} nodes\n${allJointsIds?.length || '0'} joints`,
+      `\n${nodes.length} nodes\n${allJointsIds?.length || "0"} joints`,
     );
   }
 

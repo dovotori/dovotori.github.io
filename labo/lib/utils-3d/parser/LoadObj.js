@@ -20,20 +20,20 @@ export default class {
   }
 
   readLines(source) {
-    const lines = source.split('\n');
+    const lines = source.split("\n");
     lines.forEach((line) => {
-      const words = line.split(' ');
+      const words = line.split(" ");
       const firstWord = words[0];
       switch (firstWord) {
-        case 'f':
+        case "f":
           this.addFace(words.slice(1));
           break;
-        case 'v':
-        case 'vn':
-        case 'vt':
+        case "v":
+        case "vn":
+        case "vt":
           this.addPoints(firstWord, words.slice(1));
           break;
-        case 'usemtl':
+        case "usemtl":
           this.addNewMaterial(words.slice(1)[0]);
           break;
         default:
@@ -48,20 +48,21 @@ export default class {
   }
 
   addFaceIndex = (indexGroup) => {
-    const indexes = indexGroup.split('/');
-    if (indexes[0] && indexes[0] !== '') {
+    const indexes = indexGroup.split("/");
+    if (indexes[0] && indexes[0] !== "") {
       this.obj.v.indices.push(parseInt(indexes[0], 10) - 1);
     }
-    if (indexes[1] && indexes[1] !== '') {
+    if (indexes[1] && indexes[1] !== "") {
       this.obj.vt.indices.push(parseInt(indexes[1], 10) - 1);
     }
-    if (indexes[2] && indexes[2] !== '') {
+    if (indexes[2] && indexes[2] !== "") {
       this.obj.vn.indices.push(parseInt(indexes[2], 10) - 1);
     }
   };
 
   addPoints(type, coor) {
-    const finalCoor = type === 'vt' && coor.length === 3 ? coor.slice(0, 2) : coor;
+    const finalCoor =
+      type === "vt" && coor.length === 3 ? coor.slice(0, 2) : coor;
     finalCoor.forEach((c) => this.obj[type].points.push(parseFloat(c, 10)));
   }
 

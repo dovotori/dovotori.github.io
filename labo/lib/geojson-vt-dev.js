@@ -1,22 +1,22 @@
 (function (f) {
-  if (typeof exports === 'object' && typeof module !== 'undefined') {
+  if (typeof exports === "object" && typeof module !== "undefined") {
     module.exports = f();
-  } else if (typeof define === 'function' && define.amd) {
+  } else if (typeof define === "function" && define.amd) {
     define([], f);
   } else {
     let g;
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       g = window;
-    } else if (typeof global !== 'undefined') {
+    } else if (typeof global !== "undefined") {
       g = global;
-    } else if (typeof self !== 'undefined') {
+    } else if (typeof self !== "undefined") {
       g = self;
     } else {
       g = this;
     }
     g.geojsonvt = f();
   }
-})(function () {
+})(() => {
   let define;
   let module;
   let exports;
@@ -24,16 +24,16 @@
     function s(o, u) {
       if (!n[o]) {
         if (!t[o]) {
-          const a = typeof require === 'function' && require;
+          const a = typeof require === "function" && require;
           if (!u && a) return a(o, !0);
           if (i) return i(o, !0);
           const f = new Error(`Cannot find module '${o}'`);
-          throw ((f.code = 'MODULE_NOT_FOUND'), f);
+          throw ((f.code = "MODULE_NOT_FOUND"), f);
         }
         const l = (n[o] = { exports: {} });
         t[o][0].call(
           l.exports,
-          function (e) {
+          (e) => {
             const n = t[o][1][e];
             return s(n || e);
           },
@@ -47,16 +47,16 @@
       }
       return n[o].exports;
     }
-    var i = typeof require === 'function' && require;
+    var i = typeof require === "function" && require;
     for (let o = 0; o < r.length; o++) s(r[o]);
     return s;
   })(
     {
       1: [
-        function (require, module, exports) {
+        (require, module, exports) => {
           module.exports = clip;
 
-          const createFeature = require('./feature');
+          const createFeature = require("./feature");
 
           /* clip features between two axis-parallel lines:
            *     |        |
@@ -93,15 +93,15 @@
 
               let newGeometry = [];
 
-              if (type === 'Point' || type === 'MultiPoint') {
+              if (type === "Point" || type === "MultiPoint") {
                 clipPoints(geometry, newGeometry, k1, k2, axis);
-              } else if (type === 'LineString') {
+              } else if (type === "LineString") {
                 clipLine(geometry, newGeometry, k1, k2, axis, false);
-              } else if (type === 'MultiLineString') {
+              } else if (type === "MultiLineString") {
                 clipLines(geometry, newGeometry, k1, k2, axis, false);
-              } else if (type === 'Polygon') {
+              } else if (type === "Polygon") {
                 clipLines(geometry, newGeometry, k1, k2, axis, true);
-              } else if (type === 'MultiPolygon') {
+              } else if (type === "MultiPolygon") {
                 for (let j = 0; j < geometry.length; j++) {
                   const polygon = [];
                   clipLines(geometry[j], polygon, k1, k2, axis, true);
@@ -112,19 +112,21 @@
               }
 
               if (newGeometry.length) {
-                if (type === 'LineString' || type === 'MultiLineString') {
+                if (type === "LineString" || type === "MultiLineString") {
                   if (newGeometry.length === 1) {
-                    type = 'LineString';
+                    type = "LineString";
                     newGeometry = newGeometry[0];
                   } else {
-                    type = 'MultiLineString';
+                    type = "MultiLineString";
                   }
                 }
-                if (type === 'Point' || type === 'MultiPoint') {
-                  type = newGeometry.length === 3 ? 'Point' : 'MultiPoint';
+                if (type === "Point" || type === "MultiPoint") {
+                  type = newGeometry.length === 3 ? "Point" : "MultiPoint";
                 }
 
-                clipped.push(createFeature(feature.id, type, newGeometry, feature.tags));
+                clipped.push(
+                  createFeature(feature.id, type, newGeometry, feature.tags),
+                );
               }
             }
 
@@ -233,25 +235,25 @@
             out.push(1);
           }
         },
-        { './feature': 3 },
+        { "./feature": 3 },
       ],
       2: [
-        function (require, module, exports) {
+        (require, module, exports) => {
           module.exports = convert;
 
-          const simplify = require('./simplify');
-          const createFeature = require('./feature');
+          const simplify = require("./simplify");
+          const createFeature = require("./feature");
 
           // converts GeoJSON feature into an intermediate projected JSON vector format with simplification data
 
           function convert(data, tolerance) {
             const features = [];
 
-            if (data.type === 'FeatureCollection') {
+            if (data.type === "FeatureCollection") {
               for (let i = 0; i < data.features.length; i++) {
                 convertFeature(features, data.features[i], tolerance);
               }
-            } else if (data.type === 'Feature') {
+            } else if (data.type === "Feature") {
               convertFeature(features, data, tolerance);
             } else {
               // single geometry or a geometry collection
@@ -269,25 +271,25 @@
             const tol = tolerance * tolerance;
             const geometry = [];
 
-            if (type === 'Point') {
+            if (type === "Point") {
               convertPoint(coords, geometry);
-            } else if (type === 'MultiPoint') {
+            } else if (type === "MultiPoint") {
               for (var i = 0; i < coords.length; i++) {
                 convertPoint(coords[i], geometry);
               }
-            } else if (type === 'LineString') {
+            } else if (type === "LineString") {
               convertLine(coords, geometry, tol, false);
-            } else if (type === 'MultiLineString') {
+            } else if (type === "MultiLineString") {
               convertLines(coords, geometry, tol, false);
-            } else if (type === 'Polygon') {
+            } else if (type === "Polygon") {
               convertLines(coords, geometry, tol, true);
-            } else if (type === 'MultiPolygon') {
+            } else if (type === "MultiPolygon") {
               for (i = 0; i < coords.length; i++) {
                 const polygon = [];
                 convertLines(coords[i], polygon, tol, true);
                 geometry.push(polygon);
               }
-            } else if (type === 'GeometryCollection') {
+            } else if (type === "GeometryCollection") {
               for (i = 0; i < geojson.geometry.geometries.length; i++) {
                 convertFeature(
                   features,
@@ -300,10 +302,12 @@
               }
               return;
             } else {
-              throw new Error('Input data is not a valid GeoJSON object.');
+              throw new Error("Input data is not a valid GeoJSON object.");
             }
 
-            features.push(createFeature(geojson.id, type, geometry, geojson.properties));
+            features.push(
+              createFeature(geojson.id, type, geometry, geojson.properties),
+            );
           }
 
           function convertPoint(coords, out) {
@@ -329,7 +333,7 @@
                 if (isPolygon) {
                   size += (x0 * y - x * y0) / 2; // area
                 } else {
-                  size += Math.sqrt(Math.pow(x - x0, 2) + Math.pow(y - y0, 2)); // length
+                  size += Math.sqrt((x - x0) ** 2 + (y - y0) ** 2); // length
                 }
               }
               x0 = x;
@@ -362,10 +366,10 @@
             return y2 < 0 ? 0 : y2 > 1 ? 1 : y2;
           }
         },
-        { './feature': 3, './simplify': 5 },
+        { "./feature": 3, "./simplify": 5 },
       ],
       3: [
-        function (require, module, exports) {
+        (require, module, exports) => {
           module.exports = createFeature;
 
           function createFeature(id, type, geom, tags) {
@@ -387,13 +391,17 @@
             const geom = feature.geometry;
             const { type } = feature;
 
-            if (type === 'Point' || type === 'MultiPoint' || type === 'LineString') {
+            if (
+              type === "Point" ||
+              type === "MultiPoint" ||
+              type === "LineString"
+            ) {
               calcLineBBox(feature, geom);
-            } else if (type === 'Polygon' || type === 'MultiLineString') {
+            } else if (type === "Polygon" || type === "MultiLineString") {
               for (var i = 0; i < geom.length; i++) {
                 calcLineBBox(feature, geom[i]);
               }
-            } else if (type === 'MultiPolygon') {
+            } else if (type === "MultiPolygon") {
               for (i = 0; i < geom.length; i++) {
                 for (let j = 0; j < geom[i].length; j++) {
                   calcLineBBox(feature, geom[i][j]);
@@ -414,27 +422,33 @@
         {},
       ],
       4: [
-        function (require, module, exports) {
+        (require, module, exports) => {
           module.exports = geojsonvt;
 
-          const convert = require('./convert'); // GeoJSON conversion and preprocessing
-          const transform = require('./transform'); // coordinate transformation
-          const clip = require('./clip'); // stripe clipping algorithm
-          const wrap = require('./wrap'); // date line processing
-          const createTile = require('./tile'); // final simplified tile generation
+          const convert = require("./convert"); // GeoJSON conversion and preprocessing
+          const transform = require("./transform"); // coordinate transformation
+          const clip = require("./clip"); // stripe clipping algorithm
+          const wrap = require("./wrap"); // date line processing
+          const createTile = require("./tile"); // final simplified tile generation
 
           function geojsonvt(data, options) {
             return new GeoJSONVT(data, options);
           }
 
           function GeoJSONVT(data, options) {
-            options = this.options = extend(Object.create(this.options), options);
+            options = this.options = extend(
+              Object.create(this.options),
+              options,
+            );
 
             if (options.maxZoom < 0 || options.maxZoom > 24)
-              throw new Error('maxZoom should be in the 0-24 range');
+              throw new Error("maxZoom should be in the 0-24 range");
 
             const z2 = 1 << options.maxZoom; // 2^z
-            let features = convert(data, options.tolerance / (z2 * options.extent));
+            let features = convert(
+              data,
+              options.tolerance / (z2 * options.extent),
+            );
 
             this.tiles = {};
             this.tileCoords = [];
@@ -455,7 +469,15 @@
             debug: 0, // logging level (0, 1 or 2)
           };
 
-          GeoJSONVT.prototype.splitTile = function (features, z, x, y, cz, cx, cy) {
+          GeoJSONVT.prototype.splitTile = function (
+            features,
+            z,
+            x,
+            y,
+            cz,
+            cx,
+            cy,
+          ) {
             const stack = [features, z, x, y];
             const { options } = this;
 
@@ -470,7 +492,9 @@
               const id = toID(z, x, y);
               let tile = this.tiles[id];
               const tileTolerance =
-                z === options.maxZoom ? 0 : options.tolerance / (z2 * options.extent);
+                z === options.maxZoom
+                  ? 0
+                  : options.tolerance / (z2 * options.extent);
 
               if (!tile) {
                 tile = this.tiles[id] = createTile(
@@ -490,7 +514,10 @@
               // if it's the first-pass tiling
               if (!cz) {
                 // stop tiling if we reached max zoom, or if the tile is too simple
-                if (z === options.indexMaxZoom || tile.numPoints <= options.indexMaxPoints)
+                if (
+                  z === options.indexMaxZoom ||
+                  tile.numPoints <= options.indexMaxPoints
+                )
                   continue;
 
                 // if a drilldown to a specific tile
@@ -500,7 +527,8 @@
 
                 // stop tiling if it's not an ancestor of the target tile
                 const m = 1 << (cz - z);
-                if (x !== Math.floor(cx / m) || y !== Math.floor(cy / m)) continue;
+                if (x !== Math.floor(cx / m) || y !== Math.floor(cy / m))
+                  continue;
               }
 
               // if we slice further down, no need to keep source geometry
@@ -522,8 +550,24 @@
 
               tl = bl = tr = br = null;
 
-              left = clip(features, z2, x - k1, x + k3, 0, tile.minX, tile.maxX);
-              right = clip(features, z2, x + k2, x + k4, 0, tile.minX, tile.maxX);
+              left = clip(
+                features,
+                z2,
+                x - k1,
+                x + k3,
+                0,
+                tile.minX,
+                tile.maxX,
+              );
+              right = clip(
+                features,
+                z2,
+                x + k2,
+                x + k4,
+                0,
+                tile.minX,
+                tile.maxX,
+              );
               features = null;
 
               if (left) {
@@ -571,7 +615,9 @@
 
             if (!parent || !parent.source) return null;
             this.splitTile(parent.source, z0, x0, y0, z, x, y);
-            return this.tiles[id] ? transform.tile(this.tiles[id], extent) : null;
+            return this.tiles[id]
+              ? transform.tile(this.tiles[id], extent)
+              : null;
           };
 
           function toID(z, x, y) {
@@ -584,15 +630,15 @@
           }
         },
         {
-          './clip': 1,
-          './convert': 2,
-          './tile': 6,
-          './transform': 7,
-          './wrap': 8,
+          "./clip": 1,
+          "./convert": 2,
+          "./tile": 6,
+          "./transform": 7,
+          "./wrap": 8,
         },
       ],
       5: [
-        function (require, module, exports) {
+        (require, module, exports) => {
           module.exports = simplify;
 
           // calculate simplification data using optimized Douglas-Peucker algorithm
@@ -615,7 +661,8 @@
             }
 
             if (maxSqDist > sqTolerance) {
-              if (index - first > 3) simplify(coords, first, index, sqTolerance);
+              if (index - first > 3)
+                simplify(coords, first, index, sqTolerance);
               coords[index + 2] = maxSqDist;
               if (last - index > 3) simplify(coords, index, last, sqTolerance);
             }
@@ -647,7 +694,7 @@
         {},
       ],
       6: [
-        function (require, module, exports) {
+        (require, module, exports) => {
           module.exports = createTile;
 
           function createTile(features, z2, tx, ty, tolerance, noSimplify) {
@@ -688,16 +735,24 @@
             const { type } = feature;
             const simplified = [];
 
-            if (type === 'Point' || type === 'MultiPoint') {
+            if (type === "Point" || type === "MultiPoint") {
               for (var i = 0; i < geom.length; i += 3) {
                 simplified.push(geom[i]);
                 simplified.push(geom[i + 1]);
                 tile.numPoints++;
                 tile.numSimplified++;
               }
-            } else if (type === 'LineString') {
-              addLine(simplified, geom, tile, tolerance, noSimplify, false, false);
-            } else if (type === 'MultiLineString' || type === 'Polygon') {
+            } else if (type === "LineString") {
+              addLine(
+                simplified,
+                geom,
+                tile,
+                tolerance,
+                noSimplify,
+                false,
+                false,
+              );
+            } else if (type === "MultiLineString" || type === "Polygon") {
               for (i = 0; i < geom.length; i++) {
                 addLine(
                   simplified,
@@ -705,15 +760,23 @@
                   tile,
                   tolerance,
                   noSimplify,
-                  type === 'Polygon',
+                  type === "Polygon",
                   i === 0,
                 );
               }
-            } else if (type === 'MultiPolygon') {
+            } else if (type === "MultiPolygon") {
               for (let k = 0; k < geom.length; k++) {
                 const polygon = geom[k];
                 for (i = 0; i < polygon.length; i++) {
-                  addLine(simplified, polygon[i], tile, tolerance, noSimplify, true, i === 0);
+                  addLine(
+                    simplified,
+                    polygon[i],
+                    tile,
+                    tolerance,
+                    noSimplify,
+                    true,
+                    i === 0,
+                  );
                 }
               }
             }
@@ -722,9 +785,9 @@
               const tileFeature = {
                 geometry: simplified,
                 type:
-                  type === 'Polygon' || type === 'MultiPolygon'
+                  type === "Polygon" || type === "MultiPolygon"
                     ? 3
-                    : type === 'LineString' || type === 'MultiLineString'
+                    : type === "LineString" || type === "MultiLineString"
                       ? 2
                       : 1,
                 tags: feature.tags || null,
@@ -736,10 +799,21 @@
             }
           }
 
-          function addLine(result, geom, tile, tolerance, noSimplify, isPolygon, isOuter) {
+          function addLine(
+            result,
+            geom,
+            tile,
+            tolerance,
+            noSimplify,
+            isPolygon,
+            isOuter,
+          ) {
             const sqTolerance = tolerance * tolerance;
 
-            if (!noSimplify && geom.size < (isPolygon ? sqTolerance : tolerance)) {
+            if (
+              !noSimplify &&
+              geom.size < (isPolygon ? sqTolerance : tolerance)
+            ) {
               tile.numPoints += geom.length / 3;
               return;
             }
@@ -762,7 +836,11 @@
 
           function rewind(ring, clockwise) {
             let area = 0;
-            for (var i = 0, len = ring.length, j = len - 2; i < len; j = i, i += 2) {
+            for (
+              var i = 0, len = ring.length, j = len - 2;
+              i < len;
+              j = i, i += 2
+            ) {
               area += (ring[i] - ring[j]) * (ring[i + 1] + ring[j + 1]);
             }
             if (area > 0 === clockwise) {
@@ -780,7 +858,7 @@
         {},
       ],
       7: [
-        function (require, module, exports) {
+        (require, module, exports) => {
           exports.tile = transformTile;
           exports.point = transformPoint;
 
@@ -805,13 +883,24 @@
 
               if (type === 1) {
                 for (j = 0; j < geom.length; j += 2) {
-                  feature.geometry.push(transformPoint(geom[j], geom[j + 1], extent, z2, tx, ty));
+                  feature.geometry.push(
+                    transformPoint(geom[j], geom[j + 1], extent, z2, tx, ty),
+                  );
                 }
               } else {
                 for (j = 0; j < geom.length; j++) {
                   const ring = [];
                   for (k = 0; k < geom[j].length; k += 2) {
-                    ring.push(transformPoint(geom[j][k], geom[j][k + 1], extent, z2, tx, ty));
+                    ring.push(
+                      transformPoint(
+                        geom[j][k],
+                        geom[j][k + 1],
+                        extent,
+                        z2,
+                        tx,
+                        ty,
+                      ),
+                    );
                   }
                   feature.geometry.push(ring);
                 }
@@ -824,15 +913,18 @@
           }
 
           function transformPoint(x, y, extent, z2, tx, ty) {
-            return [Math.round(extent * (x * z2 - tx)), Math.round(extent * (y * z2 - ty))];
+            return [
+              Math.round(extent * (x * z2 - tx)),
+              Math.round(extent * (y * z2 - ty)),
+            ];
           }
         },
         {},
       ],
       8: [
-        function (require, module, exports) {
-          const clip = require('./clip');
-          const createFeature = require('./feature');
+        (require, module, exports) => {
+          const clip = require("./clip");
+          const createFeature = require("./feature");
 
           module.exports = wrap;
 
@@ -860,25 +952,33 @@
 
               var newGeometry;
 
-              if (type === 'Point' || type === 'MultiPoint' || type === 'LineString') {
+              if (
+                type === "Point" ||
+                type === "MultiPoint" ||
+                type === "LineString"
+              ) {
                 newGeometry = shiftCoords(feature.geometry, offset);
-              } else if (type === 'MultiLineString' || type === 'Polygon') {
+              } else if (type === "MultiLineString" || type === "Polygon") {
                 newGeometry = [];
                 for (var j = 0; j < feature.geometry.length; j++) {
                   newGeometry.push(shiftCoords(feature.geometry[j], offset));
                 }
-              } else if (type === 'MultiPolygon') {
+              } else if (type === "MultiPolygon") {
                 newGeometry = [];
                 for (j = 0; j < feature.geometry.length; j++) {
                   const newPolygon = [];
                   for (let k = 0; k < feature.geometry[j].length; k++) {
-                    newPolygon.push(shiftCoords(feature.geometry[j][k], offset));
+                    newPolygon.push(
+                      shiftCoords(feature.geometry[j][k], offset),
+                    );
                   }
                   newGeometry.push(newPolygon);
                 }
               }
 
-              newFeatures.push(createFeature(feature.id, type, newGeometry, feature.tags));
+              newFeatures.push(
+                createFeature(feature.id, type, newGeometry, feature.tags),
+              );
             }
 
             return newFeatures;
@@ -894,7 +994,7 @@
             return newPoints;
           }
         },
-        { './clip': 1, './feature': 3 },
+        { "./clip": 1, "./feature": 3 },
       ],
     },
     {},

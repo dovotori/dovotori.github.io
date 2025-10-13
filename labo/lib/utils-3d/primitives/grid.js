@@ -1,6 +1,10 @@
-import { mapFromRange } from '../../utils/numbers';
+import { mapFromRange } from "../../utils/numbers";
 
-export const getPoints = (width, height, { startX = -1, endX = 1, startZ = -1, endZ = 1 } = {}) => {
+export const getPoints = (
+  width,
+  height,
+  { startX = -1, endX = 1, startZ = -1, endZ = 1 } = {},
+) => {
   const points = [];
   for (let y = 0; y < height; y++) {
     const posZ = mapFromRange(y, 0, height - 1, startZ, endZ);

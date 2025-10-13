@@ -1,6 +1,6 @@
-import StateSprite from '../../../lib/utils-3d/core/StateSprite';
-import Vec3 from '../../../lib/utils/maths/Vec3';
-import MeshSprite from '../../../lib/webgl/meshes/MeshSprite';
+import StateSprite from "../../../lib/utils-3d/core/StateSprite";
+import Vec3 from "../../../lib/utils/maths/Vec3";
+import MeshSprite from "../../../lib/webgl/meshes/MeshSprite";
 
 export default class extends MeshSprite {
   constructor({ constants, sprites, viewBox }) {
@@ -32,8 +32,8 @@ export default class extends MeshSprite {
       this.behavior.getY() - this.viewBox.y - (1 - h) + (py || 0),
       this.behavior.getZ(),
     );
-    program.setTexture(0, texture.get(), 'textureMap');
-    program.setInt('inverseX', this.inverseX ? 1 : 0);
+    program.setTexture(0, texture.get(), "textureMap");
+    program.setInt("inverseX", this.inverseX ? 1 : 0);
     super.render(objet, program);
     this.setSprite(this.stateSprite.get());
   }
@@ -93,7 +93,9 @@ export default class extends MeshSprite {
 
   reset() {
     this.stateSprite.reset();
-    this.stateSprite.set(this.constants.states[Object.keys(this.constants.states)[0]]);
+    this.stateSprite.set(
+      this.constants.states[Object.keys(this.constants.states)[0]],
+    );
     this.setSprite(this.stateSprite.get());
   }
 }

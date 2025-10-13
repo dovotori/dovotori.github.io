@@ -1,6 +1,6 @@
-import App from '../lib/webgl/App';
-import Scene from './scene';
-import config from './config';
+import App from "../lib/webgl/App";
+import Scene from "./scene";
+import config from "./config";
 
 let app = null;
 

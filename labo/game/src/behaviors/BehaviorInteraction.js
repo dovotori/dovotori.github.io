@@ -1,6 +1,6 @@
-import Vec3 from '../../../lib/utils/maths/Vec3';
-import { mapFromRange } from '../../../lib/utils/numbers';
-import Behavior from './BehaviorGravity';
+import Vec3 from "../../../lib/utils/maths/Vec3";
+import { mapFromRange } from "../../../lib/utils/numbers";
+import Behavior from "./BehaviorGravity";
 
 export default class extends Behavior {
   constructor(constants, updateState, tileSize) {
@@ -54,10 +54,18 @@ export default class extends Behavior {
     }
 
     if (this.status === AIM) {
-      this.aimingStrength = mapFromRange(keyboard.getCharge(keys.W), 0, 40, 0.2, 1);
+      this.aimingStrength = mapFromRange(
+        keyboard.getCharge(keys.W),
+        0,
+        40,
+        0.2,
+        1,
+      );
     }
 
-    const directionSpeed = this.isCollision.bottom ? physics.run : physics.aircontrol;
+    const directionSpeed = this.isCollision.bottom
+      ? physics.run
+      : physics.aircontrol;
 
     if (!this.isCollision.right && keyboard.isPressed(keys.RIGHT)) {
       this.speed.addX(directionSpeed);

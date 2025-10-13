@@ -1,7 +1,7 @@
-import { Fragment } from 'react';
-import styled from 'styled-components';
+import { Fragment } from "react";
+import styled from "styled-components";
 
-import Tag from './Tag';
+import Tag from "./Tag";
 
 const Wrap = styled.p`
   letter-spacing: 0.1em;

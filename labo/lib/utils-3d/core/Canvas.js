@@ -1,9 +1,9 @@
-import Context from '../../webgl/gl/Context';
-import ContextGpu from '../../webgpu/Context';
+import Context from "../../webgl/gl/Context";
+import ContextGpu from "../../webgpu/Context";
 
 export default class {
   constructor(isWebGpu = false) {
-    this.canvas = document.createElement('canvas');
+    this.canvas = document.createElement("canvas");
     this.isWebGpu = isWebGpu;
   }
 
@@ -17,8 +17,8 @@ export default class {
   }
 
   resize = (box) => {
-    this.canvas.setAttribute('width', box.width);
-    this.canvas.setAttribute('height', box.height);
+    this.canvas.setAttribute("width", box.width);
+    this.canvas.setAttribute("height", box.height);
   };
 
   get() {

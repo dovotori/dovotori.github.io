@@ -27,7 +27,11 @@ export default class {
     this.count = points.length / this.stride;
 
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vbo);
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(points), this.modeCalcul);
+    this.gl.bufferData(
+      this.gl.ARRAY_BUFFER,
+      new Float32Array(points),
+      this.modeCalcul,
+    );
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
   }
 
@@ -38,7 +42,10 @@ export default class {
     let decalage = 0;
     Object.entries(this.steps).forEach((entry) => {
       const [type, step] = entry;
-      if (program.locations[type] !== undefined && program.locations[type] !== -1) {
+      if (
+        program.locations[type] !== undefined &&
+        program.locations[type] !== -1
+      ) {
         this.gl.enableVertexAttribArray(program.locations[type]);
         this.gl.vertexAttribPointer(
           program.locations[type],
@@ -126,7 +133,9 @@ export default class {
         });
         const currentMatName = obj.mat[Object.keys(obj.mat)[currentMatId]];
         Object.keys(this.materialProps).forEach((type) => {
-          const values = (mat[currentMatName] && mat[currentMatName][type]) || DEFAULT_MAT[type];
+          const values =
+            (mat[currentMatName] && mat[currentMatName][type]) ||
+            DEFAULT_MAT[type];
           values.forEach((value) => finalPoints.push(value));
         });
       }

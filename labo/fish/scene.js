@@ -1,5 +1,5 @@
-import WebgpuScene from '../lib/webgpu/WebgpuScene.js';
-import { Compute } from './compute.js';
+import WebgpuScene from "../lib/webgpu/WebgpuScene.js";
+import { Compute } from "./compute.js";
 
 export default class Scene extends WebgpuScene {
   constructor(context, config) {
@@ -18,7 +18,7 @@ export default class Scene extends WebgpuScene {
     const device = this.context.getDevice();
 
     this.vertexBuffer = device.createBuffer({
-      label: 'vertex buffer',
+      label: "vertex buffer",
       size: vertices.byteLength,
       usage: window.GPUBufferUsage.VERTEX | window.GPUBufferUsage.COPY_DST,
     });
@@ -29,7 +29,7 @@ export default class Scene extends WebgpuScene {
       arrayStride: 8, // (Float32Array.BYTES_PER_ELEMENT = 4) * 2 XY
       attributes: [
         {
-          format: 'float32x2',
+          format: "float32x2",
           offset: 0,
           shaderLocation: 0, // Position, see vertex shader
         },
@@ -40,16 +40,16 @@ export default class Scene extends WebgpuScene {
     console.log({ canvasFormat, programs });
 
     this.pipeline = device.createRenderPipeline({
-      label: 'Fish pipeline',
-      layout: 'auto',
+      label: "Fish pipeline",
+      layout: "auto",
       vertex: {
         module: programs.v_fish.get(),
-        entryPoint: 'v_main',
+        entryPoint: "v_main",
         buffers: [vertexBufferLayout],
       },
       fragment: {
         module: programs.f_fish.get(),
-        entryPoint: 'f_main',
+        entryPoint: "f_main",
         targets: [
           {
             format: canvasFormat,
@@ -57,8 +57,8 @@ export default class Scene extends WebgpuScene {
         ],
       },
       primitive: {
-        topology: 'triangle-strip',
-        cullMode: 'back',
+        topology: "triangle-strip",
+        cullMode: "back",
       },
     });
 
@@ -78,16 +78,16 @@ export default class Scene extends WebgpuScene {
     const device = this.context.getDevice();
 
     const encoder = device.createCommandEncoder({
-      label: 'Fish Command Encoder',
+      label: "Fish Command Encoder",
     });
     const pass = encoder.beginRenderPass({
-      label: 'Fish Pass Descriptor',
+      label: "Fish Pass Descriptor",
       colorAttachments: [
         {
           view: this.context.getCurrentTexture().createView(),
           clearValue: { r: 0, g: 0, b: 0, a: 0 },
-          loadOp: 'clear', // 'load' -> draw hover / 'clear'
-          storeOp: 'store', // 'store' -> save // 'discard' maybe for save in tex
+          loadOp: "clear", // 'load' -> draw hover / 'clear'
+          storeOp: "store", // 'store' -> save // 'discard' maybe for save in tex
         },
       ],
     });

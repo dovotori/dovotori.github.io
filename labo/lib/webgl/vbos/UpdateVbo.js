@@ -22,13 +22,24 @@ export default class {
     this.gl.useProgram(program);
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vbo);
     this.gl.enableVertexAttribArray(program.locations[location]);
-    this.gl.vertexAttribPointer(program.locations[location], 1, this.gl.FLOAT, false, 0, 0);
+    this.gl.vertexAttribPointer(
+      program.locations[location],
+      1,
+      this.gl.FLOAT,
+      false,
+      0,
+      0,
+    );
   }
 
   start(program, location, points) {
     this.enable(program, location);
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vbo);
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(points), this.modeCalcul);
+    this.gl.bufferData(
+      this.gl.ARRAY_BUFFER,
+      new Float32Array(points),
+      this.modeCalcul,
+    );
   }
 
   end() {

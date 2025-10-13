@@ -1,12 +1,12 @@
-import ManagerGltfs from '../managers/ManagerGltfs';
-import ManagerObjets from '../managers/ManagerObjets';
-import ManagerPrograms from '../managers/ManagerPrograms';
-import ManagerSounds from '../managers/ManagerSounds';
-import ManagerTextures from '../managers/ManagerTextures';
-import Bloom from '../postprocess/Bloom';
-import PostProcess from '../postprocess/PostProcess';
-import Shadow from '../postprocess/Shadow';
-import Ssao from '../postprocess/Ssao';
+import ManagerGltfs from "../managers/ManagerGltfs";
+import ManagerObjets from "../managers/ManagerObjets";
+import ManagerPrograms from "../managers/ManagerPrograms";
+import ManagerSounds from "../managers/ManagerSounds";
+import ManagerTextures from "../managers/ManagerTextures";
+import Bloom from "../postprocess/Bloom";
+import PostProcess from "../postprocess/PostProcess";
+import Shadow from "../postprocess/Shadow";
+import Ssao from "../postprocess/Ssao";
 
 export default class {
   constructor(gl, config) {
@@ -35,7 +35,11 @@ export default class {
         this.postProcess = new PostProcess(gl, processConfig, programs);
 
         if (config.postprocess.bloom) {
-          this.bloom = new Bloom(gl, { ...processConfig, ...config.postprocess.bloom }, programs);
+          this.bloom = new Bloom(
+            gl,
+            { ...processConfig, ...config.postprocess.bloom },
+            programs,
+          );
         }
 
         if (config.postprocess.ssao) {
@@ -83,7 +87,9 @@ export default class {
   }
 
   canUseDepth() {
-    return (this.config.useDepthTexture && this.config.support.depthTexture) || false;
+    return (
+      (this.config.useDepthTexture && this.config.support.depthTexture) || false
+    );
   }
 
   resize(box) {
@@ -100,7 +106,10 @@ export default class {
     if (this.shadow) {
       this.shadow.resize(box);
     }
-    this.mngProg.updateResolution(this.containerSize.width, this.containerSize.height);
+    this.mngProg.updateResolution(
+      this.containerSize.width,
+      this.containerSize.height,
+    );
     this.resizeViewport();
   }
 

@@ -1,9 +1,9 @@
-import DualQuaternion from '../lib/utils/maths/DualQuaternion';
-import Mat4 from '../lib/utils/maths/Mat4';
-import Spring from '../lib/utils/maths/Spring';
-import Target from '../lib/utils/maths/Target';
-import { degToRad, mapFromRange } from '../lib/utils/numbers';
-import Scene from '../lib/webgl/scenes/SceneLampe';
+import DualQuaternion from "../lib/utils/maths/DualQuaternion";
+import Mat4 from "../lib/utils/maths/Mat4";
+import Spring from "../lib/utils/maths/Spring";
+import Target from "../lib/utils/maths/Target";
+import { degToRad, mapFromRange } from "../lib/utils/numbers";
+import Scene from "../lib/webgl/scenes/SceneLampe";
 
 export default class extends Scene {
   setup() {
@@ -30,8 +30,11 @@ export default class extends Scene {
 
     this.model.identity();
 
-    const angle = degToRad(this.targetX.get()) + Math.sin(this.time * 0.005) * 0.1;
-    const angle2 = degToRad(this.targetY.get()) - Math.abs(Math.cos(this.time * 0.005) * 0.1);
+    const angle =
+      degToRad(this.targetX.get()) + Math.sin(this.time * 0.005) * 0.1;
+    const angle2 =
+      degToRad(this.targetY.get()) -
+      Math.abs(Math.cos(this.time * 0.005) * 0.1);
 
     this.model.scale(this.targetScale.get());
 
@@ -41,15 +44,22 @@ export default class extends Scene {
     this.model.multiply(quat.toMatrix4());
 
     const program = this.mngProg.get(this.config.MAIN_PROG);
-    program.setFloat('time', this.time);
+    program.setFloat("time", this.time);
   }
 
   effects() {
     const delta = Math.cos(this.time * 0.001) * 0.05;
     if (delta > 0) {
-      this.postProcess.setGlitch(this.time * 0.07 + this.target.get(), delta, -delta);
+      this.postProcess.setGlitch(
+        this.time * 0.07 + this.target.get(),
+        delta,
+        -delta,
+      );
     }
-    this.postProcess.setWave(0.05, delta, [this.mouseCanvasPosition.x, this.mouseCanvasPosition.y]);
+    this.postProcess.setWave(0.05, delta, [
+      this.mouseCanvasPosition.x,
+      this.mouseCanvasPosition.y,
+    ]);
     this.postProcess.setFxaa();
   }
 

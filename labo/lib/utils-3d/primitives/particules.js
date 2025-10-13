@@ -1,17 +1,13 @@
-import { mapFromRange } from '../../utils/numbers';
-import PerlinNoise from '../../utils/perlinNoise';
+import { mapFromRange } from "../../utils/numbers";
+import PerlinNoise from "../../utils/perlinNoise";
 
 export const getRandomPointsInCube = (count) =>
-  Array.from(
-    { length: count },
-    () => {
-      const x = Math.floor(Math.random() * 255);
-      const y = Math.floor(Math.random() * 255);
-      const z = Math.floor(Math.random() * 255);
-      return [x, y, z, 255];
-    },
-    [],
-  ).flat();
+  Array.from({ length: count }, () => {
+    const x = Math.floor(Math.random() * 255);
+    const y = Math.floor(Math.random() * 255);
+    const z = Math.floor(Math.random() * 255);
+    return [x, y, z, 255];
+  }, []).flat();
 
 const getPointsInSphere = () => {
   const u = Math.random();
@@ -30,17 +26,13 @@ const getPointsInSphere = () => {
 };
 
 export const getRandomPointsInSphere = (count) =>
-  Array.from(
-    { length: count },
-    () => {
-      const point = getPointsInSphere();
-      const x = Math.floor(((point.x + 1) / 2) * 255);
-      const y = Math.floor(((point.y + 1) / 2) * 255);
-      const z = Math.floor(((point.z + 1) / 2) * 255);
-      return [x, y, z, 255];
-    },
-    [],
-  ).flat();
+  Array.from({ length: count }, () => {
+    const point = getPointsInSphere();
+    const x = Math.floor(((point.x + 1) / 2) * 255);
+    const y = Math.floor(((point.y + 1) / 2) * 255);
+    const z = Math.floor(((point.z + 1) / 2) * 255);
+    return [x, y, z, 255];
+  }, []).flat();
 
 export const getGridPoints = (nbRows, nbColumns) => {
   let result = [];

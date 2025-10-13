@@ -1,13 +1,13 @@
-import App from '../lib/webgl/App';
+import App from "../lib/webgl/App";
 
-import config from './config';
-import Scene from './scene';
+import config from "./config";
+import Scene from "./scene";
 
-import 'Assets/style/controls.css';
-import 'Assets/style/fullscreen-btn.css';
-import 'Assets/style/range-input.css';
+import "Assets/style/controls.css";
+import "Assets/style/fullscreen-btn.css";
+import "Assets/style/range-input.css";
 
-import './style.css';
+import "./style.css";
 
 let app = null;
 

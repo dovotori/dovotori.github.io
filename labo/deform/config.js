@@ -1,14 +1,14 @@
-const MAIN_PROG = 'deform';
+const MAIN_PROG = "deform";
 export default {
-  slug: 'deform',
+  slug: "deform",
   MAIN_PROG,
   shaders: [
-    '/camera/normale.js',
-    '/camera/frequencyCircle.js',
-    '/camera/frequencyGrid.js',
+    "/camera/normale.js",
+    "/camera/frequencyCircle.js",
+    "/camera/frequencyGrid.js",
     `/camera/${MAIN_PROG}.js`,
   ],
-  assets: ['/textures/earth.png', '/sound/akira.mp3'],
+  assets: ["/textures/earth.png", "/sound/akira.mp3"],
   camera: {
     position: { x: 0, y: 0, z: 20 },
     target: { x: 0, y: 0, z: 0 },
@@ -34,12 +34,12 @@ export default {
       brillance: 1,
     },
   ],
-  mouse: { domId: 'deform', events: ['drag', 'wheel', 'click'] },
+  mouse: { domId: "deform", events: ["drag", "wheel", "click"] },
   controls: {
-    fullscreen: { domId: 'deform', buttonId: 'fullscreen-toggle-btn' },
+    fullscreen: { domId: "deform", buttonId: "fullscreen-toggle-btn" },
     ranges: {
-      volume: { min: 0, max: 100, value: 50, label: 'Volume' },
-      playbackRate: { min: 0, max: 100, value: 50, label: 'Playback rate' },
+      volume: { min: 0, max: 100, value: 50, label: "Volume" },
+      playbackRate: { min: 0, max: 100, value: 50, label: "Playback rate" },
     },
   },
   postprocess: true,

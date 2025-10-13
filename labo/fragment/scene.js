@@ -1,12 +1,12 @@
-import earcut from 'earcut';
-import { getAbsoluteCoor } from 'Labo/lib/parseSvgPath';
-import { hslToRgb } from '../lib/utils/color';
-import Mat4 from '../lib/utils/maths/Mat4';
-import Primitive from '../lib/webgl/gl/Primitive';
-import Scene from '../lib/webgl/scenes/SceneCamera';
+import earcut from "earcut";
+import { getAbsoluteCoor } from "Labo/lib/parseSvgPath";
+import { hslToRgb } from "../lib/utils/color";
+import Mat4 from "../lib/utils/maths/Mat4";
+import Primitive from "../lib/webgl/gl/Primitive";
+import Scene from "../lib/webgl/scenes/SceneCamera";
 
 const pathLogo =
-  'm-10-20-2 2 8 12-18 18v5l7 7v-10l5-5 5 5h10l5-5 5 5v10l7-7v-5l-18-18 8-12-2-2-10 10z';
+  "m-10-20-2 2 8 12-18 18v5l7 7v-10l5-5 5 5h10l5-5 5 5v10l7-7v-5l-18-18 8-12-2-2-10 10z";
 
 export default class extends Scene {
   setup() {
@@ -42,9 +42,9 @@ export default class extends Scene {
     super.render();
     this.model.identity();
     this.model.rotate(Math.cos(this.time * 0.001) * 50.0, 0, 1, 0);
-    this.mngProg.get('vertexColor').setMatrix('model', this.model.get());
+    this.mngProg.get("vertexColor").setMatrix("model", this.model.get());
     this.bloom.start();
-    this.vbo.render(this.mngProg.get('vertexColor').get());
+    this.vbo.render(this.mngProg.get("vertexColor").get());
     this.bloom.end();
     this.bloom.render();
   }

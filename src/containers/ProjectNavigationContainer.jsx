@@ -1,4 +1,4 @@
-import ProjectNavigation from '../components/ProjectNavigation';
+import ProjectNavigation from "../components/ProjectNavigation";
 import {
   getCategoryId,
   getContentBack,
@@ -6,12 +6,12 @@ import {
   getContentPrevious,
   getEntries,
   getIsTouchDevice,
-} from '../selectors';
+} from "../selectors";
 
 const getEntryNav = (entries, slug) => {
   const entryIdx = entries.findIndex((entry) => entry.slug === slug);
   if (entryIdx === -1) {
-    window.location = '/';
+    window.location = "/";
   }
   let nextEntryIdx = entryIdx + 1;
   let prevEntryIdx = entryIdx - 1;

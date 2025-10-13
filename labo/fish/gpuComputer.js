@@ -74,14 +74,14 @@ export class WebGPUComputer {
 
   async _initWebGPU() {
     if (!navigator.gpu) {
-      throw new Error('WebGPU Not Supported');
+      throw new Error("WebGPU Not Supported");
     }
 
     const adapter = await navigator.gpu.requestAdapter({
-      powerPreference: 'high-performance',
+      powerPreference: "high-performance",
     });
     if (!adapter) {
-      throw new Error('Could not get adapter');
+      throw new Error("Could not get adapter");
     }
 
     this._device = await adapter.requestDevice({
@@ -96,15 +96,16 @@ export class WebGPUComputer {
       return;
     }
     const descriptor = {
-      layout: 'auto',
+      layout: "auto",
       compute: {
         module: this._device.createShaderModule({
           code: this._computeShader,
         }),
-        entryPoint: 'main',
+        entryPoint: "main",
       },
     };
 
-    this._computePipeline = await this._device.createComputePipelineAsync(descriptor);
+    this._computePipeline =
+      await this._device.createComputePipelineAsync(descriptor);
   }
 }

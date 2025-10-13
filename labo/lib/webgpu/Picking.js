@@ -1,9 +1,8 @@
 import {
-  buildBindGroupLayouts,
   buildPickingBindGroupLayouts,
   GltfBindGroups,
-} from './GltfPipelineBindGroupLayout';
-import PipelineTextures from './PipelineTextures';
+} from "./GltfPipelineBindGroupLayout";
+import PipelineTextures from "./PipelineTextures";
 
 export class Picking {
   constructor(context) {
@@ -21,15 +20,15 @@ export class Picking {
   createTexture(size) {
     const device = this.context.getDevice();
     this.colorTexture = device.createTexture({
-      label: 'picking texture',
-      format: 'rgba32float',
+      label: "picking texture",
+      format: "rgba32float",
       size,
       usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
     });
 
     this.depthTexture = device.createTexture({
-      label: 'picking depth texture',
-      format: 'depth32float',
+      label: "picking depth texture",
+      format: "depth32float",
       size,
       usage: GPUTextureUsage.RENDER_ATTACHMENT,
     });
@@ -57,11 +56,12 @@ export class Picking {
     // face color
     const buffers = [
       {
-        arrayStride: buffersLayout[0].arrayStride + Float32Array.BYTES_PER_ELEMENT,
+        arrayStride:
+          buffersLayout[0].arrayStride + Float32Array.BYTES_PER_ELEMENT,
         attributes: [
           ...buffersLayout[0].attributes,
           {
-            format: 'float32',
+            format: "float32",
             offset: 32,
             shaderLocation: 3,
           },
@@ -74,9 +74,9 @@ export class Picking {
     const bindGroupLayouts = buildPickingBindGroupLayouts(device);
 
     this.pipeline = await device.createRenderPipelineAsync({
-      label: 'PickingPipeline',
+      label: "PickingPipeline",
       layout: device.createPipelineLayout({
-        label: 'Picking Pipeline layout',
+        label: "Picking Pipeline layout",
         bindGroupLayouts: [
           bindGroupLayouts[GltfBindGroups.CAMERA],
           bindGroupLayouts[GltfBindGroups.TRANSFORM],
@@ -84,52 +84,52 @@ export class Picking {
       }),
       vertex: {
         module: program.vertex,
-        entryPoint: 'v_main',
+        entryPoint: "v_main",
         buffers,
       },
       fragment: {
         module: program.fragment,
-        entryPoint: 'f_main',
+        entryPoint: "f_main",
         targets: [
           {
-            format: 'rgba32float',
+            format: "rgba32float",
           },
         ],
       },
       primitive: {
-        topology: 'triangle-list',
-        cullMode: 'back',
+        topology: "triangle-list",
+        cullMode: "back",
       },
       depthStencil: {
         depthWriteEnabled: true,
-        depthCompare: 'less',
-        format: 'depth32float',
+        depthCompare: "less",
+        format: "depth32float",
       },
     });
 
     this.createTexture(this.texSize);
 
     this.destinationBuffer = device.createBuffer({
-      label: 'PickDestination',
+      label: "PickDestination",
       size: this.bufferSize,
       usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
     });
 
     this.renderPassDescriptor = {
-      label: 'MousePickRenderPass',
+      label: "MousePickRenderPass",
       colorAttachments: [
         {
           view: null,
           clearValue: { r: 0, g: 0, b: 0, a: 0 },
-          loadOp: 'clear', // 'load' -> draw hover / 'clear'
-          storeOp: 'store', // 'store' -> save // 'discard' maybe for save in tex
+          loadOp: "clear", // 'load' -> draw hover / 'clear'
+          storeOp: "store", // 'store' -> save // 'discard' maybe for save in tex
         },
       ],
       depthStencilAttachment: {
         view: null,
         depthClearValue: 1.0,
-        depthLoadOp: 'clear',
-        depthStoreOp: 'store',
+        depthLoadOp: "clear",
+        depthStoreOp: "store",
         stencilClearValue: 0,
       },
     };
@@ -144,11 +144,13 @@ export class Picking {
   render = (uniformCameraBindGroup) => {
     const device = this.context.getDevice();
     const encoder = device.createCommandEncoder({
-      label: 'PickingCommandEncoder',
+      label: "PickingCommandEncoder",
     });
 
-    this.renderPassDescriptor.colorAttachments[0].view = this.colorTexture.createView();
-    this.renderPassDescriptor.depthStencilAttachment.view = this.depthTexture.createView();
+    this.renderPassDescriptor.colorAttachments[0].view =
+      this.colorTexture.createView();
+    this.renderPassDescriptor.depthStencilAttachment.view =
+      this.depthTexture.createView();
 
     const pass = encoder.beginRenderPass(this.renderPassDescriptor);
 
@@ -158,7 +160,7 @@ export class Picking {
     if (this.drawModel) {
       this.drawModel(device, pass);
     } else {
-      console.warn('drawModel not define for picking');
+      console.warn("drawModel not define for picking");
     }
 
     pass.end();
@@ -171,11 +173,13 @@ export class Picking {
   pick = async (origin, uniformCameraBindGroup, nodes, animations) => {
     const device = this.context.getDevice();
     const encoder = device.createCommandEncoder({
-      label: 'PickingCommandEncoder',
+      label: "PickingCommandEncoder",
     });
 
-    this.renderPassDescriptor.colorAttachments[0].view = this.colorTexture.createView();
-    this.renderPassDescriptor.depthStencilAttachment.view = this.depthTexture.createView();
+    this.renderPassDescriptor.colorAttachments[0].view =
+      this.colorTexture.createView();
+    this.renderPassDescriptor.depthStencilAttachment.view =
+      this.depthTexture.createView();
 
     const pass = encoder.beginRenderPass(this.renderPassDescriptor);
     pass.setPipeline(this.pipeline);
@@ -214,7 +218,9 @@ export class Picking {
       this.bufferSize, // Length
     );
 
-    const mappedData = new Float32Array(this.destinationBuffer.getMappedRange(0, this.bufferSize));
+    const mappedData = new Float32Array(
+      this.destinationBuffer.getMappedRange(0, this.bufferSize),
+    );
 
     // need to copy data before the unmap (delete)
     const data = [...mappedData];
@@ -230,7 +236,7 @@ export class Picking {
     // should sort primitives by material
     for (const [key, node] of nodes) {
       node.buffers.forEach((buffer) => {
-        let transformBindGroup = this.transformBinGroups.get(key);
+        const transformBindGroup = this.transformBinGroups.get(key);
         if (!transformBindGroup) {
           return;
 
@@ -258,7 +264,11 @@ export class Picking {
   };
 
   resize = (size) => {
-    this.textures.resize(this.context.getDevice(), this.context.getCanvasFormat(), size);
+    this.textures.resize(
+      this.context.getDevice(),
+      this.context.getCanvasFormat(),
+      size,
+    );
     this.createTexture(size);
     this.texSize = size;
   };

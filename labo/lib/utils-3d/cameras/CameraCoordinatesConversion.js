@@ -1,6 +1,6 @@
-import Mat4 from '../../utils/maths/Mat4';
-import Vec4 from '../../utils/maths/Vec4';
-import Camera from './Camera';
+import Mat4 from "../../utils/maths/Mat4";
+import Vec4 from "../../utils/maths/Vec4";
+import Camera from "./Camera";
 
 export default class extends Camera {
   get2dTexturePoint(point) {

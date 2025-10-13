@@ -1,4 +1,4 @@
-import bullet from '../persos/bullet';
+import bullet from "../persos/bullet";
 
 const { BULLET, BULLET_LOAD } = bullet.states;
 

@@ -5,10 +5,10 @@ class PipelineTextures {
     this.depthTexture = null;
     this.depthTextureView = null;
     this.sampleCount = sampleCount; // ?? Pipeline multisample, should get from pipeline
-    this.depthTextureFormat = 'depth32float'; // Default depth format
+    this.depthTextureFormat = "depth32float"; // Default depth format
   }
 
-  setup(device, format, size, depthFormat = 'depth32float') {
+  setup(device, format, size, depthFormat = "depth32float") {
     this.depthTextureFormat = depthFormat; // Set the depth format
     this.setupRender(device, format, size);
     this.setupDepth(device, depthFormat, size);
@@ -29,7 +29,7 @@ class PipelineTextures {
       usage: GPUTextureUsage.RENDER_ATTACHMENT,
     });
     this.renderTargetView = this.renderTarget.createView({
-      label: 'SceneTextureView',
+      label: "SceneTextureView",
     });
   };
 
@@ -38,10 +38,11 @@ class PipelineTextures {
       size: [width, height],
       sampleCount: this.sampleCount,
       format,
-      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+      usage:
+        GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
     });
     this.depthTextureView = this.depthTexture.createView({
-      label: 'SceneDepthTextureView',
+      label: "SceneDepthTextureView",
     });
   };
 

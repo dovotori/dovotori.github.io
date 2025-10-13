@@ -1,8 +1,8 @@
-import { parseGLB } from '../../utils-3d/parser/GltfCommon';
-import LoadGltf from '../../utils-3d/parser/LoadGltf';
-import LoadGltfForWebGpu from '../../utils-3d/parser/LoadGltfForWebGpu';
-import LoadMat from '../../utils-3d/parser/LoadMat';
-import LoadObj from '../../utils-3d/parser/LoadObj';
+import { parseGLB } from "../../utils-3d/parser/GltfCommon";
+import LoadGltf from "../../utils-3d/parser/LoadGltf";
+import LoadGltfForWebGpu from "../../utils-3d/parser/LoadGltfForWebGpu";
+import LoadMat from "../../utils-3d/parser/LoadMat";
+import LoadObj from "../../utils-3d/parser/LoadObj";
 
 class ManagerAssets {
   constructor(isWebgpu) {
@@ -18,7 +18,9 @@ class ManagerAssets {
   }
 
   static getInfo(path) {
-    const parts = path.substring(path.lastIndexOf('/') + 1, path.length).split('.');
+    const parts = path
+      .substring(path.lastIndexOf("/") + 1, path.length)
+      .split(".");
     return { name: parts[0], ext: parts[1].toLowerCase() };
   }
 
@@ -49,16 +51,21 @@ class ManagerAssets {
 
   static load3dGltfWebGpu = (path, info) =>
     fetch(path)
-      .then((response) => (info.ext === 'glb' ? response.arrayBuffer() : response.text()))
+      .then((response) =>
+        info.ext === "glb" ? response.arrayBuffer() : response.text(),
+      )
       .then(async (response) => {
         let data;
-        if (info.ext === 'glb') {
+        if (info.ext === "glb") {
           const glb = parseGLB(response);
           data = glb.gltf;
         } else {
           data = JSON.parse(response);
         }
-        const gltf = await LoadGltfForWebGpu.load(data, path.slice(0, path.lastIndexOf('/') + 1));
+        const gltf = await LoadGltfForWebGpu.load(
+          data,
+          path.slice(0, path.lastIndexOf("/") + 1),
+        );
         return { data: gltf, info };
       });
 
@@ -81,22 +88,22 @@ class ManagerAssets {
     const promesses = paths.map((path) => {
       const info = ManagerAssets.getInfo(path);
       switch (info.ext) {
-        case 'jpg':
-        case 'jpeg':
-        case 'png':
-        case 'bmp':
-        case 'webp':
+        case "jpg":
+        case "jpeg":
+        case "png":
+        case "bmp":
+        case "webp":
           return ManagerAssets.loadImage(path, info);
-        case 'obj':
+        case "obj":
           return ManagerAssets.load3dObj(path, info);
-        case 'gltf':
-        case 'glb':
+        case "gltf":
+        case "glb":
           return this.isWebgpu
             ? ManagerAssets.load3dGltfWebGpu(path, info)
             : ManagerAssets.load3dGltf(path, info);
-        case 'mtl':
+        case "mtl":
           return ManagerAssets.loadMaterial(path, info);
-        case 'mp3':
+        case "mp3":
           return ManagerAssets.loadSound(path, info);
         default:
           return null;
@@ -105,26 +112,26 @@ class ManagerAssets {
     return Promise.all(promesses).then((data) => {
       data.forEach((item) => {
         switch (item.info.ext) {
-          case 'jpg':
-          case 'jpeg':
-          case 'png':
-          case 'webp':
+          case "jpg":
+          case "jpeg":
+          case "png":
+          case "webp":
             this.assets.textures[item.info.name] = item.data;
             break;
-          case 'bmp':
+          case "bmp":
             this.assets.levels[item.info.name] = item.data;
             break;
-          case 'obj':
+          case "obj":
             this.assets.objets[item.info.name] = item.data;
             break;
-          case 'gltf':
-          case 'glb':
+          case "gltf":
+          case "glb":
             this.assets.gltfs[item.info.name] = item.data;
             break;
-          case 'mtl':
+          case "mtl":
             this.assets.materials[item.info.name] = item.data;
             break;
-          case 'mp3':
+          case "mp3":
             this.assets.sounds[item.info.name] = item.data;
             break;
           default:

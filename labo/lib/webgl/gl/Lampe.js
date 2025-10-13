@@ -1,7 +1,7 @@
-import Objectif from '../../utils-3d/cameras/Objectif';
-import Vec3 from '../../utils/maths/Vec3';
-import MeshRepere from '../meshes/MeshRepere';
-import Fbo from './Fbo';
+import Objectif from "../../utils-3d/cameras/Objectif";
+import Vec3 from "../../utils/maths/Vec3";
+import MeshRepere from "../meshes/MeshRepere";
+import Fbo from "./Fbo";
 
 export default class extends Objectif {
   constructor(gl, config, width = 1024, height = 1024, useDepth = false) {
@@ -43,16 +43,16 @@ export default class extends Objectif {
   }
 
   setDepthProgram(program) {
-    program.setMatrix('projection', this.getOrtho().get());
-    program.setMatrix('view', this.getView().get());
+    program.setMatrix("projection", this.getOrtho().get());
+    program.setMatrix("view", this.getView().get());
   }
 
   setShadowProgram(program) {
     // need to have renderBasiqueForLampeDepth method on scene
-    program.setTexture(2, this.getDepthTexture().get(), 'shadowMap');
-    program.setMatrix('shadowView', this.getView().get());
-    program.setMatrix('shadowProjection', this.getOrtho().get());
-    program.setVector('posLum', this.getPosition());
+    program.setTexture(2, this.getDepthTexture().get(), "shadowMap");
+    program.setMatrix("shadowView", this.getView().get());
+    program.setMatrix("shadowProjection", this.getOrtho().get());
+    program.setVector("posLum", this.getPosition());
   }
 
   resize(box) {

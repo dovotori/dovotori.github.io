@@ -15,8 +15,8 @@ export class PostProcess {
     const device = this.context.getDevice();
 
     this.pipeline = device.createRenderPipeline({
-      label: 'post process no attributes',
-      layout: 'auto',
+      label: "post process no attributes",
+      layout: "auto",
       vertex: { module: program },
       fragment: {
         module: program,
@@ -28,30 +28,32 @@ export class PostProcess {
     });
 
     this.sampler = device.createSampler({
-      minFilter: 'linear',
-      magFilter: 'linear',
+      minFilter: "linear",
+      magFilter: "linear",
     });
 
     this.renderPassDescriptor = {
-      label: 'post process render pass',
-      colorAttachments: [{ loadOp: 'clear', storeOp: 'store' }],
+      label: "post process render pass",
+      colorAttachments: [{ loadOp: "clear", storeOp: "store" }],
     };
   }
 
   setupRenderTextures(device, canvasSize) {
-    this.renderTargets = Array.from({ length: this.renderTargetsCount }).map((_, i) =>
-      device.createTexture({
-        label: `post process render target ${i}`,
-        size: canvasSize,
-        format: this.renderTargetFormat,
-        sampleCount: this.sampleCount,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
-      }),
+    this.renderTargets = Array.from({ length: this.renderTargetsCount }).map(
+      (_, i) =>
+        device.createTexture({
+          label: `post process render target ${i}`,
+          size: canvasSize,
+          format: this.renderTargetFormat,
+          sampleCount: this.sampleCount,
+          usage:
+            GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+        }),
     );
     this.renderTargetViews = this.renderTargets.map((rT) => rT.createView());
 
     this.bindGroup = device.createBindGroup({
-      label: 'post process bind group',
+      label: "post process bind group",
       layout: this.pipeline.getBindGroupLayout(0),
       entries: [
         { binding: 0, resource: this.sampler },
@@ -65,19 +67,21 @@ export class PostProcess {
 
   setupPingPongTargets(device, canvasSize) {
     this.pingTarget = device.createTexture({
-      label: 'ping render target',
+      label: "ping render target",
       size: canvasSize,
       format: this.renderTargetFormat,
       sampleCount: this.sampleCount,
-      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+      usage:
+        GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
     });
 
     this.pongTarget = device.createTexture({
-      label: 'pong render target',
+      label: "pong render target",
       size: canvasSize,
       format: this.renderTargetFormat,
       sampleCount: this.sampleCount,
-      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+      usage:
+        GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
     });
   }
 
@@ -86,7 +90,7 @@ export class PostProcess {
     this.effects.set(name, {
       pipeline: device.createRenderPipeline({
         label: `post process ${name} no attributes`,
-        layout: 'auto',
+        layout: "auto",
         vertex: { module: program },
         fragment: {
           module: program,
@@ -98,7 +102,7 @@ export class PostProcess {
       }),
       passDescriptor: {
         label: `post process ${name}`,
-        colorAttachments: [{ loadOp: 'clear', storeOp: 'store' }],
+        colorAttachments: [{ loadOp: "clear", storeOp: "store" }],
       },
       params,
     });
@@ -108,34 +112,41 @@ export class PostProcess {
     const device = this.context.getDevice();
 
     let buffers = {};
-    let entries = [
+    const entries = [
       { binding: 0, resource: this.sampler },
       { binding: 1, resource: sourceTextureView },
     ];
 
     switch (name) {
-      case 'guassianBlurVertical':
-      case 'guassianBlurHorizontal': {
-        const texelSize = [1 / this.canvasSize.width, 1 / this.canvasSize.height];
+      case "guassianBlurVertical":
+      case "guassianBlurHorizontal": {
+        const texelSize = [
+          1 / this.canvasSize.width,
+          1 / this.canvasSize.height,
+        ];
 
         const radiusBuffer = device.createBuffer({
-          label: 'radius buffer',
+          label: "radius buffer",
           size: 8,
           usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
         });
 
         const directionBuffer = device.createBuffer({
-          label: 'direction buffer',
+          label: "direction buffer",
           size: 8,
           usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
         });
 
         const texelSizeBuffer = device.createBuffer({
-          label: 'texel size buffer',
+          label: "texel size buffer",
           size: 8,
           usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
         });
-        device.queue.writeBuffer(texelSizeBuffer, 0, new Float32Array(texelSize));
+        device.queue.writeBuffer(
+          texelSizeBuffer,
+          0,
+          new Float32Array(texelSize),
+        );
 
         entries.push(
           ...[
@@ -147,14 +158,14 @@ export class PostProcess {
         buffers = { radius: radiusBuffer, direction: directionBuffer };
         break;
       }
-      case 'bright': {
+      case "bright": {
         const thresholdBuffer = device.createBuffer({
-          label: 'threshold buffer',
+          label: "threshold buffer",
           size: 8,
           usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
         });
         const glowThresholdKneeBuffer = device.createBuffer({
-          label: 'glow threshold knee buffer',
+          label: "glow threshold knee buffer",
           size: 8,
           usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
         });
@@ -187,7 +198,9 @@ export class PostProcess {
 
   resize = (device, canvasSize) => {
     this.canvasSize = canvasSize;
-    this.renderTargets?.forEach((t) => t.destroy());
+    this.renderTargets?.forEach((t) => {
+      t.destroy();
+    });
     this.setupRenderTextures(device, canvasSize);
 
     this.pingTarget?.destroy();
@@ -196,7 +209,10 @@ export class PostProcess {
 
     let i = 0;
     for (const [name, _] of this.effects) {
-      this.setupEffectSource(name, this.getPingPongTexture(i % 2 === 0).createView());
+      this.setupEffectSource(
+        name,
+        this.getPingPongTexture(i % 2 === 0).createView(),
+      );
       i++;
     }
   };
@@ -233,11 +249,9 @@ export class PostProcess {
   }
 
   renderEffects(encoder) {
-    let i = 0;
     for (const [name, _] of this.effects) {
       this.applyEffect(name);
       this.renderEffect(name, encoder);
-      i++;
     }
   }
 
@@ -246,7 +260,11 @@ export class PostProcess {
     if (!effect) return;
     const device = this.context.getDevice();
     for (const key of Object.keys(effect.params)) {
-      device.queue.writeBuffer(effect.buffers[key], 0, new Float32Array(effect.params[key]));
+      device.queue.writeBuffer(
+        effect.buffers[key],
+        0,
+        new Float32Array(effect.params[key]),
+      );
     }
   }
 

@@ -1,4 +1,4 @@
-import { Node } from './node';
+import { Node } from "./node";
 
 function radians(angle) {
   return angle * (Math.PI / 180);
@@ -34,9 +34,11 @@ export class Flagellum {
     this.count += this.muscleFreq;
     const thetaMuscle = this.muscleRange * Math.sin(this.count);
     this.nodes[1].x =
-      -this.skinXspacing * Math.cos(radians(this.theta + thetaMuscle)) + this.nodes[0].x;
+      -this.skinXspacing * Math.cos(radians(this.theta + thetaMuscle)) +
+      this.nodes[0].x;
     this.nodes[1].y =
-      -this.skinXspacing * Math.sin(radians(this.theta + thetaMuscle)) + this.nodes[0].y;
+      -this.skinXspacing * Math.sin(radians(this.theta + thetaMuscle)) +
+      this.nodes[0].y;
 
     // apply kinetic force trough body nodes (spine)
     for (let n = 2; n < this.numNodes; n++) {

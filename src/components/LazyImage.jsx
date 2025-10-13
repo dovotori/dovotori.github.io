@@ -1,7 +1,7 @@
-import { forwardRef, useCallback, useState } from 'react';
-import styled from 'styled-components';
+import { forwardRef, useCallback, useState } from "react";
+import styled from "styled-components";
 
-import GlitchImage from './GlitchImage';
+import GlitchImage from "./GlitchImage";
 
 const Wrap = styled.div`
   position: relative;
@@ -9,7 +9,7 @@ const Wrap = styled.div`
 `;
 const IMG = styled.img`
   opacity: ${(p) => (p.$isLoaded ? 1 : 0)};
-  visibility: ${(p) => (p.$isLoaded ? 'visible' : 'hidden')};
+  visibility: ${(p) => (p.$isLoaded ? "visible" : "hidden")};
   transition: opacity 300ms ease-out;
   text-transform: lowercase;
   letter-spacing: 0.1em;
@@ -27,15 +27,17 @@ const LazyImage = forwardRef(
 
     return (
       <Wrap ref={ref} className={className}>
-        {!hasError && <IMG
-          alt={`_${alt}`}
-          src={src}
-          onLoad={onLoad}
-          onError={onError}
-          $isLoaded={isLoaded}
-          width={width || 'auto'}
-          height={height || 'auto'}
-        />}
+        {!hasError && (
+          <IMG
+            alt={`_${alt}`}
+            src={src}
+            onLoad={onLoad}
+            onError={onError}
+            $isLoaded={isLoaded}
+            width={width || "auto"}
+            height={height || "auto"}
+          />
+        )}
         {!hasError && isLoaded && withGlitch && <GlitchImage src={src} />}
         {!isLoaded && children}
       </Wrap>

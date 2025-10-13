@@ -37,7 +37,10 @@ class Vec4 {
 
   length() {
     return Math.sqrt(
-      this.d[0] * this.d[0] + this.d[1] * this.d[1] + this.d[2] * this.d[2] + this.d[3] * this.d[3],
+      this.d[0] * this.d[0] +
+        this.d[1] * this.d[1] +
+        this.d[2] * this.d[2] +
+        this.d[3] * this.d[3],
     );
   }
 

@@ -13,13 +13,13 @@ class Buffer {
     this.indexCount = indices.count;
 
     this.buffers.vertex = device.createBuffer({
-      label: 'vertex buffer',
+      label: "vertex buffer",
       size: position.values.byteLength,
       usage: window.GPUBufferUsage.VERTEX | window.GPUBufferUsage.COPY_DST,
     });
 
     this.buffers.index = device.createBuffer({
-      label: 'index buffer',
+      label: "index buffer",
       size: indices.values.byteLength,
       usage: window.GPUBufferUsage.INDEX | window.GPUBufferUsage.COPY_DST,
     });
@@ -32,7 +32,7 @@ class Buffer {
       arrayStride: 12, // 4 * 2 (X,Y) ? // 4 * 3 (X,Y,Z)
       attributes: [
         {
-          format: 'float32x3',
+          format: "float32x3",
           offset: 0,
           shaderLocation: 0, // Position, see vertex shader
         },

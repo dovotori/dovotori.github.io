@@ -1,5 +1,5 @@
-import Quaternion from './Quaternion';
-import Mat4 from './Mat4';
+import Quaternion from "./Quaternion";
+import Mat4 from "./Mat4";
 
 class Transform {
   static get = (node) => {

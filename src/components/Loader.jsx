@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import { loading, blink } from '../themes/animations';
+import { loading, blink } from "../themes/animations";
 
 const Div = styled.div`
   position: absolute;
@@ -14,7 +14,7 @@ const Div = styled.div`
 `;
 
 const Bars = styled.div.attrs({
-  className: 'loader',
+  className: "loader",
 })`
   position: absolute;
   width: 20px;

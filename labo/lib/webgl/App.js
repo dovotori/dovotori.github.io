@@ -1,11 +1,11 @@
-import { capitalize, getEnvPath } from '../utils';
-import Canvas from '../utils-3d/core/Canvas';
-import Loop from '../utils-3d/core/Loop';
-import Controls from '../utils/io/Controls';
-import Keyboard from '../utils/io/Keyboard';
-import Mouse from '../utils/io/Mouse';
-import ManagerAssets from './managers/ManagerAssets';
-import ManagerShaders from './managers/ManagerShaders';
+import { capitalize, getEnvPath } from "../utils";
+import Canvas from "../utils-3d/core/Canvas";
+import Loop from "../utils-3d/core/Loop";
+import Controls from "../utils/io/Controls";
+import Keyboard from "../utils/io/Keyboard";
+import Mouse from "../utils/io/Mouse";
+import ManagerAssets from "./managers/ManagerAssets";
+import ManagerShaders from "./managers/ManagerShaders";
 
 class App {
   constructor() {
@@ -46,25 +46,26 @@ class App {
       support: supportConfig,
     };
 
-    const isDrawBufferUnsupported = !!config.useDrawBuffer && !supportConfig.drawBuffers;
+    const isDrawBufferUnsupported =
+      !!config.useDrawBuffer && !supportConfig.drawBuffers;
     const isDrawWegpuUnsupported =
       !!config.useWebGpu && (!supportConfig.webgpu || !supportConfig.device);
     const shouldDisabled = isDrawBufferUnsupported || isDrawWegpuUnsupported;
 
     if (shouldDisabled) {
-      const oups = document.createElement('p');
+      const oups = document.createElement("p");
       oups.innerHTML = `
       <b>ご迷惑おかけして申し訳ありません。</b>
       <br/>Sorry. A support problem occured.
-      <br/>Your browser does not support ${config.useWebGpu ? 'WebGPU' : 'WebGL'} or one of the required features.
+      <br/>Your browser does not support ${config.useWebGpu ? "WebGPU" : "WebGL"} or one of the required features.
       `;
-      oups.style.position = 'absolute';
-      oups.style.top = '50%';
-      oups.style.left = '50%';
-      oups.style.transform = 'translate(-50%, -50%)';
-      oups.style.textAlign = 'center';
-      oups.style.color = 'white';
-      oups.style.textShadow = '1px 1px 1px rgba(0,0,0,0.5)';
+      oups.style.position = "absolute";
+      oups.style.top = "50%";
+      oups.style.left = "50%";
+      oups.style.transform = "translate(-50%, -50%)";
+      oups.style.textAlign = "center";
+      oups.style.color = "white";
+      oups.style.textShadow = "1px 1px 1px rgba(0,0,0,0.5)";
       container.appendChild(oups);
       return;
     }
@@ -84,11 +85,14 @@ class App {
       const callbacks = events.reduce(
         (acc, cur) => ({
           ...acc,
-          [`callback${capitalize(cur)}`]: this.scene[`onMouse${capitalize(cur)}`],
+          [`callback${capitalize(cur)}`]:
+            this.scene[`onMouse${capitalize(cur)}`],
         }),
         {},
       );
-      const mouseContainer = domId ? document.querySelector(`#${domId}`) : container;
+      const mouseContainer = domId
+        ? document.querySelector(`#${domId}`)
+        : container;
       this.mouse = new Mouse(mouseContainer, callbacks);
     }
 
@@ -170,8 +174,8 @@ class App {
 
   static revealAfterLoaded = (container) => {
     if (container) {
-      const itemsToReveal = container.querySelectorAll('[style]');
-      itemsToReveal.forEach((item) => item.removeAttribute('style'));
+      const itemsToReveal = container.querySelectorAll("[style]");
+      itemsToReveal.forEach((item) => item.removeAttribute("style"));
     }
   };
 }

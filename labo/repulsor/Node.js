@@ -1,4 +1,4 @@
-import { vec3 } from './vec3';
+import { vec3 } from "./vec3";
 
 export function Node() {
   this.position = new vec3(0, 0, 0);
@@ -61,7 +61,7 @@ Node.prototype.draw = function () {
   context.fillRect(this.position.x, this.position.y, 1, 1);
 };
 
-Node.setBox = function (minX, minY, minZ, maxX, maxY, maxZ) {
+Node.setBox = (minX, minY, minZ, maxX, maxY, maxZ) => {
   Node.minX = minX;
   Node.minY = minY;
   Node.minZ = minZ;

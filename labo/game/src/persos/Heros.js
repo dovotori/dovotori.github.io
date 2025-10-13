@@ -1,5 +1,5 @@
-import Perso from './PersoBullets';
-import Behavior from '../behaviors/BehaviorInteraction';
+import Perso from "./PersoBullets";
+import Behavior from "../behaviors/BehaviorInteraction";
 
 export default class extends Perso {
   constructor({ constants, sprites, viewBox, tileSize, bullets, fxs }) {

@@ -2,7 +2,7 @@ export default class {
   constructor(worker) {
     this.worker = worker;
     this.onMessage = null;
-    this.worker.addEventListener('error', this.onError);
+    this.worker.addEventListener("error", this.onError);
   }
 
   onError(err) {
@@ -11,7 +11,7 @@ export default class {
 
   setMessageListener(onMessage) {
     this.onMessage = onMessage;
-    this.worker.addEventListener('message', this.onMessage);
+    this.worker.addEventListener("message", this.onMessage);
   }
 
   postMessage(payload) {
@@ -21,9 +21,9 @@ export default class {
   destroy() {
     if (this.worker) {
       if (this.onMessage) {
-        this.worker.removeEventListener('message', this.onMessage);
+        this.worker.removeEventListener("message", this.onMessage);
       }
-      this.worker.removeEventListener('error', this.onError);
+      this.worker.removeEventListener("error", this.onError);
       this.worker.terminate();
     }
   }

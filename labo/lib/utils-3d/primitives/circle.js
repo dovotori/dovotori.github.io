@@ -1,4 +1,4 @@
-import { mapFromRange } from '../utils/numbers';
+import { mapFromRange } from "../utils/numbers";
 
 export const getPoints = (nbPoints = 32) => {
   const points = [];

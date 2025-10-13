@@ -1,11 +1,11 @@
-import App from '../lib/webgl/App';
-import Scene from './scene';
-import config from './config';
+import App from "../lib/webgl/App";
+import Scene from "./scene";
+import config from "./config";
 
-import 'Assets/style/controls.css';
-import 'Assets/style/fullscreen-btn.css';
+import "Assets/style/controls.css";
+import "Assets/style/fullscreen-btn.css";
 
-import './style.css';
+import "./style.css";
 
 let app = null;
 

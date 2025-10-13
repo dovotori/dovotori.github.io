@@ -1,7 +1,7 @@
-import Bol from '../Bol';
+import Bol from "../Bol";
 
 export default {
-  title: 'Components/Bol',
+  title: "Components/Bol",
   component: Bol,
 };
 

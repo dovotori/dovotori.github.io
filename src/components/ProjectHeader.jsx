@@ -1,8 +1,8 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import { ReactComponent as LinkSvg } from 'Assets/svg/externalLink.svg';
-import TagsList from './TagsList';
-import TypingMessage from './TypingMessage';
+import { ReactComponent as LinkSvg } from "Assets/svg/externalLink.svg";
+import TagsList from "./TagsList";
+import TypingMessage from "./TypingMessage";
 
 const WrapContent = styled.div`
   margin: 0 auto;
@@ -28,7 +28,7 @@ const Text = styled.p`
   width: 100%;
 `;
 
-const Date = styled.p.attrs({ className: 'numbers' })`
+const Date = styled.p.attrs({ className: "numbers" })`
   text-align: left;
   margin: 0;
   padding: 0.4em 10px 0;

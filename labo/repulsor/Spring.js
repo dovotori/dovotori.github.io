@@ -1,4 +1,4 @@
-import { vec3 } from './vec3';
+import { vec3 } from "./vec3";
 
 export function Spring() {
   this.length = 1.0; // distance avec le point d'origine

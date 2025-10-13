@@ -1858,7 +1858,14 @@ function fast9_score(im, xsize, ysize, corners, b) {
   pixel[15] = -1 + stride * 3;
 
   for (let n = 0; n < corners.length; n++)
-    scores[n] = fast9_corner_score(im, stride, corners[n].y, corners[n].x, pixel, b);
+    scores[n] = fast9_corner_score(
+      im,
+      stride,
+      corners[n].y,
+      corners[n].x,
+      pixel,
+      b,
+    );
   // corners[n].score = fast9_corner_score(im, stride, corners[n].y, corners[n].x, pixel, b);
 
   return scores;
@@ -3700,27 +3707,47 @@ function nonmax_suppression(corners, scores) {
 
     /* Check left */
     if (i > 0)
-      if (corners[i - 1].x == pos.x - 1 && corners[i - 1].y == pos.y && scores[i - 1] >= score)
+      if (
+        corners[i - 1].x == pos.x - 1 &&
+        corners[i - 1].y == pos.y &&
+        scores[i - 1] >= score
+      )
         continue;
 
     /* Check right */
     if (i < corners.length - 1)
-      if (corners[i + 1].x == pos.x + 1 && corners[i + 1].y == pos.y && scores[i + 1] >= score)
+      if (
+        corners[i + 1].x == pos.x + 1 &&
+        corners[i + 1].y == pos.y &&
+        scores[i + 1] >= score
+      )
         continue;
 
     /* Check above (if there is a valid row above) */
     if (pos.y != 0 && row_start[pos.y - 1] != -1) {
       /* Make sure that current point_above is one
         row above. */
-      if (corners[point_above].y < pos.y - 1) point_above = row_start[pos.y - 1];
+      if (corners[point_above].y < pos.y - 1)
+        point_above = row_start[pos.y - 1];
 
       /* Make point_above point to the first of the pixels above the current point,
         if it exists. */
-      for (; corners[point_above].y < pos.y && corners[point_above].x < pos.x - 1; point_above++) {}
+      for (
+        ;
+        corners[point_above].y < pos.y && corners[point_above].x < pos.x - 1;
+        point_above++
+      ) {}
 
-      for (j = point_above; corners[j].y < pos.y && corners[j].x <= pos.x + 1; j++) {
+      for (
+        j = point_above;
+        corners[j].y < pos.y && corners[j].x <= pos.x + 1;
+        j++
+      ) {
         var { x } = corners[j];
-        if ((x == pos.x - 1 || x == pos.x || x == pos.x + 1) && scores[j] >= score) {
+        if (
+          (x == pos.x - 1 || x == pos.x || x == pos.x + 1) &&
+          scores[j] >= score
+        ) {
           skip = true;
           break;
         }
@@ -3729,7 +3756,11 @@ function nonmax_suppression(corners, scores) {
 
     if (!skip) {
       /* Check below (if there is anything below) */
-      if (pos.y != last_row && row_start[pos.y + 1] != -1 && point_below < corners.length) {
+      if (
+        pos.y != last_row &&
+        row_start[pos.y + 1] != -1 &&
+        point_below < corners.length
+      ) {
         /* Nothing below */ if (corners[point_below].y < pos.y + 1)
           point_below = row_start[pos.y + 1];
 
@@ -3745,11 +3776,16 @@ function nonmax_suppression(corners, scores) {
 
         for (
           j = point_below;
-          j < corners.length && corners[j].y == pos.y + 1 && corners[j].x <= pos.x + 1;
+          j < corners.length &&
+          corners[j].y == pos.y + 1 &&
+          corners[j].x <= pos.x + 1;
           j++
         ) {
           var { x } = corners[j];
-          if ((x == pos.x - 1 || x == pos.x || x == pos.x + 1) && scores[j] >= score) {
+          if (
+            (x == pos.x - 1 || x == pos.x || x == pos.x + 1) &&
+            scores[j] >= score
+          ) {
             skip = true;
             break;
           }

@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import { ReactComponent as CrossSvg } from 'Assets/svg/cross.svg';
+import { ReactComponent as CrossSvg } from "Assets/svg/cross.svg";
 
 export default styled(CrossSvg)`
   width: 0.5em;

@@ -1,7 +1,7 @@
-import TagsList from '../TagsList';
+import TagsList from "../TagsList";
 
 export default {
-  title: 'Components/TagsList',
+  title: "Components/TagsList",
   component: TagsList,
 };
 

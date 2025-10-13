@@ -1,15 +1,15 @@
-import StateSprite from '../../../lib/utils-3d/core/StateSprite';
-import MeshSprite from '../../../lib/webgl/meshes/MeshSpriteNormalMatrix';
+import StateSprite from "../../../lib/utils-3d/core/StateSprite";
+import MeshSprite from "../../../lib/webgl/meshes/MeshSpriteNormalMatrix";
 
 export default class extends MeshSprite {
   constructor(tiles) {
     super();
     this.state = new StateSprite(tiles);
-    this.state.set(tiles.colors['000'].pattern);
+    this.state.set(tiles.colors["000"].pattern);
   }
 
   render(objet, program, texture) {
-    program.setTexture(0, texture.get(), 'textureMap');
+    program.setTexture(0, texture.get(), "textureMap");
     this.setSprite(this.state.get());
     super.render(objet, program);
   }

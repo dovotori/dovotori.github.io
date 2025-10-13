@@ -1,4 +1,4 @@
-import Tag from '../Tag';
+import Tag from "../Tag";
 
 const Categories = {
   CAT: 0,
@@ -7,18 +7,20 @@ const Categories = {
 };
 
 export default {
-  title: 'Components/Tag',
+  title: "Components/Tag",
   component: Tag,
   argTypes: {
     category: {
-      type: 'select',
+      type: "select",
       options: Object.keys(Categories),
     },
   },
 };
 
-const Template = ({ category, ...args }) => <Tag {...args} category={Categories[category]} />;
+const Template = ({ category, ...args }) => (
+  <Tag {...args} category={Categories[category]} />
+);
 export const Primary = Template.bind({});
 Primary.args = {
-  label: 'Hello',
+  label: "Hello",
 };

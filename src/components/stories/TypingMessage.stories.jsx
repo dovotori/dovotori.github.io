@@ -1,11 +1,11 @@
-import TypingMessage from '../TypingMessage';
+import TypingMessage from "../TypingMessage";
 
 export default {
-  title: 'Components/TypingMessage',
+  title: "Components/TypingMessage",
   component: TypingMessage,
   decorators: [
     (Story) => (
-      <div style={{ fontSize: '10em' }}>
+      <div style={{ fontSize: "10em" }}>
         <Story />
         <p>Text under</p>
       </div>
@@ -16,8 +16,8 @@ export default {
 const Template = (args) => <TypingMessage {...args} />;
 export const Primary = Template.bind({});
 Primary.args = {
-  message: 'Helloooooooooo',
-  firstMessage: 'Depuis',
+  message: "Helloooooooooo",
+  firstMessage: "Depuis",
   isLoop: true,
   isVertical: false,
   isCenter: false,

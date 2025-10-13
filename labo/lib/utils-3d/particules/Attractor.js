@@ -1,5 +1,5 @@
-import Vec3 from '../../utils/maths/Vec3';
-import Node from './Node';
+import Vec3 from "../../utils/maths/Vec3";
+import Node from "./Node";
 
 export default class extends Node {
   constructor(options = {}) {

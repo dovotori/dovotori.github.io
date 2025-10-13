@@ -1,122 +1,122 @@
-import { Locales } from '../../constants/locales';
-import getLocalCategories from './getLocalCategories';
-import getLocalPosts from './getLocalPosts';
-import getLocalSkills from './getLocalSkills';
-import getLocalTags from './getLocalTags';
+import { Locales } from "../../constants/locales";
+import getLocalCategories from "./getLocalCategories";
+import getLocalPosts from "./getLocalPosts";
+import getLocalSkills from "./getLocalSkills";
+import getLocalTags from "./getLocalTags";
 
 const initialState = {
   categories: getLocalCategories(Locales.FR),
   entries: getLocalPosts(Locales.FR),
   tags: getLocalTags(Locales.FR),
   hello: {
-    title: 'Dorian Ratovo',
-    text: 'Front End developer',
-    contact: 'Contact',
-    about: 'Enchanté!',
-    bulle: 'Plus de détails',
+    title: "Dorian Ratovo",
+    text: "Front End developer",
+    contact: "Contact",
+    about: "Enchanté!",
+    bulle: "Plus de détails",
     description: [
-      'Après des études dans le domaine de la conception graphique, je me suis intéressé au développement web en autodidacte.',
+      "Après des études dans le domaine de la conception graphique, je me suis intéressé au développement web en autodidacte.",
       "Le javascript est devenu mon outil favori pour expérimenter ces possibilités notamment la génération d'image via les contextes 2D et 3D de l'api canvas.",
       "J'ai eu plusieurs possibilités d'appliquer ces connaissances en milieu professionnel et je continue à expérimenter.",
     ],
   },
   cv: {
     formation: {
-      text: 'Études',
+      text: "Études",
       items: [
         {
           date: 2022,
-          text: 'Apprentissage du japonais à la Linguage Japanese Language School à Shinjuku, Tokyo',
+          text: "Apprentissage du japonais à la Linguage Japanese Language School à Shinjuku, Tokyo",
         },
         {
           date: 2013,
-          text: 'Diplôme national d’expression plastique avec félicitations du jury à l’école supérieure d’art et design de Saint-Étienne section design',
+          text: "Diplôme national d’expression plastique avec félicitations du jury à l’école supérieure d’art et design de Saint-Étienne section design",
         },
         {
           date: 2013,
-          text: 'Exposition lors de la biennale internationale du design de Saint-Étienne avec le projet Barasson au Fil',
+          text: "Exposition lors de la biennale internationale du design de Saint-Étienne avec le projet Barasson au Fil",
         },
         {
           date: 2012,
-          text: 'Semestre dans le département Multimedia / Réalité virtuelle  de l’école d’art Burg Giebichenstein à Halle en Allemagne ',
+          text: "Semestre dans le département Multimedia / Réalité virtuelle  de l’école d’art Burg Giebichenstein à Halle en Allemagne ",
         },
         {
           date: 2011,
-          text: 'Diplôme national d’arts plastiques avec mention à l’école supérieure d’art et design de Saint-Étienne section design ',
+          text: "Diplôme national d’arts plastiques avec mention à l’école supérieure d’art et design de Saint-Étienne section design ",
         },
         {
           date: 2009,
-          text: 'Diplôme de graphisme / multimédia à LISAA Paris l’institut supérieur des arts appliqués',
+          text: "Diplôme de graphisme / multimédia à LISAA Paris l’institut supérieur des arts appliqués",
         },
         {
           date: 2006,
-          text: 'Baccalauréat général série scientifique',
+          text: "Baccalauréat général série scientifique",
         },
       ],
     },
     jobs: {
-      text: 'Experiences',
+      text: "Experiences",
       items: [
         {
           startDate: 2022,
           endDate: 2025,
-          text: 'Développeur Front-end au sein de Scene',
-          location: 'Tokyo, Japon',
+          text: "Développeur Front-end au sein de Scene",
+          location: "Tokyo, Japon",
           tasks: [
-            'développement de multiple features 3d pour une application de guide de montage industrielle',
+            "développement de multiple features 3d pour une application de guide de montage industrielle",
             "implementation de tests end-to-end basés sur la comparaison de pixels pour assurer l'intégrité des données clientes",
           ],
         },
         {
           startDate: 2016,
           endDate: 2022,
-          text: 'Développeur Front-end au sein de Winamax',
-          location: 'Paris, France',
+          text: "Développeur Front-end au sein de Winamax",
+          location: "Paris, France",
           tasks: [
             "développement des évolutions de l'application de paris sportifs",
             "développement de l'application le Jeu de l'entraîneur",
-            'développement de la nouvelle version des Grilles',
+            "développement de la nouvelle version des Grilles",
           ],
         },
         {
           startDate: 2014,
           endDate: 2016,
-          text: 'Co-gérant de l’entreprise de Web design Pix 21, responsable du design et du développement web',
-          location: 'Paris, France',
+          text: "Co-gérant de l’entreprise de Web design Pix 21, responsable du design et du développement web",
+          location: "Paris, France",
           tasks: [
-            'développement et déploiement de sites internet',
-            'conception / mise en page / gestion d’impression de documents de communication',
-            'conception de chartes graphiques',
-            'gestion et suivi de projet',
+            "développement et déploiement de sites internet",
+            "conception / mise en page / gestion d’impression de documents de communication",
+            "conception de chartes graphiques",
+            "gestion et suivi de projet",
           ],
         },
         {
           startDate: 2013,
           endDate: 2014,
-          text: 'Graphiste au sein de l’association Reporters sans frontières',
-          location: 'Paris, France',
+          text: "Graphiste au sein de l’association Reporters sans frontières",
+          location: "Paris, France",
           tasks: [
-            'réalisation de cartes intéractives en ligne',
-            'conception / mise en page de rapports et de documents de communication',
+            "réalisation de cartes intéractives en ligne",
+            "conception / mise en page de rapports et de documents de communication",
           ],
         },
         {
           startDate: 2012,
           endDate: 2012,
-          text: 'Semestre au laboratoire de recherche Ideas Lab au CEA de Grenoble',
-          location: 'Grenoble, France',
+          text: "Semestre au laboratoire de recherche Ideas Lab au CEA de Grenoble",
+          location: "Grenoble, France",
           tasks: [
-            'recherche et prototypages autour de technologies innovantes',
-            'travail collaboratif avec des ingénieurs',
+            "recherche et prototypages autour de technologies innovantes",
+            "travail collaboratif avec des ingénieurs",
           ],
         },
         {
           startDate: 2009,
           endDate: 2009,
-          text: 'Stage puis missions au sein de l’atelier des Giboulées, agence  de conseil et création graphique',
-          location: 'Paris, France',
+          text: "Stage puis missions au sein de l’atelier des Giboulées, agence  de conseil et création graphique",
+          location: "Paris, France",
           tasks: [
-            'conception / mise en page / suivi d’impression de documents de communication',
+            "conception / mise en page / suivi d’impression de documents de communication",
             "participation à l'élaboration du cahiers des charges avec le client",
           ],
         },
@@ -124,30 +124,30 @@ const initialState = {
     },
     skills: getLocalSkills(Locales.FR),
     hobbies: {
-      text: 'Intérêts',
+      text: "Intérêts",
       items: [
         {
-          text: 'Création de jeu vidéo',
-          about: '/project/game',
+          text: "Création de jeu vidéo",
+          about: "/project/game",
         },
         {
-          text: 'Culture japonaise',
+          text: "Culture japonaise",
         },
         {
-          text: 'Modélisation et rendu 3d',
-          about: '/project/paysage',
+          text: "Modélisation et rendu 3d",
+          about: "/project/paysage",
         },
         {
-          text: 'Datavisualisation',
+          text: "Datavisualisation",
         },
       ],
     },
   },
-  back: 'Retour',
-  darkMode: 'sombre',
-  lightMode: 'clair',
-  next: 'Suivant',
-  previous: 'Précédent',
+  back: "Retour",
+  darkMode: "sombre",
+  lightMode: "clair",
+  next: "Suivant",
+  previous: "Précédent",
 };
 
 export default initialState;

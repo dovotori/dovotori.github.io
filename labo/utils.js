@@ -16,7 +16,7 @@ export const downloadSVG = (svg, selector, prefix) => {
 };
 
 export const later = (delay = 20) => {
-  return new Promise(function (resolve) {
+  return new Promise((resolve) => {
     setTimeout(resolve, delay);
   });
 };
@@ -58,7 +58,7 @@ export const processSplit = (data, handler) => {
         result.push(r);
       } while (queue.length > 0 && endtime > +new Date() && !cancel);
       if (cancel) {
-        console.log('cancel');
+        console.log("cancel");
         return;
       } else if (queue.length > 0) {
         await later();

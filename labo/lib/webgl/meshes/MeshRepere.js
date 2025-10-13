@@ -1,6 +1,6 @@
-import primitive from '../../utils-3d/primitives/cube';
-import Mat4 from '../../utils/maths/Mat4';
-import Primitive from '../gl/Primitive';
+import primitive from "../../utils-3d/primitives/cube";
+import Mat4 from "../../utils/maths/Mat4";
+import Primitive from "../gl/Primitive";
 
 export default class {
   constructor(gl) {
@@ -12,7 +12,7 @@ export default class {
   }
 
   render(program) {
-    program.setMatrix('model', this.model.get());
+    program.setMatrix("model", this.model.get());
     this.objet.render(program.get());
   }
 

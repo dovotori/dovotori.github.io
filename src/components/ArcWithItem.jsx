@@ -1,8 +1,8 @@
-import { useMemo } from 'react';
-import styled from 'styled-components';
+import { useMemo } from "react";
+import styled from "styled-components";
 
-import { polarToCartesian } from '../utils';
-import Arc from './Arc';
+import { polarToCartesian } from "../utils";
+import Arc from "./Arc";
 
 const Wrap = styled.g`
   cursor: pointer;
@@ -16,7 +16,7 @@ const Wrap = styled.g`
   }
 
   &:hover > path {
-    transform: ${(p) => (p.noHoverAnim ? 'none' : 'scale(1.05)')};
+    transform: ${(p) => (p.noHoverAnim ? "none" : "scale(1.05)")};
   }
 `;
 
@@ -76,7 +76,12 @@ const ArcWithItem = ({
   }
 
   return (
-    <Wrap className={className} onClick={onClick} noHoverAnim={noHoverAnim} data-depth={depth}>
+    <Wrap
+      className={className}
+      onClick={onClick}
+      noHoverAnim={noHoverAnim}
+      data-depth={depth}
+    >
       <StyledArc
         x={x}
         y={y}

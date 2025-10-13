@@ -1,5 +1,5 @@
-import Scene from './SceneCamera';
-import Lampe from '../gl/Lampe';
+import Scene from "./SceneCamera";
+import Lampe from "../gl/Lampe";
 
 export default class extends Scene {
   constructor(gl, config) {
@@ -9,7 +9,9 @@ export default class extends Scene {
     const { width, height } = config.canvas;
     this.lampes =
       (config.lampes &&
-        config.lampes.map((lampe) => new Lampe(gl, lampe, width, height, useDepth))) ||
+        config.lampes.map(
+          (lampe) => new Lampe(gl, lampe, width, height, useDepth),
+        )) ||
       [];
   }
 
@@ -37,11 +39,19 @@ export default class extends Scene {
   }
 
   setLampeInfos(program) {
-    program.setVector('posEye', this.camera.getPosition());
-    program.setInt('numLights', this.lampes.length);
+    program.setVector("posEye", this.camera.getPosition());
+    program.setInt("numLights", this.lampes.length);
     this.config.lampes.forEach((lampeConfig, i) => {
-      const { type, ambiant, diffuse, specular, brillance, radius, direction, strength } =
-        lampeConfig;
+      const {
+        type,
+        ambiant,
+        diffuse,
+        specular,
+        brillance,
+        radius,
+        direction,
+        strength,
+      } = lampeConfig;
 
       program.setInt(`lights[${i}].type`, type);
       program.setVector(`lights[${i}].position`, this.lampes[i].getPosition());
@@ -63,7 +73,7 @@ export default class extends Scene {
 
   render() {
     super.render();
-    if (typeof this.renderBasiqueForLampeDepth === 'function') {
+    if (typeof this.renderBasiqueForLampeDepth === "function") {
       this.renderBasiqueForLampeDepth();
     }
     this.mngProg.setCameraMatrix(this.camera, !!this.config.camera.ortho);

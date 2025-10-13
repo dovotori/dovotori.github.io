@@ -1,4 +1,4 @@
-import heros from '../persos/heros';
+import heros from "../persos/heros";
 
 const {
   STAND,

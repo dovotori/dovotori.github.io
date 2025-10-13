@@ -1,13 +1,13 @@
-import { useParams } from 'react-router-dom';
-import ProjectCommon from '../components/ProjectCommon';
-import { getEntry, getTags } from '../selectors';
-import { getColorType } from '../utils';
+import { useParams } from "react-router-dom";
+import ProjectCommon from "../components/ProjectCommon";
+import { getEntry, getTags } from "../selectors";
+import { getColorType } from "../utils";
 
 const ProjectCommonContainer = () => {
   const slug = useParams().slug || null;
   const entry = getEntry(slug);
   if (entry === null) {
-    window.location.href = '/';
+    window.location.href = "/";
   }
   const tags = getTags();
   return (

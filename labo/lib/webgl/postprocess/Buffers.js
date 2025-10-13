@@ -1,4 +1,4 @@
-import Fbo from '../gl/Fbo';
+import Fbo from "../gl/Fbo";
 // import PingPongBuffer from './PingPongBuffer';
 
 export default class {
@@ -14,17 +14,17 @@ export default class {
   }
 
   generateTextures(renderScene, program) {
-    program.setInt('type', 0);
+    program.setInt("type", 0);
     this.fboColorDepth.start();
     renderScene(program);
     this.fboColorDepth.end();
 
-    program.setInt('type', 1);
+    program.setInt("type", 1);
     this.fboNormal.start();
     renderScene(program);
     this.fboNormal.end();
 
-    program.setInt('type', 2);
+    program.setInt("type", 2);
     this.fboPosition.start();
     renderScene(program);
     this.fboPosition.end();

@@ -1,9 +1,9 @@
-import Camera from '../lib/utils-3d/cameras/Camera';
-import Objectif from '../lib/utils-3d/cameras/Objectif';
-import DualQuaternion from '../lib/utils/maths/DualQuaternion';
-import Mat4 from '../lib/utils/maths/Mat4';
-import { DebugTexture, GltfBindGroups, GltfPipeline } from '../lib/webgpu';
-import WebgpuScene from '../lib/webgpu/WebgpuScene';
+import Camera from "../lib/utils-3d/cameras/Camera";
+import Objectif from "../lib/utils-3d/cameras/Objectif";
+import DualQuaternion from "../lib/utils/maths/DualQuaternion";
+import Mat4 from "../lib/utils/maths/Mat4";
+import { DebugTexture, GltfBindGroups, GltfPipeline } from "../lib/webgpu";
+import WebgpuScene from "../lib/webgpu/WebgpuScene";
 
 export default class Scene extends WebgpuScene {
   constructor(context, config) {
@@ -48,7 +48,7 @@ export default class Scene extends WebgpuScene {
     let bufferLightProj;
     if (withLight) {
       bufferLightProj = device.createBuffer({
-        label: 'LightProjBuffer',
+        label: "LightProjBuffer",
         size: Float32Array.BYTES_PER_ELEMENT * 16,
         usage: window.GPUBufferUsage.UNIFORM | window.GPUBufferUsage.COPY_DST,
       });
@@ -62,7 +62,7 @@ export default class Scene extends WebgpuScene {
     }
 
     const bindGroup = device.createBindGroup({
-      label: 'CameraUniforms',
+      label: "CameraUniforms",
       layout,
       entries,
     });
@@ -80,7 +80,7 @@ export default class Scene extends WebgpuScene {
     const size = Float32Array.BYTES_PER_ELEMENT * 8 * this.config.lampes.length; // vec3 * 2 + 1
 
     const buffer = device.createBuffer({
-      label: 'Light Storage Buffer',
+      label: "Light Storage Buffer",
       size,
       usage: window.GPUBufferUsage.STORAGE | window.GPUBufferUsage.COPY_DST,
     });
@@ -101,10 +101,16 @@ export default class Scene extends WebgpuScene {
 
     const uniforms = new Float32Array(array);
     // direct setup
-    device.queue.writeBuffer(buffer, 0, uniforms.buffer, uniforms.byteOffset, uniforms.byteLength);
+    device.queue.writeBuffer(
+      buffer,
+      0,
+      uniforms.buffer,
+      uniforms.byteOffset,
+      uniforms.byteLength,
+    );
 
     const bindGroup = device.createBindGroup({
-      label: 'LightsUniforms',
+      label: "LightsUniforms",
       layout,
       entries: [
         {
@@ -203,12 +209,17 @@ export default class Scene extends WebgpuScene {
 
     this.gltfPipeline.update();
 
-    this.updateCameraUniforms(this.uniformCamera.buffer, this.uniformCamera.bufferLightProj);
+    this.updateCameraUniforms(
+      this.uniformCamera.buffer,
+      this.uniformCamera.bufferLightProj,
+    );
 
     const encoder = device.createCommandEncoder({
-      label: 'GltfCommandEncoder',
+      label: "GltfCommandEncoder",
     });
-    const pass = encoder.beginRenderPass(this.gltfPipeline.getRenderPassDescriptor());
+    const pass = encoder.beginRenderPass(
+      this.gltfPipeline.getRenderPassDescriptor(),
+    );
 
     pass.setPipeline(this.gltfPipeline.get());
     pass.setBindGroup(GltfBindGroups.CAMERA, this.uniformCamera.bindGroup);

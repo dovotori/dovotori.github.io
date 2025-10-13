@@ -1,5 +1,5 @@
-import { mapFromRange } from '../../../lib/utils/numbers';
-import Mesh from '../../../lib/webgl/meshes/MeshColor';
+import { mapFromRange } from "../../../lib/utils/numbers";
+import Mesh from "../../../lib/webgl/meshes/MeshColor";
 
 export default class {
   constructor(viewBox, levelSize) {
@@ -66,13 +66,17 @@ export default class {
       mesh.update();
       mesh.setScale(scale, scale, scale);
       mesh.setRotate(45, 0, 0, 1);
-      mesh.setTranslate(this.cloudData[idx].x, this.cloudData[idx].y, this.cloudData[idx].z);
+      mesh.setTranslate(
+        this.cloudData[idx].x,
+        this.cloudData[idx].y,
+        this.cloudData[idx].z,
+      );
       mesh.setColor(255, 255, 255, 0.4);
     });
   }
 
   renderScreen(objet, program, herosX, speed) {
-    program.setFloat('offset', herosX * speed);
+    program.setFloat("offset", herosX * speed);
     this.screen.render(objet, program);
   }
 

@@ -1,22 +1,22 @@
-import positionCompute from './shaders/compute-position';
-import positionFrag from './shaders/f_position';
-import basicInstanced from './shaders/v_basic';
-import * as box from './util/box';
-import { getModelViewMatrix, getProjectionMatrix } from './util/math';
+import positionCompute from "./shaders/compute-position";
+import positionFrag from "./shaders/f_position";
+import basicInstanced from "./shaders/v_basic";
+import * as box from "./util/box";
+import { getModelViewMatrix, getProjectionMatrix } from "./util/math";
 
 // initialize webgpu device & config canvas context
 async function initWebGPU(canvas) {
-  if (!navigator.gpu) throw new Error('Not Support WebGPU');
+  if (!navigator.gpu) throw new Error("Not Support WebGPU");
   const adapter = await navigator.gpu.requestAdapter({
-    powerPreference: 'high-performance',
+    powerPreference: "high-performance",
   });
-  if (!adapter) throw new Error('No Adapter Found');
+  if (!adapter) throw new Error("No Adapter Found");
   const device = await adapter.requestDevice({
     requiredLimits: {
       maxStorageBufferBindingSize: adapter.limits.maxStorageBufferBindingSize,
     },
   });
-  const context = canvas.getContext('webgpu');
+  const context = canvas.getContext("webgpu");
   const format = navigator.gpu.getPreferredCanvasFormat();
   const devicePixelRatio = window.devicePixelRatio || 1;
   canvas.width = canvas.clientWidth * devicePixelRatio;
@@ -26,7 +26,7 @@ async function initWebGPU(canvas) {
     device,
     format,
     // prevent chrome warning after v102
-    alphaMode: 'opaque',
+    alphaMode: "opaque",
   });
   return { device, context, format, size };
 }
@@ -34,13 +34,13 @@ async function initWebGPU(canvas) {
 // create pipiline & buffers
 async function initPipeline(device, format, size) {
   const renderPipeline = await device.createRenderPipelineAsync({
-    label: 'Basic Pipline',
-    layout: 'auto',
+    label: "Basic Pipline",
+    layout: "auto",
     vertex: {
       module: device.createShaderModule({
         code: basicInstanced,
       }),
-      entryPoint: 'main',
+      entryPoint: "main",
       buffers: [
         {
           arrayStride: 8 * 4, // 3 position 2 uv,
@@ -49,19 +49,19 @@ async function initPipeline(device, format, size) {
               // position
               shaderLocation: 0,
               offset: 0,
-              format: 'float32x3',
+              format: "float32x3",
             },
             {
               // normal
               shaderLocation: 1,
               offset: 3 * 4,
-              format: 'float32x3',
+              format: "float32x3",
             },
             {
               // uv
               shaderLocation: 2,
               offset: 6 * 4,
-              format: 'float32x2',
+              format: "float32x2",
             },
           ],
         },
@@ -71,7 +71,7 @@ async function initPipeline(device, format, size) {
       module: device.createShaderModule({
         code: positionFrag,
       }),
-      entryPoint: 'main',
+      entryPoint: "main",
       targets: [
         {
           format: format,
@@ -79,80 +79,80 @@ async function initPipeline(device, format, size) {
       ],
     },
     primitive: {
-      topology: 'triangle-list',
+      topology: "triangle-list",
       // Culling backfaces pointing away from the camera
-      cullMode: 'back',
+      cullMode: "back",
     },
     // Enable depth testing since we have z-level positions
     // Fragment closest to the camera is rendered in front
     depthStencil: {
       depthWriteEnabled: true,
-      depthCompare: 'less',
-      format: 'depth24plus',
+      depthCompare: "less",
+      format: "depth24plus",
     },
   });
   // create depthTexture for renderPass
   const depthTexture = device.createTexture({
     size,
-    format: 'depth24plus',
+    format: "depth24plus",
     usage: GPUTextureUsage.RENDER_ATTACHMENT,
   });
   const depthView = depthTexture.createView();
   // create a compute pipeline
   const computePipeline = await device.createComputePipelineAsync({
-    layout: 'auto',
+    layout: "auto",
     compute: {
       module: device.createShaderModule({
         code: positionCompute,
       }),
-      entryPoint: 'main',
+      entryPoint: "main",
     },
   });
 
   // create vertex buffer
   const vertexBuffer = device.createBuffer({
-    label: 'GPUBuffer store vertex',
+    label: "GPUBuffer store vertex",
     size: box.vertex.byteLength,
     usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
   });
   device.queue.writeBuffer(vertexBuffer, 0, box.vertex);
   const indexBuffer = device.createBuffer({
-    label: 'GPUBuffer store index',
+    label: "GPUBuffer store index",
     size: box.index.byteLength,
     usage: GPUBufferUsage.INDEX | GPUBufferUsage.COPY_DST,
   });
   device.queue.writeBuffer(indexBuffer, 0, box.index);
 
   const modelBuffer = device.createBuffer({
-    label: 'GPUBuffer store MAX model matrix',
+    label: "GPUBuffer store MAX model matrix",
     size: 4 * 4 * 4 * MAX, // mat4x4 x float32 x MAX
     usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
   });
   const projectionBuffer = device.createBuffer({
-    label: 'GPUBuffer store camera projection',
+    label: "GPUBuffer store camera projection",
     size: 4 * 4 * 4, // mat4x4 x float32
     usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
   });
   // common buffer between compute and render pass
   const mvpBuffer = device.createBuffer({
-    label: 'GPUBuffer store MAX MVP',
+    label: "GPUBuffer store MAX MVP",
     size: 4 * 4 * 4 * MAX, // mat4x4 x float32 x MAX
     usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
   });
   const velocityBuffer = device.createBuffer({
-    label: 'GPUBuffer store MAX velocity',
+    label: "GPUBuffer store MAX velocity",
     size: 4 * 4 * MAX, // 4 position x float32 x MAX
     usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
   });
   const inputBuffer = device.createBuffer({
-    label: 'GPUBuffer store input vars',
+    label: "GPUBuffer store input vars",
     size: 7 * 4, // float32 * 7
     usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
   });
 
   // create a bindGroup for renderPass
   const renderGroup = device.createBindGroup({
-    label: 'Group for renderPass',
+    label: "Group for renderPass",
     layout: renderPipeline.getBindGroupLayout(0),
     entries: [
       {
@@ -165,7 +165,7 @@ async function initPipeline(device, format, size) {
   });
   // create bindGroup for computePass
   const computeGroup = device.createBindGroup({
-    label: 'Group for computePass',
+    label: "Group for computePass",
     layout: computePipeline.getBindGroupLayout(0),
     entries: [
       {
@@ -231,20 +231,20 @@ function draw(device, context, pipelineObj) {
       {
         view: context.getCurrentTexture().createView(),
         clearValue: { r: 0, g: 0, b: 0, a: 1.0 },
-        loadOp: 'clear',
-        storeOp: 'store',
+        loadOp: "clear",
+        storeOp: "store",
       },
     ],
     depthStencilAttachment: {
       view: pipelineObj.depthView,
       depthClearValue: 1.0,
-      depthLoadOp: 'clear',
-      depthStoreOp: 'store',
+      depthLoadOp: "clear",
+      depthStoreOp: "store",
     },
   });
   passEncoder.setPipeline(pipelineObj.renderPipeline);
   passEncoder.setVertexBuffer(0, pipelineObj.vertexBuffer);
-  passEncoder.setIndexBuffer(pipelineObj.indexBuffer, 'uint16');
+  passEncoder.setIndexBuffer(pipelineObj.indexBuffer, "uint16");
   passEncoder.setBindGroup(0, pipelineObj.renderGroup);
   passEncoder.drawIndexed(box.indexCount, NUM);
   passEncoder.end();
@@ -255,8 +255,8 @@ function draw(device, context, pipelineObj) {
 let NUM = 150000,
   MAX = 300000;
 async function run() {
-  const canvas = document.querySelector('canvas');
-  if (!canvas) throw new Error('No Canvas');
+  const canvas = document.querySelector("canvas");
+  if (!canvas) throw new Error("No Canvas");
 
   const { device, context, format, size } = await initWebGPU(canvas);
   const pipelineObj = await initPipeline(device, format, size);
@@ -268,7 +268,11 @@ async function run() {
     const x = Math.random() * 1000 - 500;
     const y = Math.random() * 500 - 250;
     const z = Math.random() * 1000 - 500;
-    const modelMatrix = getModelViewMatrix({ x, y, z }, { x: 0, y: 0, z: 0 }, { x: 2, y: 2, z: 2 });
+    const modelMatrix = getModelViewMatrix(
+      { x, y, z },
+      { x: 0, y: 0, z: 0 },
+      { x: 2, y: 2, z: 2 },
+    );
     modelArray.set(modelMatrix, i * 4 * 4);
 
     velocityArray[i * 4 + 0] = Math.random() - 0.5; // x
@@ -288,7 +292,13 @@ async function run() {
     const time = performance.now() / 5000;
     camera.x = 1000 * Math.sin(time);
     camera.z = 1000 * Math.cos(time);
-    const projectionMatrix = getProjectionMatrix(aspect, (60 / 180) * Math.PI, 0.1, 10000, camera);
+    const projectionMatrix = getProjectionMatrix(
+      aspect,
+      (60 / 180) * Math.PI,
+      0.1,
+      10000,
+      camera,
+    );
     device.queue.writeBuffer(pipelineObj.projectionBuffer, 0, projectionMatrix);
     draw(device, context, pipelineObj);
     requestAnimationFrame(frame);
@@ -296,7 +306,7 @@ async function run() {
   frame();
 
   // re-configure context on resize
-  window.addEventListener('resize', () => {
+  window.addEventListener("resize", () => {
     size.width = canvas.width = canvas.clientWidth * devicePixelRatio;
     size.height = canvas.height = canvas.clientHeight * devicePixelRatio;
     // don't need to recall context.configure() after v104
@@ -304,7 +314,7 @@ async function run() {
     pipelineObj.depthTexture.destroy();
     pipelineObj.depthTexture = device.createTexture({
       size,
-      format: 'depth24plus',
+      format: "depth24plus",
       usage: GPUTextureUsage.RENDER_ATTACHMENT,
     });
     pipelineObj.depthView = pipelineObj.depthTexture.createView();
@@ -312,12 +322,12 @@ async function run() {
     aspect = size.width / size.height;
   });
 
-  const range = document.querySelector('input');
+  const range = document.querySelector("input");
   range.max = MAX.toString();
   range.value = NUM.toString();
-  range.addEventListener('input', (e) => {
+  range.addEventListener("input", (e) => {
     NUM = +e.target.value;
-    const span = document.querySelector('#num');
+    const span = document.querySelector("#num");
     span.innerHTML = NUM.toString();
     inputArray[0] = NUM;
     device.queue.writeBuffer(pipelineObj.inputBuffer, 0, inputArray);

@@ -1,14 +1,14 @@
-import { useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import { useCallback } from "react";
+import { Link } from "react-router-dom";
+import styled, { css } from "styled-components";
 
-import { ReactComponent as Skills } from 'Assets/svg/chimie2.svg';
-import * as icons from 'Assets/svg/cv';
-import { ReactComponent as Diploma } from 'Assets/svg/diploma3.svg';
-import { ReactComponent as Manette } from 'Assets/svg/manette.svg';
-import { ReactComponent as Tie } from 'Assets/svg/tie3.svg';
-import AnimBar from './AnimBar';
-import Chart from './Chart';
+import { ReactComponent as Skills } from "Assets/svg/chimie2.svg";
+import * as icons from "Assets/svg/cv";
+import { ReactComponent as Diploma } from "Assets/svg/diploma3.svg";
+import { ReactComponent as Manette } from "Assets/svg/manette.svg";
+import { ReactComponent as Tie } from "Assets/svg/tie3.svg";
+import AnimBar from "./AnimBar";
+import Chart from "./Chart";
 
 const StyledChart = styled(Chart)`
   position: relative;
@@ -102,18 +102,18 @@ const CategoryText = styled.span`
 `;
 
 const Line = styled.div`
-  margin: ${(p) => `${p.noMarginTop ? 0 : '0.5em'} 0 ${p.noMarginBottom ? 0 : '0.5em'}`};
+  margin: ${(p) => `${p.noMarginTop ? 0 : "0.5em"} 0 ${p.noMarginBottom ? 0 : "0.5em"}`};
 `;
 
 const BlocJob = styled.div`
   margin: 0 0 2em 0;
 `;
 
-const Date = styled.span.attrs({ className: 'numbers' })`
+const Date = styled.span.attrs({ className: "numbers" })`
   color: ${(p) => p.theme.primary};
   ${(p) => p.theme.monospace}
   overflow-wrap: break-word;
-  ${(p) => !p.isTouch && 'text-align: right; width: 100%; '};
+  ${(p) => !p.isTouch && "text-align: right; width: 100%; "};
   font-size: 0.8em;
   line-height: 2;
   z-index: 0;
@@ -149,22 +149,22 @@ const Level = styled.span`
 `;
 
 const Clear = styled.div`
-  ${(p) => !p.isTouch && 'position: relative; overflow: hidden; display: flex;'};
+  ${(p) => !p.isTouch && "position: relative; overflow: hidden; display: flex;"};
 `;
 
 const MarginLeft = styled.div`
-  margin: ${(p) => !p.isTouch && '0 0 0 20%'};
+  margin: ${(p) => !p.isTouch && "0 0 0 20%"};
 `;
 
 const FloatLeft = styled.div`
   ${(p) =>
     !p.isTouch
-      ? 'width: 18%; margin: 0 2% 0 0; text-align: right; display: flex;'
-      : 'margin: 0 0 2% 0;'};
+      ? "width: 18%; margin: 0 2% 0 0; text-align: right; display: flex;"
+      : "margin: 0 0 2% 0;"};
 `;
 
 const FloatRight = styled.div`
-  ${(p) => !p.isTouch && 'width: 80%;'};
+  ${(p) => !p.isTouch && "width: 80%;"};
 `;
 
 const FloatRightTwoCol = styled.div`
@@ -181,7 +181,7 @@ const FloatRightTwoCol = styled.div`
 `;
 
 const TwoCol = styled.div`
-  ${(p) => !p.isTouch && 'width: 50%;'};
+  ${(p) => !p.isTouch && "width: 50%;"};
 `;
 
 const TwoColFloat = styled(TwoCol)`
@@ -191,7 +191,7 @@ const TwoColFloat = styled(TwoCol)`
 const Cv = ({ className, formation, isTouchDevice, jobs, skills, hobbies }) => {
   const renderDate = useCallback((start, end) => {
     if (start === 0) {
-      return 'now';
+      return "now";
     }
     if (start !== end) {
       return `${end} ${start}`;
@@ -247,7 +247,9 @@ const Cv = ({ className, formation, isTouchDevice, jobs, skills, hobbies }) => {
                 <Line noMarginBottom>
                   <Clear isTouch={isTouchDevice}>
                     <FloatLeft isTouch={isTouchDevice}>
-                      <Date isTouch={isTouchDevice}>{renderDate(startDate, endDate)}</Date>
+                      <Date isTouch={isTouchDevice}>
+                        {renderDate(startDate, endDate)}
+                      </Date>
                     </FloatLeft>
                     <FloatRight isTouch={isTouchDevice}>
                       <Text>{text}</Text>
@@ -371,7 +373,8 @@ const renderItem = (item, isTouchDevice) => {
   return (
     <>
       <SkillLine item={item} isTouchDevice={isTouchDevice} />
-      {item.children && item.children.map((subitem) => renderItem(subitem, isTouchDevice))}
+      {item.children &&
+        item.children.map((subitem) => renderItem(subitem, isTouchDevice))}
     </>
   );
 };

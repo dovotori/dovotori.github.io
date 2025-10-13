@@ -12,7 +12,7 @@ class Context {
   async setup(canvas) {
     if (!navigator.gpu) return;
     this.canvas = canvas;
-    this.context = canvas.getContext('webgpu');
+    this.context = canvas.getContext("webgpu");
     this.support.webgpu = true;
     const adapter = await navigator.gpu.requestAdapter();
     if (!adapter) return;
@@ -23,7 +23,7 @@ class Context {
     this.context.configure({
       device: this.device,
       format: this.format,
-      alphaMode: 'premultiplied', // to have transparent background,
+      alphaMode: "premultiplied", // to have transparent background,
     });
   }
 

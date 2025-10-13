@@ -1,7 +1,7 @@
-import { lerp } from '../../utils/easing';
-import Vec3 from '../../utils/maths/Vec3';
-import { random } from '../../utils/numbers';
-import Blur from './Blur';
+import { lerp } from "../../utils/easing";
+import Vec3 from "../../utils/maths/Vec3";
+import { random } from "../../utils/numbers";
+import Blur from "./Blur";
 
 export default class extends Blur {
   constructor(gl, config, programs = {}) {
@@ -13,10 +13,10 @@ export default class extends Blur {
     this.strength = config.strength || 1.0;
 
     const program = this.programs.ssao;
-    program.setFloat('radius', this.radius);
-    program.setFloat('near', this.near);
-    program.setFloat('far', this.far);
-    program.setFloat('strength', this.strength);
+    program.setFloat("radius", this.radius);
+    program.setFloat("near", this.near);
+    program.setFloat("far", this.far);
+    program.setFloat("strength", this.strength);
   }
 
   generateSsaoSamples(effect, nbSamples) {
@@ -24,7 +24,11 @@ export default class extends Blur {
     for (let i = 0; i < nbSamples; i += 1) {
       let scale = i / nbSamples;
       scale = lerp(scale * scale, 0.1, 1.0);
-      const sample = new Vec3(random(-1.0, 1.0), random(-1.0, 1.0), random(0.0, 1.0))
+      const sample = new Vec3(
+        random(-1.0, 1.0),
+        random(-1.0, 1.0),
+        random(0.0, 1.0),
+      )
         .normalise()
         .multiplyNumber(random(0.0, 1.0))
         .multiplyNumber(scale);
@@ -34,7 +38,7 @@ export default class extends Blur {
 
   compute(depthTex) {
     const program = this.applyTexToProg(this.programs.ssao, depthTex);
-    program.setFloat('flipY', -1.0);
+    program.setFloat("flipY", -1.0);
     this.renderToPingPong(program);
   }
 

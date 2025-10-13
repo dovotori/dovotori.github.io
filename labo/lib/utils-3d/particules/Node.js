@@ -1,4 +1,4 @@
-import Vec3 from '../../utils/maths/Vec3';
+import Vec3 from "../../utils/maths/Vec3";
 
 const MIN_X = -1;
 const MIN_Y = -1;

@@ -1,4 +1,4 @@
-import Vbo from './Vbo';
+import Vbo from "./Vbo";
 
 export default class {
   constructor(gl, vbos, isDynamic = false) {
@@ -48,7 +48,10 @@ export default class {
   }
 
   getActiveVbo = () =>
-    this.vbos.indices || this.vbos.position || this.vbos.texture || this.vbos.index;
+    this.vbos.indices ||
+    this.vbos.position ||
+    this.vbos.texture ||
+    this.vbos.index;
 
   render(program) {
     this.enable(program);

@@ -1,9 +1,9 @@
 export default {
-  slug: 'rig',
-  shaders: ['/wgsl/vertex/v_gltf_rig.js', '/wgsl/fragment/f_gltf_rig.js'],
+  slug: "rig",
+  shaders: ["/wgsl/vertex/v_gltf_rig.js", "/wgsl/fragment/f_gltf_rig.js"],
   // assets: ['/gltf/paysage.gltf'],
   // assets: ['/gltf/distributedInstances.gltf'],
-  assets: ['/gltf/perso.glb'],
+  assets: ["/gltf/perso.glb"],
   // assets: ["/gltf/plane.gltf"],
   // assets: ["/gltf/head.gltf"],
   // assets: ['/gltf/headinterleaved.gltf'],
@@ -35,7 +35,7 @@ export default {
     },
   ],
   controls: {
-    fullscreen: { buttonId: 'fullscreen-toggle-btn' },
+    fullscreen: { buttonId: "fullscreen-toggle-btn" },
   },
   useWebGpu: true,
 };

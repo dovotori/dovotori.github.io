@@ -1,9 +1,13 @@
-import About from '../components/About';
-import { getContent, getContentBack, getIsTouchDevice } from '../selectors';
+import About from "../components/About";
+import { getContent, getContentBack, getIsTouchDevice } from "../selectors";
 
 const Container = () => {
   return (
-    <About hello={getContent().hello} isTouchDevice={getIsTouchDevice()} back={getContentBack()} />
+    <About
+      hello={getContent().hello}
+      isTouchDevice={getIsTouchDevice()}
+      back={getContentBack()}
+    />
   );
 };
 

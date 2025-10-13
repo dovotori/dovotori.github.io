@@ -1,5 +1,5 @@
-import Perso from './PersoLife';
-import Fxs from '../game/Fxs';
+import Perso from "./PersoLife";
+import Fxs from "../game/Fxs";
 
 export default class PersoFx extends Perso {
   constructor({ constants, sprites, viewBox, fxs }) {
@@ -20,7 +20,10 @@ export default class PersoFx extends Perso {
       const lastJumpingPos = this.getLastJumpingPosition();
       const lastRunningPosition = this.getLastRunningPosition();
 
-      if (this.isStatusChanged() && (status === JUMP_UP || status === RUN_JUMP_UP)) {
+      if (
+        this.isStatusChanged() &&
+        (status === JUMP_UP || status === RUN_JUMP_UP)
+      ) {
         this.fxs.createNewOne(lastJumpingPos, DUST);
       }
       if (lastRunningPosition !== null) {

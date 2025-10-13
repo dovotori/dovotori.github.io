@@ -1,11 +1,11 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import { ReactComponent as QuoteIcon } from 'Assets/svg/quote.svg';
-import CvContainer from '../containers/CvContainer';
-import { jiggle } from './Animations';
-import Bloc from './Bloc';
-import ButtonBack from './ButtonBack';
-import SocialLinks from './SocialLinks';
+import { ReactComponent as QuoteIcon } from "Assets/svg/quote.svg";
+import CvContainer from "../containers/CvContainer";
+import { jiggle } from "./Animations";
+import Bloc from "./Bloc";
+import ButtonBack from "./ButtonBack";
+import SocialLinks from "./SocialLinks";
 
 const StyledSocialLinks = styled(SocialLinks)`
   margin: 10em 0;
@@ -35,7 +35,7 @@ const Description = styled.p`
 `;
 
 const MarginLeft = styled.div`
-  margin: ${(p) => !p.isTouch && '0 0 0 20%'};
+  margin: ${(p) => !p.isTouch && "0 0 0 20%"};
 `;
 
 const StyledButtonBack = styled(ButtonBack)`
@@ -43,7 +43,7 @@ const StyledButtonBack = styled(ButtonBack)`
 `;
 
 const Link = styled.a`
-  margin-top: ${(p) => (!p.isTouch ? 0 : '10em')};
+  margin-top: ${(p) => (!p.isTouch ? 0 : "10em")};
   display: flex;
   justify-content: flex-end;
 `;
