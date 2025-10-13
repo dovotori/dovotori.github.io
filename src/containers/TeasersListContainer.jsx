@@ -1,12 +1,10 @@
-import { useSelector } from 'react-redux';
-
 import TeasersList from '../components/TeasersList';
-import { getEntries, getIsTouchDevice } from '../selectors';
+import { getCategoryId, getEntries, getIsTouchDevice } from '../selectors';
 
 export default () => {
   const stateEntries = getEntries();
   const isTouchDevice = getIsTouchDevice();
-  const categoryId = useSelector((state) => state.device.category);
+  const categoryId = getCategoryId();
   const entries =
     categoryId === -1
       ? stateEntries

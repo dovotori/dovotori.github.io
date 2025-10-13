@@ -1,14 +1,12 @@
 import { useParams } from 'react-router-dom';
-
-import { getColorType } from '../utils';
-
 import Project from '../components/Project';
-import { getEntry } from '../selectors';
+import { getContentBack, getEntry } from '../selectors';
+import { getColorType } from '../utils';
 
 const ProjectContainer = () => {
   const slug = useParams().slug || null;
   const entry = getEntry(slug);
-  return <Project colorType={getColorType(entry.category)} {...entry} />;
+  return <Project colorType={getColorType(entry.category)} {...entry} back={getContentBack()} />;
 };
 
 export default ProjectContainer;

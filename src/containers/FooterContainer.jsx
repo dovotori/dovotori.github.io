@@ -1,15 +1,13 @@
-import { useDispatch, useSelector } from 'react-redux';
-
+import { setLang, toggleTheme } from '../actions/device';
 import Footer from '../components/Footer';
-import { toggleTheme, setLang } from '../actions/device';
+import { getContent, getDispatch, getIsDarkMode, getlang } from '../selectors';
 
 export default () => {
-  const dispatch = useDispatch();
-  const darkMode = useSelector((state) => state.content.darkMode);
-  const lightMode = useSelector((state) => state.content.lightMode);
+  const dispatch = getDispatch();
+  const content = getContent();
   const texts = {
-    darkMode,
-    lightMode,
+    darkMode: content.darkMode,
+    lightMode: content.lightMode,
   };
   const dispatchToggleTheme = () => dispatch(toggleTheme());
   const dispatchSetLang = (lang) => () => {
@@ -17,8 +15,8 @@ export default () => {
   };
   return (
     <Footer
-      isDarkMode={useSelector((state) => state.device.isDarkMode)}
-      lang={useSelector((state) => state.device.lang)}
+      isDarkMode={getIsDarkMode()}
+      lang={getlang()}
       texts={texts}
       toggleTheme={dispatchToggleTheme}
       setLang={dispatchSetLang}

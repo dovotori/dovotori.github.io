@@ -1,15 +1,14 @@
-import { useDispatch, useSelector } from 'react-redux';
 
-import CategoriesFilters from '../components/CategoriesFilters';
-import { getCategories, getEntries } from '../selectors';
 import { setCategory } from '../actions/device';
+import CategoriesFilters from '../components/CategoriesFilters';
+import { getCategories, getCategoryId, getDispatch, getEntries } from '../selectors';
 
 export default () => {
-  const dispatch = useDispatch();
+  const dispatch = getDispatch();
   const categories = getCategories();
   const entries = getEntries();
   const categoryIds = entries.reduce((acc, cur) => ({ ...acc, [cur.category]: true }), {});
-  const categoryId = useSelector((state) => state.device.category);
+  const categoryId = getCategoryId();
   const filterCategories = Object.keys(categoryIds).reduce(
     (acc, cur) => ({ ...acc, [cur]: categories[cur] }),
     {},

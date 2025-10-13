@@ -1,13 +1,11 @@
-import { useSelector } from 'react-redux';
+import { ReactComponent as BackArrow } from 'Assets/svg/arrow.svg';
 import { Navigate, Route, HashRouter as Router, Routes, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-
-import { ReactComponent as BackArrow } from 'Assets/svg/arrow.svg';
 import routes from '../constants/routes';
 import FooterContainer from '../containers/FooterContainer';
 import ProjectCommonContainer from '../containers/ProjectCommonContainer';
 import SignatureContainer from '../containers/SignatureContainer';
-import { getIsTouchDevice } from '../selectors';
+import { getContentBack, getIsTouchDevice } from '../selectors';
 import ButtonNavigation from './ButtonNavigation';
 import TransitionRoute from './TransitionRoute';
 
@@ -36,7 +34,7 @@ const Center = styled.div`
 
 const BackButton = () => {
   const location = useLocation();
-  const labelBack = useSelector((state) => state.content.back);
+  const labelBack = getContentBack();
   const isHide = location.pathname === '/' || location.pathname.indexOf('/category/') !== -1;
   return (
     <Center $isHide={isHide}>

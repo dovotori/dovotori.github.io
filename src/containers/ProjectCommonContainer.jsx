@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-
 import ProjectCommon from '../components/ProjectCommon';
 import { getEntry, getTags } from '../selectors';
 import { getColorType } from '../utils';

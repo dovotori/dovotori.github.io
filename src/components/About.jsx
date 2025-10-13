@@ -67,7 +67,7 @@ const Center = styled.div`
   margin: 4em auto;
 `;
 
-const About = ({ hello, isTouchDevice }) => (
+const About = ({ hello, isTouchDevice, back }) => (
   <Wrap>
     <WrapContent>
       <MarginLeft isTouch={isTouchDevice}>
@@ -89,7 +89,7 @@ const About = ({ hello, isTouchDevice }) => (
       </MarginLeft>
       <MarginLeft isTouch={isTouchDevice}>
         <Center>
-          <StyledButtonBack isTouch={isTouchDevice} />
+          <StyledButtonBack isTouch={isTouchDevice} text={back} />
         </Center>
       </MarginLeft>
     </WrapContent>

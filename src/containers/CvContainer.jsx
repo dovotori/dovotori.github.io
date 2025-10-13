@@ -1,13 +1,15 @@
-import { useSelector } from 'react-redux';
-
 import Cv from '../components/Cv';
+import { getIsTouchDevice } from '../selectors';
 
-export default () => (
+export default () => {
+  const cv = getCvContent();
+  return (
   <Cv
-    jobs={useSelector((state) => state.content.cv.jobs)}
-    formation={useSelector((state) => state.content.cv.formation)}
-    skills={useSelector((state) => state.content.cv.skills)}
-    hobbies={useSelector((state) => state.content.cv.hobbies)}
-    isTouchDevice={useSelector((state) => state.device.isTouch)}
+    jobs={cv.jobs}
+    formation={cv.formation}
+    skills={cv.skills}
+    hobbies={cv.hobbies}
+    isTouchDevice={getIsTouchDevice()}
   />
 );
+};

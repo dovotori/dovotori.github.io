@@ -1,12 +1,12 @@
-import { useSelector } from 'react-redux';
 
 import ProjectNavigation from '../components/ProjectNavigation';
 import {
-  getEntries,
+  getCategoryId,
   getContentBack,
-  getContentPrevious,
-  getIsTouchDevice,
   getContentNext,
+  getContentPrevious,
+  getEntries,
+  getIsTouchDevice,
 } from '../selectors';
 
 const getEntryNav = (entries, slug) => {
@@ -41,7 +41,7 @@ const getEntryNav = (entries, slug) => {
 
 const ProjectNavigationContainer = ({ slug }) => {
   const stateEntries = getEntries();
-  const categoryId = useSelector((state) => state.device.category);
+  const categoryId = getCategoryId();
   const entries =
     categoryId === -1
       ? stateEntries

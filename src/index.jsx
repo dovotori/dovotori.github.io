@@ -1,8 +1,6 @@
 import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
-
 import App from './components/App';
-import configureStore from './store/configureStore';
+import { StateProvider } from './contexts';
 
 if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -31,12 +29,12 @@ if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
   });
 }
 
-const store = configureStore();
-
-const Main = () => (
-  <Provider store={store}>
+const Main = () => {
+return (
+  <StateProvider>
     <App />
-  </Provider>
+  </StateProvider>
 );
 
+}
 createRoot(document.querySelector(`#${process.env.NAME}`)).render(<Main />);

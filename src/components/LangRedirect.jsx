@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { useLocation, Navigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Navigate, useLocation } from 'react-router-dom';
 import { setLang } from '../actions/device';
+import { getDispatch } from '../selectors';
 
 import { Locales } from '../constants/locales';
 
@@ -10,7 +10,7 @@ const getRedirect = (str) => (str.length > 3 ? str.slice(3, str.length) : '/');
 
 export default () => {
   const location = useLocation();
-  const dispatch = useDispatch();
+  const dispatch = getDispatch();
   useEffect(() => {
     if (haveLangRedirect(location.pathname, '/fr')) {
       dispatch(setLang(Locales.FR));

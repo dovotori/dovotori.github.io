@@ -1,12 +1,12 @@
-import { useSelector } from 'react-redux';
-
 import About from '../components/About';
+import { getContent, getContentBack, getIsTouchDevice } from '../selectors';
 
 const Container = () => {
   return (
     <About
-      hello={useSelector((state) => state.content.hello)}
-      isTouchDevice={useSelector((state) => state.device.isTouch)}
+      hello={getContent().hello}
+      isTouchDevice={getIsTouchDevice()}
+      back={getContentBack()}
     />
   );
 };

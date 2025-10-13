@@ -35,7 +35,7 @@ const StyledProjectLabo = styled(ProjectLabo)`
   --project-color: ${(p) => p.theme.getColor};
 `;
 
-const Project = ({ slug, images, colorType, labo }) => (
+const Project = ({ slug, images, colorType, labo, back }) => (
   <>
     {!!labo && (
       <StyledProjectLabo
@@ -65,7 +65,7 @@ const Project = ({ slug, images, colorType, labo }) => (
           </Images>
         </ImagesList>
       )}
-      <ButtonBack $colorType={null} />
+      <ButtonBack $colorType={null} text={back} />
     </WrapContent>
   </>
 );
