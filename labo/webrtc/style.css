@@ -1,29 +1,29 @@
 #labo {
-  position: relative;
-  width: 100%;
-  height: auto;
-  background-color: #222;
-  text-align: center;
+	position: relative;
+	width: 100%;
+	height: auto;
+	background-color: #222;
+	text-align: center;
 }
 video {
-  width: 50%;
+	width: 50%;
 }
 .flex {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 #status {
-  width: 80%;
-  color: #fff;
-  margin: 0 auto;
-  padding: 1em;
+	width: 80%;
+	color: #fff;
+	margin: 0 auto;
+	padding: 1em;
 }
 #btn {
-  background: #fff;
-  width: 80%;
-  margin: 0 auto;
-  padding: 1em;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
+	background: #fff;
+	width: 80%;
+	margin: 0 auto;
+	padding: 1em;
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
 }

@@ -59,48 +59,50 @@ const Chart = ({ className, data, showAllIcons = false }) => {
     (current, x, y, node, depth = 1, parentStart = 0, parentAngle = 360) => {
       let currentStartAngle = parentStart;
       const radius = CENTER_WIDTH + depth * (STROKE_WIDTH + CONCENTRIC_MARGIN);
-      return node.children.filter(child => child.id !== undefined).map((child) => {
-        const { value, id, label } = child;
-        const isActive = current === data.id || current === id;
-        let angle = 0;
-        let newEnd = parentAngle;
-        let image = null;
-        let newDepth = depth;
-        let nextCurrent = current;
-        const childHasChildren = !!child.children;
-        if (isActive) {
-          const isFirst = current !== data.id && depth === 1;
-          angle = isFirst ? parentAngle : mapFromRange(value, 0, 100, 0, parentAngle);
-          newEnd = isFirst ? parentAngle : mapFromRange(value, 0, 100, 0, parentAngle);
-          image = svgs[id] || null;
-          newDepth = depth + 1;
-          nextCurrent = data.id;
-        }
-        const returnValue = (
-          <StyledArcWithItem
-            key={id}
-            angle={angle}
-            className={id}
-            noHoverAnim={!childHasChildren}
-            onClick={handleClickArc(child, node)}
-            x={x}
-            y={y}
-            strokeWidth={STROKE_WIDTH}
-            radius={radius}
-            startAngle={currentStartAngle}
-            depth={depth}
-            Picto={image}
-            margin={MARGIN}
-            name={label}
-            showIcon={showAllIcons}
-          >
-            {childHasChildren &&
-              drawNodes(nextCurrent, x, y, child, newDepth, currentStartAngle, newEnd)}
-          </StyledArcWithItem>
-        );
-        currentStartAngle += angle;
-        return returnValue;
-      });
+      return node.children
+        .filter((child) => child.id !== undefined)
+        .map((child) => {
+          const { value, id, label } = child;
+          const isActive = current === data.id || current === id;
+          let angle = 0;
+          let newEnd = parentAngle;
+          let image = null;
+          let newDepth = depth;
+          let nextCurrent = current;
+          const childHasChildren = !!child.children;
+          if (isActive) {
+            const isFirst = current !== data.id && depth === 1;
+            angle = isFirst ? parentAngle : mapFromRange(value, 0, 100, 0, parentAngle);
+            newEnd = isFirst ? parentAngle : mapFromRange(value, 0, 100, 0, parentAngle);
+            image = svgs[id] || null;
+            newDepth = depth + 1;
+            nextCurrent = data.id;
+          }
+          const returnValue = (
+            <StyledArcWithItem
+              key={id}
+              angle={angle}
+              className={id}
+              noHoverAnim={!childHasChildren}
+              onClick={handleClickArc(child, node)}
+              x={x}
+              y={y}
+              strokeWidth={STROKE_WIDTH}
+              radius={radius}
+              startAngle={currentStartAngle}
+              depth={depth}
+              Picto={image}
+              margin={MARGIN}
+              name={label}
+              showIcon={showAllIcons}
+            >
+              {childHasChildren &&
+                drawNodes(nextCurrent, x, y, child, newDepth, currentStartAngle, newEnd)}
+            </StyledArcWithItem>
+          );
+          currentStartAngle += angle;
+          return returnValue;
+        });
     },
     [handleClickArc, showAllIcons],
   );
@@ -111,8 +113,8 @@ const Chart = ({ className, data, showAllIcons = false }) => {
         <filter x="0" y="0" width="1" height="1" id="solid">
           <feFlood flood-color="#fff" result="bg" />
           <feMerge>
-            <feMergeNode in="bg"/>
-            <feMergeNode in="SourceGraphic"/>
+            <feMergeNode in="bg" />
+            <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
       </defs>

@@ -11,7 +11,12 @@ export default {
       { label: '京都・Kyoto', coor: [135.75777, 35.02291] },
       { label: '広島・Hiroshima', coor: [132.44975, 34.39636] },
       { label: '宮島・Miyajima', coor: [132.3217, 34.2991], offsetY: 25 },
-      { label: '大阪・Osaka', coor: [135.4547, 34.6776], offsetY: 25, picto: 'plane' },
+      {
+        label: '大阪・Osaka',
+        coor: [135.4547, 34.6776],
+        offsetY: 25,
+        picto: 'plane',
+      },
       { coor: [130.76266, 40] },
     ],
     icon: {

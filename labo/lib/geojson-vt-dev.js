@@ -583,7 +583,13 @@
             return dest;
           }
         },
-        { './clip': 1, './convert': 2, './tile': 6, './transform': 7, './wrap': 8 },
+        {
+          './clip': 1,
+          './convert': 2,
+          './tile': 6,
+          './transform': 7,
+          './wrap': 8,
+        },
       ],
       5: [
         function (require, module, exports) {

@@ -1,90 +1,94 @@
 body {
-  font-size: 12px;
-  color: #333;
-  margin: 0;
+	font-size: 12px;
+	color: #333;
+	margin: 0;
 }
 
 svg {
-  background: rgb(34, 34, 34);
+	background: rgb(34, 34, 34);
 }
 
 .map path {
-  stroke-width: 0.4;
-  stroke: #222;
-  transition: fill 300ms ease-out, stroke 300ms ease-out;
+	stroke-width: 0.4;
+	stroke: #222;
+	transition:
+		fill 300ms ease-out,
+		stroke 300ms ease-out;
 }
 
 .noPenalty {
-  fill: #dfdfdf;
+	fill: #dfdfdf;
 }
 
 .diffamation {
-  fill: #568cac;
+	fill: #568cac;
 }
 
 .blaspheme {
-  fill: #5656bf;
+	fill: #5656bf;
 }
 
 .apostasie {
-  fill: #8080a0;
+	fill: #8080a0;
 }
 
 .blasphemeDiffamation {
-  fill: #804ab4;
+	fill: #804ab4;
 }
 
 .apostasieDiffamation {
-  fill: #ac568c;
+	fill: #ac568c;
 }
 
 .blasphemeApostasie {
-  fill: #bf5656;
+	fill: #bf5656;
 }
 
 .allPenalties {
-  fill: #533a67;
+	fill: #533a67;
 }
 
 .deadPicto {
-  stroke-width: 0.03em;
-  stroke: #000;
-  fill: #fff;
+	stroke-width: 0.03em;
+	stroke: #000;
+	fill: #fff;
 }
 
 #infos h3 {
-  letter-spacing: 0.02em;
-  font-size: 1em;
-  color: #000;
+	letter-spacing: 0.02em;
+	font-size: 1em;
+	color: #000;
 }
 
 #infos svg {
-  width: 50%;
-  height: auto;
-  float: left;
+	width: 50%;
+	height: auto;
+	float: left;
 }
 
 #infos svg circle {
-  fill: transparent;
-  stroke-width: 3;
-  transition: stroke-dashoffset 1s ease-out, stroke-dasharray 1s ease-out;
+	fill: transparent;
+	stroke-width: 3;
+	transition:
+		stroke-dashoffset 1s ease-out,
+		stroke-dasharray 1s ease-out;
 }
 
 #legend {
-  width: 50%;
-  float: left;
+	width: 50%;
+	float: left;
 }
 
 #legend .legendBloc {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
+	display: inline-block;
+	width: 10px;
+	height: 10px;
 }
 
 #legend .legendText {
-  font-size: 0.8em;
-  margin-left: 0.5em;
-  color: #000;
+	font-size: 0.8em;
+	margin-left: 0.5em;
+	color: #000;
 }
 
 /* .oth: { color: '#DDD' }*/

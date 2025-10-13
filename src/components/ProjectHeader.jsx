@@ -73,7 +73,16 @@ const LinkIcon = styled(LinkSvg)`
   transform: translateY(1px);
 `;
 
-const ProjectHeader = ({ title, inverseTitle, descriptions, tags, date, links, textSite, $colorType }) => (
+const ProjectHeader = ({
+  title,
+  inverseTitle,
+  descriptions,
+  tags,
+  date,
+  links,
+  textSite,
+  $colorType,
+}) => (
   <WrapContent>
     <WrapTexte>
       {date && <Date $colorType={$colorType}>{date}</Date>}
@@ -90,12 +99,20 @@ const ProjectHeader = ({ title, inverseTitle, descriptions, tags, date, links, t
               <Text key={text}>{text}</Text>
             ))}
             {tags?.length ? <StyledTagsList tags={tags} /> : null}
-            {links ? links.map(link => (
-              <A key={link.url} href={link.url} target="_blank" rel="noreferrer" $colorType={$colorType}>
-                {link.label}
-                <LinkIcon $colorType={$colorType} />
-              </A>
-            )) : null}
+            {links
+              ? links.map((link) => (
+                  <A
+                    key={link.url}
+                    href={link.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    $colorType={$colorType}
+                  >
+                    {link.label}
+                    <LinkIcon $colorType={$colorType} />
+                  </A>
+                ))
+              : null}
           </Description>
         </>
       ) : null}

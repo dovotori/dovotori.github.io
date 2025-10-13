@@ -15,7 +15,7 @@ const fadeUp = keyframes`
 const Wrap = styled.div`
   position: relative;
   margin: 22vh auto;
-  display:flex;
+  display: flex;
   justify-content: center;
 `;
 

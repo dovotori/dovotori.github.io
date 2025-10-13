@@ -1,19 +1,19 @@
 {
-  "files.autoSave": "onFocusChange",
-  "search.exclude": {
-    "**/.git": true,
-    "**/node_modules": true,
-    "**/build": true,
-    "**/package-lock.json": true
-  },
-  "files.exclude": {
-    "**/node_modules": true
-  },
-  "editor.codeActionsOnSave": {
-    "source.organizeImports": "always"
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true
-  }
+	"files.autoSave": "onFocusChange",
+	"search.exclude": {
+		"**/.git": true,
+		"**/node_modules": true,
+		"**/build": true,
+		"**/package-lock.json": true
+	},
+	"files.exclude": {
+		"**/node_modules": true
+	},
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": "always"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	}
 }

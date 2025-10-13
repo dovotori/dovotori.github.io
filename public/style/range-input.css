@@ -1,67 +1,67 @@
-input[type='range'] {
-  -webkit-appearance: none; /*nécessaire pour Chrome */
-  padding: 0; /* nécessaire pour IE */
-  font: inherit; /* même rendu suivant font document */
-  outline: none;
-  background: transparent;
-  margin: 0.5em;
+input[type="range"] {
+	-webkit-appearance: none; /*nécessaire pour Chrome */
+	padding: 0; /* nécessaire pour IE */
+	font: inherit; /* même rendu suivant font document */
+	outline: none;
+	background: transparent;
+	margin: 0.5em;
 }
 
-input[type='range']:focus {
-  outline: none;
+input[type="range"]:focus {
+	outline: none;
 }
 
-input[type='range']::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 2px;
-  cursor: pointer;
-  background: var(--project-color);
+input[type="range"]::-webkit-slider-runnable-track {
+	width: 100%;
+	height: 2px;
+	cursor: pointer;
+	background: var(--project-color);
 }
 
-input[type='range']::-moz-range-track {
-  width: 100%;
-  height: 2px;
-  cursor: pointer;
-  background: var(--project-color);
+input[type="range"]::-moz-range-track {
+	width: 100%;
+	height: 2px;
+	cursor: pointer;
+	background: var(--project-color);
 }
 
-input[type='range']::-ms-track {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 2px;
-  background: var(--project-color);
-  cursor: pointer;
+input[type="range"]::-ms-track {
+	-webkit-appearance: none;
+	width: 100%;
+	height: 2px;
+	background: var(--project-color);
+	cursor: pointer;
 }
 
-input[type='range']::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  height: 2em;
-  width: 1em;
-  margin: calc(2px - 1em) 0 0 0;
-  background: #fff;
-  cursor: pointer;
-  border-radius: 0;
-  border: solid 2px #444;
+input[type="range"]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	height: 2em;
+	width: 1em;
+	margin: calc(2px - 1em) 0 0 0;
+	background: #fff;
+	cursor: pointer;
+	border-radius: 0;
+	border: solid 2px #444;
 }
 
-input[type='range']::-moz-range-thumb {
-  -webkit-appearance: none;
-  height: 2em;
-  width: 1em;
-  margin: calc(2px - 1em) 0 0 0;
-  background: #fff;
-  cursor: pointer;
-  border-radius: 0;
-  border: solid 2px #444;
+input[type="range"]::-moz-range-thumb {
+	-webkit-appearance: none;
+	height: 2em;
+	width: 1em;
+	margin: calc(2px - 1em) 0 0 0;
+	background: #fff;
+	cursor: pointer;
+	border-radius: 0;
+	border: solid 2px #444;
 }
 
-input[type='range']::-ms-thumb {
-  -webkit-appearance: none;
-  height: 2em;
-  width: 1em;
-  margin: calc(2px - 1em) 0 0 0;
-  background: #fff;
-  cursor: pointer;
-  border-radius: 0;
-  border: solid 2px #444;
+input[type="range"]::-ms-thumb {
+	-webkit-appearance: none;
+	height: 2em;
+	width: 1em;
+	margin: calc(2px - 1em) 0 0 0;
+	background: #fff;
+	cursor: pointer;
+	border-radius: 0;
+	border: solid 2px #444;
 }

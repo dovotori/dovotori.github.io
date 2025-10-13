@@ -130,7 +130,16 @@ const changeColor = () => {
   const bright = parseFloat(rangeBright.value, 10);
   const { width, height } = canvas;
   const grey = !!boxGrey.checked;
-  const payload = { data: initialDataImage, width, height, blue, red, green, bright, grey };
+  const payload = {
+    data: initialDataImage,
+    width,
+    height,
+    blue,
+    red,
+    green,
+    bright,
+    grey,
+  };
   webworker.postMessage({ type: 'color', payload });
 };
 

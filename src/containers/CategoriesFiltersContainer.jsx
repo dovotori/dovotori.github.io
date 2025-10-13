@@ -1,4 +1,3 @@
-
 import { setCategory } from '../actions/device';
 import CategoriesFilters from '../components/CategoriesFilters';
 import { getCategories, getCategoryId, getDispatch, getEntries } from '../selectors';

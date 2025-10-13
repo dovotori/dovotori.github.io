@@ -1,126 +1,126 @@
 #game {
-  text-align: center;
+	text-align: center;
 }
 
 #game canvas {
-  display: block;
-  margin: 0 auto;
-  width: auto;
-  height: auto;
-  max-width: 100%;
+	display: block;
+	margin: 0 auto;
+	width: auto;
+	height: auto;
+	max-width: 100%;
 }
 
 #gameinfos {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 4px;
-  width: 100%;
-  text-align: left;
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 4px;
+	width: 100%;
+	text-align: left;
 }
 
 meter {
-  width: 100px;
-  height: 1.2em;
+	width: 100px;
+	height: 1.2em;
 }
 
 #game[data-fullscreen] canvas {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate3d(-50%, -50%, 0);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate3d(-50%, -50%, 0);
 }
 
 #splash {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  color: #fff;
-  transition: opacity 500ms ease-out;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	color: #fff;
+	transition: opacity 500ms ease-out;
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 #title {
-  font-size: 6em;
-  font-weight: 100;
-  text-shadow: 0.04em 0.04em 0 rgba(0, 0, 0, 0.7);
-  margin: 0;
+	font-size: 6em;
+	font-weight: 100;
+	text-shadow: 0.04em 0.04em 0 rgba(0, 0, 0, 0.7);
+	margin: 0;
 }
 
 @media (max-width: 570px) {
-  #title {
-    font-size: 4em;
-  }
+	#title {
+		font-size: 4em;
+	}
 }
 
 #instructions {
-  font-size: 1.6em;
-  display: none;
-  letter-spacing: 0.1em;
-  animation: blink 1s linear infinite;
-  margin: 1em 0;
+	font-size: 1.6em;
+	display: none;
+	letter-spacing: 0.1em;
+	animation: blink 1s linear infinite;
+	margin: 1em 0;
 }
 
 .commands {
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  padding: 1em 0;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	padding: 1em 0;
 }
 
 .command {
-  position: relative;
-  overflow: hidden;
-  font-size: 0.8em;
-  letter-spacing: 0.1em;
-  margin: 10px 0;
+	position: relative;
+	overflow: hidden;
+	font-size: 0.8em;
+	letter-spacing: 0.1em;
+	margin: 10px 0;
 }
 
 .command .key {
-  border-radius: 4px;
-  margin: 0 4px;
-  text-align: center;
-  width: calc(50% - 8px);
-  background: #444;
-  float: left;
+	border-radius: 4px;
+	margin: 0 4px;
+	text-align: center;
+	width: calc(50% - 8px);
+	background: #444;
+	float: left;
 }
 
 .command .key.twocol {
-  width: calc(25% - 8px);
+	width: calc(25% - 8px);
 }
 
 .command .key svg {
-  width: 8px;
-  stroke: #fff;
-  stroke-width: 2;
-  fill: none;
+	width: 8px;
+	stroke: #fff;
+	stroke-width: 2;
+	fill: none;
 }
 
 .command .desc {
-  float: left;
-  width: 50%;
+	float: left;
+	width: 50%;
 }
 
 .command .key,
 .command .desc {
-  padding: 0.4em;
-  text-shadow: 1px 1px 0 #000;
+	padding: 0.4em;
+	text-shadow: 1px 1px 0 #000;
 }
 
 @keyframes blink {
-  0% {
-    opacity: 0;
-  }
+	0% {
+		opacity: 0;
+	}
 
-  50% {
-    opacity: 1;
-  }
+	50% {
+		opacity: 1;
+	}
 
-  100% {
-    opacity: 0;
-  }
+	100% {
+		opacity: 0;
+	}
 }

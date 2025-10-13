@@ -36,7 +36,9 @@ const generateSvg = async (showBrowser) => {
   const page = await browser.newPage();
   await page.setContent(html);
   await page.addStyleTag({ content: css });
-  await page.addScriptTag({ url: 'https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js' });
+  await page.addScriptTag({
+    url: 'https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js',
+  });
   await page.addScriptTag({ url: 'https://d3js.org/topojson.v3.min.js' });
   await page.addScriptTag({ path: path.resolve(__dirname, './createSvg.js') });
   await page.addScriptTag({ content: extraScript });

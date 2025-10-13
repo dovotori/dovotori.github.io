@@ -164,7 +164,10 @@ export class PostProcess {
             { binding: 3, resource: { buffer: glowThresholdKneeBuffer } },
           ],
         );
-        buffers = { threshold: thresholdBuffer, glowThresholdKnee: glowThresholdKneeBuffer };
+        buffers = {
+          threshold: thresholdBuffer,
+          glowThresholdKnee: glowThresholdKneeBuffer,
+        };
         break;
       }
       default:

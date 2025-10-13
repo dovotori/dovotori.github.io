@@ -1,27 +1,29 @@
 #fullscreen-toggle-btn {
-  border-radius: 0;
-  margin: 0;
-  padding: 4px;
-  border: solid 2px var(--project-color);
+	border-radius: 0;
+	margin: 0;
+	padding: 4px;
+	border: solid 2px var(--project-color);
 }
 
 #fullscreen-toggle-btn:hover svg,
 #fullscreen-toggle-btn:active svg {
-  transform: scale(0.8);
-  opacity: 1;
+	transform: scale(0.8);
+	opacity: 1;
 }
 
 #fullscreen-toggle-btn svg {
-  display: block;
-  width: 2em;
-  fill: #fff;
-  opacity: 0.8;
-  transform: scale(0.6);
-  transition: opacity 300ms ease-out, transform 300ms ease-out;
+	display: block;
+	width: 2em;
+	fill: #fff;
+	opacity: 0.8;
+	transform: scale(0.6);
+	transition:
+		opacity 300ms ease-out,
+		transform 300ms ease-out;
 }
 
 [data-fullscreen] {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }

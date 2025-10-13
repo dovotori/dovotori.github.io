@@ -43,10 +43,16 @@ export default class extends Scene {
     });
 
     const indicesRoads = getIndices(2, roadLength);
-    this.roadVbo = new Primitive(gl, { position: pointsRoads, indices: indicesRoads });
+    this.roadVbo = new Primitive(gl, {
+      position: pointsRoads,
+      indices: indicesRoads,
+    });
 
     const indicesMountains = getIndices(120, roadLength);
-    this.mountainVbo = new Primitive(gl, { position: pointsMountains, indices: indicesMountains });
+    this.mountainVbo = new Primitive(gl, {
+      position: pointsMountains,
+      indices: indicesMountains,
+    });
 
     this.shipPos = new Vec3(...shipPosition);
     this.currentShipPos = new Vec3(0.0);

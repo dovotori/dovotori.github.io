@@ -9,7 +9,11 @@ export default class {
     this.modeCalcul = isDynamic ? this.gl.DYNAMIC_DRAW : this.gl.STATIC_DRAW;
 
     this.vbos = Object.keys(vbos).reduce((acc, cur) => {
-      acc[cur] = new Vbo(gl, { locationKey: cur, modeCalcul: this.modeCalcul, ...vbos[cur] });
+      acc[cur] = new Vbo(gl, {
+        locationKey: cur,
+        modeCalcul: this.modeCalcul,
+        ...vbos[cur],
+      });
       return acc;
     }, {});
 

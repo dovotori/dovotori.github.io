@@ -1,42 +1,42 @@
 #controls {
-  position: absolute;
-  top: 0;
-  right: 0;
-  display: flex;
-  align-items: stretch;
-  z-index: 10;
-  background-color: rgba(34, 34, 34, .8);
-  margin: .5em;
-  padding: .5em;
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: flex;
+	align-items: stretch;
+	z-index: 10;
+	background-color: rgba(34, 34, 34, 0.8);
+	margin: 0.5em;
+	padding: 0.5em;
 }
 
 #controls div {
-  display: flex;
-  align-items: stretch;
+	display: flex;
+	align-items: stretch;
 }
 
-#controls div input[type=range] {
-  width: 100%;
+#controls div input[type="range"] {
+	width: 100%;
 }
 
-#controls div input[type=checkbox] {
-  margin-right: 0.5em;
+#controls div input[type="checkbox"] {
+	margin-right: 0.5em;
 }
 
 #controls label {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 #controls label,
 #controls a {
-  font-size: .8em;
+	font-size: 0.8em;
 }
 
 @media (max-width: 570px) {
-  #controls.responsive {
-    position: relative;
-    width: 100%;
-    margin: 0;
-  }
+	#controls.responsive {
+		position: relative;
+		width: 100%;
+		margin: 0;
+	}
 }

@@ -1,46 +1,46 @@
 #delaunay {
-  --project-color: #66ffcc;
-  width: 100%;
-  margin: 0 auto;
+	--project-color: #66ffcc;
+	width: 100%;
+	margin: 0 auto;
 }
 
 #delaunay #controls {
-  display: block;
+	display: block;
 }
 
 #delaunay #controls div {
-  margin: 0 0 1em 0;
+	margin: 0 0 1em 0;
 }
 
 #delaunay #controls div label:not(.nomargin) {
-  margin: 0 0 1em 0;
-  min-width: 40%;
+	margin: 0 0 1em 0;
+	min-width: 40%;
 }
 
 #delaunay img {
-  display: block;
+	display: block;
 }
 
 #delaunay svg,
 #delaunay canvas.debug {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 0;
 }
 
 #delaunay svg,
 #delaunay canvas {
-  max-width: 1200px;
-  width: 100%;
-  height: auto;
+	max-width: 1200px;
+	width: 100%;
+	height: auto;
 }
 
 #delaunay #container {
-  position: relative;
-  z-index: 1;
+	position: relative;
+	z-index: 1;
 }
 
 .hide {
-  visibility: hidden;
+	visibility: hidden;
 }

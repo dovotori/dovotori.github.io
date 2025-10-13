@@ -185,7 +185,7 @@ const TwoCol = styled.div`
 `;
 
 const TwoColFloat = styled(TwoCol)`
-  margin: ${p => p.noMargin ? 0 : 0.5}em 0;
+  margin: ${(p) => (p.noMargin ? 0 : 0.5)}em 0;
 `;
 
 const Cv = ({ className, formation, isTouchDevice, jobs, skills, hobbies }) => {
@@ -345,8 +345,7 @@ const Cv = ({ className, formation, isTouchDevice, jobs, skills, hobbies }) => {
 
 export default Cv;
 
-
-const SkillLine = ({item, isTouchDevice}) => {
+const SkillLine = ({ item, isTouchDevice }) => {
   const Svg = item.id ? styledIcons[item.id] : null;
   if (!Svg && item.children) return null;
   return (
@@ -366,10 +365,13 @@ const SkillLine = ({item, isTouchDevice}) => {
       </Line>
     </TwoColFloat>
   );
-}
+};
 
 const renderItem = (item, isTouchDevice) => {
-  return (<><SkillLine item={item} isTouchDevice={isTouchDevice}/>
-  {item.children && item.children.map((subitem) => renderItem(subitem, isTouchDevice))}
-  </>);
-}  
+  return (
+    <>
+      <SkillLine item={item} isTouchDevice={isTouchDevice} />
+      {item.children && item.children.map((subitem) => renderItem(subitem, isTouchDevice))}
+    </>
+  );
+};

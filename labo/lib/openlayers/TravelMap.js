@@ -336,9 +336,17 @@ export default ({
   icon,
   highlightIso,
   defaultZoom = 6,
-  colors = { highlight: '#4531d5', land: '#514799', stroke: '#0000ff', background: '#ffffca' },
+  colors = {
+    highlight: '#4531d5',
+    land: '#514799',
+    stroke: '#0000ff',
+    background: '#ffffca',
+  },
 }) => {
-  const formatPoints = points.map((point) => ({ ...point, coor: getCoor(point.coor) }));
+  const formatPoints = points.map((point) => ({
+    ...point,
+    coor: getCoor(point.coor),
+  }));
   const labelPoints = formatPoints.filter((point) => point.label);
   const view = getView(labelPoints, defaultZoom);
   const animMarker = new AnimationMarker(formatPoints, icon);

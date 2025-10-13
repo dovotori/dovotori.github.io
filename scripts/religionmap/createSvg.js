@@ -36,7 +36,11 @@ const RELIGION_INFOS = {
   chrstprotpct: { fr: 'Protestant', en: 'Prostestant', color: '#AAD1E3' },
   chrstorthpct: { fr: 'Orthodoxe', en: 'Orthodox', color: '#A7A7D8' },
   chrstangpct: { fr: 'Anglican', en: 'Anglican', color: '#AB89F1' },
-  chrstothrpct: { fr: 'Autres Chrétiens', en: 'Others Christians', color: '#5D65C2' },
+  chrstothrpct: {
+    fr: 'Autres Chrétiens',
+    en: 'Others Christians',
+    color: '#5D65C2',
+  },
   islmsunpct: { fr: 'Sunnite', en: 'Sunni', color: '#82C7A1' },
   islmshipct: { fr: 'Shiite', en: "Shi'a", color: '#9DE47A' },
   judgenpct: { fr: 'Juif', en: 'Judaism', color: '#F08686' },
@@ -86,7 +90,10 @@ const main = () => {
     const filteredGeometries = geojson.objects.countries.geometries.filter(
       (country) => country.id !== '010',
     );
-    const filteredCountries = { ...geojson.objects.countries, geometries: filteredGeometries };
+    const filteredCountries = {
+      ...geojson.objects.countries,
+      geometries: filteredGeometries,
+    };
 
     // Update world map
     const u = d3

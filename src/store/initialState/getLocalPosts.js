@@ -411,7 +411,11 @@ const rawPosts = [
   {
     id: 17,
     slug: 'hongkong',
-    title: { [Locales.FR]: 'Hong Kong', [Locales.EN]: 'Hong Kong', [Locales.JP]: '香港' },
+    title: {
+      [Locales.FR]: 'Hong Kong',
+      [Locales.EN]: 'Hong Kong',
+      [Locales.JP]: '香港',
+    },
     category: CAT_BLOG,
     tags: [Tags.TAG_TRAVEL, Tags.TAG_PHOTO],
     date: 2019,
@@ -426,7 +430,11 @@ const rawPosts = [
   {
     id: 18,
     slug: 'budapest',
-    title: { [Locales.FR]: 'Budapest', [Locales.EN]: 'Budapest', [Locales.JP]: 'ブダペスト' },
+    title: {
+      [Locales.FR]: 'Budapest',
+      [Locales.EN]: 'Budapest',
+      [Locales.JP]: 'ブダペスト',
+    },
     category: CAT_BLOG,
     tags: [Tags.TAG_TRAVEL, Tags.TAG_PHOTO],
     date: 2019,

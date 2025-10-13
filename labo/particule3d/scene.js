@@ -196,7 +196,9 @@ export default class Scene extends WebgpuScene {
         module: programs.f_particule_3d.get(),
         entryPoint: 'f_main',
         // can define multiple targets textures, to get color / depth or normal texture of your scene
-        targets: Array.from({ length: this.postProcess.getRenderTargetsCount() }).map(() => ({
+        targets: Array.from({
+          length: this.postProcess.getRenderTargetsCount(),
+        }).map(() => ({
           format: this.postProcess.getRenderTargetFormat(),
         })),
         // [{
@@ -269,14 +271,14 @@ export default class Scene extends WebgpuScene {
 
     this.renderPassDescriptor = {
       // can define multiple targets textures, should match pipeline targets
-      colorAttachments: Array.from({ length: this.postProcess.getRenderTargetsCount() }).map(
-        () => ({
-          view: null,
-          clearValue: { r: 0, g: 0, b: 0, a: 0 },
-          loadOp: 'clear',
-          storeOp: 'store',
-        }),
-      ),
+      colorAttachments: Array.from({
+        length: this.postProcess.getRenderTargetsCount(),
+      }).map(() => ({
+        view: null,
+        clearValue: { r: 0, g: 0, b: 0, a: 0 },
+        loadOp: 'clear',
+        storeOp: 'store',
+      })),
       // [
       //   {
       //     view: null,

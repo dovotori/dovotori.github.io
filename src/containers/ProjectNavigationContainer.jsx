@@ -1,4 +1,3 @@
-
 import ProjectNavigation from '../components/ProjectNavigation';
 import {
   getCategoryId,

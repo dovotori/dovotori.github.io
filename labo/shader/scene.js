@@ -71,7 +71,10 @@ export default class extends Scene {
       endZ: roadDepth,
     });
     const indicesRoads = getIndices(roadWidth, roadDepth);
-    this.roadVbo = new Primitive(gl, { position: pointsRoads, indices: indicesRoads });
+    this.roadVbo = new Primitive(gl, {
+      position: pointsRoads,
+      indices: indicesRoads,
+    });
 
     this.roadFrequence = new Vec3(2, 0, 2);
     this.roadAmplitude = new Vec3(10, 0, 4);

@@ -1,24 +1,26 @@
 body {
-  font-size: 12px;
-  color: #333;
-  margin: 0;
+	font-size: 12px;
+	color: #333;
+	margin: 0;
 }
 
 svg {
-  background: rgb(34, 34, 34);
+	background: rgb(34, 34, 34);
 }
 
 .map path {
-  stroke-width: 0.4;
-  stroke: #222;
-  fill: #a2afae;
-  transition: fill 300ms ease-out, stroke 300ms ease-out;
+	stroke-width: 0.4;
+	stroke: #222;
+	fill: #a2afae;
+	transition:
+		fill 300ms ease-out,
+		stroke 300ms ease-out;
 }
 
 .map path.enemy {
-  fill: #cd1335;
+	fill: #cd1335;
 }
 
 .map path.enemy:hover {
-  fill: #580823;
+	fill: #580823;
 }

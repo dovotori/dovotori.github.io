@@ -9,11 +9,11 @@ if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
       .then((registration) => {
         // scope should be https://domain/ to avoid error on reload
         console.log(`[Service Worker] Registration successful with scope: ${registration.scope}`);
-        
+
         // Check for updates
         registration.addEventListener('updatefound', () => {
           const newWorker = registration.installing;
-          
+
           newWorker.addEventListener('statechange', () => {
             // When the service worker is installed, show update notification
             if (newWorker.state === 'activated') {
@@ -30,11 +30,10 @@ if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
 }
 
 const Main = () => {
-return (
-  <StateProvider>
-    <App />
-  </StateProvider>
-);
-
-}
+  return (
+    <StateProvider>
+      <App />
+    </StateProvider>
+  );
+};
 createRoot(document.querySelector(`#${process.env.NAME}`)).render(<Main />);

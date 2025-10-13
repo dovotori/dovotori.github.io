@@ -1,209 +1,211 @@
 #worldmap {
-  display: block;
-  margin: 0 auto;
-  transition: transform 2s ease-out;
+	display: block;
+	margin: 0 auto;
+	transition: transform 2s ease-out;
 }
 
 #worldmap path {
-  stroke-width: 0.4;
-  stroke: #000;
-  transition: fill 10s ease-out;
-  cursor: pointer;
-  opacity: 0.8;
+	stroke-width: 0.4;
+	stroke: #000;
+	transition: fill 10s ease-out;
+	cursor: pointer;
+	opacity: 0.8;
 }
 
 #worldmap path:hover {
-  opacity: 1;
+	opacity: 1;
 }
 
 .noPenalty {
-  fill: #dfdfdf;
+	fill: #dfdfdf;
 }
 
 .diffamation {
-  fill: #568cac;
+	fill: #568cac;
 }
 
 .blaspheme {
-  fill: #5656bf;
+	fill: #5656bf;
 }
 
 .apostasie {
-  fill: #8080a0;
+	fill: #8080a0;
 }
 
 .blasphemeDiffamation {
-  fill: #804ab4;
+	fill: #804ab4;
 }
 
 .apostasieDiffamation {
-  fill: #ac568c;
+	fill: #ac568c;
 }
 
 .blasphemeApostasie {
-  fill: #bf5656;
+	fill: #bf5656;
 }
 
 .allPenalties {
-  fill: #533a67;
+	fill: #533a67;
 }
 
 .peindeDeMort {
-  fill: transparent;
+	fill: transparent;
 }
 
 .deadPicto {
-  stroke: #000;
-  stroke-width: 2;
-  fill: #fff;
+	stroke: #000;
+	stroke-width: 2;
+	fill: #fff;
 }
 
 #infos {
-  position: absolute;
-  left: 50%;
-  bottom: 50%;
-  width: 50%;
-  background: rgba(255, 255, 255, 0.8);
-  padding: 1em;
-  text-align: left;
-  transition: transform 500ms ease-out;
-  transform: none;
-  transform-origin: center center;
-  overflow: hidden;
+	position: absolute;
+	left: 50%;
+	bottom: 50%;
+	width: 50%;
+	background: rgba(255, 255, 255, 0.8);
+	padding: 1em;
+	text-align: left;
+	transition: transform 500ms ease-out;
+	transform: none;
+	transform-origin: center center;
+	overflow: hidden;
 }
 
 #infos[data-hide] {
-  transform: scale(0);
+	transform: scale(0);
 }
 
 #infos h3 {
-  letter-spacing: 0.02em;
-  font-size: 1em;
-  color: #000;
+	letter-spacing: 0.02em;
+	font-size: 1em;
+	color: #000;
 }
 
 #infos svg {
-  width: 50%;
-  height: auto;
-  float: left;
+	width: 50%;
+	height: auto;
+	float: left;
 }
 
 #infos svg circle {
-  fill: transparent;
-  stroke-width: 3;
-  transition: stroke-dashoffset 1s ease-out, stroke-dasharray 1s ease-out;
+	fill: transparent;
+	stroke-width: 3;
+	transition:
+		stroke-dashoffset 1s ease-out,
+		stroke-dasharray 1s ease-out;
 }
 
 #legend {
-  width: 50%;
-  float: left;
+	width: 50%;
+	float: left;
 }
 
 #legend .legendBloc {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
+	display: inline-block;
+	width: 10px;
+	height: 10px;
 }
 
 #legend .legendText {
-  font-size: 0.8em;
-  margin-left: 0.5em;
-  color: #000;
+	font-size: 0.8em;
+	margin-left: 0.5em;
+	color: #000;
 }
 
 .infosSource {
-  font-size: 0.7em;
-  fill: #fff;
-  cursor: pointer;
+	font-size: 0.7em;
+	fill: #fff;
+	cursor: pointer;
 }
 
 circle.chrstcatpct {
-  stroke: #7199f0;
+	stroke: #7199f0;
 }
 .chrstcatpct .legendBloc {
-  background-color: #7199f0;
+	background-color: #7199f0;
 }
 circle.chrstprotpct {
-  stroke: #aad1e3;
+	stroke: #aad1e3;
 }
 .chrstprotpct .legendBloc {
-  background-color: #aad1e3;
+	background-color: #aad1e3;
 }
 circle.chrstorthpct {
-  stroke: #a7a7d8;
+	stroke: #a7a7d8;
 }
 .chrstorthpct .legendBloc {
-  background-color: #a7a7d8;
+	background-color: #a7a7d8;
 }
 circle.chrstangpct {
-  stroke: #ab89f1;
+	stroke: #ab89f1;
 }
 .chrstangpct .legendBloc {
-  background-color: #ab89f1;
+	background-color: #ab89f1;
 }
 circle.chrstothrpct {
-  stroke: #5d65c2;
+	stroke: #5d65c2;
 }
 .chrstothrpct .legendBloc {
-  background-color: #5d65c2;
+	background-color: #5d65c2;
 }
 circle.islmsunpct {
-  stroke: #82c7a1;
+	stroke: #82c7a1;
 }
 .islmsunpct .legendBloc {
-  background-color: #82c7a1;
+	background-color: #82c7a1;
 }
 circle.islmshipct {
-  stroke: #9de47a;
+	stroke: #9de47a;
 }
 .islmshipct .legendBloc {
-  background-color: #9de47a;
+	background-color: #9de47a;
 }
 circle.judgenpct {
-  stroke: #f08686;
+	stroke: #f08686;
 }
 .judgenpct .legendBloc {
-  background-color: #f08686;
+	background-color: #f08686;
 }
 circle.anmgenpct {
-  stroke: #eecc5c;
+	stroke: #eecc5c;
 }
 .anmgenpct .legendBloc {
-  background-color: #eecc5c;
+	background-color: #eecc5c;
 }
 circle.budgenpct {
-  stroke: #dfb561;
+	stroke: #dfb561;
 }
 .budgenpct .legendBloc {
-  background-color: #dfb561;
+	background-color: #dfb561;
 }
 circle.taogenpct {
-  stroke: #d69773;
+	stroke: #d69773;
 }
 .taogenpct .legendBloc {
-  background-color: #d69773;
+	background-color: #d69773;
 }
 circle.hindgenpct {
-  stroke: #ec7f4e;
+	stroke: #ec7f4e;
 }
 .hindgenpct .legendBloc {
-  background-color: #ec7f4e;
+	background-color: #ec7f4e;
 }
 circle.confgenpct {
-  stroke: #c37fa6;
+	stroke: #c37fa6;
 }
 .confgenpct .legendBloc {
-  background-color: #c37fa6;
+	background-color: #c37fa6;
 }
 circle.syncgenpct {
-  stroke: #c35d5c;
+	stroke: #c35d5c;
 }
 .syncgenpct .legendBloc {
-  background-color: #c35d5c;
+	background-color: #c35d5c;
 }
 circle.nonreligpct {
-  stroke: #999;
+	stroke: #999;
 }
 .nonreligpct .legendBloc {
-  background-color: #999;
+	background-color: #999;
 }
