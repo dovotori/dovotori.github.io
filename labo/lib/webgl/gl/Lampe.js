@@ -1,5 +1,5 @@
-import Objectif from '../cameras/Objectif';
-import Vec3 from '../maths/Vec3';
+import Objectif from '../../utils-3d/cameras/Objectif';
+import Vec3 from '../../utils/maths/Vec3';
 import MeshRepere from '../meshes/MeshRepere';
 import Fbo from './Fbo';
 

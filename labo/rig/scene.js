@@ -1,9 +1,9 @@
-import Camera from '../lib/webgl/cameras/Camera';
-import Objectif from '../lib/webgl/cameras/Objectif';
-import DualQuaternion from '../lib/webgl/maths/DualQuaternion';
-import Mat4 from '../lib/webgl/maths/Mat4';
-import { DebugTexture, GltfBindGroups, GltfPipeline } from '../lib/webgl/webgpu';
-import WebgpuScene from '../lib/webgl/webgpu/WebgpuScene';
+import Camera from '../lib/utils-3d/cameras/Camera';
+import Objectif from '../lib/utils-3d/cameras/Objectif';
+import DualQuaternion from '../lib/utils/maths/DualQuaternion';
+import Mat4 from '../lib/utils/maths/Mat4';
+import { DebugTexture, GltfBindGroups, GltfPipeline } from '../lib/webgpu';
+import WebgpuScene from '../lib/webgpu/WebgpuScene';
 
 export default class Scene extends WebgpuScene {
   constructor(context, config) {

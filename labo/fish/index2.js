@@ -1,4 +1,4 @@
-import { getEnvPath } from '../lib/webgl/utils';
+import { getEnvPath } from '../lib/utils';
 import config from './config';
 import { Flagellum } from './flagellum';
 

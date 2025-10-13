@@ -1,4 +1,4 @@
-import WebgpuScene from '../lib/webgl/webgpu/WebgpuScene.js';
+import WebgpuScene from '../lib/webgpu/WebgpuScene.js';
 import { Compute } from './compute.js';
 
 export default class Scene extends WebgpuScene {

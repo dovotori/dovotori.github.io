@@ -1,4 +1,4 @@
-import { X } from '../../../lib/webgl/constants/keyboard';
+import { X } from '../../../lib/utils/constants/keyboard';
 
 const STAND = 'STAND';
 const RUN = 'RUN';

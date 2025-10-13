@@ -1,5 +1,5 @@
+import Camera from '../../utils-3d/cameras/CameraSmooth';
 import Scene from './Scene';
-import Camera from '../cameras/CameraSmooth';
 
 export default class extends Scene {
   constructor(gl, config) {

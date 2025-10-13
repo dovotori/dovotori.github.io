@@ -1,9 +1,9 @@
+import { lerp } from '../../utils/easing';
+import Mat4 from '../../utils/maths/Mat4';
+import Quaternion from '../../utils/maths/Quaternion';
+import Sample from '../../utils/maths/Sample';
+import { mapFromRange } from '../../utils/numbers';
 import ObjetGltf from './ObjetGltf';
-import Quaternion from '../maths/Quaternion';
-import Mat4 from '../maths/Mat4';
-import Sample from '../maths/Sample';
-import { lerp } from '../utils/easing';
-import { mapFromRange } from '../utils/numbers';
 
 class ObjectGltfAnim extends ObjetGltf {
   constructor(gl, data, forceStep = null) {

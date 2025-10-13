@@ -1,25 +1,25 @@
 import {
-  UP,
   DOWN,
+  ECHAP,
+  ENTER,
   LEFT,
   RIGHT,
-  SPACE,
   SHIFT,
-  X,
+  SPACE,
+  UP,
   W,
-  ENTER,
-  ECHAP,
-} from '../../lib/webgl/constants/keyboard';
+  X,
+} from '../../lib/utils/constants/keyboard';
 
-import spriteHeros from './sprites/heros';
 import spriteBullet from './sprites/bullet';
 import spriteFx from './sprites/fx';
+import spriteHeros from './sprites/heros';
 import spriteMonster from './sprites/monster';
 import spriteTiles from './sprites/tiles';
 
-import herosConstants from './persos/heros';
 import bulletConstants from './persos/bullet';
 import fxConstants from './persos/fx';
+import herosConstants from './persos/heros';
 import monsterConstants from './persos/monster';
 
 export default {

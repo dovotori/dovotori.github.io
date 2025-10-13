@@ -1,8 +1,8 @@
-import { parseGLB } from '../parser/GltfCommon';
-import LoadGltf from '../parser/LoadGltf';
-import LoadGltfForWebGpu from '../parser/LoadGltfForWebGpu';
-import LoadMat from '../parser/LoadMat';
-import LoadObj from '../parser/LoadObj';
+import { parseGLB } from '../../utils-3d/parser/GltfCommon';
+import LoadGltf from '../../utils-3d/parser/LoadGltf';
+import LoadGltfForWebGpu from '../../utils-3d/parser/LoadGltfForWebGpu';
+import LoadMat from '../../utils-3d/parser/LoadMat';
+import LoadObj from '../../utils-3d/parser/LoadObj';
 
 class ManagerAssets {
   constructor(isWebgpu) {

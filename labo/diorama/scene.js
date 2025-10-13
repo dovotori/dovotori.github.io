@@ -1,14 +1,13 @@
-import Scene from '../lib/webgl/scenes/SceneLampe';
-import Primitive from '../lib/webgl/gl/Primitive';
-import Mat4 from '../lib/webgl/maths/Mat4';
-import Vec3 from '../lib/webgl/maths/Vec3';
-import Spring from '../lib/webgl/maths/Spring';
-import getTerrain from '../lib/webgl/primitives/terrain';
-import TextureNoise from '../lib/webgl/textures/TexturePerlinNoise';
-import TextureClouds from '../lib/webgl/textures/TextureClouds';
-import { hexToRgb } from '../lib/webgl/utils/color';
+import getTerrain from '../lib/utils-3d/primitives/terrain';
+import { hexToRgb } from '../lib/utils/color';
+import Mat4 from '../lib/utils/maths/Mat4';
+import Spring from '../lib/utils/maths/Spring';
+import Vec3 from '../lib/utils/maths/Vec3';
+import { fract, mix } from '../lib/utils/numbers';
 import Fbo from '../lib/webgl/gl/Fbo';
-import { fract, mix } from '../lib/webgl/utils/numbers';
+import Primitive from '../lib/webgl/gl/Primitive';
+import Scene from '../lib/webgl/scenes/SceneLampe';
+import TextureClouds from '../lib/webgl/textures/TextureClouds';
 
 const hash = (x, y) => {
   const p3 = new Vec3(x, y, x).multiplyNumber(0.13).fract();

@@ -1,6 +1,6 @@
-import Perso from './PersoFxs';
+import Vec3 from '../../../lib/utils/maths/Vec3';
 import Bullets from '../game/Bullets';
-import Vec3 from '../../../lib/webgl/maths/Vec3';
+import Perso from './PersoFxs';
 
 export default class PersoBullets extends Perso {
   constructor({ constants, sprites, viewBox, fxs, bullets }) {

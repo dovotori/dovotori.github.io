@@ -1,6 +1,6 @@
-import ManagerShaders from '../../labo/lib/webgl/managers/ManagerShaders';
+import { getEnvPath } from '../../labo/lib/utils';
 import ManagerAssets from '../../labo/lib/webgl/managers/ManagerAssets';
-import { getEnvPath } from '../../labo/lib/webgl/utils';
+import ManagerShaders from '../../labo/lib/webgl/managers/ManagerShaders';
 
 self.onmessage = async (e) => {
   const { type, config, id } = e.data;

@@ -1,5 +1,5 @@
+import primitive from '../../utils-3d/primitives/plane';
 import Primitive from './Primitive';
-import primitive from '../primitives/plane';
 
 export default class {
   constructor(gl) {

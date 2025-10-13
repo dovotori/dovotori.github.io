@@ -1,4 +1,4 @@
-import StateSprite from '../../../lib/webgl/core/StateSprite';
+import StateSprite from '../../../lib/utils-3d/core/StateSprite';
 import MeshSprite from '../../../lib/webgl/meshes/MeshSpriteNormalMatrix';
 
 export default class extends MeshSprite {

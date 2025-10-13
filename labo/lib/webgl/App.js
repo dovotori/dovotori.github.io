@@ -1,11 +1,11 @@
-import Canvas from './core/Canvas';
-import Loop from './core/Loop';
-import Controls from './io/Controls';
-import Keyboard from './io/Keyboard';
-import Mouse from './io/Mouse';
+import { capitalize, getEnvPath } from '../utils';
+import Canvas from '../utils-3d/core/Canvas';
+import Loop from '../utils-3d/core/Loop';
+import Controls from '../utils/io/Controls';
+import Keyboard from '../utils/io/Keyboard';
+import Mouse from '../utils/io/Mouse';
 import ManagerAssets from './managers/ManagerAssets';
 import ManagerShaders from './managers/ManagerShaders';
-import { capitalize, getEnvPath } from './utils';
 
 class App {
   constructor() {

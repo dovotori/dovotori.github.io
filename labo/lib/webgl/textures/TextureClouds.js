@@ -1,4 +1,4 @@
-import { generate2DTexture, generate3DTexture } from '../utils/clouds';
+import { generate2DTexture } from '../../utils/clouds';
 
 export default class {
   constructor(gl, width = 4, height = 4, depth = 4) {

@@ -1,9 +1,9 @@
 import earcut from 'earcut';
 import { getAbsoluteCoor } from 'Labo/lib/parseSvgPath';
-import Scene from '../lib/webgl/scenes/SceneCamera';
+import { hslToRgb } from '../lib/utils/color';
+import Mat4 from '../lib/utils/maths/Mat4';
 import Primitive from '../lib/webgl/gl/Primitive';
-import Mat4 from '../lib/webgl/maths/Mat4';
-import { hslToRgb } from '../lib/webgl/utils/color';
+import Scene from '../lib/webgl/scenes/SceneCamera';
 
 const pathLogo =
   'm-10-20-2 2 8 12-18 18v5l7 7v-10l5-5 5 5h10l5-5 5 5v10l7-7v-5l-18-18 8-12-2-2-10 10z';

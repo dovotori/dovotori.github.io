@@ -1,10 +1,10 @@
-import Scene from '../lib/webgl/scenes/SceneLampe';
-import Screen from '../lib/webgl/gl/Screen';
+import { getIndices, getPoints } from '../lib/utils-3d/primitives/grid';
+import Mat4 from '../lib/utils/maths/Mat4';
+import Target from '../lib/utils/maths/Target';
+import Vec3 from '../lib/utils/maths/Vec3';
 import Primitive from '../lib/webgl/gl/Primitive';
-import Mat4 from '../lib/webgl/maths/Mat4';
-import Vec3 from '../lib/webgl/maths/Vec3';
-import { getPoints, getIndices } from '../lib/webgl/primitives/grid';
-import Target from '../lib/webgl/maths/Target';
+import Screen from '../lib/webgl/gl/Screen';
+import Scene from '../lib/webgl/scenes/SceneLampe';
 
 const nsin = (val) => Math.sin(val) * 0.5 + 0.5;
 

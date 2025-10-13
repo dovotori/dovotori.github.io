@@ -1,7 +1,7 @@
+import { lerp } from '../../utils/easing';
+import Vec3 from '../../utils/maths/Vec3';
+import { random } from '../../utils/numbers';
 import Blur from './Blur';
-import Vec3 from '../maths/Vec3';
-import { lerp } from '../utils/easing';
-import { random } from '../utils/numbers';
 
 export default class extends Blur {
   constructor(gl, config, programs = {}) {

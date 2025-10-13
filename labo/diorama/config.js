@@ -1,4 +1,4 @@
-import { UP, DOWN, LEFT, RIGHT } from '../lib/webgl/constants/keyboard';
+import { DOWN, LEFT, RIGHT, UP } from '../lib/utils/constants/keyboard';
 
 export default {
   slug: 'diorama',

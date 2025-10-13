@@ -1,5 +1,5 @@
+import CollisionBox from '../../../lib/utils-3d/collisions/CollisionBox';
 import Perso from './Perso';
-import CollisionBox from '../../../lib/webgl/collisions/CollisionBox';
 
 export default class extends Perso {
   constructor({ constants, sprites, viewBox }) {

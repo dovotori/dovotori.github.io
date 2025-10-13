@@ -1,13 +1,13 @@
-import Camera from '../lib/webgl/cameras/Camera';
-import Objectif from '../lib/webgl/cameras/Objectif';
-import DualQuaternion from '../lib/webgl/maths/DualQuaternion';
-import Mat4 from '../lib/webgl/maths/Mat4';
-import Vec3 from '../lib/webgl/maths/Vec3';
-import Vec4 from '../lib/webgl/maths/Vec4';
-import { intersectRayWithPlane } from '../lib/webgl/maths/intersection';
-import { DebugTexture, GltfBindGroups, GltfPipeline, Picking, Shadow } from '../lib/webgl/webgpu';
-import WebgpuScene from '../lib/webgl/webgpu/WebgpuScene';
-// import { DebugPipeline } from '../lib/webgl/webgpu/DebugPipeline';
+import Camera from '../lib/utils-3d/cameras/Camera';
+import Objectif from '../lib/utils-3d/cameras/Objectif';
+import DualQuaternion from '../lib/utils/maths/DualQuaternion';
+import Mat4 from '../lib/utils/maths/Mat4';
+import Vec3 from '../lib/utils/maths/Vec3';
+import Vec4 from '../lib/utils/maths/Vec4';
+import { intersectRayWithPlane } from '../lib/utils/maths/intersection';
+import { DebugTexture, GltfBindGroups, GltfPipeline, Picking, Shadow } from '../lib/webgpu';
+import WebgpuScene from '../lib/webgpu/WebgpuScene';
+// import { DebugPipeline } from '../lib/webgpu/DebugPipeline';
 import { GltfDb } from './GltfDb';
 
 // to see the color change f_picking with alpha to 1

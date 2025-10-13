@@ -1,6 +1,6 @@
+import Vec3 from '../../../lib/utils/maths/Vec3';
+import { mapFromRange } from '../../../lib/utils/numbers';
 import Behavior from './BehaviorGravity';
-import { mapFromRange } from '../../../lib/webgl/utils/numbers';
-import Vec3 from '../../../lib/webgl/maths/Vec3';
 
 export default class extends Behavior {
   constructor(constants, updateState, tileSize) {

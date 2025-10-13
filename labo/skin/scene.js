@@ -1,5 +1,5 @@
+import Mat4 from '../lib/utils/maths/Mat4';
 import Scene from '../lib/webgl/scenes/SceneLampe';
-import Mat4 from '../lib/webgl/maths/Mat4';
 
 export default class extends Scene {
   setup() {

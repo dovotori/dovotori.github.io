@@ -1,6 +1,6 @@
+import Mat4 from '../../utils/maths/Mat4';
+import Quaternion from '../../utils/maths/Quaternion';
 import ObjetGltfPrimitive from './ObjetGltfPrimitive';
-import Quaternion from '../maths/Quaternion';
-import Mat4 from '../maths/Mat4';
 
 class ObjetGltf {
   constructor(gl, data) {

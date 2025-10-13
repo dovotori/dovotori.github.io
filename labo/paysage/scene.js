@@ -1,12 +1,12 @@
-import Scene from '../lib/webgl/scenes/SceneLampe';
-import Mat4 from '../lib/webgl/maths/Mat4';
-import Spring from '../lib/webgl/maths/Spring';
-import Target from '../lib/webgl/maths/Target';
-import DualQuaternion from '../lib/webgl/maths/DualQuaternion';
-import { degToRad } from '../lib/webgl/utils/numbers';
+import primitive from '../lib/utils-3d/primitives/plane';
+import DualQuaternion from '../lib/utils/maths/DualQuaternion';
+import Mat4 from '../lib/utils/maths/Mat4';
+import Spring from '../lib/utils/maths/Spring';
+import Target from '../lib/utils/maths/Target';
+import { degToRad } from '../lib/utils/numbers';
 import Primitive from '../lib/webgl/gl/Primitive';
 import Buffers from '../lib/webgl/postprocess/Buffers';
-import primitive from '../lib/webgl/primitives/plane';
+import Scene from '../lib/webgl/scenes/SceneLampe';
 
 export default class extends Scene {
   constructor(gl, config) {

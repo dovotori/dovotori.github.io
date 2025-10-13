@@ -1,7 +1,7 @@
 import Scene from '../../lib/webgl/scenes/SceneLampe';
 
-import Target from '../../lib/webgl/maths/Target';
-import Collisions from '../../lib/webgl/collisions/Collisions';
+import Collisions from '../../lib/utils-3d/collisions/Collisions';
+import Target from '../../lib/utils/maths/Target';
 
 import Background from './game/Background';
 import Tilemap from './game/Tilemap';

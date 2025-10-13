@@ -1,6 +1,6 @@
+import primitive from '../../utils-3d/primitives/cube';
+import Mat4 from '../../utils/maths/Mat4';
 import Primitive from '../gl/Primitive';
-import Mat4 from '../maths/Mat4';
-import primitive from '../primitives/cube';
 
 export default class {
   constructor(gl) {

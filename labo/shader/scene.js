@@ -1,16 +1,16 @@
 import Delaunay from '../lib/delaunay';
+import LinesTrail from '../lib/utils-3d/lines/LinesTrail';
+import Grid from '../lib/utils-3d/particules/Grid';
+import Migration from '../lib/utils-3d/particules/Migration';
+import { getIndices, getPoints } from '../lib/utils-3d/primitives/grid';
+import { getGridPerlinPoints, getGridPoints } from '../lib/utils-3d/primitives/particules';
+import Mat4 from '../lib/utils/maths/Mat4';
+import Vec3 from '../lib/utils/maths/Vec3';
+import { mapFromRange } from '../lib/utils/numbers';
+import GpuParticules from '../lib/webgl/gl/GpuParticules';
 import Primitive from '../lib/webgl/gl/Primitive';
 import Screen from '../lib/webgl/gl/Screen';
-import LinesTrail from '../lib/webgl/lines/LinesTrail';
-import Mat4 from '../lib/webgl/maths/Mat4';
-import Vec3 from '../lib/webgl/maths/Vec3';
-import GpuParticules from '../lib/webgl/particules/GpuParticules';
-import Grid from '../lib/webgl/particules/Grid';
-import Migration from '../lib/webgl/particules/Migration';
-import { getIndices, getPoints } from '../lib/webgl/primitives/grid';
-import { getGridPerlinPoints, getGridPoints } from '../lib/webgl/primitives/particules';
 import Scene from '../lib/webgl/scenes/SceneCamera';
-import { mapFromRange } from '../lib/webgl/utils/numbers';
 
 const nsin = (val) => Math.sin(val) * 0.5 + 0.5;
 
