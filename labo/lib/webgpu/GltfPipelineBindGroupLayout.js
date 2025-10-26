@@ -1,6 +1,7 @@
 // utils to generate pipeline bind group layout
 // maybe this should be written directly near the shader because it is very link to the shader code
 
+// max is 4
 export const GltfBindGroups = {
   CAMERA: 0,
   TRANSFORM: 1,
@@ -9,43 +10,61 @@ export const GltfBindGroups = {
 };
 
 // generate from https://webgpufundamentals.org/webgpu/lessons/resources/wgsl-offset-computer.html
-export const buildBindGroupLayouts = (device, withShadow = false) => {
+export const buildBindGroupLayouts = (device, { withShadow = false, withSkin = false }) => {
+  const cameraEntries = [
+    {
+      binding: 0,
+      visibility: GPUShaderStage.VERTEX,
+      buffer: {
+        type: 'uniform',
+        hasDynamicOffset: false,
+        minBindingSize: 208,
+      },
+    },
+  ];
+
+  if (withShadow) {
+    cameraEntries.push({
+      binding: 1,
+      visibility: GPUShaderStage.VERTEX,
+      buffer: {
+        type: 'uniform',
+        hasDynamicOffset: false,
+      },
+    });
+  }
+
   const cameraUniformBindGroupLayout = device.createBindGroupLayout({
-    label: "Camera Uniform Bind Group Layout",
-    entries: [
-      {
-        binding: 0,
-        visibility: GPUShaderStage.VERTEX,
-        buffer: {
-          type: "uniform",
-          hasDynamicOffset: false,
-          minBindingSize: 208,
-        },
-      },
-      {
-        binding: 1,
-        visibility: GPUShaderStage.VERTEX,
-        buffer: {
-          type: "uniform",
-          hasDynamicOffset: false,
-        },
-      },
-    ],
+    label: 'Camera Uniform Bind Group Layout',
+    entries: cameraEntries,
   });
 
-  const transformUniformBindGroupLayout = device.createBindGroupLayout({
-    label: "Transform Uniform Bind Group Layout",
-    entries: [
-      {
-        binding: 0,
-        visibility: GPUShaderStage.VERTEX,
-        buffer: {
-          type: "uniform",
-          hasDynamicOffset: false,
-          // minBindingSize: 112,
-        },
+  const transformEntries = [
+    {
+      binding: 0,
+      visibility: GPUShaderStage.VERTEX,
+      buffer: {
+        type: 'uniform',
+        hasDynamicOffset: false,
+        // minBindingSize: 112,
       },
-    ],
+    },
+  ];
+
+  if (withSkin) {
+    transformEntries.push({
+      binding: 1,
+      visibility: GPUShaderStage.VERTEX,
+      buffer: {
+        type: 'uniform',
+        hasDynamicOffset: false,
+      },
+    });
+  }
+
+  const transformUniformBindGroupLayout = device.createBindGroupLayout({
+    label: 'Transform Uniform Bind Group Layout',
+    entries: transformEntries,
   });
 
   const materialUniformBindGroupEntries = [
@@ -53,7 +72,7 @@ export const buildBindGroupLayouts = (device, withShadow = false) => {
       binding: 0,
       visibility: GPUShaderStage.FRAGMENT,
       buffer: {
-        type: "uniform",
+        type: 'uniform',
         hasDynamicOffset: false,
         minBindingSize: 48,
       },
@@ -76,36 +95,36 @@ export const buildBindGroupLayouts = (device, withShadow = false) => {
           binding: 3,
           visibility: GPUShaderStage.FRAGMENT,
           buffer: {
-            type: "uniform", // posLight
+            type: 'uniform', // posLight
           },
         },
         {
           binding: 4,
           visibility: GPUShaderStage.FRAGMENT,
-          sampler: { type: "comparison" }, // Comparison sampler
+          sampler: { type: 'comparison' }, // Comparison sampler
         },
         {
           binding: 5,
           visibility: GPUShaderStage.FRAGMENT,
-          texture: { sampleType: "depth", viewDimension: "2d" }, // Depth texture
+          texture: { sampleType: 'depth', viewDimension: '2d' }, // Depth texture
         },
       ],
     );
   }
 
   const materialUniformBindGroupLayout = device.createBindGroupLayout({
-    label: "Material Uniform Bind Group Layout",
+    label: 'Material Uniform Bind Group Layout',
     entries: materialUniformBindGroupEntries,
   });
 
   const lightsStorageBindGroupLayout = device.createBindGroupLayout({
-    label: "Lights Storage Bind Group Layout",
+    label: 'Lights Storage Bind Group Layout',
     entries: [
       {
         binding: 0,
         visibility: GPUShaderStage.FRAGMENT,
         buffer: {
-          type: "read-only-storage",
+          type: 'read-only-storage',
           hasDynamicOffset: false,
           minBindingSize: 0,
         },
@@ -123,13 +142,13 @@ export const buildBindGroupLayouts = (device, withShadow = false) => {
 
 export const buildShadowBindGroupLayouts = (device) => {
   const cameraUniformBindGroupLayout = device.createBindGroupLayout({
-    label: "Shadow Camera Uniform Bind Group Layout",
+    label: 'Shadow Camera Uniform Bind Group Layout',
     entries: [
       {
         binding: 0,
         visibility: GPUShaderStage.VERTEX | GPUShaderStage.FRAGMENT,
         buffer: {
-          type: "uniform",
+          type: 'uniform',
           hasDynamicOffset: false,
           minBindingSize: 208,
         },
@@ -138,13 +157,13 @@ export const buildShadowBindGroupLayouts = (device) => {
   });
 
   const transformUniformBindGroupLayout = device.createBindGroupLayout({
-    label: "Shadow Transform Uniform Bind Group Layout",
+    label: 'Shadow Transform Uniform Bind Group Layout',
     entries: [
       {
         binding: 0,
         visibility: GPUShaderStage.VERTEX,
         buffer: {
-          type: "uniform",
+          type: 'uniform',
           hasDynamicOffset: false,
           minBindingSize: 112,
         },
@@ -156,13 +175,13 @@ export const buildShadowBindGroupLayouts = (device) => {
 
 export const buildPickingBindGroupLayouts = (device) => {
   const cameraUniformBindGroupLayout = device.createBindGroupLayout({
-    label: "Picking Camera Uniform Bind Group Layout",
+    label: 'Picking Camera Uniform Bind Group Layout',
     entries: [
       {
         binding: 0,
         visibility: GPUShaderStage.VERTEX | GPUShaderStage.FRAGMENT,
         buffer: {
-          type: "uniform",
+          type: 'uniform',
           hasDynamicOffset: false,
           minBindingSize: 208,
         },
@@ -171,13 +190,13 @@ export const buildPickingBindGroupLayouts = (device) => {
   });
 
   const transformUniformBindGroupLayout = device.createBindGroupLayout({
-    label: "Picking Transform Uniform Bind Group Layout",
+    label: 'Picking Transform Uniform Bind Group Layout',
     entries: [
       {
         binding: 0,
         visibility: GPUShaderStage.VERTEX,
         buffer: {
-          type: "uniform",
+          type: 'uniform',
           hasDynamicOffset: false,
           minBindingSize: 128,
         },

@@ -1,7 +1,11 @@
-import Quaternion from "./Quaternion";
-import Mat4 from "./Mat4";
+import Mat4 from './Mat4';
+import Quaternion from './Quaternion';
 
 class Transform {
+  constructor() {
+    this.name = 'Transform';
+  }
+
   static get = (node) => {
     const localMatrix = Transform.handleLocalTransform(node);
     return localMatrix;

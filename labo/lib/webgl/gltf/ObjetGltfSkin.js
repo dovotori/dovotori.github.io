@@ -1,12 +1,12 @@
-import ObjetGltfAnim from "./ObjetGltfAnim";
 // import Bone from './Bone';
 // import Bones from './Bones';
-import Mat4 from "../../utils/maths/Mat4";
+import Mat4 from '../../utils/maths/Mat4';
+import ObjetGltfAnim from './ObjetGltfAnim';
 
 class ObjectGltfSkin extends ObjetGltfAnim {
   constructor(gl, data, forceStep = null) {
     super(gl, data);
-    const { nodes, skins } = data;
+    const { skins } = data;
     if (skins) {
       skins.forEach(({ joints }) => {
         this.addJointsAnimations(joints, forceStep);
@@ -59,7 +59,7 @@ class ObjectGltfSkin extends ObjetGltfAnim {
   setProgramJoints = (joints, program, parentMatrix, depth = 0) => {
     // console.log('--------')
     joints.forEach((joint) => {
-      const { invMatrix, children, name } = joint;
+      const { invMatrix, children } = joint;
 
       // if (['neutral_bone', 'Bras.L', 'AvBras.L', 'Main.L'].indexOf(name) !== -1) return;
       // if (['neutral_bone', 'Cou', 'Tete'].indexOf(name) !== -1) return;

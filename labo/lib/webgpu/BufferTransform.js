@@ -1,22 +1,36 @@
-import Transform from "../utils/maths/Transform";
+import Transform from '../utils/maths/Transform';
 
 class BufferTransform {
-  static setup(device, layout, bufferData, debugName) {
+  constructor() {
+    this.name = 'BufferTransform';
+  }
+
+  static setup(device, layout, bufferData, debugName, bufferSkin) {
     const buffer = BufferTransform.setupOne(device, bufferData, debugName);
+
+    const entries = [
+      {
+        binding: 0,
+        resource: { buffer },
+      },
+    ];
+
+    if (bufferSkin) {
+      entries.push({
+        binding: 1,
+        resource: { buffer: bufferSkin },
+      });
+    }
+
     return device.createBindGroup({
-      label: "NodeTransformBindGroup",
+      label: 'NodeTransformBindGroup',
       layout,
-      entries: [
-        {
-          binding: 0,
-          resource: { buffer },
-        },
-      ],
+      entries,
     });
   }
 
   // https://webgpufundamentals.org/webgpu/lessons/webgpu-memory-layout.html
-  static setupOne(device, bufferData, debugName) {
+  static setupOne(device, bufferData, _debugName) {
     const { transformMatrix, pickingColor } = bufferData;
 
     // copy paste wgsl struct here to get the mapping

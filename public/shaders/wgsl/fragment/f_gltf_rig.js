@@ -28,8 +28,7 @@ struct FragInput {
   @location(3) camera_position: vec3f,
 };
 
-@fragment
-fn f_main(in: FragInput) -> @location(0) vec4f {
+@fragment fn f_main(in: FragInput) -> @location(0) vec4f {
   var color = material.baseColorFactor;
 
   var baseColorTex = textureSample(baseColorTexture, baseColorSampler, in.texture);

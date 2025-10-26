@@ -1,3 +1,5 @@
+import { getBufferMinSize } from './utils';
+
 class BufferGltf {
   constructor() {
     this.vertex = null;
@@ -8,8 +10,7 @@ class BufferGltf {
   }
 
   setup(device, primitive) {
-    const { arrayStride, attributes, bufferVertex, bufferIndex, indexCount } =
-      primitive;
+    const { arrayStride, attributes, bufferVertex, bufferIndex, indexCount } = primitive;
 
     this.indexCount = indexCount;
 
@@ -20,31 +21,26 @@ class BufferGltf {
     */
 
     this.vertex = device.createBuffer({
-      label: "vertex buffer",
+      label: 'vertex buffer',
       // size: bufferVertex.byteLength,
-      size: Math.ceil(bufferVertex.byteLength / 4) * 4,
+      size: getBufferMinSize(bufferVertex.byteLength),
       mappedAtCreation: true,
       usage: window.GPUBufferUsage.VERTEX | window.GPUBufferUsage.COPY_DST,
     });
 
     const mappedBufferArray = new Float32Array(this.vertex.getMappedRange()); // position vec3 / normal vec3 / tex v2
-    mappedBufferArray.set(
-      new Float32Array(bufferVertex, 0, this.vertex.byteLength),
-    );
+    mappedBufferArray.set(new Float32Array(bufferVertex, 0, this.vertex.byteLength));
     this.vertex.unmap();
 
     this.indexes = device.createBuffer({
-      label: "index buffer",
-      // size: bufferIndex.byteLength,
-      size: Math.ceil(bufferIndex.byteLength / 4) * 4,
+      label: 'index buffer',
+      size: getBufferMinSize(bufferIndex.byteLength),
       mappedAtCreation: true,
       usage: window.GPUBufferUsage.INDEX | window.GPUBufferUsage.COPY_DST,
     });
 
     const mappedBufferArray2 = new Uint16Array(this.indexes.getMappedRange());
-    mappedBufferArray2.set(
-      new Uint16Array(bufferIndex, 0, this.indexes.byteLength),
-    );
+    mappedBufferArray2.set(new Uint16Array(bufferIndex, 0, this.indexes.byteLength));
     this.indexes.unmap();
 
     this.layout = {
@@ -55,14 +51,12 @@ class BufferGltf {
 
   setupFaceColorPick = (device, data) => {
     this.faceColor = device.createBuffer({
-      label: "face color buffer",
+      label: 'face color buffer',
       size: Float32Array.BYTES_PER_ELEMENT * data.length,
       mappedAtCreation: true,
       usage: window.GPUBufferUsage.VERTEX | window.GPUBufferUsage.COPY_DST,
     });
-    const mappedBufferArray3 = new Float32Array(
-      this.faceColor.getMappedRange(),
-    ); // color float
+    const mappedBufferArray3 = new Float32Array(this.faceColor.getMappedRange()); // color float
     mappedBufferArray3.set(data);
     this.faceColor.unmap();
   };
@@ -88,19 +82,14 @@ class BufferGltf {
     const buff = new Float32Array(bufferData);
 
     this.faceBuffer = device.createBuffer({
-      label: "vertex buffer per face",
-      // size: bufferVertex.byteLength,
-      size: Math.ceil(buff.byteLength / 4) * 4,
+      label: 'vertex buffer per face',
+      size: getBufferMinSize(buff.byteLength),
       mappedAtCreation: true,
       usage: window.GPUBufferUsage.VERTEX | window.GPUBufferUsage.COPY_DST,
     });
 
-    const mappedBufferArray = new Float32Array(
-      this.faceBuffer.getMappedRange(),
-    ); // position vec3 / normal vec3 / tex v2 / face color f
-    mappedBufferArray.set(
-      new Float32Array(buff, 0, this.faceBuffer.byteLength),
-    );
+    const mappedBufferArray = new Float32Array(this.faceBuffer.getMappedRange()); // position vec3 / normal vec3 / tex v2 / face color f
+    mappedBufferArray.set(new Float32Array(buff, 0, this.faceBuffer.byteLength));
     this.faceBuffer.unmap();
 
     this.faceDrawCount = indexCount;

@@ -5,18 +5,15 @@ struct CameraUniform {
   model: mat4x4<f32>,
   position: vec3<f32>,
 };
-@group(0) @binding(0)
-var<uniform> camera: CameraUniform;
-@group(0) @binding(1)
-var<uniform> shadowProjection: mat4x4<f32>;
+@group(0) @binding(0) var<uniform> camera: CameraUniform;
+@group(0) @binding(1) var<uniform> shadowProjection: mat4x4<f32>;
 
 struct TransformUniform {
   model: mat4x4<f32>,
   normal_matrix: mat3x3<f32>,
   picking_color: vec4<f32>,
 };
-@group(1) @binding(0)
-var<uniform> transform: TransformUniform;
+@group(1) @binding(0) var<uniform> transform: TransformUniform;
 
 struct VertexInput {
   @location(0) position: vec3<f32>,

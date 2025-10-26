@@ -1,16 +1,14 @@
-import Animation from "../utils/maths/Animation";
-import Mat4 from "../utils/maths/Mat4";
-import Transform from "../utils/maths/Transform";
-import BufferGltf from "./BufferGltf";
-import BufferMaterial from "./BufferMaterial";
-import BufferTransform from "./BufferTransform";
-import {
-  buildBindGroupLayouts,
-  GltfBindGroups,
-} from "./GltfPipelineBindGroupLayout";
-import { pixelToPickingColor } from "./Picking";
-import Pipeline from "./Pipeline";
-import PipelineTextures from "./PipelineTextures";
+import Animation from '../utils/maths/Animation';
+import Mat4 from '../utils/maths/Mat4';
+import Transform from '../utils/maths/Transform';
+import BufferGltf from './BufferGltf';
+import BufferMaterial from './BufferMaterial';
+import { BufferSkin } from './BufferSkin';
+import BufferTransform from './BufferTransform';
+import { buildBindGroupLayouts, GltfBindGroups } from './GltfPipelineBindGroupLayout';
+import { pixelToPickingColor } from './Picking';
+import Pipeline from './Pipeline';
+import PipelineTextures from './PipelineTextures';
 
 export class GltfPipeline {
   constructor(context, config) {
@@ -27,16 +25,10 @@ export class GltfPipeline {
     await this.db.setup();
   }
 
-  async setup(
-    gltf,
-    program,
-    canvasSize,
-    depthMapBingGroupEntries,
-    isDebug = false,
-  ) {
+  async setup(gltf, program, canvasSize, depthMapBingGroupEntries, isDebug = false) {
     const device = this.context.getDevice();
 
-    const nodes = gltf.get("nodes");
+    const nodes = gltf.get('nodes');
     this.nodes = nodes;
 
     this.matrixBuffersMaps = new Map();
@@ -47,7 +39,7 @@ export class GltfPipeline {
 
     const dataToSotore = [];
 
-    for (const [key, mesh] of gltf.get("meshes")) {
+    for (const [key, mesh] of gltf.get('meshes')) {
       const meshBuffers = [];
       const facesPerColorPicking = new Map();
 
@@ -68,9 +60,7 @@ export class GltfPipeline {
         const nbTrianglesFaces = primitive.bufferIndex.length / 3;
         const colorPerFace = [];
 
-        const indexPositionsMap = this.db
-          ? GltfPipeline.getIndiceVerticesMap(primitive)
-          : null;
+        const indexPositionsMap = this.db ? GltfPipeline.getIndiceVerticesMap(primitive) : null;
 
         for (let cFace = 0; cFace < nbTrianglesFaces; cFace++) {
           // don't compute if already exist
@@ -105,18 +95,6 @@ export class GltfPipeline {
 
         buffer.setupForFaces(device, primitive, colorPerFace);
 
-        if (mesh.name === "billboard") {
-          console.log("+++", nbTrianglesFaces, primitive);
-        }
-
-        if (key === 12) {
-          // billboard poteau
-          console.log({
-            nbTrianglesFaces,
-            colorPerFace,
-          });
-        }
-
         // the problem is that for a plane with 2 triangles (4 vertices),
         // i expected to pass 6 times into the vertex shader (one per index) but it pass only one per vertice so 4
         buffer.setupFaceColorPick(device, [0, 0, 0, 0]);
@@ -135,18 +113,15 @@ export class GltfPipeline {
 
     let buffersLayout = [this.firstBufferLayout];
 
-    console.log({ firstBuffer: this.firstBufferLayout });
-
     if (isDebug) {
       // buffer faces
       buffersLayout = [
         {
-          arrayStride:
-            this.firstBufferLayout.arrayStride + Float32Array.BYTES_PER_ELEMENT,
+          arrayStride: this.firstBufferLayout.arrayStride + Float32Array.BYTES_PER_ELEMENT,
           attributes: [
             ...this.firstBufferLayout.attributes,
             {
-              format: "float32",
+              format: 'float32',
               offset: 32,
               shaderLocation: 3,
             },
@@ -155,15 +130,15 @@ export class GltfPipeline {
       ];
     }
 
-    this.bindGroupLayouts = buildBindGroupLayouts(
-      device,
-      depthMapBingGroupEntries !== undefined,
-    );
+    this.bindGroupLayouts = buildBindGroupLayouts(device, {
+      withSkin: !!gltf.get('skins'),
+      withShadow: depthMapBingGroupEntries !== undefined,
+    });
 
     await this.pipeline.setup(
       device,
       program,
-      gltf.get("pipeline"),
+      gltf.get('pipeline'),
       buffersLayout,
       this.context.getCanvasFormat(),
       [
@@ -177,19 +152,19 @@ export class GltfPipeline {
 
     // animations
     // TODO should put this outside
-    this.animations = new Animation(gltf.get("animations"), nodes);
+    this.animations = new Animation(gltf.get('animations'), nodes);
 
     // for material
     this.materialBuffer = new BufferMaterial();
     await this.materialBuffer.setup(
       device,
       this.getBindGroupLayout(GltfBindGroups.MATERIAL),
-      gltf.get("materials"),
-      gltf.get("textures"),
+      gltf.get('materials'),
+      gltf.get('textures'),
       depthMapBingGroupEntries,
     );
 
-    this.buildDrawNodes(nodes, meshBuffersMaps); // TODO should put node and drawNodes outside as animation to call renderModel on other pipeline
+    this.buildDrawNodes(device, nodes, meshBuffersMaps, gltf.get('skins')); // TODO should put node and drawNodes outside as animation to call renderModel on other pipeline
     this.transformBinGroups = this.buildTransformBindGroups(
       this.getBindGroupLayout(GltfBindGroups.TRANSFORM),
     );
@@ -211,8 +186,7 @@ export class GltfPipeline {
 
   static getIndiceVerticesMap(primitive) {
     const indexPositionsMap = new Map();
-    const nbFloatStride =
-      primitive.arrayStride / Float32Array.BYTES_PER_ELEMENT;
+    const nbFloatStride = primitive.arrayStride / Float32Array.BYTES_PER_ELEMENT;
     const nbIndex = primitive.bufferVertex.length / nbFloatStride;
 
     for (let i = 0; i < nbIndex; i++) {
@@ -229,7 +203,7 @@ export class GltfPipeline {
   static getAbsoluteMatrix(key, nodes) {
     const node = nodes.get(key);
     if (!node) {
-      throw Error("node not found in getAbsoluteMatrix");
+      throw Error('node not found in getAbsoluteMatrix');
     }
     if (node.parent) {
       const matrix = Transform.get(node);
@@ -246,7 +220,7 @@ export class GltfPipeline {
   getAbsoluteAnimatedMatrix(key) {
     const node = this.nodes.get(key);
     if (!node) {
-      throw Error("node not found in getAbsoluteMatrix");
+      throw Error('node not found in getAbsoluteMatrix');
     }
     if (node.parent) {
       const matrix = Transform.get(node);
@@ -276,7 +250,7 @@ export class GltfPipeline {
     return node.mesh;
   }
 
-  buildDrawNodes(nodes, meshBuffersMaps) {
+  buildDrawNodes(device, nodes, meshBuffersMaps, skins) {
     this.nodesToDraw = new Map();
     this.nodesPerColorPicking = new Map();
 
@@ -302,18 +276,33 @@ export class GltfPipeline {
       // MESH COLOR
       const pickingColor = pixelToPickingColor(index);
 
+      // SKIN
+      let skinBuffer = null;
+      if (node.skin !== undefined) {
+        const skin = skins.get(node.skin);
+        if (skin) {
+          const { joints, inverseMatrixesAccessor } = skin;
+          skinBuffer = new BufferSkin();
+          // skinBuffer.setup(device, inverseMatrixesAccessor);
+          skinBuffer.setupJointsMatrices(device, joints);
+        } else {
+          console.warn(`skin ${node.skin} not found for node ${key}`);
+        }
+      }
+
       this.nodesToDraw.set(key, {
         name: node.name,
         buffers,
         matrix,
         pickingColor: [Number.parseFloat(pickingColor), 0, 0, 1], // TODO can be only a float
         hasAnimation,
+        skinBuffer: skinBuffer?.get(),
       });
 
       this.nodesPerColorPicking.set(pickingColor, key);
       index++;
     }
-    console.log("drawNodes", this.nodesToDraw);
+    console.log('drawNodes', this.nodesToDraw);
   }
 
   buildTransformBindGroups(layoutTransform) {
@@ -321,10 +310,16 @@ export class GltfPipeline {
     const groups = new Map();
     for (const [key, node] of this.nodesToDraw) {
       const transformBindGroup = !node.hasAnimation
-        ? BufferTransform.setup(device, layoutTransform, {
-            transformMatrix: node.matrix,
-            pickingColor: node.pickingColor, // TODO should only send this to picking pipeline
-          })
+        ? BufferTransform.setup(
+            device,
+            layoutTransform,
+            {
+              transformMatrix: node.matrix,
+              pickingColor: node.pickingColor, // TODO should only send this to picking pipeline
+            },
+            node.name,
+            node.skinBuffer,
+          )
         : undefined;
 
       groups.set(key, transformBindGroup);
@@ -364,6 +359,7 @@ export class GltfPipeline {
               pickingColor: isDebug ? node.pickingColor : undefined,
             },
             node.name,
+            node.skinBuffer,
           );
         }
 
@@ -372,14 +368,16 @@ export class GltfPipeline {
         // MAT
         pass.setBindGroup(
           GltfBindGroups.MATERIAL,
-          this.materialBuffer.getBindGroup(
-            this.materialIndexes.get(buffer) || 0,
-          ),
+          this.materialBuffer.getBindGroup(this.materialIndexes.get(buffer) || 0),
         );
+
+        // pass.setBindGroup(
+        //   GltfBindGroups.JOINT_MAT,
+        // );
 
         if (!isDebug) {
           pass.setVertexBuffer(0, buffer.getVertexBuffer());
-          pass.setIndexBuffer(buffer.getIndexBuffer(), "uint16");
+          pass.setIndexBuffer(buffer.getIndexBuffer(), 'uint16');
           pass.drawIndexed(buffer.getIndexCount(), 1, 0);
         } else {
           pass.setVertexBuffer(0, buffer.getFaceBuffer());
@@ -390,11 +388,7 @@ export class GltfPipeline {
   };
 
   resize = (size) => {
-    this.textures.resize(
-      this.context.getDevice(),
-      this.context.getCanvasFormat(),
-      size,
-    );
+    this.textures.resize(this.context.getDevice(), this.context.getCanvasFormat(), size);
   };
 
   getBindGroupLayout = (bindGroupType) => this.bindGroupLayouts[bindGroupType];
@@ -428,9 +422,7 @@ export class GltfPipeline {
       if (faceColors) {
         const faceIndex = faceColors.get(color[1]);
         console.log({ faceIndex }, color, faceColors);
-        const faceData = await this.db.getMeshFaceData(
-          `${node.mesh}-${faceIndex}`,
-        );
+        const faceData = await this.db.getMeshFaceData(`${node.mesh}-${faceIndex}`);
         if (faceData) {
           positions = faceData.vertices;
         }

@@ -1,9 +1,9 @@
 import {
   base64ToArrayBuffer,
   dataViewToFloat32,
-  dataViewToUint16,
   dataViewToUint8,
-} from "../../utils/base64";
+  dataViewToUint16,
+} from '../../utils/base64';
 
 const getConvertMethod = (componentType) => {
   switch (componentType) {
@@ -41,46 +41,46 @@ export const getArrayType = (componentType) => {
 
 export const getGlslProgramLocationsMappedName = (gltfName) => {
   switch (gltfName) {
-    case "position":
-      return "position";
-    case "normal":
-      return "normale";
-    case "texcoord_0":
-      return "texture";
-    case "baseColorFactor":
-    case "color_0":
-      return "color";
-    case "metallicFactor":
-      return "metal";
-    case "roughnessFactor":
-      return "rough";
-    case "joints_0":
-      return "joint";
-    case "weights_0":
-      return "weight";
-    case "tangent":
-      return "tangent";
+    case 'position':
+      return 'position';
+    case 'normal':
+      return 'normale';
+    case 'texcoord_0':
+      return 'texture';
+    case 'baseColorFactor':
+    case 'color_0':
+      return 'color';
+    case 'metallicFactor':
+      return 'metal';
+    case 'roughnessFactor':
+      return 'rough';
+    case 'joints_0':
+      return 'joint';
+    case 'weights_0':
+      return 'weight';
+    case 'tangent':
+      return 'tangent';
     default:
-      console.warn("unknown gltf primitive attribute", gltfName);
+      console.warn('unknown gltf primitive attribute', gltfName);
       return undefined;
   }
 };
 
 export const getNumComponentPerType = (type) => {
   switch (type) {
-    case "VEC2":
+    case 'VEC2':
       return 2;
-    case "VEC3":
+    case 'VEC3':
       return 3;
-    case "VEC4":
+    case 'VEC4':
       return 4;
-    case "MAT2":
+    case 'MAT2':
       return 4;
-    case "MAT3":
+    case 'MAT3':
       return 9;
-    case "MAT4":
+    case 'MAT4':
       return 16;
-    case "SCALAR":
+    case 'SCALAR':
       return 1;
     default:
       return 0;
@@ -109,27 +109,15 @@ const getBufferDataFromAccessor = (buffers, bufferViews, accessor) => {
   const numElement = getNumComponentPerType(type);
   const length = numElement * count;
   const converterMethod = getConvertMethod(componentType);
-  return converterMethod
-    ? converterMethod(dataView, length, count, numElement, byteStride)
-    : null;
+  return converterMethod ? converterMethod(dataView, length, count, numElement, byteStride) : null;
 };
 
 export const getBufferDataFromLayout = (buffers, layout) => {
-  const {
-    buffer,
-    componentType,
-    count,
-    numElement,
-    length,
-    byteOffset,
-    byteLength,
-    byteStride,
-  } = layout;
+  const { buffer, componentType, count, numElement, length, byteOffset, byteLength, byteStride } =
+    layout;
   const dataView = new DataView(buffers[buffer], byteOffset, byteLength);
   const converterMethod = getConvertMethod(componentType);
-  return converterMethod
-    ? converterMethod(dataView, length, count, numElement, byteStride)
-    : null;
+  return converterMethod ? converterMethod(dataView, length, count, numElement, byteStride) : null;
 };
 
 export const getBufferDataFromTexture = (buffers, bufferView) => {
@@ -139,26 +127,16 @@ export const getBufferDataFromTexture = (buffers, bufferView) => {
     byteOffset: bufferViewByteOffset = 0,
     byteStride,
   } = bufferView;
-  const dataView = new DataView(
-    buffers[bufferIndex],
-    bufferViewByteOffset,
-    bufferViewByteLength,
-  );
+  const dataView = new DataView(buffers[bufferIndex], bufferViewByteOffset, bufferViewByteLength);
   const numElement = 4; // RBGA
   const length = bufferViewByteLength / Uint8Array.BYTES_PER_ELEMENT;
   const count = length / numElement;
   const componentType = 5121; // uint8
   const converterMethod = getConvertMethod(componentType);
-  return converterMethod
-    ? converterMethod(dataView, length, count, numElement, byteStride)
-    : null;
+  return converterMethod ? converterMethod(dataView, length, count, numElement, byteStride) : null;
 };
 
-export const getMixedInterleavedBufferData = (
-  buffers,
-  bufferViews,
-  accessors,
-) => {
+export const getMixedInterleavedBufferData = (buffers, bufferViews, accessors) => {
   const arraysByComponentType = {};
   const bv = bufferViews[accessors[0].bufferView];
   const buffer = buffers[bv.buffer];
@@ -182,8 +160,8 @@ export const getMixedInterleavedBufferData = (
     });
   }
   return {
-    vertex: new Float32Array(arraysByComponentType["5126"]),
-    index: new Uint16Array(arraysByComponentType["5123"]),
+    vertex: new Float32Array(arraysByComponentType['5126']),
+    index: new Uint16Array(arraysByComponentType['5123']),
   };
 };
 
@@ -229,7 +207,7 @@ export function parseGLB(arrayBuffer) {
   const version = dataView.getUint32(4, true);
   const length = dataView.getUint32(8, true);
 
-  if (magic !== 0x46546c67) throw new Error("Invalid GLB magic string");
+  if (magic !== 0x46546c67) throw new Error('Invalid GLB magic string');
 
   // // First chunk (JSON)
   // const jsonChunkLength = dataView.getUint32(12, true);
@@ -277,3 +255,28 @@ export function parseGLB(arrayBuffer) {
 
   return { gltf, version, length };
 }
+
+const processJointChildren = (children, joints) =>
+  children.map((childId) => {
+    const nodeIndex = joints.findIndex((node) => node.id === childId);
+    const newJoint = joints.splice(nodeIndex, 1)[0];
+    if (newJoint.children) {
+      newJoint.children = processChildren(newJoint.children, joints);
+    }
+    const { id, ...rest } = newJoint;
+    return rest;
+  });
+
+export const getHierarchyJoints = (jointNodes) => {
+  const tmpArray = jointNodes.slice();
+  const hierarchyJoints = [];
+  while (tmpArray.length !== 0) {
+    const currentJoint = tmpArray.shift();
+    if (currentJoint.children) {
+      currentJoint.children = processJointChildren(currentJoint.children, tmpArray);
+    }
+    const { id, ...rest } = currentJoint;
+    hierarchyJoints.push(rest);
+  }
+  return hierarchyJoints;
+};

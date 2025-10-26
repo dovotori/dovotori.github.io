@@ -1,20 +1,15 @@
-import Camera from "../lib/utils-3d/cameras/Camera";
-import Objectif from "../lib/utils-3d/cameras/Objectif";
-import DualQuaternion from "../lib/utils/maths/DualQuaternion";
-import Mat4 from "../lib/utils/maths/Mat4";
-import Vec3 from "../lib/utils/maths/Vec3";
-import Vec4 from "../lib/utils/maths/Vec4";
-import { intersectRayWithPlane } from "../lib/utils/maths/intersection";
-import {
-  DebugTexture,
-  GltfBindGroups,
-  GltfPipeline,
-  Picking,
-  Shadow,
-} from "../lib/webgpu";
-import WebgpuScene from "../lib/webgpu/WebgpuScene";
+import DualQuaternion from '../lib/utils/maths/DualQuaternion';
+import { intersectRayWithPlane } from '../lib/utils/maths/intersection';
+import Mat4 from '../lib/utils/maths/Mat4';
+import Vec3 from '../lib/utils/maths/Vec3';
+import Vec4 from '../lib/utils/maths/Vec4';
+import Camera from '../lib/utils-3d/cameras/Camera';
+import Objectif from '../lib/utils-3d/cameras/Objectif';
+import { DebugTexture, GltfBindGroups, GltfPipeline, Picking, Shadow } from '../lib/webgpu';
+import { BufferCamera } from '../lib/webgpu/BufferCamera';
+import WebgpuScene from '../lib/webgpu/WebgpuScene';
 // import { DebugPipeline } from '../lib/webgpu/DebugPipeline';
-import { GltfDb } from "./GltfDb";
+import { GltfDb } from './GltfDb';
 
 // to see the color change f_picking with alpha to 1
 const DEBUG_PICKING = false;
@@ -46,48 +41,8 @@ export default class Scene extends WebgpuScene {
   // should create one for each pipeline
   setupCamera(layout, withLight) {
     const device = this.context.getDevice();
-
-    const buffer = device.createBuffer({
-      size: Float32Array.BYTES_PER_ELEMENT * (16 * 3 + 4), // 4x4 matrix view + projection + model + vec3,
-      usage: window.GPUBufferUsage.UNIFORM | window.GPUBufferUsage.COPY_DST,
-    });
-
-    const entries = [
-      {
-        binding: 0,
-        resource: {
-          buffer,
-        },
-      },
-    ];
-
-    let bufferLightProj;
-    if (withLight) {
-      bufferLightProj = device.createBuffer({
-        label: "LightProjBuffer",
-        size: Float32Array.BYTES_PER_ELEMENT * 16,
-        usage: window.GPUBufferUsage.UNIFORM | window.GPUBufferUsage.COPY_DST,
-      });
-
-      entries.push({
-        binding: 1,
-        resource: {
-          buffer: bufferLightProj,
-        },
-      });
-    }
-
-    const bindGroup = device.createBindGroup({
-      label: "CameraUniforms",
-      layout,
-      entries,
-    });
-
-    return {
-      buffer,
-      bindGroup,
-      bufferLightProj,
-    };
+    const bufferCamera = new BufferCamera();
+    return bufferCamera.setup(device, layout, withLight);
   }
 
   setupLights(layout) {
@@ -96,7 +51,7 @@ export default class Scene extends WebgpuScene {
     const size = Float32Array.BYTES_PER_ELEMENT * 8 * this.config.lampes.length; // vec3 * 2 + 1
 
     const buffer = device.createBuffer({
-      label: "Light Storage Buffer",
+      label: 'Light Storage Buffer',
       size,
       usage: window.GPUBufferUsage.STORAGE | window.GPUBufferUsage.COPY_DST,
     });
@@ -117,16 +72,10 @@ export default class Scene extends WebgpuScene {
 
     const uniforms = new Float32Array(array);
     // direct setup
-    device.queue.writeBuffer(
-      buffer,
-      0,
-      uniforms.buffer,
-      uniforms.byteOffset,
-      uniforms.byteLength,
-    );
+    device.queue.writeBuffer(buffer, 0, uniforms.buffer, uniforms.byteOffset, uniforms.byteLength);
 
     const bindGroup = device.createBindGroup({
-      label: "LightsUniforms",
+      label: 'LightsUniforms',
       layout,
       entries: [
         {
@@ -170,15 +119,12 @@ export default class Scene extends WebgpuScene {
       [this.gltfPipeline.getFirstBufferLayout()],
     );
 
-    await this.gltfPipeline.setupDb(new GltfDb("gltf"));
+    await this.gltfPipeline.setupDb(new GltfDb('gltf'));
     await this.gltfPipeline.setup(
       gltf,
       program,
       this.canvasSize,
-      this.shadow.getShadowMapBindGroupEntries(
-        device,
-        this.lampe.getPosition(),
-      ),
+      this.shadow.getShadowMapBindGroupEntries(device, this.lampe.getPosition()),
       DEBUG_PICKING,
     );
     this.uniformCamera = this.setupCamera(
@@ -340,17 +286,12 @@ export default class Scene extends WebgpuScene {
 
     this.renderShadowDepthPass();
 
-    this.updateCameraUniforms(
-      this.uniformCamera.buffer,
-      this.uniformCamera.bufferLightProj,
-    );
+    this.updateCameraUniforms(this.uniformCamera.buffer, this.uniformCamera.bufferLightProj);
 
     const encoder = device.createCommandEncoder({
-      label: "GltfCommandEncoder",
+      label: 'GltfCommandEncoder',
     });
-    const pass = encoder.beginRenderPass(
-      this.gltfPipeline.getRenderPassDescriptor(),
-    );
+    const pass = encoder.beginRenderPass(this.gltfPipeline.getRenderPassDescriptor());
 
     pass.setPipeline(this.gltfPipeline.get());
     // bind group are defined in shader code ex: @group(0) @binding(0)
@@ -403,8 +344,7 @@ export default class Scene extends WebgpuScene {
       this.gltfPipeline.getAnimations(),
     );
 
-    const { node, positions, matrix } =
-      await this.gltfPipeline.getByPickColor(pickingColor);
+    const { node, positions, matrix } = await this.gltfPipeline.getByPickColor(pickingColor);
 
     const mousePosRel = {
       x: (e.pos.x / e.size.width) * 2 - 1,
@@ -431,11 +371,10 @@ export default class Scene extends WebgpuScene {
 
       const p1 = new Vec3(positions[1][0], positions[1][1], positions[1][2]);
       const p2 = new Vec3(positions[2][0], positions[2][1], positions[2][2]);
-      const normal = new Vec3(
-        positions[0][0],
-        positions[0][1],
-        positions[0][2],
-      ).computeNormal(p1, p2);
+      const normal = new Vec3(positions[0][0], positions[0][1], positions[0][2]).computeNormal(
+        p1,
+        p2,
+      );
 
       const intersectionPoint = intersectRayWithPlane(
         this.camera.getPositionVec3(),
@@ -471,16 +410,12 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
 
 async function testHeavyCompute() {
   const arrSize = 100000;
-  let data = new Float32Array(
-    Array.from({ length: arrSize }, () => Math.random()),
-  );
+  let data = new Float32Array(Array.from({ length: arrSize }, () => Math.random()));
 
   // CPU to verify
   let startTime = performance.now();
-  const checkData = data.reduce(
-    (previousValue, currentValue) => previousValue + currentValue,
-  );
-  console.log("cpu result time", performance.now() - startTime, checkData);
+  const checkData = data.reduce((previousValue, currentValue) => previousValue + currentValue);
+  console.log('cpu result time', performance.now() - startTime, checkData);
 
   // GPU run
   startTime = performance.now();
@@ -496,10 +431,7 @@ async function testHeavyCompute() {
       Math.ceil(data.length / 10) * 4,
       GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
     );
-    const bindGroup = webGPUComputer.createBindGroup([
-      dataBuffer,
-      resultBuffer,
-    ]);
+    const bindGroup = webGPUComputer.createBindGroup([dataBuffer, resultBuffer]);
 
     const readBuffer = webGPUComputer.createBuffer(
       Math.ceil(data.length / 10) * 4,
@@ -512,5 +444,5 @@ async function testHeavyCompute() {
     data = new Float32Array(readBuffer.getMappedRange());
   }
 
-  console.log("gpu result time", performance.now() - startTime, data);
+  console.log('gpu result time', performance.now() - startTime, data);
 }
