@@ -33,8 +33,8 @@ export const getArrayType = (componentType) => {
       return Int8Array;
     case 5122: // SHORT / Int16Array
       return Int16Array;
-    default:
     case 5125: // UNSIGNED_INT / Uint32Array
+    default:
       return Uint32Array;
   }
 };
@@ -260,8 +260,8 @@ const processJointChildren = (children, joints) =>
   children.map((childId) => {
     const nodeIndex = joints.findIndex((node) => node.id === childId);
     const newJoint = joints.splice(nodeIndex, 1)[0];
-    if (newJoint.children) {
-      newJoint.children = processChildren(newJoint.children, joints);
+    if (newJoint?.children) {
+      newJoint.children = processJointChildren(newJoint.children, joints);
     }
     const { id, ...rest } = newJoint;
     return rest;

@@ -3,7 +3,7 @@ export default {
   shaders: ['/wgsl/vertex/v_gltf_rig.js', '/wgsl/fragment/f_gltf_rig.js'],
   // assets: ['/gltf/paysage.gltf'],
   // assets: ['/gltf/distributedInstances.gltf'],
-  assets: ['/gltf/skin.glb'],
+  assets: ['/gltf/perso.glb'],
   // assets: ["/gltf/plane.gltf"],
   // assets: ["/gltf/head.gltf"],
   // assets: ['/gltf/headinterleaved.gltf'],
@@ -13,8 +13,8 @@ export default {
   },
   camera: {
     // perspective
-    position: { x: 0, y: 0, z: 10 },
-    target: { x: 0, y: 0, z: 0 },
+    position: { x: 0, y: 4, z: 20 },
+    target: { x: 0, y: 4, z: 0 },
     near: 1,
     far: 60,
     angle: 60,

@@ -27,7 +27,7 @@ struct VertexInput {
   @location(0) position: vec3<f32>,
   @location(1) normale: vec3<f32>,
   @location(2) texture: vec2<f32>,
-  @location(4) joint: vec4<u32>,
+  @location(4) joint: vec4<f32>,
   @location(5) weight: vec4<f32>,
   // @location(3) tangent: vec4<f32>,
   // @location(3) faceColor: f32,
@@ -46,10 +46,10 @@ struct VertexOutput {
   in: VertexInput,
 ) -> VertexOutput {
   var skinMat: mat4x4<f32> =
-    in.weight.x * jointMat.mats[in.joint.x] +
-    in.weight.y * jointMat.mats[in.joint.y] +
-    in.weight.z * jointMat.mats[in.joint.z] +
-    in.weight.w * jointMat.mats[in.joint.w];
+    in.weight.x * jointMat.mats[u32(in.joint.x)] +
+    in.weight.y * jointMat.mats[u32(in.joint.y)] +
+    in.weight.z * jointMat.mats[u32(in.joint.z)] +
+    in.weight.w * jointMat.mats[u32(in.joint.w)];
 
   var out: VertexOutput;
   var world_position: vec4<f32> = transform.model * skinMat * vec4<f32>(in.position, 1.0);

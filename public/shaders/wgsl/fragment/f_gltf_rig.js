@@ -63,7 +63,7 @@ struct FragInput {
 
   result /= vec4(f32(countLights)).xyz;
 
-  // return vec4(result, 1.0);
-  return vec4(in.debug_color.xyz, 1.0);
+  return vec4(result, 1.0);
+  // return vec4(in.debug_color.xyz, 1.0);
 }
 `;

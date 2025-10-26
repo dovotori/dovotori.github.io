@@ -390,7 +390,7 @@ class LoadGltfForWebGpu {
       const invMatrices = chunkArray(inverseMatrixesBuffer, 16);
 
       const jointNodes = joints.map((nodeIndex, i) => {
-        return { ...gltf.nodes[nodeIndex], invMatrix: invMatrices[i], nodeIndex };
+        return { ...gltf.nodes[nodeIndex], invMatrix: invMatrices[i], id: nodeIndex };
       });
 
       skins.set(skinIndex, {
