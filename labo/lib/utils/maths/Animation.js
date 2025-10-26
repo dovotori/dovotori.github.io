@@ -117,8 +117,16 @@ class Animation {
     return newAnimation;
   };
 
+  hasAnim(key) {
+    return this.nodeTramsforms.get(key) !== undefined;
+  }
+
   handleLocalTransform = (key) => {
-    const { translation, rotation, scale } = this.nodeTramsforms.get(key);
+    const nodeTransforms = this.nodeTramsforms.get(key);
+    if (!nodeTransforms) {
+      return new Mat4().identity();
+    }
+    const { translation, rotation, scale } = nodeTransforms;
     const animations = this.animations.get(key);
     const rotationAnimation = animations?.get('rotation') || null;
     const translationAnimation = animations?.get('translation') || null;
@@ -158,14 +166,14 @@ class Animation {
   };
 
   static getVector = (vector = [0, 0, 0], vectorAnimation = null) => {
-    if (vectorAnimation && vectorAnimation.value) {
+    if (vectorAnimation?.value) {
       return vectorAnimation.value;
     }
     return vector;
   };
 
   static getRotationMat = (rotation = [0, 0, 0, 1], rotationAnimation = null) => {
-    if (rotationAnimation && rotationAnimation.value) {
+    if (rotationAnimation?.value) {
       return rotationAnimation.value;
     }
     return new Quaternion(...rotation).toMatrix4();

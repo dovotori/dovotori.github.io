@@ -280,7 +280,7 @@ class LoadGltfForWebGpu {
   static getNodes = (nodes, jointsIndexes) => {
     const newNodes = new Map();
     nodes.forEach((node, i) => {
-      // remove joints nodes
+      // mark joints nodes
       newNodes.set(i, { ...node, isJoint: jointsIndexes.has(i) });
     });
     for (const [nodeId, node] of newNodes) {
@@ -380,14 +380,17 @@ class LoadGltfForWebGpu {
       const invMatrices = chunkArray(inverseMatrixesBuffer, 16);
 
       const jointNodes = joints.map((nodeIndex, i) => {
-        return { ...gltf.nodes[nodeIndex], invMatrix: invMatrices[i] };
+        return { ...gltf.nodes[nodeIndex], invMatrix: invMatrices[i], nodeIndex };
       });
 
       skins.set(skinIndex, {
+        hierarchy: joints,
         joints: getHierarchyJoints(jointNodes),
         inverseMatrixesAccessor,
       });
-      jointsIndexes.add(...joints);
+      joints.forEach((jointNodeIndex) => {
+        jointsIndexes.add(jointNodeIndex);
+      });
     });
     return { skins, jointsIndexes };
   }

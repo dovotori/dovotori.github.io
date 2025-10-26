@@ -26,6 +26,7 @@ struct FragInput {
   @location(1) world_normal: vec3f,
   @location(2) texture: vec2f,
   @location(3) camera_position: vec3f,
+  @location(4) debug_color: vec4f,
 };
 
 @fragment fn f_main(in: FragInput) -> @location(0) vec4f {
@@ -62,6 +63,7 @@ struct FragInput {
 
   result /= vec4(f32(countLights)).xyz;
 
-  return vec4(result, 1.0);
+  // return vec4(result, 1.0);
+  return vec4(in.debug_color.xyz, 1.0);
 }
 `;

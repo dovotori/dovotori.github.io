@@ -281,10 +281,9 @@ export class GltfPipeline {
       if (node.skin !== undefined) {
         const skin = skins.get(node.skin);
         if (skin) {
-          const { joints, inverseMatrixesAccessor } = skin;
+          const { joints } = skin;
           skinBuffer = new BufferSkin();
-          // skinBuffer.setup(device, inverseMatrixesAccessor);
-          skinBuffer.setupJointsMatrices(device, joints);
+          skinBuffer.setup(device, joints);
         } else {
           console.warn(`skin ${node.skin} not found for node ${key}`);
         }
@@ -343,7 +342,7 @@ export class GltfPipeline {
     for (const [key, node] of this.nodesToDraw) {
       // if (!["Hautvent.002", "billboard"].includes(node.name)) continue;
 
-      node.skinBuffer.update(device, this.animations);
+      node.skinBuffer?.update(device, this.animations);
 
       node.buffers.forEach((buffer) => {
         const { hasAnimation, transform } = this.transformBindGroups.get(key);

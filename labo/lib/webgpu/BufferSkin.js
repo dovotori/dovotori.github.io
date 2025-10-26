@@ -7,19 +7,19 @@ export class BufferSkin {
     this.joints = null;
   }
 
-  setup(device, accessor) {
-    this.buffer = device.createBuffer({
-      label: 'skin joint matrices buffer',
-      size: 16 * 6 * Float32Array.BYTES_PER_ELEMENT, // 6 (MAX_JOINT_MAT from shader) matrices 4x4
-      mappedAtCreation: true,
-      usage: window.GPUBufferUsage.UNIFORM | window.GPUBufferUsage.COPY_DST,
-    });
-    const mappedBufferArray3 = new Float32Array(this.buffer.getMappedRange()); // color float
-    mappedBufferArray3.set(accessor.buffer);
-    this.buffer.unmap();
-  }
+  // setup(device, accessor) {
+  //   this.buffer = device.createBuffer({
+  //     label: 'skin joint matrices buffer',
+  //     size: 16 * 6 * Float32Array.BYTES_PER_ELEMENT, // 6 (MAX_JOINT_MAT from shader) matrices 4x4
+  //     mappedAtCreation: true,
+  //     usage: window.GPUBufferUsage.UNIFORM | window.GPUBufferUsage.COPY_DST,
+  //   });
+  //   const mappedBufferArray3 = new Float32Array(this.buffer.getMappedRange()); // color float
+  //   mappedBufferArray3.set(accessor.buffer);
+  //   this.buffer.unmap();
+  // }
 
-  setupJointsMatrices(device, joints) {
+  setup(device, joints) {
     this.joints = joints;
     this.buffer = device.createBuffer({
       label: 'skin joint matrices buffer',
@@ -35,10 +35,14 @@ export class BufferSkin {
     // this.buffer.unmap();
   }
 
-  setupJointMatrix(joints, parentMatrix) {
+  computeJointMatrix(joints, parentMatrix, animations) {
     const matrices = [];
     for (const joint of joints) {
-      const localMatrix = Transform.handleLocalTransform(joint);
+      const hasAnim = animations?.hasAnim(joint.nodeIndex) ?? false;
+      const localMatrix = hasAnim
+        ? animations?.handleLocalTransform(joint.nodeIndex)
+        : Transform.handleLocalTransform(joint);
+
       localMatrix.multiply(parentMatrix);
 
       const jointInverse = new Mat4();
@@ -52,7 +56,7 @@ export class BufferSkin {
       matrices.push(finalMatrix.get());
 
       if (joint.children) {
-        const childrenMatrices = this.setupJointMatrix(joint.children, localMatrix);
+        const childrenMatrices = this.computeJointMatrix(joint.children, localMatrix, animations);
         matrices.push(...childrenMatrices);
       }
     }
@@ -60,13 +64,20 @@ export class BufferSkin {
   }
 
   update(device, animations) {
-    console.log({ animations });
     const jointMatrix = new Mat4();
     jointMatrix.identity();
-    const matrices = this.setupJointMatrix(this.joints, jointMatrix);
-    const data = new Float32Array(matrices.flat());
-    this.uniformValues = device.queue.writeBuffer(this.buffer, 0, data);
-    console.log({ matrices, data });
+    const matrices = this.computeJointMatrix(this.joints, jointMatrix, animations);
+    const flat = matrices.flat();
+    this.uniformValues.fill(0); // clear then set (prevent leftover data)
+    this.uniformValues.set(flat.slice(0, this.uniformValues.length)); // copy only up to buffer length (avoid overflow if compute returned more)
+
+    device.queue.writeBuffer(
+      this.buffer,
+      0,
+      this.uniformValues.buffer,
+      this.uniformValues.byteOffset,
+      this.uniformValues.byteLength,
+    );
   }
 
   get() {

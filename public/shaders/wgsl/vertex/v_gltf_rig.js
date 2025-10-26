@@ -16,7 +16,12 @@ struct TransformUniform {
 };
 
 @group(1) @binding(0) var<uniform> transform: TransformUniform;
-@group(1) @binding(1) var<uniform> jointMat: array<mat4x4<f32>, ${MAX_JOINT_MAT}>;
+
+struct JointMatrices {
+  mats: array<mat4x4<f32>, ${MAX_JOINT_MAT}>,
+};
+
+@group(1) @binding(1) var<uniform> jointMat: JointMatrices;
 
 struct VertexInput {
   @location(0) position: vec3<f32>,
@@ -34,17 +39,17 @@ struct VertexOutput {
   @location(1) world_normal: vec3f,
   @location(2) texture: vec2f,
   @location(3) camera_position: vec3f,
-  // @location(6) face_color: f32,
+  @location(4) debug_color: vec4f,
 }
 
 @vertex fn v_main(
   in: VertexInput,
 ) -> VertexOutput {
   var skinMat: mat4x4<f32> =
-    in.weight.x * jointMat[in.joint.x] +
-    in.weight.y * jointMat[in.joint.y] +
-    in.weight.z * jointMat[in.joint.z] +
-    in.weight.w * jointMat[in.joint.w];
+    in.weight.x * jointMat.mats[in.joint.x] +
+    in.weight.y * jointMat.mats[in.joint.y] +
+    in.weight.z * jointMat.mats[in.joint.z] +
+    in.weight.w * jointMat.mats[in.joint.w];
 
   var out: VertexOutput;
   var world_position: vec4<f32> = transform.model * skinMat * vec4<f32>(in.position, 1.0);
@@ -55,6 +60,13 @@ struct VertexOutput {
   out.clip_position = camera.projection * camera.view * camera.model * world_position;
   out.texture = in.texture;
   out.camera_position = camera.position;
+
+  out.debug_color = vec4<f32>(
+    skinMat[1].x,
+    skinMat[1].y,
+    skinMat[1].z,
+    skinMat[1].w
+  );
 
   return out;
 }

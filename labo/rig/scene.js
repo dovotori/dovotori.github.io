@@ -119,7 +119,7 @@ export default class Scene extends WebgpuScene {
     const quat = new DualQuaternion();
     quat.rotateY(time * 0.0001);
     // quat.rotateX(time * 0.001);
-    this.model.multiply(quat.toMatrix4());
+    // this.model.multiply(quat.toMatrix4());
 
     this.gltfPipeline.updateAnimations(time);
   }

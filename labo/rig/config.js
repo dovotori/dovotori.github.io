@@ -13,8 +13,8 @@ export default {
   },
   camera: {
     // perspective
-    position: { x: 0, y: 10, z: 40 },
-    target: { x: 0, y: 10, z: 0 },
+    position: { x: 0, y: 0, z: 10 },
+    target: { x: 0, y: 0, z: 0 },
     near: 1,
     far: 60,
     angle: 60,
