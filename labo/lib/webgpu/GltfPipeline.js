@@ -165,7 +165,7 @@ export class GltfPipeline {
     );
 
     this.buildDrawNodes(device, nodes, meshBuffersMaps, gltf.get('skins')); // TODO should put node and drawNodes outside as animation to call renderModel on other pipeline
-    this.transformBinGroups = this.buildTransformBindGroups(
+    this.transformBindGroups = this.buildTransformBindGroups(
       this.getBindGroupLayout(GltfBindGroups.TRANSFORM),
     );
 
@@ -296,7 +296,7 @@ export class GltfPipeline {
         matrix,
         pickingColor: [Number.parseFloat(pickingColor), 0, 0, 1], // TODO can be only a float
         hasAnimation,
-        skinBuffer: skinBuffer?.get(),
+        skinBuffer,
       });
 
       this.nodesPerColorPicking.set(pickingColor, key);
@@ -309,20 +309,17 @@ export class GltfPipeline {
     const device = this.context.getDevice();
     const groups = new Map();
     for (const [key, node] of this.nodesToDraw) {
-      const transformBindGroup = !node.hasAnimation
-        ? BufferTransform.setup(
-            device,
-            layoutTransform,
-            {
-              transformMatrix: node.matrix,
-              pickingColor: node.pickingColor, // TODO should only send this to picking pipeline
-            },
-            node.name,
-            node.skinBuffer,
-          )
-        : undefined;
+      const buffer = new BufferTransform();
+      buffer.setup(device, layoutTransform, node.skinBuffer);
+      groups.set(key, { transform: buffer, hasAnimation: node.hasAnimation });
 
-      groups.set(key, transformBindGroup);
+      if (!node.hasAnimation) {
+        // if no animation just update once
+        buffer.update(device, {
+          transformMatrix: node.matrix,
+          pickingColor: node.pickingColor, // TODO should only send this to picking pipeline
+        });
+      }
     }
     return groups;
   }
@@ -346,24 +343,21 @@ export class GltfPipeline {
     for (const [key, node] of this.nodesToDraw) {
       // if (!["Hautvent.002", "billboard"].includes(node.name)) continue;
 
+      node.skinBuffer.update(device, this.animations);
+
       node.buffers.forEach((buffer) => {
-        let transformBindGroup = this.transformBinGroups.get(key);
-        if (!transformBindGroup) {
+        const { hasAnimation, transform } = this.transformBindGroups.get(key);
+        if (hasAnimation) {
           // animations
           const animMatrix = this.getAbsoluteAnimatedMatrix(key);
-          transformBindGroup = BufferTransform.setup(
-            device,
-            this.getBindGroupLayout(GltfBindGroups.TRANSFORM),
-            {
-              transformMatrix: animMatrix,
-              pickingColor: isDebug ? node.pickingColor : undefined,
-            },
-            node.name,
-            node.skinBuffer,
-          );
+
+          transform.update(device, {
+            transformMatrix: animMatrix,
+            pickingColor: isDebug ? node.pickingColor : undefined,
+          });
         }
 
-        pass.setBindGroup(GltfBindGroups.TRANSFORM, transformBindGroup);
+        pass.setBindGroup(GltfBindGroups.TRANSFORM, transform.getBindGroup());
 
         // MAT
         pass.setBindGroup(

@@ -4,6 +4,7 @@ import Transform from '../utils/maths/Transform';
 export class BufferSkin {
   constructor() {
     this.buffer = null;
+    this.joints = null;
   }
 
   setup(device, accessor) {
@@ -19,21 +20,19 @@ export class BufferSkin {
   }
 
   setupJointsMatrices(device, joints) {
-    const jointMatrix = new Mat4();
-    jointMatrix.identity();
-    const matrices = this.setupJointMatrix(joints, jointMatrix);
-    const data = new Float32Array(matrices.flat());
-    console.log({ joints, matrices, data });
-
+    this.joints = joints;
     this.buffer = device.createBuffer({
       label: 'skin joint matrices buffer',
       size: 16 * 6 * Float32Array.BYTES_PER_ELEMENT, // 6 (MAX_JOINT_MAT from shader) matrices 4x4
-      mappedAtCreation: true,
+      // mappedAtCreation: true,
       usage: window.GPUBufferUsage.UNIFORM | window.GPUBufferUsage.COPY_DST,
     });
-    const mappedBufferArray = new Float32Array(this.buffer.getMappedRange()); // color float
-    mappedBufferArray.set(data);
-    this.buffer.unmap();
+
+    this.uniformValues = new Float32Array(16 * 6);
+
+    // const mappedBufferArray = new Float32Array(this.buffer.getMappedRange()); // color float
+    // mappedBufferArray.set(data);
+    // this.buffer.unmap();
   }
 
   setupJointMatrix(joints, parentMatrix) {
@@ -60,7 +59,15 @@ export class BufferSkin {
     return matrices;
   }
 
-  update() {}
+  update(device, animations) {
+    console.log({ animations });
+    const jointMatrix = new Mat4();
+    jointMatrix.identity();
+    const matrices = this.setupJointMatrix(this.joints, jointMatrix);
+    const data = new Float32Array(matrices.flat());
+    this.uniformValues = device.queue.writeBuffer(this.buffer, 0, data);
+    console.log({ matrices, data });
+  }
 
   get() {
     return this.buffer;

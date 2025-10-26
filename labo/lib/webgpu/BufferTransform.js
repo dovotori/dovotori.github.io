@@ -3,44 +3,44 @@ import Transform from '../utils/maths/Transform';
 class BufferTransform {
   constructor() {
     this.name = 'BufferTransform';
+    this.buffer = null;
+    this.bindGroup = null;
   }
 
-  static setup(device, layout, bufferData, debugName, bufferSkin) {
-    const buffer = BufferTransform.setupOne(device, bufferData, debugName);
+  // https://webgpufundamentals.org/webgpu/lessons/webgpu-memory-layout.html
+  setup(device, layout, bufferSkin) {
+    // copy paste wgsl struct here to get the mapping
+    // https://webgpufundamentals.org/webgpu/lessons/resources/wgsl-offset-computer.html
+    this.buffer = device.createBuffer({
+      size: Float32Array.BYTES_PER_ELEMENT * 16 * 2, // 1 4x4 mat + 1 3x3 mat + 1 vec4  (use the space of 2 mat4, but may not use all space)
+      usage: window.GPUBufferUsage.UNIFORM | window.GPUBufferUsage.COPY_DST,
+      // mappedAtCreation: true,
+    });
 
     const entries = [
       {
         binding: 0,
-        resource: { buffer },
+        resource: { buffer: this.buffer },
       },
     ];
 
     if (bufferSkin) {
       entries.push({
         binding: 1,
-        resource: { buffer: bufferSkin },
+        resource: { buffer: bufferSkin.get() },
       });
     }
 
-    return device.createBindGroup({
+    this.bindGroup = device.createBindGroup({
       label: 'NodeTransformBindGroup',
       layout,
       entries,
     });
   }
 
-  // https://webgpufundamentals.org/webgpu/lessons/webgpu-memory-layout.html
-  static setupOne(device, bufferData, _debugName) {
+  update(device, bufferData) {
     const { transformMatrix, pickingColor } = bufferData;
 
-    // copy paste wgsl struct here to get the mapping
-    // https://webgpufundamentals.org/webgpu/lessons/resources/wgsl-offset-computer.html
-    const buffer = device.createBuffer({
-      size: Float32Array.BYTES_PER_ELEMENT * 16 * 2, // 1 4x4 mat + 1 3x3 mat + 1 vec4  (use the space of 2 mat4, but may not use all space)
-      usage: window.GPUBufferUsage.UNIFORM | window.GPUBufferUsage.COPY_DST,
-      mappedAtCreation: true,
-    });
-    const bufferArray = new Float32Array(buffer.getMappedRange());
     const normalMatrix = Transform.getNormalMatrix(transformMatrix).get();
 
     const nm = [
@@ -65,9 +65,15 @@ class BufferTransform {
       ...(pickingColor ?? []), // use in picking shader
     ];
 
-    bufferArray.set(data);
-    buffer.unmap();
-    return buffer;
+    device.queue.writeBuffer(this.buffer, 0, new Float32Array(data));
+  }
+
+  getBuffer() {
+    return this.buffer;
+  }
+
+  getBindGroup() {
+    return this.bindGroup;
   }
 }
 
