@@ -218,7 +218,17 @@ class LoadGltfForWebGpu {
           ({ attribName, shaderLocationName, shaderLocation }) => {
             const accessorIndex = attributes[attribName];
             const accessor = accessors[accessorIndex];
-            const format = LoadGltfForWebGpu.gpuFormatForAccessor(accessor);
+            let format = LoadGltfForWebGpu.gpuFormatForAccessor(accessor);
+
+            // force format for joint
+            // because it is interleaved as a big float32 buffer
+            if (
+              shaderLocationName === 'joint' &&
+              attribName === 'JOINTS_0' &&
+              shaderLocation === 4
+            ) {
+              format = 'float32x4';
+            }
 
             if (isNotInterleaved) {
               const layoutBuffer = layoutBuffers.get(accessor.bufferView);
