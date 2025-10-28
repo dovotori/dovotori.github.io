@@ -38,9 +38,9 @@ export class BufferSkin {
   computeJointMatrix(joints, parentMatrix, animations) {
     const matrices = [];
     for (const joint of joints) {
-      const hasAnim = animations?.hasAnim(joint.index) ?? false;
+      const hasAnim = animations?.hasAnim(joint.id) ?? false;
       const localMatrix = hasAnim
-        ? animations?.handleLocalTransform(joint.index)
+        ? animations?.handleLocalTransform(joint.id)
         : Transform.handleLocalTransform(joint);
 
       localMatrix.multiply(parentMatrix);

@@ -263,8 +263,7 @@ const processJointChildren = (children, joints) =>
     if (newJoint?.children) {
       newJoint.children = processJointChildren(newJoint.children, joints);
     }
-    const { id, ...rest } = newJoint;
-    return rest;
+    return newJoint;
   });
 
 export const getHierarchyJoints = (jointNodes) => {
@@ -275,8 +274,7 @@ export const getHierarchyJoints = (jointNodes) => {
     if (currentJoint.children) {
       currentJoint.children = processJointChildren(currentJoint.children, tmpArray);
     }
-    const { id, ...rest } = currentJoint;
-    hierarchyJoints.push(rest);
+    hierarchyJoints.push(currentJoint);
   }
   return hierarchyJoints;
 };
