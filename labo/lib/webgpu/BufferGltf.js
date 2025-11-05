@@ -1,3 +1,4 @@
+import { chunkArray } from '../utils';
 import { getBufferMinSize } from './utils';
 
 class BufferGltf {
@@ -9,10 +10,33 @@ class BufferGltf {
     this.faceColor = null;
   }
 
-  setup(device, primitive) {
+  setup(device, primitive, meshName) {
     const { arrayStride, attributes, bufferVertex, bufferIndex, indexCount } = primitive;
 
     this.indexCount = indexCount;
+
+    // debug
+    if (meshName === 'Pull') {
+      // 3 position, 3 normale, 2 texture, 4 joint, 4 weight
+      const stride = arrayStride / Float32Array.BYTES_PER_ELEMENT;
+      console.log({ bufferVertex, stride });
+      const parts = chunkArray(bufferVertex, arrayStride / Float32Array.BYTES_PER_ELEMENT);
+
+      const pos = [];
+      const norm = [];
+      const tex = [];
+      const joint = [];
+      const weight = [];
+
+      for (const part of parts) {
+        pos.push(part.slice(0, 3));
+        norm.push(part.slice(3, 6));
+        tex.push(part.slice(6, 8));
+        joint.push(part.slice(8, 12));
+        weight.push(part.slice(12, 16));
+      }
+      console.log({ pos, norm, tex, joint, weight });
+    }
 
     /*
       Soit on utilise writeBuffer to put data on Gpu (mémoire du tampon), device.queue.writeBuffer(this.vertex, 0, bufferVertex)
@@ -39,8 +63,8 @@ class BufferGltf {
       usage: window.GPUBufferUsage.INDEX | window.GPUBufferUsage.COPY_DST,
     });
 
-    const mappedBufferArray2 = new Uint16Array(this.indexes.getMappedRange());
-    mappedBufferArray2.set(new Uint16Array(bufferIndex, 0, this.indexes.byteLength));
+    const mappedBufferIndexes = new Uint16Array(this.indexes.getMappedRange());
+    mappedBufferIndexes.set(new Uint16Array(bufferIndex, 0, this.indexes.byteLength));
     this.indexes.unmap();
 
     this.layout = {

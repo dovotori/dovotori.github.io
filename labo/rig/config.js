@@ -3,7 +3,7 @@ export default {
   shaders: ['/wgsl/vertex/v_gltf_rig.js', '/wgsl/fragment/f_gltf_rig.js'],
   // assets: ['/gltf/paysage.gltf'],
   // assets: ['/gltf/distributedInstances.gltf'],
-  assets: ['/gltf/skin.glb'],
+  assets: ['/gltf/perso.glb'],
   // assets: ["/gltf/plane.gltf"],
   // assets: ["/gltf/head.gltf"],
   // assets: ['/gltf/headinterleaved.gltf'],

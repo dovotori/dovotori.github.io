@@ -1,4 +1,4 @@
-import { chunkArray } from '../../utils';
+import { chunkArray, isEqualArray } from '../../utils';
 import { base64ToArrayBuffer } from '../../utils/base64';
 import {
   getArrayType,
@@ -335,6 +335,10 @@ class LoadGltfForWebGpu {
           const output = layoutBuffers.get(outAccessor.bufferView);
           const { node: nodeIndex, path } = target;
 
+          if (nodeIndex === undefined) {
+            return;
+          }
+
           const outputData = chunkArray(output.buffer, output.numElement);
           const inputData = input.buffer;
           const newAnimItem = {
@@ -343,6 +347,14 @@ class LoadGltfForWebGpu {
             output: outputData,
             interpolation,
           };
+
+          if (
+            interpolation === 'STEP' &&
+            outputData.length === 2 &&
+            isEqualArray(outputData[0], outputData[1])
+          ) {
+            return; // remove useless animation with 2 same values for step
+          }
 
           animationsPerNodes.has(nodeIndex)
             ? animationsPerNodes.get(nodeIndex).push(newAnimItem)

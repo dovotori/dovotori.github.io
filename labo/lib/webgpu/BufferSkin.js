@@ -1,6 +1,8 @@
 import Mat4 from '../utils/maths/Mat4';
 import Transform from '../utils/maths/Transform';
 
+const MAX_JOINT_MAT = 25; // bones count
+
 export class BufferSkin {
   constructor() {
     this.buffer = null;
@@ -23,12 +25,12 @@ export class BufferSkin {
     this.joints = joints;
     this.buffer = device.createBuffer({
       label: 'skin joint matrices buffer',
-      size: 16 * 6 * Float32Array.BYTES_PER_ELEMENT, // 6 (MAX_JOINT_MAT from shader) matrices 4x4
+      size: 16 * MAX_JOINT_MAT * Float32Array.BYTES_PER_ELEMENT, // 6 (MAX_JOINT_MAT from shader) matrices 4x4
       // mappedAtCreation: true,
       usage: window.GPUBufferUsage.UNIFORM | window.GPUBufferUsage.COPY_DST,
     });
 
-    this.uniformValues = new Float32Array(16 * 6);
+    this.uniformValues = new Float32Array(16 * MAX_JOINT_MAT);
 
     // const mappedBufferArray = new Float32Array(this.buffer.getMappedRange()); // color float
     // mappedBufferArray.set(data);
@@ -37,6 +39,7 @@ export class BufferSkin {
 
   computeJointMatrix(joints, parentMatrix, animations) {
     const matrices = [];
+    // console.log({ joints });
     for (const joint of joints) {
       const hasAnim = animations?.hasAnim(joint.id) ?? false;
       const localMatrix = hasAnim

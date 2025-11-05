@@ -50,7 +50,7 @@ export class GltfPipeline {
         // attributes.length // 2 position/ normale // 3 position/normale/texture
         // a buffer store data of a mesh with the same material
         const buffer = new BufferGltf();
-        buffer.setup(device, primitive);
+        buffer.setup(device, primitive, mesh.name);
         this.materialIndexes.set(buffer, primitive.material);
         meshBuffers.push(buffer);
 
@@ -340,7 +340,7 @@ export class GltfPipeline {
   drawModel = (device, pass, isDebug = false) => {
     // should sort primitives by material
     for (const [key, node] of this.nodesToDraw) {
-      // if (!["Hautvent.002", "billboard"].includes(node.name)) continue;
+      // if (!['Pull'].includes(node.name)) continue;
 
       node.skinBuffer?.update(device, this.animations);
 

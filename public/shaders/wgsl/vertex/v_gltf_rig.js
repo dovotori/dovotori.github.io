@@ -1,4 +1,4 @@
-const MAX_JOINT_MAT = 6;
+const MAX_JOINT_MAT = 25;
 
 export default `
 struct CameraUniform {
