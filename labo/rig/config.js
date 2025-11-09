@@ -37,5 +37,8 @@ export default {
   controls: {
     fullscreen: { buttonId: 'fullscreen-toggle-btn' },
   },
+  mouse: {
+    events: ['move', 'click'],
+  },
   useWebGpu: true,
 };

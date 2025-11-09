@@ -1,5 +1,7 @@
 import DualQuaternion from '../lib/utils/maths/DualQuaternion';
 import Mat4 from '../lib/utils/maths/Mat4';
+import Quaternion from '../lib/utils/maths/Quaternion';
+import Vec3 from '../lib/utils/maths/Vec3';
 import Camera from '../lib/utils-3d/cameras/Camera';
 import Objectif from '../lib/utils-3d/cameras/Objectif';
 import { DebugTexture, GltfBindGroups, GltfPipeline } from '../lib/webgpu';
@@ -185,5 +187,49 @@ export default class Scene extends WebgpuScene {
     this.gltfPipeline.resize(size);
   }
 
-  onMouseClick = async (e) => {};
+  headFollowMouse(x, y) {
+    const ray = this.camera.getRayFromNDC(x, y);
+
+    const headAbsMat = this.gltfPipeline.getNodeAbsoluteMatrix(31); // Head
+    const headArr = headAbsMat.get();
+    const headPos = new Vec3(headArr[12], headArr[13], headArr[14]);
+
+    const t = (headPos.getY() - ray.origin.getY()) / ray.dir.getY();
+    const target = new Vec3(
+      ray.origin.getX() + ray.dir.getX() * t,
+      headPos.getY(),
+      ray.origin.getZ() + ray.dir.getZ() * t,
+    );
+
+    const headLocalMat = this.computeLocalRotationMatrixQuaternion(headAbsMat, target);
+    this.gltfPipeline.setCustomTransform('Head', headLocalMat);
+  }
+
+  computeLocalRotationMatrixQuaternion(nodeAbsMat, target) {
+    // head world position (column-major indices 12,13,14)
+    const d = nodeAbsMat.get();
+    const nodePos = new Vec3(d[12], d[13], d[14]);
+
+    // direction from head to target (world space)
+    const dir = new Vec3(target.getX(), target.getY(), target.getZ()).minus(nodePos).normalise();
+
+    // model-forward in head local space (adjust if your model uses different axis)
+    const forward = new Vec3(0, 0, 1);
+
+    // build quaternion rotating forward -> dir (this is world-aligned rotation)
+    const q = Quaternion.fromUnitVectors(forward, dir);
+
+    // convert quaternion to rotation matrix
+    const rotMat = q.toMatrix4();
+
+    // rotMat is a pure rotation; keep translation zero for local override
+    rotMat.setTranslation([0, 0, 0]);
+    return rotMat;
+  }
+
+  onMouseMove = async (mouse) => {
+    this.headFollowMouse(mouse.rel.x, mouse.rel.y);
+  };
+
+  onMouseClick = async (mouse) => {};
 }

@@ -37,9 +37,8 @@ export class BufferSkin {
     // this.buffer.unmap();
   }
 
-  computeJointMatrix(joints, parentMatrix, animations) {
+  computeJointMatrix(joints, parentMatrix, animations, customTranforms = {}) {
     const matrices = [];
-    // console.log({ joints });
     for (const joint of joints) {
       const hasAnim = animations?.hasAnim(joint.id) ?? false;
       const localMatrix = hasAnim
@@ -47,6 +46,10 @@ export class BufferSkin {
         : Transform.handleLocalTransform(joint);
 
       localMatrix.multiply(parentMatrix);
+
+      if (customTranforms[joint.name]) {
+        localMatrix.multiply(customTranforms[joint.name]);
+      }
 
       const jointInverse = new Mat4();
       jointInverse.setFromArray(joint.invMatrix);
@@ -59,17 +62,22 @@ export class BufferSkin {
       matrices.push(finalMatrix.get());
 
       if (joint.children) {
-        const childrenMatrices = this.computeJointMatrix(joint.children, localMatrix, animations);
+        const childrenMatrices = this.computeJointMatrix(
+          joint.children,
+          localMatrix,
+          animations,
+          customTranforms,
+        );
         matrices.push(...childrenMatrices);
       }
     }
     return matrices;
   }
 
-  update(device, animations) {
+  update(device, animations, customTranforms = {}) {
     const jointMatrix = new Mat4();
     jointMatrix.identity();
-    const matrices = this.computeJointMatrix(this.joints, jointMatrix, animations);
+    const matrices = this.computeJointMatrix(this.joints, jointMatrix, animations, customTranforms);
     const flat = matrices.flat();
     this.uniformValues.fill(0); // clear then set (prevent leftover data)
     this.uniformValues.set(flat.slice(0, this.uniformValues.length)); // copy only up to buffer length (avoid overflow if compute returned more)

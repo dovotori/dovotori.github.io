@@ -1,16 +1,9 @@
-import { mapFromRange } from "../numbers";
+import { mapFromRange } from '../numbers';
 
 class Mouse {
   constructor(
     div,
-    {
-      callbackDrag,
-      callbackDown,
-      callbackUp,
-      callbackMove,
-      callbackWheel,
-      callbackClick,
-    },
+    { callbackDrag, callbackDown, callbackUp, callbackMove, callbackWheel, callbackClick },
   ) {
     this.div = div;
     this.callbackDrag = callbackDrag || null;
@@ -33,20 +26,20 @@ class Mouse {
   setup() {
     if (this.div) {
       if (this.callbackClick) {
-        this.div.addEventListener("click", this.onClick, false);
+        this.div.addEventListener('click', this.onClick, false);
       }
       if (this.callbackDrag || this.callbackMove) {
-        this.div.addEventListener("mousemove", this.onMove, this.options);
-        this.div.addEventListener("touchmove", this.onMove, this.options);
+        this.div.addEventListener('mousemove', this.onMove, this.options);
+        this.div.addEventListener('touchmove', this.onMove, this.options);
       }
       if (this.callbackDrag || this.callbackDown || this.callbackUp) {
-        window.addEventListener("mouseup", this.onUp, this.options);
-        this.div.addEventListener("mousedown", this.onDown, this.options);
-        this.div.addEventListener("touchstart", this.onDown, this.options);
-        this.div.addEventListener("touchend", this.onUp, this.options);
+        window.addEventListener('mouseup', this.onUp, this.options);
+        this.div.addEventListener('mousedown', this.onDown, this.options);
+        this.div.addEventListener('touchstart', this.onDown, this.options);
+        this.div.addEventListener('touchend', this.onUp, this.options);
       }
       if (this.callbackWheel) {
-        this.div.addEventListener("wheel", this.onWheel, this.options);
+        this.div.addEventListener('wheel', this.onWheel, this.options);
       }
     }
   }
@@ -54,20 +47,20 @@ class Mouse {
   cancel() {
     if (this.div) {
       if (this.callbackClick) {
-        this.div.removeEventListener("click", this.onClick, false);
+        this.div.removeEventListener('click', this.onClick, false);
       }
       if (this.callbackDrag || this.callbackMove) {
-        this.div.removeEventListener("mousemove", this.onMove, this.options);
-        this.div.removeEventListener("touchmove", this.onMove, this.options);
+        this.div.removeEventListener('mousemove', this.onMove, this.options);
+        this.div.removeEventListener('touchmove', this.onMove, this.options);
       }
       if (this.callbackDrag) {
-        window.removeEventListener("mouseup", this.onUp, this.options);
-        this.div.removeEventListener("mousedown", this.onDown, this.options);
-        this.div.removeEventListener("touchstart", this.onDown, this.options);
-        this.div.removeEventListener("touchend", this.onUp, this.options);
+        window.removeEventListener('mouseup', this.onUp, this.options);
+        this.div.removeEventListener('mousedown', this.onDown, this.options);
+        this.div.removeEventListener('touchstart', this.onDown, this.options);
+        this.div.removeEventListener('touchend', this.onUp, this.options);
       }
       if (this.callbackWheel) {
-        this.div.removeEventListener("wheel", this.onWheel, this.options);
+        this.div.removeEventListener('wheel', this.onWheel, this.options);
       }
     }
   }

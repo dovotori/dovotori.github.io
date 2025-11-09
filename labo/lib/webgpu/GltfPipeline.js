@@ -16,6 +16,7 @@ export class GltfPipeline {
     this.config = config;
     this.pipeline = new Pipeline();
     this.textures = new PipelineTextures();
+    this.customTransforms = {};
 
     this.db = null;
   }
@@ -327,6 +328,13 @@ export class GltfPipeline {
     if (this.animations) {
       this.animations.update(time);
     }
+
+    // const newMatrix = new Mat4();
+    // newMatrix.identity();
+    // newMatrix.rotate(Math.cos(time * 0.005) * 10, 1, 0, 0);
+    // this.customTransforms = {
+    //   Head: newMatrix,
+    // };
   }
 
   update() {
@@ -342,7 +350,7 @@ export class GltfPipeline {
     for (const [key, node] of this.nodesToDraw) {
       // if (!['Pull'].includes(node.name)) continue;
 
-      node.skinBuffer?.update(device, this.animations);
+      node.skinBuffer?.update(device, this.animations, this.customTransforms);
 
       node.buffers.forEach((buffer) => {
         const { hasAnimation, transform } = this.transformBindGroups.get(key);
@@ -363,10 +371,6 @@ export class GltfPipeline {
           GltfBindGroups.MATERIAL,
           this.materialBuffer.getBindGroup(this.materialIndexes.get(buffer) || 0),
         );
-
-        // pass.setBindGroup(
-        //   GltfBindGroups.JOINT_MAT,
-        // );
 
         if (!isDebug) {
           pass.setVertexBuffer(0, buffer.getVertexBuffer());
@@ -423,4 +427,13 @@ export class GltfPipeline {
     }
     return { positions, node, matrix };
   };
+
+  getNodeAbsoluteMatrix(key) {
+    console.log('getNodeAbsoluteMatrix', key, this.nodesToDraw);
+    return this.nodesToDraw.get(key).matrix;
+  }
+
+  setCustomTransform(name, matrix) {
+    this.customTransforms[name] = matrix;
+  }
 }

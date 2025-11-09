@@ -1,5 +1,6 @@
-import Mat4 from "../../utils/maths/Mat4";
-import Objectif from "./Objectif";
+import Mat4 from '../../utils/maths/Mat4';
+import Vec3 from '../../utils/maths/Vec3';
+import Objectif from './Objectif';
 
 export default class extends Objectif {
   constructor(config) {
@@ -24,9 +25,7 @@ export default class extends Objectif {
   }
 
   perspective(w, h) {
-    this.projection
-      .identity()
-      .perspective(this.angle, w / h, this.near, this.far);
+    this.projection.identity().perspective(this.angle, w / h, this.near, this.far);
   }
 
   moveAroundCenter(time, offset = 0) {
@@ -78,6 +77,35 @@ export default class extends Objectif {
     vp.multiply(this.getView());
     vp.multiply(this.getProjection());
     return vp;
+  }
+
+  getInverseViewProjection() {
+    const vp = this.getViewProjection();
+    return vp.inverse();
+  }
+
+  /**
+   * NDC = Normalized Device Coordinates.
+   * Unproject NDC coords (x,y in [-1..1], z in [0..1]) to world space.
+   * Returns a new Vec3 (mutating internally then returned).
+   */
+  unproject(x, y, z = 0.5) {
+    const ndc = new Vec3(x, y, z);
+    const ivp = this.getInverseViewProjection(); // Mat4
+    return ndc.multiplyMatrix(ivp);
+  }
+
+  /**
+   * Returns a world-space ray for NDC x,y:
+   * { origin: Vec3 (point at near plane), dir: Vec3 (normalized direction) }
+   *  [-1, 1]. x = -1 is left, +1 is right; y = -1 is bottom, +1 is top
+   */
+  getRayFromNDC(x, y) {
+    const ivp = this.getInverseViewProjection();
+    const near = new Vec3(x, y, 0).multiplyMatrix(ivp);
+    const far = new Vec3(x, y, 1).multiplyMatrix(ivp);
+    const dir = new Vec3(far.getX(), far.getY(), far.getZ()).minus(near).normalise();
+    return { origin: near, dir };
   }
 
   getIdentity() {

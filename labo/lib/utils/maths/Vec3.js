@@ -1,4 +1,4 @@
-import { fract, signe } from "../numbers";
+import { fract, signe } from '../numbers';
 
 class Vec3 {
   constructor(x = 0, y = 0, z = 0) {
@@ -99,8 +99,7 @@ class Vec3 {
   }
 
   limiter(max) {
-    const lengthCarre =
-      this.d[0] * this.d[0] + this.d[1] * this.d[1] + this.d[2] * this.d[2];
+    const lengthCarre = this.d[0] * this.d[0] + this.d[1] * this.d[1] + this.d[2] * this.d[2];
     if (lengthCarre > max * max && lengthCarre > 0) {
       const ratio = max / Math.sqrt(lengthCarre);
       this.d[0] *= ratio;
@@ -125,9 +124,7 @@ class Vec3 {
   }
 
   length() {
-    return Math.sqrt(
-      this.d[0] * this.d[0] + this.d[1] * this.d[1] + this.d[2] * this.d[2],
-    );
+    return Math.sqrt(this.d[0] * this.d[0] + this.d[1] * this.d[1] + this.d[2] * this.d[2]);
   }
 
   directionVers(v) {
@@ -179,17 +176,32 @@ class Vec3 {
 
   multiplyMatrix(matrice) {
     // maybe wrong
-    this.set(
-      matrice.d[0] * this.d[0] +
-        matrice.d[1] * this.d[1] +
-        matrice.d[2] * this.d[2],
-      matrice.d[3] * this.d[0] +
-        matrice.d[4] * this.d[1] +
-        matrice.d[5] * this.d[2],
-      matrice.d[6] * this.d[0] +
-        matrice.d[7] * this.d[1] +
-        matrice.d[8] * this.d[2],
-    );
+    // this.set(
+    //   matrice.d[0] * this.d[0] +
+    //     matrice.d[1] * this.d[1] +
+    //     matrice.d[2] * this.d[2],
+    //   matrice.d[3] * this.d[0] +
+    //     matrice.d[4] * this.d[1] +
+    //     matrice.d[5] * this.d[2],
+    //   matrice.d[6] * this.d[0] +
+    //     matrice.d[7] * this.d[1] +
+    //     matrice.d[8] * this.d[2],
+    // );
+    const m = matrice.d ? matrice : { d: matrice }; // accept Mat4 or raw array
+    const x = this.d[0];
+    const y = this.d[1];
+    const z = this.d[2];
+
+    const outX = m.d[0] * x + m.d[4] * y + m.d[8] * z + m.d[12];
+    const outY = m.d[1] * x + m.d[5] * y + m.d[9] * z + m.d[13];
+    const outZ = m.d[2] * x + m.d[6] * y + m.d[10] * z + m.d[14];
+    const outW = m.d[3] * x + m.d[7] * y + m.d[11] * z + m.d[15];
+
+    if (outW !== 0 && outW !== 1) {
+      this.set(outX / outW, outY / outW, outZ / outW);
+    } else {
+      this.set(outX, outY, outZ);
+    }
     return this;
   }
 
@@ -255,16 +267,11 @@ class Vec3 {
 
   static getBarycentre(v1, v2, v3, pos) {
     const det =
-      (v2.d[2] - v3.d[2]) * (v1.d[0] - v3.d[0]) +
-      (v3.d[0] - v2.d[0]) * (v1.d[2] - v3.d[2]);
+      (v2.d[2] - v3.d[2]) * (v1.d[0] - v3.d[0]) + (v3.d[0] - v2.d[0]) * (v1.d[2] - v3.d[2]);
     const l1 =
-      ((v2.d[2] - v3.d[2]) * (pos[0] - v3.d[0]) +
-        (v3.d[0] - v2.d[0]) * (pos[1] - v3.d[2])) /
-      det;
+      ((v2.d[2] - v3.d[2]) * (pos[0] - v3.d[0]) + (v3.d[0] - v2.d[0]) * (pos[1] - v3.d[2])) / det;
     const l2 =
-      ((v3.d[2] - v1.d[2]) * (pos[0] - v3.d[0]) +
-        (v1.d[0] - v3.d[0]) * (pos[1] - v3.d[2])) /
-      det;
+      ((v3.d[2] - v1.d[2]) * (pos[0] - v3.d[0]) + (v1.d[0] - v3.d[0]) * (pos[1] - v3.d[2])) / det;
     const l3 = 1.0 - l1 - l2;
     return l1 * v1.d[1] + l2 * v2.d[1] + l3 * v3.d[1];
   }
