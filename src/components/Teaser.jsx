@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { ReactComponent as PlusIcon } from "Assets/svg/plus.svg";
+import { useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-
-import { ReactComponent as PlusIcon } from "Assets/svg/plus.svg";
 import { getColorType, getTeaserPath } from "../utils";
 import LazyImage from "./LazyImage";
 import Loader from "./Loader";
@@ -106,9 +105,13 @@ const Teaser = ({
     triggerOnce: true,
   });
 
-  const onEnter = useCallback(() => setIsHovered(true), [setIsHovered]);
-  const onLeave = useCallback(() => setIsHovered(false), [setIsHovered]);
-  useEffect(() => setCurrentHover(isHovered ? slug : ""), [isHovered]);
+  const onEnter = () => setIsHovered(true);
+  const onLeave = () => setIsHovered(false);
+
+  useEffect(
+    () => setCurrentHover(isHovered ? slug : ""),
+    [isHovered, setCurrentHover, slug],
+  );
 
   const opacity = useMemo(() => {
     if (!inView) {
@@ -118,7 +121,7 @@ const Teaser = ({
       return 1;
     }
     return 0.65;
-  }, [currentHover, isHovered, inView]);
+  }, [currentHover, inView, isTouchDevice, slug]);
 
   return (
     <StyledLink
@@ -129,7 +132,7 @@ const Teaser = ({
       onMouseLeave={onLeave}
       $levelOpacity={opacity}
       $isVisible={inView}
-      title={slug}
+      title={title}
       $isHover={isHovered}
       isTouchDevice={isTouchDevice}
     >

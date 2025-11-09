@@ -1,5 +1,5 @@
 import Cv from "../components/Cv";
-import { getIsTouchDevice } from "../selectors";
+import { getCvContent, getIsTouchDevice } from "../selectors";
 
 export default () => {
   const cv = getCvContent();
