@@ -4,7 +4,7 @@ import Quaternion from '../lib/utils/maths/Quaternion';
 import Vec3 from '../lib/utils/maths/Vec3';
 import Camera from '../lib/utils-3d/cameras/Camera';
 import Objectif from '../lib/utils-3d/cameras/Objectif';
-import { DebugTexture, GltfBindGroups, GltfPipeline } from '../lib/webgpu';
+import { DebugPipeline, DebugTexture, GltfBindGroups, GltfPipeline } from '../lib/webgpu';
 import { BufferCamera } from '../lib/webgpu/BufferCamera';
 import WebgpuScene from '../lib/webgpu/WebgpuScene';
 
@@ -27,7 +27,7 @@ export default class Scene extends WebgpuScene {
     this.lampe = new Objectif(config.lampes[0]);
     this.lampe.lookAt();
 
-    // this.debugCube = new DebugPipeline(context);
+    this.debugCube = new DebugPipeline(context);
   }
 
   setupCamera(layout, withLight) {
@@ -109,6 +109,14 @@ export default class Scene extends WebgpuScene {
     this.uniformLights = this.setupLights(
       this.gltfPipeline.getBindGroupLayout(GltfBindGroups.LIGHT),
     );
+
+    await this.debugCube.setup({
+      vertex: programs.v_model_camera.get(),
+      fragment: programs.f_simple.get(),
+    });
+    this.debugUniformCamera = this.setupCamera(
+      this.debugCube.getBindGroupLayout(GltfBindGroups.CAMERA),
+    );
   }
 
   update(time) {
@@ -177,6 +185,9 @@ export default class Scene extends WebgpuScene {
 
     this.gltfPipeline.drawModel(device, pass);
 
+    this.updateCameraUniforms(this.debugUniformCamera.buffer);
+    this.debugCube.render(pass, this.debugUniformCamera.bindGroup);
+
     pass.end();
 
     device.queue.submit([encoder.finish()]);
@@ -190,41 +201,55 @@ export default class Scene extends WebgpuScene {
   headFollowMouse(x, y) {
     const ray = this.camera.getRayFromNDC(x, y);
 
-    const headAbsMat = this.gltfPipeline.getNodeAbsoluteMatrix(31); // Head
-    const headArr = headAbsMat.get();
-    const headPos = new Vec3(headArr[12], headArr[13], headArr[14]);
+    const stableDist = 10.0;
 
-    const t = (headPos.getY() - ray.origin.getY()) / ray.dir.getY();
     const target = new Vec3(
-      ray.origin.getX() + ray.dir.getX() * t,
-      headPos.getY(),
-      ray.origin.getZ() + ray.dir.getZ() * t,
+      ray.origin.getX() + ray.dir.getX() * stableDist,
+      ray.origin.getY() + ray.dir.getY() * stableDist,
+      ray.origin.getZ() + ray.dir.getZ() * stableDist,
     );
 
-    const headLocalMat = this.computeLocalRotationMatrixQuaternion(headAbsMat, target);
+    const headNodeId = 31; // Head
+    const headAbsMat = this.gltfPipeline.getNodeAbsoluteMatrix(headNodeId);
+    const headArr = headAbsMat.get();
+    const headPos = new Vec3(headArr[12], headArr[13] + 4, headArr[14]); // +4 to adjust to center of head to the eyes
+
+    // v1 = target - head
+    const v1 = new Vec3(target.getX(), target.getY(), target.getZ()).minus(headPos);
+    if (v1.length() === 0) return { angleRad: 0, angleDeg: 0, sign: 0 };
+    v1.normalise();
+
+    // v2 = camera - head
+    const camArr = this.camera.getPosition();
+    const camPos = new Vec3(camArr[0], camArr[1], camArr[2]);
+    const v2 = camPos.minus(headPos);
+    if (v2.length() === 0) return { angleRad: 0, angleDeg: 0, sign: 0 };
+    v2.normalise();
+
+    const dot = Math.max(-1, Math.min(1, v1.dot(v2)));
+    const cross = v1.cross(v2);
+
+    const yawRad = Math.atan2(cross.getY(), dot); // signed radians (-PI..PI)
+    let yawDeg = yawRad * (180 / Math.PI);
+    yawDeg = Math.max(-40, Math.min(40, yawDeg)); // clamp
+
+    const pitchRad = Math.atan2(cross.getX(), dot);
+    let pitchDeg = pitchRad * (180 / Math.PI);
+    pitchDeg = Math.max(-20, Math.min(7, pitchDeg)); // clamp pitch
+
+    const headLocalMat = this.computeLocalRotationMatrixQuaternion(yawDeg, pitchDeg);
+
     this.gltfPipeline.setCustomTransform('Head', headLocalMat);
+
+    this.debugCube.setTransform(target.getX(), target.getY(), target.getZ());
   }
 
-  computeLocalRotationMatrixQuaternion(nodeAbsMat, target) {
-    // head world position (column-major indices 12,13,14)
-    const d = nodeAbsMat.get();
-    const nodePos = new Vec3(d[12], d[13], d[14]);
-
-    // direction from head to target (world space)
-    const dir = new Vec3(target.getX(), target.getY(), target.getZ()).minus(nodePos).normalise();
-
-    // model-forward in head local space (adjust if your model uses different axis)
-    const forward = new Vec3(0, 0, 1);
-
-    // build quaternion rotating forward -> dir (this is world-aligned rotation)
-    const q = Quaternion.fromUnitVectors(forward, dir);
-
-    // convert quaternion to rotation matrix
-    const rotMat = q.toMatrix4();
-
-    // rotMat is a pure rotation; keep translation zero for local override
-    rotMat.setTranslation([0, 0, 0]);
-    return rotMat;
+  computeLocalRotationMatrixQuaternion(yawDeg = 0, pitchDeg = 0) {
+    const rot = new Mat4().identity();
+    rot.rotate(yawDeg, 0, 1, 0); // yaw around Y (degrees)
+    rot.rotate(pitchDeg, 1, 0, 0); // pitch around X (degrees)
+    rot.setTranslation([0, 0, 0]); // ensure pure rotation
+    return rot;
   }
 
   onMouseMove = async (mouse) => {

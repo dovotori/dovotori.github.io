@@ -1,6 +1,11 @@
 export default {
   slug: 'rig',
-  shaders: ['/wgsl/vertex/v_gltf_rig.js', '/wgsl/fragment/f_gltf_rig.js'],
+  shaders: [
+    '/wgsl/vertex/v_gltf_rig.js',
+    '/wgsl/fragment/f_gltf_rig.js',
+    '/wgsl/vertex/v_model_camera.js',
+    '/wgsl/fragment/f_simple.js',
+  ],
   // assets: ['/gltf/paysage.gltf'],
   // assets: ['/gltf/distributedInstances.gltf'],
   assets: ['/gltf/perso.glb'],

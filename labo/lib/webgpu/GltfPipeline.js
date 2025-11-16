@@ -429,7 +429,6 @@ export class GltfPipeline {
   };
 
   getNodeAbsoluteMatrix(key) {
-    console.log('getNodeAbsoluteMatrix', key, this.nodesToDraw);
     return this.nodesToDraw.get(key).matrix;
   }
 
