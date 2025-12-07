@@ -108,6 +108,22 @@ export default class extends Objectif {
     return { origin: near, dir };
   }
 
+  /**
+   * Project a world-space Vec3 to NDC (x,y in [-1..1], z in [0..1]).
+   * Relies on Vec3.multiplyMatrix(mat) performing the homogeneous transform + perspective divide.
+   */
+  worldToNDC(worldVec) {
+    const vp = this.getViewProjection(); // Mat4
+    return new Vec3(worldVec.getX(), worldVec.getY(), worldVec.getZ()).multiplyMatrix(vp);
+  }
+
+  worldToRelativeScreen(worldVec, screenSize) {
+    const ndc = this.worldToNDC(worldVec);
+    const x = (ndc.getX() * 0.5 + 0.5) * screenSize.width;
+    const y = (1.0 - (ndc.getY() * 0.5 + 0.5)) * screenSize.height;
+    return { x, y };
+  }
+
   getIdentity() {
     return this.matIdentity;
   }

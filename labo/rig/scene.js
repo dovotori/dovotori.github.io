@@ -131,6 +131,14 @@ export default class Scene extends WebgpuScene {
     // quat.rotateX(time * 0.001);
     // this.model.multiply(quat.toMatrix4());
 
+    const matrix = this.gltfPipeline.getAbsoluteAnimatedMatrix(0);
+    const target = new Vec3().multiplyMatrix(matrix);
+    const screenPos = this.camera.worldToRelativeScreen(target, this.canvasSize);
+    const line2d = document.getElementById('line');
+    if (line2d) {
+      line2d.setAttribute('d', `M${this.canvasSize.width} ${0} L${screenPos.x} ${screenPos.y}`);
+    }
+
     this.gltfPipeline.updateAnimations(time);
   }
 
@@ -216,14 +224,14 @@ export default class Scene extends WebgpuScene {
 
     // v1 = target - head
     const v1 = new Vec3(target.getX(), target.getY(), target.getZ()).minus(headPos);
-    if (v1.length() === 0) return { angleRad: 0, angleDeg: 0, sign: 0 };
+    if (v1.length() === 0) return;
     v1.normalise();
 
     // v2 = camera - head
     const camArr = this.camera.getPosition();
     const camPos = new Vec3(camArr[0], camArr[1], camArr[2]);
     const v2 = camPos.minus(headPos);
-    if (v2.length() === 0) return { angleRad: 0, angleDeg: 0, sign: 0 };
+    if (v2.length() === 0) return;
     v2.normalise();
 
     const dot = Math.max(-1, Math.min(1, v1.dot(v2)));
