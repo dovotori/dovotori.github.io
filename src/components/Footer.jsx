@@ -1,9 +1,8 @@
-import styled from "styled-components";
-
 import license from "Assets/img/cclicense80x15.png";
-import ToggleMode from "./ToggleMode";
+import styled from "styled-components";
 import availablesLang from "../constants/locales";
 import SocialLinks from "./SocialLinks";
+import ToggleMode from "./ToggleMode";
 
 const Wrap = styled.div`
   padding: 2em 4%;

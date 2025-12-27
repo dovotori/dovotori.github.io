@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState, useRef } from "react";
-import styled, { keyframes, css } from "styled-components";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import styled, { css, keyframes } from "styled-components";
 
 import Toggle from "./Toggle";
 
@@ -36,7 +36,7 @@ const TransitionEffect = styled.div`
   z-index: -1;
   width: 100%;
   height: 100%;
-  background-color: ${(p) => (p.isDarkMode ? "#fff" : "#222")};
+  background-color: ${(p) => (p.$isDarkMode ? "#fff" : "#222")};
 `;
 
 const Circle = styled.div`
@@ -53,6 +53,8 @@ const Circle = styled.div`
 const ToggleMode = ({ isDarkMode, toggleTheme, texts }) => {
   const [isModeTransition, setIsModeTransition] = useState(false);
   const refTransition = useRef(null);
+  const uid = useId();
+  const toggleId = `themeMode-${uid}`;
 
   const reset = useCallback(() => {
     setIsModeTransition(false);
@@ -61,7 +63,7 @@ const ToggleMode = ({ isDarkMode, toggleTheme, texts }) => {
   const onClick = useCallback(() => {
     toggleTheme();
     setIsModeTransition(true);
-  }, [isDarkMode]);
+  }, [toggleTheme]);
 
   useEffect(() => {
     if (refTransition.current) {
@@ -72,17 +74,17 @@ const ToggleMode = ({ isDarkMode, toggleTheme, texts }) => {
         refTransition.current.removeEventListener("animationend", reset, false);
       }
     };
-  }, [isModeTransition]);
+  }, [reset]);
 
   return (
     <>
-      <Toggle id="themeMode" onClick={onClick} checked={isDarkMode} />
-      <Span htmlFor="themeMode">
+      <Toggle id={toggleId} onClick={onClick} checked={isDarkMode} />
+      <Span htmlFor={toggleId}>
         {isDarkMode ? texts.lightMode : texts.darkMode}
       </Span>
       {isModeTransition &&
         createPortal(
-          <TransitionEffect isDarkMode={isDarkMode}>
+          <TransitionEffect $isDarkMode={isDarkMode}>
             <Circle ref={refTransition} />
           </TransitionEffect>,
           document.body,

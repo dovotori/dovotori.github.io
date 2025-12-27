@@ -71,26 +71,24 @@ const MainRoutes = () => {
   const isTouchDevice = getIsTouchDevice();
   return (
     <Router>
-      <>
-        <MinHeight className="min-height">
-          <Routes>
-            <Route path="/qrcode" exact element={<BackButton />} />
-            <Route path="/about" exact element={<Common />} />
-            <Route path="/category/:slug" exact element={<Common />} />
-            <Route path="/" exact element={<Common />} />
-            <Route
-              path="/project/:slug"
-              exact
-              element={<ProjectCommonContainer />}
-            />
-          </Routes>
-          <TransitionRoute isTouchDevice={isTouchDevice}>
-            {routes.map(renderRoute)}
-            <Route path="*" element={<RedirectionHome />} />
-          </TransitionRoute>
-        </MinHeight>
-        <FooterContainer />
-      </>
+      <MinHeight className="min-height">
+        <Routes>
+          <Route path="/qrcode" exact element={<BackButton />} />
+          <Route path="/about" exact element={<Common />} />
+          <Route path="/category/:slug" exact element={<Common />} />
+          <Route path="/" exact element={<Common />} />
+          <Route
+            path="/project/:slug"
+            exact
+            element={<ProjectCommonContainer />}
+          />
+        </Routes>
+        <TransitionRoute isTouchDevice={isTouchDevice}>
+          {routes.map(renderRoute)}
+          <Route path="*" element={<RedirectionHome />} />
+        </TransitionRoute>
+      </MinHeight>
+      <FooterContainer />
     </Router>
   );
 };
