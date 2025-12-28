@@ -25,7 +25,7 @@ const configPromise = async (env, options, name = process.env.NAME || 'labo') =>
       rules,
     },
     resolve: {
-      extensions: ['.js'],
+      extensions: ['.ts', '.tsx', '.js', '.jsx'],
       alias,
     },
     plugins: [

@@ -50,7 +50,7 @@ module.exports = {
     rules,
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
     alias,
   },
   plugins,

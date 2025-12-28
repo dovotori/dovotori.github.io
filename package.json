@@ -9,6 +9,7 @@
 	},
 	"license": "CC-BY-4.0",
 	"scripts": {
+		"dev": "npm run start & npm run storybook",
 		"start": "webpack serve --config webpack/dev.js",
 		"build": "webpack --config webpack/prod.js",
 		"clean": "node scripts/cleanBuild.js",
@@ -27,7 +28,8 @@
 		"deploy": "gh-pages -d build --remote origin",
 		"release": "node scripts/release.js",
 		"storybook": "storybook dev -p 6006 --no-open",
-		"build-storybook": "storybook build"
+		"build-storybook": "storybook build",
+		"typecheck": "tsc --noEmit"
 	},
 	"engines": {
 		"node": ">=22.1.0"
@@ -98,7 +100,12 @@
 		"storybook": "^8.5.2",
 		"webpack-bundle-analyzer": "^4.10.2",
 		"webpack-dev-server": "^5.2.0",
-		"webrtc-adapter": "^9.0.1"
+		"webrtc-adapter": "^9.0.1",
+		"typescript": "^5.5.2",
+		"ts-loader": "^9.4.4",
+		"@types/react": "^18.2.24",
+		"@types/react-dom": "^18.2.8",
+		"@types/node": "^20.5.3"
 	},
 	"main": "src/index.js",
 	"repository": {

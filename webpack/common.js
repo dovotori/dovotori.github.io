@@ -50,6 +50,16 @@ const optimization = {
 
 const rules = [
   {
+    test: /\.(ts|tsx)$/i,
+    exclude: /node_modules/,
+    use: {
+      loader: 'ts-loader',
+      options: {
+        transpileOnly: true,
+      },
+    },
+  },
+  {
     test: /\.(js|jsx)$/i,
     exclude: /node_modules/,
     loader: 'babel-loader',

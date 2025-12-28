@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import { loading, blink } from "../themes/animations";
+import { loading, blink } from '../themes/animations';
 
 const Div = styled.div`
   position: absolute;
@@ -14,7 +14,7 @@ const Div = styled.div`
 `;
 
 const Bars = styled.div.attrs({
-  className: "loader",
+  className: 'loader',
 })`
   position: absolute;
   width: 20px;
@@ -27,7 +27,7 @@ const Bars = styled.div.attrs({
   margin: 2em 0;
 `;
 
-const Bar = styled.div`
+const Bar = styled.div<{ delay: number }>`
   position: absolute;
   left: 0;
   width: 100%;
@@ -49,7 +49,7 @@ const Blink = styled.span`
   color: ${(p) => p.theme.primary};
 `;
 
-const Loader = ({ className, $colorType }) => (
+const Loader = ({ className }: { className?: string }) => (
   <Div className={className}>
     {/* <Bars>
       {[0, 1, 2, 3].map((idx) => (
