@@ -65,16 +65,18 @@ const ToggleMode = ({ isDarkMode, toggleTheme, texts }) => {
     setIsModeTransition(true);
   }, [toggleTheme]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: isModeTransition
   useEffect(() => {
-    if (refTransition.current) {
-      refTransition.current.addEventListener("animationend", reset, false);
+    const el = refTransition.current;
+    if (el) {
+      el.addEventListener("animationend", reset, false);
     }
     return () => {
-      if (refTransition.current) {
-        refTransition.current.removeEventListener("animationend", reset, false);
+      if (el) {
+        el.removeEventListener("animationend", reset, false);
       }
     };
-  }, [reset]);
+  }, [reset, isModeTransition]);
 
   return (
     <>
