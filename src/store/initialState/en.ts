@@ -1,10 +1,11 @@
+import type { MyState } from "src/types";
 import { Locales } from "../../constants/locales";
 import getLocalCategories from "./getLocalCategories";
 import getLocalPosts from "./getLocalPosts";
 import getLocalSkills from "./getLocalSkills";
 import getLocalTags from "./getLocalTags";
 
-const initialState = {
+const initialState: MyState = {
   categories: getLocalCategories(Locales.EN),
   tags: getLocalTags(Locales.EN),
   entries: getLocalPosts(Locales.EN),
@@ -71,6 +72,7 @@ const initialState = {
           startDate: 2016,
           endDate: 2022,
           text: "Front-end developer at Winamax",
+          location: "Paris, France",
           tasks: [
             "betting web application development",
             "fantasy sport web application development",
@@ -81,6 +83,7 @@ const initialState = {
           startDate: 2014,
           endDate: 2016,
           text: "Co-managing director of Pix 21, web design agency",
+          location: "Paris, France",
           tasks: [
             "websites production",
             "visual identities production",
@@ -91,6 +94,7 @@ const initialState = {
           startDate: 2013,
           endDate: 2014,
           text: "Graphic designer at Reporters without borders",
+          location: "Paris, France",
           tasks: [
             "interactive maps production",
             "edition of association report",
@@ -100,6 +104,7 @@ const initialState = {
           startDate: 2012,
           endDate: 2012,
           text: "Semester at Ideas Lab Atomic Energic Center of Grenoble",
+          location: "Grenoble, France",
           tasks: [
             "research and design development with inovative technologies",
             "collaborative work with engineers",
@@ -109,6 +114,7 @@ const initialState = {
           startDate: 2009,
           endDate: 2009,
           text: "Internship and missions at Atelier des giboulées, graphic design agency",
+          location: "Paris, France",
           tasks: [
             "printed design",
             "holding client meetings to elaborate projects specifications",

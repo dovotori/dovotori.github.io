@@ -1,3 +1,5 @@
+import { Locales } from "../../constants/locales";
+import type { Locale, MyState } from "../../types";
 import chart from "./chart";
 
 function transformLabels(node, locale) {
@@ -25,4 +27,5 @@ function transformLabels(node, locale) {
   return transformed;
 }
 
-export default (locale) => transformLabels(chart, locale);
+export default (locale: Locale): MyState["cv"]["skills"] =>
+  transformLabels(chart, locale);

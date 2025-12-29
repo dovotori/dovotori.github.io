@@ -1,4 +1,5 @@
-import { CAT_DESIGN, CAT_CODE, CAT_BLOG } from "../../constants/categories";
+import type { Locale, MyState } from "src/types";
+import { CAT_BLOG, CAT_CODE, CAT_DESIGN } from "../../constants/categories";
 import { Locales } from "../../constants/locales";
 
 const categories = {
@@ -28,7 +29,7 @@ const categories = {
   },
 };
 
-export default (locale) =>
+export default (locale: Locale): MyState["categories"] =>
   [CAT_DESIGN, CAT_CODE, CAT_BLOG].reduce((acc, cur) => {
     return {
       ...acc,

@@ -1,10 +1,11 @@
+import type { MyState } from "src/types";
 import { Locales } from "../../constants/locales";
 import getLocalCategories from "./getLocalCategories";
 import getLocalPosts from "./getLocalPosts";
 import getLocalSkills from "./getLocalSkills";
 import getLocalTags from "./getLocalTags";
 
-const initialState = {
+const initialState: MyState = {
   categories: getLocalCategories(Locales.JP),
   entries: getLocalPosts(Locales.JP),
   tags: getLocalTags(Locales.JP),
@@ -61,6 +62,7 @@ const initialState = {
           startDate: 2022,
           endDate: 2025,
           text: "Scene株式会社でフロントエンドの開発者",
+          location: "東京、日本",
           tasks: [
             "組立説明書アプリケーションのために複数の3D機能を開発",
             "データの正確性を確保するために、ピクセル比較を使用したエンドツーエンドテストを実装",
@@ -70,6 +72,7 @@ const initialState = {
           startDate: 2016,
           endDate: 2022,
           text: "Winamaxというスポーツ賭け事会社でフロントエンドの開発者",
+          location: "パリ、フランス",
           tasks: [
             "ベッティングWebアプリケーションの開発",
             "ファンタジースポーツWebアプリケーションの開発",
@@ -79,6 +82,7 @@ const initialState = {
         {
           startDate: 2014,
           endDate: 2016,
+          location: "パリ、フランス",
           text: "ウェブ代理店会社Pix 21の起業共同マネージャー、グラフィックデザインとウェブ開発の責任者",
           tasks: [
             "ウェブサイトの開発と展開",
@@ -90,6 +94,7 @@ const initialState = {
         {
           startDate: 2013,
           endDate: 2014,
+          location: "パリ、フランス",
           text: "Reporters sans frontières協会のグラフィックデザイナー",
           tasks: [
             "オンライン で インタラクティブマップ の 作成",
@@ -99,6 +104,7 @@ const initialState = {
         {
           startDate: 2012,
           endDate: 2012,
+          location: "グルノーブル、フランス",
           text: "グルノーブルに研究所のCEA Ideas Lab学期をしました",
           tasks: [
             "革新的な技術の研究とプロトタイピング",
@@ -108,6 +114,7 @@ const initialState = {
         {
           startDate: 2009,
           endDate: 2009,
+          location: "パリ、フランス",
           text: "コンサルティングおよびグラフィックデザインエージェンシーのatelier des Gibouléesの会社でビジネスインターンシップをしました",
           tasks: [
             "創生 / ページ組み / コミュニケーション文書とテンプレートの印刷管理",
