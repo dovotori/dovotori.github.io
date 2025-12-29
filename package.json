@@ -32,7 +32,7 @@
     "typecheck": "tsc --noEmit"
   },
   "engines": {
-    "node": ">=22.1.0"
+    "node": ">=22.13.1"
   },
   "browserslist": "> 0.25%, not dead",
   "dependencies": {
