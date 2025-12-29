@@ -25,7 +25,7 @@ const useFetchJs = (name, hasJs = true) => {
     } else {
       setPending(false);
     }
-  }, [name]);
+  }, [name, hasJs]);
 
   return { pending, js, error };
 };

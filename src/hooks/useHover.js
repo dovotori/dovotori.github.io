@@ -1,10 +1,10 @@
-import { useRef, useState, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const useHover = () => {
   const [value, setValue] = useState(false);
   const ref = useRef(null);
-  const handleMouseOver = () => setValue(true);
-  const handleMouseOut = () => setValue(false);
+  const handleMouseOver = useCallback(() => setValue(true), []);
+  const handleMouseOut = useCallback(() => setValue(false), []);
 
   useEffect(
     () => {
@@ -21,7 +21,7 @@ const useHover = () => {
       return null;
     },
 
-    [ref.current], // Recall only if ref changes
+    [handleMouseOver, handleMouseOut] // Recall only if ref changes
   );
 
   return [ref, value];

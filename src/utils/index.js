@@ -2,23 +2,18 @@ import availablesLang from "../constants/locales";
 
 export const getSelectedCategory = (categories, category) => {
   if (category) {
-    const match = Object.keys(categories).filter(
-      (id) => category === categories[id].slug,
-    )[0];
+    const match = Object.keys(categories).filter((id) => category === categories[id].slug)[0];
     return match ? parseInt(match, 10) : null;
   }
   return null;
 };
 
 export const isTouchDevice = () =>
-  "ontouchstart" in window ||
-  navigator.MaxTouchPoints > 0 ||
-  navigator.msMaxTouchPoints > 0;
+  "ontouchstart" in window || navigator.MaxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
 
 export const getEnvPath = (path) => `${process.env.ASSET_PATH}${path}`;
 export const getTeaserPath = (slug) => getEnvPath(`/img/teasers/${slug}.png`);
-export const getProjectImagePath = (slug, idx) =>
-  getEnvPath(`/img/${slug}/${slug}-${idx}.jpg`);
+export const getProjectImagePath = (slug, idx) => getEnvPath(`/img/${slug}/${slug}-${idx}.jpg`);
 
 export const getColorType = (category) => {
   switch (category) {
@@ -26,20 +21,16 @@ export const getColorType = (category) => {
       return 0;
     case 2:
       return 2;
-    case 0:
     default:
       return 1;
   }
 };
 
-export const capitalize = (string) =>
-  string.charAt(0).toUpperCase() + string.slice(1);
+export const capitalize = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
 export const getLocationHash = () => {
   const locationHash = window.location.hash.replace("#", "").toLowerCase();
-  return availablesLang.map((l) => l.id).indexOf(locationHash) !== -1
-    ? locationHash
-    : null;
+  return availablesLang.map((l) => l.id).indexOf(locationHash) !== -1 ? locationHash : null;
 };
 
 export const parseCsv = (string) => {
@@ -52,14 +43,13 @@ export const parseCsv = (string) => {
         ...acc,
         [cur]: l[index] !== "" ? l[index] : null,
       }),
-      {},
+      {}
     );
   });
 };
 
 export const mapFromRange = (valeur, minRef, maxRef, minDest, maxDest) => {
-  let result =
-    minDest + ((valeur - minRef) * (maxDest - minDest)) / (maxRef - minRef);
+  let result = minDest + ((valeur - minRef) * (maxDest - minDest)) / (maxRef - minRef);
   if (result < Math.min(minDest, maxDest)) {
     result = Math.min(minDest, maxDest);
   }
@@ -84,7 +74,7 @@ export const storage = {
         sessionStorage.setItem(key, JSON.stringify(value));
       }
     } catch (e) {
-      console.debug("Can't access session storage");
+      console.debug("Can't access session storage", e);
     }
   },
   getItem: (key) => {
@@ -92,15 +82,15 @@ export const storage = {
     try {
       item = sessionStorage.getItem(key);
     } catch (e) {
-      console.debug("Can't access session storage");
+      console.debug("Can't access session storage", e);
     }
     return item !== null && item !== undefined ? JSON.parse(item) : null;
   },
 };
 
 export const chunkArray = (arr, size) =>
-  Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
-    arr.slice(i * size, i * size + size),
+  Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
+    arr.slice(i * size, i * size + size)
   );
 
 export const timeout = (ms) =>
