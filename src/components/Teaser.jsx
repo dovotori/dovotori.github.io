@@ -20,7 +20,7 @@ const StyledLink = styled(Link).attrs({
   box-shadow: ${(p) => (p.$isHover ? `0 0 1em ${p.theme.backgroundHighlight}` : "none")};
   transform: ${(p) => {
     if (p.$isVisible) {
-      return p.$isHover && !p.isTouchDevice ? "scale(1.2)" : "none";
+      return p.$isHover && !p.isTouchDevice ? "scale(1.2)" : "scale(1.01)";
     }
     return "translateY(20%)";
   }};

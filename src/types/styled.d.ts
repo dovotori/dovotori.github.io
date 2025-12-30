@@ -13,6 +13,7 @@ declare module "styled-components" {
     background: string;
     backgroundHighlight: string;
     backgroundSubtleGradient: string;
+    dark: string;
     midl: string;
     light: string;
     text: string;

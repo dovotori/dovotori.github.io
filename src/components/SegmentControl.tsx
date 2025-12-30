@@ -53,9 +53,12 @@ export const SegmentControl = ({
   const wrapRef = useRef<HTMLDivElement>(null);
   const segmentRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
   const [markerStyle, setMarkerStyle] = useState({ left: 0, width: 0 });
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+
+  const activeId = hoveredId ?? selectedId;
 
   useEffect(() => {
-    const selectedElement = segmentRefs.current.get(selectedId);
+    const selectedElement = segmentRefs.current.get(activeId);
     const wrapElement = wrapRef.current;
 
     if (selectedElement && wrapElement) {
@@ -67,7 +70,7 @@ export const SegmentControl = ({
         width: selectedRect.width,
       });
     }
-  }, [selectedId]);
+  }, [activeId]);
 
   return (
     <Wrap className={className} ref={wrapRef}>
@@ -80,6 +83,8 @@ export const SegmentControl = ({
           }}
           $selected={item.id === selectedId}
           onClick={() => onClick(item.id)}
+          onMouseEnter={() => setHoveredId(item.id)}
+          onMouseLeave={() => setHoveredId(null)}
         >
           {item.label}
         </Segment>
