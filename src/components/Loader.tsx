@@ -1,6 +1,7 @@
-import styled from 'styled-components';
+import { useEffect, useState } from "react";
+import styled from "styled-components";
 
-import { loading, blink } from '../themes/animations';
+import { blink } from "../themes/animations";
 
 const Div = styled.div`
   position: absolute;
@@ -13,54 +14,52 @@ const Div = styled.div`
   align-items: center;
 `;
 
-const Bars = styled.div.attrs({
-  className: 'loader',
-})`
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  top: 50%;
-  left: 50%;
-  transform: translate3d(-50%, -50%, 0) rotate(45deg);
-  overflow: hidden;
-  opacity: 0.3;
-  margin: 2em 0;
-`;
-
-const Bar = styled.div<{ delay: number }>`
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background-color: ${(p) => p.theme.getColor};
-  animation: ${loading} 1s ${(p) => p.theme.elastic} infinite;
-  animation-direction: alternate-reverse;
-  animation-delay: ${(p) => p.delay}ms;
-  transform-origin: 0 0;
-`;
-
-const Text = styled.div`
-  color: ${(p) => p.theme.light};
-  ${(p) => p.theme.monospace}
-  text-transform: uppercase;
-`;
 const Blink = styled.span`
   animation: ${blink} 1s linear infinite;
   color: ${(p) => p.theme.primary};
 `;
 
-const Loader = ({ className }: { className?: string }) => (
-  <Div className={className}>
-    {/* <Bars>
-      {[0, 1, 2, 3].map((idx) => (
-        <Bar key={idx} delay={idx * 100} style={{ top: `${idx * 5}px` }} $colorType={$colorType} />
-      ))}
-    </Bars> */}
-    <Text>
-      <Blink>_</Blink>
-      loading
-    </Text>
-  </Div>
-);
+const CharStream = styled.div`
+  color: ${(p) => p.theme.primary};
+  ${(p) => p.theme.monospace}
+  font-size: 1.2em;
+  letter-spacing: 2px;
+  min-width: 120px;
+  text-align: left;
+`;
+
+const CHARS = ["/", "-", "\\", "=", "<", ">", "+", "#"];
+const MAX_CHARS = 10;
+const INTERVAL_MS = 100;
+
+const getRandomChar = () => CHARS[Math.floor(Math.random() * CHARS.length)];
+
+const Loader = ({ className }: { className?: string }) => {
+  const [chars, setChars] = useState<string[]>([]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setChars((prev) => {
+        const newChar = getRandomChar();
+        const updated = [newChar, ...prev];
+        if (updated.length > MAX_CHARS) {
+          return updated.slice(0, MAX_CHARS);
+        }
+        return updated;
+      });
+    }, INTERVAL_MS);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <Div className={className}>
+      <CharStream>
+        <Blink>_</Blink>
+        {chars.join("")}
+      </CharStream>
+    </Div>
+  );
+};
 
 export default Loader;

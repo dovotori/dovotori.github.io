@@ -1,4 +1,6 @@
 import type { Locales } from "src/constants/locales";
+import type { css, RuleSet } from "styled-components";
+
 export type Locale = (typeof Locales)[keyof typeof Locales];
 
 type Labo = { hasJs?: boolean; noBackground?: boolean; hasHtml?: boolean };

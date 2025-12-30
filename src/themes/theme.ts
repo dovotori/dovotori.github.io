@@ -1,9 +1,6 @@
 import { css } from "styled-components";
 
-import stripes from "Assets/img/stripes.png";
-import stripesWhite from "Assets/img/stripesWhite.png";
-
-const getType = (p) => {
+const getType = (p: { colorType?: number; $colorType?: number }) => {
   const { colorType, $colorType } = p;
   if ($colorType !== undefined) {
     return $colorType;
@@ -40,6 +37,7 @@ const common = {
     }
   `,
   monospace: css`
+    font-family: monospace;
     letter-spacing: 0.2em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -57,17 +55,17 @@ const common = {
   // #ffffca
   // #c6eab2
   media: {
-    mobile: (...args) => css`
+    mobile: (...args: Parameters<typeof css>) => css`
       @media (max-width: 570px) {
         ${css(...args)};
       }
     `,
-    tablet: (...args) => css`
+    tablet: (...args: Parameters<typeof css>) => css`
       @media (max-width: 1020px) {
         ${css(...args)};
       }
     `,
-    desktop: (...args) => css`
+    desktop: (...args: Parameters<typeof css>) => css`
       @media (min-width: 1020px) {
         ${css(...args)};
       }
@@ -121,7 +119,6 @@ export const dark = {
   midl: "#666",
   light: "#bbb",
   text: "#fff",
-  stripes: stripesWhite,
   isLight: false,
   softGradient: "linear-gradient(180deg, #111, #222)",
 };
@@ -139,7 +136,6 @@ export const light = {
   midl: "#888",
   light: "#222",
   text: "#000",
-  stripes,
   isLight: true,
   softGradient: "linear-gradient(180deg, #ccc, #fff)",
 };
