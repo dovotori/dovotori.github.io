@@ -29,6 +29,7 @@ const StyledLink = styled(Link)`
   ${(p) => p.theme.monospace}
   ${(p) => p.theme.active}
   letter-spacing: 0.5em;
+  white-space: nowrap;
   &:hover {
     opacity: 1;
   }
