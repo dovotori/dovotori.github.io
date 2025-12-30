@@ -17,7 +17,7 @@ const initialState: MyState = {
     bulle: "詳しくへ",
     description: [
       "グラフィック設計を勉強しました。其の後ウェブ開発に趣味がありましたので自分で、養成しました。",
-      "javascriptは一番好きなツールに成りました。 経験をするためにJavascriptを使います。 例えばAPIcanvasで2D / 3D画像を作りました。",
+      "Javascriptは一番好きなツールに成りました。 経験をするためにJavascriptを使います。 例えばAPIcanvasで2D / 3D画像を作りました。",
       "沢山の可能性がありましたから此の知識を職場で、適用して、今勉強を続けます。",
     ],
   },

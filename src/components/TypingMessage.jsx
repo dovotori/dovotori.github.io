@@ -47,6 +47,8 @@ const TypingMessage = ({
   isLoop = false,
   delayLoop = 5000, // en ms
   delayLetter = 100, // en ms
+  trigger = 0, // increment to replay animation
+  triggerDebounce = 500, // debounce delay for trigger in ms
 }) => {
   const count = useRef(0);
   const lastFrame = useRef(Date.now());
@@ -55,6 +57,7 @@ const TypingMessage = ({
   const fromMessage = useRef(firstMessage);
   const toMessage = useRef(message);
   const mode = useRef(Modes.STOP);
+  const lastTriggerTime = useRef(0);
   const [displayMessage, setDisplayMessage] = useState(firstMessage);
 
   const randomChar = useCallback(
@@ -199,6 +202,29 @@ const TypingMessage = ({
     },
     [],
   );
+
+  // Replay animation when trigger changes (with throttle)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: only trigger on trigger change
+  useEffect(() => {
+    if (trigger > 0 && !isDisabled) {
+      const now = Date.now();
+      if (now - lastTriggerTime.current < triggerDebounce) return;
+      lastTriggerTime.current = now;
+
+      if (req.current) {
+        cancelAnimationFrame(req.current);
+      }
+      if (timeout.current) {
+        clearTimeout(timeout.current);
+      }
+      count.current = displayMessage.length;
+      fromMessage.current = displayMessage;
+      toMessage.current = message;
+      mode.current = Modes.DISAPPEAR;
+      lastFrame.current = now;
+      req.current = requestAnimationFrame(update);
+    }
+  }, [trigger]);
 
   return (
     <Wrap className={className} $isVertical={isVertical} $isCenter={isCenter}>

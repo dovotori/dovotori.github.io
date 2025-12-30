@@ -1,9 +1,10 @@
-import { Fragment } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import { getColorType } from "../utils";
 import Cross from "./Cross";
+import TypingMessage from "./TypingMessage";
 
 const Wrap = styled.div`
   text-align: center;
@@ -35,32 +36,55 @@ const StyledLink = styled(Link)`
   }
 `;
 
+const StyledTypingMessage = styled(TypingMessage)`
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
+`;
+
 const CategoriesFilters = ({
   selected,
   className,
   categories,
   onClickCategory = () => {},
-}) => (
-  <Wrap className={className}>
-    {Object.keys(categories).map((categoryId, index) => {
-      const isLinkSelected = selected === parseInt(categoryId, 10);
-      return (
-        <Fragment key={categories[categoryId].slug}>
-          {index !== 0 && <Cross $colorType={0} />}
-          <StyledLink
-            to={
-              isLinkSelected ? "/" : `/category/${categories[categoryId].slug}`
-            }
-            selected={isLinkSelected}
-            $colorType={getColorType(parseInt(categoryId, 10))}
-            onClick={onClickCategory(categoryId)}
-          >
-            {categories[categoryId].label}
-          </StyledLink>
-        </Fragment>
-      );
-    })}
-  </Wrap>
-);
+}) => {
+  const triggers = useRef({});
+  const [, forceUpdate] = useState(0);
+
+  const handleMouseEnter = (categoryId) => {
+    triggers.current[categoryId] = (triggers.current[categoryId] || 0) + 1;
+    forceUpdate((n) => n + 1);
+  };
+
+  return (
+    <Wrap className={className}>
+      {Object.keys(categories).map((categoryId, index) => {
+        const isLinkSelected = selected === parseInt(categoryId, 10);
+        return (
+          <Fragment key={categories[categoryId].slug}>
+            {index !== 0 && <Cross $colorType={0} />}
+            <StyledLink
+              to={
+                isLinkSelected
+                  ? "/"
+                  : `/category/${categories[categoryId].slug}`
+              }
+              selected={isLinkSelected}
+              $colorType={getColorType(parseInt(categoryId, 10))}
+              onClick={onClickCategory(categoryId)}
+              onMouseEnter={() => handleMouseEnter(categoryId)}
+            >
+              <StyledTypingMessage
+                message={categories[categoryId].label}
+                firstMessage={categories[categoryId].label}
+                delayLetter={30}
+                trigger={triggers.current[categoryId] || 0}
+              />
+            </StyledLink>
+          </Fragment>
+        );
+      })}
+    </Wrap>
+  );
+};
 
 export default CategoriesFilters;
