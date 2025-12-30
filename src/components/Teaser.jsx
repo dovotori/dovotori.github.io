@@ -13,11 +13,10 @@ const StyledLink = styled(Link).attrs({
   position: relative;
   overflow: hidden;
   display: inline-block;
-  margin: 1em;
   width: 400px;
   height: 100px;
-  opacity: 1;
-  box-shadow: 0 0 1em ${(p) => p.theme.backgroundHighlight};
+  opacity: ${(p) => (p.$isVisible ? 1 : 0)};
+  box-shadow: ${(p) => (p.$isHover ? `0 0 1em ${p.theme.backgroundHighlight}` : "none")};
   transform: ${(p) => {
     if (p.$isVisible) {
       return p.$isHover && !p.isTouchDevice ? "scale(1.2)" : "none";

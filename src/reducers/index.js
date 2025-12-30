@@ -1,15 +1,15 @@
-import { SET_CATEGORY, SET_LANG, TOGGLE_THEME } from '../constants/actionsTypes';
-import availablesLang from '../constants/locales';
-import { en, fr, jp } from '../store/initialState';
-import { getLocationHash, isTouchDevice, storage } from '../utils';
+import { SET_CATEGORY, SET_LANG, TOGGLE_THEME } from "../constants/actionsTypes";
+import availablesLang from "../constants/locales";
+import { en, fr, jp } from "../store/initialState";
+import { getLocationHash, isTouchDevice, storage } from "../utils";
 
 const CONTENTS_MAP = { en, jp, fr };
 
-const defaultLang = getLocationHash() || storage.getItem('lang') || availablesLang[1].id;
+const defaultLang = getLocationHash() || storage.getItem("lang") || availablesLang[1].id;
 
-document.documentElement.setAttribute('lang', defaultLang);
+document.documentElement.setAttribute("lang", defaultLang);
 
-const storedDarkMode = storage.getItem('dark');
+const storedDarkMode = storage.getItem("dark");
 
 const INITIAL_DEVICE = {
   isTouch: isTouchDevice(),
@@ -31,7 +31,7 @@ export function mainReducer(state, action) {
   switch (action.type) {
     case TOGGLE_THEME: {
       const isDarkMode = !state.device.isDarkMode;
-      storage.setItem('dark', isDarkMode);
+      storage.setItem("dark", isDarkMode);
       return {
         ...state,
         device: { ...state.device, isDarkMode },
@@ -50,7 +50,7 @@ export function mainReducer(state, action) {
         ...state,
         device: {
           ...state.device,
-          category: state.category === action.flag ? -1 : action.flag,
+          category: state.device.category === action.flag ? -1 : action.flag,
         },
       };
     }
