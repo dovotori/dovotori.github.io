@@ -13,7 +13,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {},
+    "types": ["@webgpu/types"]
   },
   "include": ["src", "labo", "src/types/styled.d.ts"],
   "exclude": ["node_modules", "build"]
