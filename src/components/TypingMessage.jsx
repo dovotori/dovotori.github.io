@@ -1,4 +1,4 @@
-import { useRef, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 const Wrap = styled.div`
@@ -49,7 +49,7 @@ const TypingMessage = ({
   delayLetter = 100, // en ms
 }) => {
   const count = useRef(0);
-  const lastFrame = useRef(new Date().getTime());
+  const lastFrame = useRef(Date.now());
   const req = useRef(null);
   const timeout = useRef(null);
   const fromMessage = useRef(firstMessage);
@@ -63,23 +63,23 @@ const TypingMessage = ({
   );
   const randomStr = useCallback(
     (length) => new Array(length).fill(0).map(randomChar).join(""),
-    [],
+    [randomChar],
   );
   const randomCurrentStr = useCallback(
     (str) =>
       str
         .split("")
-        .map((car, i) => {
+        .map((car) => {
           if (car === " ") return car;
           if (Math.random() > 0.5) return randomChar();
           return car;
         })
         .join(""),
-    [],
+    [randomChar],
   );
 
   const update = useCallback(() => {
-    const now = new Date().getTime();
+    const now = Date.now();
     const milli = now - lastFrame.current;
     if (milli < delayLetter) {
       req.current = requestAnimationFrame(update);
@@ -112,7 +112,6 @@ const TypingMessage = ({
         }
         break;
       }
-      case Modes.STOP:
       default:
         break;
     }
@@ -131,8 +130,9 @@ const TypingMessage = ({
         req.current = requestAnimationFrame(update);
       }, delayLoop);
     }
-  }, [setDisplayMessage]);
+  }, [isLoop, delayLoop, delayLetter, randomStr, randomCurrentStr]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: displayMessage
   useEffect(() => {
     if (timeout.current) {
       clearTimeout(timeout.current);
@@ -159,7 +159,7 @@ const TypingMessage = ({
       if (nextMode !== Modes.STOP) {
         fromMessage.current = old;
         toMessage.current = message;
-        lastFrame.current = new Date().getTime();
+        lastFrame.current = Date.now();
         mode.current = nextMode;
         req.current = requestAnimationFrame(update);
       }
@@ -169,7 +169,7 @@ const TypingMessage = ({
         cancelAnimationFrame(req.current);
       }
     };
-  }, [message]);
+  }, [message, isDisabled, update]);
 
   useEffect(() => {
     if (timeout.current) {
@@ -186,7 +186,7 @@ const TypingMessage = ({
         clearTimeout(timeout.current);
       }
     };
-  }, [isLoop]);
+  }, [isLoop, delayLoop, update]);
 
   useEffect(
     () => () => {
