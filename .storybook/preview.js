@@ -1,7 +1,7 @@
 import { HashRouter as Router } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
-import { themes } from "storybook/theming";
 import { dark } from "../src/themes/theme";
+import theme from "./theme";
 
 import "../public/style/critical.css";
 
@@ -15,7 +15,7 @@ export const parameters = {
     },
   },
   docs: {
-    theme: themes.dark,
+    theme,
   },
 };
 

@@ -75,6 +75,7 @@
     "@storybook/addon-webpack5-compiler-swc": "^4.0.2",
     "@storybook/react": "^10.1.11",
     "@storybook/react-webpack5": "^10.1.11",
+    "@storybook/test": "^8.6.14",
     "@storybook/testing-library": "^0.2.2",
     "@types/node": "^25.0.3",
     "@types/react": "^19.2.7",

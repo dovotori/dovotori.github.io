@@ -11,7 +11,7 @@ const Wrap = styled.div`
   background: ${(p) => p.theme.backgroundSubtleGradient};
 `;
 
-const Segment = styled.button<{ $selected: boolean }>`
+const Segment = styled.button<{ $selected: boolean; $hovered: boolean }>`
   position: relative;
   z-index: 1;
   padding: 0 20px;
@@ -20,7 +20,7 @@ const Segment = styled.button<{ $selected: boolean }>`
   background: transparent;
   cursor: pointer;
   white-space: nowrap;
-  color: ${(p) => (p.$selected ? p.theme.background : p.theme.text)};
+  color: ${(p) => (p.$selected || p.$hovered ? p.theme.background : p.theme.text)};
   font-weight: ${(p) => (p.$selected ? 600 : 400)};
   transition: color 300ms ease-out;
   ${(p) => p.theme.monospace}
@@ -82,6 +82,7 @@ export const SegmentControl = ({
             if (el) segmentRefs.current.set(item.id, el);
           }}
           $selected={item.id === selectedId}
+          $hovered={item.id === hoveredId}
           onClick={() => onClick(item.id)}
           onMouseEnter={() => setHoveredId(item.id)}
           onMouseLeave={() => setHoveredId(null)}

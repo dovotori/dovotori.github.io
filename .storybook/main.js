@@ -18,12 +18,13 @@ const config = {
     "../src/components/stories/*.mdx",
     "../src/components/stories/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
+  staticDirs: ["../public"],
   addons: [
     "@storybook/addon-webpack5-compiler-swc",
     "@storybook/addon-onboarding",
     "@chromatic-com/storybook",
     "@storybook/addon-docs",
-    "@storybook/addon-a11y"
+    "@storybook/addon-a11y",
   ],
   framework: {
     name: "@storybook/react-webpack5",
