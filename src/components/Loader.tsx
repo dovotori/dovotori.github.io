@@ -22,7 +22,7 @@ const Blink = styled.span`
 const CharStream = styled.div`
   color: ${(p) => p.theme.primary};
   ${(p) => p.theme.monospace}
-  font-size: 1.2em;
+  font-family: monospace;
   letter-spacing: 2px;
   min-width: 120px;
   text-align: left;

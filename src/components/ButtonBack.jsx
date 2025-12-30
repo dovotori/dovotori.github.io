@@ -1,56 +1,72 @@
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-
 import { ReactComponent as BackArrow } from "Assets/svg/arrow.svg";
+import { Link } from "react-router-dom";
+import styled, { css, keyframes } from "styled-components";
 import useHover from "../hooks/useHover";
+
+const moveLeft = keyframes`
+  0% {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+`;
 
 const LINK = styled(Link)`
   position: relative;
   display: flex;
   width: 100%;
   margin: 2em auto;
-  padding: 1em 10px;
+  padding: 0.5em;
   border: solid 1px ${(p) => p.theme.getColor};
   box-shadow: 2px 2px 0 ${(p) => p.theme.getColor};
   max-width: 400px;
   -webkit-tap-highlight-color: ${(p) => p.theme.getColor};
+  overflow: hidden;
 
   ${(p) => p.theme.active}
+
+  background: ${(p) => (p.$isFocus ? p.theme.softGradient : "transparent")};
 `;
 
-const StyledBackArrow = styled(BackArrow)`
+const ArrowsContainer = styled.div`
   position: relative;
-  fill: ${(p) => p.theme.getColor};
-  width: auto;
-  height: 0.6em;
-  margin: 0 0.2em;
+  width: 100%;
+  display: flex;
+  align-items: center;
 `;
 
-const Fill = styled.div`
+const AnimatedArrow = styled(BackArrow)`
   position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  transition: transform 300ms ${(p) => p.theme.elastic};
-  background: ${(p) => p.theme.backgroundHighlight};
-  transform-origin: 100% 0;
-  transform: ${(p) => (p.$isFocus ? "none" : "scale(0, 1)")};
+  fill: ${(p) => p.theme.getColor};
+  height: 0.6em;
+  opacity: 0;
+  margin-left: ${(p) => p.$delay * 0.1}px;
+  
+  ${(p) =>
+    p.$isAnimating &&
+    css`
+      animation: ${moveLeft} 400ms ease-in-out forwards;
+      animation-delay: ${(p) => p.$delay}ms;
+    `}
 `;
 
 const Span = styled.span`
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translate3d(0, -50%, 0);
-  display: inline-block;
+  width: 100%;
   color: ${(p) => p.theme.getColor};
-  font-size: 0.8em;
   ${(p) => p.theme.monospace}
+  font-size: 0.8em;
+  letter-spacing: 0.5em;
+  text-align: right;
 `;
 
-const ButtonBack = ({ to, className, $colorType, text }) => {
+const ARROW_DELAYS = [0, 100, 200, 300, 400];
+
+const ButtonBack = ({ to, className, $colorType, label }) => {
   const [hoverRef, isHovered] = useHover();
+
   return (
     <LINK
       to={to || "/"}
@@ -59,9 +75,18 @@ const ButtonBack = ({ to, className, $colorType, text }) => {
       $colorType={$colorType}
       ref={hoverRef}
     >
-      <Fill $isFocus={isHovered} />
-      <StyledBackArrow $colorType={$colorType} />
-      <Span $colorType={$colorType}>{text}</Span>
+      <ArrowsContainer>
+        {isHovered &&
+          ARROW_DELAYS.map((delay) => (
+            <AnimatedArrow
+              key={delay}
+              $colorType={$colorType}
+              $isAnimating={isHovered}
+              $delay={delay}
+            />
+          ))}
+      </ArrowsContainer>
+      <Span $colorType={$colorType}>{label}</Span>
     </LINK>
   );
 };

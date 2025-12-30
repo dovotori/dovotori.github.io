@@ -28,6 +28,7 @@ const StyledLink = styled(Link)`
   text-transform: uppercase;
   ${(p) => p.theme.monospace}
   ${(p) => p.theme.active}
+  letter-spacing: 0.5em;
   &:hover {
     opacity: 1;
   }

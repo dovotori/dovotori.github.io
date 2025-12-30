@@ -1,6 +1,5 @@
-import styled from "styled-components";
-
 import { ReactComponent as QuoteIcon } from "Assets/svg/quote.svg";
+import styled from "styled-components";
 import CvContainer from "../containers/CvContainer";
 import { jiggle } from "./Animations";
 import Bloc from "./Bloc";
@@ -89,7 +88,7 @@ const About = ({ hello, isTouchDevice, back }) => (
       </MarginLeft>
       <MarginLeft isTouch={isTouchDevice}>
         <Center>
-          <StyledButtonBack isTouch={isTouchDevice} text={back} />
+          <StyledButtonBack isTouch={isTouchDevice} label={back} />
         </Center>
       </MarginLeft>
     </WrapContent>

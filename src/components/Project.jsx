@@ -65,7 +65,7 @@ const Project = ({ slug, images, colorType, labo, back }) => (
           </Images>
         </ImagesList>
       )}
-      <ButtonBack $colorType={null} text={back} />
+      <ButtonBack $colorType={null} label={back} />
     </WrapContent>
   </>
 );

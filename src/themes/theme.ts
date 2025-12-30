@@ -37,7 +37,6 @@ const common = {
     }
   `,
   monospace: css`
-    font-family: monospace;
     letter-spacing: 0.2em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
