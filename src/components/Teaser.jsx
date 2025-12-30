@@ -13,6 +13,7 @@ const StyledLink = styled(Link).attrs({
   position: relative;
   overflow: hidden;
   display: inline-block;
+  margin: 10px;
   width: 400px;
   height: 100px;
   opacity: ${(p) => (p.$isVisible ? 1 : 0)};
