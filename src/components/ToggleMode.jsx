@@ -9,22 +9,6 @@ const loadTransition = keyframes`
   100% { transform: translate3d(-50%, -50%, 0); }
 `;
 
-const commonItem = css`
-  position: relative;
-  padding: 0.4em;
-  margin: 0 1em;
-  text-transform: uppercase;
-  text-align: center;
-  min-width: 70px;
-  ${(p) => p.theme.monospace}
-  font-weight: normal;
-`;
-
-const Span = styled.label`
-  ${commonItem}
-  color: ${(p) => (p.isHighlight ? p.theme.primary : p.theme.light)};
-`;
-
 const animationLoad = css`
   animation: ${loadTransition} 800ms linear forwards;
 `;
@@ -80,10 +64,12 @@ const ToggleMode = ({ isDarkMode, toggleTheme, texts }) => {
 
   return (
     <>
-      <Toggle id={toggleId} onClick={onClick} checked={isDarkMode} />
-      <Span htmlFor={toggleId}>
-        {isDarkMode ? texts.lightMode : texts.darkMode}
-      </Span>
+      <Toggle
+        id={toggleId}
+        onClick={onClick}
+        checked={isDarkMode}
+        label={isDarkMode ? texts.lightMode : texts.darkMode}
+      />
       {isModeTransition &&
         createPortal(
           <TransitionEffect $isDarkMode={isDarkMode}>

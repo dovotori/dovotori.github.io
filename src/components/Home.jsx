@@ -1,8 +1,7 @@
 import styled from "styled-components";
-
-import Bloc from "./Bloc";
-import TeasersListContainer from "../containers/TeasersListContainer";
 import CategoriesFiltersContainer from "../containers/CategoriesFiltersContainer";
+import TeasersListContainer from "../containers/TeasersListContainer";
+import Bloc from "./Bloc";
 
 const StyledHome = styled(Bloc)`
   margin: 0 auto 20vh;

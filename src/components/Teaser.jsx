@@ -30,6 +30,14 @@ const StyledLink = styled(Link).attrs({
     transform 1s ${(p) => p.theme.elastic},
     box-shadow 800ms linear;
 
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 16px),
+    calc(100% - 16px) 100%,
+    0 100%
+  );
+
   ${(p) => p.theme.active}
   ${(p) => p.theme.media.mobile`margin: 5px auto; width: 100%; height: auto;`}
 `;

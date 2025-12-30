@@ -1,9 +1,8 @@
-import styled from "styled-components";
-
 import { ReactComponent as Github } from "Assets/svg/github.svg";
 import { ReactComponent as Gitlab } from "Assets/svg/gitlab.svg";
 import { ReactComponent as Linkedin } from "Assets/svg/linkedin.svg";
 import { ReactComponent as Mail } from "Assets/svg/mail.svg";
+import styled from "styled-components";
 
 const Wrap = styled.div`
   text-align: center;
@@ -41,13 +40,13 @@ const StyledGithub = styled(Github)`
 
 const SociaLinks = ({ className }) => (
   <Wrap className={className}>
-    <a href="https://gitlab.com/dovotori">
+    <a href="https://gitlab.com/dovotori" title="gitlab">
       <Gitlab />
     </a>
-    <a href="https://github.com/dovotori">
+    <a href="https://github.com/dovotori" title="github">
       <StyledGithub />
     </a>
-    <a href="https://jp.linkedin.com/in/dorian-ratovo">
+    <a href="https://jp.linkedin.com/in/dorian-ratovo" title="linkedin">
       <Linkedin />
     </a>
     <a href={`mailto:${process.env.MAIL}`} title="contact">

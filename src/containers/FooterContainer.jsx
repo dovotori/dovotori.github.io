@@ -10,7 +10,7 @@ export default () => {
     lightMode: content.lightMode,
   };
   const dispatchToggleTheme = () => dispatch(toggleTheme());
-  const dispatchSetLang = (lang) => () => {
+  const dispatchSetLang = (lang) => {
     dispatch(setLang(lang));
   };
   return (

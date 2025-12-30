@@ -12,6 +12,7 @@ declare module "styled-components" {
     tertiaryDark: string;
     background: string;
     backgroundHighlight: string;
+    backgroundSubtleGradient: string;
     midl: string;
     light: string;
     text: string;

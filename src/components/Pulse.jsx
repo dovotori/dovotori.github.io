@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 
 const pulse = keyframes`
@@ -21,8 +21,7 @@ const Circle = styled.div`
   height: 240px;
   top: calc(50% - 120px);
   left: calc(50% - 120px);
-  background: ${(p) => p.theme.backgroundHighlight};
-  background: linear-gradient(to right, #222, #333);
+  background: ${(p) => p.theme.backgroundSubtleGradient};
   transform-origin: center center;
   border-radius: 50%;
 `;
@@ -59,7 +58,7 @@ const Pulse = ({ count }) => {
         ref.current.removeEventListener("animationend", reset, false);
       }
     };
-  }, []);
+  }, [reset]);
 
   return (
     <>

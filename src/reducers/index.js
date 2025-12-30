@@ -41,7 +41,7 @@ export function mainReducer(state, action) {
       const newContent = CONTENTS_MAP[action.flag];
       return {
         ...state,
-        content: newContent || state,
+        content: newContent || state.content,
         device: { ...state.device, lang: action.flag },
       };
     }

@@ -1,6 +1,7 @@
 import license from "Assets/img/cclicense80x15.png";
 import styled from "styled-components";
 import availablesLang from "../constants/locales";
+import SegmentControl from "./SegmentControl";
 import SocialLinks from "./SocialLinks";
 import ToggleMode from "./ToggleMode";
 
@@ -36,6 +37,7 @@ const Div = styled.div`
 
 const Start = styled(Div)`
   justify-content: flex-start;
+  min-width: 200px;
 `;
 
 const Img = styled.img`
@@ -43,53 +45,6 @@ const Img = styled.img`
   width: 80px;
   height: 14px;
   margin: 0 0.4em;
-`;
-
-const Button = styled.button`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.4em;
-  margin: 0.4em;
-  text-transform: uppercase;
-  min-width: 80px;
-  ${(p) => p.theme.monospace}
-  ${(p) => p.theme.active}
-  font-weight: normal;
-  color: ${(p) => p.theme.light};
-  &:hover {
-    color: ${(p) => p.theme.text};
-    .line {
-      transform: none;
-    }
-  }
-`;
-
-const Line = styled.span`
-  display: inline-block;
-  width: 100%;
-  height: 1px;
-  background: ${(p) => p.theme.text};
-  z-index: 0;
-  transition: transform 300ms ease-out;
-  transform: ${(p) => (p.$isHighlight ? "none" : "scale(0)")};
-`;
-
-const LineLeft = styled(Line)`
-  transform-origin: right center;
-`;
-
-const LineRight = styled(Line)`
-  transform-origin: left center;
-`;
-
-const SimpleSpan = styled.span`
-  transition: background-color 0.2s ease-out;
-  padding: 0 0 0;
-  width: 100%;
-  flex-grow: 2;
-  white-space: nowrap;
 `;
 
 const StyledSocialLinks = styled(SocialLinks)`
@@ -105,21 +60,19 @@ const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => (
       <StyledSocialLinks />
     </Div>
     <Div>
-      {availablesLang.map((availableLang) => (
-        <Button key={availableLang.id} onClick={setLang(availableLang.id)}>
-          <LineLeft $isHighlight={availableLang.id === lang} className="line" />
-          <SimpleSpan>&#8202;{availableLang.short}</SimpleSpan>
-          <LineRight
-            $isHighlight={availableLang.id === lang}
-            className="line"
-          />
-        </Button>
-      ))}
-    </Div>
-    <Div>
       <a href="https://creativecommons.org/licenses/by/4.0/" title="license">
         <Img alt="license creative common" src={license} />
       </a>
+    </Div>
+    <Div>
+      <SegmentControl
+        items={availablesLang.map((availableLang) => ({
+          label: availableLang.short,
+          id: availableLang.id,
+        }))}
+        selectedId={lang}
+        onClick={setLang}
+      />
     </Div>
     <Start>
       <ToggleMode
