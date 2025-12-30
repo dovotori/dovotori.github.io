@@ -8,5 +8,5 @@ export default {
 const Template = (args) => <ButtonBack {...args} />;
 export const Primary = Template.bind({});
 Primary.args = {
-  text: "Back",
+  label: "Back",
 };

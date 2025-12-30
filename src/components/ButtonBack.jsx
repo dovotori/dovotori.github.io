@@ -20,6 +20,7 @@ const LINK = styled(Link)`
   width: 100%;
   margin: 2em auto;
   padding: 0.5em;
+  min-height: 40px;
   border: solid 1px ${(p) => p.theme.getColor};
   box-shadow: 2px 2px 0 ${(p) => p.theme.getColor};
   max-width: 400px;
