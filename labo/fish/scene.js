@@ -2,10 +2,6 @@ import WebgpuScene from "../lib/webgpu/WebgpuScene.js";
 import { Compute } from "./compute.js";
 
 export default class Scene extends WebgpuScene {
-  constructor(context, config) {
-    super(context, config);
-  }
-
   async setupAssets(assets) {
     const { programs } = await super.setupAssets(assets);
 

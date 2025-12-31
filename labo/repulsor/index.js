@@ -14,7 +14,6 @@ let cptHome = 0;
 let context = null;
 let proportionnelleDistance = 0;
 
-let windowRequestHome = null;
 let lastFrame = Date.now();
 
 const FPS = 1000 / 40;
@@ -121,7 +120,7 @@ export default async () => {
     springs = data.springs;
 
     window.addEventListener("mousemove", onMouseMove, false);
-    windowRequestHome = window.requestAnimationFrame(drawHome);
+    window.requestAnimationFrame(drawHome);
   };
   embedElem.src = getEnvPath("/svg/leaf3.svg"); // should not have curbs, and no group transforms
 
@@ -169,7 +168,7 @@ function drawHome() {
     lastFrame = now;
   }
 
-  windowRequestHome = window.requestAnimationFrame(drawHome);
+  window.requestAnimationFrame(drawHome);
 }
 
 function drawForme() {
