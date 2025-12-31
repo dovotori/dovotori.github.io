@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "npm run start & npm run storybook:dev",
     "start": "webpack serve --config webpack/dev.js",
-    "build": "webpack --config webpack/prod.js",
+    "build": "webpack --config webpack/prod.js & npm run storybook:build",
     "clean": "node scripts/cleanBuild.js",
     "labo:start": "cross-env NAME=skin webpack serve --config webpack/labo.dev.js",
     "labo:build": "webpack --config webpack/labo.prod.js",
