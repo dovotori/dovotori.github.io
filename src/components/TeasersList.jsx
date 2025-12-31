@@ -26,7 +26,7 @@ const TeasersList = ({ entries, isTouchDevice, className }) => {
     [entries],
   );
   return (
-    <Wrap className={className} isTouchDevice={isTouchDevice}>
+    <Wrap className={className}>
       {sortEntries.map((item, index) => (
         <StyledTeaser
           key={item.id}

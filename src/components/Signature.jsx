@@ -107,7 +107,7 @@ const common = css`
 `;
 
 const Absolute = styled.div`
-  ${(p) => p.isTouch && `${common}`}
+  ${(p) => p.$isTouch && `${common}`}
   ${(p) => p.theme.media.mobile`
     ${common}
   `}
@@ -155,14 +155,14 @@ const Signature = ({
   return (
     <Wrap>
       <Pulse className="circle" count={count} />
-      <Katakana isTouch={isTouchDevice} $isHome={isHome}>
+      <Katakana $isHome={isHome}>
         <StyledTypingMessage
           message={isHome ? "ドリアン" : "はじめまして"}
           isLoop
           isVertical
         />
       </Katakana>
-      <Absolute isTouch={isTouchDevice}>
+      <Absolute $isTouch={isTouchDevice}>
         <StyledLink
           to={isHome ? "/about" : "/"}
           className={className}
@@ -176,8 +176,8 @@ const Signature = ({
               <StyledLabo slug="picto" $colorType={0} noBackground hasJs />
             )}
           </Appear>
-          <CenterHorizontal isTouch={isTouchDevice}>
-            <Name isTouch={isTouchDevice}>
+          <CenterHorizontal>
+            <Name>
               <StyledTypingMessage
                 message={isHome ? "dorian" : hello}
                 firstMessage="ドリアン"

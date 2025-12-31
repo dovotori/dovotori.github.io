@@ -16,7 +16,7 @@ const Wrap = styled.g`
   }
 
   &:hover > path {
-    transform: ${(p) => (p.noHoverAnim ? "none" : "scale(1.05)")};
+    transform: ${(p) => (p.$noHoverAnim ? "none" : "scale(1.05)")};
   }
 `;
 
@@ -71,7 +71,7 @@ const ArcWithItem = ({
     [startAngle, angle],
   );
 
-  if (isNaN(endAngle)) {
+  if (Number.isNaN(endAngle)) {
     return null;
   }
 
@@ -79,7 +79,7 @@ const ArcWithItem = ({
     <Wrap
       className={className}
       onClick={onClick}
-      noHoverAnim={noHoverAnim}
+      $noHoverAnim={noHoverAnim}
       data-depth={depth}
     >
       <StyledArc

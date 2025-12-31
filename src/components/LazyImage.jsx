@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import styled from "styled-components";
 
 import GlitchImage from "./GlitchImage";
@@ -15,34 +15,56 @@ const IMG = styled.img`
   letter-spacing: 0.1em;
 `;
 
-const LazyImage = forwardRef(
-  ({ className, withGlitch, alt, width, height, children, src }, ref) => {
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [hasError, setHasError] = useState(false);
-    const onLoad = useCallback(() => setIsLoaded(true), []);
-    const onError = useCallback(() => {
+const LazyImage = ({
+  className,
+  withGlitch,
+  alt,
+  width,
+  height,
+  children,
+  src,
+  ref,
+  placeholderImg,
+}) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const [finalSrc, setFinalSrc] = useState(src);
+  const [usedPlaceholder, setUsedPlaceholder] = useState(false);
+
+  const onLoad = useCallback(() => {
+    setIsLoaded(true);
+  }, []);
+
+  const onError = useCallback(() => {
+    if (placeholderImg && !usedPlaceholder) {
+      // Try loading the placeholder
+      setFinalSrc(placeholderImg);
+      setUsedPlaceholder(true);
+      setIsLoaded(false);
+    } else {
+      // No placeholder or placeholder also failed
       setHasError(true);
       setIsLoaded(true);
-    }, []);
+    }
+  }, [placeholderImg, usedPlaceholder]);
 
-    return (
-      <Wrap ref={ref} className={className}>
-        {!hasError && (
-          <IMG
-            alt={`_${alt}`}
-            src={src}
-            onLoad={onLoad}
-            onError={onError}
-            $isLoaded={isLoaded}
-            width={width || "auto"}
-            height={height || "auto"}
-          />
-        )}
-        {!hasError && isLoaded && withGlitch && <GlitchImage src={src} />}
-        {!isLoaded && children}
-      </Wrap>
-    );
-  },
-);
+  return (
+    <Wrap ref={ref} className={className}>
+      {!hasError && (
+        <IMG
+          alt={`_${alt}`}
+          src={finalSrc}
+          onLoad={onLoad}
+          onError={onError}
+          $isLoaded={isLoaded}
+          width={width || "auto"}
+          height={height || "auto"}
+        />
+      )}
+      {!hasError && isLoaded && withGlitch && <GlitchImage src={finalSrc} />}
+      {!isLoaded && children}
+    </Wrap>
+  );
+};
 
 export default LazyImage;

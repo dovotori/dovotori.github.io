@@ -1,7 +1,6 @@
+import * as svgs from "Assets/svg/cv";
 import { useCallback, useState } from "react";
 import styled from "styled-components";
-
-import * as svgs from "Assets/svg/cv";
 import { mapFromRange } from "../utils";
 import ArcWithItem from "./ArcWithItem";
 
@@ -116,14 +115,14 @@ const Chart = ({ className, data, showAllIcons = false }) => {
           return returnValue;
         });
     },
-    [handleClickArc, showAllIcons],
+    [handleClickArc, showAllIcons, data.id],
   );
 
   return (
     <Svg className={`${className} chart`} viewBox={`0 0 ${WIDTH} ${WIDTH}`}>
       <defs>
         <filter x="0" y="0" width="1" height="1" id="solid">
-          <feFlood flood-color="#fff" result="bg" />
+          <feFlood floodColor="#fff" result="bg" />
           <feMerge>
             <feMergeNode in="bg" />
             <feMergeNode in="SourceGraphic" />

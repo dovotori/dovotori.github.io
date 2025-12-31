@@ -20,11 +20,11 @@ const StyledLink = styled(Link).attrs({
   box-shadow: ${(p) => (p.$isHover ? `0 0 1em ${p.theme.backgroundHighlight}` : "none")};
   transform: ${(p) => {
     if (p.$isVisible) {
-      return p.$isHover && !p.isTouchDevice ? "scale(1.2)" : "scale(1.01)";
+      return p.$isHover && !p.$isTouchDevice ? "scale(1.2)" : "scale(1.01)";
     }
     return "translateY(20%)";
   }};
-  z-index: ${(p) => (p.$isVisible && p.$isHover && !p.isTouchDevice ? 1 : 0)};
+  z-index: ${(p) => (p.$isVisible && p.$isHover && !p.$isTouchDevice ? 1 : 0)};
   transition:
     opacity 1s ${(p) => p.theme.elastic},
     transform 1s ${(p) => p.theme.elastic},
@@ -142,7 +142,7 @@ const Teaser = ({
       $isVisible={inView}
       title={title}
       $isHover={isHovered}
-      isTouchDevice={isTouchDevice}
+      $isTouchDevice={isTouchDevice}
     >
       <Infos $colorType={$colorType}>
         <StyledLazyImage

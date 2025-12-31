@@ -11,7 +11,7 @@ import routes from "../constants/routes";
 import FooterContainer from "../containers/FooterContainer";
 import ProjectCommonContainer from "../containers/ProjectCommonContainer";
 import SignatureContainer from "../containers/SignatureContainer";
-import { getContentBack, getIsTouchDevice } from "../selectors";
+import { getContentBack } from "../selectors";
 import ButtonNavigation from "./ButtonNavigation";
 import TransitionRoute from "./TransitionRoute";
 
@@ -68,7 +68,6 @@ const Common = () => (
 );
 
 const MainRoutes = () => {
-  const isTouchDevice = getIsTouchDevice();
   return (
     <Router>
       <MinHeight className="min-height">
@@ -83,7 +82,7 @@ const MainRoutes = () => {
             element={<ProjectCommonContainer />}
           />
         </Routes>
-        <TransitionRoute isTouchDevice={isTouchDevice}>
+        <TransitionRoute>
           {routes.map(renderRoute)}
           <Route path="*" element={<RedirectionHome />} />
         </TransitionRoute>
