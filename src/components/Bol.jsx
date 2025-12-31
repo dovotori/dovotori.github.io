@@ -1,6 +1,6 @@
 import { ReactComponent as BolSvg } from "Assets/svg/bol2.svg";
 import { ReactComponent as BonzaiSvg } from "Assets/svg/bonzai2.svg";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 import usePrevious from "../hooks/usePrevious";
 import { timeout } from "../utils";
@@ -38,6 +38,7 @@ const Div = styled.div`
     top: 50%;
     left: 50%;
     width: 100%;
+    height: 100%;
     transform: translate3d(-50%, -50%, 0);
   }
 
@@ -186,7 +187,7 @@ const Bol = ({ className, isSwitched = false }) => {
   const svgs = useRef(null);
   const previousIsSwitched = usePrevious(isSwitched);
 
-  const animSvg = async (svg, isAppear = true) => {
+  const animSvg = useCallback(async (svg, isAppear = true) => {
     const paths = svg.querySelectorAll("path");
     for (const p of paths) {
       if (isAppear) {
@@ -196,8 +197,9 @@ const Bol = ({ className, isSwitched = false }) => {
       }
       await timeout(20);
     }
-  };
+  }, []);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: previousIsSwitched
   useEffect(() => {
     if (ref.current) {
       const isFirstMount = previousIsSwitched === undefined;
@@ -211,7 +213,7 @@ const Bol = ({ className, isSwitched = false }) => {
       };
       asyncExec();
     }
-  }, [isSwitched]);
+  }, [isSwitched, animSvg]);
 
   return (
     <Div ref={ref} className={className}>

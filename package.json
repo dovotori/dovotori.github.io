@@ -9,13 +9,13 @@
   },
   "license": "CC-BY-4.0",
   "scripts": {
-    "dev": "npm run start & npm run storybook",
+    "dev": "npm run start & npm run storybook:dev",
     "start": "webpack serve --config webpack/dev.js",
     "build": "webpack --config webpack/prod.js",
     "clean": "node scripts/cleanBuild.js",
     "labo:start": "cross-env NAME=skin webpack serve --config webpack/labo.dev.js",
     "labo:build": "webpack --config webpack/labo.prod.js",
-    "local:server": "npx http-server build/ -p 8080 -b -g --cors",
+    "local:serve": "npx http-server build/ -p 8080 -b -g --cors",
     "lint": "biome lint --write & biome format --write",
     "favicon": "node scripts/favicons.js",
     "test": "jest --config=jest.config.js",
@@ -27,8 +27,9 @@
     "docker:run:prod": "docker run --name dovotori_client_prod --rm dovotori_client_prod:latest",
     "deploy": "gh-pages -d build --remote origin",
     "release": "node scripts/release.js",
-    "storybook": "storybook dev -p 6006 --no-open",
-    "build-storybook": "storybook build",
+    "storybook:dev": "storybook dev -p 6006 --no-open",
+    "storybook:build": "storybook build -o build/storybook",
+    "storybook:serve": "npx http-server build/storybook -p 8080 -b -g --cors",
     "typecheck": "tsc --noEmit"
   },
   "engines": {

@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import QrCode from "../QrCode";
 
 export default {
@@ -5,6 +6,11 @@ export default {
   component: QrCode,
 };
 
-const Template = (args) => <QrCode {...args} />;
+const StyledQrCode = styled(QrCode)`
+  width: 10em;
+  height: 10em;
+`;
+
+const Template = (args) => <StyledQrCode {...args} />;
 export const Primary = Template.bind({});
 Primary.args = {};

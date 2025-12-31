@@ -34,6 +34,7 @@ export const parameters = {
   docs: {
     theme,
   },
+  layout: "centered", // center all stories by default
 };
 
 export const decorators = [

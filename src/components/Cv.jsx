@@ -351,7 +351,7 @@ const SkillLine = ({ item, isTouchDevice }) => {
   if (!Svg && item.children) return null;
   return (
     <TwoColFloat $noMargin={!Svg}>
-      <Line noMarginTop>
+      <Line $noMarginTop>
         {Svg ? (
           <WrapSvg>
             <ColSvg $isTouch={isTouchDevice}>
@@ -372,7 +372,7 @@ const renderItem = (item, isTouchDevice) => {
   return (
     <>
       <SkillLine item={item} isTouchDevice={isTouchDevice} />
-      {item.children.map((subitem) => renderItem(subitem, isTouchDevice))}
+      {item.children?.map((subitem) => renderItem(subitem, isTouchDevice))}
     </>
   );
 };

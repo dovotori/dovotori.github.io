@@ -5,7 +5,8 @@ const StyledQrCode = styled(QrCode)`
   display: block;
   color: ${(p) => p.theme.light};
   height: auto;
-  width: 80%;
+  width: 100%;
+  height: 100%;
   max-width: 512px;
   padding: 10%;
   margin: 0 auto;
@@ -15,4 +16,4 @@ const StyledQrCode = styled(QrCode)`
   }
 `;
 
-export default () => <StyledQrCode />;
+export default StyledQrCode;

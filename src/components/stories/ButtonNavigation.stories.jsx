@@ -5,7 +5,9 @@ export default {
   component: ButtonNavigation,
 };
 
-const Template = (args) => <ButtonNavigation {...args} />;
+const Template = (args) => (
+  <ButtonNavigation {...args}>Custom</ButtonNavigation>
+);
 export const Primary = Template.bind({});
 Primary.args = {
   label: "Back",

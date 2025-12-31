@@ -5,26 +5,28 @@ const StyledLink = styled(Link)`
   position: relative;
   width: 100%;
   padding: 1.5em 0 1.5em 2%;
-  color: ${(p) => p.theme.getColor};
+  color: ${(p) => p.theme.light};
   ${(p) => p.theme.active};
-  transition:
-    background-color 1000ms ease-out,
-    color 1000ms ease-out;
-  background-color: none;
+  padding: 0.5em;
+  min-height: 40px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   overflow-wrap: break-word;
   overflow: hidden;
-  opacity: 0.5;
+
+  background-color: none;
+  transition:
+    background-color 1000ms ease-out,
+    color 1000ms ease-out;
 
   &:focus {
     color: ${(p) => p.theme.getColor};
   }
 
   &:hover {
+    color: ${(p) => p.theme.getColor};
     background-color: ${(p) => p.theme.backgroundHighlight};
-    opacity: 1;
 
     span {
       opacity: 1;
