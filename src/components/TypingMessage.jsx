@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 const Wrap = styled.div`
@@ -58,7 +58,8 @@ const TypingMessage = ({
   const toMessage = useRef(message);
   const mode = useRef(Modes.STOP);
   const lastTriggerTime = useRef(0);
-  const [displayMessage, setDisplayMessage] = useState(firstMessage);
+  const displayMessage = useRef(firstMessage);
+  const animRef = useRef(null);
 
   const randomChar = useCallback(
     () => CHARS[Math.floor(Math.random() * CHARS.length)],
@@ -80,6 +81,17 @@ const TypingMessage = ({
         .join(""),
     [randomChar],
   );
+
+  // Direct DOM update - no React re-render
+  const updateDOM = useCallback((text) => {
+    displayMessage.current = text;
+    if (animRef.current) {
+      animRef.current.innerHTML = text
+        .split("")
+        .map((letter) => `<span>${letter === " " ? "_" : letter}</span>`)
+        .join("");
+    }
+  }, []);
 
   const update = useCallback(() => {
     const now = Date.now();
@@ -119,7 +131,7 @@ const TypingMessage = ({
         break;
     }
 
-    setDisplayMessage(text);
+    updateDOM(text);
     lastFrame.current = now;
 
     if (mode.current !== Modes.STOP) {
@@ -133,16 +145,15 @@ const TypingMessage = ({
         req.current = requestAnimationFrame(update);
       }, delayLoop);
     }
-  }, [isLoop, delayLoop, delayLetter, randomStr, randomCurrentStr]);
+  }, [isLoop, delayLoop, delayLetter, randomStr, randomCurrentStr, updateDOM]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: displayMessage
   useEffect(() => {
     if (timeout.current) {
       clearTimeout(timeout.current);
     }
 
     if (!isDisabled) {
-      const old = displayMessage;
+      const old = displayMessage.current;
       let nextMode = Modes.STOP;
 
       // determine le mode
@@ -217,14 +228,19 @@ const TypingMessage = ({
       if (timeout.current) {
         clearTimeout(timeout.current);
       }
-      count.current = displayMessage.length;
-      fromMessage.current = displayMessage;
+      count.current = displayMessage.current.length;
+      fromMessage.current = displayMessage.current;
       toMessage.current = message;
       mode.current = Modes.DISAPPEAR;
       lastFrame.current = now;
       req.current = requestAnimationFrame(update);
     }
   }, [trigger]);
+
+  // Initialize DOM on mount
+  useEffect(() => {
+    updateDOM(firstMessage);
+  }, [firstMessage, updateDOM]);
 
   return (
     <Wrap className={className} $isVertical={isVertical} $isCenter={isCenter}>
@@ -234,12 +250,7 @@ const TypingMessage = ({
           return <span key={key}>{letter === " " ? `_` : letter}</span>;
         })}
       </Hidden>
-      <Anim>
-        {displayMessage.split("").map((letter, index) => {
-          const key = `${displayMessage}${letter}${index}`;
-          return <span key={key}>{letter === " " ? `_` : letter}</span>;
-        })}
-      </Anim>
+      <Anim ref={animRef} />
     </Wrap>
   );
 };
