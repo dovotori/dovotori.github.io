@@ -14,31 +14,22 @@ let cptHome = 0;
 let context = null;
 let proportionnelleDistance = 0;
 
-const svgSize = {
-  width: 0,
-  height: 0,
-};
-
 let windowRequestHome = null;
 let lastFrame = Date.now();
 
 const FPS = 1000 / 40;
-const POINT_SIZE = 2;
+const POINT_SIZE = 4;
 const HALF_POINT_SIZE = POINT_SIZE / 2;
 
 const getSvgSize = (svg) => {
-  let width = parseFloat(svg.getAttribute("width"));
-  let height = parseFloat(svg.getAttribute("height"));
-
-  // Fallback to viewBox if width/height are NaN
-  if (Number.isNaN(width) || Number.isNaN(height)) {
-    const viewBox = svg.getAttribute("viewBox");
-    if (viewBox) {
-      const parts = viewBox.split(/\s+|,/).map(parseFloat);
-      if (parts.length === 4) {
-        width = parts[2];
-        height = parts[3];
-      }
+  let width = 400;
+  let height = 400;
+  const viewBox = svg.getAttribute("viewBox");
+  if (viewBox) {
+    const parts = viewBox.split(/\s+|,/).map(parseFloat);
+    if (parts.length === 4) {
+      width = parts[2];
+      height = parts[3];
     }
   }
 
@@ -52,28 +43,72 @@ const getSvgSize = (svg) => {
 export default async () => {
   const embedElem = document.querySelector("#embed-svg");
   canvas = document.querySelector("#canvas-svg");
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  function resizeCanvasAndBounds() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    Node.setBox(0, 0, 0, canvas.width, canvas.height, 1000);
+  }
+  resizeCanvasAndBounds();
   context = canvas.getContext("2d");
+
+  window.addEventListener("resize", () => {
+    resizeCanvasAndBounds();
+  });
 
   embedElem.onload = () => {
     const svgDom = embedElem.getSVGDocument();
     const svg = svgDom.getElementsByTagName("svg")[0];
 
-    proportionnelleDistance = mapFromRange(Math.min(canvas.width, canvas.height), 0, 10000, 0, 800);
+    proportionnelleDistance = mapFromRange(
+      Math.min(canvas.width, canvas.height),
+      0,
+      10000,
+      0,
+      1600
+    );
 
     const points = setupPoints(svg);
-
     const svgSize = getSvgSize(svg);
+    const box = canvas.getBoundingClientRect();
 
-    const scale = canvas.width / svgSize.width;
+    // Use uniform scale to preserve aspect ratio
+    const scale = Math.min(box.width / svgSize.width, box.height / svgSize.height);
 
+    // Find SVG shape bounds
+    let minSvgX = Infinity,
+      minSvgY = Infinity,
+      maxSvgX = -Infinity,
+      maxSvgY = -Infinity;
     for (let i = 0; i < points.length; i += 2) {
-      fixPoints[i] = points[i] * scale;
-      fixPoints[i + 1] = points[i + 1] * scale;
+      if (points[i] < minSvgX) minSvgX = points[i];
+      if (points[i] > maxSvgX) maxSvgX = points[i];
+      if (points[i + 1] < minSvgY) minSvgY = points[i + 1];
+      if (points[i + 1] > maxSvgY) maxSvgY = points[i + 1];
+    }
+    const shapeWidth = (maxSvgX - minSvgX) * scale;
+    const shapeHeight = (maxSvgY - minSvgY) * scale;
+
+    // Center the shape in the canvas (letterboxing)
+    const offsetX = (canvas.width - shapeWidth) / 2 - minSvgX * scale;
+    const offsetY = (canvas.height - shapeHeight) / 2 - minSvgY * scale;
+
+    // Scale and translate points
+    for (let i = 0; i < points.length; i += 2) {
+      fixPoints[i] = points[i] * scale + offsetX;
+      fixPoints[i + 1] = points[i + 1] * scale + offsetY;
     }
 
-    console.log({ points, fixPoints, scale, svgSize });
+    console.log({
+      points,
+      fixPoints,
+      scale,
+      svgSize,
+      canvasSize: { width: canvas.width, height: canvas.height },
+      offsetX,
+      offsetY,
+    });
+
+    Node.setBox(-100, -100, 0, canvas.width + 100, canvas.height + 100, 0);
 
     const data = setupNodes(fixPoints);
     nodes = data.nodes;
@@ -82,7 +117,7 @@ export default async () => {
     window.addEventListener("mousemove", onMouseMove, false);
     windowRequestHome = window.requestAnimationFrame(drawHome);
   };
-  embedElem.src = getEnvPath("/svg/bonzai.svg");
+  embedElem.src = getEnvPath("/svg/leaf3.svg"); // should not have curbs, and no group transforms
 
   // const svg = await fetch(getEnvPath('/svg/cubeClean.svg')).then((x) => x.text());
 };
@@ -142,46 +177,33 @@ function updatePoints() {
   for (let i = 0; i < nodes.length; i++) {
     attractor.attract(nodes[i]);
     nodes[i].update(false, false, true);
-    drawLiaisonProche(i);
+    // drawLiaisonProche(i);
   }
 }
 
 function drawPoints() {
-  //attractor.draw();
+  // attractor.draw();
 
   let cptNodes = 0;
-  const SQUARE_SIZE = 4;
-  // Draw subpaths as polylines
-  for (const sub of fixSubpaths) {
-    context.beginPath();
-    for (let i = 0; i < sub.length; i += 2) {
-      const x = sub[i];
-      const y = sub[i + 1];
-      if (i === 0) {
-        context.moveTo(x, y);
-      } else {
-        context.lineTo(x, y);
-      }
-    }
-    context.strokeStyle = "#fff";
-    context.lineWidth = 2;
-    context.stroke();
-  }
-  // Draw points and physics
+
   for (let i = 0; i < fixPoints.length; i += 2, cptNodes++) {
     const x = fixPoints[i];
     const y = fixPoints[i + 1];
-    context.fillRect(x, y, SQUARE_SIZE, SQUARE_SIZE);
+
+    context.fillRect(x, y, POINT_SIZE, POINT_SIZE);
+
     // moving
-    const movX = nodes[cptNodes].position.x - HALF_POINT_SIZE;
-    const movY = nodes[cptNodes].position.y - HALF_POINT_SIZE;
-    context.fillRect(movX, movY, POINT_SIZE, POINT_SIZE);
+    const movX = nodes[cptNodes].position.x;
+    const movY = nodes[cptNodes].position.y;
+    context.fillRect(movX - HALF_POINT_SIZE, movY - HALF_POINT_SIZE, POINT_SIZE, POINT_SIZE);
+
     // line between fix and moving
     context.strokeStyle = "rgba(255, 255, 255, 0.8)";
     context.beginPath();
-    context.moveTo(x + SQUARE_SIZE / 2, y + SQUARE_SIZE / 2);
+    context.moveTo(x + HALF_POINT_SIZE, y + HALF_POINT_SIZE);
     context.lineTo(movX, movY);
     context.stroke();
+
     const origine = new vec3(x, y, 0);
     springs[cptNodes].update(origine, nodes[cptNodes]);
   }
