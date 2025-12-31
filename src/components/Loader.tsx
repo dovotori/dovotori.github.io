@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
 
 import { blink } from "../themes/animations";
@@ -35,18 +35,20 @@ const INTERVAL_MS = 100;
 const getRandomChar = () => CHARS[Math.floor(Math.random() * CHARS.length)];
 
 const Loader = ({ className }: { className?: string }) => {
-  const [chars, setChars] = useState<string[]>([]);
+  const charsRef = useRef<string[]>([]);
+  const streamRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setChars((prev) => {
-        const newChar = getRandomChar();
-        const updated = [newChar, ...prev];
-        if (updated.length > MAX_CHARS) {
-          return updated.slice(0, MAX_CHARS);
-        }
-        return updated;
-      });
+      const newChar = getRandomChar();
+      charsRef.current = [newChar, ...charsRef.current];
+      if (charsRef.current.length > MAX_CHARS) {
+        charsRef.current = charsRef.current.slice(0, MAX_CHARS);
+      }
+      // Direct DOM update
+      if (streamRef.current) {
+        streamRef.current.textContent = charsRef.current.join("");
+      }
     }, INTERVAL_MS);
 
     return () => clearInterval(interval);
@@ -56,7 +58,7 @@ const Loader = ({ className }: { className?: string }) => {
     <Div className={className}>
       <CharStream>
         <Blink>_</Blink>
-        {chars.join("")}
+        <span ref={streamRef} />
       </CharStream>
     </Div>
   );
