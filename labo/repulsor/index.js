@@ -67,7 +67,9 @@ export default async () => {
       1600
     );
 
-    const points = setupPoints(svg);
+    const subpaths = setupPoints(svg); // array of subpaths, each is array of [x, y]
+    // Flatten all points for bounding box and scaling
+    const allPoints = subpaths.flat();
     const svgSize = getSvgSize(svg);
     const box = canvas.getBoundingClientRect();
 
@@ -79,11 +81,12 @@ export default async () => {
       minSvgY = Infinity,
       maxSvgX = -Infinity,
       maxSvgY = -Infinity;
-    for (let i = 0; i < points.length; i += 2) {
-      if (points[i] < minSvgX) minSvgX = points[i];
-      if (points[i] > maxSvgX) maxSvgX = points[i];
-      if (points[i + 1] < minSvgY) minSvgY = points[i + 1];
-      if (points[i + 1] > maxSvgY) maxSvgY = points[i + 1];
+    for (let i = 0; i < allPoints.length; i++) {
+      const [x, y] = allPoints[i];
+      if (x < minSvgX) minSvgX = x;
+      if (x > maxSvgX) maxSvgX = x;
+      if (y < minSvgY) minSvgY = y;
+      if (y > maxSvgY) maxSvgY = y;
     }
     const shapeWidth = (maxSvgX - minSvgX) * scale;
     const shapeHeight = (maxSvgY - minSvgY) * scale;
@@ -92,18 +95,21 @@ export default async () => {
     const offsetX = (canvas.width - shapeWidth) / 2 - minSvgX * scale;
     const offsetY = (canvas.height - shapeHeight) / 2 - minSvgY * scale;
 
-    // Scale and translate points
-    for (let i = 0; i < points.length; i += 2) {
-      fixPoints[i] = points[i] * scale + offsetX;
-      fixPoints[i + 1] = points[i + 1] * scale + offsetY;
+    // Fill fixPoints as a flat array for compatibility with rest of code
+    fixPoints.length = 0;
+    for (let i = 0; i < allPoints.length; i++) {
+      fixPoints[2 * i] = allPoints[i][0] * scale + offsetX;
+      fixPoints[2 * i + 1] = allPoints[i][1] * scale + offsetY;
     }
 
     console.log({
-      points,
+      subpaths,
+      allPoints,
       fixPoints,
       scale,
       svgSize,
       canvasSize: { width: canvas.width, height: canvas.height },
+      canvasOffsetSize: { width: canvas.offsetWidth, height: canvas.offsetHeight },
       offsetX,
       offsetY,
     });
@@ -177,7 +183,7 @@ function updatePoints() {
   for (let i = 0; i < nodes.length; i++) {
     attractor.attract(nodes[i]);
     nodes[i].update(false, false, true);
-    // drawLiaisonProche(i);
+    drawLiaisonProche(i);
   }
 }
 
