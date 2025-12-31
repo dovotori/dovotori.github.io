@@ -1,1 +1,1 @@
-"use strict";(self.webpackChunkdovotori=self.webpackChunkdovotori||[]).push([[545],{80545:(o,e,s)=>{s.r(e),s.d(e,{default:()=>t});const t=""}}]);
+"use strict";(self.webpackChunkdovotori=self.webpackChunkdovotori||[]).push([[545],{80545(o,e,s){s.r(e),s.d(e,{default:()=>t});const t=""}}]);

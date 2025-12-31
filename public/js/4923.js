@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdovotori=self.webpackChunkdovotori||[]).push([[4923],{74923(e,t,s){s.r(t),s.d(t,{default:()=>o});const o='<style>#svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}#line{stroke:#fff}</style> <svg id="svg"><path id="line" d="L0 0 M0 0"/></svg>'}}]);

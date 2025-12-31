@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdovotori=self.webpackChunkdovotori||[]).push([[389],{80389(n,o,e){e.r(o),e.d(o,{default:()=>t});const t="\n@vertex\nfn v_main(@location(0) pos: vec2f) ->\n  @builtin(position) vec4f {\n  return vec4f(pos, 0, 1);\n}\n"}}]);

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdovotori=self.webpackChunkdovotori||[]).push([[6071],{66071(e,t,s){s.r(t),s.d(t,{default:()=>i});const i='<style>#embed-svg{position:absolute;top:0;left:0;visibility:hidden;pointer-events:none}</style> <div style="position:relative;text-align:center"> <embed id="embed-svg" type="image/svg+xml"/> <canvas id="canvas-svg"></canvas> </div>'}}]);
