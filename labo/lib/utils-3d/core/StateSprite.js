@@ -55,14 +55,14 @@ export default class {
       this.timeout = this.uv[this.step].t || this.states.time || 100;
       this.iteration = data.iteration || null;
       this.nextState = data.next;
-      this.lastFrame = new Date().getTime();
+      this.lastFrame = Date.now();
     }
   }
 
   update() {
     this.oldStep = this.step;
     if (this.lastFrame !== null) {
-      const now = new Date().getTime();
+      const now = Date.now();
       const milli = now - this.lastFrame;
       if (milli > this.timeout) {
         if (this.step < this.nbSteps - 1) {

@@ -3,7 +3,7 @@ import * as easings from "../utils/easing";
 export default class {
   constructor(value = 0) {
     this.value = value;
-    this.lastFrame = new Date().getTime();
+    this.lastFrame = Date.now();
     this.isFinish = true;
     this.currentStep = 0;
     this.steps = [];
@@ -26,7 +26,7 @@ export default class {
   }
 
   updateStep({ duration, easingType, end, start }) {
-    const now = new Date().getTime();
+    const now = Date.now();
     const milli = now - this.lastFrame;
     const normalizeDuration = milli / duration;
     const stepIsFinish = normalizeDuration > 1;
@@ -48,7 +48,7 @@ export default class {
   }
 
   startStep() {
-    this.lastFrame = new Date().getTime();
+    this.lastFrame = Date.now();
   }
 
   set(start = 0, end = 0, duration = 1000, easingType = "easeInOutCirc") {

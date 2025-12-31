@@ -661,6 +661,7 @@ const rawPosts = [
       hasJs: true,
       noBackground: true,
     },
+    isDevOnly: true,
   },
   {
     id: 27,
@@ -682,6 +683,7 @@ const rawPosts = [
       hasJs: true,
       noBackground: true,
     },
+    isDevOnly: true,
   },
   {
     id: 28,
@@ -703,6 +705,7 @@ const rawPosts = [
       hasJs: true,
       noBackground: true,
     },
+    isDevOnly: true,
   },
   {
     id: 29,
@@ -725,29 +728,40 @@ const rawPosts = [
       hasHtml: true,
       noBackground: true,
     },
+    isDevOnly: true,
   },
 ];
 
 export default (locale): MyState["entries"] => {
-  return rawPosts.map((post) => {
-    const description = post.description?.[locale];
-    const inverseLocale = locale === Locales.JP ? Locales.EN : Locales.JP;
+  return rawPosts
+    .map((post) => {
+      const description = post.description?.[locale];
+      const inverseLocale = locale === Locales.JP ? Locales.EN : Locales.JP;
 
-    const { title: _title, description: _desc, links: _links, ...rest } = post;
+      const {
+        title: _title,
+        description: _desc,
+        links: _links,
+        ...rest
+      } = post;
 
-    const title = _title[locale];
-    const inverseTitle = _title[inverseLocale];
-    const links = _links?.map((link) => ({
-      ...link,
-      label: link.label[locale],
-    }));
+      const title = _title[locale];
+      const inverseTitle = _title[inverseLocale];
+      const links = _links?.map((link) => ({
+        ...link,
+        label: link.label[locale],
+      }));
 
-    return {
-      ...rest,
-      title,
-      inverseTitle,
-      description,
-      links,
-    };
-  });
+      return {
+        ...rest,
+        title,
+        inverseTitle,
+        description,
+        links,
+      };
+    })
+    .filter(
+      (post) =>
+        post.isDevOnly !== true || process.env.NODE_ENV !== "production",
+    );
 };

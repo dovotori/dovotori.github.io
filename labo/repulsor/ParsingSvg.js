@@ -19,7 +19,7 @@ ParsingSvg.prototype.setup = function (svg) {
 
     for (let j = 0; j < string.length; j++) {
       const caractere = string.charAt(j);
-      if (caractere.search(/[mMAaLlCcSsQqVvHhTZz]/g) == 0) {
+      if (caractere.search(/[mMAaLlCcSsQqVvHhTZz]/g) === 0) {
         ordre[cpt] = caractere;
         cpt++;
       }
@@ -90,10 +90,7 @@ ParsingSvg.prototype.setup = function (svg) {
 
       const coors = partiesPropres[j];
       for (let k = 0; k < coors.length; k++) {
-        if (
-          k % multipleDe == multipleDe - 1 ||
-          k % multipleDe == multipleDe - 2
-        ) {
+        if (k % multipleDe === multipleDe - 1 || k % multipleDe === multipleDe - 2) {
           if (!isRelatif || cptPoints < 2) {
             this.points[cptPoints] = coors[k];
           } else {

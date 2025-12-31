@@ -20,11 +20,34 @@ const svgSize = {
 };
 
 let windowRequestHome = null;
-let lastFrame = new Date().getTime();
+let lastFrame = Date.now();
 
 const FPS = 1000 / 40;
 const POINT_SIZE = 2;
 const HALF_POINT_SIZE = POINT_SIZE / 2;
+
+const getSvgSize = (svg) => {
+  let width = parseFloat(svg.getAttribute("width"));
+  let height = parseFloat(svg.getAttribute("height"));
+
+  // Fallback to viewBox if width/height are NaN
+  if (Number.isNaN(width) || Number.isNaN(height)) {
+    const viewBox = svg.getAttribute("viewBox");
+    if (viewBox) {
+      const parts = viewBox.split(/\s+|,/).map(parseFloat);
+      if (parts.length === 4) {
+        width = parts[2];
+        height = parts[3];
+      }
+    }
+  }
+
+  // Default to 400 if still NaN
+  if (Number.isNaN(width)) width = 400;
+  if (Number.isNaN(height)) height = 400;
+
+  return { width, height };
+};
 
 export default async () => {
   const embedElem = document.querySelector("#embed-svg");
@@ -37,20 +60,11 @@ export default async () => {
     const svgDom = embedElem.getSVGDocument();
     const svg = svgDom.getElementsByTagName("svg")[0];
 
-    proportionnelleDistance = mapFromRange(
-      Math.min(canvas.width, canvas.height),
-      0,
-      10000,
-      0,
-      800,
-    );
+    proportionnelleDistance = mapFromRange(Math.min(canvas.width, canvas.height), 0, 10000, 0, 800);
 
     const points = setupPoints(svg);
 
-    const svgSize = {
-      width: parseFloat(svg.getAttribute("width")),
-      height: parseFloat(svg.getAttribute("height")),
-    };
+    const svgSize = getSvgSize(svg);
 
     const scale = canvas.width / svgSize.width;
 
@@ -59,6 +73,8 @@ export default async () => {
       fixPoints[i + 1] = points[i + 1] * scale;
     }
 
+    console.log({ points, fixPoints, scale, svgSize });
+
     const data = setupNodes(fixPoints);
     nodes = data.nodes;
     springs = data.springs;
@@ -66,7 +82,7 @@ export default async () => {
     window.addEventListener("mousemove", onMouseMove, false);
     windowRequestHome = window.requestAnimationFrame(drawHome);
   };
-  embedElem.src = getEnvPath("/svg/cubeClean.svg");
+  embedElem.src = getEnvPath("/svg/bonzai.svg");
 
   // const svg = await fetch(getEnvPath('/svg/cubeClean.svg')).then((x) => x.text());
 };
@@ -102,7 +118,7 @@ function onMouseMove(event) {
 }
 
 function drawHome() {
-  const now = new Date().getTime();
+  const now = Date.now();
   const milli = now - lastFrame;
 
   if (milli > FPS) {
@@ -123,7 +139,7 @@ function drawForme() {
 }
 
 function updatePoints() {
-  for (var i = 0; i < nodes.length; i++) {
+  for (let i = 0; i < nodes.length; i++) {
     attractor.attract(nodes[i]);
     nodes[i].update(false, false, true);
     drawLiaisonProche(i);
@@ -134,26 +150,38 @@ function drawPoints() {
   //attractor.draw();
 
   let cptNodes = 0;
-
+  const SQUARE_SIZE = 4;
+  // Draw subpaths as polylines
+  for (const sub of fixSubpaths) {
+    context.beginPath();
+    for (let i = 0; i < sub.length; i += 2) {
+      const x = sub[i];
+      const y = sub[i + 1];
+      if (i === 0) {
+        context.moveTo(x, y);
+      } else {
+        context.lineTo(x, y);
+      }
+    }
+    context.strokeStyle = "#fff";
+    context.lineWidth = 2;
+    context.stroke();
+  }
+  // Draw points and physics
   for (let i = 0; i < fixPoints.length; i += 2, cptNodes++) {
-    // fix
     const x = fixPoints[i];
     const y = fixPoints[i + 1];
-
-    context.fillRect(x, y, 1, 1);
-
+    context.fillRect(x, y, SQUARE_SIZE, SQUARE_SIZE);
     // moving
     const movX = nodes[cptNodes].position.x - HALF_POINT_SIZE;
     const movY = nodes[cptNodes].position.y - HALF_POINT_SIZE;
     context.fillRect(movX, movY, POINT_SIZE, POINT_SIZE);
-
     // line between fix and moving
     context.strokeStyle = "rgba(255, 255, 255, 0.8)";
     context.beginPath();
-    context.moveTo(x, y);
+    context.moveTo(x + SQUARE_SIZE / 2, y + SQUARE_SIZE / 2);
     context.lineTo(movX, movY);
     context.stroke();
-
     const origine = new vec3(x, y, 0);
     springs[cptNodes].update(origine, nodes[cptNodes]);
   }
@@ -171,18 +199,12 @@ function drawLiaisonProche(i) {
     if (distance > 1 && distance < limiteDistance) {
       let opacite = 0;
       if (distance > limiteDistance / 2) {
-        opacite = mapFromRange(
-          distance,
-          limiteDistance / 2,
-          limiteDistance,
-          1,
-          0.2,
-        );
+        opacite = mapFromRange(distance, limiteDistance / 2, limiteDistance, 1, 0.2);
       } else {
         opacite = mapFromRange(distance, 0, limiteDistance / 2, 0.2, 1);
       }
 
-      context.strokeStyle = "rgba(255, 255, 255, " + opacite + ")";
+      context.strokeStyle = `rgba(255, 255, 255, ${opacite})`;
       context.beginPath();
       context.moveTo(nodes[i].position.x, nodes[i].position.y);
       context.lineTo(nodes[j].position.x, nodes[j].position.y);

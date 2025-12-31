@@ -1,13 +1,13 @@
 export default class {
   constructor() {
     this.fps = 1000 / 40;
-    this.firstFrame = new Date().getTime();
+    this.firstFrame = Date.now();
     this.lastFrame = this.firstFrame;
     this.ref = null;
   }
 
   start = () => {
-    const now = new Date().getTime();
+    const now = Date.now();
     const milli = now - this.lastFrame;
     if (this.callbackNoFps) this.callbackNoFps();
     if (milli > this.fps) {

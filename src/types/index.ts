@@ -1,5 +1,4 @@
 import type { Locales } from "src/constants/locales";
-import type { css, RuleSet } from "styled-components";
 
 export type Locale = (typeof Locales)[keyof typeof Locales];
 
@@ -20,6 +19,7 @@ type Post = {
     url: string;
     label: string;
   }[];
+  isDevOnly?: boolean;
 };
 
 type Tag = {
