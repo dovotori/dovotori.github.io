@@ -174,6 +174,7 @@ export default {
       ],
     },
     {
+      id: "languages",
       label: {
         [Locales.FR]: "Langues",
         [Locales.EN]: "Languages",
@@ -181,6 +182,7 @@ export default {
       },
       children: [
         {
+          id: "french",
           label: {
             [Locales.FR]: "Français",
             [Locales.EN]: "French",
@@ -188,11 +190,12 @@ export default {
           },
           level: {
             [Locales.FR]: "Langue maternelle",
-            [Locales.EN]: "Native language",
+            [Locales.EN]: "Native",
             [Locales.JP]: "母国語",
           },
         },
         {
+          id: "english",
           label: {
             [Locales.FR]: "Anglais",
             [Locales.EN]: "English",
@@ -205,6 +208,7 @@ export default {
           },
         },
         {
+          id: "japanese",
           label: {
             [Locales.FR]: "Japonais",
             [Locales.EN]: "Japanese",

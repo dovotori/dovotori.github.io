@@ -3,7 +3,7 @@ import * as icons from "Assets/svg/cv";
 import { ReactComponent as Diploma } from "Assets/svg/diploma3.svg";
 import { ReactComponent as Manette } from "Assets/svg/manette.svg";
 import { ReactComponent as Tie } from "Assets/svg/tie3.svg";
-import { useCallback } from "react";
+import { Fragment, useCallback } from "react";
 import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import AnimBar from "./AnimBar";
@@ -128,7 +128,6 @@ const ColSvg = styled.span`
     p.$isTouch &&
     `
       display: inline-block;
-      width: 50px;
   `};
 `;
 
@@ -180,7 +179,6 @@ const FloatRightTwoCol = styled.div`
 `;
 
 const TwoCol = styled.div`
-  ${(p) => !p.$isTouch && "width: 50%;"};
 `;
 
 const TwoColFloat = styled(TwoCol)`
@@ -284,7 +282,7 @@ const Cv = ({ className, formation, isTouchDevice, jobs, skills, hobbies }) => {
           {!isTouchDevice && <StyledChart data={skills} />}
           {isTouchDevice &&
             skills.children.map((item) => (
-              <BlocJob key={item.text}>
+              <BlocJob key={item.id}>
                 <Line>
                   <Clear $isTouch={isTouchDevice}>
                     <FloatLeft $isTouch={isTouchDevice}>
@@ -370,9 +368,9 @@ const SkillLine = ({ item, isTouchDevice }) => {
 
 const renderItem = (item, isTouchDevice) => {
   return (
-    <>
+    <Fragment key={item.id}>
       <SkillLine item={item} isTouchDevice={isTouchDevice} />
       {item.children?.map((subitem) => renderItem(subitem, isTouchDevice))}
-    </>
+    </Fragment>
   );
 };
