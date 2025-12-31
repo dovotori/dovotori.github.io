@@ -1,4 +1,4 @@
-import Mat4 from '../utils/maths/Mat4';
+import Mat4 from "../utils/maths/Mat4";
 
 export class Skybox {
   constructor(context, sampleCount = 4) {
@@ -11,20 +11,20 @@ export class Skybox {
     const device = this.context.getDevice();
 
     this.pipeline = device.createRenderPipeline({
-      label: 'skybox no attributes',
-      layout: 'auto',
+      label: "skybox no attributes",
+      layout: "auto",
       vertex: {
         module: program,
-        entryPoint: 'v_main',
+        entryPoint: "v_main",
       },
       fragment: {
         module: program,
-        entryPoint: 'f_main',
+        entryPoint: "f_main",
         targets,
       },
       depthStencil: {
         depthWriteEnabled: true,
-        depthCompare: 'less-equal', // we clear the depth texture to 1.0, and render the sybox at z 1.0
+        depthCompare: "less-equal", // we clear the depth texture to 1.0, and render the sybox at z 1.0
         format: depthFormat,
       },
       multisample: {
@@ -34,7 +34,7 @@ export class Skybox {
 
     const uniformBufferSize = 16 * Float32Array.BYTES_PER_ELEMENT; // 4x4 matrix
     this.uniformBuffer = device.createBuffer({
-      label: 'skybox uniforms',
+      label: "skybox uniforms",
       size: uniformBufferSize,
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
@@ -47,7 +47,7 @@ export class Skybox {
     );
 
     this.bindGroup = device.createBindGroup({
-      label: 'bind group for skybox triangle',
+      label: "bind group for skybox triangle",
       layout: this.pipeline.getBindGroupLayout(0),
       entries: [
         { binding: 0, resource: { buffer: this.uniformBuffer } },

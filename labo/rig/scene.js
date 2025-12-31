@@ -1,12 +1,17 @@
-import DualQuaternion from '../lib/utils/maths/DualQuaternion';
-import Mat4 from '../lib/utils/maths/Mat4';
-import Quaternion from '../lib/utils/maths/Quaternion';
-import Vec3 from '../lib/utils/maths/Vec3';
-import Camera from '../lib/utils-3d/cameras/Camera';
-import Objectif from '../lib/utils-3d/cameras/Objectif';
-import { DebugPipeline, DebugTexture, GltfBindGroups, GltfPipeline } from '../lib/webgpu';
-import { BufferCamera } from '../lib/webgpu/BufferCamera';
-import WebgpuScene from '../lib/webgpu/WebgpuScene';
+import DualQuaternion from "../lib/utils/maths/DualQuaternion";
+import Mat4 from "../lib/utils/maths/Mat4";
+import Quaternion from "../lib/utils/maths/Quaternion";
+import Vec3 from "../lib/utils/maths/Vec3";
+import Camera from "../lib/utils-3d/cameras/Camera";
+import Objectif from "../lib/utils-3d/cameras/Objectif";
+import {
+  DebugPipeline,
+  DebugTexture,
+  GltfBindGroups,
+  GltfPipeline,
+} from "../lib/webgpu";
+import { BufferCamera } from "../lib/webgpu/BufferCamera";
+import WebgpuScene from "../lib/webgpu/WebgpuScene";
 
 export default class Scene extends WebgpuScene {
   constructor(context, config) {
@@ -42,7 +47,7 @@ export default class Scene extends WebgpuScene {
     const size = Float32Array.BYTES_PER_ELEMENT * 8 * this.config.lampes.length; // vec3 * 2 + 1
 
     const buffer = device.createBuffer({
-      label: 'Light Storage Buffer',
+      label: "Light Storage Buffer",
       size,
       usage: window.GPUBufferUsage.STORAGE | window.GPUBufferUsage.COPY_DST,
     });
@@ -63,10 +68,16 @@ export default class Scene extends WebgpuScene {
 
     const uniforms = new Float32Array(array);
     // direct setup
-    device.queue.writeBuffer(buffer, 0, uniforms.buffer, uniforms.byteOffset, uniforms.byteLength);
+    device.queue.writeBuffer(
+      buffer,
+      0,
+      uniforms.buffer,
+      uniforms.byteOffset,
+      uniforms.byteLength,
+    );
 
     const bindGroup = device.createBindGroup({
-      label: 'LightsUniforms',
+      label: "LightsUniforms",
       layout,
       entries: [
         {
@@ -133,10 +144,16 @@ export default class Scene extends WebgpuScene {
 
     const matrix = this.gltfPipeline.getAbsoluteAnimatedMatrix(0);
     const target = new Vec3().multiplyMatrix(matrix);
-    const screenPos = this.camera.worldToRelativeScreen(target, this.canvasSize);
-    const line2d = document.getElementById('line');
+    const screenPos = this.camera.worldToRelativeScreen(
+      target,
+      this.canvasSize,
+    );
+    const line2d = document.getElementById("line");
     if (line2d) {
-      line2d.setAttribute('d', `M${this.canvasSize.width} ${0} L${screenPos.x} ${screenPos.y}`);
+      line2d.setAttribute(
+        "d",
+        `M${this.canvasSize.width} ${0} L${screenPos.x} ${screenPos.y}`,
+      );
     }
 
     this.gltfPipeline.updateAnimations(time);
@@ -180,12 +197,17 @@ export default class Scene extends WebgpuScene {
 
     this.gltfPipeline.update();
 
-    this.updateCameraUniforms(this.uniformCamera.buffer, this.uniformCamera.bufferLightProj);
+    this.updateCameraUniforms(
+      this.uniformCamera.buffer,
+      this.uniformCamera.bufferLightProj,
+    );
 
     const encoder = device.createCommandEncoder({
-      label: 'GltfCommandEncoder',
+      label: "GltfCommandEncoder",
     });
-    const pass = encoder.beginRenderPass(this.gltfPipeline.getRenderPassDescriptor());
+    const pass = encoder.beginRenderPass(
+      this.gltfPipeline.getRenderPassDescriptor(),
+    );
 
     pass.setPipeline(this.gltfPipeline.get());
     pass.setBindGroup(GltfBindGroups.CAMERA, this.uniformCamera.bindGroup);
@@ -223,7 +245,9 @@ export default class Scene extends WebgpuScene {
     const headPos = new Vec3(headArr[12], headArr[13] + 4, headArr[14]); // +4 to adjust to center of head to the eyes
 
     // v1 = target - head
-    const v1 = new Vec3(target.getX(), target.getY(), target.getZ()).minus(headPos);
+    const v1 = new Vec3(target.getX(), target.getY(), target.getZ()).minus(
+      headPos,
+    );
     if (v1.length() === 0) return;
     v1.normalise();
 
@@ -245,9 +269,12 @@ export default class Scene extends WebgpuScene {
     let pitchDeg = pitchRad * (180 / Math.PI);
     pitchDeg = Math.max(-20, Math.min(7, pitchDeg)); // clamp pitch
 
-    const headLocalMat = this.computeLocalRotationMatrixQuaternion(yawDeg, pitchDeg);
+    const headLocalMat = this.computeLocalRotationMatrixQuaternion(
+      yawDeg,
+      pitchDeg,
+    );
 
-    this.gltfPipeline.setCustomTransform('Head', headLocalMat);
+    this.gltfPipeline.setCustomTransform("Head", headLocalMat);
 
     this.debugCube.setTransform(target.getX(), target.getY(), target.getZ());
   }

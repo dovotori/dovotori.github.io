@@ -1,7 +1,7 @@
 // import Bone from './Bone';
 // import Bones from './Bones';
-import Mat4 from '../../utils/maths/Mat4';
-import ObjetGltfAnim from './ObjetGltfAnim';
+import Mat4 from "../../utils/maths/Mat4";
+import ObjetGltfAnim from "./ObjetGltfAnim";
 
 class ObjectGltfSkin extends ObjetGltfAnim {
   constructor(gl, data, forceStep = null) {

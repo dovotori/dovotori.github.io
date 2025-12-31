@@ -1,30 +1,37 @@
-import { blend } from './constants';
+import { blend } from "./constants";
 
 class Pipeline {
-  constructor(sampleCount = 4, depthTextureFormat = 'depth32float') {
+  constructor(sampleCount = 4, depthTextureFormat = "depth32float") {
     this.pipeline = null;
     this.renderPassDescriptor = null;
     this.depthTextureFormat = depthTextureFormat;
     this.sampleCount = sampleCount;
   }
 
-  async setup(device, program, config, buffersLayout, canvasFormat, bindGroupLayouts) {
+  async setup(
+    device,
+    program,
+    config,
+    buffersLayout,
+    canvasFormat,
+    bindGroupLayouts,
+  ) {
     const pipelineLayout = device.createPipelineLayout({
-      label: 'Pipeline layout',
+      label: "Pipeline layout",
       bindGroupLayouts,
     });
 
     const descriptor = {
-      label: 'Gltf pipeline',
+      label: "Gltf pipeline",
       layout: pipelineLayout,
       vertex: {
         module: program.vertex,
-        entryPoint: 'v_main',
+        entryPoint: "v_main",
         buffers: buffersLayout,
       },
       fragment: {
         module: program.fragment,
-        entryPoint: 'f_main',
+        entryPoint: "f_main",
         targets: [
           {
             format: canvasFormat,
@@ -35,7 +42,7 @@ class Pipeline {
       primitive: config,
       depthStencil: {
         depthWriteEnabled: true,
-        depthCompare: 'less',
+        depthCompare: "less",
         format: this.depthTextureFormat,
       },
       multisample: {
@@ -48,21 +55,21 @@ class Pipeline {
   setupRenderPassDescriptor = () => {
     // renderpass descriptor
     this.renderPassDescriptor = {
-      label: 'Gltf Pass Descriptor',
+      label: "Gltf Pass Descriptor",
       colorAttachments: [
         {
           view: null,
           resolveTarget: null, // context.getCurrentTexture().createView(),
           clearValue: { r: 0, g: 0, b: 0, a: 0 },
-          loadOp: 'clear', // 'load' -> draw hover / 'clear'
-          storeOp: 'store', // 'store' -> save // 'discard' maybe for save in tex
+          loadOp: "clear", // 'load' -> draw hover / 'clear'
+          storeOp: "store", // 'store' -> save // 'discard' maybe for save in tex
         },
       ],
       depthStencilAttachment: {
         view: null,
         depthClearValue: 1.0,
-        depthLoadOp: 'clear',
-        depthStoreOp: 'store',
+        depthLoadOp: "clear",
+        depthStoreOp: "store",
         stencilClearValue: 0,
         // stencilLoadOp: 'clear',
         // stencilStoreOp: 'store',

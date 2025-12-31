@@ -21,7 +21,7 @@ export class BufferCamera {
     let bufferLightProj;
     if (withLight) {
       bufferLightProj = device.createBuffer({
-        label: 'LightProjBuffer',
+        label: "LightProjBuffer",
         size: Float32Array.BYTES_PER_ELEMENT * 16,
         usage: window.GPUBufferUsage.UNIFORM | window.GPUBufferUsage.COPY_DST,
       });
@@ -35,7 +35,7 @@ export class BufferCamera {
     }
 
     const bindGroup = device.createBindGroup({
-      label: 'CameraUniforms',
+      label: "CameraUniforms",
       layout,
       entries,
     });

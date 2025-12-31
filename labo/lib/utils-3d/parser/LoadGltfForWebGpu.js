@@ -1,5 +1,5 @@
-import { chunkArray, isEqualArray } from '../../utils';
-import { base64ToArrayBuffer } from '../../utils/base64';
+import { chunkArray, isEqualArray } from "../../utils";
+import { base64ToArrayBuffer } from "../../utils/base64";
 import {
   getArrayType,
   getBufferDataFromLayout,
@@ -8,17 +8,17 @@ import {
   getHierarchyJoints,
   getMixedInterleavedBufferData,
   getNumComponentPerType,
-} from './GltfCommon';
+} from "./GltfCommon";
 
 class LoadGltfForWebGpu {
   constructor() {
-    console.warn('LoadGltfForWebGpu should not be instanciated');
+    console.warn("LoadGltfForWebGpu should not be instanciated");
   }
 
   static gpuFormatForAccessor(accessor) {
-    const norm = accessor.normalized ? 'norm' : 'int';
+    const norm = accessor.normalized ? "norm" : "int";
     const count = getNumComponentPerType(accessor.type);
-    const x = count > 1 ? `x${count}` : '';
+    const x = count > 1 ? `x${count}` : "";
     switch (accessor.componentType) {
       case WebGLRenderingContext.BYTE:
         return `s${norm}8${x}`;
@@ -38,33 +38,33 @@ class LoadGltfForWebGpu {
   static gpuPrimitiveTopologyForMode(mode) {
     switch (mode) {
       case WebGLRenderingContext.TRIANGLE_STRIP:
-        return 'triangle-strip';
+        return "triangle-strip";
       case WebGLRenderingContext.LINES:
-        return 'line-list';
+        return "line-list";
       case WebGLRenderingContext.LINE_STRIP:
-        return 'line-strip';
+        return "line-strip";
       case WebGLRenderingContext.POINTS:
-        return 'point-list';
+        return "point-list";
       default:
       case WebGLRenderingContext.TRIANGLES:
-        return 'triangle-list';
+        return "triangle-list";
     }
   }
 
   static getShaderLocationFromName(name) {
     // should match @location(...) on vertex shader
     switch (name) {
-      case 'position':
+      case "position":
         return 0;
-      case 'normale':
+      case "normale":
         return 1;
-      case 'texture':
+      case "texture":
         return 2;
-      case 'tangent':
+      case "tangent":
         return 3;
-      case 'joint':
+      case "joint":
         return 4;
-      case 'weight':
+      case "weight":
         return 5;
       default:
         return undefined;
@@ -101,7 +101,7 @@ class LoadGltfForWebGpu {
   static getBuffersDataWebGpu = async (gltf, matTextures) => {
     const { buffers, accessors, bufferViews } = gltf;
     const newBuffers = buffers?.map((buffer) => {
-      if (buffer.uri?.startsWith('data:')) {
+      if (buffer.uri?.startsWith("data:")) {
         return base64ToArrayBuffer(buffer.uri);
       }
       if (buffer.data) {
@@ -140,10 +140,12 @@ class LoadGltfForWebGpu {
       if (layoutBuffers.has(layoutIndex)) {
         const layout = layoutBuffers.get(layoutIndex);
         if (layout.count !== count) {
-          throw new Error('Really weird gltf interleaved with different count on accessors');
+          throw new Error(
+            "Really weird gltf interleaved with different count on accessors",
+          );
         }
         if (layout.componentType !== componentType) {
-          console.warn('strange gltf interleaved of diffrent type or count');
+          console.warn("strange gltf interleaved of diffrent type or count");
           // in this case, i think we should split the buffer between vertex and index
           layout.mixTypes = true;
         }
@@ -165,8 +167,14 @@ class LoadGltfForWebGpu {
 
     layoutBuffers.forEach((layout) => {
       if (layout.mixTypes) {
-        const layoutAccessors = layout.accessorsIndexes.map((id) => accessors[id]);
-        layout.buffer = getMixedInterleavedBufferData(newBuffers, bufferViews, layoutAccessors);
+        const layoutAccessors = layout.accessorsIndexes.map(
+          (id) => accessors[id],
+        );
+        layout.buffer = getMixedInterleavedBufferData(
+          newBuffers,
+          bufferViews,
+          layoutAccessors,
+        );
       } else {
         layout.buffer = getBufferDataFromLayout(newBuffers, layout);
       }
@@ -187,10 +195,13 @@ class LoadGltfForWebGpu {
         const firstAccessor = accessors[firstAttribute];
         const vertexLayoutBuffer = layoutBuffers.get(firstAccessor.bufferView);
 
-        const isNotInterleaved = vertexLayoutBuffer.accessorsIndexes.length === 1;
+        const isNotInterleaved =
+          vertexLayoutBuffer.accessorsIndexes.length === 1;
 
         const indicesAccessor = accessors[indices];
-        const indicesLayoutBuffer = layoutBuffers.get(indicesAccessor.bufferView);
+        const indicesLayoutBuffer = layoutBuffers.get(
+          indicesAccessor.bufferView,
+        );
 
         // LAYOUT ATTRIBUTES
         let previousOffset = 0;
@@ -207,8 +218,11 @@ class LoadGltfForWebGpu {
 
         const sortLocations = Object.keys(attributes)
           .map((attribName) => {
-            const shaderLocationName = getGlslProgramLocationsMappedName(attribName.toLowerCase());
-            const shaderLocation = LoadGltfForWebGpu.getShaderLocationFromName(shaderLocationName);
+            const shaderLocationName = getGlslProgramLocationsMappedName(
+              attribName.toLowerCase(),
+            );
+            const shaderLocation =
+              LoadGltfForWebGpu.getShaderLocationFromName(shaderLocationName);
             return { shaderLocationName, shaderLocation, attribName };
           })
           .filter((a) => a.shaderLocation !== undefined) // remove undefined
@@ -223,17 +237,18 @@ class LoadGltfForWebGpu {
             // force format for joint
             // because it is interleaved as a big float32 buffer
             if (
-              shaderLocationName === 'joint' &&
-              attribName === 'JOINTS_0' &&
+              shaderLocationName === "joint" &&
+              attribName === "JOINTS_0" &&
               shaderLocation === 4
             ) {
-              format = 'float32x4';
+              format = "float32x4";
             }
 
             if (isNotInterleaved) {
               const layoutBuffer = layoutBuffers.get(accessor.bufferView);
               offset += previousOffset;
-              previousOffset = layoutBuffer.numElement * arrayType.BYTES_PER_ELEMENT;
+              previousOffset =
+                layoutBuffer.numElement * arrayType.BYTES_PER_ELEMENT;
 
               toInterleaved.primitives[shaderLocation] = {
                 shaderLocationName,
@@ -253,7 +268,8 @@ class LoadGltfForWebGpu {
         );
 
         if (isNotInterleaved) {
-          const interleaved = LoadGltfForWebGpu.setInterleavedBuffer(toInterleaved);
+          const interleaved =
+            LoadGltfForWebGpu.setInterleavedBuffer(toInterleaved);
           arrayStride = interleaved.arrayStride;
           bufferVertex = interleaved.buffer;
         } else if (vertexLayoutBuffer.mixTypes) {
@@ -280,10 +296,12 @@ class LoadGltfForWebGpu {
   };
 
   static getPipelines = (meshes) => {
-    const topology = LoadGltfForWebGpu.gpuPrimitiveTopologyForMode(meshes[0].primitives[0].mode);
+    const topology = LoadGltfForWebGpu.gpuPrimitiveTopologyForMode(
+      meshes[0].primitives[0].mode,
+    );
     return {
       topology,
-      cullMode: 'back', // 'none'
+      cullMode: "back", // 'none'
     };
   };
 
@@ -349,7 +367,7 @@ class LoadGltfForWebGpu {
           };
 
           if (
-            interpolation === 'STEP' &&
+            interpolation === "STEP" &&
             outputData.length === 2 &&
             isEqualArray(outputData[0], outputData[1])
           ) {
@@ -402,7 +420,11 @@ class LoadGltfForWebGpu {
       const invMatrices = chunkArray(inverseMatrixesBuffer, 16);
 
       const jointNodes = joints.map((nodeIndex, i) => {
-        return { ...gltf.nodes[nodeIndex], invMatrix: invMatrices[i], id: nodeIndex };
+        return {
+          ...gltf.nodes[nodeIndex],
+          invMatrix: invMatrices[i],
+          id: nodeIndex,
+        };
       });
 
       skins.set(skinIndex, {
@@ -418,14 +440,17 @@ class LoadGltfForWebGpu {
   }
 
   static async load(gltf, folderPath) {
-    const buffers = await LoadGltfForWebGpu.fetchBuffers(gltf.buffers, folderPath);
+    const buffers = await LoadGltfForWebGpu.fetchBuffers(
+      gltf.buffers,
+      folderPath,
+    );
     return await LoadGltfForWebGpu.parse({ ...gltf, buffers });
   }
 
   static async fetchBuffers(buffers, folderPath) {
     return await Promise.all(
       buffers.map((b) => {
-        if (b.uri?.endsWith('.bin')) {
+        if (b.uri?.endsWith(".bin")) {
           return fetch(folderPath + b.uri).then((res) => res.arrayBuffer());
         }
         return b;
@@ -443,24 +468,28 @@ class LoadGltfForWebGpu {
       samplers,
       images,
     );
-    const { layoutBuffers, textureBuffers } = await LoadGltfForWebGpu.getBuffersDataWebGpu(
-      gltf,
-      matTextures,
-    );
+    const { layoutBuffers, textureBuffers } =
+      await LoadGltfForWebGpu.getBuffersDataWebGpu(gltf, matTextures);
     const newMeshes = LoadGltfForWebGpu.getMeshes(gltf, layoutBuffers);
-    const { skins: newSkins, jointsIndexes } = LoadGltfForWebGpu.getSkins(gltf, layoutBuffers);
+    const { skins: newSkins, jointsIndexes } = LoadGltfForWebGpu.getSkins(
+      gltf,
+      layoutBuffers,
+    );
     const newNodes = LoadGltfForWebGpu.getNodes(nodes, jointsIndexes);
 
-    const animationsPerNodes = LoadGltfForWebGpu.getAnimationsPerNodes(gltf, layoutBuffers);
+    const animationsPerNodes = LoadGltfForWebGpu.getAnimationsPerNodes(
+      gltf,
+      layoutBuffers,
+    );
     const data = new Map();
-    if (newMeshes) data.set('meshes', newMeshes);
-    data.set('nodes', newNodes);
-    data.set('materials', newMaterials);
-    data.set('pipeline', LoadGltfForWebGpu.getPipelines(meshes));
-    data.set('animations', animationsPerNodes);
-    data.set('textures', textureBuffers);
+    if (newMeshes) data.set("meshes", newMeshes);
+    data.set("nodes", newNodes);
+    data.set("materials", newMaterials);
+    data.set("pipeline", LoadGltfForWebGpu.getPipelines(meshes));
+    data.set("animations", animationsPerNodes);
+    data.set("textures", textureBuffers);
     if (newSkins.size > 0) {
-      data.set('skins', newSkins);
+      data.set("skins", newSkins);
     }
     return data;
   }

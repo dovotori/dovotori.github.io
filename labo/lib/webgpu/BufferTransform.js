@@ -1,8 +1,8 @@
-import Transform from '../utils/maths/Transform';
+import Transform from "../utils/maths/Transform";
 
 class BufferTransform {
   constructor() {
-    this.name = 'BufferTransform';
+    this.name = "BufferTransform";
     this.buffer = null;
     this.bindGroup = null;
   }
@@ -32,7 +32,7 @@ class BufferTransform {
     }
 
     this.bindGroup = device.createBindGroup({
-      label: 'NodeTransformBindGroup',
+      label: "NodeTransformBindGroup",
       layout,
       entries,
     });

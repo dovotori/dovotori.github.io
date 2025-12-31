@@ -1,6 +1,6 @@
-import Mat4 from '../../utils/maths/Mat4';
-import Vec3 from '../../utils/maths/Vec3';
-import Objectif from './Objectif';
+import Mat4 from "../../utils/maths/Mat4";
+import Vec3 from "../../utils/maths/Vec3";
+import Objectif from "./Objectif";
 
 export default class extends Objectif {
   constructor(config) {
@@ -25,7 +25,9 @@ export default class extends Objectif {
   }
 
   perspective(w, h) {
-    this.projection.identity().perspective(this.angle, w / h, this.near, this.far);
+    this.projection
+      .identity()
+      .perspective(this.angle, w / h, this.near, this.far);
   }
 
   moveAroundCenter(time, offset = 0) {
@@ -104,7 +106,9 @@ export default class extends Objectif {
     const ivp = this.getInverseViewProjection();
     const near = new Vec3(x, y, 0).multiplyMatrix(ivp);
     const far = new Vec3(x, y, 1).multiplyMatrix(ivp);
-    const dir = new Vec3(far.getX(), far.getY(), far.getZ()).minus(near).normalise();
+    const dir = new Vec3(far.getX(), far.getY(), far.getZ())
+      .minus(near)
+      .normalise();
     return { origin: near, dir };
   }
 
@@ -114,7 +118,11 @@ export default class extends Objectif {
    */
   worldToNDC(worldVec) {
     const vp = this.getViewProjection(); // Mat4
-    return new Vec3(worldVec.getX(), worldVec.getY(), worldVec.getZ()).multiplyMatrix(vp);
+    return new Vec3(
+      worldVec.getX(),
+      worldVec.getY(),
+      worldVec.getZ(),
+    ).multiplyMatrix(vp);
   }
 
   worldToRelativeScreen(worldVec, screenSize) {

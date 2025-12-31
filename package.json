@@ -91,8 +91,8 @@
     "geojson-vt": "^4.0.2",
     "gh-cli": "^0.0.1",
     "gh-pages": "^6.3.0",
-    "globals": "^16.5.0",
     "jest": "^30.2.0",
+    "lint-staged": "^16.2.7",
     "ol": "^10.7.0",
     "prettier": "^3.7.4",
     "puppeteer": "^24.34.0",
@@ -122,5 +122,11 @@
     "email": "dovotori@proton.me"
   },
   "homepage": "https://dovotori.gitlab.io",
-  "packageManager": "yarn@4.12.0"
+  "lint-staged": {
+    "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
+      "biome check --files-ignore-unknown=true",
+      "biome check --write --no-errors-on-unmatched"
+    ],
+    "*": ["biome check --no-errors-on-unmatched --files-ignore-unknown=true"]
+  }
 }

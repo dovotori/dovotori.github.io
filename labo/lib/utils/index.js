@@ -11,6 +11,7 @@ export const isEqualArray = (a, b) => {
   return true;
 };
 
-export const capitalize = (string) => string.charAt(0).toUpperCase() + string.slice(1);
+export const capitalize = (string) =>
+  string.charAt(0).toUpperCase() + string.slice(1);
 
 export const getEnvPath = (path) => `${process.env.ASSET_PATH}${path}`;

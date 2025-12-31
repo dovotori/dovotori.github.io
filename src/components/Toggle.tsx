@@ -75,7 +75,13 @@ const Toggle = ({
   name?: string;
 }) => (
   <CheckBoxWrapper className={className}>
-    <HideInput id={id} name={name || id} type="checkbox" checked={checked} onChange={onClick} />
+    <HideInput
+      id={id}
+      name={name || id}
+      type="checkbox"
+      checked={checked}
+      onChange={onClick}
+    />
     <ToggleTrack htmlFor={id}>
       <Background />
       <Circle checked={checked} />

@@ -21,7 +21,7 @@ const useHover = () => {
       return null;
     },
 
-    [handleMouseOver, handleMouseOut] // Recall only if ref changes
+    [handleMouseOver, handleMouseOut], // Recall only if ref changes
   );
 
   return [ref, value];
