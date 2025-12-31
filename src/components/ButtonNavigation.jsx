@@ -4,21 +4,21 @@ import styled from "styled-components";
 const StyledLink = styled(Link)`
   position: relative;
   width: 100%;
-  padding: 1.5em 0 1.5em 2%;
+  padding: 0.5em;
   color: ${(p) => p.theme.light};
   ${(p) => p.theme.active};
-  padding: 0.5em;
   min-height: 40px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   overflow-wrap: break-word;
   overflow: hidden;
-
   background-color: none;
   transition:
     background-color 1000ms ease-out,
     color 1000ms ease-out;
+
+  cursor: pointer;
 
   &:focus {
     color: ${(p) => p.theme.getColor};
@@ -27,7 +27,6 @@ const StyledLink = styled(Link)`
   &:hover {
     color: ${(p) => p.theme.getColor};
     background-color: ${(p) => p.theme.backgroundHighlight};
-
     span {
       opacity: 1;
     }

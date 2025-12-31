@@ -102,7 +102,7 @@ const common = {
     menu: 50,
     content: 10,
   },
-  active: "&:active { transform-origin: center; transform: scale(0.95); }",
+  active: "&:active { transform-origin: center; transform: scale(1.05); }",
 };
 
 export const dark = {
