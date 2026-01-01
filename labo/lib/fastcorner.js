@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   detect,
 
   fast9_detect,
@@ -14,12 +14,11 @@ https://github.com/edrosten/fast-C-src
 - nonmax.c
 */
 
-function detect(im, width, height, threshold, _nonmax) {
+function detect(im, width, height, threshold, nonmax = false) {
   const corners = fast9_detect(im, width, height, threshold);
   const scores = fast9_score(im, width, height, corners, threshold);
   if (nonmax) {
-    const nonmax = nonmax_suppression(corners, scores);
-    return nonmax;
+    return nonmax_suppression(corners, scores);
   }
   for (let i = 0; i < corners.length; i++) {
     corners[i].score = scores[i];

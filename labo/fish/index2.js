@@ -17,7 +17,7 @@ export default async () => {
   context.strokeStyle = "white";
   console.log("---init", canvas.width, canvas.height);
 
-  const imgPath = getEnvPath("/img/fish/skin-3.png");
+  const imgPath = getEnvPath("/img/fish/skin-3.avif");
   const img = new Image();
   await new Promise((resolve) => {
     img.onload = () => {

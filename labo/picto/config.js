@@ -1,6 +1,6 @@
 export default {
   slug: "picto",
-  assets: ["/img/signature.png"],
+  assets: ["/img/signature.avif"],
   mouse: { events: ["move"] },
   shaders: [
     "/screen/glitch.js",

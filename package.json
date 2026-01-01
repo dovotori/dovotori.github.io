@@ -10,7 +10,7 @@
   "license": "CC-BY-4.0",
   "type": "module",
   "scripts": {
-    "dev": "npm run start & npm run storybook:dev",
+    "dev": "concurrently \"npm run start\" \"npm run storybook:dev\"",
     "start": "webpack serve --config webpack/dev.js",
     "images": "node scripts/convert-images.js",
     "build": "webpack --config webpack/prod.js",
@@ -85,6 +85,7 @@
     "@webgpu/types": "^0.1.68",
     "babel-jest": "^30.2.0",
     "compression-webpack-plugin": "^11.1.0",
+    "concurrently": "^9.2.1",
     "cross-env": "^10.1.0",
     "csv-parser": "^3.2.0",
     "earcut": "^3.0.2",

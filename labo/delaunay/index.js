@@ -193,7 +193,7 @@ export default async () => {
   boxDebug = document.querySelector("#boxdebug");
   boxGrey = document.querySelector("#boxgrey");
 
-  const url = "/public/img/japon/japon-0.jpg";
+  const url = "/public/img/japon/japon-0.avif";
   const img = await loadImage(url);
   const { width, height } = img;
   canvas.width = width;

@@ -12,8 +12,8 @@ export const isTouchDevice = () =>
   "ontouchstart" in window || navigator.MaxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
 
 export const getEnvPath = (path) => `${process.env.ASSET_PATH}${path}`;
-export const getTeaserPath = (slug) => getEnvPath(`/img/teasers/${slug}.png`);
-export const getProjectImagePath = (slug, idx) => getEnvPath(`/img/${slug}/${slug}-${idx}.jpg`);
+export const getTeaserPath = (slug) => getEnvPath(`/img/teasers/${slug}.webp`);
+export const getProjectImagePath = (slug, idx) => getEnvPath(`/img/${slug}/${slug}-${idx}.avif`);
 
 export const getColorType = (category) => {
   switch (category) {

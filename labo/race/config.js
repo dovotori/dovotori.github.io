@@ -1,6 +1,6 @@
 export default {
   slug: "race",
-  assets: ["/textures/noisergb.png", "/gltf/raceship.gltf"],
+  assets: ["/textures/noisergb.avif", "/gltf/raceship.gltf"],
   shaders: [
     "/camera/road.js",
     "/camera/gltf.js",

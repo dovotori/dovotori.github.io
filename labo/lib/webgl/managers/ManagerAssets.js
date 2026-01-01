@@ -85,6 +85,7 @@ class ManagerAssets {
         case "jpeg":
         case "png":
         case "bmp":
+        case "avif":
         case "webp":
           return ManagerAssets.loadImage(path, info);
         case "obj":
@@ -109,6 +110,7 @@ class ManagerAssets {
           case "jpeg":
           case "png":
           case "webp":
+          case "avif":
             this.assets.textures[item.info.name] = item.data;
             break;
           case "bmp":

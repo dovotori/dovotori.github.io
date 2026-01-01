@@ -8,7 +8,7 @@ export default {
     "/camera/frequencyGrid.js",
     `/camera/${MAIN_PROG}.js`,
   ],
-  assets: ["/textures/earth.png", "/sound/akira.mp3"],
+  assets: ["/textures/earth.avif", "/sound/akira.mp3"],
   camera: {
     position: { x: 0, y: 0, z: 20 },
     target: { x: 0, y: 0, z: 0 },
