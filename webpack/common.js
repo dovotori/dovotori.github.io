@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import zlib from "node:zlib";
 import CompressionPlugin from "compression-webpack-plugin";
 import TerserPlugin from "terser-webpack-plugin";
-import * as utils from "../scripts/utils";
+import * as utils from "../scripts/utils.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

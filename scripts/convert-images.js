@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
-import { __dirname } from "./utils";
+import { __dirname } from "./utils.js";
 
 const SRC = [
   path.resolve(__dirname, "../public/img"),

@@ -1,7 +1,7 @@
 import path from "node:path";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import webpack from "webpack";
-import { __dirname, alias, getHtml, rules } from "./common";
+import { __dirname, alias, getHtml, rules } from "./common.js";
 
 const port = process.env.PORT || 8081;
 const host = process.env.HOST || "0.0.0.0";

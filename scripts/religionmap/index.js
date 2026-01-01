@@ -1,6 +1,6 @@
 import path from "node:path";
 import puppeteer from "puppeteer";
-import { __dirname, readCsv, readFile, removeFile, saveHtml } from "./utils";
+import { __dirname, readCsv, readFile, removeFile, saveHtml } from "./utils.js";
 
 const SAVE_HTML_FILE = path.resolve(__dirname, "../../public/html/religionmap.html");
 const SAVE_SVG_FILE = path.resolve(__dirname, "./religionmap.svg");

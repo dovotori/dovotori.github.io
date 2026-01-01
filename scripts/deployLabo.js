@@ -1,5 +1,5 @@
 import path from "node:path";
-import { __dirname, copyFile, readFile, saveFile } from "./utils";
+import { __dirname, copyFile, readFile, saveFile } from "./utils.js";
 
 const PATH_ASSETS = path.resolve(__dirname, "../public/");
 const PATH_LABO = path.resolve(__dirname, "../labo/");

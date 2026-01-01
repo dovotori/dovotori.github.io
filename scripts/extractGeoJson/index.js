@@ -1,5 +1,5 @@
 import path from "node:path";
-import { __dirname, readFile, removeFile, saveHtml } from "./utils";
+import { __dirname, readFile, removeFile, saveHtml } from "./utils.js";
 
 const SAVE_FILE = path.resolve(__dirname, "../../public/json");
 

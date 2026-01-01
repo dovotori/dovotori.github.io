@@ -3,7 +3,7 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import webpack from "webpack";
 import BundleAnalyzerPlugin from "webpack-bundle-analyzer";
 import config from "../package.json" with { type: "json" };
-import { __dirname, alias, rules } from "./common";
+import { __dirname, alias, rules } from "./common.js";
 
 const port = process.env.PORT || 8080;
 const host = process.env.HOST || "0.0.0.0";
