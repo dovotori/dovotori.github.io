@@ -6,7 +6,7 @@ import Loader from "./Loader";
 
 const renderLoader = () => (
   <Bloc>
-    <Loader $colorType={0} />
+    <Loader />
   </Bloc>
 );
 

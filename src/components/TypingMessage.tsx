@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import styled from "styled-components";
 
-const Wrap = styled.div`
+const Wrap = styled.div<{ $isVertical: boolean; $isCenter: boolean }>`
   position: relative;
 
   p {
@@ -18,7 +18,7 @@ const Wrap = styled.div`
   }
 `;
 
-const Hidden = styled.p`
+const Hidden = styled.p<{ $isVisible: boolean }>`
   visibility: ${(p) => (p.$isVisible ? "visible" : "hidden")};
 `;
 
@@ -49,6 +49,18 @@ const TypingMessage = ({
   delayLetter = 100, // en ms
   trigger = 0, // increment to replay animation
   triggerDebounce = 500, // debounce delay for trigger in ms
+}: {
+  message: string;
+  isDisabled?: boolean;
+  isVertical?: boolean;
+  isCenter?: boolean;
+  firstMessage?: string;
+  className?: string;
+  isLoop?: boolean;
+  delayLoop?: number;
+  delayLetter?: number;
+  trigger?: number;
+  triggerDebounce?: number;
 }) => {
   const count = useRef(0);
   const lastFrame = useRef(Date.now());

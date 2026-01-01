@@ -1,11 +1,11 @@
-import type { MyState } from "src/types";
+import type { MyContent } from "src/types";
 import { Locales } from "../../constants/locales";
 import getLocalCategories from "./getLocalCategories";
 import getLocalPosts from "./getLocalPosts";
 import getLocalSkills from "./getLocalSkills";
 import getLocalTags from "./getLocalTags";
 
-const initialState: MyState = {
+const initialState: MyContent = {
   categories: getLocalCategories(Locales.EN),
   tags: getLocalTags(Locales.EN),
   entries: getLocalPosts(Locales.EN),

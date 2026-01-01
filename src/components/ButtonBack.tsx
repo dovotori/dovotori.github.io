@@ -14,7 +14,7 @@ const moveLeft = keyframes`
   }
 `;
 
-const LINK = styled(Link)`
+const LINK = styled(Link)<{ $isFocus: boolean; $colorType?: number }>`
   position: relative;
   display: flex;
   align-items: center;
@@ -41,7 +41,11 @@ const ArrowsContainer = styled.div`
   align-items: center;
 `;
 
-const AnimatedArrow = styled(BackArrow)`
+const AnimatedArrow = styled(BackArrow)<{
+  $isAnimating: boolean;
+  $delay: number;
+  $colorType?: number;
+}>`
   position: absolute;
   fill: ${(p) => p.theme.getColor};
   height: 0.6em;
@@ -52,23 +56,35 @@ const AnimatedArrow = styled(BackArrow)`
     p.$isAnimating &&
     css`
       animation: ${moveLeft} 400ms ease-in-out forwards;
-      animation-delay: ${(p) => p.$delay}ms;
+      animation-delay: ${p.$delay}ms;
     `}
 `;
 
-const Span = styled.span`
+const Span = styled.span<{ $colorType?: number }>`
   width: 100%;
   color: ${(p) => p.theme.getColor};
   ${(p) => p.theme.monospace}
   font-size: 0.8em;
   letter-spacing: 0.5em;
   text-align: right;
+  white-space: nowrap;
+  margin-left: 60px;
 `;
 
 const ARROW_DELAYS = [0, 100, 200, 300, 400];
 
-const ButtonBack = ({ to, className, $colorType, label }) => {
-  const [hoverRef, isHovered] = useHover();
+const ButtonBack = ({
+  to,
+  className,
+  $colorType,
+  label,
+}: {
+  to?: string;
+  className?: string;
+  $colorType?: number;
+  label: string;
+}) => {
+  const { ref: hoverRef, value: isHovered } = useHover<HTMLAnchorElement>();
 
   return (
     <LINK

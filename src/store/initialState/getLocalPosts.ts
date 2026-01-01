@@ -1,4 +1,4 @@
-import type { MyState } from "src/types";
+import type { MyContent } from "src/types";
 import { CAT_BLOG, CAT_CODE, CAT_DESIGN } from "../../constants/categories";
 import { Locales } from "../../constants/locales";
 import * as Tags from "../../constants/tags";
@@ -685,7 +685,7 @@ const rawPosts = [
   },
 ];
 
-export default (locale): MyState["entries"] => {
+export default (locale): MyContent["entries"] => {
   return rawPosts
     .map((post) => {
       const description = post.description?.[locale];

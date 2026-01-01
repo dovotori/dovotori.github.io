@@ -39,21 +39,21 @@ const StyledGithub = styled(Github)`
   color: ${(p) => p.theme.light};
 `;
 
-const SociaLinks = ({ className }) => (
+const SociaLinks = ({ className }: { className?: string }) => (
   <Wrap className={className}>
-    <a href="https://gitlab.com/dovotori" title="gitlab">
+    <a href="https://gitlab.com/dovotori" title="gitlab" aria-label="GitLab">
       <Gitlab />
     </a>
-    <a href="https://github.com/dovotori" title="github">
+    <a href="https://github.com/dovotori" title="github" aria-label="GitHub">
       <StyledGithub />
     </a>
-    <a href="https://jp.linkedin.com/in/dorian-ratovo" title="linkedin">
+    <a href="https://jp.linkedin.com/in/dorian-ratovo" title="linkedin" aria-label="LinkedIn">
       <Linkedin />
     </a>
-    <a href="/storybook" title="storybook">
+    <a href="/storybook" title="storybook" aria-label="Storybook">
       <Storybook />
     </a>
-    <a href={`mailto:${process.env.MAIL}`} title="contact">
+    <a href={`mailto:${process.env.MAIL}`} title="contact" aria-label="Send email">
       <StyledMail />
     </a>
   </Wrap>

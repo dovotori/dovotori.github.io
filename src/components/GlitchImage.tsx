@@ -62,9 +62,7 @@ const glitchFlash = keyframes`
   }
 `;
 
-const Wrap = styled.div``;
-
-const Glitch = styled.div`
+const Glitch = styled.div<{ src: string }>`
   @supports (
     (clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%)) or
       (-webkit-clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%))
@@ -82,7 +80,7 @@ const Glitch = styled.div`
   }
 `;
 
-const GlitchBlink = styled.div`
+const GlitchBlink = styled.div<{ src: string }>`
   @supports (
     (clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%)) or
       (-webkit-clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%))
@@ -99,11 +97,11 @@ const GlitchBlink = styled.div`
   }
 `;
 
-const GlitchImage = ({ className, src }) => (
-  <Wrap className={className}>
+const GlitchImage = ({ className, src }: { className?: string; src: string }) => (
+  <div className={className}>
     <Glitch src={src} />
     <GlitchBlink src={src} />
-  </Wrap>
+  </div>
 );
 
 export default GlitchImage;

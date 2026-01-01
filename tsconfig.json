@@ -13,7 +13,12 @@
     "isolatedModules": true,
     "noEmit": true,
     "baseUrl": ".",
-    "paths": {},
+    "paths": {
+      "Assets/*": ["public/*"],
+      "Assets": ["public"],
+      "Labo/*": ["labo/*"],
+      "Labo": ["labo"]
+    },
     "types": ["@webgpu/types"]
   },
   "include": ["src", "labo", "src/types/styled.d.ts"],

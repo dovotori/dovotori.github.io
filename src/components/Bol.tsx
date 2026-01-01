@@ -125,7 +125,7 @@ const StyledBonzai = styled(BonzaiSvg)`
   }
 `;
 
-const StyledBol = styled(BolSvg)`
+const StyledBol = styled(BolSvg)<{ $colorType: number }>`
   z-index: 2;
   position: relative;
   .mode {
@@ -182,7 +182,7 @@ const StyledBol = styled(BolSvg)`
   }
 `;
 
-const Bol = ({ className, isSwitched = false }) => {
+const Bol = ({ className, isSwitched = false }: { className?: string; isSwitched?: boolean }) => {
   const ref = useRef(null);
   const svgs = useRef(null);
   const previousIsSwitched = usePrevious(isSwitched);

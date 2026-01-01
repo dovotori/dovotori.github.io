@@ -3,7 +3,11 @@ import { getContent, getContentBack, getIsTouchDevice } from "../selectors";
 
 const Container = () => {
   return (
-    <About hello={getContent().hello} isTouchDevice={getIsTouchDevice()} back={getContentBack()} />
+    <About
+      description={getContent().hello.description}
+      isTouchDevice={getIsTouchDevice()}
+      back={getContentBack()}
+    />
   );
 };
 

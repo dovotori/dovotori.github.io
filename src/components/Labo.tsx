@@ -2,9 +2,21 @@ import { useEffect, useRef } from "react";
 
 import useFetchLabo from "../hooks/useFetchLabo";
 
-const Labo = ({ className, slug, hasHtml = false, hasJs = false, onLoad = null }) => {
+const Labo = ({
+  className,
+  slug,
+  hasHtml = false,
+  hasJs = false,
+  onLoad = null,
+}: {
+  className?: string;
+  slug: string;
+  hasHtml?: boolean;
+  hasJs?: boolean;
+  onLoad?: (() => void) | null;
+}) => {
   const { js, html, isLoaded } = useFetchLabo(slug, hasHtml, hasJs);
-  const ref = useRef();
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isLoaded) return;

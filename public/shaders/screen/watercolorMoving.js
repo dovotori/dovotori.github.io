@@ -17,12 +17,20 @@ void main() {
     p.x += 0.3 / float(i) * sin(float(i) * 3. * p.y + time * speed) + mouse.x / 1000.;
     p.y += 0.3 / float(i) * cos(float(i) * 3. * p.x + time * speed) + mouse.y / 1000.;
   }
-  float r = cos(p.x + p.y + 1.) * .5 + .5;
+  float r = cos(p.x + p.y + 1.) * 0.5 + 0.5;
   // float g = sin(p.x + p.y + 1.) * .5 + .5;
   // float b = (sin(p.x + p.y) + cos(p.x + p.y)) * .5 + .5;
   // vec3 watercolor = vec3(r, g, b);
 
-  gl_FragColor = vec4(color.xyz * r, color.a);
+  float bright = color.x + color.y + color.z / 3.0;
+  // vec3 final = mix(vec3(r),color.xyz, bright);
+
+  vec3 final = color.xyz;
+  if (bright < 0.5) {
+    final = vec3(r  * 0.2);
+  }
+
+  gl_FragColor = vec4(final, color.a);
 }`;
 
 export default {

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const StyledLink = styled(Link)`
+const StyledLink = styled(Link)<{ $colorType?: number }>`
   position: relative;
   width: 100%;
   padding: 0.5em;
@@ -46,8 +46,26 @@ const Span = styled.span`
   `}
 `;
 
-const ButtonNavigation = ({ children, className, to, $colorType, label }) => (
-  <StyledLink className={className} $colorType={$colorType} to={to}>
+const ButtonNavigation = ({
+  children,
+  className,
+  to,
+  $colorType,
+  label,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  to: string;
+  $colorType?: number;
+  label: string;
+}) => (
+  <StyledLink
+    className={className}
+    $colorType={$colorType}
+    to={to}
+    title={label}
+    aria-label={label}
+  >
     {children}
     <Span>{label}</Span>
   </StyledLink>

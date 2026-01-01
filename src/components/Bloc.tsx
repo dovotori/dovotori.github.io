@@ -5,7 +5,7 @@ const Wrap = styled.div`
   width: 100%;
 `;
 
-const Bloc = ({ className, children }) => {
+const Bloc = ({ className, children }: { className?: string; children: React.ReactNode }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

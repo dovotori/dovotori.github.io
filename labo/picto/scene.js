@@ -26,7 +26,7 @@ export default class extends Scene {
     super.render();
     const delta = Math.sin(this.value) * 0.1;
     const time = this.time * 0.004;
-    this.postProcess.setGlitch(time, delta, delta, this.mngTex.get("signature").get());
+    this.postProcess.setGlitch(time, delta, delta, this.mngTex.get("signature3").get());
     this.postProcess.setWave(time, delta, this.centerWave);
     this.postProcess.setWatercolorMoving(this.time * 0.002, [this.value, this.value], 4.0);
     this.postProcess.setRGB(delta * 100.0, delta * 100.0, this.centerWave[0], this.centerWave[1]);
@@ -34,10 +34,7 @@ export default class extends Scene {
   }
 
   onMouseMove = (mouse) => {
-    const newPos = [
-      mouse.relScroll.x / mouse.size.width,
-      1 - mouse.relScroll.y / mouse.size.height,
-    ];
+    const newPos = [mouse.relScroll.x / mouse.size.width, mouse.relScroll.y / mouse.size.height];
     const velocity = [this.centerWave[0] - newPos[0], this.centerWave[1] - newPos[1]];
     this.centerWave = newPos;
     this.target = (velocity[0] + velocity[1]) * 100;

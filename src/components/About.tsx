@@ -33,7 +33,7 @@ const Description = styled.p`
   margin-bottom: 1em;
 `;
 
-const MarginLeft = styled.div`
+const MarginLeft = styled.div<{ $isTouch: boolean }>`
   margin: ${(p) => !p.$isTouch && "0 0 0 20%"};
 `;
 
@@ -41,7 +41,7 @@ const StyledButtonBack = styled(ButtonBack)`
   margin: 12em auto 2em;
 `;
 
-const Link = styled.a`
+const Link = styled.a<{ $isTouch: boolean }>`
   margin-top: ${(p) => (!p.$isTouch ? 0 : "10em")};
   display: flex;
   justify-content: flex-end;
@@ -66,11 +66,19 @@ const Center = styled.div`
   margin: 4em auto;
 `;
 
-const About = ({ hello, isTouchDevice, back }) => (
+const About = ({
+  description,
+  isTouchDevice,
+  back,
+}: {
+  description: string[];
+  isTouchDevice: boolean;
+  back: string;
+}) => (
   <Wrap>
     <WrapContent>
       <MarginLeft $isTouch={isTouchDevice}>
-        <Link href={`mailto:${process.env.MAIL}`} $isTouch={isTouchDevice}>
+        <Link href={`mailto:${process.env.MAIL}`} $isTouch={isTouchDevice} aria-label="Send email">
           <Quote>
             <StyledQuoteIcon />
           </Quote>
@@ -78,7 +86,7 @@ const About = ({ hello, isTouchDevice, back }) => (
             <StyledQuoteIcon />
           </Quote>
         </Link>
-        {hello.description.map((text) => (
+        {description.map((text) => (
           <Description key={text}>{text}</Description>
         ))}
       </MarginLeft>

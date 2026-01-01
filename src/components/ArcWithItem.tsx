@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { polarToCartesian } from "../utils";
 import Arc from "./Arc";
 
-const Wrap = styled.g`
+const Wrap = styled.g<{ $noHoverAnim?: boolean }>`
   cursor: pointer;
 
   & > path {
@@ -20,7 +20,7 @@ const Wrap = styled.g`
   }
 `;
 
-const StyledArc = styled(Arc)`
+const StyledArc = styled(Arc)<{ depth: number; visible: boolean }>`
   opacity: ${(p) => {
     if (!p.visible) return 0;
     switch (p.depth) {
@@ -61,6 +61,22 @@ const ArcWithItem = ({
   margin,
   noHoverAnim,
   showIcon,
+}: {
+  x: number;
+  y: number;
+  radius: number;
+  startAngle: number;
+  className?: string;
+  name: string;
+  Picto?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  depth: number;
+  strokeWidth: number;
+  children?: React.ReactNode;
+  onClick?: () => void;
+  angle: number;
+  margin: number;
+  noHoverAnim?: boolean;
+  showIcon?: boolean;
 }) => {
   const endAngle = startAngle + angle - margin;
   const imageWidth = strokeWidth * 0.7;

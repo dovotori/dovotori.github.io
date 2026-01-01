@@ -5,6 +5,7 @@ import { ReactComponent as Manette } from "Assets/svg/manette.svg";
 import { ReactComponent as Tie } from "Assets/svg/tie3.svg";
 import { Fragment, useCallback } from "react";
 import { Link } from "react-router-dom";
+import type { MyContent } from "src/types";
 import styled, { css } from "styled-components";
 import AnimBar from "./AnimBar";
 import Chart from "./Chart";
@@ -70,7 +71,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const DateComp = styled.span.attrs({ className: "numbers" })`
+const DateComp = styled.span.attrs({ className: "numbers" })<{ $isTouch: boolean }>`
   color: ${(p) => p.theme.primary};
   ${(p) => p.theme.monospace}
   overflow-wrap: break-word;
@@ -110,7 +111,7 @@ const CategoryText = styled.span`
   padding: 0.2em 1em 0.2em 0;
 `;
 
-const Line = styled.div`
+const Line = styled.div<{ $noMarginTop?: boolean; $noMarginBottom?: boolean }>`
   margin: ${(p) => `${p.$noMarginTop ? 0 : "0.5em"} 0 ${p.$noMarginBottom ? 0 : "0.5em"}`};
 `;
 
@@ -123,7 +124,7 @@ const WrapSvg = styled.div`
   align-items: center;
 `;
 
-const ColSvg = styled.span`
+const ColSvg = styled.span<{ $isTouch: boolean }>`
   ${(p) =>
     p.$isTouch &&
     `
@@ -146,26 +147,26 @@ const Level = styled.span`
   margin: 0 1em;
 `;
 
-const Clear = styled.div`
+const Clear = styled.div<{ $isTouch: boolean }>`
   ${(p) => !p.$isTouch && "position: relative; overflow: hidden; display: flex;"};
 `;
 
-const MarginLeft = styled.div`
+const MarginLeft = styled.div<{ $isTouch: boolean }>`
   margin: ${(p) => !p.$isTouch && "0 0 0 20%"};
 `;
 
-const FloatLeft = styled.div`
+const FloatLeft = styled.div<{ $isTouch: boolean }>`
   ${(p) =>
     !p.$isTouch
       ? "width: 18%; margin: 0 2% 0 0; text-align: right; display: flex;"
       : "margin: 0 0 2% 0;"};
 `;
 
-const FloatRight = styled.div`
+const FloatRight = styled.div<{ $isTouch: boolean }>`
   ${(p) => !p.$isTouch && "width: 80%;"};
 `;
 
-const FloatRightTwoCol = styled.div`
+const FloatRightTwoCol = styled.div<{ $isTouch: boolean }>`
   ${(p) =>
     p.$isTouch &&
     `
@@ -178,15 +179,26 @@ const FloatRightTwoCol = styled.div`
   `};
 `;
 
-const TwoCol = styled.div`
-`;
-
-const TwoColFloat = styled(TwoCol)`
+const TwoColFloat = styled.div<{ $noMargin?: boolean }>`
   margin: ${(p) => (p.$noMargin ? 0 : 0.5)}em 0;
 `;
 
-const Cv = ({ className, formation, isTouchDevice, jobs, skills, hobbies }) => {
-  const renderDate = useCallback((start, end) => {
+const Cv = ({
+  className,
+  formation,
+  isTouchDevice,
+  jobs,
+  skills,
+  hobbies,
+}: {
+  className?: string;
+  formation: MyContent["cv"]["formation"];
+  jobs: MyContent["cv"]["jobs"];
+  skills: MyContent["cv"]["skills"];
+  hobbies: MyContent["cv"]["hobbies"];
+  isTouchDevice: boolean;
+}) => {
+  const renderDate = useCallback((start: number, end: number) => {
     if (start === 0) {
       return "now";
     }
@@ -311,7 +323,7 @@ const Cv = ({ className, formation, isTouchDevice, jobs, skills, hobbies }) => {
             {hobbies.items.map((item) => {
               const { text, about } = item;
               return (
-                <TwoCol $isTouch={isTouchDevice} key={item.text}>
+                <Fragment key={item.text}>
                   <Line>
                     {about ? (
                       <StyledLink to={about}>
@@ -321,7 +333,7 @@ const Cv = ({ className, formation, isTouchDevice, jobs, skills, hobbies }) => {
                       <Text>{text}</Text>
                     )}
                   </Line>
-                </TwoCol>
+                </Fragment>
               );
             })}
           </MarginLeft>

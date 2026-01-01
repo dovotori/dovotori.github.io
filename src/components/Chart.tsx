@@ -38,11 +38,26 @@ const StyledArcWithItem = styled(ArcWithItem)`
   stroke-width: ${STROKE_WIDTH};
 `;
 
-const Chart = ({ className, data, showAllIcons = false }) => {
+type Data = {
+  id: number;
+  label: string;
+  value: number;
+  children?: Data[];
+};
+
+const Chart = ({
+  className,
+  data,
+  showAllIcons = false,
+}: {
+  className?: string;
+  data: Data;
+  showAllIcons?: boolean;
+}) => {
   const [currentId, setCurrentId] = useState(data.id);
 
   const handleClickArc = useCallback(
-    (node, parent) => (e) => {
+    (node: Data, parent: Data) => (e?: React.SyntheticEvent) => {
       e.stopPropagation();
       const goBack = node.id === currentId;
       if (goBack) {

@@ -1,4 +1,4 @@
-import type { Locale, MyState } from "src/types";
+import type { Locale, MyContent } from "src/types";
 import { CAT_BLOG, CAT_CODE, CAT_DESIGN } from "../../constants/categories";
 import * as Tags from "../../constants/tags";
 
@@ -233,7 +233,7 @@ const tags = {
   },
 };
 
-export default (locale: Locale): MyState["tags"] =>
+export default (locale: Locale): MyContent["tags"] =>
   Object.keys(tags).reduce((acc, cur) => {
     const { slug, picto, categoryId, label } = tags[cur];
     return {

@@ -15,7 +15,21 @@ const getD = (x, y, radius, startAngle, endAngle) => {
   return ["M", start.x, start.y, "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y].join(" ");
 };
 
-const Arc = ({ x, y, radius, startAngle, endAngle, className }) => {
+const Arc = ({
+  x,
+  y,
+  radius,
+  startAngle,
+  endAngle,
+  className,
+}: {
+  x: number;
+  y: number;
+  radius: number;
+  startAngle: number;
+  endAngle: number;
+  className?: string;
+}) => {
   const ref = useRef(null);
 
   const current = useRef({

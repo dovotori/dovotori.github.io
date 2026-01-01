@@ -1,7 +1,7 @@
 import { Fragment, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import type { CategoryId, MyContent } from "src/types";
 import styled from "styled-components";
-
 import { getColorType } from "../utils";
 import Cross from "./Cross";
 import TypingMessage from "./TypingMessage";
@@ -16,7 +16,7 @@ const Wrap = styled.div`
   ${(p) => p.theme.media.mobile`flex-direction: column;`}
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled(Link)<{ selected: boolean; $colorType?: number }>`
   position: relative;
   padding: 1em 2em;
   opacity: ${(p) => (p.selected ? 1 : 0.5)};
@@ -41,7 +41,17 @@ const StyledTypingMessage = styled(TypingMessage)`
   letter-spacing: 0.5em;
 `;
 
-const CategoriesFilters = ({ selected, className, categories, onClickCategory = () => {} }) => {
+const CategoriesFilters = ({
+  selected,
+  className,
+  categories,
+  onClickCategory,
+}: {
+  selected: CategoryId;
+  className?: string;
+  categories: MyContent["categories"];
+  onClickCategory: (categoryId: CategoryId) => () => void;
+}) => {
   const triggers = useRef({});
   const [, forceUpdate] = useState(0);
 
@@ -52,15 +62,18 @@ const CategoriesFilters = ({ selected, className, categories, onClickCategory = 
 
   return (
     <Wrap className={className}>
-      {Object.keys(categories).map((categoryId, index) => {
-        const isLinkSelected = selected === parseInt(categoryId, 10);
+      {Object.keys(categories).map((_categoryId, index) => {
+        const categoryId = parseInt(_categoryId, 10) as CategoryId;
+        const isLinkSelected = selected === categoryId;
         return (
           <Fragment key={categories[categoryId].slug}>
             {index !== 0 && <Cross $colorType={0} />}
             <StyledLink
               to={isLinkSelected ? "/" : `/category/${categories[categoryId].slug}`}
+              title={categories[categoryId].label}
+              aria-label={categories[categoryId].label}
               selected={isLinkSelected}
-              $colorType={getColorType(parseInt(categoryId, 10))}
+              $colorType={getColorType(categoryId)}
               onClick={onClickCategory(categoryId)}
               onMouseEnter={() => handleMouseEnter(categoryId)}
             >

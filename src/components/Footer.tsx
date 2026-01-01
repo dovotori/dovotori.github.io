@@ -54,7 +54,19 @@ const StyledSocialLinks = styled(SocialLinks)`
   }
 `;
 
-const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => (
+const Footer = ({
+  toggleTheme,
+  isDarkMode,
+  setLang,
+  texts,
+  lang,
+}: {
+  toggleTheme: () => void;
+  isDarkMode: boolean;
+  setLang: (langId: string) => void;
+  texts: { toggleLightMode: string; toggleDarkMode: string };
+  lang: string;
+}) => (
   <Wrap className="footer">
     <Div>
       <StyledSocialLinks />
