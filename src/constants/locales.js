@@ -7,5 +7,5 @@ export const Locales = Object.freeze({
 export default [
   { id: Locales.FR, short: "fr" },
   { id: Locales.EN, short: "en" },
-  { id: Locales.JP, short: "日本語" },
+  { id: Locales.JP, short: "jp" },
 ];

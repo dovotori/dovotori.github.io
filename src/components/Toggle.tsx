@@ -40,7 +40,6 @@ const Background = styled.div`
   border-radius: ${SIZE / 2}px;
   background: ${(p) => p.theme.backgroundSubtleGradient};
   transition: background-color 0.2s;
-  border: solid 4px ${(p) => p.theme.dark};
 `;
 
 const Circle = styled.div<{ checked: boolean }>`

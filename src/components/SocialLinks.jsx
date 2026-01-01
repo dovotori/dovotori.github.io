@@ -1,3 +1,4 @@
+import { ReactComponent as Storybook } from "Assets/svg/cv/storybook.svg";
 import { ReactComponent as Github } from "Assets/svg/github.svg";
 import { ReactComponent as Gitlab } from "Assets/svg/gitlab.svg";
 import { ReactComponent as Linkedin } from "Assets/svg/linkedin.svg";
@@ -48,6 +49,9 @@ const SociaLinks = ({ className }) => (
     </a>
     <a href="https://jp.linkedin.com/in/dorian-ratovo" title="linkedin">
       <Linkedin />
+    </a>
+    <a href="/storybook" title="storybook">
+      <Storybook />
     </a>
     <a href={`mailto:${process.env.MAIL}`} title="contact">
       <StyledMail />
