@@ -1,5 +1,5 @@
 import { ReactComponent as PlusIcon } from "Assets/svg/plus.svg";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
 import type { CategoryId } from "src/types";
@@ -8,9 +8,13 @@ import { getColorType, getTeaserPath } from "../utils";
 import LazyImage from "./LazyImage";
 import Loader from "./Loader";
 
-const StyledLink = styled(Link).attrs({
+const StyledLink = styled(Link).attrs<{
+  $isVisible: boolean;
+  $isHover: boolean;
+  $isTouchDevice: boolean;
+}>({
   className: "teaser",
-})<{ $isVisible: boolean; $isHover: boolean; $isTouchDevice: boolean }>`
+})`
   position: relative;
   overflow: hidden;
   display: inline-block;
@@ -103,14 +107,12 @@ const Teaser = ({
   category,
   slug,
   title = "",
-  setCurrentHover,
   isTouchDevice,
 }: {
   className?: string;
   category: CategoryId;
   slug: string;
   title: string;
-  setCurrentHover: (slug: string) => void;
   isTouchDevice: boolean;
 }) => {
   const $colorType = getColorType(category);
@@ -122,8 +124,6 @@ const Teaser = ({
 
   const onEnter = () => setIsHovered(true);
   const onLeave = () => setIsHovered(false);
-
-  useEffect(() => setCurrentHover(isHovered ? slug : ""), [isHovered, setCurrentHover, slug]);
 
   return (
     <StyledLink

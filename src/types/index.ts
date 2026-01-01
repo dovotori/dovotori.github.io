@@ -50,10 +50,10 @@ export type Post = {
 
 export type EntryNav = { category: CategoryId; slug: string; title: string };
 
-type Tag = {
+export type Tag = {
   slug: string;
   label: string;
-  categoryId: number;
+  categoryId: CategoryId;
   picto?: string;
 };
 

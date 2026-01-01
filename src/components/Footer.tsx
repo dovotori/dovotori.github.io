@@ -1,7 +1,6 @@
 import license from "Assets/img/cclicense80x15.png";
 import styled from "styled-components";
 import availablesLang from "../constants/locales";
-import { dark, light } from "../themes/theme";
 import SegmentControl from "./SegmentControl";
 import SocialLinks from "./SocialLinks";
 import ToggleMode from "./ToggleMode";

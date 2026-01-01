@@ -1,5 +1,5 @@
 import { ReactComponent as BackArrow } from "Assets/svg/arrow.svg";
-import { Navigate, Route, HashRouter as Router, Routes, useLocation } from "react-router-dom";
+import { HashRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import routes from "../constants/routes";
 import FooterContainer from "../containers/FooterContainer";
@@ -9,7 +9,7 @@ import { getContentBack } from "../selectors";
 import ButtonNavigation from "./ButtonNavigation";
 import TransitionRoute from "./TransitionRoute";
 
-const Arrow = styled(BackArrow)`
+const Arrow = styled(BackArrow)<{ $colorType: number }>`
   height: 1em;
   fill: ${(p) => p.theme.getColor};
 `;
@@ -20,12 +20,12 @@ const MinHeight = styled.main`
 
 const renderRoute = (route) => {
   const Comp = route.component;
-  return <Route key={route.path} path={route.path} exact={route.exact} element={<Comp />} />;
+  return <Route key={route.path} path={route.path} element={<Comp />} />;
 };
 
 const RedirectionHome = () => <Navigate to="/" />;
 
-const Center = styled.div`
+const Center = styled.div<{ $isHide: boolean }>`
   position: relative;
   margin: 0 auto;
   max-width: 700px;
@@ -55,14 +55,14 @@ const Common = () => (
 
 const MainRoutes = () => {
   return (
-    <Router>
+    <HashRouter>
       <MinHeight className="min-height">
         <Routes>
-          <Route path="/qrcode" exact element={<BackButton />} />
-          <Route path="/about" exact element={<Common />} />
-          <Route path="/category/:slug" exact element={<Common />} />
-          <Route path="/" exact element={<Common />} />
-          <Route path="/project/:slug" exact element={<ProjectCommonContainer />} />
+          <Route path="/qrcode" element={<BackButton />} />
+          <Route path="/about" element={<Common />} />
+          <Route path="/category/:slug" element={<Common />} />
+          <Route path="/" element={<Common />} />
+          <Route path="/project/:slug" element={<ProjectCommonContainer />} />
         </Routes>
         <TransitionRoute>
           {routes.map(renderRoute)}
@@ -70,7 +70,7 @@ const MainRoutes = () => {
         </TransitionRoute>
       </MinHeight>
       <FooterContainer />
-    </Router>
+    </HashRouter>
   );
 };
 

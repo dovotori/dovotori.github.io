@@ -10,14 +10,14 @@ const renderLoader = () => (
   </Bloc>
 );
 
-const RenderSwitch = ({ location, children }) => (
+const RenderSwitch = ({ children }: { children: React.ReactNode }) => (
   <Suspense fallback={renderLoader()}>
-    <Routes location={location}>{children}</Routes>
+    <Routes>{children}</Routes>
   </Suspense>
 );
 
-const TransitionRoute = ({ location, children }) => (
-  <RenderSwitch location={location}>{children}</RenderSwitch>
+const TransitionRoute = ({ children }: { children: React.ReactNode }) => (
+  <RenderSwitch>{children}</RenderSwitch>
 );
 
 export default TransitionRoute;
