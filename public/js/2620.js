@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdovotori=self.webpackChunkdovotori||[]).push([[2620],{62620(o,n,e){e.r(n),e.d(n,{default:()=>i});const i="\nprecision mediump float;\nvoid main() {\n  gl_FragColor = vec4(1.0);\n}\n"}}]);

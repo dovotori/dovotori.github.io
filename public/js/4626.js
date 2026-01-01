@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdovotori=self.webpackChunkdovotori||[]).push([[4626],{64626(n,t,e){e.r(t),e.d(t,{default:()=>c});const c="\nstruct FragInput {\n  @location(0) cell: vec2f,\n};\n\n@fragment\nfn f_main(input: FragInput) -> @location(0) vec4f {\n  return vec4f(input.cell, 0, 1);\n}\n"}}]);

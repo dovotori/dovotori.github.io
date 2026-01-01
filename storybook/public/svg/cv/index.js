@@ -1,0 +1,61 @@
+import { ReactComponent as babylon } from "./babylon.svg";
+import { ReactComponent as blender } from "./blender.svg";
+import { ReactComponent as css } from "./css.svg";
+import { ReactComponent as d3 } from "./d3.svg";
+import { ReactComponent as eslint } from "./eslint.svg";
+import { ReactComponent as figma } from "./figma.svg";
+import { ReactComponent as flow } from "./flow.svg";
+import { ReactComponent as gitlab } from "./gitlab.svg";
+import { ReactComponent as html } from "./html.svg";
+import { ReactComponent as inkscape } from "./inkscape.svg";
+import { ReactComponent as jest } from "./jest.svg";
+import { ReactComponent as js } from "./js.svg";
+import { ReactComponent as linkedin } from "./linkedin.svg";
+import { ReactComponent as mysql } from "./mysql.svg";
+import { ReactComponent as node } from "./node.svg";
+import { ReactComponent as php } from "./php.svg";
+import { ReactComponent as playwright } from "./playwright.svg";
+import { ReactComponent as postgresql } from "./postgresql.svg";
+import { ReactComponent as prisma } from "./prisma.svg";
+import { ReactComponent as react } from "./react.svg";
+import { ReactComponent as redis } from "./redis.svg";
+import { ReactComponent as redux } from "./redux.svg";
+import { ReactComponent as storybook } from "./storybook.svg";
+import { ReactComponent as trpc } from "./trpc.svg";
+import { ReactComponent as typescript } from "./typescript.svg";
+import { ReactComponent as vite } from "./vite.svg";
+import { ReactComponent as webgl } from "./webgl.svg";
+import { ReactComponent as webgpu } from "./webgpu.svg";
+import { ReactComponent as webpack } from "./webpack.svg";
+
+export default {
+  babylon,
+  blender,
+  css,
+  d3,
+  eslint,
+  figma,
+  flow,
+  gitlab,
+  html,
+  inkscape,
+  jest,
+  js,
+  linkedin,
+  mysql,
+  node,
+  php,
+  playwright,
+  postgresql,
+  prisma,
+  react,
+  redis,
+  redux,
+  storybook,
+  trpc,
+  typescript,
+  vite,
+  webgl,
+  webgpu,
+  webpack,
+};

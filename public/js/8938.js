@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkdovotori=self.webpackChunkdovotori||[]).push([[8938],{28938(o,c,n){n.r(c),n.d(c,{default:()=>r});const r="@fragment \nfn f_main(@location(0) color: vec4f) -> @location(0) vec4f {\n    return vec4f(color.rgb * color.a, color.a);\n} \n"}}]);

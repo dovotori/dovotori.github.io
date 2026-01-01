@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkdovotori=self.webpackChunkdovotori||[]).push([[7035],{57035(n,e,o){o.r(e),o.d(e,{default:()=>t});const t="\n@fragment\nfn f_main() -> @location(0) vec4f {\n  return vec4f(1, 0, 0, 1);\n}\n"}}]);
