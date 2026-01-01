@@ -1,11 +1,10 @@
-const path = require('path');
+import path from "node:path";
+import { __dirname, clean } from "./utils.js";
 
-const utils = require('./utils');
-
-const DEST = path.resolve(__dirname, '../build');
+const DEST = path.resolve(__dirname, "../build");
 
 const main = async () => {
-  await utils.clean(DEST);
+  await clean(DEST);
 };
 
 main();

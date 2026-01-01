@@ -1,15 +1,19 @@
-const { promisify } = require('util');
-const path = require('path');
-const fs = require('fs');
-const csv = require('csv-parser');
+import fs from "node:fs";
+import path, { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import { promisify } from "node:util";
+import csv from "csv-parser";
 
-const writeFile = promisify(fs.writeFile);
+const __filename = fileURLToPath(import.meta.url);
+export const __dirname = dirname(__filename);
 
-exports.copyFile = promisify(fs.copyFile);
+const writeFile = promisify(fs.writeFile.bind(fs));
 
-exports.readFile = promisify(fs.readFile);
+export const copyFile = promisify(fs.copyFile.bind(fs));
 
-exports.saveFile = (url, data) => {
+export const readFile = promisify(fs.readFile.bind(fs));
+
+export const saveFile = (url, data) => {
   writeFile(url, data, (err) => {
     if (err) {
       console.log(err);
@@ -17,9 +21,9 @@ exports.saveFile = (url, data) => {
   });
 };
 
-exports.saveHtml = (url, data) => {
+export const saveHtml = (url, data) => {
   const stream = fs.createWriteStream(url);
-  stream.once('open', () => {
+  stream.once("open", () => {
     stream.end(data);
   });
 };
@@ -36,38 +40,33 @@ const removeFile = (file) => {
   }
 };
 
-exports.removeFile = removeFile;
+export { removeFile };
 
-exports.readCsv = (url) =>
+export const readCsv = (url) =>
   new Promise((resolve, reject) => {
     const data = [];
     fs.createReadStream(url)
       .pipe(csv())
-      .on('error', (e) => reject(e))
-      .on('data', (row) => {
+      .on("error", (e) => reject(e))
+      .on("data", (row) => {
         data.push(row);
       })
-      .on('end', () => {
+      .on("end", () => {
         resolve(data);
       });
   });
 
-const deleteFolderRecursive = async (folderPath) => {
+export const clean = async (folderPath) => {
   if (fs.existsSync(folderPath)) {
     const files = fs.readdirSync(folderPath);
-    // eslint-disable-next-line
     for await (const file of files) {
       const curPath = path.join(folderPath, file);
       if (fs.lstatSync(curPath).isDirectory()) {
-        // recurse
-        await deleteFolderRecursive(curPath);
+        await clean(curPath);
       } else {
-        // delete file
         fs.unlinkSync(curPath);
       }
     }
     fs.rmdirSync(folderPath);
   }
 };
-
-exports.clean = deleteFolderRecursive;

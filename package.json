@@ -8,10 +8,12 @@
     "url": "https://dovotori.gitlab.io"
   },
   "license": "CC-BY-4.0",
+  "type": "module",
   "scripts": {
     "dev": "npm run start & npm run storybook:dev",
     "start": "webpack serve --config webpack/dev.js",
-    "build": "webpack --config webpack/prod.js & npm run storybook:build",
+    "images": "node scripts/convert-images.js",
+    "build": "webpack --config webpack/prod.js",
     "clean": "node scripts/cleanBuild.js",
     "labo:start": "cross-env NAME=skin webpack serve --config webpack/labo.dev.js",
     "labo:build": "webpack --config webpack/labo.prod.js",
@@ -29,7 +31,6 @@
     "release": "node scripts/release.js",
     "storybook:dev": "storybook dev -p 6006 --no-open",
     "storybook:build": "storybook build -o build/storybook",
-    "storybook:serve": "npx http-server build/storybook -p 8080 -b -g --cors",
     "typecheck": "tsc --noEmit"
   },
   "engines": {
@@ -97,6 +98,7 @@
     "prettier": "^3.7.4",
     "puppeteer": "^24.34.0",
     "semver": "^7.7.3",
+    "sharp": "^0.34.5",
     "simple-peer": "^9.11.1",
     "socket.io-client": "^4.8.3",
     "storybook": "^10.1.11",
@@ -127,6 +129,8 @@
       "biome check --files-ignore-unknown=true",
       "biome check --write --no-errors-on-unmatched"
     ],
-    "*": ["biome check --no-errors-on-unmatched --files-ignore-unknown=true"]
+    "*": [
+      "biome check --no-errors-on-unmatched --files-ignore-unknown=true"
+    ]
   }
 }

@@ -1,24 +1,27 @@
-const path = require('path');
-const TerserPlugin = require('terser-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
-const zlib = require('zlib');
+import path, { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import zlib from "node:zlib";
+import CompressionPlugin from "compression-webpack-plugin";
+import TerserPlugin from "terser-webpack-plugin";
+import * as utils from "../scripts/utils.js";
 
-const utils = require('../scripts/utils');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const alias = {
-  Assets: path.resolve(__dirname, '../public/'),
-  Labo: path.resolve(__dirname, '../labo/'),
+  Assets: path.resolve(__dirname, "../public/"),
+  Labo: path.resolve(__dirname, "../labo/"),
 };
 
 const optimization = {
   splitChunks: {
-    chunks: 'async',
+    chunks: "async",
     minSize: 30000,
     maxSize: 240000,
     minChunks: 1,
     maxAsyncRequests: 6,
     maxInitialRequests: 4,
-    automaticNameDelimiter: '~',
+    automaticNameDelimiter: "~",
     cacheGroups: {
       defaultVendors: {
         test: /[\\/]node_modules[\\/]/,
@@ -49,11 +52,23 @@ const optimization = {
 };
 
 const rules = [
+  // Allow extension-less imports in ESM modules (fullySpecified false)
+  {
+    test: /\.m?js$/i,
+    resolve: {
+      fullySpecified: false,
+    },
+  },
+  // Treat legacy CJS libraries under labo/lib as CommonJS so module.exports works
+  {
+    test: /labo\/.*\.js$/i,
+    type: "javascript/auto",
+  },
   {
     test: /\.(ts|tsx)$/i,
     exclude: /node_modules/,
     use: {
-      loader: 'ts-loader',
+      loader: "ts-loader",
       options: {
         transpileOnly: true,
       },
@@ -62,35 +77,35 @@ const rules = [
   {
     test: /\.(js|jsx)$/i,
     exclude: /node_modules/,
-    loader: 'babel-loader',
+    loader: "babel-loader",
   },
   {
     test: /\.svg$/i,
     use: [
       {
-        loader: '@svgr/webpack',
+        loader: "@svgr/webpack",
         options: {
           svgo: false,
         },
       },
       {
-        loader: 'url-loader',
+        loader: "url-loader",
       },
     ],
   },
   {
     test: /\.css$/i,
-    use: ['style-loader', 'css-loader'],
+    use: ["style-loader", "css-loader"],
   },
   {
     test: /\.html$/i,
-    loader: 'html-loader',
+    loader: "html-loader",
   },
   {
     test: /\.(jpe?g|png|gif)$/i,
-    loader: 'url-loader',
+    loader: "url-loader",
     options: {
-      name: '/img/[name].[ext]?[hash]',
+      name: "/img/[name].[ext]?[hash]",
       limit: 100000,
     },
   },
@@ -108,29 +123,29 @@ const minify = {
 
 const getHtml = async (name) => {
   const htmlPath = path.resolve(__dirname, `../labo/${name}/inject.html`);
-  let html = '';
+  let html = "";
   try {
-    html = (await utils.readFile(htmlPath, 'utf8')) || '';
+    html = (await utils.readFile(htmlPath, "utf8")) || "";
   } catch (e) {
-    console.log('no html find to be inject in template');
+    console.log("no html find to be inject in template", e);
   }
   return html;
 };
 
 const compression = [
   new CompressionPlugin({
-    test: /\.(js|css|svg|jpg|png|html)$/,
-    algorithm: 'gzip',
+    test: /\.(js|css|svg|html)$/,
+    algorithm: "gzip",
     deleteOriginalAssets: false,
-    filename: '[path][base].gz[query]',
+    filename: "[path][base].gz[query]",
     threshold: 0,
     minRatio: 1,
   }),
   new CompressionPlugin({
-    test: /\.(js|css|svg|jpg|png|html)$/,
-    algorithm: 'brotliCompress',
+    test: /\.(js|css|svg|html)$/,
+    algorithm: "brotliCompress",
     deleteOriginalAssets: false,
-    filename: '[path][base].br[query]',
+    filename: "[path][base].br[query]",
     threshold: 0,
     minRatio: 1,
     compressionOptions: {
@@ -141,4 +156,4 @@ const compression = [
   }),
 ];
 
-module.exports = { alias, optimization, rules, minify, getHtml, compression };
+export { alias, optimization, rules, minify, getHtml, compression, __dirname };

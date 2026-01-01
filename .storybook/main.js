@@ -1,15 +1,10 @@
-// This file has been automatically migrated to valid ESM format by Storybook.
+import path, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { dirname } from "node:path";
-import { createRequire } from "node:module";
 import webpack from "webpack";
+import { alias } from "../webpack/common.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const require = createRequire(import.meta.url);
-
-const { alias } = require("../webpack/common");
-const path = require("path");
 const pathToInlineSvg = path.resolve(__dirname, "../public/svg/");
 
 /** @type { import('@storybook/react-webpack5').StorybookConfig } */
@@ -33,10 +28,13 @@ const config = {
     defaultName: "Documentation",
   },
   webpackFinal: async (config) => {
+    config.resolve = config.resolve || {};
     config.resolve.alias = alias;
     const rules = config.module.rules;
-    const fileLoaderRule = rules.find((rule) => rule.test.test(".svg"));
-    fileLoaderRule.exclude = pathToInlineSvg;
+    const fileLoaderRule = rules.find(
+      (rule) => rule.test && rule.test.test && rule.test.test(".svg")
+    );
+    if (fileLoaderRule) fileLoaderRule.exclude = pathToInlineSvg;
     rules.push({
       test: /\.svg$/,
       include: pathToInlineSvg,
@@ -53,6 +51,7 @@ const config = {
         },
       ],
     });
+    config.plugins = config.plugins || [];
     config.plugins.push(
       new webpack.ProvidePlugin({
         React: "react",
@@ -61,4 +60,5 @@ const config = {
     return config;
   },
 };
+
 export default config;

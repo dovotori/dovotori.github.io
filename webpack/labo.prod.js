@@ -1,30 +1,29 @@
-const webpack = require('webpack');
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+import path from "node:path";
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import webpack from "webpack";
+import { __dirname, alias, compression, getHtml, minify, optimization, rules } from "./common.js";
 
-const { alias, optimization, rules, minify, getHtml, compression } = require('./common');
+const BUILD_ASSET_PATH = process.env.ASSET_PATH || "/public";
+const SRC_ASSET_PATH = path.resolve(__dirname, "../public");
 
-const BUILD_ASSET_PATH = process.env.ASSET_PATH || '/public';
-const SRC_ASSET_PATH = path.resolve(__dirname, '../public');
-
-const configPromise = async (env, options, name = process.env.NAME || 'labo') => {
+const configPromise = async (_env, _options, name = process.env.NAME || "labo") => {
   const html = await getHtml(name);
   const BUILD_PATH = path.resolve(__dirname, `../build/`);
   return {
-    mode: 'production',
-    entry: ['@babel/polyfill', path.resolve(__dirname, `../labo/${name}/standalone.js`)],
+    mode: "production",
+    entry: ["@babel/polyfill", path.resolve(__dirname, `../labo/${name}/standalone.js`)],
     output: {
       path: BUILD_PATH,
-      publicPath: '/',
-      filename: '[name].js',
+      publicPath: "/",
+      filename: "[name].js",
     },
-    target: 'web',
+    target: "web",
     module: {
       rules,
     },
     resolve: {
-      extensions: ['.ts', '.tsx', '.js', '.jsx'],
+      extensions: [".ts", ".tsx", ".js", ".jsx"],
       alias,
     },
     optimization,
@@ -32,10 +31,10 @@ const configPromise = async (env, options, name = process.env.NAME || 'labo') =>
       new HtmlWebpackPlugin({
         title: name,
         filename: `${BUILD_PATH}/index.html`,
-        inject: 'body',
+        inject: "body",
         html,
         base: BUILD_ASSET_PATH,
-        template: path.resolve(__dirname, './templates/labo.ejs'),
+        template: path.resolve(__dirname, "./templates/labo.ejs"),
         minify,
       }),
       new CopyWebpackPlugin({
@@ -51,8 +50,8 @@ const configPromise = async (env, options, name = process.env.NAME || 'labo') =>
         ],
       }),
       new webpack.DefinePlugin({
-        'process.env': {
-          NODE_ENV: JSON.stringify('production'),
+        "process.env": {
+          NODE_ENV: JSON.stringify("production"),
           ASSET_PATH: JSON.stringify(BUILD_ASSET_PATH),
           NAME: JSON.stringify(name),
         },
@@ -62,4 +61,4 @@ const configPromise = async (env, options, name = process.env.NAME || 'labo') =>
   };
 };
 
-module.exports = configPromise;
+export default configPromise;

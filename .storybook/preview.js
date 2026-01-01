@@ -1,5 +1,5 @@
 import { HashRouter as Router } from "react-router-dom";
-import { ThemeProvider, createGlobalStyle } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { dark } from "../src/themes/theme";
 import theme from "./theme";
 
