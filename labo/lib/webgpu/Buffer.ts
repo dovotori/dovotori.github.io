@@ -1,13 +1,18 @@
 class Buffer {
-  constructor() {
-    this.buffers = {
-      vertex: null,
-      index: null,
-    };
-    this.layout = null;
-  }
+  buffers: {
+    vertex: GPUBuffer | null;
+    index: GPUBuffer | null;
+  };
+  layout: GPUVertexBufferLayout | null;
+  indexCount: number;
 
-  setup(device, primitives) {
+  setup(
+    device: GPUDevice,
+    primitives: {
+      indices: { count: number; values: ArrayBuffer };
+      position: { values: ArrayBuffer };
+    },
+  ) {
     const { indices, position } = primitives;
 
     this.indexCount = indices.count;

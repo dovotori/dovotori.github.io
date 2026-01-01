@@ -1,4 +1,4 @@
-![Dovotori](./public/img/signature2.png)
+![Dovotori](./public/img/signature2.avif)
 
 # Portfolio
 

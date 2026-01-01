@@ -21,6 +21,9 @@
       "recommended": true,
       "performance": {
         "noAccumulatingSpread": "off"
+      },
+      "suspicious": {
+        "noExplicitAny": "error"
       }
     },
     "includes": ["**/*.{js,jsx,ts,tsx}"]
