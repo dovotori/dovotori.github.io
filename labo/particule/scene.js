@@ -22,11 +22,11 @@ const computeShader = `struct Mass {
 fn main(@builtin(global_invocation_id) global_id: vec3u) {
     let index = global_id.x;
     let position = positions[index].xyz;
-    let velocity = velocities[index].xyz;
+    var velocity = velocities[index].xyz;
 
-    let massVec = mass.position1.xyz - position;
-    let massDist2 = max(0.01, dot(massVec, massVec));
-    let acceleration = mass.factor1 * normalize(massVec) / massDist2;
+    var massVec = mass.position1.xyz - position;
+    var massDist2 = max(0.01, dot(massVec, massVec));
+    var acceleration = mass.factor1 * normalize(massVec) / massDist2;
 
     massVec = mass.position2.xyz - position;
     massDist2 = max(0.01, dot(massVec, massVec));

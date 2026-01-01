@@ -51,7 +51,7 @@ struct VertexOutput {
     in.weight.z * jointMat.mats[u32(in.joint.z)] +
     in.weight.w * jointMat.mats[u32(in.joint.w)];
 
-  let out: VertexOutput;
+  var out: VertexOutput;
   let world_position: vec4<f32> = transform.model * skinMat * vec4<f32>(in.position, 1.0);
 
   out.world_position = world_position.xyz;

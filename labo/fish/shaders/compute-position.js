@@ -9,18 +9,18 @@ const size = u32(128);
 fn main(
     @builtin(global_invocation_id) GlobalInvocationID : vec3<u32>
 ) {
-    let index = GlobalInvocationID.x;
+    var index = GlobalInvocationID.x;
     if(index >= u32(input[0])){
         return;
     }
-    let xMin = input[1];
-    let xMax = input[2];
-    let yMin = input[3];
-    let yMax = input[4];
-    let zMin = input[5];
-    let zMax = input[6];
-    let pos = modelView[index][3];
-    let vel = velocity[index];
+    var xMin = input[1];
+    var xMax = input[2];
+    var yMin = input[3];
+    var yMax = input[4];
+    var zMin = input[5];
+    var zMax = input[6];
+    var pos = modelView[index][3];
+    var vel = velocity[index];
     // change x
     pos.x += vel.x;
     if(pos.x < xMin){

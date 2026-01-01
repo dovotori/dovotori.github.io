@@ -1,7 +1,6 @@
 import path from "node:path";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
-import sharp from "sharp";
 import SwCachePlugin from "sw-cache-plugin";
 import webpack from "webpack";
 import config from "../package.json" with { type: "json" };

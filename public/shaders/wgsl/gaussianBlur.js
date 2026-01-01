@@ -1,6 +1,6 @@
 export default `
-@group(0) @binding(0) let mySampler: sampler;
-@group(0) @binding(1) let myTexture: texture_2d<f32>;
+@group(0) @binding(0) var mySampler: sampler;
+@group(0) @binding(1) var myTexture: texture_2d<f32>;
 @group(0) @binding(2) var<uniform> direction: vec2<f32>; // (1,0)=horizontal, (0,1)=vertical
 @group(0) @binding(3) var<uniform> texelSize: vec2<f32>;
 @group(0) @binding(4) var<uniform> radius: f32;
@@ -24,7 +24,7 @@ fn vs_main(@builtin(vertex_index) vertexIndex: u32) -> VertexOutput {
     vec2<f32>(2.0,  1.0),
   );
 
-  let output: VertexOutput;
+  var output: VertexOutput;
   output.position = vec4<f32>(pos[vertexIndex], 0.0, 1.0);
   output.uv = uv[vertexIndex];
   return output;
@@ -43,14 +43,14 @@ fn fs_main(@location(0) uv: vec2<f32>) -> @location(0) vec4<f32> {
     -4.0, -3.0, -2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0
   );
 
-  let color = vec4<f32>(0.0);
-  let total = 0.0;
+  var color = vec4<f32>(0.0);
+  var total = 0.0;
 
   // Center index for weights/offsets
   let center = 4;
 
   // Use only taps within the current radius
-  for (let i = -r; i <= r; i = i + 1) {
+  for (var i = -r; i <= r; i = i + 1) {
     let idx = i + center;
     let offset = direction * offsets[idx] * texelSize;
     color = color + textureSample(myTexture, mySampler, uv + offset) * weights[idx];

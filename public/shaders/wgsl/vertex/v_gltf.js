@@ -38,7 +38,7 @@ struct VertexOutput {
 fn v_main(
   in: VertexInput,
 ) -> VertexOutput {
-  let out: VertexOutput;
+  var out: VertexOutput;
   let world_position: vec4<f32> = transform.model * vec4<f32>(in.position, 1.0);
 
   out.world_position = world_position.xyz;

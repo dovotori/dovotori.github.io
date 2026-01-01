@@ -23,7 +23,7 @@ fn v_main(
     @location(1) normal : vec3<f32>,
     @location(2) uv : vec2<f32>
 ) -> VertexOutput {
-    let output : VertexOutput;
+    var output : VertexOutput;
     output.Position = uni.viewProjection * model[index] * position;
     output.fragPosition = 0.5 * (position + vec4<f32>(1.0, 1.0, 1.0, 1.0));
     // output.fragNormal = normalize(position.xyz); // for cube map

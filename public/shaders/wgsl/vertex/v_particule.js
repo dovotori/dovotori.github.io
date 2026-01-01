@@ -16,7 +16,7 @@ fn v_main(
     @location(1) color: vec4f,
     @location(2) position: vec3f
 ) -> VertexOutput {
-    let out: VertexOutput;
+    var out: VertexOutput;
     out.clipPosition = vec4f(vertexPosition * vertexUniforms.particleSize / vertexUniforms.screenDimensions + position.xy, position.z, 1.0);
     out.color = color;
 

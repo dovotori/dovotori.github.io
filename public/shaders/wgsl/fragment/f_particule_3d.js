@@ -11,9 +11,9 @@ struct FragOutput {
 };
 
 @binding(1) @group(0) var<uniform> uni: Uniform;
-@binding(2) @group(0) let ourSampler: sampler;
-// @binding(3) @group(0) let ourTexture: texture_2d<f32>;
-@binding(3) @group(0) let ourTexture: texture_cube<f32>;
+@binding(2) @group(0) var ourSampler: sampler;
+// @binding(3) @group(0) var ourTexture: texture_2d<f32>;
+@binding(3) @group(0) var ourTexture: texture_cube<f32>;
 
 @fragment
 fn f_main(
@@ -32,7 +32,7 @@ fn f_main(
     // let tex = textureSample(ourTexture, ourSampler, fragUV);
     // let tex = textureSample(ourTexture, ourSampler, fragNormal);
 
-    let out: FragOutput;
+    var out: FragOutput;
     out.color = tex;
     out.normal = vec4(fragNormal, 1.0);
     out.depth = vec4(vec3(fragPosition.z / fragPosition.w), 1.0); // linearize depth

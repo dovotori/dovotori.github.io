@@ -15,7 +15,7 @@ struct VertexOutput {
     vec2f( 3,-1),
   );
 
-  let out: VertexOutput;
+  var out: VertexOutput;
   out.position = vec4f(pos[vertex_index], 1, 1);
   out.pos = out.position; // pass to fragment shader
   return out;
@@ -25,8 +25,8 @@ struct Uniforms {
   viewDirectionProjectionInverse: mat4x4f,
 };
 @group(0) @binding(0) var<uniform> uni: Uniforms;
-@group(0) @binding(1) let ourSampler: sampler;
-@group(0) @binding(2) let ourTexture: texture_cube<f32>;
+@group(0) @binding(1) var ourSampler: sampler;
+@group(0) @binding(2) var ourTexture: texture_cube<f32>;
 
 struct FragInput {
   @builtin(position) position: vec4f,
@@ -40,7 +40,7 @@ struct FragOutput {
 };
 
 @fragment fn f_main(input: FragInput) -> FragOutput {
-  let out : FragOutput;
+  var out : FragOutput;
   let t = uni.viewDirectionProjectionInverse * input.pos;
   let color = textureSample(ourTexture, ourSampler, normalize(t.xyz / t.w) * vec3f(1, 1, -1));
   out.color = color;

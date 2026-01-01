@@ -7,8 +7,8 @@ struct MaterialUniform {
 };
 
 @group(2) @binding(0) var<uniform> material : MaterialUniform;
-@group(2) @binding(1) let baseColorSampler: sampler;
-@group(2) @binding(2) let baseColorTexture: texture_2d<f32>;
+@group(2) @binding(1) var baseColorSampler: sampler;
+@group(2) @binding(2) var baseColorTexture: texture_2d<f32>;
 
 struct PointLight {
   position: vec3f, 
@@ -30,7 +30,7 @@ struct FragInput {
 };
 
 @fragment fn f_main(in: FragInput) -> @location(0) vec4f {
-  let color = material.baseColorFactor;
+  var color = material.baseColorFactor;
 
   let baseColorTex = textureSample(baseColorTexture, baseColorSampler, in.texture);
   // if it is not the red 1 pixel texture we display the texture
@@ -43,9 +43,9 @@ struct FragInput {
   let ambient_strength = 0.1;
   let view_dir = normalize(in.camera_position - in.world_position);
   
-  let result: vec3<f32> = vec3(0., 0., 0.);
+  var result: vec3<f32> = vec3(0., 0., 0.);
 
-  for(let i: u32 = 0; i < countLights; i++) {
+  for(var i: u32 = 0; i < countLights; i++) {
     let light = lights[i];
     let ambient_color = light.color * light.intensity;
     

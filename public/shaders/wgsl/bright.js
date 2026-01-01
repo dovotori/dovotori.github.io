@@ -1,6 +1,6 @@
 export default `
-@group(0) @binding(0) let mySampler: sampler;
-@group(0) @binding(1) let myTexture: texture_2d<f32>;
+@group(0) @binding(0) var mySampler: sampler;
+@group(0) @binding(1) var myTexture: texture_2d<f32>;
 @group(0) @binding(2) var<uniform> threshold: f32;
 @group(0) @binding(3) var<uniform> uGlow_ThresholdKnee: f32;
 
@@ -23,7 +23,7 @@ fn vs_main(@builtin(vertex_index) vertexIndex: u32) -> VertexOutput {
     vec2<f32>(2.0,  1.0),
   );
 
-  let output: VertexOutput;
+  var output: VertexOutput;
   output.position = vec4<f32>(pos[vertexIndex], 0.0, 1.0);
   output.uv = uv[vertexIndex];
   return output;

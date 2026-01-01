@@ -7,11 +7,11 @@ struct MaterialUniform {
 };
 
 @group(2) @binding(0) var<uniform> material : MaterialUniform;
-@group(2) @binding(1) let baseColorSampler: sampler;
-@group(2) @binding(2) let baseColorTexture: texture_2d<f32>;
+@group(2) @binding(1) var baseColorSampler: sampler;
+@group(2) @binding(2) var baseColorTexture: texture_2d<f32>;
 @group(2) @binding(3) var<uniform> lightPos: vec3f;
-@group(2) @binding(4) let depthMapSampler: sampler_comparison;
-@group(2) @binding(5) let depthMapTexture: texture_depth_2d;
+@group(2) @binding(4) var depthMapSampler: sampler_comparison;
+@group(2) @binding(5) var depthMapTexture: texture_depth_2d;
 
 struct PointLight {
   position: vec3f, 
@@ -36,7 +36,7 @@ struct FragInput {
 
 @fragment
 fn f_main(in: FragInput) -> @location(0) vec4f {
-  let color = material.baseColorFactor;
+  var color = material.baseColorFactor;
 
   let baseColorTex = textureSample(baseColorTexture, baseColorSampler, in.texture);
   // if it is not the red 1 pixel texture we display the texture
@@ -44,14 +44,14 @@ fn f_main(in: FragInput) -> @location(0) vec4f {
     color = baseColorTex;
   }
 
-  let countLights = number_of_lights();
+  var countLights = number_of_lights();
 
   let ambient_strength = 0.1;
   let view_dir = normalize(in.camera_position - in.world_position);
   
-  let result: vec3<f32> = vec3(0., 0., 0.);
+  var result: vec3<f32> = vec3(0., 0., 0.);
 
-  for(let i: u32 = 0; i < countLights; i++) {
+  for(var i: u32 = 0; i < countLights; i++) {
     let light = lights[i];
     let ambient_color = light.color * light.intensity;
     
@@ -72,12 +72,12 @@ fn f_main(in: FragInput) -> @location(0) vec4f {
 
  // SHADOW
   let diffuse: f32 = max(dot(normalize(lightPos.xyz), in.world_normal), 0.0);
-  let shadow : f32 = 0.0;
+  var shadow : f32 = 0.0;
   // apply Percentage-closer filtering (PCF)
   // sample nearest 9 texels to smooth result
   let size = f32(textureDimensions(depthMapTexture).x);
-  for (let y : i32 = -1 ; y <= 1 ; y = y + 1) {
-    for (let x : i32 = -1 ; x <= 1 ; x = x + 1) {
+  for (var y : i32 = -1 ; y <= 1 ; y = y + 1) {
+    for (var x : i32 = -1 ; x <= 1 ; x = x + 1) {
       let offset = vec2<f32>(f32(x) / size, f32(y) / size);
       shadow = shadow + textureSampleCompare(
         depthMapTexture, 

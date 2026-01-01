@@ -3,8 +3,8 @@ struct Uniforms {
   viewDirectionProjectionInverse: mat4x4f,
 };
 @group(0) @binding(0) var<uniform> uni: Uniforms;
-@group(0) @binding(1) let ourSampler: sampler;
-@group(0) @binding(2) let ourTexture: texture_cube<f32>;
+@group(0) @binding(1) var ourSampler: sampler;
+@group(0) @binding(2) var ourTexture: texture_cube<f32>;
 
 struct FragInput {
   @builtin(position) position: vec4f,
