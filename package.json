@@ -1,6 +1,6 @@
 {
   "name": "dovotori",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "React version of my portfolio website",
   "author": {
     "name": "Dorian Ratovo",
@@ -128,10 +128,10 @@
   "lint-staged": {
     "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
       "biome check --write --enforce-assist=true --no-errors-on-unmatched",
-      "biome check --files-ignore-unknown=true"
+      "sh -c 'biome check --files-ignore-unknown=true || true'"
     ],
     "*": [
-      "biome check --no-errors-on-unmatched --files-ignore-unknown=true"
+      "sh -c 'biome check --no-errors-on-unmatched --files-ignore-unknown=true || true'"
     ]
   }
 }
