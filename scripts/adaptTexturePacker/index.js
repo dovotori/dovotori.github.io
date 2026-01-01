@@ -1,5 +1,5 @@
 import path from "node:path";
-import { __dirname, readFile, removeFile, saveHtml } from "./utils.js";
+import { __dirname, readFile, removeFile, saveHtml } from "./utils";
 
 const SAVE_FILE = path.resolve(__dirname, "./level.txt");
 

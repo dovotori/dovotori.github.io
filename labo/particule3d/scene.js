@@ -1,11 +1,11 @@
-import Mat4 from "../lib/utils/maths/Mat4.js";
-import Camera from "../lib/utils-3d/cameras/Camera.js";
-import { CubeTexture } from "../lib/webgpu/CubeTexture.js";
-import PipelineTextures from "../lib/webgpu/PipelineTextures.js";
-import { PostProcess } from "../lib/webgpu/PostProcess.js";
-import { Skybox } from "../lib/webgpu/Skybox.js";
-import WebgpuScene from "../lib/webgpu/WebgpuScene.js";
-import { getComputeShader } from "./compute.js";
+import Mat4 from "../lib/utils/maths/Mat4";
+import Camera from "../lib/utils-3d/cameras/Camera";
+import { CubeTexture } from "../lib/webgpu/CubeTexture";
+import PipelineTextures from "../lib/webgpu/PipelineTextures";
+import { PostProcess } from "../lib/webgpu/PostProcess";
+import { Skybox } from "../lib/webgpu/Skybox";
+import WebgpuScene from "../lib/webgpu/WebgpuScene";
+import { getComputeShader } from "./compute";
 
 export default class Scene extends WebgpuScene {
   constructor(context, config) {

@@ -1,7 +1,7 @@
 import path, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import webpack from "webpack";
-import { alias } from "../webpack/common.js";
+import { alias } from "../webpack/common";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

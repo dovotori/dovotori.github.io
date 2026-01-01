@@ -1,6 +1,6 @@
 import path from "node:path";
 import favicons from "favicons";
-import { __dirname, clean, saveFile } from "./utils.js";
+import { __dirname, clean, saveFile } from "./utils";
 
 const config = require("../package.json");
 

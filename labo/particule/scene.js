@@ -1,4 +1,4 @@
-import WebgpuScene from "../lib/webgpu/WebgpuScene.js";
+import WebgpuScene from "../lib/webgpu/WebgpuScene";
 
 const WORKGROUP_SIZE = 64;
 const NUM_WORKGROUPS = 1000;

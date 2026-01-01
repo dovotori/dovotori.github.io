@@ -2,7 +2,7 @@ import path from "node:path";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import webpack from "webpack";
-import { __dirname, alias, compression, getHtml, minify, optimization, rules } from "./common.js";
+import { __dirname, alias, compression, getHtml, minify, optimization, rules } from "./common";
 
 const BUILD_ASSET_PATH = process.env.ASSET_PATH || "/public";
 const SRC_ASSET_PATH = path.resolve(__dirname, "../public");

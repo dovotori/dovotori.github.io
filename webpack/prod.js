@@ -4,7 +4,7 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import SwCachePlugin from "sw-cache-plugin";
 import webpack from "webpack";
 import config from "../package.json" with { type: "json" };
-import { __dirname, alias, compression, minify, optimization, rules } from "./common.js";
+import { __dirname, alias, compression, minify, optimization, rules } from "./common";
 
 const BUILD_PATH = path.resolve(__dirname, "../build");
 const SRC_ASSET_PATH = path.resolve(__dirname, "../public");

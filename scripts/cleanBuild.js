@@ -1,5 +1,5 @@
 import path from "node:path";
-import { __dirname, clean } from "./utils.js";
+import { __dirname, clean } from "./utils";
 
 const DEST = path.resolve(__dirname, "../build");
 

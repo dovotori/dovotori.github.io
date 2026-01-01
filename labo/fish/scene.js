@@ -1,5 +1,5 @@
-import WebgpuScene from "../lib/webgpu/WebgpuScene.js";
-import { Compute } from "./compute.js";
+import WebgpuScene from "../lib/webgpu/WebgpuScene";
+import { Compute } from "./compute";
 
 export default class Scene extends WebgpuScene {
   async setupAssets(assets) {
