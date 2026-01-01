@@ -756,7 +756,7 @@ body[theme='light'] {
 `,Mt=t=>{let{className:n,isTouchDevice:r,hello:a,text:l,isHome:o=!0}=t;const[i,s]=(0,e.useState)(0),u=(0,e.useCallback)((()=>{s(i+1)}),[i]);return(0,g.jsxs)(Pt,{children:[(0,g.jsx)(Et,{className:"circle",count:i}),(0,g.jsx)(Tt,{$isHome:o,children:(0,g.jsx)(Nt,{message:o?"ドリアン":"はじめまして",isLoop:!0,isVertical:!0})}),(0,g.jsx)($t,{$isTouch:r,children:(0,g.jsxs)(At,{to:o?"/about":"/",className:n,title:"about",onClick:u,children:[(0,g.jsx)(zt,{children:r?(0,g.jsx)(Ft,{isSwitched:!o}):(0,g.jsx)(jt,{slug:"picto",$colorType:0,noBackground:!0,hasJs:!0})}),(0,g.jsxs)(Ot,{children:[(0,g.jsx)(Lt,{children:(0,g.jsx)(Nt,{message:o?"dorian":a,firstMessage:"ドリアン",isLoop:!0,isCenter:!0})}),(0,g.jsx)(Dt,{children:l})]})]})})]})},It=()=>{const e=(0,p.zy)(),t="/about"!==(0,p.RQ)(e.pathname).pathname,n=(0,r._A)(),a=n.hello.about,l=n.hello.text,o=(0,r.qs)();return(0,g.jsx)(Mt,{hello:a,isTouchDevice:o,isHome:t,text:l})};var Kt=o(44476),Wt=o(51015);const Ht=t=>{let{location:n,children:r}=t;return(0,g.jsx)(e.Suspense,{fallback:(0,g.jsx)(Kt.A,{children:(0,g.jsx)(Wt.A,{$colorType:0})}),children:(0,g.jsx)(p.BV,{location:n,children:r})})},Ut=e=>{let{location:t,children:n}=e;return(0,g.jsx)(Ht,{location:t,children:n})},Bt=(0,n.Ay)(f.h)`
   height: 1em;
   fill: ${e=>e.theme.getColor};
-`,Jt=n.Ay.div`
+`,Jt=n.Ay.main`
   min-height: 100vh;
 `,Vt=e=>{const t=e.component;return(0,g.jsx)(p.qh,{path:e.path,exact:e.exact,element:(0,g.jsx)(t,{})},e.path)},qt=()=>(0,g.jsx)(p.C5,{to:"/"}),Gt=n.Ay.div`
   position: relative;
