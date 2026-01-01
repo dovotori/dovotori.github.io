@@ -14,7 +14,7 @@ const Arrow = styled(BackArrow)`
   fill: ${(p) => p.theme.getColor};
 `;
 
-const MinHeight = styled.div`
+const MinHeight = styled.main`
   min-height: 100vh;
 `;
 
