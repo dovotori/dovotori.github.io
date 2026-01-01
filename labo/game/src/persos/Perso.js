@@ -1,5 +1,5 @@
-import StateSprite from "../../../lib/utils-3d/core/StateSprite";
 import Vec3 from "../../../lib/utils/maths/Vec3";
+import StateSprite from "../../../lib/utils-3d/core/StateSprite";
 import MeshSprite from "../../../lib/webgl/meshes/MeshSprite";
 
 export default class extends MeshSprite {
@@ -93,9 +93,7 @@ export default class extends MeshSprite {
 
   reset() {
     this.stateSprite.reset();
-    this.stateSprite.set(
-      this.constants.states[Object.keys(this.constants.states)[0]],
-    );
+    this.stateSprite.set(this.constants.states[Object.keys(this.constants.states)[0]]);
     this.setSprite(this.stateSprite.get());
   }
 }

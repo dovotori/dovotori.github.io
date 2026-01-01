@@ -46,7 +46,6 @@ class LoadGltfForWebGpu {
       case WebGLRenderingContext.POINTS:
         return "point-list";
       default:
-      case WebGLRenderingContext.TRIANGLES:
         return "triangle-list";
     }
   }
@@ -140,9 +139,7 @@ class LoadGltfForWebGpu {
       if (layoutBuffers.has(layoutIndex)) {
         const layout = layoutBuffers.get(layoutIndex);
         if (layout.count !== count) {
-          throw new Error(
-            "Really weird gltf interleaved with different count on accessors",
-          );
+          throw new Error("Really weird gltf interleaved with different count on accessors");
         }
         if (layout.componentType !== componentType) {
           console.warn("strange gltf interleaved of diffrent type or count");
@@ -167,14 +164,8 @@ class LoadGltfForWebGpu {
 
     layoutBuffers.forEach((layout) => {
       if (layout.mixTypes) {
-        const layoutAccessors = layout.accessorsIndexes.map(
-          (id) => accessors[id],
-        );
-        layout.buffer = getMixedInterleavedBufferData(
-          newBuffers,
-          bufferViews,
-          layoutAccessors,
-        );
+        const layoutAccessors = layout.accessorsIndexes.map((id) => accessors[id]);
+        layout.buffer = getMixedInterleavedBufferData(newBuffers, bufferViews, layoutAccessors);
       } else {
         layout.buffer = getBufferDataFromLayout(newBuffers, layout);
       }
@@ -195,13 +186,10 @@ class LoadGltfForWebGpu {
         const firstAccessor = accessors[firstAttribute];
         const vertexLayoutBuffer = layoutBuffers.get(firstAccessor.bufferView);
 
-        const isNotInterleaved =
-          vertexLayoutBuffer.accessorsIndexes.length === 1;
+        const isNotInterleaved = vertexLayoutBuffer.accessorsIndexes.length === 1;
 
         const indicesAccessor = accessors[indices];
-        const indicesLayoutBuffer = layoutBuffers.get(
-          indicesAccessor.bufferView,
-        );
+        const indicesLayoutBuffer = layoutBuffers.get(indicesAccessor.bufferView);
 
         // LAYOUT ATTRIBUTES
         let previousOffset = 0;
@@ -218,11 +206,8 @@ class LoadGltfForWebGpu {
 
         const sortLocations = Object.keys(attributes)
           .map((attribName) => {
-            const shaderLocationName = getGlslProgramLocationsMappedName(
-              attribName.toLowerCase(),
-            );
-            const shaderLocation =
-              LoadGltfForWebGpu.getShaderLocationFromName(shaderLocationName);
+            const shaderLocationName = getGlslProgramLocationsMappedName(attribName.toLowerCase());
+            const shaderLocation = LoadGltfForWebGpu.getShaderLocationFromName(shaderLocationName);
             return { shaderLocationName, shaderLocation, attribName };
           })
           .filter((a) => a.shaderLocation !== undefined) // remove undefined
@@ -247,8 +232,7 @@ class LoadGltfForWebGpu {
             if (isNotInterleaved) {
               const layoutBuffer = layoutBuffers.get(accessor.bufferView);
               offset += previousOffset;
-              previousOffset =
-                layoutBuffer.numElement * arrayType.BYTES_PER_ELEMENT;
+              previousOffset = layoutBuffer.numElement * arrayType.BYTES_PER_ELEMENT;
 
               toInterleaved.primitives[shaderLocation] = {
                 shaderLocationName,
@@ -268,8 +252,7 @@ class LoadGltfForWebGpu {
         );
 
         if (isNotInterleaved) {
-          const interleaved =
-            LoadGltfForWebGpu.setInterleavedBuffer(toInterleaved);
+          const interleaved = LoadGltfForWebGpu.setInterleavedBuffer(toInterleaved);
           arrayStride = interleaved.arrayStride;
           bufferVertex = interleaved.buffer;
         } else if (vertexLayoutBuffer.mixTypes) {
@@ -296,9 +279,7 @@ class LoadGltfForWebGpu {
   };
 
   static getPipelines = (meshes) => {
-    const topology = LoadGltfForWebGpu.gpuPrimitiveTopologyForMode(
-      meshes[0].primitives[0].mode,
-    );
+    const topology = LoadGltfForWebGpu.gpuPrimitiveTopologyForMode(meshes[0].primitives[0].mode);
     return {
       topology,
       cullMode: "back", // 'none'
@@ -440,10 +421,7 @@ class LoadGltfForWebGpu {
   }
 
   static async load(gltf, folderPath) {
-    const buffers = await LoadGltfForWebGpu.fetchBuffers(
-      gltf.buffers,
-      folderPath,
-    );
+    const buffers = await LoadGltfForWebGpu.fetchBuffers(gltf.buffers, folderPath);
     return await LoadGltfForWebGpu.parse({ ...gltf, buffers });
   }
 
@@ -468,19 +446,15 @@ class LoadGltfForWebGpu {
       samplers,
       images,
     );
-    const { layoutBuffers, textureBuffers } =
-      await LoadGltfForWebGpu.getBuffersDataWebGpu(gltf, matTextures);
-    const newMeshes = LoadGltfForWebGpu.getMeshes(gltf, layoutBuffers);
-    const { skins: newSkins, jointsIndexes } = LoadGltfForWebGpu.getSkins(
+    const { layoutBuffers, textureBuffers } = await LoadGltfForWebGpu.getBuffersDataWebGpu(
       gltf,
-      layoutBuffers,
+      matTextures,
     );
+    const newMeshes = LoadGltfForWebGpu.getMeshes(gltf, layoutBuffers);
+    const { skins: newSkins, jointsIndexes } = LoadGltfForWebGpu.getSkins(gltf, layoutBuffers);
     const newNodes = LoadGltfForWebGpu.getNodes(nodes, jointsIndexes);
 
-    const animationsPerNodes = LoadGltfForWebGpu.getAnimationsPerNodes(
-      gltf,
-      layoutBuffers,
-    );
+    const animationsPerNodes = LoadGltfForWebGpu.getAnimationsPerNodes(gltf, layoutBuffers);
     const data = new Map();
     if (newMeshes) data.set("meshes", newMeshes);
     data.set("nodes", newNodes);

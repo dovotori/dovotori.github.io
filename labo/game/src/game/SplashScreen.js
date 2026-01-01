@@ -1,8 +1,8 @@
 export default class {
   constructor() {
     this.div = document.querySelector("#splash");
-    this.instructions = this.div && this.div.querySelector("#instructions");
-    this.title = this.div && this.div.querySelector("#title");
+    this.instructions = this.div?.querySelector("#instructions");
+    this.title = this.div?.querySelector("#title");
   }
 
   show() {

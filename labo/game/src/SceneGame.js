@@ -1,7 +1,7 @@
-import Scene from "../../lib/webgl/scenes/SceneLampe";
+import Target from "../../lib/utils/maths/Target";
 
 import Collisions from "../../lib/utils-3d/collisions/Collisions";
-import Target from "../../lib/utils/maths/Target";
+import Scene from "../../lib/webgl/scenes/SceneLampe";
 
 import Background from "./game/Background";
 import Tilemap from "./game/Tilemap";
@@ -193,11 +193,7 @@ export default class extends Scene {
       );
     });
     const { heros } = this.interactives;
-    heros.renderFxs(
-      this.mngProg.get("sprite"),
-      this.mngTex.get("fx"),
-      this.mngObj.get("tile"),
-    );
+    heros.renderFxs(this.mngProg.get("sprite"), this.mngTex.get("fx"), this.mngObj.get("tile"));
     heros.renderBullets(
       this.mngProg.get("sprite"),
       this.mngTex.get("bullet"),
@@ -209,45 +205,21 @@ export default class extends Scene {
     const { heros } = this.interactives;
     const herosPosX = heros.getX();
     const program = this.mngProg.get("background");
-    this.background.renderMountains(
-      this.mngObj.get("tile"),
-      this.mngProg.get("color"),
-    );
+    this.background.renderMountains(this.mngObj.get("tile"), this.mngProg.get("color"));
     this.background.updateScreens(-0.15);
     program.setTexture(0, this.mngTex.get("clouds").get(), "textureMap");
-    this.background.renderScreen(
-      this.mngObj.get("tile"),
-      program,
-      herosPosX,
-      0.0005,
-    );
+    this.background.renderScreen(this.mngObj.get("tile"), program, herosPosX, 0.0005);
     this.background.updateScreens(-0.1);
     program.setTexture(0, this.mngTex.get("rocks").get(), "textureMap");
-    this.background.renderScreen(
-      this.mngObj.get("tile"),
-      program,
-      herosPosX,
-      0.001,
-    );
+    this.background.renderScreen(this.mngObj.get("tile"), program, herosPosX, 0.001);
     this.background.updateScreens(-0.05);
     program.setTexture(0, this.mngTex.get("ground").get(), "textureMap");
-    this.background.renderScreen(
-      this.mngObj.get("tile"),
-      program,
-      herosPosX,
-      0.005,
-    );
-    this.background.renderCloudsBack(
-      this.mngObj.get("tile"),
-      this.mngProg.get("color"),
-    );
+    this.background.renderScreen(this.mngObj.get("tile"), program, herosPosX, 0.005);
+    this.background.renderCloudsBack(this.mngObj.get("tile"), this.mngProg.get("color"));
   }
 
   renderForeground() {
-    this.background.renderCloudsFront(
-      this.mngObj.get("tile"),
-      this.mngProg.get("color"),
-    );
+    this.background.renderCloudsFront(this.mngObj.get("tile"), this.mngProg.get("color"));
   }
 
   effects() {

@@ -1,10 +1,10 @@
-import getIcoSphere from "../lib/utils-3d/primitives/icosphere";
 import DualQuaternion from "../lib/utils/maths/DualQuaternion";
 import Mat4 from "../lib/utils/maths/Mat4";
 import Pulse from "../lib/utils/maths/Pulse";
 import Spring from "../lib/utils/maths/Spring";
 import Target from "../lib/utils/maths/Target";
 import { degToRad } from "../lib/utils/numbers";
+import getIcoSphere from "../lib/utils-3d/primitives/icosphere";
 import Primitive from "../lib/webgl/gl/Primitive";
 import Scene from "../lib/webgl/scenes/SceneLampe";
 import TextureData from "../lib/webgl/textures/TextureData";
@@ -54,11 +54,7 @@ export default class extends Scene {
     if (this.config.controls) {
       const { volume, playbackRate } = this.ranges;
       volume.dom.addEventListener("change", this.onChangeVolume, false);
-      playbackRate.dom.addEventListener(
-        "change",
-        this.onChangePlaybackRate,
-        false,
-      );
+      playbackRate.dom.addEventListener("change", this.onChangePlaybackRate, false);
     }
   };
 
@@ -192,11 +188,7 @@ export default class extends Scene {
     if (this.ranges) {
       const { volume, playbackRate } = this.ranges;
       volume.dom.removeEventListener("change", this.onChangeVolume, false);
-      playbackRate.dom.removeEventListener(
-        "change",
-        this.onChangePlaybackRate,
-        false,
-      );
+      playbackRate.dom.removeEventListener("change", this.onChangePlaybackRate, false);
     }
 
     if (this.sound) {

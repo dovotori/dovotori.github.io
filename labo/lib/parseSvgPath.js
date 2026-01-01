@@ -38,8 +38,7 @@ const parseSvgPath = (path) => {
         parseArgs.unshift(finalCommand);
         return data.push(parseArgs);
       }
-      if (parseArgs.length < length[type])
-        throw new Error("malformed path data");
+      if (parseArgs.length < length[type]) throw new Error("malformed path data");
       data.push([finalCommand].concat(parseArgs.splice(0, length[type])));
     }
   });

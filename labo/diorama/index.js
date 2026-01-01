@@ -1,6 +1,6 @@
 import App from "../lib/webgl/App";
-import Scene from "./scene";
 import config from "./config";
+import Scene from "./scene";
 
 import "Assets/style/controls.css";
 import "Assets/style/fullscreen-btn.css";
@@ -16,7 +16,7 @@ export default async () => {
 };
 
 export const destroy = () => {
-  if (app && app.destroy) {
+  if (app?.destroy) {
     app.destroy();
   }
 };

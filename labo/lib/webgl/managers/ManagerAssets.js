@@ -18,9 +18,7 @@ class ManagerAssets {
   }
 
   static getInfo(path) {
-    const parts = path
-      .substring(path.lastIndexOf("/") + 1, path.length)
-      .split(".");
+    const parts = path.substring(path.lastIndexOf("/") + 1, path.length).split(".");
     return { name: parts[0], ext: parts[1].toLowerCase() };
   }
 
@@ -51,9 +49,7 @@ class ManagerAssets {
 
   static load3dGltfWebGpu = (path, info) =>
     fetch(path)
-      .then((response) =>
-        info.ext === "glb" ? response.arrayBuffer() : response.text(),
-      )
+      .then((response) => (info.ext === "glb" ? response.arrayBuffer() : response.text()))
       .then(async (response) => {
         let data;
         if (info.ext === "glb") {
@@ -62,10 +58,7 @@ class ManagerAssets {
         } else {
           data = JSON.parse(response);
         }
-        const gltf = await LoadGltfForWebGpu.load(
-          data,
-          path.slice(0, path.lastIndexOf("/") + 1),
-        );
+        const gltf = await LoadGltfForWebGpu.load(data, path.slice(0, path.lastIndexOf("/") + 1));
         return { data: gltf, info };
       });
 

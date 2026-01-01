@@ -46,10 +46,7 @@ class Quaternion {
 
   dot(quaternion) {
     return (
-      this.x * quaternion.x +
-      this.y * quaternion.y +
-      this.z * quaternion.z +
-      this.w * quaternion.w
+      this.x * quaternion.x + this.y * quaternion.y + this.z * quaternion.z + this.w * quaternion.w
     );
   }
 
@@ -105,8 +102,7 @@ class Quaternion {
   }
 
   normalize() {
-    let mag =
-      this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
+    let mag = this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
     if (mag !== 0.0 && mag !== 1.0) {
       mag = 1.0 / Math.sqrt(mag);
       this.x *= mag;
@@ -163,8 +159,7 @@ class Quaternion {
   }
 
   scale(scalar) {
-    let mag =
-      this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
+    let mag = this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
     if (mag === 0.0) {
       return this;
     }
@@ -357,24 +352,7 @@ class Quaternion {
     const m12 = 2.0 * (tmp1 - tmp2) * invs;
 
     const mat4 = new Mat4();
-    return mat4.set(
-      m00,
-      m10,
-      m20,
-      0.0,
-      m01,
-      m11,
-      m21,
-      0.0,
-      m02,
-      m12,
-      m22,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      1.0,
-    );
+    return mat4.set(m00, m10, m20, 0.0, m01, m11, m21, 0.0, m02, m12, m22, 0.0, 0.0, 0.0, 0.0, 1.0);
   }
 
   setFromMat3(mat3) {
@@ -432,12 +410,7 @@ class Quaternion {
       let axis = new Vec3(1, 0, 0).cross(a);
       if (axis.length() < EPSILON) axis = new Vec3(0, 1, 0).cross(a);
       axis.normalise();
-      return new Quaternion(
-        axis.getX(),
-        axis.getY(),
-        axis.getZ(),
-        0,
-      ).normalize();
+      return new Quaternion(axis.getX(), axis.getY(), axis.getZ(), 0).normalize();
     }
 
     // general case

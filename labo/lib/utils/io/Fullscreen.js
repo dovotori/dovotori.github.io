@@ -61,11 +61,7 @@ export default class {
       } else if (document.mozCancelFullScreen) {
         document.addEventListener("mozfullscreenchange", this.onChange, false);
       } else if (document.webkitExitFullscreen) {
-        document.addEventListener(
-          "webkitfullscreenchange",
-          this.onChange,
-          false,
-        );
+        document.addEventListener("webkitfullscreenchange", this.onChange, false);
       }
     }
   };
@@ -105,11 +101,7 @@ export default class {
       } else if (document.mozCancelFullScreen) {
         document.removeEventListener("mozfullscreenchange", this.onExit, false);
       } else if (document.webkitExitFullscreen) {
-        document.removeEventListener(
-          "webkitfullscreenchange",
-          this.onExit,
-          false,
-        );
+        document.removeEventListener("webkitfullscreenchange", this.onExit, false);
       }
     }
   }

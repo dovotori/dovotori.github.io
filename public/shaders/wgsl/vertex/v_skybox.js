@@ -15,7 +15,7 @@ struct VertexOutput {
     vec2f( 3,-1),
   );
 
-  var out: VertexOutput;
+  let out: VertexOutput;
   out.position = vec4f(pos[vertex_index], 1, 1);
   out.pos = out.position; // pass to fragment shader
   return out;

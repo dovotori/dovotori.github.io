@@ -212,7 +212,7 @@ const main = () => {
           longitudeCapitale,
           projection,
           OFFSET_X,
-          OFFSET_Y
+          OFFSET_Y,
         );
 
         const length = distanceEntrePoints([countryX, countryY], [instiX, instiY]);

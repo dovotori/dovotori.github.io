@@ -48,10 +48,7 @@ export default class {
   }
 
   getActiveVbo = () =>
-    this.vbos.indices ||
-    this.vbos.position ||
-    this.vbos.texture ||
-    this.vbos.index;
+    this.vbos.indices || this.vbos.position || this.vbos.texture || this.vbos.index;
 
   render(program) {
     this.enable(program);

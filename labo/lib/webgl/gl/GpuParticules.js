@@ -1,5 +1,5 @@
-import { get2DGridTexturePoints } from "../../utils-3d/primitives/particules";
 import { nearestNextPowerOf2 } from "../../utils/numbers";
+import { get2DGridTexturePoints } from "../../utils-3d/primitives/particules";
 import TextureData from "../textures/TextureData";
 import Fbo from "./Fbo";
 import Primitive from "./Primitive";

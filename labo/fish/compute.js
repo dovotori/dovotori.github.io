@@ -11,8 +11,8 @@ const sum10wgsl = `
 @compute @workgroup_size(1)
 fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
     let index = global_id.x;
-    var sum: f32 = 0;
-    for (var i = index * 10; i < (index + 1) * 10; i++) {
+    let sum: f32 = 0;
+    for (let i = index * 10; i < (index + 1) * 10; i++) {
         sum += data[i];
     }
 
@@ -44,9 +44,7 @@ export class Compute {
   async init(arrSize = 100) {
     this.webGPUComputer = await WebGPUComputer.init(update1wgsl);
 
-    const data = new Float32Array(
-      Array.from({ length: arrSize }, () => Math.random()),
-    );
+    const data = new Float32Array(Array.from({ length: arrSize }, () => Math.random()));
 
     this.dataBuffer = this.webGPUComputer.createBuffer(
       data.byteLength,
@@ -60,10 +58,7 @@ export class Compute {
       Math.ceil(this.workerGroups) * 4,
       GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
     );
-    this.bindGroup = this.webGPUComputer.createBindGroup([
-      this.dataBuffer,
-      this.resultBuffer,
-    ]);
+    this.bindGroup = this.webGPUComputer.createBindGroup([this.dataBuffer, this.resultBuffer]);
 
     // convert result to js
     this.readBuffer = this.webGPUComputer.createBuffer(
@@ -94,9 +89,7 @@ export class Compute {
 
 export async function testHeavyCompute() {
   const arrSize = 100000;
-  const data = new Float32Array(
-    Array.from({ length: arrSize }, () => Math.random()),
-  );
+  let data = new Float32Array(Array.from({ length: arrSize }, () => Math.random()));
 
   // GPU run
   // multiple pass to sum a big quantity of data
@@ -113,10 +106,7 @@ export async function testHeavyCompute() {
       Math.ceil(data.length / 10) * 4,
       GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
     );
-    const bindGroup = webGPUComputer.createBindGroup([
-      dataBuffer,
-      resultBuffer,
-    ]);
+    const bindGroup = webGPUComputer.createBindGroup([dataBuffer, resultBuffer]);
 
     const readBuffer = webGPUComputer.createBuffer(
       Math.ceil(data.length / 10) * 4,

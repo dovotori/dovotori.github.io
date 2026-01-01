@@ -1,5 +1,5 @@
-import earcut from "earcut";
 import { getAbsoluteCoor } from "Labo/lib/parseSvgPath";
+import earcut from "earcut";
 import { hslToRgb } from "../lib/utils/color";
 import Mat4 from "../lib/utils/maths/Mat4";
 import Primitive from "../lib/webgl/gl/Primitive";
@@ -27,7 +27,7 @@ export default class extends Scene {
       return [r / 255, g / 255, b / 255, 1.0];
     });
 
-    const color = indices.reduce((acc, cur, index) => {
+    const color = indices.reduce((acc, _cur, index) => {
       const indexColor = Math.floor(index / 3);
       const newColors = acc.concat(colorPerTriangle[indexColor]);
       return newColors;

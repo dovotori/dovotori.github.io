@@ -1,15 +1,12 @@
 import Delaunay from "../lib/delaunay";
+import Mat4 from "../lib/utils/maths/Mat4";
+import Vec3 from "../lib/utils/maths/Vec3";
+import { mapFromRange } from "../lib/utils/numbers";
 import LinesTrail from "../lib/utils-3d/lines/LinesTrail";
 import Grid from "../lib/utils-3d/particules/Grid";
 import Migration from "../lib/utils-3d/particules/Migration";
 import { getIndices, getPoints } from "../lib/utils-3d/primitives/grid";
-import {
-  getGridPerlinPoints,
-  getGridPoints,
-} from "../lib/utils-3d/primitives/particules";
-import Mat4 from "../lib/utils/maths/Mat4";
-import Vec3 from "../lib/utils/maths/Vec3";
-import { mapFromRange } from "../lib/utils/numbers";
+import { getGridPerlinPoints, getGridPoints } from "../lib/utils-3d/primitives/particules";
 import GpuParticules from "../lib/webgl/gl/GpuParticules";
 import Primitive from "../lib/webgl/gl/Primitive";
 import Screen from "../lib/webgl/gl/Screen";
@@ -21,14 +18,11 @@ const getDistortion = (progress, frequence, amplitude, time) => {
   const movementProgressFix = 0.02;
   return new Vec3(
     Math.cos(progress * Math.PI * frequence.getX() + time) * amplitude.getX() -
-      Math.cos(movementProgressFix * Math.PI * frequence.getX() + time) *
-        amplitude.getX(),
+      Math.cos(movementProgressFix * Math.PI * frequence.getX() + time) * amplitude.getX(),
     nsin(progress * Math.PI * frequence.getY() + time) * amplitude.getY() -
-      nsin(movementProgressFix * Math.PI * frequence.getY() + time) *
-        amplitude.getY(),
+      nsin(movementProgressFix * Math.PI * frequence.getY() + time) * amplitude.getY(),
     nsin(progress * Math.PI * frequence.getZ() + time) * amplitude.getZ() -
-      nsin(movementProgressFix * Math.PI * frequence.getZ() + time) *
-        amplitude.getZ(),
+      nsin(movementProgressFix * Math.PI * frequence.getZ() + time) * amplitude.getZ(),
   );
 };
 
@@ -39,19 +33,11 @@ export default class extends Scene {
     this.linesTrail = new LinesTrail(gl);
 
     this.grid = new Grid(40);
-    this.vboGrid = new Primitive(
-      gl,
-      { position: this.grid.getPositions() },
-      true,
-    );
+    this.vboGrid = new Primitive(gl, { position: this.grid.getPositions() }, true);
     this.vboGrid.setModeDessin(gl.POINTS);
 
     this.migration = new Migration(40);
-    this.vboMigration = new Primitive(
-      gl,
-      { position: this.migration.getPositions() },
-      true,
-    );
+    this.vboMigration = new Primitive(gl, { position: this.migration.getPositions() }, true);
     this.vboMigration.setModeDessin(gl.POINTS);
 
     this.particules = new GpuParticules(gl, 32, 32);
@@ -99,9 +85,7 @@ export default class extends Scene {
 
     const CIRCLE_VERTICES_COUNT = 256;
     const CIRCLES_COUNT = 10;
-    const indexes = new Array(CIRCLE_VERTICES_COUNT)
-      .fill(0)
-      .map((_, index) => index);
+    const indexes = new Array(CIRCLE_VERTICES_COUNT).fill(0).map((_, index) => index);
     this.circleVbo = new Primitive(gl, { index: indexes });
     this.circleVbo.setModeDessin(gl.LINE_LOOP);
     const progCircle = this.mngProg.get("movingCircle");
@@ -136,7 +120,9 @@ export default class extends Scene {
   };
 
   onClickButton = (button, index) => {
-    this.buttons.forEach((b) => b.removeAttribute("data-current"));
+    this.buttons.forEach((b) => {
+      b.removeAttribute("data-current");
+    });
     button.setAttribute("data-current", true);
     this.mode = index;
 
@@ -149,13 +135,9 @@ export default class extends Scene {
 
   destroy = () => {
     if (this.buttons) {
-      this.buttons.forEach((button, index) =>
-        button.removeEventListener(
-          "click",
-          () => this.onClickButton(index),
-          false,
-        ),
-      );
+      this.buttons.forEach((button, index) => {
+        button.removeEventListener("click", () => this.onClickButton(index), false);
+      });
     }
   };
 
@@ -186,13 +168,7 @@ export default class extends Scene {
       }
       case 1: {
         this.model.rotate(this.time * 0.005, 0, 1, 0);
-        const newTime = mapFromRange(
-          Math.cos(this.time * 0.01 * 0.05),
-          -1,
-          1,
-          0,
-          1,
-        );
+        const newTime = mapFromRange(Math.cos(this.time * 0.01 * 0.05), -1, 1, 0, 1);
         this.particules.compute(this.mngProg.get("pass1Morph"), newTime);
         this.resizeViewport();
         this.mngProg.get("pass2Camera").setMatrix("model", this.model.get());
@@ -208,29 +184,15 @@ export default class extends Scene {
       case 4: {
         const time = this.time * 0.005;
 
-        const cameraPos = getDistortion(
-          0.0,
-          this.roadFrequence,
-          this.roadAmplitude,
-          time,
-        );
-        const cameraTarget = getDistortion(
-          0.2,
-          this.roadFrequence,
-          this.roadAmplitude,
-          time,
-        );
+        const cameraPos = getDistortion(0.0, this.roadFrequence, this.roadAmplitude, time);
+        const cameraTarget = getDistortion(0.2, this.roadFrequence, this.roadAmplitude, time);
 
         this.camera.setTarget(
           cameraTarget.getX(),
           this.roadPositionY + cameraTarget.getY(),
           this.roadLength,
         );
-        this.camera.setPosition(
-          cameraPos.getX(),
-          this.roadPositionY + cameraPos.getY(),
-          0,
-        );
+        this.camera.setPosition(cameraPos.getX(), this.roadPositionY + cameraPos.getY(), 0);
 
         const program = this.mngProg.get("road");
         program.setProjectionView(this.camera);
@@ -261,7 +223,6 @@ export default class extends Scene {
         this.circleVbo.render(progCircle.get());
         break;
       }
-      case 5:
       default: {
         this.grid.update();
         this.vboGrid.update({ position: this.grid.getPositions() });

@@ -73,10 +73,7 @@ export default async () => {
     const box = canvas.getBoundingClientRect();
 
     // Use uniform scale to preserve aspect ratio
-    const scale = Math.min(
-      box.width / svgSize.width,
-      box.height / svgSize.height,
-    );
+    const scale = Math.min(box.width / svgSize.width, box.height / svgSize.height);
 
     // Find SVG shape bounds
     let minSvgX = Infinity,
@@ -206,12 +203,7 @@ function drawPoints() {
     // moving
     const movX = nodes[cptNodes].position.x;
     const movY = nodes[cptNodes].position.y;
-    context.fillRect(
-      movX - HALF_POINT_SIZE,
-      movY - HALF_POINT_SIZE,
-      POINT_SIZE,
-      POINT_SIZE,
-    );
+    context.fillRect(movX - HALF_POINT_SIZE, movY - HALF_POINT_SIZE, POINT_SIZE, POINT_SIZE);
 
     // line between fix and moving
     context.strokeStyle = "rgba(255, 255, 255, 0.8)";
@@ -237,13 +229,7 @@ function drawLiaisonProche(i) {
     if (distance > 1 && distance < limiteDistance) {
       let opacite = 0;
       if (distance > limiteDistance / 2) {
-        opacite = mapFromRange(
-          distance,
-          limiteDistance / 2,
-          limiteDistance,
-          1,
-          0.2,
-        );
+        opacite = mapFromRange(distance, limiteDistance / 2, limiteDistance, 1, 0.2);
       } else {
         opacite = mapFromRange(distance, 0, limiteDistance / 2, 0.2, 1);
       }

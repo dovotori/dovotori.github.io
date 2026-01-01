@@ -1,5 +1,5 @@
-import PersoCollision from "./PersoCollision";
 import Behavior from "../behaviors/BehaviorBullet";
+import PersoCollision from "./PersoCollision";
 
 export default class extends PersoCollision {
   constructor({ constants, sprites, viewBox, tileSize, startPos, goLeft }) {

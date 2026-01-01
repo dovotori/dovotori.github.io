@@ -9,9 +9,7 @@ export default class extends Behavior {
       this.inverseSprite = true;
     }
     if (this.isCollision.bottom) {
-      this.speed.addX(
-        (this.inverseSprite ? -1 : 1) * this.constants.physics.run,
-      );
+      this.speed.addX((this.inverseSprite ? -1 : 1) * this.constants.physics.run);
     }
   }
 }

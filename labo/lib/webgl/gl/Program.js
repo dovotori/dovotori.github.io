@@ -35,9 +35,7 @@ export default class {
     this.gl.compileShader(shader);
 
     if (!this.gl.getShaderParameter(shader, this.gl.COMPILE_STATUS)) {
-      console.error(
-        `Peux pas compiler ${type} shader: ${this.gl.getShaderInfoLog(shader)}`,
-      );
+      console.error(`Peux pas compiler ${type} shader: ${this.gl.getShaderInfoLog(shader)}`);
       this.gl.deleteShader(shader);
       return;
     }
@@ -48,16 +46,10 @@ export default class {
   createLocations(config) {
     this.program.locations = {};
     config.uniforms.forEach((uniform) => {
-      this.program.locations[uniform] = this.gl.getUniformLocation(
-        this.program,
-        uniform,
-      );
+      this.program.locations[uniform] = this.gl.getUniformLocation(this.program, uniform);
     });
     config.attributes.forEach((attribute) => {
-      this.program.locations[attribute] = this.gl.getAttribLocation(
-        this.program,
-        attribute,
-      );
+      this.program.locations[attribute] = this.gl.getAttribLocation(this.program, attribute);
     });
   }
 
@@ -122,7 +114,6 @@ export default class {
         case 4:
           this.gl.uniform4fv(loc, value);
           break;
-        case 2:
         default:
           this.gl.uniform2fv(loc, value);
           break;

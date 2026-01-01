@@ -31,9 +31,7 @@ const config = {
     config.resolve = config.resolve || {};
     config.resolve.alias = alias;
     const rules = config.module.rules;
-    const fileLoaderRule = rules.find(
-      (rule) => rule.test && rule.test.test && rule.test.test(".svg")
-    );
+    const fileLoaderRule = rules.find((rule) => rule.test.test(".svg"));
     if (fileLoaderRule) fileLoaderRule.exclude = pathToInlineSvg;
     rules.push({
       test: /\.svg$/,
@@ -55,7 +53,7 @@ const config = {
     config.plugins.push(
       new webpack.ProvidePlugin({
         React: "react",
-      })
+      }),
     );
     return config;
   },

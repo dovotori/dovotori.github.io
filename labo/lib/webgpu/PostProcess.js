@@ -39,16 +39,14 @@ export class PostProcess {
   }
 
   setupRenderTextures(device, canvasSize) {
-    this.renderTargets = Array.from({ length: this.renderTargetsCount }).map(
-      (_, i) =>
-        device.createTexture({
-          label: `post process render target ${i}`,
-          size: canvasSize,
-          format: this.renderTargetFormat,
-          sampleCount: this.sampleCount,
-          usage:
-            GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
-        }),
+    this.renderTargets = Array.from({ length: this.renderTargetsCount }).map((_, i) =>
+      device.createTexture({
+        label: `post process render target ${i}`,
+        size: canvasSize,
+        format: this.renderTargetFormat,
+        sampleCount: this.sampleCount,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+      }),
     );
     this.renderTargetViews = this.renderTargets.map((rT) => rT.createView());
 
@@ -71,8 +69,7 @@ export class PostProcess {
       size: canvasSize,
       format: this.renderTargetFormat,
       sampleCount: this.sampleCount,
-      usage:
-        GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
     });
 
     this.pongTarget = device.createTexture({
@@ -80,8 +77,7 @@ export class PostProcess {
       size: canvasSize,
       format: this.renderTargetFormat,
       sampleCount: this.sampleCount,
-      usage:
-        GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
     });
   }
 
@@ -120,10 +116,7 @@ export class PostProcess {
     switch (name) {
       case "guassianBlurVertical":
       case "guassianBlurHorizontal": {
-        const texelSize = [
-          1 / this.canvasSize.width,
-          1 / this.canvasSize.height,
-        ];
+        const texelSize = [1 / this.canvasSize.width, 1 / this.canvasSize.height];
 
         const radiusBuffer = device.createBuffer({
           label: "radius buffer",
@@ -142,11 +135,7 @@ export class PostProcess {
           size: 8,
           usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
         });
-        device.queue.writeBuffer(
-          texelSizeBuffer,
-          0,
-          new Float32Array(texelSize),
-        );
+        device.queue.writeBuffer(texelSizeBuffer, 0, new Float32Array(texelSize));
 
         entries.push(
           ...[
@@ -209,10 +198,7 @@ export class PostProcess {
 
     let i = 0;
     for (const [name, _] of this.effects) {
-      this.setupEffectSource(
-        name,
-        this.getPingPongTexture(i % 2 === 0).createView(),
-      );
+      this.setupEffectSource(name, this.getPingPongTexture(i % 2 === 0).createView());
       i++;
     }
   };
@@ -260,11 +246,7 @@ export class PostProcess {
     if (!effect) return;
     const device = this.context.getDevice();
     for (const key of Object.keys(effect.params)) {
-      device.queue.writeBuffer(
-        effect.buffers[key],
-        0,
-        new Float32Array(effect.params[key]),
-      );
+      device.queue.writeBuffer(effect.buffers[key], 0, new Float32Array(effect.params[key]));
     }
   }
 

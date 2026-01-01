@@ -36,9 +36,6 @@ export default class {
   };
 
   getPositions() {
-    return this.nodes.reduce(
-      (acc, node) => [...node.getPosition().get(), ...acc],
-      [],
-    );
+    return this.nodes.reduce((acc, node) => [...node.getPosition().get(), ...acc], []);
   }
 }

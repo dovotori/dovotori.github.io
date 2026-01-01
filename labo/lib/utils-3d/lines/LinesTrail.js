@@ -4,12 +4,10 @@ import Line from "./Line";
 
 export default class {
   constructor(gl) {
-    this.colors = ["#e09f7d", "#ef5d60", "#ec4067", "#a01a7d", "#311847"].map(
-      (hex) => {
-        const { r, g, b } = hexToRgb(hex);
-        return [r / 255, g / 255, b / 255];
-      },
-    );
+    this.colors = ["#e09f7d", "#ef5d60", "#ec4067", "#a01a7d", "#311847"].map((hex) => {
+      const { r, g, b } = hexToRgb(hex);
+      return [r / 255, g / 255, b / 255];
+    });
     this.lines = this.colors.map(
       (_, i) =>
         new Line(gl, 20, {
@@ -23,7 +21,9 @@ export default class {
 
   update(program) {
     program.setFloat("time", this.time);
-    this.lines.forEach((line) => line.update(this.mousePos));
+    this.lines.forEach((line) => {
+      line.update(this.mousePos);
+    });
   }
 
   render(program) {
@@ -42,6 +42,8 @@ export default class {
 
   onMouseDown = (mouse) => {
     this.mousePos = mouse.rel;
-    this.lines.forEach((line) => line.init([mouse.rel.x, mouse.rel.y, 0]));
+    this.lines.forEach((line) => {
+      line.init([mouse.rel.x, mouse.rel.y, 0]);
+    });
   };
 }

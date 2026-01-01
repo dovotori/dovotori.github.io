@@ -51,9 +51,9 @@ fn extractEulerYXZ(m: mat4x4<f32>) -> vec3<f32> {
     let m21 = m[2][1];
     let m22 = m[2][2];
 
-    var y = asin(clamp(-m02, -1.0, 1.0));
-    var x: f32;
-    var z: f32;
+    let y = asin(clamp(-m02, -1.0, 1.0));
+    let x: f32;
+    let z: f32;
 
     if (abs(m02) < 0.99999) {
         x = atan2(m12, m22);
@@ -70,19 +70,19 @@ fn extractEulerYXZ(m: mat4x4<f32>) -> vec3<f32> {
 fn main(
     @builtin(global_invocation_id) GlobalInvocationID : vec3<u32>
 ) {
-    var index = GlobalInvocationID.x;
+    let index = GlobalInvocationID.x;
     if(index >= u32(input[0])){
       return;
     }
 
-    var xMin = input[1];
-    var xMax = input[2];
-    var yMin = input[3];
-    var yMax = input[4];
-    var zMin = input[5];
-    var zMax = input[6];
-    var pos = model[index][3];
-    var vel = velocity[index];
+    let xMin = input[1];
+    let xMax = input[2];
+    let yMin = input[3];
+    let yMax = input[4];
+    let zMin = input[5];
+    let zMax = input[6];
+    let pos = model[index][3];
+    let vel = velocity[index];
     
     // change x
     pos.x += vel.x;

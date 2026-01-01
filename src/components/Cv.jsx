@@ -1,5 +1,5 @@
 import { ReactComponent as Skills } from "Assets/svg/chimie2.svg";
-import * as icons from "Assets/svg/cv";
+import icons from "Assets/svg/cv";
 import { ReactComponent as Diploma } from "Assets/svg/diploma3.svg";
 import { ReactComponent as Manette } from "Assets/svg/manette.svg";
 import { ReactComponent as Tie } from "Assets/svg/tie3.svg";
@@ -244,9 +244,7 @@ const Cv = ({ className, formation, isTouchDevice, jobs, skills, hobbies }) => {
                 <Line $noMarginBottom>
                   <Clear $isTouch={isTouchDevice}>
                     <FloatLeft $isTouch={isTouchDevice}>
-                      <DateComp $isTouch={isTouchDevice}>
-                        {renderDate(startDate, endDate)}
-                      </DateComp>
+                      <DateComp $isTouch={isTouchDevice}>{renderDate(startDate, endDate)}</DateComp>
                     </FloatLeft>
                     <FloatRight $isTouch={isTouchDevice}>
                       <Text>{text}</Text>

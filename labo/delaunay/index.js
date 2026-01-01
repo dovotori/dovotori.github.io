@@ -32,7 +32,7 @@ const debugFastCorner = (context, corners) => {
   });
 };
 
-const drawOnCanvas = (context, coors) => {
+const _drawOnCanvas = (context, coors) => {
   coors.forEach(({ x0, y0, x1, y1, x2, y2, color }) => {
     context.fillStyle = `rgb(${color.r},${color.g},${color.b})`;
     context.beginPath();

@@ -20,13 +20,7 @@ type Story = StoryObj<typeof meta>;
 
 const InteractiveTemplate = () => {
   const [selectedId, setSelectedId] = useState("1");
-  return (
-    <SegmentControl
-      items={items}
-      selectedId={selectedId}
-      onClick={setSelectedId}
-    />
-  );
+  return <SegmentControl items={items} selectedId={selectedId} onClick={setSelectedId} />;
 };
 
 export const Primary = InteractiveTemplate.bind({});
@@ -35,13 +29,7 @@ export const Primary = InteractiveTemplate.bind({});
 export const ClickSelection: Story = {
   render: () => {
     const [selectedId, setSelectedId] = useState("1");
-    return (
-      <SegmentControl
-        items={items}
-        selectedId={selectedId}
-        onClick={setSelectedId}
-      />
-    );
+    return <SegmentControl items={items} selectedId={selectedId} onClick={setSelectedId} />;
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
@@ -76,13 +64,7 @@ export const ClickSelection: Story = {
 export const HoverBehavior: Story = {
   render: () => {
     const [selectedId, setSelectedId] = useState("1");
-    return (
-      <SegmentControl
-        items={items}
-        selectedId={selectedId}
-        onClick={setSelectedId}
-      />
-    );
+    return <SegmentControl items={items} selectedId={selectedId} onClick={setSelectedId} />;
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);

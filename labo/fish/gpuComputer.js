@@ -105,7 +105,6 @@ export class WebGPUComputer {
       },
     };
 
-    this._computePipeline =
-      await this._device.createComputePipelineAsync(descriptor);
+    this._computePipeline = await this._device.createComputePipelineAsync(descriptor);
   }
 }

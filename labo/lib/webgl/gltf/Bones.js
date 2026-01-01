@@ -39,11 +39,7 @@ export default class {
     const { type, values, count, size } = vboData;
     const vbo = this.gl.createBuffer();
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, vbo);
-    this.gl.bufferData(
-      this.gl.ARRAY_BUFFER,
-      new Float32Array(values),
-      this.modeCalcul,
-    );
+    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(values), this.modeCalcul);
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
     return {
       vbo,

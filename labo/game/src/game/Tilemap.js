@@ -84,13 +84,11 @@ class Tilemap {
   follow(pos) {
     let offsetX = pos[0] - this.scrollBox.w;
     if (offsetX < 0) offsetX = 0;
-    if (offsetX > this.levelSize.w - this.viewBox.w)
-      offsetX = this.levelSize.w - this.viewBox.w;
+    if (offsetX > this.levelSize.w - this.viewBox.w) offsetX = this.levelSize.w - this.viewBox.w;
 
     let offsetY = pos[1] - this.scrollBox.h;
     if (offsetY < 0) offsetY = 0;
-    if (offsetY > this.levelSize.h - this.viewBox.h)
-      offsetY = this.levelSize.h - this.viewBox.h;
+    if (offsetY > this.levelSize.h - this.viewBox.h) offsetY = this.levelSize.h - this.viewBox.h;
 
     if (this.viewBox.x !== offsetX || this.viewBox.y !== offsetY) {
       this.viewBox.x = offsetX;

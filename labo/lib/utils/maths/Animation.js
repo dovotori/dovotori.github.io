@@ -104,18 +104,12 @@ class Animation {
       if (index === 0) {
         newAnimation.value = new Quaternion(...output[0]).toMatrix4();
       } else if (index > output.length - 1) {
-        newAnimation.value = new Quaternion(
-          ...output[output.length - 1],
-        ).toMatrix4();
+        newAnimation.value = new Quaternion(...output[output.length - 1]).toMatrix4();
       } else {
         const previous = output[index - 1];
         const next = output[index];
         const interpolationValue = sample.get();
-        newAnimation.value = Quaternion.slerpArray(
-          previous,
-          next,
-          interpolationValue,
-        ).toMatrix4();
+        newAnimation.value = Quaternion.slerpArray(previous, next, interpolationValue).toMatrix4();
       }
     } else {
       newAnimation.value = new Quaternion(...output[customStep]).toMatrix4();
@@ -146,14 +140,10 @@ class Animation {
       localMatrix.scale(...Animation.getVector(scale, scaleAnimation));
     }
     if (rotation || rotationAnimation) {
-      localMatrix.multiply(
-        Animation.getRotationMat(rotation, rotationAnimation),
-      );
+      localMatrix.multiply(Animation.getRotationMat(rotation, rotationAnimation));
     }
     if (translation || translationAnimation) {
-      localMatrix.translate(
-        ...Animation.getVector(translation, translationAnimation),
-      );
+      localMatrix.translate(...Animation.getVector(translation, translationAnimation));
     }
 
     return localMatrix;
@@ -182,10 +172,7 @@ class Animation {
     return vector;
   };
 
-  static getRotationMat = (
-    rotation = [0, 0, 0, 1],
-    rotationAnimation = null,
-  ) => {
+  static getRotationMat = (rotation = [0, 0, 0, 1], rotationAnimation = null) => {
     if (rotationAnimation?.value) {
       return rotationAnimation.value;
     }

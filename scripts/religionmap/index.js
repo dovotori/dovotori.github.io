@@ -8,7 +8,7 @@ const SAVE_SVG_FILE = path.resolve(__dirname, "./religionmap.svg");
 const generateSvg = async (showBrowser) => {
   const geoDataFile = await readFile(
     path.resolve(__dirname, "../common/world-110m.v1.json"),
-    "utf8"
+    "utf8",
   );
   const countriesDataFile = path.resolve(__dirname, "../common/worldCountries.csv");
   const blasphemeDataFile = path.resolve(__dirname, "./blasphemeInfos.csv");

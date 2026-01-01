@@ -16,9 +16,7 @@ class BehaviorCollision extends Behavior {
   static isCollisionTile(map, x, y) {
     const pixel = map.getImageData(Math.floor(x), Math.floor(y), 1, 1);
     return (
-      pixel.data[0] !== 255 &&
-      pixel.data[0] === pixel.data[1] &&
-      pixel.data[1] === pixel.data[2]
+      pixel.data[0] !== 255 && pixel.data[0] === pixel.data[1] && pixel.data[1] === pixel.data[2]
     );
   }
 
@@ -46,14 +44,8 @@ class BehaviorCollision extends Behavior {
 
   determineTestPoints(tileSize) {
     const { w, h } = this.constants;
-    const { value: sizeW, step: stepW } = BehaviorCollision.determineStep(
-      w,
-      tileSize.w,
-    );
-    const { value: sizeH, step: stepH } = BehaviorCollision.determineStep(
-      h,
-      tileSize.h,
-    );
+    const { value: sizeW, step: stepW } = BehaviorCollision.determineStep(w, tileSize.w);
+    const { value: sizeH, step: stepH } = BehaviorCollision.determineStep(h, tileSize.h);
 
     const bottom = [];
     bottom.push({ x: SPACE_CHECK, y: -SPACE_CHECK }); // first
@@ -173,10 +165,7 @@ class BehaviorCollision extends Behavior {
       }
 
       // update position
-      const collisionPoint = BehaviorCollision.getNearCollisionPoint(
-        map,
-        points,
-      );
+      const collisionPoint = BehaviorCollision.getNearCollisionPoint(map, points);
       if (collisionPoint) {
         // collision
         const { w, h } = this.constants;

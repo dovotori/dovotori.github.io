@@ -1,6 +1,5 @@
-import styled from "styled-components";
-
 import { ReactComponent as LinkSvg } from "Assets/svg/externalLink.svg";
+import styled from "styled-components";
 import TagsList from "./TagsList";
 import TypingMessage from "./TypingMessage";
 
@@ -28,7 +27,7 @@ const Text = styled.p`
   width: 100%;
 `;
 
-const Date = styled.p.attrs({ className: "numbers" })`
+const DateComp = styled.p.attrs({ className: "numbers" })`
   text-align: left;
   margin: 0;
   padding: 0.4em 10px 0;
@@ -73,19 +72,10 @@ const LinkIcon = styled(LinkSvg)`
   transform: translateY(1px);
 `;
 
-const ProjectHeader = ({
-  title,
-  inverseTitle,
-  descriptions,
-  tags,
-  date,
-  links,
-  textSite,
-  $colorType,
-}) => (
+const ProjectHeader = ({ title, descriptions, tags, date, links, $colorType }) => (
   <WrapContent>
     <WrapTexte>
-      {date && <Date $colorType={$colorType}>{date}</Date>}
+      {date && <DateComp $colorType={$colorType}>{date}</DateComp>}
       {title && (
         <StyledTitle $colorType={$colorType}>
           <StyledTypingMessage message={title} />

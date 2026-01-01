@@ -1,5 +1,5 @@
-import Scene from "./src/SceneGame";
 import SplashScreen from "./src/game/SplashScreen";
+import Scene from "./src/SceneGame";
 
 export default class extends Scene {
   constructor(gl, config) {
@@ -31,10 +31,7 @@ export default class extends Scene {
 
   setKeyboardInteraction(keyboard) {
     super.setKeyboardInteraction(keyboard);
-    if (
-      this.isSplashScreen &&
-      keyboard.isPressedOne(this.config.keyboard.ENTER)
-    ) {
+    if (this.isSplashScreen && keyboard.isPressedOne(this.config.keyboard.ENTER)) {
       this.setPause(false);
       this.splash.hide();
       this.isSplashScreen = false;

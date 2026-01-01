@@ -1,7 +1,7 @@
 import "webrtc-adapter";
 import createStream from "Labo/lib/webrtc/createStream";
-import Socket from "Labo/lib/webrtc/Socket";
 import Peer from "Labo/lib/webrtc/Peer";
+import Socket from "Labo/lib/webrtc/Socket";
 
 import "./style.css";
 
@@ -21,7 +21,8 @@ const setupStream = async (peer) => {
 };
 
 const setupSocket = async (peer) => {
-  const socket = await new Socket();
+  const socket = new Socket();
+  await socket.start();
   const ask = (...args) => socket.emit(...args);
   peer.setAsk(ask);
   socket.on("answer initiator", peer.setIsInitiator);

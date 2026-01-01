@@ -17,9 +17,7 @@ export default {
   },
 };
 
-const Template = ({ category, ...args }) => (
-  <Tag {...args} category={Categories[category]} />
-);
+const Template = ({ category, ...args }) => <Tag {...args} category={Categories[category]} />;
 export const Primary = Template.bind({});
 Primary.args = {
   label: "Hello",

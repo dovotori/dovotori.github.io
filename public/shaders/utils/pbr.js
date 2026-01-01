@@ -1,5 +1,5 @@
-import { addLightLocations, uniformLights } from './light';
-import { PI } from '.';
+import { PI } from ".";
+import { addLightLocations, uniformLights } from "./light";
 
 export const uniformPBR = `
 uniform vec4 color;
@@ -90,4 +90,4 @@ vec3 funcPBR(vec3 position, vec3 normale, vec3 posEye) {
 }
 `;
 
-export const locationsPBR = addLightLocations().concat(['color', 'metal', 'rough', 'ao']);
+export const locationsPBR = addLightLocations().concat(["color", "metal", "rough", "ao"]);

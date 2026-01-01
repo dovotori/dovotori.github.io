@@ -1,5 +1,5 @@
-import fast from '../../labo/lib/fastcorner';
-import Delaunay from '../../labo/lib/delaunay';
+import Delaunay from "../../labo/lib/delaunay";
+import fast from "../../labo/lib/fastcorner";
 
 const getGrayScaleBuffer = (data, width, height) => {
   const gs = new Uint8Array(width * height);
@@ -121,10 +121,10 @@ self.onmessage = (e) => {
   const { type, payload, id } = e.data;
   let newPayload = null;
   switch (type) {
-    case 'delaunay':
+    case "delaunay":
       newPayload = computeDelaunay(payload);
       break;
-    case 'color':
+    case "color":
       newPayload = computeColor(payload);
       break;
     default:

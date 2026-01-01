@@ -30,11 +30,11 @@ export const heavyProcessSplit = (data, handler) =>
     const result = [];
 
     const loop = () => {
-      const endtime = +new Date() + maxtime;
+      const endtime = Date.now() + maxtime;
       do {
         const r = handler(queue.shift());
         result.push(r);
-      } while (queue.length > 0 && endtime > +new Date());
+      } while (queue.length > 0 && endtime > Date.now());
       if (queue.length > 0) {
         setTimeout(loop, delay);
         return;
@@ -52,11 +52,11 @@ export const processSplit = (data, handler) => {
     const result = [];
 
     const loop = async () => {
-      const endtime = +new Date() + maxtime;
+      const endtime = Date.now() + maxtime;
       do {
         const r = handler(queue.shift());
         result.push(r);
-      } while (queue.length > 0 && endtime > +new Date() && !cancel);
+      } while (queue.length > 0 && endtime > Date.now() && !cancel);
       if (cancel) {
         console.log("cancel");
         return;
@@ -70,14 +70,16 @@ export const processSplit = (data, handler) => {
     loop();
   });
 
-  const setCancelled = () => (cancel = true);
+  const setCancelled = () => {
+    cancel = true;
+  };
 
   return { promise, setCancelled };
 };
 
 /* CANCELLABLE PROMISE
 const data = [];
-for (var i = 0; i < 500000; i++) data[i] = i;
+for (let i = 0; i < 500000; i++) data[i] = i;
 const Process = (i) => i + 2;
 const Done = (result) => console.log(result);
 

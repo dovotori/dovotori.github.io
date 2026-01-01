@@ -1,5 +1,5 @@
-import { anothorNoise2D } from './noise';
-import { PI } from '.';
+import { PI } from ".";
+import { anothorNoise2D } from "./noise";
 
 export const getNaturalHeight = `
 ${anothorNoise2D}
@@ -23,7 +23,7 @@ float getNaturalHeight(vec2 coor) {
   return result / allAmpli;
 }`;
 
-export const locations = ['octaves', 'lacunarity', 'persistance', 'moving', 'gridSize'];
+export const locations = ["octaves", "lacunarity", "persistance", "moving", "gridSize"];
 
 export const funcWave = `
 ${PI}

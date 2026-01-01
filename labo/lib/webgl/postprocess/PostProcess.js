@@ -1,5 +1,5 @@
-import ProcessBase from "./ProcessBase";
 import TextureNoise from "../textures/TextureNoise";
+import ProcessBase from "./ProcessBase";
 
 export default class extends ProcessBase {
   constructor(gl, config, programs = {}) {

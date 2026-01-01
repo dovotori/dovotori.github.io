@@ -1,4 +1,4 @@
-import { funcMap, PI } from '../utils';
+import { funcMap, PI } from "../utils";
 
 const vertex = `
 attribute float value;
@@ -45,6 +45,6 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['value', 'index'],
-  uniforms: ['projection', 'model', 'view', 'length', 'maxfrequency'],
+  attributes: ["value", "index"],
+  uniforms: ["projection", "model", "view", "length", "maxfrequency"],
 };

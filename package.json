@@ -18,7 +18,7 @@
     "labo:start": "cross-env NAME=skin webpack serve --config webpack/labo.dev.js",
     "labo:build": "webpack --config webpack/labo.prod.js",
     "local:serve": "npx http-server build/ -p 8080 -b -g --cors",
-    "lint": "biome lint --write & biome format --write",
+    "lint": "biome check --write --enforce-assist=true --no-errors-on-unmatched && biome check --files-ignore-unknown=true",
     "favicon": "node scripts/favicons.js",
     "test": "jest --config=jest.config.js",
     "upgrade": "npx npm-check-updates -u",
@@ -126,8 +126,8 @@
   "homepage": "https://dovotori.gitlab.io",
   "lint-staged": {
     "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
-      "biome check --files-ignore-unknown=true",
-      "biome check --write --no-errors-on-unmatched"
+      "biome check --write --enforce-assist=true --no-errors-on-unmatched",
+      "biome check --files-ignore-unknown=true"
     ],
     "*": [
       "biome check --no-errors-on-unmatched --files-ignore-unknown=true"

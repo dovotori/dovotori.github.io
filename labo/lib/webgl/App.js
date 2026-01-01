@@ -46,8 +46,7 @@ class App {
       support: supportConfig,
     };
 
-    const isDrawBufferUnsupported =
-      !!config.useDrawBuffer && !supportConfig.drawBuffers;
+    const isDrawBufferUnsupported = !!config.useDrawBuffer && !supportConfig.drawBuffers;
     const isDrawWegpuUnsupported =
       !!config.useWebGpu && (!supportConfig.webgpu || !supportConfig.device);
     const shouldDisabled = isDrawBufferUnsupported || isDrawWegpuUnsupported;
@@ -85,14 +84,11 @@ class App {
       const callbacks = events.reduce(
         (acc, cur) => ({
           ...acc,
-          [`callback${capitalize(cur)}`]:
-            this.scene[`onMouse${capitalize(cur)}`],
+          [`callback${capitalize(cur)}`]: this.scene[`onMouse${capitalize(cur)}`],
         }),
         {},
       );
-      const mouseContainer = domId
-        ? document.querySelector(`#${domId}`)
-        : container;
+      const mouseContainer = domId ? document.querySelector(`#${domId}`) : container;
       this.mouse = new Mouse(mouseContainer, callbacks);
     }
 

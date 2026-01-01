@@ -1,5 +1,5 @@
-import Scene from "./SceneCamera";
 import Lampe from "../gl/Lampe";
+import Scene from "./SceneCamera";
 
 export default class extends Scene {
   constructor(gl, config) {
@@ -8,11 +8,7 @@ export default class extends Scene {
     const useDepth = this.canUseDepth();
     const { width, height } = config.canvas;
     this.lampes =
-      (config.lampes &&
-        config.lampes.map(
-          (lampe) => new Lampe(gl, lampe, width, height, useDepth),
-        )) ||
-      [];
+      config.lampes?.map((lampe) => new Lampe(gl, lampe, width, height, useDepth)) || [];
   }
 
   async setupAssets(assets) {
@@ -27,7 +23,9 @@ export default class extends Scene {
   }
 
   renderReperes() {
-    this.lampes.forEach((lampe) => lampe.renderRepere(this.camera));
+    this.lampes.forEach((lampe) => {
+      lampe.renderRepere(this.camera);
+    });
   }
 
   randomLampesPositions(speed = 1.0, index = null) {
@@ -42,16 +40,8 @@ export default class extends Scene {
     program.setVector("posEye", this.camera.getPosition());
     program.setInt("numLights", this.lampes.length);
     this.config.lampes.forEach((lampeConfig, i) => {
-      const {
-        type,
-        ambiant,
-        diffuse,
-        specular,
-        brillance,
-        radius,
-        direction,
-        strength,
-      } = lampeConfig;
+      const { type, ambiant, diffuse, specular, brillance, radius, direction, strength } =
+        lampeConfig;
 
       program.setInt(`lights[${i}].type`, type);
       program.setVector(`lights[${i}].position`, this.lampes[i].getPosition());
@@ -88,7 +78,9 @@ export default class extends Scene {
 
   resize(box) {
     super.resize(box);
-    this.lampes.forEach((lampe) => lampe.resize(box));
+    this.lampes.forEach((lampe) => {
+      lampe.resize(box);
+    });
   }
 
   // getTestPoint() {

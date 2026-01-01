@@ -22,11 +22,11 @@ const computeShader = `struct Mass {
 fn main(@builtin(global_invocation_id) global_id: vec3u) {
     let index = global_id.x;
     let position = positions[index].xyz;
-    var velocity = velocities[index].xyz;
+    let velocity = velocities[index].xyz;
 
-    var massVec = mass.position1.xyz - position;
-    var massDist2 = max(0.01, dot(massVec, massVec));
-    var acceleration = mass.factor1 * normalize(massVec) / massDist2;
+    let massVec = mass.position1.xyz - position;
+    let massDist2 = max(0.01, dot(massVec, massVec));
+    let acceleration = mass.factor1 * normalize(massVec) / massDist2;
 
     massVec = mass.position2.xyz - position;
     massDist2 = max(0.01, dot(massVec, massVec));
@@ -60,10 +60,7 @@ export default class Scene extends WebgpuScene {
     this.positionBuffer = device.createBuffer({
       size: positionArrayStride * NUM_PARTICLES, // 16 * NUM_PARTICLES
       label: "particules position buffer",
-      usage:
-        GPUBufferUsage.VERTEX |
-        GPUBufferUsage.COPY_DST |
-        GPUBufferUsage.STORAGE,
+      usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST | GPUBufferUsage.STORAGE,
     });
     const positionBufferData = new Float32Array(NUM_PARTICLES * 4);
     for (let i = 0; i < positionBufferData.length; i += 4) {
@@ -78,10 +75,7 @@ export default class Scene extends WebgpuScene {
     this.velocityBuffer = device.createBuffer({
       size: velocityArrayStride * NUM_PARTICLES, // 16 * NUM_PARTICLES
       label: "particules velocity buffer",
-      usage:
-        GPUBufferUsage.VERTEX |
-        GPUBufferUsage.COPY_DST |
-        GPUBufferUsage.STORAGE,
+      usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST | GPUBufferUsage.STORAGE,
     });
     const velocityBufferData = new Float32Array(NUM_PARTICLES * 4);
     for (let i = 0; i < velocityBufferData.length; i += 4) {
@@ -297,11 +291,7 @@ export default class Scene extends WebgpuScene {
     device.queue.writeBuffer(
       this.vertexUniformBuffer,
       0,
-      new Float32Array([
-        this.canvasSize.width,
-        this.canvasSize.height,
-        PARTICLE_SIZE,
-      ]),
+      new Float32Array([this.canvasSize.width, this.canvasSize.height, PARTICLE_SIZE]),
     );
 
     if (this.msaaTexture) {
@@ -340,9 +330,7 @@ export default class Scene extends WebgpuScene {
 
     const commandEncoder = device.createCommandEncoder();
 
-    const computePass = commandEncoder.beginComputePass(
-      this.computePassDescription,
-    );
+    const computePass = commandEncoder.beginComputePass(this.computePassDescription);
     computePass.setPipeline(this.computePipeline);
     computePass.setBindGroup(0, this.computeBindGroup);
     computePass.dispatchWorkgroups(NUM_WORKGROUPS);
@@ -353,9 +341,7 @@ export default class Scene extends WebgpuScene {
       .getCurrentTexture()
       .createView();
 
-    const renderPass = commandEncoder.beginRenderPass(
-      this.renderPassDescription,
-    );
+    const renderPass = commandEncoder.beginRenderPass(this.renderPassDescription);
     renderPass.setPipeline(this.renderPipeline);
 
     // First argument here refers to array index

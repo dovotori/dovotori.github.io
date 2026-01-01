@@ -1,9 +1,9 @@
-import getTerrain from "../lib/utils-3d/primitives/terrain";
 import { hexToRgb } from "../lib/utils/color";
 import Mat4 from "../lib/utils/maths/Mat4";
 import Spring from "../lib/utils/maths/Spring";
 import Vec3 from "../lib/utils/maths/Vec3";
 import { fract, mix } from "../lib/utils/numbers";
+import getTerrain from "../lib/utils-3d/primitives/terrain";
 import Fbo from "../lib/webgl/gl/Fbo";
 import Primitive from "../lib/webgl/gl/Primitive";
 import Scene from "../lib/webgl/scenes/SceneLampe";
@@ -77,10 +77,7 @@ class TerrainScene extends Scene {
     this.targetZ = new Spring(0);
     this.model = new Mat4();
 
-    this.vbo = new Primitive(
-      gl,
-      getTerrain(width, height, { withThick: true, thicknessY: -0.1 }),
-    );
+    this.vbo = new Primitive(gl, getTerrain(width, height, { withThick: true, thicknessY: -0.1 }));
     this.vbo.setModeDessin(gl.TRIANGLE_STRIP);
 
     // this.vbo = new Primitive(gl, getGrid(width, height, { withThick: true, thicknessY: -0.1 }));
@@ -96,20 +93,15 @@ class TerrainScene extends Scene {
     const progTerrainDepth = this.mngProg.get("terrainDepth");
     const progThreesShadow = this.mngProg.get("instancingDepth");
 
-    [
-      progTerrain,
-      progThrees,
-      progShadow,
-      progWater,
-      progTerrainDepth,
-      progThreesShadow,
-    ].forEach((p) => {
-      TerrainScene.setFog(p, config.fog);
-      TerrainScene.setTerrain(p, config.terrain);
-      p.setVector("gridSize", [width, height]);
-      p.setFloat("waterLevel", waterLevel);
-      this.setLampeInfos(p);
-    });
+    [progTerrain, progThrees, progShadow, progWater, progTerrainDepth, progThreesShadow].forEach(
+      (p) => {
+        TerrainScene.setFog(p, config.fog);
+        TerrainScene.setTerrain(p, config.terrain);
+        p.setVector("gridSize", [width, height]);
+        p.setFloat("waterLevel", waterLevel);
+        this.setLampeInfos(p);
+      },
+    );
 
     colors.forEach((hex, i) => {
       const { r, g, b } = hexToRgb(hex);
@@ -160,11 +152,7 @@ class TerrainScene extends Scene {
     });
 
     const coor = [-0.6, 0.8];
-    this.posAntenna = [
-      coor[0],
-      getTerrainHeight(coor, config.terrain),
-      coor[1],
-    ];
+    this.posAntenna = [coor[0], getTerrainHeight(coor, config.terrain), coor[1]];
     this.isAntennaVisible = false;
     this.currentPosAntenna = this.posAntenna;
   }
@@ -193,18 +181,13 @@ class TerrainScene extends Scene {
     const progTerrainDepth = this.mngProg.get("terrainDepth");
     const progThreesShadow = this.mngProg.get("instancingDepth");
 
-    [
-      progTerrain,
-      progThrees,
-      progShadow,
-      progWater,
-      progTerrainDepth,
-      progThreesShadow,
-    ].forEach((p) => {
-      p.setMatrix("model", this.model.get());
-      p.setMatrix("normalMatrix", normalMatrix.get());
-      p.setVector("moving", moving);
-    });
+    [progTerrain, progThrees, progShadow, progWater, progTerrainDepth, progThreesShadow].forEach(
+      (p) => {
+        p.setMatrix("model", this.model.get());
+        p.setMatrix("normalMatrix", normalMatrix.get());
+        p.setVector("moving", moving);
+      },
+    );
     progWater.setFloat("time", slowTime);
 
     this.mngGltf.get("antenna").update(time * 0.1);
@@ -253,9 +236,7 @@ class TerrainScene extends Scene {
     this.shadow.start(lampe);
     this.vbo.render(this.shadow.getProgram().get());
     // this.vbo.render(this.mngProg.get('water').get());
-    this.mngGltf
-      .get("three")
-      .render(this.mngProg.get("instancingDepth"), this.model);
+    this.mngGltf.get("three").render(this.mngProg.get("instancingDepth"), this.model);
     this.renderEntenna(this.mngProg.get("basique3d"));
     this.shadow.end();
     this.shadow.setBrightContrast(0.0, 3.0);
@@ -268,9 +249,7 @@ class TerrainScene extends Scene {
       lampe.setDepthProgram(program);
     });
     lampe.start();
-    this.mngGltf
-      .get("three")
-      .render(this.mngProg.get("instancingDepth"), this.model);
+    this.mngGltf.get("three").render(this.mngProg.get("instancingDepth"), this.model);
     this.renderEntenna(this.mngProg.get("basique3d"));
     lampe.end();
 
@@ -304,9 +283,7 @@ class TerrainScene extends Scene {
     // this.postProcess.start();
     this.vbo.render(this.mngProg.get("terrain").get());
     // this.vbo.render(progWater.get());
-    this.mngGltf
-      .get("three")
-      .render(this.mngProg.get("instancing"), this.model);
+    this.mngGltf.get("three").render(this.mngProg.get("instancing"), this.model);
     this.renderEntenna(this.mngProg.get("gltf"));
     // this.postProcess.end();
 

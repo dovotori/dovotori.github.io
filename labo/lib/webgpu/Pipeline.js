@@ -8,14 +8,7 @@ class Pipeline {
     this.sampleCount = sampleCount;
   }
 
-  async setup(
-    device,
-    program,
-    config,
-    buffersLayout,
-    canvasFormat,
-    bindGroupLayouts,
-  ) {
+  async setup(device, program, config, buffersLayout, canvasFormat, bindGroupLayouts) {
     const pipelineLayout = device.createPipelineLayout({
       label: "Pipeline layout",
       bindGroupLayouts,

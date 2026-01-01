@@ -1,4 +1,4 @@
-import fragment from './basicFrag';
+import fragment from "./basicFrag";
 
 const vertex = `
 attribute float value;
@@ -15,6 +15,6 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['value'],
-  uniforms: ['projection', 'model', 'view'],
+  attributes: ["value"],
+  uniforms: ["projection", "model", "view"],
 };

@@ -13,7 +13,7 @@ export default async () => {
 };
 
 export const destroy = () => {
-  if (app && app.destroy) {
+  if (app?.destroy) {
     app.destroy();
   }
 };

@@ -6,8 +6,7 @@ export default class extends ProcessBase {
 
     const configBlur = config.blur || {};
     this.blurSize = configBlur.size !== undefined ? configBlur.size : 0.6;
-    this.blurIntensity =
-      configBlur.intensity !== undefined ? configBlur.intensity : 1.0;
+    this.blurIntensity = configBlur.intensity !== undefined ? configBlur.intensity : 1.0;
   }
 
   // setBlur(direction, tex = null) {

@@ -1,7 +1,7 @@
-import { getIndices, getPoints } from "../lib/utils-3d/primitives/grid";
 import Mat4 from "../lib/utils/maths/Mat4";
 import Target from "../lib/utils/maths/Target";
 import Vec3 from "../lib/utils/maths/Vec3";
+import { getIndices, getPoints } from "../lib/utils-3d/primitives/grid";
 import Primitive from "../lib/webgl/gl/Primitive";
 import Screen from "../lib/webgl/gl/Screen";
 import Scene from "../lib/webgl/scenes/SceneLampe";
@@ -12,8 +12,7 @@ const getDistortion = (progress, frequence, amplitude, time) => {
   const movementProgressFix = 0.02;
   return [
     Math.cos(progress * Math.PI * frequence[0] + time) * amplitude[0] -
-      Math.cos(movementProgressFix * Math.PI * frequence[0] + time) *
-        amplitude[0],
+      Math.cos(movementProgressFix * Math.PI * frequence[0] + time) * amplitude[0],
     nsin(progress * Math.PI * frequence[1] + time) * amplitude[1] -
       nsin(movementProgressFix * Math.PI * frequence[1] + time) * amplitude[1],
     nsin(progress * Math.PI * frequence[2] + time) * amplitude[2] -
@@ -62,9 +61,7 @@ export default class extends Scene {
     this.posTime = 0.0;
 
     this.setLampeInfos(this.mngProg.get("gltf"));
-    this.mngProg
-      .get("roadSky")
-      .setTexture(1, this.mngTex.get("noisergb").get(), "textureMap");
+    this.mngProg.get("roadSky").setTexture(1, this.mngTex.get("noisergb").get(), "textureMap");
 
     // this.bonus = new Primitive(gl, primitive);
   }
@@ -81,12 +78,7 @@ export default class extends Scene {
   getDistPos = (posZ) => {
     const { roadAmplitude, roadLength, roadFrequence } = this.config;
     return new Vec3(
-      ...getDistortion(
-        posZ / roadLength,
-        roadFrequence,
-        roadAmplitude,
-        this.posTime,
-      ),
+      ...getDistortion(posZ / roadLength, roadFrequence, roadAmplitude, this.posTime),
     );
   };
 
@@ -94,16 +86,8 @@ export default class extends Scene {
     const { roadLength, camera } = this.config;
     const cameraTarget = this.getDistPos(100);
     const cameraPos = this.getDistPos(0);
-    this.camera.setTarget(
-      cameraTarget.getX(),
-      camera.position.y + cameraTarget.getY(),
-      roadLength,
-    );
-    this.camera.setPosition(
-      cameraPos.getX(),
-      camera.position.y + cameraPos.getY(),
-      0,
-    );
+    this.camera.setTarget(cameraTarget.getX(), camera.position.y + cameraTarget.getY(), roadLength);
+    this.camera.setPosition(cameraPos.getX(), camera.position.y + cameraPos.getY(), 0);
   };
 
   moveShip = () => {
@@ -111,10 +95,7 @@ export default class extends Scene {
     this.targetSpeed.update();
     this.posTime += this.targetSpeed.get();
     const distPos = this.getDistPos(this.shipPos.getZ());
-    this.currentShipPos
-      .equal(distPos)
-      .add(this.shipPos)
-      .addX(this.targetPosX.get());
+    this.currentShipPos.equal(distPos).add(this.shipPos).addX(this.targetPosX.get());
   };
 
   updateTrails() {

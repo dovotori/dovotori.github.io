@@ -3,14 +3,7 @@ import { mapFromRange } from "../numbers";
 class Mouse {
   constructor(
     div,
-    {
-      callbackDrag,
-      callbackDown,
-      callbackUp,
-      callbackMove,
-      callbackWheel,
-      callbackClick,
-    },
+    { callbackDrag, callbackDown, callbackUp, callbackMove, callbackWheel, callbackClick },
   ) {
     this.div = div;
     this.callbackDrag = callbackDrag || null;

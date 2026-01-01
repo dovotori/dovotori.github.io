@@ -1,10 +1,17 @@
-import Map from "ol/Map";
-import View from "ol/View";
+import geojsonvt from "geojson-vt";
+import { defaults as defaultControls, ScaleLine } from "ol/control";
 import Feature from "ol/Feature";
+// import Stamen from 'ol/source/Stamen';
+import GeoJSON from "ol/format/GeoJSON";
+import LineString from "ol/geom/LineString";
+import Point from "ol/geom/Point";
 // import TileLayer from 'ol/layer/Tile';
 import { Vector as VectorLayer, VectorTile as VectorTileLayer } from "ol/layer";
-import Point from "ol/geom/Point";
-import LineString from "ol/geom/LineString";
+import { default as OlMap } from "ol/Map";
+import Overlay from "ol/Overlay";
+// import TopoJSON from 'ol/format/TopoJSON';
+import { fromLonLat } from "ol/proj";
+import Projection from "ol/proj/Projection";
 // import Circle from 'ol/geom/Circle';
 // import MultiPoint from 'ol/geom/MultiPoint';
 // import MultiPolygon from 'ol/geom/MultiPolygon';
@@ -12,16 +19,8 @@ import LineString from "ol/geom/LineString";
 import VectorSource from "ol/source/Vector";
 // import TileJSON from 'ol/source/TileJSON';
 import VectorTileSource from "ol/source/VectorTile";
-// import Stamen from 'ol/source/Stamen';
-import GeoJSON from "ol/format/GeoJSON";
-// import TopoJSON from 'ol/format/TopoJSON';
-import { fromLonLat } from "ol/proj";
-import Projection from "ol/proj/Projection";
 import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
-import Overlay from "ol/Overlay";
-import { defaults as defaultControls, ScaleLine } from "ol/control";
-
-import geojsonvt from "geojson-vt";
+import View from "ol/View";
 
 import AnimationMarker from "./AnimationMarker";
 
@@ -192,7 +191,7 @@ const getLineLayer = (points) => {
 
 const replacer =
   (moveX = 0, moveY = 0) =>
-  (key, value) => {
+  (_key, value) => {
     if (value?.geometry) {
       let type;
       const rawType = value.type;
@@ -201,10 +200,7 @@ const replacer =
       if (moveX !== 0 || moveY !== 0) {
         for (let i = 0; i < geometry.length; i++) {
           for (let j = 0; j < geometry[i].length; j++) {
-            geometry[i][j] = [
-              geometry[i][j][0] + moveX,
-              geometry[i][j][1] + moveY,
-            ];
+            geometry[i][j] = [geometry[i][j][0] + moveX, geometry[i][j][1] + moveY];
           }
         }
       }
@@ -364,12 +360,7 @@ export default ({
   });
 
   const vectors = getVectorMap(geojson, format, highlightIso, colors);
-  const translateVectors = getDecalVectorMap(
-    geojson,
-    format,
-    highlightIso,
-    colors,
-  );
+  const translateVectors = getDecalVectorMap(geojson, format, highlightIso, colors);
 
   /* const tiles = new TileLayer({
     source: new Stamen({
@@ -398,7 +389,7 @@ export default ({
     animations,
   ];
 
-  const map = new Map({
+  const map = new OlMap({
     controls: defaultControls({
       zoom: false,
       rotate: false,
@@ -412,7 +403,9 @@ export default ({
     view,
   });
 
-  labelPoints.forEach((point) => createTooltip(map, point));
+  labelPoints.forEach((point) => {
+    createTooltip(map, point);
+  });
 
   const start = () => {
     animMarker.animTooltip(formatPoints[0]);

@@ -41,12 +41,7 @@ const StyledTypingMessage = styled(TypingMessage)`
   letter-spacing: 0.5em;
 `;
 
-const CategoriesFilters = ({
-  selected,
-  className,
-  categories,
-  onClickCategory = () => {},
-}) => {
+const CategoriesFilters = ({ selected, className, categories, onClickCategory = () => {} }) => {
   const triggers = useRef({});
   const [, forceUpdate] = useState(0);
 
@@ -63,11 +58,7 @@ const CategoriesFilters = ({
           <Fragment key={categories[categoryId].slug}>
             {index !== 0 && <Cross $colorType={0} />}
             <StyledLink
-              to={
-                isLinkSelected
-                  ? "/"
-                  : `/category/${categories[categoryId].slug}`
-              }
+              to={isLinkSelected ? "/" : `/category/${categories[categoryId].slug}`}
               selected={isLinkSelected}
               $colorType={getColorType(parseInt(categoryId, 10))}
               onClick={onClickCategory(categoryId)}

@@ -1,6 +1,5 @@
-import styled from "styled-components";
-
 import { ReactComponent as BackArrow } from "Assets/svg/arrow.svg";
+import styled from "styled-components";
 import ButtonNavigation from "./ButtonNavigation";
 
 const Wrap = styled.div`

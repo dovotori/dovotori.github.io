@@ -11,9 +11,9 @@ struct FragOutput {
 };
 
 @binding(1) @group(0) var<uniform> uni: Uniform;
-@binding(2) @group(0) var ourSampler: sampler;
-// @binding(3) @group(0) var ourTexture: texture_2d<f32>;
-@binding(3) @group(0) var ourTexture: texture_cube<f32>;
+@binding(2) @group(0) let ourSampler: sampler;
+// @binding(3) @group(0) let ourTexture: texture_2d<f32>;
+@binding(3) @group(0) let ourTexture: texture_cube<f32>;
 
 @fragment
 fn f_main(
@@ -24,24 +24,24 @@ fn f_main(
     @location(4) worldNormal: vec3<f32>
 ) -> FragOutput {
  // reflect
-    var norm = normalize(worldNormal);
-    var eyeToSurfaceDir = normalize(worldPosition - uni.eye.xyz);
-    var direction = reflect(eyeToSurfaceDir, norm);
-    var tex = textureSample(ourTexture, ourSampler, direction * vec3f(1, 1, -1));
+    let norm = normalize(worldNormal);
+    let eyeToSurfaceDir = normalize(worldPosition - uni.eye.xyz);
+    let direction = reflect(eyeToSurfaceDir, norm);
+    let tex = textureSample(ourTexture, ourSampler, direction * vec3f(1, 1, -1));
 
-    // var tex = textureSample(ourTexture, ourSampler, fragUV);
-    // var tex = textureSample(ourTexture, ourSampler, fragNormal);
+    // let tex = textureSample(ourTexture, ourSampler, fragUV);
+    // let tex = textureSample(ourTexture, ourSampler, fragNormal);
 
-    var out: FragOutput;
+    let out: FragOutput;
     out.color = tex;
     out.normal = vec4(fragNormal, 1.0);
     out.depth = vec4(vec3(fragPosition.z / fragPosition.w), 1.0); // linearize depth
 
     return out;
 
-    // var specAverage = tex.r * 0.333 + tex.g * 0.333 + tex.b * 0.333;
+    // let specAverage = tex.r * 0.333 + tex.g * 0.333 + tex.b * 0.333;
     // tex = vec4<f32>(vec3<f32>(specAverage), 1.0);
-    // var rgb = vec3<f32>(0.0, 0.0, 0.0);
+    // let rgb = vec3<f32>(0.0, 0.0, 0.0);
     // return mix(vec4<f32>(rgb, 1.0), tex, 0.5);
 
     // return vec4<f32>(worldPosition, 1.0);

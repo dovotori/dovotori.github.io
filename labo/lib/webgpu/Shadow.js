@@ -1,7 +1,4 @@
-import {
-  buildShadowBindGroupLayouts,
-  GltfBindGroups,
-} from "./GltfPipelineBindGroupLayout";
+import { buildShadowBindGroupLayouts, GltfBindGroups } from "./GltfPipelineBindGroupLayout";
 
 export class Shadow {
   constructor(context) {
@@ -68,8 +65,7 @@ export class Shadow {
       label: "shadow depth texture",
       size: { width: 2048, height: 2048, depthOrArrayLayers: 1 },
       format: "depth32float", // Depth texture format
-      usage:
-        GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
     });
 
     this.textureDepthView = this.depthTexture.createView({
@@ -109,7 +105,7 @@ export class Shadow {
     device.queue.submit([encoder.finish()]);
   };
 
-  drawModel = (device, pass, nodes, animations) => {
+  drawModel = (_device, pass, nodes, _animations) => {
     // should sort primitives by material
     for (const [key, node] of nodes) {
       node.buffers.forEach((buffer) => {

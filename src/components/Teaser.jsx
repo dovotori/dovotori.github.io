@@ -116,10 +116,7 @@ const Teaser = ({
   const onEnter = () => setIsHovered(true);
   const onLeave = () => setIsHovered(false);
 
-  useEffect(
-    () => setCurrentHover(isHovered ? slug : ""),
-    [isHovered, setCurrentHover, slug],
-  );
+  useEffect(() => setCurrentHover(isHovered ? slug : ""), [isHovered, setCurrentHover, slug]);
 
   const opacity = useMemo(() => {
     if (!inView) {

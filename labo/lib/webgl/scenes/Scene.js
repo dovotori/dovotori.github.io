@@ -35,11 +35,7 @@ export default class {
         this.postProcess = new PostProcess(gl, processConfig, programs);
 
         if (config.postprocess.bloom) {
-          this.bloom = new Bloom(
-            gl,
-            { ...processConfig, ...config.postprocess.bloom },
-            programs,
-          );
+          this.bloom = new Bloom(gl, { ...processConfig, ...config.postprocess.bloom }, programs);
         }
 
         if (config.postprocess.ssao) {
@@ -87,9 +83,7 @@ export default class {
   }
 
   canUseDepth() {
-    return (
-      (this.config.useDepthTexture && this.config.support.depthTexture) || false
-    );
+    return (this.config.useDepthTexture && this.config.support.depthTexture) || false;
   }
 
   resize(box) {
@@ -106,10 +100,7 @@ export default class {
     if (this.shadow) {
       this.shadow.resize(box);
     }
-    this.mngProg.updateResolution(
-      this.containerSize.width,
-      this.containerSize.height,
-    );
+    this.mngProg.updateResolution(this.containerSize.width, this.containerSize.height);
     this.resizeViewport();
   }
 

@@ -1,5 +1,5 @@
-import Vbos from "../vbos/Vbos";
 import TextureData from "../textures/TextureData";
+import Vbos from "../vbos/Vbos";
 
 export default class {
   constructor(gl, { vbos, material = {} }) {

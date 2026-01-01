@@ -96,7 +96,7 @@ export default class Scene extends WebgpuScene {
     device.queue.submit([encoder.finish()]);
   }
 
-  resize(size) {}
+  resize(_size) {}
 
   destroy() {
     super.destroy();

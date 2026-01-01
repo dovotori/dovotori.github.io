@@ -44,12 +44,12 @@ uniform vec3 posLum;
 `;
 
 export const shadowLocations = [
-  'shadowView',
-  'shadowProjection',
-  'shadowMap',
-  'lighten',
-  'shadowEpsilon',
-  'posLum',
+  "shadowView",
+  "shadowProjection",
+  "shadowMap",
+  "lighten",
+  "shadowEpsilon",
+  "posLum",
 ];
 
 export const fragment = `

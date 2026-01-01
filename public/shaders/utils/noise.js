@@ -1,5 +1,5 @@
-import { funcRand } from './random';
-import { PI } from '.';
+import { PI } from ".";
+import { funcRand } from "./random";
 
 // export const funcNoise = `
 // ${funcRand}

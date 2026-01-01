@@ -60,30 +60,21 @@ const StyledLabo = styled(Labo)`
 `;
 
 const ProjecLabo = (props) => {
-  const {
-    colorType,
-    className,
-    slug,
-    noBackground,
-    hasJs = false,
-    hasHtml = false,
-  } = props;
+  const { colorType, className, slug, noBackground, hasJs = false, hasHtml = false } = props;
   const [isLoaded, setIsLoaded] = useState(false);
 
   const onLoad = useCallback(() => {
     setIsLoaded(true);
-  }, [setIsLoaded]);
+  }, []);
 
   useEffect(() => {
     setIsLoaded(false);
-  }, [slug]);
+  }, []);
 
   return (
     <Wrap className={className}>
       <StyledLabo slug={slug} onLoad={onLoad} hasHtml={hasHtml} hasJs={hasJs} />
-      {!noBackground && (
-        <LoadedTransition $colorType={colorType} $isLoaded={isLoaded} />
-      )}
+      {!noBackground && <LoadedTransition $colorType={colorType} $isLoaded={isLoaded} />}
       {!isLoaded && <Loader $colorType={colorType} />}
     </Wrap>
   );

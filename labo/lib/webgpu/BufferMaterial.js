@@ -31,14 +31,9 @@ class BufferMaterial {
 
       // has embedded texture
       if (material.pbrMetallicRoughness.baseColorTexture) {
-        const texture = textures.get(
-          material.pbrMetallicRoughness.baseColorTexture.index,
-        );
+        const texture = textures.get(material.pbrMetallicRoughness.baseColorTexture.index);
         const { sampler, textureView } = this.setupTexture(device, texture);
-        entries.push(
-          { binding: 1, resource: sampler },
-          { binding: 2, resource: textureView },
-        );
+        entries.push({ binding: 1, resource: sampler }, { binding: 2, resource: textureView });
       } else {
         entries.push(
           { binding: 1, resource: empty.sampler },
@@ -71,19 +66,11 @@ class BufferMaterial {
 
     const bufferArray = new Float32Array(buffer.getMappedRange());
 
-    const baseColorFactor = material.pbrMetallicRoughness?.baseColorFactor || [
-      1, 1, 1, 1,
-    ];
+    const baseColorFactor = material.pbrMetallicRoughness?.baseColorFactor || [1, 1, 1, 1];
     const emissiveFactor = material.emissiveFactor || [1, 1, 1];
     const metallicFactor = material.pbrMetallicRoughness?.metallicFactor ?? 0.5;
-    const roughnessFactor =
-      material.pbrMetallicRoughness?.roughnessFactor ?? 0.5;
-    const array = [
-      ...baseColorFactor,
-      ...emissiveFactor,
-      metallicFactor,
-      roughnessFactor,
-    ];
+    const roughnessFactor = material.pbrMetallicRoughness?.roughnessFactor ?? 0.5;
+    const array = [...baseColorFactor, ...emissiveFactor, metallicFactor, roughnessFactor];
     bufferArray.set(array);
 
     buffer.unmap();
@@ -103,11 +90,7 @@ class BufferMaterial {
         GPUTextureUsage.RENDER_ATTACHMENT,
     });
 
-    device.queue.copyExternalImageToTexture(
-      { source: tex.imageData },
-      { texture },
-      size,
-    );
+    device.queue.copyExternalImageToTexture({ source: tex.imageData }, { texture }, size);
 
     // const img = new Image();
     // img.src = window.URL.createObjectURL(tex.blob);
@@ -151,11 +134,7 @@ class BufferMaterial {
         GPUTextureUsage.RENDER_ATTACHMENT,
     });
 
-    device.queue.copyExternalImageToTexture(
-      { source: imageBitmap },
-      { texture },
-      size,
-    );
+    device.queue.copyExternalImageToTexture({ source: imageBitmap }, { texture }, size);
 
     return {
       sampler: device.createSampler(),

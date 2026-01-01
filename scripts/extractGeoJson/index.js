@@ -6,11 +6,11 @@ const SAVE_FILE = path.resolve(__dirname, "../../public/json");
 const generateContent = async (selection) => {
   const geoDataFile = await readFile(
     path.resolve(__dirname, "./countries.geo.medres.json"),
-    "utf8"
+    "utf8",
   );
   const geojson = JSON.parse(geoDataFile);
   const filteredFeatures = geojson.features.filter(
-    (feature) => selection.indexOf(feature.properties.iso_a3) !== -1
+    (feature) => selection.indexOf(feature.properties.iso_a3) !== -1,
   );
   return JSON.stringify({ ...geojson, features: filteredFeatures });
 };

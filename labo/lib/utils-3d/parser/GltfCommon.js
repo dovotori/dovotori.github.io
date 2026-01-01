@@ -13,9 +13,6 @@ const getConvertMethod = (componentType) => {
       return dataViewToFloat32;
     case 5121: // UNSIGNED_BYTE / Uint8Array
       return dataViewToUint8; // for joints
-    case 5120: // BYTE / Int8Array
-    case 5122: // SHORT / Int16Array
-    case 5125: // UNSIGNED_INT / Uint32Array
     default:
       return null;
   }
@@ -33,7 +30,6 @@ export const getArrayType = (componentType) => {
       return Int8Array;
     case 5122: // SHORT / Int16Array
       return Int16Array;
-    case 5125: // UNSIGNED_INT / Uint32Array
     default:
       return Uint32Array;
   }
@@ -109,27 +105,15 @@ const getBufferDataFromAccessor = (buffers, bufferViews, accessor) => {
   const numElement = getNumComponentPerType(type);
   const length = numElement * count;
   const converterMethod = getConvertMethod(componentType);
-  return converterMethod
-    ? converterMethod(dataView, length, count, numElement, byteStride)
-    : null;
+  return converterMethod ? converterMethod(dataView, length, count, numElement, byteStride) : null;
 };
 
 export const getBufferDataFromLayout = (buffers, layout) => {
-  const {
-    buffer,
-    componentType,
-    count,
-    numElement,
-    length,
-    byteOffset,
-    byteLength,
-    byteStride,
-  } = layout;
+  const { buffer, componentType, count, numElement, length, byteOffset, byteLength, byteStride } =
+    layout;
   const dataView = new DataView(buffers[buffer], byteOffset, byteLength);
   const converterMethod = getConvertMethod(componentType);
-  return converterMethod
-    ? converterMethod(dataView, length, count, numElement, byteStride)
-    : null;
+  return converterMethod ? converterMethod(dataView, length, count, numElement, byteStride) : null;
 };
 
 export const getBufferDataFromTexture = (buffers, bufferView) => {
@@ -139,26 +123,16 @@ export const getBufferDataFromTexture = (buffers, bufferView) => {
     byteOffset: bufferViewByteOffset = 0,
     byteStride,
   } = bufferView;
-  const dataView = new DataView(
-    buffers[bufferIndex],
-    bufferViewByteOffset,
-    bufferViewByteLength,
-  );
+  const dataView = new DataView(buffers[bufferIndex], bufferViewByteOffset, bufferViewByteLength);
   const numElement = 4; // RBGA
   const length = bufferViewByteLength / Uint8Array.BYTES_PER_ELEMENT;
   const count = length / numElement;
   const componentType = 5121; // uint8
   const converterMethod = getConvertMethod(componentType);
-  return converterMethod
-    ? converterMethod(dataView, length, count, numElement, byteStride)
-    : null;
+  return converterMethod ? converterMethod(dataView, length, count, numElement, byteStride) : null;
 };
 
-export const getMixedInterleavedBufferData = (
-  buffers,
-  bufferViews,
-  accessors,
-) => {
+export const getMixedInterleavedBufferData = (buffers, bufferViews, accessors) => {
   const arraysByComponentType = {};
   const bv = bufferViews[accessors[0].bufferView];
   const buffer = buffers[bv.buffer];
@@ -294,10 +268,7 @@ export const getHierarchyJoints = (jointNodes) => {
   while (tmpArray.length !== 0) {
     const currentJoint = tmpArray.shift();
     if (currentJoint.children) {
-      currentJoint.children = processJointChildren(
-        currentJoint.children,
-        tmpArray,
-      );
+      currentJoint.children = processJointChildren(currentJoint.children, tmpArray);
     }
     hierarchyJoints.push(currentJoint);
   }

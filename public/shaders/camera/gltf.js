@@ -1,6 +1,6 @@
-import { uniformLights } from '../utils/light';
-import { /* funcPBR, */ locationsPBR, uniformPBR } from '../utils/pbr';
-import { funcLightsToon } from '../utils/toon';
+import { uniformLights } from "../utils/light";
+import { /* funcPBR, */ locationsPBR, uniformPBR } from "../utils/pbr";
+import { funcLightsToon } from "../utils/toon";
 
 const vertex = `
 attribute vec3 position;
@@ -50,6 +50,6 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'normale', 'tangent'],
-  uniforms: ['projection', 'model', 'view', 'normalMatrix', 'posEye'].concat(locationsPBR),
+  attributes: ["position", "normale", "tangent"],
+  uniforms: ["projection", "model", "view", "normalMatrix", "posEye"].concat(locationsPBR),
 };

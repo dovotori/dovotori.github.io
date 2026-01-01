@@ -38,8 +38,7 @@ class PipelineTextures {
       size: [width, height],
       sampleCount: this.sampleCount,
       format,
-      usage:
-        GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
     });
     this.depthTextureView = this.depthTexture.createView({
       label: "SceneDepthTextureView",

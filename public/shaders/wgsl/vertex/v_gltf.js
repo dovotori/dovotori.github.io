@@ -38,8 +38,8 @@ struct VertexOutput {
 fn v_main(
   in: VertexInput,
 ) -> VertexOutput {
-  var out: VertexOutput;
-  var world_position: vec4<f32> = transform.model * vec4<f32>(in.position, 1.0);
+  let out: VertexOutput;
+  let world_position: vec4<f32> = transform.model * vec4<f32>(in.position, 1.0);
 
   out.world_position = world_position.xyz;
   out.world_normal = normalize(transform.normal_matrix * in.normale); // normalize is important to have correct normal
@@ -48,7 +48,7 @@ fn v_main(
   out.texture = in.texture;
   out.camera_position = camera.position;
 
-  var posFromLight: vec4<f32> = shadowProjection * camera.model * world_position;
+  let posFromLight: vec4<f32> = shadowProjection * camera.model * world_position;
   // Convert shadowPos XY to (0, 1) to fit texture UV
   out.shadow_pos = vec3<f32>(posFromLight.xy * vec2<f32>(0.5, -0.5) + vec2<f32>(0.5, 0.5), posFromLight.z);
 

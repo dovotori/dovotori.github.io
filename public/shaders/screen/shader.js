@@ -1,14 +1,14 @@
+import { funcGradiant, funcMap } from "../utils";
 import {
-  rect,
   circle,
-  polar,
-  polygon,
-  distanceField,
   concentricCircles,
+  distanceField,
   fluid,
   planet,
-} from '../utils/shapes';
-import { funcMap, funcGradiant } from '../utils';
+  polar,
+  polygon,
+  rect,
+} from "../utils/shapes";
 
 const vertex = `
 attribute vec3 position;
@@ -97,6 +97,6 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['texture'],
-  uniforms: ['time'],
+  attributes: ["texture"],
+  uniforms: ["time"],
 };

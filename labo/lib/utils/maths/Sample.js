@@ -14,8 +14,7 @@ export default class {
     } else {
       const nextTime = this.timeSteps[this.index];
       const previousTime = this.timeSteps[this.index - 1];
-      this.interpolationValue =
-        (timeInAnimation - previousTime) / (nextTime - previousTime);
+      this.interpolationValue = (timeInAnimation - previousTime) / (nextTime - previousTime);
     }
   }
 

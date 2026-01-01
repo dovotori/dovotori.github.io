@@ -5,13 +5,7 @@ import Vec3 from "../lib/utils/maths/Vec3";
 import Vec4 from "../lib/utils/maths/Vec4";
 import Camera from "../lib/utils-3d/cameras/Camera";
 import Objectif from "../lib/utils-3d/cameras/Objectif";
-import {
-  DebugTexture,
-  GltfBindGroups,
-  GltfPipeline,
-  Picking,
-  Shadow,
-} from "../lib/webgpu";
+import { DebugTexture, GltfBindGroups, GltfPipeline, Picking, Shadow } from "../lib/webgpu";
 import { BufferCamera } from "../lib/webgpu/BufferCamera";
 import WebgpuScene from "../lib/webgpu/WebgpuScene";
 // import { DebugPipeline } from '../lib/webgpu/DebugPipeline';
@@ -78,13 +72,7 @@ export default class Scene extends WebgpuScene {
 
     const uniforms = new Float32Array(array);
     // direct setup
-    device.queue.writeBuffer(
-      buffer,
-      0,
-      uniforms.buffer,
-      uniforms.byteOffset,
-      uniforms.byteLength,
-    );
+    device.queue.writeBuffer(buffer, 0, uniforms.buffer, uniforms.byteOffset, uniforms.byteLength);
 
     const bindGroup = device.createBindGroup({
       label: "LightsUniforms",
@@ -136,10 +124,7 @@ export default class Scene extends WebgpuScene {
       gltf,
       program,
       this.canvasSize,
-      this.shadow.getShadowMapBindGroupEntries(
-        device,
-        this.lampe.getPosition(),
-      ),
+      this.shadow.getShadowMapBindGroupEntries(device, this.lampe.getPosition()),
       DEBUG_PICKING,
     );
     this.uniformCamera = this.setupCamera(
@@ -301,17 +286,12 @@ export default class Scene extends WebgpuScene {
 
     this.renderShadowDepthPass();
 
-    this.updateCameraUniforms(
-      this.uniformCamera.buffer,
-      this.uniformCamera.bufferLightProj,
-    );
+    this.updateCameraUniforms(this.uniformCamera.buffer, this.uniformCamera.bufferLightProj);
 
     const encoder = device.createCommandEncoder({
       label: "GltfCommandEncoder",
     });
-    const pass = encoder.beginRenderPass(
-      this.gltfPipeline.getRenderPassDescriptor(),
-    );
+    const pass = encoder.beginRenderPass(this.gltfPipeline.getRenderPassDescriptor());
 
     pass.setPipeline(this.gltfPipeline.get());
     // bind group are defined in shader code ex: @group(0) @binding(0)
@@ -364,8 +344,7 @@ export default class Scene extends WebgpuScene {
       this.gltfPipeline.getAnimations(),
     );
 
-    const { node, positions, matrix } =
-      await this.gltfPipeline.getByPickColor(pickingColor);
+    const { positions, matrix } = await this.gltfPipeline.getByPickColor(pickingColor);
 
     const mousePosRel = {
       x: (e.pos.x / e.size.width) * 2 - 1,
@@ -388,17 +367,16 @@ export default class Scene extends WebgpuScene {
     if (positions && matrix) {
       // let fMat = new Mat4().setFromArray(matrix.get()).multiply(this.model);
       // fMat.setFromArray(this.model.get()); //.multiply(matrix);
-      const pos = positions[0];
+      const _pos = positions[0];
 
       const p1 = new Vec3(positions[1][0], positions[1][1], positions[1][2]);
       const p2 = new Vec3(positions[2][0], positions[2][1], positions[2][2]);
-      const normal = new Vec3(
-        positions[0][0],
-        positions[0][1],
-        positions[0][2],
-      ).computeNormal(p1, p2);
+      const normal = new Vec3(positions[0][0], positions[0][1], positions[0][2]).computeNormal(
+        p1,
+        p2,
+      );
 
-      const intersectionPoint = intersectRayWithPlane(
+      const _intersectionPoint = intersectRayWithPlane(
         this.camera.getPositionVec3(),
         new Vec3(rayWorld.getX(), rayWorld.getY(), rayWorld.getZ()),
         p1,
@@ -421,8 +399,8 @@ const sum10wgsl = `
 @compute @workgroup_size(1)
 fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
     let index = global_id.x;
-    var sum: f32 = 0;
-    for (var i = index * 10; i < (index + 1) * 10; i++) {
+    let sum: f32 = 0;
+    for (let i = index * 10; i < (index + 1) * 10; i++) {
         sum += data[i];
     }
 
@@ -430,17 +408,13 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
 }
 `;
 
-async function testHeavyCompute() {
+async function _testHeavyCompute() {
   const arrSize = 100000;
-  let data = new Float32Array(
-    Array.from({ length: arrSize }, () => Math.random()),
-  );
+  let data = new Float32Array(Array.from({ length: arrSize }, () => Math.random()));
 
   // CPU to verify
   let startTime = performance.now();
-  const checkData = data.reduce(
-    (previousValue, currentValue) => previousValue + currentValue,
-  );
+  const checkData = data.reduce((previousValue, currentValue) => previousValue + currentValue);
   console.log("cpu result time", performance.now() - startTime, checkData);
 
   // GPU run
@@ -457,10 +431,7 @@ async function testHeavyCompute() {
       Math.ceil(data.length / 10) * 4,
       GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
     );
-    const bindGroup = webGPUComputer.createBindGroup([
-      dataBuffer,
-      resultBuffer,
-    ]);
+    const bindGroup = webGPUComputer.createBindGroup([dataBuffer, resultBuffer]);
 
     const readBuffer = webGPUComputer.createBuffer(
       Math.ceil(data.length / 10) * 4,

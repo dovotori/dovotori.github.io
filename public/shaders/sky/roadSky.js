@@ -1,6 +1,6 @@
-import getClouds from './getClouds';
-import getSunSky from './getSunSky';
-import vertex from '../screen/basicVertex';
+import vertex from "../screen/basicVertex";
+import getClouds from "./getClouds";
+import getSunSky from "./getSunSky";
 
 const fragment = `
 precision mediump float;
@@ -45,6 +45,6 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'texture'],
-  uniforms: ['flipY', 'textureMap', 'resolution', 'time', 'wind'],
+  attributes: ["position", "texture"],
+  uniforms: ["flipY", "textureMap", "resolution", "time", "wind"],
 };

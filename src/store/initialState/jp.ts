@@ -106,10 +106,7 @@ const initialState: MyState = {
           endDate: 2012,
           location: "グルノーブル、フランス",
           text: "グルノーブルに研究所のCEA Ideas Lab学期をしました",
-          tasks: [
-            "革新的な技術の研究とプロトタイピング",
-            "エンジニアとチームワークをしました.",
-          ],
+          tasks: ["革新的な技術の研究とプロトタイピング", "エンジニアとチームワークをしました."],
         },
         {
           startDate: 2009,

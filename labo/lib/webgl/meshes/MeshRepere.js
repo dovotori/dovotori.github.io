@@ -1,5 +1,5 @@
-import primitive from "../../utils-3d/primitives/cube";
 import Mat4 from "../../utils/maths/Mat4";
+import primitive from "../../utils-3d/primitives/cube";
 import Primitive from "../gl/Primitive";
 
 export default class {

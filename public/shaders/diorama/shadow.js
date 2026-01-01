@@ -1,5 +1,5 @@
-import { uniformVertShadow, fragment, shadowLocations } from '../utils/shadow';
-import { locations, getNaturalHeight, getNormale } from '../utils/terrain';
+import { fragment, shadowLocations, uniformVertShadow } from "../utils/shadow";
+import { getNaturalHeight, getNormale, locations } from "../utils/terrain";
 
 const vertex = `
 attribute vec3 position;
@@ -39,8 +39,8 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position'],
-  uniforms: ['projection', 'model', 'view', 'normalMatrix', 'resolution']
+  attributes: ["position"],
+  uniforms: ["projection", "model", "view", "normalMatrix", "resolution"]
     .concat(locations)
     .concat(shadowLocations),
 };

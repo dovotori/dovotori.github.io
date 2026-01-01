@@ -1,16 +1,11 @@
-import {
-  SET_CATEGORY,
-  SET_LANG,
-  TOGGLE_THEME,
-} from "../constants/actionsTypes";
+import { SET_CATEGORY, SET_LANG, TOGGLE_THEME } from "../constants/actionsTypes";
 import availablesLang from "../constants/locales";
 import { en, fr, jp } from "../store/initialState";
 import { getLocationHash, isTouchDevice, storage } from "../utils";
 
 const CONTENTS_MAP = { en, jp, fr };
 
-const defaultLang =
-  getLocationHash() || storage.getItem("lang") || availablesLang[1].id;
+const defaultLang = getLocationHash() || storage.getItem("lang") || availablesLang[1].id;
 
 document.documentElement.setAttribute("lang", defaultLang);
 

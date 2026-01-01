@@ -19,7 +19,7 @@ struct VertexOutput {
     vec2f(1.0, 1.0),  // right, top
   );
 
-  var out: VertexOutput;
+  let out: VertexOutput;
   let xy = pos[vertexIndex];
   out.position = vec4f(xy, 0.0, 1.0);
   out.texcoord = xy;

@@ -1,5 +1,5 @@
-import Perso from "./PersoLife";
 import Behavior from "../behaviors/BehaviorBackAndForth";
+import Perso from "./PersoLife";
 
 export default class extends Perso {
   constructor({ constants, sprites, viewBox, tileSize }) {

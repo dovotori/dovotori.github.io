@@ -33,9 +33,7 @@ export class DebugPipeline {
       usage: window.GPUBufferUsage.VERTEX | window.GPUBufferUsage.COPY_DST,
     });
 
-    const mappedBufferArray = new Float32Array(
-      this.buffers.vertex.getMappedRange(),
-    );
+    const mappedBufferArray = new Float32Array(this.buffers.vertex.getMappedRange());
     mappedBufferArray.set(bufferVertex);
     this.buffers.vertex.unmap();
 
@@ -47,9 +45,7 @@ export class DebugPipeline {
       usage: window.GPUBufferUsage.INDEX | window.GPUBufferUsage.COPY_DST,
     });
 
-    const mappedBufferArray2 = new Uint16Array(
-      this.buffers.index.getMappedRange(),
-    );
+    const mappedBufferArray2 = new Uint16Array(this.buffers.index.getMappedRange());
     mappedBufferArray2.set(bufferIndex);
     this.buffers.index.unmap();
 

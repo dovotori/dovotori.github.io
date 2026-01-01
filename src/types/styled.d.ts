@@ -47,16 +47,8 @@ declare module "styled-components" {
     };
 
     // Functions
-    getColor: (p: {
-      theme: Theme;
-      colorType?: number;
-      $colorType?: number;
-    }) => string;
-    getGradient: (p: {
-      theme: Theme;
-      colorType?: number;
-      $colorType?: number;
-    }) => string;
+    getColor: (p: { theme: Theme; colorType?: number; $colorType?: number }) => string;
+    getGradient: (p: { theme: Theme; colorType?: number; $colorType?: number }) => string;
 
     // Z-index
     zindex: { logo: number; menu: number; content: number };

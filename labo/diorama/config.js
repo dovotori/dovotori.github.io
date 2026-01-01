@@ -16,12 +16,7 @@ export default {
     "/camera/gltf.js",
     "/camera/basique3d.js",
   ],
-  assets: [
-    "/gltf/three.gltf",
-    "/gltf/antenna.gltf",
-    "/textures/waterN.jpg",
-    "/textures/dudv.png",
-  ],
+  assets: ["/gltf/three.gltf", "/gltf/antenna.gltf", "/textures/waterN.jpg", "/textures/dudv.png"],
   canvas: {
     width: 1024,
     height: 1024,

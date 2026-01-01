@@ -2,13 +2,7 @@ import { useEffect, useRef } from "react";
 
 import useFetchLabo from "../hooks/useFetchLabo";
 
-const Labo = ({
-  className,
-  slug,
-  hasHtml = false,
-  hasJs = false,
-  onLoad = null,
-}) => {
+const Labo = ({ className, slug, hasHtml = false, hasJs = false, onLoad = null }) => {
   const { js, html, isLoaded } = useFetchLabo(slug, hasHtml, hasJs);
   const ref = useRef();
 
@@ -38,7 +32,7 @@ const Labo = ({
         js.destroy();
       }
     };
-  }, [isLoaded, js, html]);
+  }, [isLoaded, js, html, onLoad]);
 
   return (
     <div key={slug} className={className} id={slug}>

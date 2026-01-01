@@ -18,7 +18,7 @@ struct VertexOutput {
 fn v_main(
   model: VertexInput,
 ) -> VertexOutput {
-  var out: VertexOutput;
+  let out: VertexOutput;
   out.clip_position = camera.projection * camera.view * vec4<f32>(model.position, 1.0);
   return out;
 }

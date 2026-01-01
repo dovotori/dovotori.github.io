@@ -34,8 +34,8 @@ struct VertexOutput {
 fn v_main(
   in: VertexInput,
 ) -> VertexOutput {
-  var out: VertexOutput;
-  var world_position: vec4<f32> = transform.model * vec4<f32>(in.position, 1.0);
+  let out: VertexOutput;
+  let world_position: vec4<f32> = transform.model * vec4<f32>(in.position, 1.0);
 
   // out.color_picking = transform.color_picking;
   out.color_picking = vec4(transform.color_picking.x, in.faceColor, 0.0, 1.0);

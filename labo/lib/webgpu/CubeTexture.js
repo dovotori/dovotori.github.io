@@ -9,9 +9,7 @@ export class CubeTexture {
     const source = sources[0];
     this.texture = device.createTexture({
       format: "rgba8unorm",
-      mipLevelCount: options.mips
-        ? this.numMipLevels(source.width, source.height)
-        : 1,
+      mipLevelCount: options.mips ? this.numMipLevels(source.width, source.height) : 1,
       size: [source.width, source.height, sources.length],
       usage:
         GPUTextureUsage.TEXTURE_BINDING |

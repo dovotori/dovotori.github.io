@@ -15,11 +15,7 @@ export default class {
   }
 
   static onDisconnect(e) {
-    console.log(
-      "Gamepad disconnected from index %d: %s",
-      e.gamepad.index,
-      e.gamepad.id,
-    );
+    console.log("Gamepad disconnected from index %d: %s", e.gamepad.index, e.gamepad.id);
   }
 
   detroy() {

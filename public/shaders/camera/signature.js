@@ -1,4 +1,4 @@
-import { uniformLights, addLightLocations, funcLightsColor } from '../utils/light';
+import { addLightLocations, funcLightsColor, uniformLights } from "../utils/light";
 
 const vertex = `
 attribute vec3 position;
@@ -52,17 +52,17 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'normale', 'tangent'],
+  attributes: ["position", "normale", "tangent"],
   uniforms: [
-    'projection',
-    'model',
-    'view',
-    'normalMatrix',
-    'color',
-    'rough',
-    'metal',
-    'posLum',
-    'posEye',
-    'time',
+    "projection",
+    "model",
+    "view",
+    "normalMatrix",
+    "color",
+    "rough",
+    "metal",
+    "posLum",
+    "posEye",
+    "time",
   ].concat(addLightLocations()),
 };

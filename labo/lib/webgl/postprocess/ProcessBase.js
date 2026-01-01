@@ -1,5 +1,5 @@
-import PingPongBuffer from "./PingPongBuffer";
 import Screen from "../gl/Screen";
+import PingPongBuffer from "./PingPongBuffer";
 
 export default class {
   constructor(gl, config = {}, programs = {}) {
@@ -67,19 +67,13 @@ export default class {
   }
 
   render(tex = null, isDebug = false) {
-    const program = this.applyTexToProg(
-      this.programs[isDebug ? "debug" : "screen"],
-      tex,
-    );
+    const program = this.applyTexToProg(this.programs[isDebug ? "debug" : "screen"], tex);
     this.gl.viewport(0, 0, this.viewportSize.width, this.viewportSize.height);
     this.screen.render(program.get());
   }
 
   renderInverse(tex = null, isDebug = false) {
-    const program = this.applyTexToProg(
-      this.programs[isDebug ? "debug" : "screen"],
-      tex,
-    );
+    const program = this.applyTexToProg(this.programs[isDebug ? "debug" : "screen"], tex);
     program.setFloat("flipY", 1.0);
     this.gl.viewport(0, 0, this.viewportSize.width, this.viewportSize.height);
     this.screen.render(program.get());

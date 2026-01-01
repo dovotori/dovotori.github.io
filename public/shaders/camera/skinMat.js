@@ -1,4 +1,4 @@
-import { uniformLights, addLightLocations, funcLightsColor } from '../utils/light';
+import { addLightLocations, funcLightsColor, uniformLights } from "../utils/light";
 
 const MAX_JOINT_MAT = 4;
 
@@ -62,17 +62,17 @@ const getExtraLocations = () => {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'joint', 'weight', 'normale'],
+  attributes: ["position", "joint", "weight", "normale"],
   uniforms: [
-    'projection',
-    'model',
-    'view',
-    'normalMatrix',
-    'color',
-    'rough',
-    'metal',
-    'posLum',
-    'posEye',
+    "projection",
+    "model",
+    "view",
+    "normalMatrix",
+    "color",
+    "rough",
+    "metal",
+    "posLum",
+    "posEye",
   ]
     .concat(getExtraLocations())
     .concat(addLightLocations()),

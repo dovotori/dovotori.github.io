@@ -18,7 +18,7 @@ const Wrap = styled.span`
 //   margin-right: 5px;
 // `
 
-export default ({ className, label, category, picto, hidePicto = true }) => {
+export default ({ className, label, category }) => {
   const $colorType = getColorType(category);
   return (
     <Wrap className={className} $colorType={$colorType}>

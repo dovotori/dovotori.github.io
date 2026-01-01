@@ -30,11 +30,8 @@ export default class extends Scene {
 
     this.model.identity();
 
-    const angle =
-      degToRad(this.targetX.get()) + Math.sin(this.time * 0.005) * 0.1;
-    const angle2 =
-      degToRad(this.targetY.get()) -
-      Math.abs(Math.cos(this.time * 0.005) * 0.1);
+    const angle = degToRad(this.targetX.get()) + Math.sin(this.time * 0.005) * 0.1;
+    const angle2 = degToRad(this.targetY.get()) - Math.abs(Math.cos(this.time * 0.005) * 0.1);
 
     this.model.scale(this.targetScale.get());
 
@@ -50,16 +47,9 @@ export default class extends Scene {
   effects() {
     const delta = Math.cos(this.time * 0.001) * 0.05;
     if (delta > 0) {
-      this.postProcess.setGlitch(
-        this.time * 0.07 + this.target.get(),
-        delta,
-        -delta,
-      );
+      this.postProcess.setGlitch(this.time * 0.07 + this.target.get(), delta, -delta);
     }
-    this.postProcess.setWave(0.05, delta, [
-      this.mouseCanvasPosition.x,
-      this.mouseCanvasPosition.y,
-    ]);
+    this.postProcess.setWave(0.05, delta, [this.mouseCanvasPosition.x, this.mouseCanvasPosition.y]);
     this.postProcess.setFxaa();
   }
 

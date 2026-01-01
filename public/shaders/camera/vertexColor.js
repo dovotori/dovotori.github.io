@@ -25,6 +25,6 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'color'],
-  uniforms: ['projection', 'model', 'view'],
+  attributes: ["position", "color"],
+  uniforms: ["projection", "model", "view"],
 };

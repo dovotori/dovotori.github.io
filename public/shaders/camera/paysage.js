@@ -1,6 +1,7 @@
-import { funcLightsColor } from '../utils/light';
-import { funcPBR, locationsPBR } from '../utils/pbr';
-import { uniformVertShadow, uniformFragShadow, funcShadow, shadowLocations } from '../utils/shadow';
+import { funcLightsColor } from "../utils/light";
+import { funcPBR, locationsPBR } from "../utils/pbr";
+import { funcShadow, shadowLocations, uniformFragShadow, uniformVertShadow } from "../utils/shadow";
+
 // import { funcLightsToon } from '../utils/toon';
 
 const vertex = `
@@ -75,16 +76,16 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'normale'],
+  attributes: ["position", "normale"],
   uniforms: [
-    'projection',
-    'view',
-    'model',
-    'inverseModel',
-    'normalMatrix',
-    'resolution',
-    'ambiantMap',
-    'posEye',
+    "projection",
+    "view",
+    "model",
+    "inverseModel",
+    "normalMatrix",
+    "resolution",
+    "ambiantMap",
+    "posEye",
   ]
     .concat(locationsPBR)
     .concat(shadowLocations),

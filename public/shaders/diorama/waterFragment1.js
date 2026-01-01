@@ -1,5 +1,5 @@
-import { getFogAmount, fogUniforms } from '../utils/fog';
-import { uniformLights, funcLightsColor } from '../utils/light';
+import { fogUniforms, getFogAmount } from "../utils/fog";
+import { funcLightsColor, uniformLights } from "../utils/light";
 
 export default `
 precision mediump float;

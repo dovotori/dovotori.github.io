@@ -4,9 +4,7 @@ class ManagerShaders {
   }
 
   static getInfos(path) {
-    const parts = path
-      .substring(path.lastIndexOf("/") + 1, path.length)
-      .split(".");
+    const parts = path.substring(path.lastIndexOf("/") + 1, path.length).split(".");
     return { name: parts[0], ext: parts[1].toLowerCase() };
   }
 

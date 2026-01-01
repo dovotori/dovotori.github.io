@@ -33,4 +33,4 @@ uniform float fogStart;
 uniform float fogEnd;
 `;
 
-export const fogLocations = ['fogStart', 'fogEnd', 'fogColor'];
+export const fogLocations = ["fogStart", "fogEnd", "fogColor"];

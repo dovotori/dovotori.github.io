@@ -66,11 +66,7 @@ export default class {
       mesh.update();
       mesh.setScale(scale, scale, scale);
       mesh.setRotate(45, 0, 0, 1);
-      mesh.setTranslate(
-        this.cloudData[idx].x,
-        this.cloudData[idx].y,
-        this.cloudData[idx].z,
-      );
+      mesh.setTranslate(this.cloudData[idx].x, this.cloudData[idx].y, this.cloudData[idx].z);
       mesh.setColor(255, 255, 255, 0.4);
     });
   }
@@ -81,7 +77,9 @@ export default class {
   }
 
   renderMountains(objet, program) {
-    this.mountains.forEach((mesh) => mesh.render(objet, program));
+    this.mountains.forEach((mesh) => {
+      mesh.render(objet, program);
+    });
   }
 
   renderCloudsFront(objet, program) {

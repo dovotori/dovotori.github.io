@@ -10,14 +10,7 @@ const SignatureContainer = () => {
   const hello = content.hello.about;
   const text = content.hello.text;
   const isTouchDevice = getIsTouchDevice();
-  return (
-    <Signature
-      hello={hello}
-      isTouchDevice={isTouchDevice}
-      isHome={isHome}
-      text={text}
-    />
-  );
+  return <Signature hello={hello} isTouchDevice={isTouchDevice} isHome={isHome} text={text} />;
 };
 
 export default SignatureContainer;

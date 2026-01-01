@@ -1,4 +1,4 @@
-import { uniformVertShadow, shadowLocations, fragment } from '../utils/shadow';
+import { fragment, shadowLocations, uniformVertShadow } from "../utils/shadow";
 
 /* 
 use lampe depth map texture to create a black and white shadow map
@@ -31,6 +31,6 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'normale'],
-  uniforms: ['projection', 'model', 'view', 'normalMatrix', 'resolution'].concat(shadowLocations),
+  attributes: ["position", "normale"],
+  uniforms: ["projection", "model", "view", "normalMatrix", "resolution"].concat(shadowLocations),
 };

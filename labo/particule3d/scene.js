@@ -1,5 +1,5 @@
-import Camera from "../lib/utils-3d/cameras/Camera.js";
 import Mat4 from "../lib/utils/maths/Mat4.js";
+import Camera from "../lib/utils-3d/cameras/Camera.js";
 import { CubeTexture } from "../lib/webgpu/CubeTexture.js";
 import PipelineTextures from "../lib/webgpu/PipelineTextures.js";
 import { PostProcess } from "../lib/webgpu/PostProcess.js";
@@ -20,8 +20,7 @@ export default class Scene extends WebgpuScene {
     this.model = new Mat4();
 
     this.numParticules =
-      this.config.particules.workgroupSize *
-      this.config.particules.workgroupCount;
+      this.config.particules.workgroupSize * this.config.particules.workgroupCount;
 
     this.textures = new PipelineTextures(1);
   }
@@ -31,12 +30,7 @@ export default class Scene extends WebgpuScene {
 
     const device = this.context.getDevice();
 
-    this.textures.setup(
-      device,
-      this.context.getCanvasFormat(),
-      this.canvasSize,
-      "depth24plus",
-    );
+    this.textures.setup(device, this.context.getCanvasFormat(), this.canvasSize, "depth24plus");
 
     // POST PROCESS
     this.postProcess = new PostProcess(this.context);
@@ -44,11 +38,7 @@ export default class Scene extends WebgpuScene {
 
     Object.keys(this.config.postprocess).forEach((key) => {
       const effect = this.config.postprocess[key];
-      this.postProcess.addEffect(
-        key,
-        programs[effect.programName].get(),
-        effect.params,
-      );
+      this.postProcess.addEffect(key, programs[effect.programName].get(), effect.params);
     });
 
     const computeShaderModule = device.createShaderModule({
@@ -67,9 +57,7 @@ export default class Scene extends WebgpuScene {
 
     /////////////////////////////////////////////
 
-    const gltfPrimitive = Array.from(
-      assets.gltfs.smoothSphere.get("meshes").get(0).primitives,
-    )[0];
+    const gltfPrimitive = Array.from(assets.gltfs.smoothSphere.get("meshes").get(0).primitives)[0];
     this.indexCount = gltfPrimitive.indexCount;
 
     // create vertex buffer
@@ -145,21 +133,9 @@ export default class Scene extends WebgpuScene {
     //////////////// DATA ///////////////////////
     /////////////////////////////////////////////
 
-    const inputArray = new Float32Array([
-      this.numParticules,
-      -500,
-      500,
-      -250,
-      250,
-      -500,
-      500,
-    ]); // count, xmin/max, ymin/max, zmin/max
-    const modelArray = new Float32Array(
-      this.numParticules * 4 * Float32Array.BYTES_PER_ELEMENT,
-    );
-    const velocityArray = new Float32Array(
-      this.numParticules * Float32Array.BYTES_PER_ELEMENT,
-    );
+    const inputArray = new Float32Array([this.numParticules, -500, 500, -250, 250, -500, 500]); // count, xmin/max, ymin/max, zmin/max
+    const modelArray = new Float32Array(this.numParticules * 4 * Float32Array.BYTES_PER_ELEMENT);
+    const velocityArray = new Float32Array(this.numParticules * Float32Array.BYTES_PER_ELEMENT);
     for (let i = 0; i < this.numParticules; i++) {
       const x = Math.random() * 1000 - 500;
       const y = Math.random() * 500 - 250;
@@ -171,12 +147,9 @@ export default class Scene extends WebgpuScene {
       modelMatrix.translate(x, y, z);
       modelArray.set(modelMatrix.get(), i * 4 * 4);
 
-      velocityArray[i * 4 + 0] =
-        (Math.random() - 0.5) * this.config.particules.speed; // x
-      velocityArray[i * 4 + 1] =
-        (Math.random() - 0.5) * this.config.particules.speed; // y
-      velocityArray[i * 4 + 2] =
-        (Math.random() - 0.5) * this.config.particules.speed; // z
+      velocityArray[i * 4 + 0] = (Math.random() - 0.5) * this.config.particules.speed; // x
+      velocityArray[i * 4 + 1] = (Math.random() - 0.5) * this.config.particules.speed; // y
+      velocityArray[i * 4 + 2] = (Math.random() - 0.5) * this.config.particules.speed; // z
       velocityArray[i * 4 + 3] = 1; // w
     }
     device.queue.writeBuffer(velocityBuffer, 0, velocityArray);
@@ -328,11 +301,9 @@ export default class Scene extends WebgpuScene {
     this.skybox.setup(
       programs.skybox.get(),
       cubeTexture,
-      Array.from({ length: this.postProcess.getRenderTargetsCount() }).map(
-        () => ({
-          format: this.postProcess.getRenderTargetFormat(),
-        }),
-      ),
+      Array.from({ length: this.postProcess.getRenderTargetsCount() }).map(() => ({
+        format: this.postProcess.getRenderTargetFormat(),
+      })),
       this.textures.getDepthFormat(),
     );
     this.resize(this.canvasSize);
@@ -354,11 +325,7 @@ export default class Scene extends WebgpuScene {
     this.model.rotate(this.time, 0, 1, 0);
     this.model.multiply(this.camera.getViewProjection());
 
-    const array = [
-      ...this.camera.getPosition(),
-      0,
-      ...this.camera.getViewProjection().get(),
-    ];
+    const array = [...this.camera.getPosition(), 0, ...this.camera.getViewProjection().get()];
     this.uniformValues.set(array);
     device.queue.writeBuffer(this.uniformBuffer, 0, this.uniformValues);
 
@@ -369,23 +336,15 @@ export default class Scene extends WebgpuScene {
     // this.renderPassDescriptor.colorAttachments[0].resolveTarget = canvasCurrentView; // use for multisampling
     // this.renderPassDescriptor.colorAttachments[0].view = renderTargetView;
 
-    Array.from({ length: this.postProcess.getRenderTargetsCount() }).forEach(
-      (_, i) => {
-        this.renderPassDescriptor.colorAttachments[i].view =
-          this.postProcess.getRenderTargetView(i);
-      },
-    );
+    Array.from({ length: this.postProcess.getRenderTargetsCount() }).forEach((_, i) => {
+      this.renderPassDescriptor.colorAttachments[i].view = this.postProcess.getRenderTargetView(i);
+    });
     this.renderPassDescriptor.depthStencilAttachment.view = depthTextureView;
 
-    this.camera.moveAroundCenter(
-      this.time * 0.01,
-      this.config.camera.position.z,
-    );
+    this.camera.moveAroundCenter(this.time * 0.01, this.config.camera.position.z);
     this.skybox.updateCamera(this.camera);
 
-    const pingTargetView = this.postProcess
-      .getPingPongTexture(true)
-      .createView();
+    const pingTargetView = this.postProcess.getPingPongTexture(true).createView();
     this.postProcess.updateTexture(pingTargetView);
     this.postProcess.updateEffectTextures(canvasCurrentView);
   }
@@ -399,18 +358,14 @@ export default class Scene extends WebgpuScene {
       label: "Command Encoder for render and compute passes",
     });
 
-    const computePass = commandEncoder.beginComputePass(
-      this.computePassDescriptor,
-    );
+    const computePass = commandEncoder.beginComputePass(this.computePassDescriptor);
     computePass.setPipeline(this.computePipeline);
     computePass.setBindGroup(0, this.computeGroup);
     computePass.dispatchWorkgroups(this.config.particules.workgroupCount); // Math.ceil(NUM_PARTICLES / WORKGROUP_SIZE)
     computePass.end();
 
     // same render pass for skybox and model
-    const renderPass = commandEncoder.beginRenderPass(
-      this.renderPassDescriptor,
-    );
+    const renderPass = commandEncoder.beginRenderPass(this.renderPassDescriptor);
 
     renderPass.setPipeline(this.renderPipeline);
     renderPass.setVertexBuffer(0, this.vertexBuffer);

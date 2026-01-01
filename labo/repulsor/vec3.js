@@ -17,7 +17,7 @@ vec3.prototype.init = function () {
 };
 
 vec3.prototype.normaliser = function () {
-  var longueur = Math.sqrt(this.x ** 2 + this.y ** 2 + this.z ** 2);
+  const longueur = Math.sqrt(this.x ** 2 + this.y ** 2 + this.z ** 2);
 
   if (longueur !== 0.0) {
     this.x /= longueur;
@@ -27,7 +27,7 @@ vec3.prototype.normaliser = function () {
 };
 
 vec3.prototype.afficher = function () {
-  alert("v: " + this.x + " " + this.y + " " + this.z);
+  alert(`v: ${this.x} ${this.y} ${this.z}`);
 };
 
 vec3.prototype.produitVectoriel = function (vec31, vec32) {
@@ -52,7 +52,7 @@ vec3.prototype.egale = function (v) {
 };
 
 vec3.prototype.moins = function (v) {
-  var resultat = new vec3();
+  const resultat = new vec3();
   resultat.x = this.x - v.x;
   resultat.y = this.y - v.y;
   resultat.z = this.z - v.z;
@@ -73,7 +73,6 @@ vec3.prototype.addVector = function (vec3) {
 
 vec3.prototype.distance = function (vec32) {
   return Math.sqrt(
-    (vec32.y - this.y) * (vec32.y - this.y) +
-      (vec32.x - this.x) * (vec32.x - this.x),
+    (vec32.y - this.y) * (vec32.y - this.y) + (vec32.x - this.x) * (vec32.x - this.x),
   );
 };

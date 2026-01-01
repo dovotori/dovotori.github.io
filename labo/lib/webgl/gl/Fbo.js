@@ -1,14 +1,8 @@
-import TextureFbo from "../textures/TextureFbo";
 import TextureDepth from "../textures/TextureDepth";
+import TextureFbo from "../textures/TextureFbo";
 
 export default class {
-  constructor(
-    gl,
-    width = 1024,
-    height = 1024,
-    useDepth = false,
-    attachmentIdx = 0,
-  ) {
+  constructor(gl, width = 1024, height = 1024, useDepth = false, attachmentIdx = 0) {
     this.gl = gl;
     this.buffer = this.gl.createFramebuffer();
     this.buffer.width = width;
@@ -32,11 +26,7 @@ export default class {
         ? extension.COLOR_ATTACHMENT0_WEBGL + attachmentIdx
         : this.gl.COLOR_ATTACHMENT0;
 
-    this.texture = new TextureFbo(
-      this.gl,
-      this.buffer.width,
-      this.buffer.height,
-    );
+    this.texture = new TextureFbo(this.gl, this.buffer.width, this.buffer.height);
     this.texture.setup();
     this.gl.framebufferTexture2D(
       this.gl.FRAMEBUFFER,
@@ -47,11 +37,7 @@ export default class {
     );
 
     if (this.useDepth) {
-      this.depthTexture = new TextureDepth(
-        this.gl,
-        this.buffer.width,
-        this.buffer.height,
-      );
+      this.depthTexture = new TextureDepth(this.gl, this.buffer.width, this.buffer.height);
       this.depthTexture.setup();
       this.gl.framebufferTexture2D(
         this.gl.FRAMEBUFFER,

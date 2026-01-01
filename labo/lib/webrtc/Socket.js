@@ -7,12 +7,14 @@ export default class {
     //   transports: ['websocket'],
     //   forceNew: true,
     // };
-    const url = "http://localhost:8083";
     // const url = 'https://dovotori-test.herokuapp.com';
 
     this.socket = null;
     console.log("constructor");
+  }
 
+  start() {
+    const url = "http://localhost:8083";
     return new Promise((resolve, reject) => {
       this.socket = io(url);
       console.log("socket connect");
@@ -23,7 +25,7 @@ export default class {
       });
 
       this.socket.on("connect", () => {
-        resolve(this);
+        resolve();
       });
     });
   }

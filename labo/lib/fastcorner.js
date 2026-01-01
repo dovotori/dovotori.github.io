@@ -14,11 +14,11 @@ https://github.com/edrosten/fast-C-src
 - nonmax.c
 */
 
-function detect(im, width, height, threshold, nonmax) {
+function detect(im, width, height, threshold, _nonmax) {
   const corners = fast9_detect(im, width, height, threshold);
   const scores = fast9_score(im, width, height, corners, threshold);
   if (nonmax) {
-    var nonmax = nonmax_suppression(corners, scores);
+    const nonmax = nonmax_suppression(corners, scores);
     return nonmax;
   }
   for (let i = 0; i < corners.length; i++) {
@@ -31,7 +31,7 @@ function detect(im, width, height, threshold, nonmax) {
 
 function fast9_detect(im, xsize, ysize, b) {
   const corners = [];
-  const rsize = 512;
+  const _rsize = 512;
   const pixel = new Array(16);
   let x;
   let y;
@@ -1835,7 +1835,7 @@ function fast9_detect(im, xsize, ysize, b) {
   return corners;
 }
 
-function fast9_score(im, xsize, ysize, corners, b) {
+function fast9_score(im, xsize, _ysize, corners, b) {
   const scores = [];
   const stride = xsize;
 
@@ -1858,14 +1858,7 @@ function fast9_score(im, xsize, ysize, corners, b) {
   pixel[15] = -1 + stride * 3;
 
   for (let n = 0; n < corners.length; n++)
-    scores[n] = fast9_corner_score(
-      im,
-      stride,
-      corners[n].y,
-      corners[n].x,
-      pixel,
-      b,
-    );
+    scores[n] = fast9_corner_score(im, stride, corners[n].y, corners[n].x, pixel, b);
   // corners[n].score = fast9_corner_score(im, stride, corners[n].y, corners[n].x, pixel, b);
 
   return scores;
@@ -3645,7 +3638,7 @@ function fast9_is_corner(im, stride, y, x, pixel, b) {
 function fast9_corner_score(im, stride, y, x, pixel, bstart) {
   let bmin = bstart;
   let bmax = 255;
-  let b = parseInt((bmax + bmin) / 2);
+  let b = parseInt((bmax + bmin) / 2, 10);
 
   /* Compute the score using binary search */
   for (;;) {
@@ -3655,16 +3648,16 @@ function fast9_corner_score(im, stride, y, x, pixel, bstart) {
       bmax = b;
     }
 
-    if (bmin == bmax - 1 || bmin == bmax) return bmin;
+    if (bmin === bmax - 1 || bmin === bmax) return bmin;
 
-    b = parseInt((bmin + bmax) / 2);
+    b = parseInt((bmin + bmax) / 2, 10);
   }
 }
 
 /* nonmax.c */
 
 function nonmax_suppression(corners, scores) {
-  const num_nonmax = 0;
+  const _num_nonmax = 0;
   let last_row;
   let row_start;
   let i;
@@ -3693,7 +3686,7 @@ function nonmax_suppression(corners, scores) {
   {
     let prev_row = -1;
     for (i = 0; i < corners.length; i++)
-      if (corners[i].y != prev_row) {
+      if (corners[i].y !== prev_row) {
         row_start[corners[i].y] = i;
         prev_row = corners[i].y;
       }
@@ -3707,47 +3700,27 @@ function nonmax_suppression(corners, scores) {
 
     /* Check left */
     if (i > 0)
-      if (
-        corners[i - 1].x == pos.x - 1 &&
-        corners[i - 1].y == pos.y &&
-        scores[i - 1] >= score
-      )
+      if (corners[i - 1].x === pos.x - 1 && corners[i - 1].y === pos.y && scores[i - 1] >= score)
         continue;
 
     /* Check right */
     if (i < corners.length - 1)
-      if (
-        corners[i + 1].x == pos.x + 1 &&
-        corners[i + 1].y == pos.y &&
-        scores[i + 1] >= score
-      )
+      if (corners[i + 1].x === pos.x + 1 && corners[i + 1].y === pos.y && scores[i + 1] >= score)
         continue;
 
     /* Check above (if there is a valid row above) */
-    if (pos.y != 0 && row_start[pos.y - 1] != -1) {
+    if (pos.y !== 0 && row_start[pos.y - 1] !== -1) {
       /* Make sure that current point_above is one
         row above. */
-      if (corners[point_above].y < pos.y - 1)
-        point_above = row_start[pos.y - 1];
+      if (corners[point_above].y < pos.y - 1) point_above = row_start[pos.y - 1];
 
       /* Make point_above point to the first of the pixels above the current point,
         if it exists. */
-      for (
-        ;
-        corners[point_above].y < pos.y && corners[point_above].x < pos.x - 1;
-        point_above++
-      ) {}
+      for (; corners[point_above].y < pos.y && corners[point_above].x < pos.x - 1; point_above++) {}
 
-      for (
-        j = point_above;
-        corners[j].y < pos.y && corners[j].x <= pos.x + 1;
-        j++
-      ) {
-        var { x } = corners[j];
-        if (
-          (x == pos.x - 1 || x == pos.x || x == pos.x + 1) &&
-          scores[j] >= score
-        ) {
+      for (j = point_above; corners[j].y < pos.y && corners[j].x <= pos.x + 1; j++) {
+        const { x } = corners[j];
+        if ((x === pos.x - 1 || x === pos.x || x === pos.x + 1) && scores[j] >= score) {
           skip = true;
           break;
         }
@@ -3756,11 +3729,7 @@ function nonmax_suppression(corners, scores) {
 
     if (!skip) {
       /* Check below (if there is anything below) */
-      if (
-        pos.y != last_row &&
-        row_start[pos.y + 1] != -1 &&
-        point_below < corners.length
-      ) {
+      if (pos.y !== last_row && row_start[pos.y + 1] !== -1 && point_below < corners.length) {
         /* Nothing below */ if (corners[point_below].y < pos.y + 1)
           point_below = row_start[pos.y + 1];
 
@@ -3769,23 +3738,18 @@ function nonmax_suppression(corners, scores) {
         for (
           ;
           point_below < corners.length &&
-          corners[point_below].y == pos.y + 1 &&
+          corners[point_below].y === pos.y + 1 &&
           corners[point_below].x < pos.x - 1;
           point_below++
         ) {}
 
         for (
           j = point_below;
-          j < corners.length &&
-          corners[j].y == pos.y + 1 &&
-          corners[j].x <= pos.x + 1;
+          j < corners.length && corners[j].y === pos.y + 1 && corners[j].x <= pos.x + 1;
           j++
         ) {
-          var { x } = corners[j];
-          if (
-            (x == pos.x - 1 || x == pos.x || x == pos.x + 1) &&
-            scores[j] >= score
-          ) {
+          const { x } = corners[j];
+          if ((x === pos.x - 1 || x === pos.x || x === pos.x + 1) && scores[j] >= score) {
             skip = true;
             break;
           }

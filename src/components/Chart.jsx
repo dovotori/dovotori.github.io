@@ -1,4 +1,4 @@
-import * as svgs from "Assets/svg/cv";
+import svgs from "Assets/svg/cv";
 import { useCallback, useState } from "react";
 import styled from "styled-components";
 import { mapFromRange } from "../utils";
@@ -71,12 +71,8 @@ const Chart = ({ className, data, showAllIcons = false }) => {
           const childHasChildren = !!child.children;
           if (isActive) {
             const isFirst = current !== data.id && depth === 1;
-            angle = isFirst
-              ? parentAngle
-              : mapFromRange(value, 0, 100, 0, parentAngle);
-            newEnd = isFirst
-              ? parentAngle
-              : mapFromRange(value, 0, 100, 0, parentAngle);
+            angle = isFirst ? parentAngle : mapFromRange(value, 0, 100, 0, parentAngle);
+            newEnd = isFirst ? parentAngle : mapFromRange(value, 0, 100, 0, parentAngle);
             image = svgs[id] || null;
             newDepth = depth + 1;
             nextCurrent = data.id;
@@ -100,15 +96,7 @@ const Chart = ({ className, data, showAllIcons = false }) => {
               showIcon={showAllIcons}
             >
               {childHasChildren &&
-                drawNodes(
-                  nextCurrent,
-                  x,
-                  y,
-                  child,
-                  newDepth,
-                  currentStartAngle,
-                  newEnd,
-                )}
+                drawNodes(nextCurrent, x, y, child, newDepth, currentStartAngle, newEnd)}
             </StyledArcWithItem>
           );
           currentStartAngle += angle;

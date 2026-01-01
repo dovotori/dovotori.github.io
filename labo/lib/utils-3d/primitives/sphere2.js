@@ -1,12 +1,7 @@
 // based on http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html
 // https://dev.to/ndesmic/webgl-3d-engine-from-scratch-part-6-procedural-sphere-generation-29bf
 
-import {
-  latLngToCartesian,
-  inverseLerp,
-  TWO_PI,
-  QUARTER_TURN,
-} from "../utils/numbers";
+import { inverseLerp, latLngToCartesian, QUARTER_TURN, TWO_PI } from "../utils/numbers";
 
 export default (density) => {
   const radsPerUnit = Math.PI / density;

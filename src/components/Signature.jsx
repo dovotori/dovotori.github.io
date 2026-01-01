@@ -139,13 +139,7 @@ const StyledBol = styled(Bol)`
   z-index: 1;
 `;
 
-const Signature = ({
-  className,
-  isTouchDevice,
-  hello,
-  text,
-  isHome = true,
-}) => {
+const Signature = ({ className, isTouchDevice, hello, text, isHome = true }) => {
   const [count, setCount] = useState(0);
 
   const add = useCallback(() => {
@@ -156,19 +150,10 @@ const Signature = ({
     <Wrap>
       <Pulse className="circle" count={count} />
       <Katakana $isHome={isHome}>
-        <StyledTypingMessage
-          message={isHome ? "ドリアン" : "はじめまして"}
-          isLoop
-          isVertical
-        />
+        <StyledTypingMessage message={isHome ? "ドリアン" : "はじめまして"} isLoop isVertical />
       </Katakana>
       <Absolute $isTouch={isTouchDevice}>
-        <StyledLink
-          to={isHome ? "/about" : "/"}
-          className={className}
-          title="about"
-          onClick={add}
-        >
+        <StyledLink to={isHome ? "/about" : "/"} className={className} title="about" onClick={add}>
           <Appear>
             {isTouchDevice ? (
               <StyledBol isSwitched={!isHome} />

@@ -61,9 +61,10 @@ export default class {
   };
 
   addPoints(type, coor) {
-    const finalCoor =
-      type === "vt" && coor.length === 3 ? coor.slice(0, 2) : coor;
-    finalCoor.forEach((c) => this.obj[type].points.push(parseFloat(c, 10)));
+    const finalCoor = type === "vt" && coor.length === 3 ? coor.slice(0, 2) : coor;
+    finalCoor.forEach((c) => {
+      this.obj[type].points.push(parseFloat(c, 10));
+    });
   }
 
   addNewMaterial(name) {

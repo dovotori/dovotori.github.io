@@ -4,7 +4,7 @@ import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
 import { Vector as VectorLayer } from "ol/layer";
 import VectorSource from "ol/source/Vector";
-import { Circle as CircleStyle, Fill, Icon, Style } from "ol/style";
+import { Icon, Style } from "ol/style";
 
 const mapFromRange = (valeur, minRef, maxRef, minDest, maxDest) => {
   let result = minDest + ((valeur - minRef) * (maxDest - minDest)) / (maxRef - minRef);
@@ -106,7 +106,7 @@ class AnimationMarker {
             offset: inverse ? [60, 0] : [0, 0],
             rotation,
           }),
-        })
+        }),
       );
       this.speed = (length / this.DISTANCE_PER_SECOND_PLANE) * 1000;
     } else {
@@ -117,7 +117,7 @@ class AnimationMarker {
             offset: inverse && this.iconStyle.size ? [this.iconStyle.size[0], 0] : [0, 0],
             rotation,
           }),
-        })
+        }),
       );
       this.speed = (length / this.DISTANCE_PER_SECOND) * 1000;
     }
@@ -175,7 +175,7 @@ class AnimationMarker {
         this.now = Date.now();
         this.vectorLayer.on("postrender", this.moveFeature);
       },
-      isNewLoop ? this.DELAY_BETWEEN_LOOP : this.DELAY_BETWEEN_SEGMENT
+      isNewLoop ? this.DELAY_BETWEEN_LOOP : this.DELAY_BETWEEN_SEGMENT,
     );
   };
 
@@ -192,7 +192,7 @@ class AnimationMarker {
           src: house,
           scale: 0.08,
         }),
-      })
+      }),
     );
     this.animTooltip(this.points[this.step]);
     this.vectorLayer.un("postrender", this.moveFeature);

@@ -61,10 +61,7 @@ const TypingMessage = ({
   const displayMessage = useRef(firstMessage);
   const animRef = useRef(null);
 
-  const randomChar = useCallback(
-    () => CHARS[Math.floor(Math.random() * CHARS.length)],
-    [],
-  );
+  const randomChar = useCallback(() => CHARS[Math.floor(Math.random() * CHARS.length)], []);
   const randomStr = useCallback(
     (length) => new Array(length).fill(0).map(randomChar).join(""),
     [randomChar],

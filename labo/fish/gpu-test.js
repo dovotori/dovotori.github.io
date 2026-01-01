@@ -268,11 +268,7 @@ async function run() {
     const x = Math.random() * 1000 - 500;
     const y = Math.random() * 500 - 250;
     const z = Math.random() * 1000 - 500;
-    const modelMatrix = getModelViewMatrix(
-      { x, y, z },
-      { x: 0, y: 0, z: 0 },
-      { x: 2, y: 2, z: 2 },
-    );
+    const modelMatrix = getModelViewMatrix({ x, y, z }, { x: 0, y: 0, z: 0 }, { x: 2, y: 2, z: 2 });
     modelArray.set(modelMatrix, i * 4 * 4);
 
     velocityArray[i * 4 + 0] = Math.random() - 0.5; // x
@@ -292,13 +288,7 @@ async function run() {
     const time = performance.now() / 5000;
     camera.x = 1000 * Math.sin(time);
     camera.z = 1000 * Math.cos(time);
-    const projectionMatrix = getProjectionMatrix(
-      aspect,
-      (60 / 180) * Math.PI,
-      0.1,
-      10000,
-      camera,
-    );
+    const projectionMatrix = getProjectionMatrix(aspect, (60 / 180) * Math.PI, 0.1, 10000, camera);
     device.queue.writeBuffer(pipelineObj.projectionBuffer, 0, projectionMatrix);
     draw(device, context, pipelineObj);
     requestAnimationFrame(frame);

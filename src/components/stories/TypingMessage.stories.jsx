@@ -34,11 +34,7 @@ const TriggerTemplate = (args) => {
 
   return (
     <div>
-      <button
-        type="button"
-        onClick={() => setTrigger((t) => t + 1)}
-        data-testid="trigger-button"
-      >
+      <button type="button" onClick={() => setTrigger((t) => t + 1)} data-testid="trigger-button">
         Trigger Animation
       </button>
       <TypingMessage {...args} trigger={trigger} />

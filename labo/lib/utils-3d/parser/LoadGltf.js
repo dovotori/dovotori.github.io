@@ -14,14 +14,7 @@ const getImageBufferData = (buffers, bufferView) => {
   return dataViewToUint8(dataView, byteLength);
 };
 
-const VBO_ATTRIBUTES = [
-  "position",
-  "normale",
-  "texture",
-  "joint",
-  "weight",
-  "tangent",
-];
+const VBO_ATTRIBUTES = ["position", "normale", "texture", "joint", "weight", "tangent"];
 
 const getVbos = (attributes, accessors, indices, targets) => {
   const indicesAcc = accessors[indices];
@@ -75,26 +68,21 @@ const getSkins = (skins, nodes, accessors) => {
   if (skins) {
     const indexedNodes = nodes.map((node, index) => ({ ...node, id: index }));
     newSkins = skins
-      .map(
-        ({
-          inverseBindMatrices: matriceAccessorIndex,
-          joints: jointsNodesIndexes,
-        }) => {
-          let matrices = [];
-          if (matriceAccessorIndex !== undefined) {
-            const rawMatrix = accessors[matriceAccessorIndex].values;
-            matrices = chunkArray(rawMatrix, 16);
-          }
-          if (jointsNodesIndexes) {
-            const joints = jointsNodesIndexes.map((nodeIndex, index) => ({
-              ...indexedNodes[nodeIndex],
-              invMatrix: matrices[index],
-            }));
-            return { joints: getHierarchyJoints(joints) };
-          }
-          return null;
-        },
-      )
+      .map(({ inverseBindMatrices: matriceAccessorIndex, joints: jointsNodesIndexes }) => {
+        let matrices = [];
+        if (matriceAccessorIndex !== undefined) {
+          const rawMatrix = accessors[matriceAccessorIndex].values;
+          matrices = chunkArray(rawMatrix, 16);
+        }
+        if (jointsNodesIndexes) {
+          const joints = jointsNodesIndexes.map((nodeIndex, index) => ({
+            ...indexedNodes[nodeIndex],
+            invMatrix: matrices[index],
+          }));
+          return { joints: getHierarchyJoints(joints) };
+        }
+        return null;
+      })
       .filter((k) => k);
   }
   return newSkins;
@@ -153,9 +141,7 @@ const getImages = (images, buffers, bufferViews) =>
 const addChildrenToNode = (parent, nodes) => {
   const { children } = parent;
   if (children) {
-    const newChildren = children.map((nodeId) =>
-      addChildrenToNode(nodes[nodeId], nodes),
-    );
+    const newChildren = children.map((nodeId) => addChildrenToNode(nodes[nodeId], nodes));
     return { ...parent, children: newChildren };
   }
   return parent;
@@ -171,9 +157,7 @@ const organizeParenting = (nodes) => {
     }
   });
   const nodesWithChildren = nodes.map((node) => addChildrenToNode(node, nodes));
-  return nodesWithChildren.filter(
-    (_node, index) => indexNodeIsChild[index] === undefined,
-  );
+  return nodesWithChildren.filter((_node, index) => indexNodeIsChild[index] === undefined);
 };
 
 const convertNodesToObject = (nodesArray) =>
@@ -203,23 +187,14 @@ export default class {
   constructor(rawText) {
     const JsonData = JSON.parse(rawText);
     console.log({ JsonData });
-    const { animations, bufferViews, skins, nodes, meshes, materials, images } =
-      JsonData;
+    const { animations, bufferViews, skins, nodes, meshes, materials, images } = JsonData;
 
     const { newBuffers, newAccessors } = getBuffersData(JsonData);
-    const allJointsIds = skins?.reduce(
-      (acc, skin) => acc.concat(skin.joints),
-      [],
-    );
+    const allJointsIds = skins?.reduce((acc, skin) => acc.concat(skin.joints), []);
     const markedNodes = markedAndNameNodes(nodes, allJointsIds);
 
     // add animations to nodes
-    const animationsPerNodes = getAnimations(
-      animations,
-      markedNodes,
-      newAccessors,
-      meshes,
-    );
+    const animationsPerNodes = getAnimations(animations, markedNodes, newAccessors, meshes);
     Object.keys(animationsPerNodes).forEach((nodeIndex) => {
       markedNodes[nodeIndex].animations = animationsPerNodes[nodeIndex];
     });
@@ -234,9 +209,7 @@ export default class {
     });
 
     const newImages = getImages(images, newBuffers, bufferViews);
-    const newMaterials = materials?.map((material) =>
-      getMaterial(material, newImages),
-    );
+    const newMaterials = materials?.map((material) => getMaterial(material, newImages));
 
     let newNodes = organizeParenting(markedNodes);
     newNodes = convertNodesToObject(newNodes);

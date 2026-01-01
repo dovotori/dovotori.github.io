@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { polarToCartesian } from "../utils";
 
@@ -12,19 +12,7 @@ const getD = (x, y, radius, startAngle, endAngle) => {
   const start = polarToCartesian(x, y, radius, endAngle);
   const end = polarToCartesian(x, y, radius, startAngle);
   const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-  return [
-    "M",
-    start.x,
-    start.y,
-    "A",
-    radius,
-    radius,
-    0,
-    largeArcFlag,
-    0,
-    end.x,
-    end.y,
-  ].join(" ");
+  return ["M", start.x, start.y, "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y].join(" ");
 };
 
 const Arc = ({ x, y, radius, startAngle, endAngle, className }) => {
@@ -53,10 +41,7 @@ const Arc = ({ x, y, radius, startAngle, endAngle, className }) => {
           Math.abs(deltaStart) < ANIMATION_THRESHOLD &&
           Math.abs(deltaEnd) < ANIMATION_THRESHOLD
         ) {
-          ref.current.setAttribute(
-            "d",
-            getD(x, y, radius, startAngle, endAngle),
-          );
+          ref.current.setAttribute("d", getD(x, y, radius, startAngle, endAngle));
           current.current = { radius, startAngle, endAngle };
           window.cancelAnimationFrame(raf);
         } else {
@@ -77,7 +62,7 @@ const Arc = ({ x, y, radius, startAngle, endAngle, className }) => {
         window.cancelAnimationFrame(raf);
       }
     };
-  }, [radius, startAngle, endAngle]);
+  }, [radius, startAngle, endAngle, x, y]);
 
   return <Wrap ref={ref} className={className} />;
 };

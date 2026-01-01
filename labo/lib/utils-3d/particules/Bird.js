@@ -98,9 +98,7 @@ export default class extends Node {
         // exclue soit meme
         // SEPARATION
         if (distance < RADIUS_SEPERATE) {
-          const ajoutForce = new Vec3()
-            .equal(this.position)
-            .minus(bird.getPosition());
+          const ajoutForce = new Vec3().equal(this.position).minus(bird.getPosition());
           ajoutForce.normalise();
           // plus le voisin est loin moins la force est importante
           ajoutForce.divideNumber(distance);
@@ -140,10 +138,7 @@ export default class extends Node {
     // ALIGNEMENT
     if (cptAlignement > 0) {
       // divise par le nombre de voisin
-      forceAlignement
-        .divideNumber(cptAlignement)
-        .normalise()
-        .multiplyNumber(MAX_SPEED);
+      forceAlignement.divideNumber(cptAlignement).normalise().multiplyNumber(MAX_SPEED);
 
       // steer
       forceAlignement.minus(this.speed).limiter(MAX_STRENGTH);

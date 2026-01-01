@@ -84,21 +84,14 @@ const initialState: MyState = {
           endDate: 2016,
           text: "Co-managing director of Pix 21, web design agency",
           location: "Paris, France",
-          tasks: [
-            "websites production",
-            "visual identities production",
-            "project management",
-          ],
+          tasks: ["websites production", "visual identities production", "project management"],
         },
         {
           startDate: 2013,
           endDate: 2014,
           text: "Graphic designer at Reporters without borders",
           location: "Paris, France",
-          tasks: [
-            "interactive maps production",
-            "edition of association report",
-          ],
+          tasks: ["interactive maps production", "edition of association report"],
         },
         {
           startDate: 2012,
@@ -115,10 +108,7 @@ const initialState: MyState = {
           endDate: 2009,
           text: "Internship and missions at Atelier des giboulées, graphic design agency",
           location: "Paris, France",
-          tasks: [
-            "printed design",
-            "holding client meetings to elaborate projects specifications",
-          ],
+          tasks: ["printed design", "holding client meetings to elaborate projects specifications"],
         },
       ],
     },

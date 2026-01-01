@@ -10,17 +10,15 @@ import {
   W,
   X,
 } from "../../lib/utils/constants/keyboard";
-
+import bulletConstants from "./persos/bullet";
+import fxConstants from "./persos/fx";
+import herosConstants from "./persos/heros";
+import monsterConstants from "./persos/monster";
 import spriteBullet from "./sprites/bullet";
 import spriteFx from "./sprites/fx";
 import spriteHeros from "./sprites/heros";
 import spriteMonster from "./sprites/monster";
 import spriteTiles from "./sprites/tiles";
-
-import bulletConstants from "./persos/bullet";
-import fxConstants from "./persos/fx";
-import herosConstants from "./persos/heros";
-import monsterConstants from "./persos/monster";
 
 export default {
   slug: "game",

@@ -64,24 +64,9 @@ export default () => {
     const scaleX = boxMap[2] / boxCountry.width;
     const scaleY = boxMap[3] / boxCountry.height;
     const scale = Math.min(Math.floor(Math.min(scaleX, scaleY)), 8);
-    const x = mapFromRange(
-      centroid.x,
-      0,
-      boxMap[2],
-      (width / 2) * scale,
-      -(width / 2) * scale,
-    );
-    const y = mapFromRange(
-      centroid.y,
-      0,
-      boxMap[3],
-      (height / 2) * scale,
-      -(height / 2) * scale,
-    );
-    carte.setAttribute(
-      "style",
-      `transform: translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
-    );
+    const x = mapFromRange(centroid.x, 0, boxMap[2], (width / 2) * scale, -(width / 2) * scale);
+    const y = mapFromRange(centroid.y, 0, boxMap[3], (height / 2) * scale, -(height / 2) * scale);
+    carte.setAttribute("style", `transform: translate3d(${x}px, ${y}px, 0px) scale(${scale})`);
     updateLegend(path.getAttribute("data-data"));
   };
 

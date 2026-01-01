@@ -1,7 +1,4 @@
-import {
-  buildPickingBindGroupLayouts,
-  GltfBindGroups,
-} from "./GltfPipelineBindGroupLayout";
+import { buildPickingBindGroupLayouts, GltfBindGroups } from "./GltfPipelineBindGroupLayout";
 import PipelineTextures from "./PipelineTextures";
 
 export class Picking {
@@ -56,8 +53,7 @@ export class Picking {
     // face color
     const buffers = [
       {
-        arrayStride:
-          buffersLayout[0].arrayStride + Float32Array.BYTES_PER_ELEMENT,
+        arrayStride: buffersLayout[0].arrayStride + Float32Array.BYTES_PER_ELEMENT,
         attributes: [
           ...buffersLayout[0].attributes,
           {
@@ -147,10 +143,8 @@ export class Picking {
       label: "PickingCommandEncoder",
     });
 
-    this.renderPassDescriptor.colorAttachments[0].view =
-      this.colorTexture.createView();
-    this.renderPassDescriptor.depthStencilAttachment.view =
-      this.depthTexture.createView();
+    this.renderPassDescriptor.colorAttachments[0].view = this.colorTexture.createView();
+    this.renderPassDescriptor.depthStencilAttachment.view = this.depthTexture.createView();
 
     const pass = encoder.beginRenderPass(this.renderPassDescriptor);
 
@@ -176,10 +170,8 @@ export class Picking {
       label: "PickingCommandEncoder",
     });
 
-    this.renderPassDescriptor.colorAttachments[0].view =
-      this.colorTexture.createView();
-    this.renderPassDescriptor.depthStencilAttachment.view =
-      this.depthTexture.createView();
+    this.renderPassDescriptor.colorAttachments[0].view = this.colorTexture.createView();
+    this.renderPassDescriptor.depthStencilAttachment.view = this.depthTexture.createView();
 
     const pass = encoder.beginRenderPass(this.renderPassDescriptor);
     pass.setPipeline(this.pipeline);
@@ -218,9 +210,7 @@ export class Picking {
       this.bufferSize, // Length
     );
 
-    const mappedData = new Float32Array(
-      this.destinationBuffer.getMappedRange(0, this.bufferSize),
-    );
+    const mappedData = new Float32Array(this.destinationBuffer.getMappedRange(0, this.bufferSize));
 
     // need to copy data before the unmap (delete)
     const data = [...mappedData];
@@ -232,7 +222,7 @@ export class Picking {
     return [getNodePickingColor(data[0]), getNodePickingColor(data[1]), 0, 1];
   };
 
-  drawModel = (device, pass, nodes, animations) => {
+  drawModel = (_device, pass, nodes, _animations) => {
     // should sort primitives by material
     for (const [key, node] of nodes) {
       node.buffers.forEach((buffer) => {
@@ -264,11 +254,7 @@ export class Picking {
   };
 
   resize = (size) => {
-    this.textures.resize(
-      this.context.getDevice(),
-      this.context.getCanvasFormat(),
-      size,
-    );
+    this.textures.resize(this.context.getDevice(), this.context.getCanvasFormat(), size);
     this.createTexture(size);
     this.texSize = size;
   };

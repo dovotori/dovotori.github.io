@@ -39,7 +39,7 @@ export const getPoints = (width, nbDoublesLines = 1) => {
 const getPlateauNbPoints = (width, nbDoublesLines) =>
   width * (nbDoublesLines + 1) + (width + 1) * nbDoublesLines;
 
-const getNormales = (width, height = 1) => {
+const _getNormales = (width, height = 1) => {
   const nbPoints = getPlateauNbPoints(width, height);
   const normales = Array.from({ length: nbPoints }).fill([0, 1, 0]);
   return normales.flat();
@@ -148,7 +148,7 @@ const addThickIndices = (width, nbDoublesLines) => {
   return indices;
 };
 
-const addThickNormales = (width, nbDoublesLines) => {
+const _addThickNormales = (_width, _nbDoublesLines) => {
   const normales = [];
   // const lastIndex = getPlateauNbPoints(width, nbDoublesLines) - 1;
 

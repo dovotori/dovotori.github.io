@@ -10,10 +10,7 @@ export const GltfBindGroups = {
 };
 
 // generate from https://webgpufundamentals.org/webgpu/lessons/resources/wgsl-offset-computer.html
-export const buildBindGroupLayouts = (
-  device,
-  { withShadow = false, withSkin = false },
-) => {
+export const buildBindGroupLayouts = (device, { withShadow = false, withSkin = false }) => {
   const cameraEntries = [
     {
       binding: 0,

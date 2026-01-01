@@ -77,12 +77,7 @@ export class BufferSkin {
   update(device, animations, customTranforms = {}) {
     const jointMatrix = new Mat4();
     jointMatrix.identity();
-    const matrices = this.computeJointMatrix(
-      this.joints,
-      jointMatrix,
-      animations,
-      customTranforms,
-    );
+    const matrices = this.computeJointMatrix(this.joints, jointMatrix, animations, customTranforms);
     const flat = matrices.flat();
     this.uniformValues.fill(0); // clear then set (prevent leftover data)
     this.uniformValues.set(flat.slice(0, this.uniformValues.length)); // copy only up to buffer length (avoid overflow if compute returned more)

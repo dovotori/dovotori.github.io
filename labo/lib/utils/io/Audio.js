@@ -6,7 +6,7 @@ export default class {
     this.support = !!AudioContext;
     try {
       this.audioContext = new AudioContext();
-    } catch (e) {
+    } catch (_e) {
       this.support = false;
     }
 
@@ -24,11 +24,7 @@ export default class {
 
   setup(audioArrayBuffer) {
     if (this.support) {
-      this.audioContext.decodeAudioData(
-        audioArrayBuffer,
-        this.saveData,
-        this.onError,
-      );
+      this.audioContext.decodeAudioData(audioArrayBuffer, this.saveData, this.onError);
       // this.audioContext.addEventListener("statechange", this.onStateChange, false);
 
       // volume
@@ -38,11 +34,7 @@ export default class {
 
       // analyse
       this.sampleSize = 2048; // power of two / number of samples to collect before analyzing data
-      this.javascriptNode = this.audioContext.createScriptProcessor(
-        this.sampleSize,
-        1,
-        1,
-      );
+      this.javascriptNode = this.audioContext.createScriptProcessor(this.sampleSize, 1, 1);
       /*
       // anticipate deprecated chrome alert but still unecessery  
       this.audioContext.audioWorklet.addModule('/public/worker/audioProcessor.js').then(() => {
@@ -132,11 +124,7 @@ export default class {
     if (this.javascriptNode) {
       this.analyserNode.disconnect();
       this.javascriptNode.disconnect();
-      this.javascriptNode.removeEventListener(
-        "audioprocess",
-        this.onAnalyse,
-        false,
-      );
+      this.javascriptNode.removeEventListener("audioprocess", this.onAnalyse, false);
     }
   };
 

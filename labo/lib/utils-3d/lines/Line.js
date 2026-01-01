@@ -31,11 +31,7 @@ export default class {
       } else {
         newPos = this.points[index - 1];
       }
-      const vec = Vec3.lerp(
-        new Vec3(...point),
-        new Vec3(...newPos),
-        index === 0 ? 0.9999 : 0.8,
-      );
+      const vec = Vec3.lerp(new Vec3(...point), new Vec3(...newPos), index === 0 ? 0.9999 : 0.8);
       return vec.get();
     });
     const primitive = lineShaderWithAdjacents(this.points);

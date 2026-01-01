@@ -5,10 +5,7 @@ import BufferGltf from "./BufferGltf";
 import BufferMaterial from "./BufferMaterial";
 import { BufferSkin } from "./BufferSkin";
 import BufferTransform from "./BufferTransform";
-import {
-  buildBindGroupLayouts,
-  GltfBindGroups,
-} from "./GltfPipelineBindGroupLayout";
+import { buildBindGroupLayouts, GltfBindGroups } from "./GltfPipelineBindGroupLayout";
 import { pixelToPickingColor } from "./Picking";
 import Pipeline from "./Pipeline";
 import PipelineTextures from "./PipelineTextures";
@@ -29,13 +26,7 @@ export class GltfPipeline {
     await this.db.setup();
   }
 
-  async setup(
-    gltf,
-    program,
-    canvasSize,
-    depthMapBingGroupEntries,
-    isDebug = false,
-  ) {
+  async setup(gltf, program, canvasSize, depthMapBingGroupEntries, isDebug = false) {
     const device = this.context.getDevice();
 
     const nodes = gltf.get("nodes");
@@ -70,9 +61,7 @@ export class GltfPipeline {
         const nbTrianglesFaces = primitive.bufferIndex.length / 3;
         const colorPerFace = [];
 
-        const indexPositionsMap = this.db
-          ? GltfPipeline.getIndiceVerticesMap(primitive)
-          : null;
+        const indexPositionsMap = this.db ? GltfPipeline.getIndiceVerticesMap(primitive) : null;
 
         for (let cFace = 0; cFace < nbTrianglesFaces; cFace++) {
           // don't compute if already exist
@@ -129,8 +118,7 @@ export class GltfPipeline {
       // buffer faces
       buffersLayout = [
         {
-          arrayStride:
-            this.firstBufferLayout.arrayStride + Float32Array.BYTES_PER_ELEMENT,
+          arrayStride: this.firstBufferLayout.arrayStride + Float32Array.BYTES_PER_ELEMENT,
           attributes: [
             ...this.firstBufferLayout.attributes,
             {
@@ -199,8 +187,7 @@ export class GltfPipeline {
 
   static getIndiceVerticesMap(primitive) {
     const indexPositionsMap = new Map();
-    const nbFloatStride =
-      primitive.arrayStride / Float32Array.BYTES_PER_ELEMENT;
+    const nbFloatStride = primitive.arrayStride / Float32Array.BYTES_PER_ELEMENT;
     const nbIndex = primitive.bufferVertex.length / nbFloatStride;
 
     for (let i = 0; i < nbIndex; i++) {
@@ -382,9 +369,7 @@ export class GltfPipeline {
         // MAT
         pass.setBindGroup(
           GltfBindGroups.MATERIAL,
-          this.materialBuffer.getBindGroup(
-            this.materialIndexes.get(buffer) || 0,
-          ),
+          this.materialBuffer.getBindGroup(this.materialIndexes.get(buffer) || 0),
         );
 
         if (!isDebug) {
@@ -400,11 +385,7 @@ export class GltfPipeline {
   };
 
   resize = (size) => {
-    this.textures.resize(
-      this.context.getDevice(),
-      this.context.getCanvasFormat(),
-      size,
-    );
+    this.textures.resize(this.context.getDevice(), this.context.getCanvasFormat(), size);
   };
 
   getBindGroupLayout = (bindGroupType) => this.bindGroupLayouts[bindGroupType];
@@ -438,9 +419,7 @@ export class GltfPipeline {
       if (faceColors) {
         const faceIndex = faceColors.get(color[1]);
         console.log({ faceIndex }, color, faceColors);
-        const faceData = await this.db.getMeshFaceData(
-          `${node.mesh}-${faceIndex}`,
-        );
+        const faceData = await this.db.getMeshFaceData(`${node.mesh}-${faceIndex}`);
         if (faceData) {
           positions = faceData.vertices;
         }

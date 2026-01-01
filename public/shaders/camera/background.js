@@ -27,6 +27,6 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'texture'],
-  uniforms: ['projection', 'model', 'view', 'textureMap', 'offset'],
+  attributes: ["position", "texture"],
+  uniforms: ["projection", "model", "view", "textureMap", "offset"],
 };

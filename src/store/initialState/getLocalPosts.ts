@@ -70,8 +70,7 @@ const rawPosts = [
     description: {
       [Locales.FR]:
         "Transformation d'un comptoir de bar en séquenceur musicale, dont les sons sont déclenchés par les verres posés sur sa surface.",
-      [Locales.EN]:
-        "Interactive bar counter where glasses trigger sound like a music partition.",
+      [Locales.EN]: "Interactive bar counter where glasses trigger sound like a music partition.",
       [Locales.JP]:
         "カウンターがミュージカルシーケンサーと化した。 その上に置かれたグラスは音を生み出す。",
     },
@@ -91,10 +90,8 @@ const rawPosts = [
     description: {
       [Locales.FR]:
         "Proposition pour l'identité d'une exposition fictive sur les arts de rue et le graffiti.",
-      [Locales.EN]:
-        "Visual identity for a fictive exhibition about street art.",
-      [Locales.JP]:
-        "発起は落書きとストリートアートの展示会のビジュアルアイデンティティです。",
+      [Locales.EN]: "Visual identity for a fictive exhibition about street art.",
+      [Locales.JP]: "発起は落書きとストリートアートの展示会のビジュアルアイデンティティです。",
     },
     images: 4,
   },
@@ -125,13 +122,7 @@ const rawPosts = [
       [Locales.JP]: "エレクトロ",
     },
     category: CAT_DESIGN,
-    tags: [
-      Tags.TAG_WORDPRESS,
-      Tags.TAG_PHP,
-      Tags.TAG_JS,
-      Tags.TAG_HTML,
-      Tags.TAG_CSS,
-    ],
+    tags: [Tags.TAG_WORDPRESS, Tags.TAG_PHP, Tags.TAG_JS, Tags.TAG_HTML, Tags.TAG_CSS],
     date: 2013,
     description: {
       [Locales.FR]: "Site de l'artiste audiovisuel Alex Augier.",
@@ -206,8 +197,7 @@ const rawPosts = [
     description: {
       [Locales.FR]:
         "Différents projets réalisés au sein de l'association Reporters sans frontières.",
-      [Locales.EN]:
-        "Differents printed realisations for the association Reporters without borders",
+      [Locales.EN]: "Differents printed realisations for the association Reporters without borders",
       [Locales.JP]: "Reporters without bordersのための幾つかのプロジェクト。",
     },
     images: 6,
@@ -221,20 +211,14 @@ const rawPosts = [
       [Locales.JP]: "歓楽",
     },
     category: CAT_CODE,
-    tags: [
-      Tags.TAG_KINECT,
-      Tags.TAG_PROCESSING,
-      Tags.TAG_INDESIGN,
-      Tags.TAG_PHOTOSHOP,
-    ],
+    tags: [Tags.TAG_KINECT, Tags.TAG_PROCESSING, Tags.TAG_INDESIGN, Tags.TAG_PHOTOSHOP],
     date: 2013,
     description: {
       [Locales.FR]:
         "Dispositif de jeu qui a pour ambition d'intégrer n'importe quel objet du quotidien pour influencer un espace virtuel.",
       [Locales.EN]:
         "Game installation which allow to usual objects to influence a virtual ecosystem.",
-      [Locales.JP]:
-        "此のゲーム機は仮想空間を影響するのためどれかの日常品を統合する。",
+      [Locales.JP]: "此のゲーム機は仮想空間を影響するのためどれかの日常品を統合する。",
     },
     images: 9,
   },
@@ -252,10 +236,8 @@ const rawPosts = [
     description: {
       [Locales.FR]:
         "Élaboration d'une identité visuelle pour la biennale d'art contemporain de la ville du Havre.",
-      [Locales.EN]:
-        "Visual identity for the city of Le Havre contemporary art biennial.",
-      [Locales.JP]:
-        "これは現代美術展のルアーブルために作ったビジュアルアイデンティティ。",
+      [Locales.EN]: "Visual identity for the city of Le Havre contemporary art biennial.",
+      [Locales.JP]: "これは現代美術展のルアーブルために作ったビジュアルアイデンティティ。",
     },
     images: 11,
   },
@@ -323,21 +305,14 @@ const rawPosts = [
       [Locales.JP]: "景色",
     },
     category: CAT_CODE,
-    tags: [
-      Tags.TAG_WEBGL,
-      Tags.TAG_GLSL,
-      Tags.TAG_BLENDER,
-      Tags.TAG_GLTF,
-      Tags.TAG_EXPERIMENTAL,
-    ],
+    tags: [Tags.TAG_WEBGL, Tags.TAG_GLSL, Tags.TAG_BLENDER, Tags.TAG_GLTF, Tags.TAG_EXPERIMENTAL],
     date: 2019,
     description: {
       [Locales.FR]:
         "Chargement et visualisation d'une scène 3d au format gltf 2.0 en webgl, en suivant les spécifications du Khronos group.",
       [Locales.EN]:
         "Parsing and visualization of a scene from gltf file format, following Khronos group specifications.",
-      [Locales.JP]:
-        "gltf 2.0のフォーマット3Dビューのローディングと視覚化をwebglで作る。",
+      [Locales.JP]: "gltf 2.0のフォーマット3Dビューのローディングと視覚化をwebglで作る。",
     },
     labo: {
       hasJs: true,
@@ -536,13 +511,7 @@ const rawPosts = [
       [Locales.JP]: "ジオラマ",
     },
     category: CAT_CODE,
-    tags: [
-      Tags.TAG_WEBGL,
-      Tags.TAG_GLSL,
-      Tags.TAG_BLENDER,
-      Tags.TAG_GLTF,
-      Tags.TAG_EXPERIMENTAL,
-    ],
+    tags: [Tags.TAG_WEBGL, Tags.TAG_GLSL, Tags.TAG_BLENDER, Tags.TAG_GLTF, Tags.TAG_EXPERIMENTAL],
     date: 2020,
     labo: {
       hasJs: true,
@@ -559,13 +528,7 @@ const rawPosts = [
       [Locales.JP]: "レース",
     },
     category: CAT_CODE,
-    tags: [
-      Tags.TAG_WEBGL,
-      Tags.TAG_GLSL,
-      Tags.TAG_BLENDER,
-      Tags.TAG_GLTF,
-      Tags.TAG_EXPERIMENTAL,
-    ],
+    tags: [Tags.TAG_WEBGL, Tags.TAG_GLSL, Tags.TAG_BLENDER, Tags.TAG_GLTF, Tags.TAG_EXPERIMENTAL],
     date: 2020,
     labo: {
       hasJs: true,
@@ -580,12 +543,7 @@ const rawPosts = [
       [Locales.JP]: "ドロネー",
     },
     category: CAT_CODE,
-    tags: [
-      Tags.TAG_JS,
-      Tags.TAG_CONTEXT_2D,
-      Tags.TAG_SVG,
-      Tags.TAG_EXPERIMENTAL,
-    ],
+    tags: [Tags.TAG_JS, Tags.TAG_CONTEXT_2D, Tags.TAG_SVG, Tags.TAG_EXPERIMENTAL],
     date: 2022,
     labo: {
       hasJs: true,
@@ -602,13 +560,7 @@ const rawPosts = [
       [Locales.JP]: "Webgpu",
     },
     category: CAT_CODE,
-    tags: [
-      Tags.TAG_WEBGPU,
-      Tags.TAG_WGSL,
-      Tags.TAG_BLENDER,
-      Tags.TAG_GLTF,
-      Tags.TAG_EXPERIMENTAL,
-    ],
+    tags: [Tags.TAG_WEBGPU, Tags.TAG_WGSL, Tags.TAG_BLENDER, Tags.TAG_GLTF, Tags.TAG_EXPERIMENTAL],
     description: {
       [Locales.FR]: ["Adaptation de mon petit moteur 3d webgl vers webgpu."],
       [Locales.EN]: ["Adaptation of my small 3d engine from webgl to webgpu."],
@@ -739,12 +691,7 @@ export default (locale): MyState["entries"] => {
       const description = post.description?.[locale];
       const inverseLocale = locale === Locales.JP ? Locales.EN : Locales.JP;
 
-      const {
-        title: _title,
-        description: _desc,
-        links: _links,
-        ...rest
-      } = post;
+      const { title: _title, description: _desc, links: _links, ...rest } = post;
 
       const title = _title[locale];
       const inverseTitle = _title[inverseLocale];
@@ -761,8 +708,5 @@ export default (locale): MyState["entries"] => {
         links,
       };
     })
-    .filter(
-      (post) =>
-        post.isDevOnly !== true || process.env.NODE_ENV !== "production",
-    );
+    .filter((post) => post.isDevOnly !== true || process.env.NODE_ENV !== "production");
 };

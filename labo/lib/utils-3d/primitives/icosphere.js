@@ -7,11 +7,7 @@ const normalize = ([x, y, z]) => {
   return [x, y, z];
 };
 
-const midpoint = (a, b) => [
-  (a[0] + b[0]) / 2,
-  (a[1] + b[1]) / 2,
-  (a[2] + b[2]) / 2,
-];
+const midpoint = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (a[2] + b[2]) / 2];
 
 const pointToKey = (point) =>
   `${point[0].toPrecision(6)},${point[1].toPrecision(6)},${point[2].toPrecision(6)}`;

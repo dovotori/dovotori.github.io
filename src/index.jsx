@@ -9,9 +9,7 @@ if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
       .register("/sw.js")
       .then((registration) => {
         // scope should be https://domain/ to avoid error on reload
-        console.log(
-          `[Service Worker] Registration successful with scope: ${registration.scope}`,
-        );
+        console.log(`[Service Worker] Registration successful with scope: ${registration.scope}`);
 
         // Check for updates
         registration.addEventListener("updatefound", () => {
@@ -28,9 +26,7 @@ if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
           });
         });
       })
-      .catch((err) =>
-        console.log("[Service Worker] Registration failed: ", err),
-      );
+      .catch((err) => console.log("[Service Worker] Registration failed: ", err));
   });
 }
 

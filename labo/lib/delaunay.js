@@ -47,8 +47,7 @@ const circumcircle = (vertices, i, j, k) => {
   let my2;
 
   /* Check for coincident points */
-  if (fabsy1y2 < EPSILON && fabsy2y3 < EPSILON)
-    throw new Error("Eek! Coincident points!");
+  if (fabsy1y2 < EPSILON && fabsy2y3 < EPSILON) throw new Error("Eek! Coincident points!");
 
   if (fabsy1y2 < EPSILON) {
     m2 = -((x3 - x2) / (y3 - y2));
@@ -163,14 +162,7 @@ const Delaunay = {
           dy = vertices[c][1] - open[j].y;
           if (!(dx * dx + dy * dy - open[j].r > EPSILON)) {
             /* Remove the triangle and add it's edges to the edge list. */
-            edges.push(
-              open[j].i,
-              open[j].j,
-              open[j].j,
-              open[j].k,
-              open[j].k,
-              open[j].i,
-            );
+            edges.push(open[j].i, open[j].j, open[j].j, open[j].k, open[j].k, open[j].i);
             open.splice(j, 1);
           }
         }

@@ -27,7 +27,9 @@ class ObjetGltf {
       const node = this.nodes[key];
       const { mesh: meshIndex } = node;
       const { primitives } = this.meshes[meshIndex];
-      primitives.forEach((primitive) => primitive.addInstancing(count, vbos));
+      primitives.forEach((primitive) => {
+        primitive.addInstancing(count, vbos);
+      });
     });
   }
 
@@ -86,7 +88,9 @@ class ObjetGltf {
     if (node.mesh !== undefined) {
       const { mesh: meshIndex } = node;
       const { primitives } = this.meshes[meshIndex];
-      primitives.forEach((primitive) => primitive.render(program));
+      primitives.forEach((primitive) => {
+        primitive.render(program);
+      });
     }
   }
 

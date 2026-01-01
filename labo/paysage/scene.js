@@ -1,9 +1,9 @@
-import primitive from "../lib/utils-3d/primitives/plane";
 import DualQuaternion from "../lib/utils/maths/DualQuaternion";
 import Mat4 from "../lib/utils/maths/Mat4";
 import Spring from "../lib/utils/maths/Spring";
 import Target from "../lib/utils/maths/Target";
 import { degToRad } from "../lib/utils/numbers";
+import primitive from "../lib/utils-3d/primitives/plane";
 import Primitive from "../lib/webgl/gl/Primitive";
 import Buffers from "../lib/webgl/postprocess/Buffers";
 import Scene from "../lib/webgl/scenes/SceneLampe";
@@ -23,12 +23,7 @@ export default class extends Scene {
     this.fakeShadow = new Primitive(gl, primitive);
     this.targetZ.set(1.2);
 
-    this.buffers = new Buffers(
-      this.gl,
-      config.width,
-      config.height,
-      this.canUseDepth(),
-    );
+    this.buffers = new Buffers(this.gl, config.width, config.height, this.canUseDepth());
   }
 
   update(time) {

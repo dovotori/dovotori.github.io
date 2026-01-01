@@ -1,5 +1,5 @@
-import StateSprite from "../../../lib/utils-3d/core/StateSprite";
 import Vec3 from "../../../lib/utils/maths/Vec3";
+import StateSprite from "../../../lib/utils-3d/core/StateSprite";
 import MeshSprite from "../../../lib/webgl/meshes/MeshSprite";
 
 export default class extends MeshSprite {

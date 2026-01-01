@@ -60,9 +60,7 @@ export default class {
         break;
     }
     if (overwriteName !== "") {
-      this.materials[this.current][overwriteName] = value.map((v) =>
-        parseFloat(v, 10),
-      );
+      this.materials[this.current][overwriteName] = value.map((v) => parseFloat(v, 10));
     }
   }
 

@@ -1,4 +1,4 @@
-import * as easings from "../utils/easing";
+import easings from "../utils/easing";
 
 export default class {
   constructor(value = 0) {

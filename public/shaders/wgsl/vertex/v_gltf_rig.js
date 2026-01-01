@@ -45,14 +45,14 @@ struct VertexOutput {
 @vertex fn v_main(
   in: VertexInput,
 ) -> VertexOutput {
-  var skinMat: mat4x4<f32> =
+  let skinMat: mat4x4<f32> =
     in.weight.x * jointMat.mats[u32(in.joint.x)] +
     in.weight.y * jointMat.mats[u32(in.joint.y)] +
     in.weight.z * jointMat.mats[u32(in.joint.z)] +
     in.weight.w * jointMat.mats[u32(in.joint.w)];
 
-  var out: VertexOutput;
-  var world_position: vec4<f32> = transform.model * skinMat * vec4<f32>(in.position, 1.0);
+  let out: VertexOutput;
+  let world_position: vec4<f32> = transform.model * skinMat * vec4<f32>(in.position, 1.0);
 
   out.world_position = world_position.xyz;
   out.world_normal = normalize(transform.normal_matrix * in.normale); // normalize is important to have correct normal

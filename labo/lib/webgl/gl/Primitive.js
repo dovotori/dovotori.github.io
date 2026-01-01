@@ -40,10 +40,6 @@ const createVbosFromPrimitive = (gl, primitive) =>
         convertedValues = new Float32Array(values);
         break;
       }
-      case "position":
-      case "next":
-      case "previous":
-      case "normale":
       default: {
         type = "VEC3";
         size = 3;

@@ -1,4 +1,4 @@
-import { funcPhong } from '../utils/light';
+import { funcPhong } from "../utils/light";
 
 const vertex = `
 attribute vec3 position;
@@ -41,17 +41,17 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'normale'],
+  attributes: ["position", "normale"],
   uniforms: [
-    'projection',
-    'model',
-    'view',
-    'normalMatrix',
-    'ambiant',
-    'diffuse',
-    'specular',
-    'brillance',
-    'posLum',
-    'posEye',
+    "projection",
+    "model",
+    "view",
+    "normalMatrix",
+    "ambiant",
+    "diffuse",
+    "specular",
+    "brillance",
+    "posLum",
+    "posEye",
   ],
 };

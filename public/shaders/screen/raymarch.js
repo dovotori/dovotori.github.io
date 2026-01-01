@@ -1,5 +1,5 @@
-import { PI } from '../utils';
-import vertex from './basicVertex';
+import { PI } from "../utils";
+import vertex from "./basicVertex";
 
 const rayMarch = `
 #define RAY_MARCH_MAX_STEPS 100
@@ -104,6 +104,6 @@ void main() {
 export default {
   vertex,
   fragment,
-  attributes: ['position', 'texture'],
-  uniforms: ['flipY', 'textureMap', 'time'],
+  attributes: ["position", "texture"],
+  uniforms: ["flipY", "textureMap", "time"],
 };

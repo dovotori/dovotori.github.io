@@ -75,11 +75,7 @@ const Footer = ({ toggleTheme, isDarkMode, setLang, texts, lang }) => (
       />
     </Div>
     <Start>
-      <ToggleMode
-        isDarkMode={isDarkMode}
-        texts={texts}
-        toggleTheme={toggleTheme}
-      />
+      <ToggleMode isDarkMode={isDarkMode} texts={texts} toggleTheme={toggleTheme} />
     </Start>
   </Wrap>
 );

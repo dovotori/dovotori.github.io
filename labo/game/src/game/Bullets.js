@@ -29,9 +29,7 @@ export default class {
     });
 
     if (toDelete.length > 0) {
-      this.bullets = this.bullets.filter(
-        (bullet, idx) => toDelete.indexOf(idx) === -1,
-      );
+      this.bullets = this.bullets.filter((_bullet, idx) => toDelete.indexOf(idx) === -1);
     }
 
     this.isAiming = isAiming;
@@ -57,11 +55,7 @@ export default class {
       const lastBullet = this.bullets[this.bullets.length - 1];
       lastBullet.shoot(this.constants.states.BULLET);
       if (this.callbackShoot) {
-        this.callbackShoot(
-          lastBullet.getId(),
-          lastBullet.getCollisionBox(),
-          this.recoil,
-        );
+        this.callbackShoot(lastBullet.getId(), lastBullet.getCollisionBox(), this.recoil);
       }
     }
   }
