@@ -1,13 +1,11 @@
 import path from "node:path";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import webpack from "webpack";
-import BundleAnalyzerPlugin from "webpack-bundle-analyzer";
 import config from "../package.json" with { type: "json" };
 import { __dirname, alias, rules } from "./common.js";
 
 const port = process.env.PORT || 8080;
 const host = process.env.HOST || "0.0.0.0";
-const withAnalyze = process.env.ANALYZE || false;
 
 const plugins = [
   new webpack.HotModuleReplacementPlugin(),
@@ -28,10 +26,6 @@ const plugins = [
     template: path.resolve(__dirname, "./templates/index.ejs"),
   }),
 ];
-
-if (withAnalyze) {
-  plugins.push(new BundleAnalyzerPlugin());
-}
 
 export default {
   mode: "development",

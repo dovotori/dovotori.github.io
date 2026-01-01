@@ -3,71 +3,53 @@ import CopyWebpackPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import SwCachePlugin from "sw-cache-plugin";
 import webpack from "webpack";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import config from "../package.json" with { type: "json" };
 import { __dirname, alias, compression, minify, optimization, rules } from "./common.js";
 
 const BUILD_PATH = path.resolve(__dirname, "../build");
 const SRC_ASSET_PATH = path.resolve(__dirname, "../public");
 const BUILD_ASSET_PATH = process.env.ASSET_PATH || "/public";
+const WITH_ANALYZE = process.env.ANALYZE || false;
 
-export default {
-  mode: "production",
-  entry: {
-    polyfill: "@babel/polyfill",
-    [config.name]: path.resolve(__dirname, "../src/index.jsx"),
-  },
-  output: {
-    path: `${BUILD_PATH}/public/js/`,
-    publicPath: `${BUILD_ASSET_PATH}/js/`,
-    filename: "[name].js",
-  },
-  target: "web",
-  module: {
-    rules,
-  },
-  resolve: {
-    extensions: [".ts", ".tsx", ".js", ".jsx"],
-    alias,
-  },
-  optimization,
-  plugins: [
-    new HtmlWebpackPlugin({
-      title: config.name,
-      filename: `${BUILD_PATH}/index.html`,
-      inject: "body",
-      base: BUILD_ASSET_PATH,
-      template: path.resolve(__dirname, "./templates/index.ejs"),
-      minify,
-    }),
-    new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: JSON.stringify("production"),
-        ASSET_PATH: JSON.stringify(BUILD_ASSET_PATH),
-        NAME: JSON.stringify(config.name),
-        MAIL: JSON.stringify(config.author.email),
+const plugins = [
+  new HtmlWebpackPlugin({
+    title: config.name,
+    filename: `${BUILD_PATH}/index.html`,
+    inject: "body",
+    base: BUILD_ASSET_PATH,
+    template: path.resolve(__dirname, "./templates/index.ejs"),
+    minify,
+  }),
+  new webpack.DefinePlugin({
+    "process.env": {
+      NODE_ENV: JSON.stringify("production"),
+      ASSET_PATH: JSON.stringify(BUILD_ASSET_PATH),
+      NAME: JSON.stringify(config.name),
+      MAIL: JSON.stringify(config.author.email),
+    },
+  }),
+  new CopyWebpackPlugin({
+    patterns: [
+      {
+        from: SRC_ASSET_PATH,
+        to: `${BUILD_PATH}${BUILD_ASSET_PATH}`,
+        globOptions: {
+          dot: true,
+          ignore: [`**/sw.js`],
+        },
       },
-    }),
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: SRC_ASSET_PATH,
-          to: `${BUILD_PATH}${BUILD_ASSET_PATH}`,
-          globOptions: {
-            dot: true,
-            ignore: [`**/sw.js`],
-          },
-        },
-        {
-          from: `${SRC_ASSET_PATH}/sw.js`,
-          to: `${BUILD_PATH}/sw.js`,
-        },
-      ],
-    }),
-    new SwCachePlugin({
-      cacheName: `v${config.version}`,
-      ignore: [/.*\.map$/],
-      include: ["/"],
-      additionalCode: `
+      {
+        from: `${SRC_ASSET_PATH}/sw.js`,
+        to: `${BUILD_PATH}/sw.js`,
+      },
+    ],
+  }),
+  new SwCachePlugin({
+    cacheName: `v${config.version}`,
+    ignore: [/.*\.map$/],
+    include: ["/"],
+    additionalCode: `
     // App version: ${config.version}
     const APP_VERSION = '${config.version}';
     
@@ -91,7 +73,33 @@ export default {
       return self.clients.claim();
     });
   `,
-    }),
-    ...compression,
-  ],
+  }),
+  ...compression,
+];
+
+if (WITH_ANALYZE) {
+  plugins.push(new BundleAnalyzerPlugin());
+}
+
+export default {
+  mode: "production",
+  entry: {
+    polyfill: "@babel/polyfill",
+    [config.name]: path.resolve(__dirname, "../src/index.jsx"),
+  },
+  output: {
+    path: `${BUILD_PATH}/public/js/`,
+    publicPath: `${BUILD_ASSET_PATH}/js/`,
+    filename: "[name].js",
+  },
+  target: "web",
+  module: {
+    rules,
+  },
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
+    alias,
+  },
+  optimization,
+  plugins,
 };
