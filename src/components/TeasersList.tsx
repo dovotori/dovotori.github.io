@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
+import type { MyContent } from "src/types";
 import styled from "styled-components";
-
 import Teaser from "./Teaser";
 
-const StyledTeaser = styled(Teaser)`
+const StyledTeaser = styled(Teaser)<{ index: number }>`
   transition-delay: ${(p) => p.index * 10}ms;
 `;
 
@@ -19,7 +19,15 @@ const Wrap = styled.div.attrs({
   max-width: 1400px;
 `;
 
-const TeasersList = ({ entries, isTouchDevice, className }) => {
+const TeasersList = ({
+  entries,
+  isTouchDevice,
+  className,
+}: {
+  entries: MyContent["entries"];
+  isTouchDevice: boolean;
+  className?: string;
+}) => {
   const [currentHover, setCurrentHover] = useState("");
   const sortEntries = useMemo(() => entries.sort((a, b) => (a.date > b.date ? -1 : 1)), [entries]);
   return (
@@ -31,7 +39,6 @@ const TeasersList = ({ entries, isTouchDevice, className }) => {
           slug={item.slug}
           title={item.title}
           index={index}
-          currentHover={currentHover}
           setCurrentHover={setCurrentHover}
           isTouchDevice={isTouchDevice}
         />

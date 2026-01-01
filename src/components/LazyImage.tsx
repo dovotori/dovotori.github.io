@@ -7,7 +7,7 @@ const Wrap = styled.div`
   position: relative;
   overflow: hidden;
 `;
-const IMG = styled.img`
+const IMG = styled.img<{ $isLoaded: boolean }>`
   opacity: ${(p) => (p.$isLoaded ? 1 : 0)};
   visibility: ${(p) => (p.$isLoaded ? "visible" : "hidden")};
   transition: opacity 300ms ease-out;
@@ -25,6 +25,16 @@ const LazyImage = ({
   src,
   ref,
   placeholderImg,
+}: {
+  className?: string;
+  withGlitch?: boolean;
+  alt: string;
+  width?: number;
+  height?: number;
+  children?: React.ReactNode;
+  src: string;
+  ref?: React.Ref<HTMLDivElement>;
+  placeholderImg?: string;
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -52,13 +62,13 @@ const LazyImage = ({
     <Wrap ref={ref} className={className}>
       {!hasError && (
         <IMG
-          alt={`_${alt}`}
+          alt={alt}
           src={finalSrc}
           onLoad={onLoad}
           onError={onError}
           $isLoaded={isLoaded}
-          width={width || "auto"}
-          height={height || "auto"}
+          width={width ?? "auto"}
+          height={height ?? "auto"}
         />
       )}
       {!hasError && isLoaded && withGlitch && <GlitchImage src={finalSrc} />}

@@ -1,4 +1,5 @@
 import { ReactComponent as BackArrow } from "Assets/svg/arrow.svg";
+import type { EntryNav } from "src/types";
 import styled from "styled-components";
 import ButtonNavigation from "./ButtonNavigation";
 
@@ -13,7 +14,7 @@ const Wrap = styled.div`
   align-items: stretch;
 `;
 
-const Arrow = styled(BackArrow)`
+const Arrow = styled(BackArrow)<{ $colorType: number }>`
   height: 1em;
   fill: ${(p) => p.theme.getColor};
 `;
@@ -29,6 +30,13 @@ const ProjectNavigation = ({
   labelBack,
   labelPrevious,
   labelNext,
+}: {
+  prevEntry: EntryNav;
+  nextEntry: EntryNav;
+  $colorType: number;
+  labelBack: string;
+  labelPrevious: string;
+  labelNext: string;
 }) => (
   <Wrap>
     <ButtonNavigation $colorType={$colorType} to="/" label={labelBack}>

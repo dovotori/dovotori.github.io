@@ -17,7 +17,9 @@
       "Assets/*": ["public/*"],
       "Assets": ["public"],
       "Labo/*": ["labo/*"],
-      "Labo": ["labo"]
+      "Labo": ["labo"],
+      "src/*": ["src/*"],
+      "src": ["src"]
     },
     "types": ["@webgpu/types"]
   },

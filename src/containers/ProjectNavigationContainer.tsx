@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router";
+import type { CategoryId, EntryNav, Post } from "src/types";
 import ProjectNavigation from "../components/ProjectNavigation";
 import {
   getCategoryId,
@@ -5,13 +7,20 @@ import {
   getContentNext,
   getContentPrevious,
   getEntries,
-  getIsTouchDevice,
 } from "../selectors";
+import { getColorType } from "../utils";
 
-const getEntryNav = (entries, slug) => {
+const getEntryNav = (
+  entries: Post[],
+  slug: string,
+): {
+  nextEntry: EntryNav;
+  prevEntry: EntryNav;
+  category: CategoryId;
+} => {
   const entryIdx = entries.findIndex((entry) => entry.slug === slug);
   if (entryIdx === -1) {
-    window.location = "/";
+    return;
   }
   let nextEntryIdx = entryIdx + 1;
   let prevEntryIdx = entryIdx - 1;
@@ -38,26 +47,28 @@ const getEntryNav = (entries, slug) => {
   };
 };
 
-const ProjectNavigationContainer = ({ slug }) => {
+const ProjectNavigationContainer = ({ slug }: { slug: string }) => {
+  const navigate = useNavigate();
   const stateEntries = getEntries();
   const categoryId = getCategoryId();
   const entries =
-    categoryId === -1
+    categoryId == null
       ? stateEntries
       : stateEntries.filter((entry) => entry.category === categoryId);
-  const { nextEntry, prevEntry } = getEntryNav(entries, slug);
-  const $colorType = null; // getColorType(category);
-  const isTouchDevice = getIsTouchDevice();
+  const navEntries = getEntryNav(entries, slug);
+  if (!navEntries) {
+    navigate("/");
+    return null;
+  }
+  const $colorType = getColorType(categoryId) ?? 0;
   const labelBack = getContentBack();
   const labelPrevious = getContentPrevious();
   const labelNext = getContentNext();
   return (
     <ProjectNavigation
-      slug={slug}
-      nextEntry={nextEntry}
-      prevEntry={prevEntry}
+      nextEntry={navEntries.nextEntry}
+      prevEntry={navEntries.prevEntry}
       $colorType={$colorType}
-      isTouchDevice={isTouchDevice}
       labelBack={labelBack}
       labelPrevious={labelPrevious}
       labelNext={labelNext}

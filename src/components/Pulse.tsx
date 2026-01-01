@@ -31,11 +31,11 @@ const CircleAnim = styled(Circle)`
   opacity: 0.7;
   transform: scale(0.5);
   &.go {
-    animation: ${pulse} 400ms ${(p) => p.theme.elastic};
+    animation: ${pulse} 400ms ${(p) => p.theme.elastic1};
   }
 `;
 
-const Pulse = ({ count }) => {
+const Pulse = ({ count }: { count: number }) => {
   const [isModeTransition, setIsModeTransition] = useState(false);
   const ref = useRef(null);
 
@@ -62,10 +62,8 @@ const Pulse = ({ count }) => {
 
   return (
     <>
-      <CircleAnim ref={ref} className={isModeTransition ? "go" : ""}>
-        {/* <path d="M0 2 L2 0 L4 2 L2 4Z" /> */}
-      </CircleAnim>
-      <Circle>{/* <path d="M0 2 L2 0 L4 2 L2 4Z" /> */}</Circle>
+      <CircleAnim ref={ref} className={isModeTransition ? "go" : ""}></CircleAnim>
+      <Circle />
     </>
   );
 };

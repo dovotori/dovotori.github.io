@@ -1,5 +1,5 @@
+import type { Post } from "src/types";
 import styled from "styled-components";
-
 import ButtonBack from "./ButtonBack";
 import ProjectImage from "./ProjectImage";
 import ProjectLabo from "./ProjectLabo";
@@ -12,7 +12,7 @@ const WrapContent = styled.div`
 
 const ImagesList = styled.div`
   margin: 4em auto;
-  ${(p) => p.theme.scrollbar} img {
+  img {
     display: block;
     width: 100%;
   }
@@ -35,7 +35,19 @@ const StyledProjectLabo = styled(ProjectLabo)`
   --project-color: ${(p) => p.theme.getColor};
 `;
 
-const Project = ({ slug, images, colorType, labo, back }) => (
+const Project = ({
+  slug,
+  images,
+  colorType,
+  labo,
+  back,
+}: {
+  slug: string;
+  images?: number;
+  colorType: number;
+  labo?: Post["labo"];
+  back: string;
+}) => (
   <>
     {!!labo && (
       <StyledProjectLabo
@@ -52,7 +64,7 @@ const Project = ({ slug, images, colorType, labo, back }) => (
         <ImagesList>
           <Images>
             {Array(images)
-              .fill()
+              .fill(0)
               .map((_, idx) => idx)
               .map((idx) => (
                 <ProjectImage

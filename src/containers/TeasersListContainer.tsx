@@ -6,8 +6,9 @@ export default () => {
   const isTouchDevice = getIsTouchDevice();
   const categoryId = getCategoryId();
   const entries =
-    categoryId === -1
+    categoryId == null
       ? stateEntries
       : stateEntries.filter((entry) => entry.category === categoryId);
+  console.log({ entries, categoryId });
   return <TeasersList entries={entries} isTouchDevice={isTouchDevice} />;
 };

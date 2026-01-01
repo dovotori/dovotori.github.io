@@ -1,6 +1,7 @@
 import license from "Assets/img/cclicense80x15.png";
 import styled from "styled-components";
 import availablesLang from "../constants/locales";
+import { dark, light } from "../themes/theme";
 import SegmentControl from "./SegmentControl";
 import SocialLinks from "./SocialLinks";
 import ToggleMode from "./ToggleMode";
@@ -64,7 +65,7 @@ const Footer = ({
   toggleTheme: () => void;
   isDarkMode: boolean;
   setLang: (langId: string) => void;
-  texts: { toggleLightMode: string; toggleDarkMode: string };
+  texts: { darkMode: string; lightMode: string };
   lang: string;
 }) => (
   <Wrap className="footer">

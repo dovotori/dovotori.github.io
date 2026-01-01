@@ -55,15 +55,15 @@ const StyledLabo = styled(ProjectLabo)`
   min-height: auto;
 `;
 
-const commonName = css`
+const commonName = css<{ $isTouch: boolean }>`
   width: 100%;
   pointer-events: none;
   user-select: none;
-  ${(p) => p.isTouch && `text-align: center;`};
+  ${(p) => p.$isTouch && `text-align: center;`};
   ${(p) => p.theme.media.mobile`text-align: center;`};
 `;
 
-const Name = styled.h2`
+const Name = styled.h2<{ $isTouch: boolean }>`
   ${commonName}
   line-height: 1;
   margin: 0;
@@ -75,7 +75,7 @@ const Name = styled.h2`
   font-size: 2em;
 `;
 
-const Katakana = styled.h1`
+const Katakana = styled.h1<{ $isTouch: boolean; $isHome: boolean }>`
   ${commonName}
   opacity: 0.1;
   color: ${(p) => p.theme.text};
@@ -106,7 +106,7 @@ const common = css`
   position: relative;
 `;
 
-const Absolute = styled.div`
+const Absolute = styled.div<{ $isTouch: boolean }>`
   ${(p) => p.$isTouch && `${common}`}
   ${(p) => p.theme.media.mobile`
     ${common}
@@ -139,7 +139,19 @@ const StyledBol = styled(Bol)`
   z-index: 1;
 `;
 
-const Signature = ({ className, isTouchDevice, hello, text, isHome = true }) => {
+const Signature = ({
+  className,
+  isTouchDevice,
+  hello,
+  text,
+  isHome = true,
+}: {
+  className?: string;
+  isTouchDevice: boolean;
+  hello: string;
+  text: string;
+  isHome?: boolean;
+}) => {
   const [count, setCount] = useState(0);
 
   const add = useCallback(() => {
@@ -148,8 +160,8 @@ const Signature = ({ className, isTouchDevice, hello, text, isHome = true }) => 
 
   return (
     <Wrap>
-      <Pulse className="circle" count={count} />
-      <Katakana $isHome={isHome}>
+      <Pulse count={count} />
+      <Katakana $isHome={isHome} $isTouch={isTouchDevice}>
         <StyledTypingMessage message={isHome ? "ドリアン" : "はじめまして"} isLoop isVertical />
       </Katakana>
       <Absolute $isTouch={isTouchDevice}>
@@ -162,7 +174,7 @@ const Signature = ({ className, isTouchDevice, hello, text, isHome = true }) => 
             )}
           </Appear>
           <CenterHorizontal>
-            <Name>
+            <Name $isTouch={isTouchDevice}>
               <StyledTypingMessage
                 message={isHome ? "dorian" : hello}
                 firstMessage="ドリアン"

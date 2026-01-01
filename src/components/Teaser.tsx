@@ -1,7 +1,8 @@
 import { ReactComponent as PlusIcon } from "Assets/svg/plus.svg";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
+import type { CategoryId } from "src/types";
 import styled from "styled-components";
 import { getColorType, getTeaserPath } from "../utils";
 import LazyImage from "./LazyImage";
@@ -9,7 +10,7 @@ import Loader from "./Loader";
 
 const StyledLink = styled(Link).attrs({
   className: "teaser",
-})`
+})<{ $isVisible: boolean; $isHover: boolean; $isTouchDevice: boolean }>`
   position: relative;
   overflow: hidden;
   display: inline-block;
@@ -26,8 +27,8 @@ const StyledLink = styled(Link).attrs({
   }};
   z-index: ${(p) => (p.$isVisible && p.$isHover && !p.$isTouchDevice ? 1 : 0)};
   transition:
-    opacity 1s ${(p) => p.theme.elastic},
-    transform 1s ${(p) => p.theme.elastic},
+    opacity 1s ${(p) => p.theme.elastic1},
+    transform 1s ${(p) => p.theme.elastic1},
     box-shadow 800ms linear;
 
   clip-path: polygon(
@@ -42,10 +43,10 @@ const StyledLink = styled(Link).attrs({
   ${(p) => p.theme.media.mobile`margin: 5px auto; width: 100%; height: auto;`}
 `;
 
-const StyledLazyImage = styled(LazyImage)`
+const StyledLazyImage = styled(LazyImage)<{ $isFocus: boolean }>`
   width: 100%;
   transform: ${(p) => (p.$isFocus ? "scale(1.1)" : "none")};
-  transition: transform 5000ms ${(p) => p.theme.elastic};
+  transition: transform 5000ms ${(p) => p.theme.elastic1};
   height: 100%;
   img {
     width: 100%;
@@ -56,13 +57,13 @@ const StyledLazyImage = styled(LazyImage)`
   }
 `;
 
-const Infos = styled.div`
+const Infos = styled.div<{ $colorType: number }>`
   overflow: hidden;
   background: ${(p) => p.theme.getGradient};
   height: 100%;
 `;
 
-const Title = styled.h3`
+const Title = styled.h3<{ $isFocus: boolean }>`
   position: absolute;
   top: 50%;
   left: 0;
@@ -71,14 +72,14 @@ const Title = styled.h3`
   letter-spacing: 0.1em;
   opacity: ${(p) => (p.$isFocus ? 0.4 : 0)};
   transition:
-    opacity 1s ${(p) => p.theme.elastic},
-    transform 1s ${(p) => p.theme.elastic};
+    opacity 1s ${(p) => p.theme.elastic1},
+    transform 1s ${(p) => p.theme.elastic1};
   transform: ${(p) => (p.$isFocus ? "translate3d(0, -50%, 0)" : "translate3d(-100%, -50%, 0)")};
   z-index: 1;
   white-space: nowrap;
 `;
 
-const Plus = styled(PlusIcon)`
+const Plus = styled(PlusIcon)<{ $isFocus: boolean; $colorType: number }>`
   position: absolute;
   top: 25%;
   left: 5%;
@@ -87,8 +88,8 @@ const Plus = styled(PlusIcon)`
   fill: ${(p) => p.theme.getColor};
   opacity: ${(p) => (p.$isFocus ? 1 : 0)};
   transition:
-    opacity 1s ${(p) => p.theme.elastic},
-    transform 1s ${(p) => p.theme.elastic};
+    opacity 1s ${(p) => p.theme.elastic1},
+    transform 1s ${(p) => p.theme.elastic1};
   transform: ${(p) => (p.$isFocus ? "none" : "scale(0) rotate(45deg)")};
   z-index: 2;
 `;
@@ -102,9 +103,15 @@ const Teaser = ({
   category,
   slug,
   title = "",
-  currentHover,
-  setCurrentHover = () => {},
+  setCurrentHover,
   isTouchDevice,
+}: {
+  className?: string;
+  category: CategoryId;
+  slug: string;
+  title: string;
+  setCurrentHover: (slug: string) => void;
+  isTouchDevice: boolean;
 }) => {
   const $colorType = getColorType(category);
   const [isHovered, setIsHovered] = useState(false);
@@ -118,16 +125,6 @@ const Teaser = ({
 
   useEffect(() => setCurrentHover(isHovered ? slug : ""), [isHovered, setCurrentHover, slug]);
 
-  const opacity = useMemo(() => {
-    if (!inView) {
-      return 0;
-    }
-    if (isTouchDevice || currentHover === slug || currentHover === "") {
-      return 1;
-    }
-    return 0.65;
-  }, [currentHover, inView, isTouchDevice, slug]);
-
   return (
     <StyledLink
       ref={refInView}
@@ -135,7 +132,6 @@ const Teaser = ({
       to={`/project/${slug}`}
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
-      $levelOpacity={opacity}
       $isVisible={inView}
       title={title}
       $isHover={isHovered}

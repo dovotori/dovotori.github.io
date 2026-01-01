@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { blink } from "../themes/animations";
 
-const Div = styled.div`
+const Div = styled.div<{ $colorType?: number }>`
   position: absolute;
   top: 0;
   left: 0;
@@ -12,6 +12,7 @@ const Div = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  color: ${(p) => p.theme.getColor};
 `;
 
 const Blink = styled.span`
@@ -34,7 +35,7 @@ const INTERVAL_MS = 100;
 
 const getRandomChar = () => CHARS[Math.floor(Math.random() * CHARS.length)];
 
-const Loader = ({ className }: { className?: string }) => {
+const Loader = ({ className, $colorType = 0 }: { className?: string; $colorType?: number }) => {
   const charsRef = useRef<string[]>([]);
   const streamRef = useRef<HTMLSpanElement>(null);
 
@@ -55,7 +56,7 @@ const Loader = ({ className }: { className?: string }) => {
   }, []);
 
   return (
-    <Div className={className}>
+    <Div className={className} $colorType={$colorType}>
       <CharStream>
         <Blink>_</Blink>
         <span ref={streamRef} />

@@ -16,7 +16,7 @@ const INITIAL_DEVICE: MyDevice = {
   isTouch: isTouchDevice(),
   isDarkMode: storedDarkMode !== null ? storedDarkMode : true,
   lang: defaultLang,
-  category: -1,
+  category: null,
 };
 
 const INITIAL_CONTENT: MyContent = {
@@ -51,7 +51,7 @@ export function mainReducer(state: MyState, action: Actions): MyState {
         ...state,
         device: {
           ...state.device,
-          category: state.device.category === action.flag ? -1 : action.flag,
+          category: state.device.category === action.flag ? null : action.flag,
         },
       };
     }

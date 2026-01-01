@@ -13,7 +13,7 @@ const animationLoad = css`
   animation: ${loadTransition} 800ms linear forwards;
 `;
 
-const TransitionEffect = styled.div`
+const TransitionEffect = styled.div<{ $isDarkMode: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -34,7 +34,15 @@ const Circle = styled.div`
   ${animationLoad}
 `;
 
-const ToggleMode = ({ isDarkMode, toggleTheme, texts }) => {
+const ToggleMode = ({
+  isDarkMode,
+  toggleTheme,
+  texts,
+}: {
+  isDarkMode: boolean;
+  toggleTheme: () => void;
+  texts: { darkMode: string; lightMode: string };
+}) => {
   const [isModeTransition, setIsModeTransition] = useState(false);
   const refTransition = useRef(null);
   const uid = useId();

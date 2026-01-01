@@ -30,7 +30,7 @@ export type AppContext = {
 
 type Labo = { hasJs?: boolean; noBackground?: boolean; hasHtml?: boolean };
 
-type Post = {
+export type Post = {
   id: number;
   title: string;
   inverseTitle: string;
@@ -47,6 +47,8 @@ type Post = {
   }[];
   isDevOnly?: boolean;
 };
+
+export type EntryNav = { category: CategoryId; slug: string; title: string };
 
 type Tag = {
   slug: string;
