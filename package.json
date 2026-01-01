@@ -31,7 +31,7 @@
     "deploy": "gh-pages -d build --remote origin",
     "release": "node scripts/release.js",
     "storybook:dev": "storybook dev -p 6006 --no-open",
-    "storybook:build": "storybook build -o build/storybook",
+    "storybook:build": "cross-env PUBLIC_URL=/public storybook build -o build/storybook",
     "typecheck": "tsc --noEmit"
   },
   "engines": {
