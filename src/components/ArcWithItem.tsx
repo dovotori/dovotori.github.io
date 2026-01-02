@@ -10,7 +10,7 @@ const Wrap = styled.g<{ $noHoverAnim?: boolean }>`
   & > path {
     transform: none;
     transition:
-      transform 300ms ease-out,
+      transform 300ms ${(p) => p.theme.elastic1},
       opacity 2s ease-out;
     transform-origin: center center;
   }
@@ -56,11 +56,11 @@ const ArcWithItem = ({
   depth,
   strokeWidth,
   children,
-  onClick,
   angle,
   margin,
   noHoverAnim,
   showIcon,
+  onClick,
 }: {
   x: number;
   y: number;
@@ -72,11 +72,11 @@ const ArcWithItem = ({
   depth: number;
   strokeWidth: number;
   children?: React.ReactNode;
-  onClick?: () => void;
   angle: number;
   margin: number;
   noHoverAnim?: boolean;
   showIcon?: boolean;
+  onClick?: () => void;
 }) => {
   const endAngle = startAngle + angle - margin;
   const imageWidth = strokeWidth * 0.7;
@@ -86,6 +86,15 @@ const ArcWithItem = ({
     () => !((startAngle === 0 || startAngle === 360) && angle === 0),
     [startAngle, angle],
   );
+
+  // compute rotation for the text so it follows the arc's tangent
+  // and flip it when it's on the bottom half (between 90 and 270 degrees)
+  const textRotation = (() => {
+    let r = middleAngle % 360;
+    if (r < 0) r += 360;
+    if (r > 90 && r < 270) r += 180;
+    return r;
+  })();
 
   if (Number.isNaN(endAngle)) {
     return null;
@@ -113,7 +122,12 @@ const ArcWithItem = ({
               width={imageWidth}
             />
           ) : (
-            <TextArc x={imagePos.x} y={imagePos.y}>
+            <TextArc
+              x={imagePos.x}
+              y={imagePos.y}
+              transform={`rotate(${textRotation} ${imagePos.x} ${imagePos.y})`}
+              dominantBaseline="middle"
+            >
               {name}
             </TextArc>
           )}
