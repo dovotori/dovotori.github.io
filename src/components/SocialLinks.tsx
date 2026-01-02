@@ -6,11 +6,11 @@ import { ReactComponent as Mail } from "Assets/svg/mail.svg";
 import styled from "styled-components";
 
 const Wrap = styled.div`
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5em;
   svg {
-    min-width: 40px;
-    width: 2em;
-    margin: 0 2em;
     filter: grayscale(100%);
     transition: filter 300ms ease-out;
 
@@ -35,17 +35,13 @@ const StyledMail = styled(Mail)`
   }
 `;
 
-const StyledGithub = styled(Github)`
-  color: ${(p) => p.theme.light};
-`;
-
 const SociaLinks = ({ className }: { className?: string }) => (
   <Wrap className={className}>
     <a href="https://gitlab.com/dovotori" title="gitlab" aria-label="GitLab">
       <Gitlab />
     </a>
     <a href="https://github.com/dovotori" title="github" aria-label="GitHub">
-      <StyledGithub />
+      <Github />
     </a>
     <a href="https://jp.linkedin.com/in/dorian-ratovo" title="linkedin" aria-label="LinkedIn">
       <Linkedin />

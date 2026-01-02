@@ -50,7 +50,6 @@ const Img = styled.img`
 const StyledSocialLinks = styled(SocialLinks)`
   svg {
     height: 20px;
-    margin: 0 0.5em;
   }
 `;
 

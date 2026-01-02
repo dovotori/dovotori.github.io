@@ -9,9 +9,7 @@ import SocialLinks from "./SocialLinks";
 const StyledSocialLinks = styled(SocialLinks)`
   margin: 10em 0;
   svg {
-    min-width: 40px;
-    width: 2em;
-    margin: 0 1.5em;
+    height: 30px;
   }
 `;
 

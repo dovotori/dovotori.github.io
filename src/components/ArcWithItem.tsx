@@ -46,6 +46,7 @@ const TextArc = styled.text`
 `;
 
 const ArcWithItem = ({
+  id,
   x,
   y,
   radius,
@@ -62,6 +63,7 @@ const ArcWithItem = ({
   showIcon,
   onClick,
 }: {
+  id: string;
   x: number;
   y: number;
   radius: number;
@@ -120,6 +122,7 @@ const ArcWithItem = ({
               y={imagePos.y - imageWidth / 2}
               height={imageWidth}
               width={imageWidth}
+              name={id}
             />
           ) : (
             <TextArc

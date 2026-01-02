@@ -93,6 +93,7 @@ const Chart = ({
           const returnValue = (
             <StyledArcWithItem
               key={id}
+              id={id}
               angle={angle}
               className={id}
               noHoverAnim={!childHasChildren}
