@@ -1,4 +1,4 @@
-import type { MyContent } from "src/types";
+import type { CategoryId, MyContent } from "src/types";
 import { CAT_BLOG, CAT_CODE, CAT_DESIGN } from "../../constants/categories";
 import { Locales } from "../../constants/locales";
 import * as Tags from "../../constants/tags";
@@ -702,6 +702,7 @@ export default (locale): MyContent["entries"] => {
 
       return {
         ...rest,
+        category: rest.category as CategoryId,
         title,
         inverseTitle,
         description,

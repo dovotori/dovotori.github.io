@@ -64,7 +64,7 @@ type Skill = {
   children?: Skill[];
 };
 
-type Category = {
+export type Category = {
   slug: string;
   label: string;
 };

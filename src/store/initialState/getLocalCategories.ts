@@ -1,4 +1,4 @@
-import type { Locale, MyContent } from "src/types";
+import type { Category, CategoryId, Locale, MyContent } from "src/types";
 import { CAT_BLOG, CAT_CODE, CAT_DESIGN } from "../../constants/categories";
 import { Locales } from "../../constants/locales";
 
@@ -30,12 +30,13 @@ const categories = {
 };
 
 export default (locale: Locale): MyContent["categories"] =>
-  [CAT_DESIGN, CAT_CODE, CAT_BLOG].reduce((acc, cur) => {
-    return {
-      ...acc,
-      [cur]: {
+  [CAT_DESIGN, CAT_CODE, CAT_BLOG].reduce<Record<CategoryId, Category>>(
+    (acc, cur) => {
+      acc[cur] = {
         slug: categories[cur].slug,
         label: categories[cur].label[locale],
-      },
-    };
-  }, {});
+      };
+      return acc;
+    },
+    {} as Record<CategoryId, Category>,
+  );

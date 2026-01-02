@@ -51,7 +51,7 @@ const Circle = styled.div<{ checked: boolean }>`
   border-radius: 50%;
   width: ${SIZE}px;
   height: ${SIZE}px;
-  background-color: ${(p) => p.theme.primary};
+  background: ${(p) => p.theme.primary};
   margin-left: ${(p) => (p.checked ? SIZE : 0)}px;
   transition:
     background-color 0.2s,
