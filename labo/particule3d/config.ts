@@ -1,4 +1,6 @@
-export default {
+import type { LaboConfig } from "Labo/types";
+
+const config: LaboConfig = {
   slug: "particule3d",
   shaders: [
     "/wgsl/fragment/f_particule_3d.js",
@@ -65,3 +67,5 @@ export default {
     },
   },
 };
+
+export default config;

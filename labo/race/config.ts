@@ -1,4 +1,6 @@
-export default {
+import type { LaboConfig } from "../types";
+
+const config: LaboConfig = {
   slug: "race",
   assets: ["/textures/noisergb.avif", "/gltf/raceship.gltf"],
   shaders: [
@@ -23,9 +25,6 @@ export default {
     bloom: {
       intensity: 1,
     },
-  },
-  textures: {
-    noisergb: "LINEAR",
   },
   canvas: {
     width: 1024,
@@ -56,9 +55,5 @@ export default {
   controls: {
     fullscreen: { buttonId: "fullscreen-toggle-btn" },
   },
-  roadFrequence: [2, 0, 2],
-  roadAmplitude: [10, 0, 4],
-  roadLength: 128,
-  roadWidth: 8,
-  shipPosition: [0, 2, 3],
 };
+export default config;

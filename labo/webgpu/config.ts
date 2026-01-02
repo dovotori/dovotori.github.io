@@ -1,4 +1,6 @@
-export default {
+import type { LaboConfig } from "../types";
+
+const config: LaboConfig = {
   slug: "webgpu",
   shaders: [
     "/wgsl/vertex/v_gltf.js",
@@ -66,3 +68,4 @@ export default {
     events: ["click"],
   },
 };
+export default config;

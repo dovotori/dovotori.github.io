@@ -1,4 +1,6 @@
-export default {
+import type { LaboConfig } from "Labo/types";
+
+const config: LaboConfig = {
   slug: "particule",
   shaders: ["/wgsl/fragment/f_particule.js", "/wgsl/vertex/v_particule.js"],
   canvas: {
@@ -10,3 +12,5 @@ export default {
     fullscreen: { buttonId: "fullscreen-toggle-btn" },
   },
 };
+
+export default config;

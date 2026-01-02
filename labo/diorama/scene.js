@@ -9,6 +9,29 @@ import Primitive from "../lib/webgl/gl/Primitive";
 import Scene from "../lib/webgl/scenes/SceneLampe";
 import TextureClouds from "../lib/webgl/textures/TextureClouds";
 
+const params = {
+  width: 200,
+  height: 100,
+  lacunarity: 1.6,
+  persistance: 0.5,
+  waterLevel: 0.4,
+  colors: [
+    // DIRT
+    "#251a16",
+    "#6e6254",
+    "#8b6a47",
+    // ROC
+    "#5d564c",
+    // '#978d72',
+    "#989b56",
+    // GREEN
+    "#6d753a",
+    "#89934c",
+    "#8b8f54",
+    "#ffffff",
+  ],
+};
+
 const hash = (x, y) => {
   const p3 = new Vec3(x, y, x).multiplyNumber(0.13).fract();
   const d = new Vec3(p3.getY(), p3.getZ(), p3.getX()).addNumber(3.333);
@@ -37,8 +60,8 @@ const noise = (x, y) => {
 
 const NB_OCTAVES = 10;
 
-const getTerrainHeight = (coor, config) => {
-  const { lacunarity, persistance } = config;
+const getTerrainHeight = (coor) => {
+  const { lacunarity, persistance } = params;
   let result = 0;
   let allAmpli = 0;
   for (let i = 0; i < NB_OCTAVES; i += 1) {
@@ -71,7 +94,7 @@ class TerrainScene extends Scene {
     this.fbo2 = new Fbo(gl, config.width, config.height, true);
     this.fbo3 = new Fbo(gl, config.width, config.height, true);
 
-    const { width, height, colors, waterLevel } = config.terrain;
+    const { width, height, colors, waterLevel } = params;
 
     this.targetX = new Spring(0);
     this.targetZ = new Spring(0);
@@ -96,7 +119,7 @@ class TerrainScene extends Scene {
     [progTerrain, progThrees, progShadow, progWater, progTerrainDepth, progThreesShadow].forEach(
       (p) => {
         TerrainScene.setFog(p, config.fog);
-        TerrainScene.setTerrain(p, config.terrain);
+        TerrainScene.setTerrain(p, params);
         p.setVector("gridSize", [width, height]);
         p.setFloat("waterLevel", waterLevel);
         this.setLampeInfos(p);
@@ -152,7 +175,7 @@ class TerrainScene extends Scene {
     });
 
     const coor = [-0.6, 0.8];
-    this.posAntenna = [coor[0], getTerrainHeight(coor, config.terrain), coor[1]];
+    this.posAntenna = [coor[0], getTerrainHeight(coor), coor[1]];
     this.isAntennaVisible = false;
     this.currentPosAntenna = this.posAntenna;
   }

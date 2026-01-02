@@ -1,6 +1,9 @@
+import type { LaboConfig } from "../types";
+
 const MAIN_PROG = "paysage";
 const MAIN_OBJ = "paysage";
-export default {
+
+const config: LaboConfig = {
   slug: "paysage",
   MAIN_PROG,
   MAIN_OBJ,
@@ -86,3 +89,5 @@ export default {
     fullscreen: { buttonId: "fullscreen-toggle-btn" },
   },
 };
+
+export default config;

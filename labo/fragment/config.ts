@@ -1,4 +1,6 @@
-export default {
+import type { LaboConfig } from "Labo/types";
+
+const config: LaboConfig = {
   slug: "fragment",
   shaders: [
     "/camera/vertexColor.js",
@@ -32,3 +34,4 @@ export default {
     fullscreen: { buttonId: "fullscreen-toggle-btn" },
   },
 };
+export default config;

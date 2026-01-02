@@ -1,4 +1,6 @@
-export default {
+import type { LaboConfig } from "../types";
+
+const config: LaboConfig = {
   slug: "fish",
   shaders: ["/wgsl/fragment/f_fish.js", "/wgsl/vertex/v_fish.js"],
   canvas: {
@@ -7,3 +9,5 @@ export default {
   },
   useWebGpu: true,
 };
+
+export default config;

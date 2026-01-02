@@ -1,6 +1,7 @@
+import type { LaboConfig } from "Labo/types";
 import { DOWN, LEFT, RIGHT, UP } from "../lib/utils/constants/keyboard";
 
-export default {
+const config: LaboConfig = {
   slug: "diorama",
   shaders: [
     "/diorama/terrain.js",
@@ -62,28 +63,6 @@ export default {
   controls: {
     fullscreen: { buttonId: "fullscreen-toggle-btn" },
   },
-  terrain: {
-    width: 200,
-    height: 100,
-    lacunarity: 1.6,
-    persistance: 0.5,
-    waterLevel: 0.4,
-    colors: [
-      // DIRT
-      "#251a16",
-      "#6e6254",
-      "#8b6a47",
-      // ROC
-      "#5d564c",
-      // '#978d72',
-      "#989b56",
-      // GREEN
-      "#6d753a",
-      "#89934c",
-      "#8b8f54",
-      "#ffffff",
-    ],
-  },
   fog: {
     color: [0.0, 0.0, 0.0, 0.0],
     start: 2,
@@ -99,3 +78,5 @@ export default {
     RIGHT,
   },
 };
+
+export default config;

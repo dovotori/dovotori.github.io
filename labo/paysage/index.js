@@ -1,5 +1,5 @@
 import App from "../lib/webgl/App";
-import config from "./config";
+import config from "./config.ts";
 import Scene from "./scene";
 
 import "Assets/style/controls.css";

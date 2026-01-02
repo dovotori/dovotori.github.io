@@ -1,5 +1,7 @@
+import type { LaboConfig } from "../types";
+
 const MAIN_PROG = "deform";
-export default {
+const config: LaboConfig = {
   slug: "deform",
   MAIN_PROG,
   shaders: [
@@ -42,10 +44,11 @@ export default {
       playbackRate: { min: 0, max: 100, value: 50, label: "Playback rate" },
     },
   },
-  postprocess: true,
+  postprocess: {},
   useDepthTexture: true,
   canvas: {
     width: 1024,
     height: 1024,
   },
 };
+export default config;

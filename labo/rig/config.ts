@@ -1,4 +1,6 @@
-export default {
+import type { LaboConfig } from "../types";
+
+const config: LaboConfig = {
   slug: "rig",
   shaders: [
     "/wgsl/vertex/v_gltf_rig.js",
@@ -47,3 +49,5 @@ export default {
   },
   useWebGpu: true,
 };
+
+export default config;

@@ -1,4 +1,6 @@
-export default {
+import type { LaboConfig } from "../types";
+
+const config: LaboConfig = {
   slug: "shader",
   shaders: [
     "/camera/road.js",
@@ -15,7 +17,7 @@ export default {
     "/screen/bloom.js",
   ],
   postprocess: {
-    bloom: true,
+    bloom: {},
   },
   canvas: {
     width: 1024,
@@ -36,3 +38,4 @@ export default {
     fullscreen: { buttonId: "fullscreen-toggle-btn" },
   },
 };
+export default config;

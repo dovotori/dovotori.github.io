@@ -1,13 +1,7 @@
 import { useNavigate } from "react-router";
 import type { CategoryId, EntryNav, Post } from "src/types";
 import ProjectNavigation from "../components/ProjectNavigation";
-import {
-  getCategoryId,
-  getContentBack,
-  getContentNext,
-  getContentPrevious,
-  getEntries,
-} from "../selectors";
+import { getContentBack, getContentNext, getContentPrevious, getEntries } from "../selectors";
 import { getColorType } from "../utils";
 
 const getEntryNav = (
@@ -49,18 +43,14 @@ const getEntryNav = (
 
 const ProjectNavigationContainer = ({ slug }: { slug: string }) => {
   const navigate = useNavigate();
-  const stateEntries = getEntries();
-  const categoryId = getCategoryId();
-  const entries =
-    categoryId == null
-      ? stateEntries
-      : stateEntries.filter((entry) => entry.category === categoryId);
+  const entries = getEntries();
+  const entry = entries.find((e) => e.slug === slug);
   const navEntries = getEntryNav(entries, slug);
-  if (!navEntries) {
+  if (!navEntries || !entry) {
     navigate("/");
     return null;
   }
-  const $colorType = getColorType(categoryId) ?? 0;
+  const $colorType = getColorType(entry.category) ?? 0;
   const labelBack = getContentBack();
   const labelPrevious = getContentPrevious();
   const labelNext = getContentNext();

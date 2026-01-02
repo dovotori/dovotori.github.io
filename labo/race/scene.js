@@ -6,6 +6,12 @@ import Primitive from "../lib/webgl/gl/Primitive";
 import Screen from "../lib/webgl/gl/Screen";
 import Scene from "../lib/webgl/scenes/SceneLampe";
 
+const ROAD_FREQUENCE = [2, 0, 2];
+const ROAD_AMPLITUDE = [10, 0, 4];
+const ROAD_LENGTH = 128;
+const ROAD_WIDTH = 8;
+const SHIP_POSITION = [0, 2, 3];
+
 const nsin = (val) => Math.sin(val) * 0.5 + 0.5;
 
 const getDistortion = (progress, frequence, amplitude, time) => {
@@ -26,35 +32,33 @@ export default class extends Scene {
     this.screen = new Screen(gl);
     this.model = new Mat4();
 
-    const { roadLength, roadWidth, shipPosition } = this.config;
-
-    const pointsRoads = getPoints(2, roadLength, {
-      startX: -roadWidth,
-      endX: roadWidth,
+    const pointsRoads = getPoints(2, ROAD_LENGTH, {
+      startX: -ROAD_WIDTH,
+      endX: ROAD_WIDTH,
       startZ: 0,
-      endZ: roadLength,
+      endZ: ROAD_LENGTH,
     });
 
-    const pointsMountains = getPoints(120, roadLength, {
+    const pointsMountains = getPoints(120, ROAD_LENGTH, {
       startX: -120,
       endX: 120,
       startZ: 0,
-      endZ: roadLength,
+      endZ: ROAD_LENGTH,
     });
 
-    const indicesRoads = getIndices(2, roadLength);
+    const indicesRoads = getIndices(2, ROAD_LENGTH);
     this.roadVbo = new Primitive(gl, {
       position: pointsRoads,
       indices: indicesRoads,
     });
 
-    const indicesMountains = getIndices(120, roadLength);
+    const indicesMountains = getIndices(120, ROAD_LENGTH);
     this.mountainVbo = new Primitive(gl, {
       position: pointsMountains,
       indices: indicesMountains,
     });
 
-    this.shipPos = new Vec3(...shipPosition);
+    this.shipPos = new Vec3(...SHIP_POSITION);
     this.currentShipPos = new Vec3(0.0);
     this.targetPosX = new Target(0, 0.1);
     this.targetSpeed = new Target(0, 0.1);
@@ -76,17 +80,20 @@ export default class extends Scene {
   }
 
   getDistPos = (posZ) => {
-    const { roadAmplitude, roadLength, roadFrequence } = this.config;
     return new Vec3(
-      ...getDistortion(posZ / roadLength, roadFrequence, roadAmplitude, this.posTime),
+      ...getDistortion(posZ / ROAD_LENGTH, ROAD_FREQUENCE, ROAD_AMPLITUDE, this.posTime),
     );
   };
 
   updateCamera = () => {
-    const { roadLength, camera } = this.config;
+    const { camera } = this.config;
     const cameraTarget = this.getDistPos(100);
     const cameraPos = this.getDistPos(0);
-    this.camera.setTarget(cameraTarget.getX(), camera.position.y + cameraTarget.getY(), roadLength);
+    this.camera.setTarget(
+      cameraTarget.getX(),
+      camera.position.y + cameraTarget.getY(),
+      ROAD_LENGTH,
+    );
     this.camera.setPosition(cameraPos.getX(), camera.position.y + cameraPos.getY(), 0);
   };
 
@@ -107,28 +114,26 @@ export default class extends Scene {
   }
 
   renderMountain = () => {
-    const { roadAmplitude, roadLength, roadWidth, roadFrequence } = this.config;
     const program = this.mngProg.get("roadmountain");
     program.setProjectionView(this.camera);
     program.setMatrix("model", this.model.get());
     program.setFloat("time", this.posTime);
-    program.setVector("frequence", roadFrequence);
-    program.setVector("amplitude", roadAmplitude);
-    program.setFloat("roadWidth", roadWidth);
-    program.setFloat("roadLength", roadLength);
+    program.setVector("frequence", ROAD_FREQUENCE);
+    program.setVector("amplitude", ROAD_AMPLITUDE);
+    program.setFloat("roadWidth", ROAD_WIDTH);
+    program.setFloat("roadLength", ROAD_LENGTH);
     this.mountainVbo.render(program.get());
   };
 
   renderRoad = () => {
-    const { roadAmplitude, roadLength, roadWidth, roadFrequence } = this.config;
     const program = this.mngProg.get("road");
     program.setProjectionView(this.camera);
     program.setMatrix("model", this.model.get());
     program.setFloat("time", this.posTime);
-    program.setVector("frequence", roadFrequence);
-    program.setVector("amplitude", roadAmplitude);
-    program.setFloat("roadWidth", roadWidth);
-    program.setFloat("roadLength", roadLength);
+    program.setVector("frequence", ROAD_FREQUENCE);
+    program.setVector("amplitude", ROAD_AMPLITUDE);
+    program.setFloat("roadWidth", ROAD_WIDTH);
+    program.setFloat("roadLength", ROAD_LENGTH);
     this.roadVbo.render(program.get());
   };
 
@@ -197,9 +202,8 @@ export default class extends Scene {
   }
 
   interactShip = (mouse) => {
-    const { roadWidth } = this.config;
     this.targetSpeed.set(0.1);
-    this.targetPosX.set(-mouse.rel.x * roadWidth * 0.6);
+    this.targetPosX.set(-mouse.rel.x * ROAD_WIDTH * 0.6);
   };
 
   onMouseDrag = (mouse) => {
