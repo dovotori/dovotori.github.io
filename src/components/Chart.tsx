@@ -12,8 +12,6 @@ const MARGIN = 1;
 const CONCENTRIC_MARGIN = 4;
 
 const Svg = styled.svg`
-  margin-top: -5em;
-
   .frontend path {
     stroke: ${(p) => p.theme.text};
   }

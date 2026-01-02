@@ -10,7 +10,7 @@ const loadTransition = keyframes`
 `;
 
 const animationLoad = css`
-  animation: ${loadTransition} 800ms linear forwards;
+  animation: ${loadTransition} 1s ${(p) => p.theme.elastic2} forwards;
 `;
 
 const TransitionEffect = styled.div<{ $isDarkMode: boolean }>`
@@ -25,10 +25,11 @@ const TransitionEffect = styled.div<{ $isDarkMode: boolean }>`
 
 const Circle = styled.div`
   position: absolute;
-  top: calc(100% - 2em);
+  top: 50%;
   left: 50%;
   width: 250vh;
   height: 250vh;
+  border-radius: 50%;
   background-color: ${(p) => p.theme.background};
   transform-origin: center center;
   ${animationLoad}

@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import type { CategoryId, Tag as TagType } from "src/types";
+import type { Tag as TagType } from "src/types";
 import styled from "styled-components";
 import Tag from "./Tag";
 

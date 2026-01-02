@@ -48,8 +48,8 @@ const Marker = styled.div<{ $left: number; $width: number }>`
   border-radius: 20px;
   background-color: ${(p) => p.theme.primary};
   transition:
-    left 300ms cubic-bezier(0.4, 0, 0.2, 1),
-    width 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    left 300ms ${(p) => p.theme.elastic1},
+    width 300ms ${(p) => p.theme.elastic1};
 `;
 
 export const SegmentControl = ({

@@ -55,7 +55,7 @@ const Circle = styled.div<{ checked: boolean }>`
   margin-left: ${(p) => (p.checked ? SIZE : 0)}px;
   transition:
     background-color 0.2s,
-    margin-left 0.2s;
+    margin-left 0.2s ${(p) => p.theme.elastic1};
 `;
 
 const Toggle = ({
