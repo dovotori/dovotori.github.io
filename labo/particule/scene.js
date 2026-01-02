@@ -184,7 +184,7 @@ export default class Scene extends WebgpuScene {
 
     const colorBufferData = new Uint8Array(4 * NUM_PARTICLES);
     for (let i = 0; i < colorBufferData.length; i += 4) {
-      colorBufferData[i] = Math.floor(Math.random() * 256);
+      colorBufferData[i] = 0;
       colorBufferData[i + 1] = Math.floor(Math.random() * 256);
       colorBufferData[i + 2] = Math.floor(Math.random() * 256);
       colorBufferData[i + 3] = 128;
