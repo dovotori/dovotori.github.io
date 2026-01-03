@@ -1,18 +1,18 @@
 import Vec3 from "./Vec3";
 
+type Mat3Array = [number, number, number, number, number, number, number, number, number];
 class Mat3 {
+  d: Mat3Array;
+  sauvegardePrecedente: Mat3Array;
+  empilement: number;
+
   constructor() {
-    this.d = new Array(9);
-    this.sauvegardePrecedente = [];
-    this.empilement = 0;
     this.init();
   }
 
   init() {
-    for (let i = 0; i < 9; i += 1) {
-      this.d[i] = 0.0;
-    }
-    this.sauvegardePrecedente = [];
+    this.d = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    this.sauvegardePrecedente = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     this.empilement = 0;
     return this;
   }
@@ -21,7 +21,17 @@ class Mat3 {
     return this.d;
   }
 
-  set(a1, a2, a3, b1, b2, b3, c1, c2, c3) {
+  set(
+    a1: number,
+    a2: number,
+    a3: number,
+    b1: number,
+    b2: number,
+    b3: number,
+    c1: number,
+    c2: number,
+    c3: number,
+  ) {
     this.d[0] = a1;
     this.d[1] = a2;
     this.d[2] = a3;
@@ -36,7 +46,7 @@ class Mat3 {
     return this;
   }
 
-  setFromArray(values) {
+  setFromArray(values: Mat3Array) {
     return this.set(
       values[0],
       values[1],
@@ -50,15 +60,9 @@ class Mat3 {
     );
   }
 
-  setOneValue(valeur) {
-    for (let i = 0; i < 9; i += 1) {
-      this.d[i] = valeur[i];
-    }
-  }
-
   // ////////////////////OPERATIONS//////////////////////
 
-  multiply(matrice2) {
+  multiply(matrice2: Mat3) {
     const result = new Mat3();
     for (let k = 0; k < 3; k += 1) {
       for (let j = 0; j < 3; j += 1) {
@@ -74,7 +78,7 @@ class Mat3 {
     return this;
   }
 
-  equal(matrice2) {
+  equal(matrice2: Mat3) {
     for (let i = 0; i < 9; i += 1) {
       this.d[i] = matrice2.d[i];
       this.sauvegardePrecedente[i] = matrice2.sauvegardePrecedente[i];
@@ -123,8 +127,8 @@ class Mat3 {
     return this.setFromArray(Mat3.transpose(this.d));
   }
 
-  static transpose(array) {
-    const ordre = new Float32Array(9);
+  static transpose(array: Mat3Array) {
+    const ordre: Mat3Array = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     let cpt = 0;
     for (let j = 0; j < 3; j += 1) {
       for (let i = 0; i < 3; i += 1) {
@@ -136,7 +140,7 @@ class Mat3 {
   }
 
   inverse() {
-    const copie = new Array(9);
+    const copie = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     const det = this.getDeterminant();
 
     if (det === 0) {
@@ -171,7 +175,7 @@ class Mat3 {
     );
   }
 
-  rotate(angle, x, y, z) {
+  rotate(angle: number, x: number, y: number, z: number) {
     const rotation = new Mat3();
     const newAngle = angle * (Math.PI / 180);
 

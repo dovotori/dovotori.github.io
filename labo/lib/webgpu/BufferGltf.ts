@@ -2,15 +2,15 @@ import { chunkArray } from "../utils";
 import { getBufferMinSize } from "./utils";
 
 class BufferGltf {
-  constructor() {
-    this.vertex = null;
-    this.indexes = null;
-    this.layout = null;
+  vertex = null;
+  indexes = null;
+  layout = null;
+  faceColor = null;
+  faceBuffer: GPUBuffer = null;
+  faceDrawCount = 0;
+  indexCount = 0;
 
-    this.faceColor = null;
-  }
-
-  setup(device, primitive, meshName) {
+  setup(device: GPUDevice, primitive, meshName: string) {
     const { arrayStride, attributes, bufferVertex, bufferIndex, indexCount } = primitive;
 
     this.indexCount = indexCount;
@@ -73,7 +73,7 @@ class BufferGltf {
     };
   }
 
-  setupFaceColorPick = (device, data) => {
+  setupFaceColorPick = (device: GPUDevice, data: Float32Array) => {
     this.faceColor = device.createBuffer({
       label: "face color buffer",
       size: Float32Array.BYTES_PER_ELEMENT * data.length,
@@ -85,7 +85,7 @@ class BufferGltf {
     this.faceColor.unmap();
   };
 
-  setupForFaces(device, primitive, colorPerFace) {
+  setupForFaces(device: GPUDevice, primitive, colorPerFace: Float32Array) {
     const { arrayStride, bufferVertex, bufferIndex, indexCount } = primitive;
 
     const nbFloatPerVertex = arrayStride / Float32Array.BYTES_PER_ELEMENT;
@@ -104,16 +104,17 @@ class BufferGltf {
     });
 
     const buff = new Float32Array(bufferData);
-
+    const buffSize = getBufferMinSize(buff.byteLength);
     this.faceBuffer = device.createBuffer({
       label: "vertex buffer per face",
-      size: getBufferMinSize(buff.byteLength),
+      size: buffSize,
       mappedAtCreation: true,
       usage: window.GPUBufferUsage.VERTEX | window.GPUBufferUsage.COPY_DST,
     });
 
-    const mappedBufferArray = new Float32Array(this.faceBuffer.getMappedRange()); // position vec3 / normal vec3 / tex v2 / face color f
-    mappedBufferArray.set(new Float32Array(buff, 0, this.faceBuffer.byteLength));
+    const mapped = new Float32Array(this.faceBuffer.getMappedRange(0, buffSize));
+    mapped.set(buff);
+
     this.faceBuffer.unmap();
 
     this.faceDrawCount = indexCount;

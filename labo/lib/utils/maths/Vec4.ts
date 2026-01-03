@@ -1,4 +1,8 @@
+import type Mat4 from "./Mat4";
+
 class Vec4 {
+  d: [number, number, number, number];
+
   constructor(x = 0, y = 0, z = 0, w = 0) {
     this.d = [0, 0, 0, 0];
     this.set(x, y, z, w);
@@ -23,16 +27,48 @@ class Vec4 {
     return this.d[0];
   }
 
+  get x(): number {
+    return this.d[0];
+  }
+
+  set x(v: number) {
+    this.d[0] = v;
+  }
+
   getY() {
     return this.d[1];
+  }
+
+  get y(): number {
+    return this.d[1];
+  }
+
+  set y(v: number) {
+    this.d[1] = v;
   }
 
   getZ() {
     return this.d[2];
   }
 
+  get z(): number {
+    return this.d[2];
+  }
+
+  set z(v: number) {
+    this.d[2] = v;
+  }
+
   getW() {
     return this.d[3];
+  }
+
+  get w(): number {
+    return this.d[3];
+  }
+
+  set w(v: number) {
+    this.d[3] = v;
   }
 
   length() {
@@ -43,7 +79,7 @@ class Vec4 {
 
   // ////////////////// OPERATOR ///////////////////////
 
-  set(x, y, z, w) {
+  set(x: number | null, y: number | null, z: number | null, w: number | null) {
     if (x != null) {
       this.d[0] = x;
     }
@@ -65,12 +101,12 @@ class Vec4 {
     return this;
   }
 
-  equal(v) {
+  equal(v: Vec4) {
     this.d = [v.d[0], v.d[1], v.d[2], v.d[3]];
     return this;
   }
 
-  add(v) {
+  add(v: Vec4) {
     this.d[0] += v.d[0];
     this.d[1] += v.d[1];
     this.d[2] += v.d[2];
@@ -78,7 +114,7 @@ class Vec4 {
     return this;
   }
 
-  addNumber(valeur) {
+  addNumber(valeur: number) {
     this.d[0] += valeur;
     this.d[1] += valeur;
     this.d[2] += valeur;
@@ -86,7 +122,7 @@ class Vec4 {
     return this;
   }
 
-  minus(v) {
+  minus(v: Vec4) {
     this.d[0] -= v.d[0];
     this.d[1] -= v.d[1];
     this.d[2] -= v.d[2];
@@ -94,7 +130,7 @@ class Vec4 {
     return this;
   }
 
-  minusNumber(valeur) {
+  minusNumber(valeur: number) {
     this.d[0] -= valeur;
     this.d[1] -= valeur;
     this.d[2] -= valeur;
@@ -102,7 +138,7 @@ class Vec4 {
     return this;
   }
 
-  multiplyNumber(valeur) {
+  multiplyNumber(valeur: number) {
     this.d[0] *= valeur;
     this.d[1] *= valeur;
     this.d[2] *= valeur;
@@ -110,7 +146,7 @@ class Vec4 {
     return this;
   }
 
-  multiplyMatrix(m) {
+  multiplyMatrix(m: Mat4) {
     const x = this.d[0];
     const y = this.d[1];
     const z = this.d[2];
@@ -122,7 +158,7 @@ class Vec4 {
     return this;
   }
 
-  multiply(v) {
+  multiply(v: Vec4) {
     this.d[0] *= v.d[0];
     this.d[1] *= v.d[1];
     this.d[2] *= v.d[2];
@@ -130,7 +166,7 @@ class Vec4 {
     return this;
   }
 
-  divideNumber(valeur) {
+  divideNumber(valeur: number) {
     this.d[0] /= valeur;
     this.d[1] /= valeur;
     this.d[2] /= valeur;
@@ -138,7 +174,7 @@ class Vec4 {
     return this;
   }
 
-  divide(v) {
+  divide(v: Vec4) {
     this.d[0] /= v.d[0];
     this.d[1] /= v.d[1];
     this.d[2] /= v.d[2];
@@ -146,7 +182,7 @@ class Vec4 {
     return this;
   }
 
-  distance(vec) {
+  distance(vec: Vec4) {
     return Math.sqrt(
       (vec.d[0] - this.d[0]) * (vec.d[0] - this.d[0]) +
         (vec.d[1] - this.d[1]) * (vec.d[1] - this.d[1]) +

@@ -1,3 +1,5 @@
+import type easings from "../lib/utils/easing";
+
 type IVec3 = { x: number; y: number; z: number };
 
 type IRange = { min: number; max: number; value: number; label: string };
@@ -114,3 +116,13 @@ export interface LaboConfig {
   };
   keyboard?: Record<string, number>;
 }
+
+export type IPrimitive = {
+  arrayStride: number;
+  attributes: Record<string, { format: string; offset: number; shaderLocation: number }>;
+  bufferVertex: ArrayBuffer;
+  bufferIndex: ArrayBuffer;
+  indexCount: number;
+};
+
+export type EaseType = keyof typeof easings;

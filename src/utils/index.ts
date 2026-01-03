@@ -99,11 +99,6 @@ export const storage = {
   },
 };
 
-export const chunkArray = (arr: Array<unknown>, size: number) =>
-  Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
-    arr.slice(i * size, i * size + size),
-  );
-
 export const timeout = (ms: number) =>
   new Promise((resolve) => {
     setTimeout(resolve, ms);

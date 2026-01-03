@@ -2,17 +2,37 @@ import { EPSILON } from "../constants/maths";
 import Mat3 from "./Mat3";
 import Vec3 from "./Vec3";
 
+type Mat4Array = [
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+];
+
 class Mat4 {
+  d: Mat4Array;
+  sauvegardePrecedente: Mat4Array;
+  empilement: number;
+
   constructor() {
-    this.d = new Array(16);
-    this.sauvegardePrecedente = [];
-    this.empilement = 0;
     this.init();
   }
 
   init() {
     this.reset();
-    this.sauvegardePrecedente = [];
+    this.sauvegardePrecedente = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     this.empilement = 0;
     return this;
   }
@@ -33,7 +53,24 @@ class Mat4 {
     return this;
   }
 
-  set(a1, a2, a3, a4, b1, b2, b3, b4, c1, c2, c3, c4, d1, d2, d3, d4) {
+  set(
+    a1: number,
+    a2: number,
+    a3: number,
+    a4: number,
+    b1: number,
+    b2: number,
+    b3: number,
+    b4: number,
+    c1: number,
+    c2: number,
+    c3: number,
+    c4: number,
+    d1: number,
+    d2: number,
+    d3: number,
+    d4: number,
+  ) {
     this.d[0] = a1;
     this.d[1] = a2;
     this.d[2] = a3;
@@ -56,7 +93,7 @@ class Mat4 {
     return this;
   }
 
-  setFromArray(values) {
+  setFromArray(values: Mat4Array) {
     return this.set(
       values[0],
       values[1],
@@ -93,7 +130,7 @@ class Mat4 {
     return mat3;
   }
 
-  multiplyArray(values) {
+  multiplyArray(values: Mat4Array) {
     const m = new Mat4();
     m.setFromArray(values);
     return this.multiply(m);
@@ -112,7 +149,7 @@ class Mat4 {
     return this;
   }
 
-  equal(matrice2) {
+  equal(matrice2: Mat4) {
     for (let i = 0; i < 16; i += 1) {
       this.d[i] = matrice2.d[i];
       this.sauvegardePrecedente[i] = matrice2.sauvegardePrecedente[i];
@@ -145,7 +182,7 @@ class Mat4 {
     return this;
   }
 
-  translate(x, y, z) {
+  translate(x: number, y: number, z: number) {
     const translation = new Mat4();
     translation.identity();
     translation.d[12] = x;
@@ -155,7 +192,7 @@ class Mat4 {
     return this;
   }
 
-  scale(x, y, z) {
+  scale(x: number, y?: number, z?: number) {
     const scale = new Mat4();
     scale.d[0] = x;
     scale.d[5] = y === undefined ? x : y;
@@ -180,17 +217,11 @@ class Mat4 {
     return this;
   }
 
-  setTranslation(x, y, z) {
+  setTranslation(x: number | [number, number, number], y?: number, z?: number) {
     if (Array.isArray(x)) {
       this.d[12] = x[0];
       this.d[13] = x[1];
       this.d[14] = x[2];
-      return this;
-    }
-    if (x && typeof x.getX === "function") {
-      this.d[12] = x.getX();
-      this.d[13] = x.getY();
-      this.d[14] = x.getZ();
       return this;
     }
     // numeric args
@@ -200,7 +231,7 @@ class Mat4 {
     return this;
   }
 
-  rotate(angle, x, y, z) {
+  rotate(angle: number, x: number, y: number, z: number) {
     const rotation = new Mat4();
     const angleInRadians = angle * (Math.PI / 180);
 
@@ -241,7 +272,7 @@ class Mat4 {
     return this;
   }
 
-  perspective(angle, ratio, near, far) {
+  perspective(angle: number, ratio: number, near: number, far: number) {
     const fieldOfViewYInRadians = angle * (Math.PI / 180);
     const f = 1.0 / Math.tan(fieldOfViewYInRadians / 2);
     const rangeInv = 1 / (near - far);
@@ -267,7 +298,7 @@ class Mat4 {
     return this;
   }
 
-  ortho(left, right, bottom, top, near, far) {
+  ortho(left: number, right: number, bottom: number, top: number, near: number, far: number) {
     this.set(
       2 / (right - left),
       0,
@@ -289,17 +320,27 @@ class Mat4 {
     return this;
   }
 
-  lookAt(e0, e1, e2, c0, c1, c2, a0, a1, a2) {
-    let x0;
-    let x1;
-    let x2;
-    let y0;
-    let y1;
-    let y2;
-    let z0;
-    let z1;
-    let z2;
-    let len;
+  lookAt(
+    e0: number,
+    e1: number,
+    e2: number,
+    c0: number,
+    c1: number,
+    c2: number,
+    a0: number,
+    a1: number,
+    a2: number,
+  ) {
+    let x0: number;
+    let x1: number;
+    let x2: number;
+    let y0: number;
+    let y1: number;
+    let y2: number;
+    let z0: number;
+    let z1: number;
+    let z2: number;
+    let len: number;
     const eyex = e0;
     const eyey = e1;
     const eyez = e2;
@@ -418,8 +459,8 @@ class Mat4 {
     return this.setFromArray(Mat4.transpose(this.d));
   }
 
-  static transpose(array) {
-    const ordre = new Float32Array(16);
+  static transpose(array: Mat4Array) {
+    const ordre: Mat4Array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     let cpt = 0;
     for (let j = 0; j < 4; j += 1) {
       for (let i = 0; i < 4; i += 1) {
@@ -693,7 +734,17 @@ class Mat4 {
     );
   }
 
-  static getCofacteur(m0, m1, m2, m3, m4, m5, m6, m7, m8) {
+  static getCofacteur(
+    m0: number,
+    m1: number,
+    m2: number,
+    m3: number,
+    m4: number,
+    m5: number,
+    m6: number,
+    m7: number,
+    m8: number,
+  ) {
     return m0 * (m4 * m8 - m5 * m7) - m1 * (m3 * m8 - m5 * m6) + m2 * (m3 * m7 - m4 * m6);
   }
 }

@@ -1,6 +1,6 @@
 import Vec3 from "./maths/Vec3";
 
-const getRandomSamplesOnGrid = (width, height, depth = null) => {
+const getRandomSamplesOnGrid = (width: number, height: number, depth: number | null = null) => {
   const samples = [];
   if (depth === null) {
     for (let y = 0; y < height; y++) {
@@ -20,7 +20,7 @@ const getRandomSamplesOnGrid = (width, height, depth = null) => {
   return samples;
 };
 
-const find3DClosestDistanceFromSamples = (point, samples) => {
+const find3DClosestDistanceFromSamples = (point: number[], samples: number[][]) => {
   const p1 = new Vec3(...point);
   return Math.max(
     0,
@@ -32,10 +32,10 @@ const find3DClosestDistanceFromSamples = (point, samples) => {
   );
 };
 
-const get2Ddistance = (p1, p2) =>
+const get2Ddistance = (p1: number[], p2: number[]) =>
   Math.sqrt((p2[0] - p1[0]) * (p2[0] - p1[0]) + (p2[1] - p1[1]) * (p2[1] - p1[1]));
 
-const find2DClosestDistanceFromSamples = (point, samples) =>
+const find2DClosestDistanceFromSamples = (point: number[], samples: number[][]) =>
   Math.max(
     0,
     samples.reduce((acc, cur) => {
@@ -44,7 +44,7 @@ const find2DClosestDistanceFromSamples = (point, samples) =>
     }, 1),
   );
 
-const getSampleFromGridPos = (gridPos, samples, sizes) => {
+const getSampleFromGridPos = (gridPos: number[], samples: number[][], sizes: number[]) => {
   const [x, y, z = null] = gridPos;
   const width = sizes[0];
   const height = sizes[1];
@@ -110,7 +110,7 @@ const getSampleFromGridPos = (gridPos, samples, sizes) => {
   return newSample;
 };
 
-const getSurroundingGridCase = (gridPos, sizes) => {
+const getSurroundingGridCase = (gridPos: number[], sizes: number[]) => {
   const surroundingGridCase = [];
   if (sizes.length === 3) {
     for (let z = -1; z <= 1; z++) {
@@ -130,12 +130,12 @@ const getSurroundingGridCase = (gridPos, sizes) => {
   return surroundingGridCase;
 };
 
-export const getNearSamples = (gridPos, sizes, samples) => {
+export const getNearSamples = (gridPos: number[], sizes: number[], samples: number[][]) => {
   const surroundingGridCase = getSurroundingGridCase(gridPos, sizes);
   return surroundingGridCase.map((pos) => getSampleFromGridPos(pos, samples, sizes));
 };
 
-export const generate2DTexture = (width, height, resolution) => {
+export const generate2DTexture = (width: number, height: number, resolution: number) => {
   const samples = getRandomSamplesOnGrid(width, height);
   const sizes = [width, height];
   const values = [];
@@ -157,7 +157,12 @@ export const generate2DTexture = (width, height, resolution) => {
   return values;
 };
 
-export const generate3DTexture = (width, height, depth, resolution) => {
+export const generate3DTexture = (
+  width: number,
+  height: number,
+  depth: number,
+  resolution: number,
+) => {
   const samples = getRandomSamplesOnGrid(width, height, depth);
   const sizes = [width, height, depth];
   const values = [];

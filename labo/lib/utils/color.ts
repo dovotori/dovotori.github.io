@@ -1,4 +1,4 @@
-export const rgbToHsl = (r, g, b) => {
+export const rgbToHsl = (r: number, g: number, b: number) => {
   const red = r / 255;
   const green = g / 255;
   const blue = b / 255;
@@ -33,7 +33,7 @@ export const rgbToHsl = (r, g, b) => {
   };
 };
 
-const hueToRgb = (p, q, t) => {
+const hueToRgb = (p: number, q: number, t: number) => {
   let tt = t;
   if (tt < 0) tt += 1;
   if (tt > 1) tt -= 1;
@@ -43,10 +43,10 @@ const hueToRgb = (p, q, t) => {
   return p;
 };
 
-export const hslToRgb = (hue, sat, light) => {
-  let r;
-  let g;
-  let b;
+export const hslToRgb = (hue: number, sat: number, light: number) => {
+  let r: number;
+  let g: number;
+  let b: number;
 
   const h = hue / 360;
   const s = sat / 100;
@@ -71,7 +71,7 @@ export const hslToRgb = (hue, sat, light) => {
   };
 };
 
-export const hsvToHsl = (h, s, v) => {
+export const hsvToHsl = (h: number, s: number, v: number) => {
   const hue = h;
   let saturation = s * v;
   let lightness = (2 - s) * v;
@@ -85,7 +85,7 @@ export const hsvToHsl = (h, s, v) => {
   };
 };
 
-export const hslToHsv = (h, s, l) => {
+export const hslToHsv = (h: number, s: number, l: number) => {
   const hue = h;
   const ll = l * 2;
   const sss = s * ll <= 1 ? ll : 2 - ll;
@@ -99,7 +99,7 @@ export const hslToHsv = (h, s, l) => {
   };
 };
 
-export const hexToRgb = (hex) => {
+export const hexToRgb = (hex: string) => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {

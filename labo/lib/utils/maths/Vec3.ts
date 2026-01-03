@@ -1,6 +1,9 @@
 import { fract, signe } from "../numbers";
+import type Mat3 from "./Mat3";
 
 class Vec3 {
+  d: [number, number, number];
+
   constructor(x = 0, y = 0, z = 0) {
     this.d = [0, 0, 0];
     this.set(x, y, z);
@@ -24,15 +27,39 @@ class Vec3 {
     return this.d[0];
   }
 
+  get x(): number {
+    return this.d[0];
+  }
+
+  set x(v: number) {
+    this.d[0] = v;
+  }
+
   getY() {
     return this.d[1];
+  }
+
+  get y(): number {
+    return this.d[1];
+  }
+
+  set y(v: number) {
+    this.d[1] = v;
   }
 
   getZ() {
     return this.d[2];
   }
 
-  set(x, y, z) {
+  get z(): number {
+    return this.d[2];
+  }
+
+  set z(v: number) {
+    this.d[2] = v;
+  }
+
+  set(x: number | null, y: number | null, z: number | null) {
     if (x !== null) {
       this.d[0] = x;
     }
@@ -49,56 +76,56 @@ class Vec3 {
     return this;
   }
 
-  setX(value) {
+  setX(value: number) {
     this.d[0] = value;
   }
 
-  setY(value) {
+  setY(value: number) {
     this.d[1] = value;
   }
 
-  setZ(value) {
+  setZ(value: number) {
     this.d[2] = value;
   }
 
-  addXYZ(x, y, z) {
+  addXYZ(x: number, y: number, z: number) {
     this.d[0] += x;
     this.d[1] += y;
     this.d[2] += z;
     return this;
   }
 
-  addX(value) {
+  addX(value: number) {
     this.d[0] += value;
     return this;
   }
 
-  addY(value) {
+  addY(value: number) {
     this.d[1] += value;
     return this;
   }
 
-  addZ(value) {
+  addZ(value: number) {
     this.d[2] += value;
     return this;
   }
 
-  multiplyX(value) {
+  multiplyX(value: number) {
     this.d[0] *= value;
     return this;
   }
 
-  multiplyY(value) {
+  multiplyY(value: number) {
     this.d[1] *= value;
     return this;
   }
 
-  multiplyZ(value) {
+  multiplyZ(value: number) {
     this.d[2] *= value;
     return this;
   }
 
-  limiter(max) {
+  limiter(max: number) {
     const lengthCarre = this.d[0] * this.d[0] + this.d[1] * this.d[1] + this.d[2] * this.d[2];
     if (lengthCarre > max * max && lengthCarre > 0) {
       const ratio = max / Math.sqrt(lengthCarre);
@@ -110,7 +137,7 @@ class Vec3 {
   }
 
   // produit vectoriel
-  cross(v) {
+  cross(v: Vec3) {
     return new Vec3(
       this.d[1] * v.d[2] - this.d[2] * v.d[1],
       this.d[2] * v.d[0] - this.d[0] * v.d[2],
@@ -119,7 +146,7 @@ class Vec3 {
   }
 
   // produit scalaire
-  dot(v) {
+  dot(v: Vec3) {
     return this.d[0] * v.d[0] + this.d[1] * v.d[1] + this.d[2] * v.d[2];
   }
 
@@ -127,54 +154,54 @@ class Vec3 {
     return Math.sqrt(this.d[0] * this.d[0] + this.d[1] * this.d[1] + this.d[2] * this.d[2]);
   }
 
-  directionVers(v) {
+  directionVers(v: Vec3) {
     this.d[0] = v.d[0] - this.d[0];
     this.d[1] = v.d[1] - this.d[1];
     this.d[2] = v.d[2] - this.d[2];
     return this;
   }
 
-  equal(v) {
+  equal(v: Vec3) {
     this.d = [v.d[0], v.d[1], v.d[2]];
     return this;
   }
 
-  add(v) {
+  add(v: Vec3) {
     this.d[0] += v.d[0];
     this.d[1] += v.d[1];
     this.d[2] += v.d[2];
     return this;
   }
 
-  addNumber(valeur) {
+  addNumber(valeur: number) {
     this.d[0] += valeur;
     this.d[1] += valeur;
     this.d[2] += valeur;
     return this;
   }
 
-  minus(v) {
+  minus(v: Vec3) {
     this.d[0] -= v.d[0];
     this.d[1] -= v.d[1];
     this.d[2] -= v.d[2];
     return this;
   }
 
-  minusNumber(valeur) {
+  minusNumber(valeur: number) {
     this.d[0] -= valeur;
     this.d[1] -= valeur;
     this.d[2] -= valeur;
     return this;
   }
 
-  multiplyNumber(valeur) {
+  multiplyNumber(valeur: number) {
     this.d[0] *= valeur;
     this.d[1] *= valeur;
     this.d[2] *= valeur;
     return this;
   }
 
-  multiplyMatrix(matrice) {
+  multiplyMatrix(matrice: Mat3) {
     // maybe wrong
     // this.set(
     //   matrice.d[0] * this.d[0] +
@@ -205,21 +232,21 @@ class Vec3 {
     return this;
   }
 
-  multiply(v) {
+  multiply(v: Vec3) {
     this.d[0] *= v.d[0];
     this.d[1] *= v.d[1];
     this.d[2] *= v.d[2];
     return this;
   }
 
-  divideNumber(valeur) {
+  divideNumber(valeur: number) {
     this.d[0] /= valeur;
     this.d[1] /= valeur;
     this.d[2] /= valeur;
     return this;
   }
 
-  divide(v) {
+  divide(v: Vec3) {
     this.d[0] /= v.d[0];
     this.d[1] /= v.d[1];
     this.d[2] /= v.d[2];
@@ -233,7 +260,7 @@ class Vec3 {
     return this;
   }
 
-  distance(v) {
+  distance(v: Vec3) {
     return Math.sqrt(
       (v.d[0] - this.d[0]) * (v.d[0] - this.d[0]) +
         (v.d[1] - this.d[1]) * (v.d[1] - this.d[1]) +
@@ -241,7 +268,7 @@ class Vec3 {
     );
   }
 
-  angleDegree(v) {
+  angleDegree(v: Vec3) {
     const cosAngle = this.dot(v) / (this.length() * v.length());
     const angleRadian = Math.acos(cosAngle);
     const angle = (angleRadian * 180) / Math.PI;
@@ -249,7 +276,7 @@ class Vec3 {
     return angle * -sens;
   }
 
-  computeNormal(v2, v3, sens) {
+  computeNormal(v2: Vec3, v3: Vec3, sens: boolean) {
     const result = new Vec3();
     const U = new Vec3();
     const V = new Vec3();
@@ -265,7 +292,7 @@ class Vec3 {
     return result;
   }
 
-  static getBarycentre(v1, v2, v3, pos) {
+  static getBarycentre(v1: Vec3, v2: Vec3, v3: Vec3, pos: [number, number]) {
     const det =
       (v2.d[2] - v3.d[2]) * (v1.d[0] - v3.d[0]) + (v3.d[0] - v2.d[0]) * (v1.d[2] - v3.d[2]);
     const l1 =
@@ -276,7 +303,7 @@ class Vec3 {
     return l1 * v1.d[1] + l2 * v2.d[1] + l3 * v3.d[1];
   }
 
-  static lerp(a, b, t) {
+  static lerp(a: Vec3, b: Vec3, t: number) {
     const ax = a.d[0];
     const ay = a.d[1];
     const az = a.d[2];

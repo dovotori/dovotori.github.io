@@ -1,4 +1,7 @@
-export function generateFace(size, { faceColor, textColor, text }) {
+export function generateFace(
+  size: number,
+  { faceColor, textColor, text }: { faceColor: string; textColor: string; text: string },
+): HTMLCanvasElement {
   const canvas = document.createElement("canvas");
   canvas.width = size;
   canvas.height = size;

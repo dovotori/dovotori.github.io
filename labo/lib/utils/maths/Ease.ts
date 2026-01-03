@@ -1,6 +1,18 @@
-import easings from "../utils/easing";
+import type { EaseType } from "../../../types";
+import easings from "../easing";
 
 export default class {
+  value: number;
+  lastFrame: number;
+  isFinish: boolean;
+  currentStep: number;
+  steps: {
+    start: number;
+    end: number;
+    duration: number;
+    easingType: EaseType;
+  }[];
+
   constructor(value = 0) {
     this.value = value;
     this.lastFrame = Date.now();
@@ -36,7 +48,6 @@ export default class {
 
       const easingDiff = easings[easingType](milli, 0, diff, duration);
       this.value = start + easingDiff * Math.sign(end - start);
-      console.log("++++", start, end, diff, easingDiff, this.value);
     } else {
       this.value = end;
     }
@@ -51,7 +62,7 @@ export default class {
     this.lastFrame = Date.now();
   }
 
-  set(start = 0, end = 0, duration = 1000, easingType = "easeInOutCirc") {
+  set(start = 0, end = 0, duration = 1000, easingType: EaseType = "easeInOutCirc") {
     this.steps = [{ start, end, duration, easingType }];
     this.isFinish = false;
     this.currentStep = 0;

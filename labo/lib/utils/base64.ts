@@ -10,12 +10,12 @@ export const base64ToArrayBuffer = (rawBase64) => {
   const base64 = rawBase64.split(",")[1];
   let bufferLength = base64.length * 0.75;
   const len = base64.length;
-  let i;
+  let i: number;
   let p = 0;
-  let encoded1;
-  let encoded2;
-  let encoded3;
-  let encoded4;
+  let encoded1: number;
+  let encoded2: number;
+  let encoded3: number;
+  let encoded4: number;
 
   if (base64[base64.length - 1] === "=") {
     bufferLength--;
@@ -41,7 +41,13 @@ export const base64ToArrayBuffer = (rawBase64) => {
   return arraybuffer;
 };
 
-export const dataViewToFloat32 = (dataView, length, count, numElement, byteStride) => {
+export const dataViewToFloat32 = (
+  dataView: DataView,
+  length: number,
+  count: number,
+  numElement: number,
+  byteStride?: number,
+) => {
   const result = new Float32Array(length); // Final Output at the correct size
   // for (let i = 0; i < length; i++) {
   //   result[i] = dataView.getFloat32(i * Float32Array.BYTES_PER_ELEMENT, true);
@@ -60,7 +66,13 @@ export const dataViewToFloat32 = (dataView, length, count, numElement, byteStrid
   return result;
 };
 
-export const dataViewToUint16 = (dataView, length, count, numElement, byteStride) => {
+export const dataViewToUint16 = (
+  dataView: DataView,
+  length: number,
+  count: number,
+  numElement: number,
+  byteStride?: number,
+) => {
   const result = new Uint16Array(length); // Final Output at the correct size
   const stride = byteStride || Uint16Array.BYTES_PER_ELEMENT * numElement;
   let currentOffset = 0;
@@ -76,10 +88,10 @@ export const dataViewToUint16 = (dataView, length, count, numElement, byteStride
   return result;
 };
 
-export const dataViewToUint8 = (dataView, byteLength) => {
+export const dataViewToUint8 = (dataView: DataView, byteLength: number) => {
   const result = new Uint8Array(byteLength);
   for (let cpt = 0; cpt < byteLength; cpt++) {
-    result[cpt] = dataView.getUint8(cpt, true);
+    result[cpt] = dataView.getUint8(cpt);
   }
   return result;
 };
