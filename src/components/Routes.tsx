@@ -1,4 +1,5 @@
 import { ReactComponent as BackArrow } from "Assets/svg/arrow.svg";
+import { Suspense } from "react";
 import { HashRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import routes from "../constants/routes";
@@ -6,8 +7,9 @@ import FooterContainer from "../containers/FooterContainer";
 import ProjectCommonContainer from "../containers/ProjectCommonContainer";
 import SignatureContainer from "../containers/SignatureContainer";
 import { getContentBack } from "../selectors";
+import Bloc from "./Bloc";
 import ButtonNavigation from "./ButtonNavigation";
-import TransitionRoute from "./TransitionRoute";
+import Loader from "./Loader";
 
 const Arrow = styled(BackArrow)<{ $colorType: number }>`
   height: 1em;
@@ -18,19 +20,19 @@ const MinHeight = styled.main`
   min-height: 100vh;
 `;
 
-const renderRoute = (route) => {
-  const Comp = route.component;
-  return <Route key={route.path} path={route.path} element={<Comp />} />;
-};
-
-const RedirectionHome = () => <Navigate to="/" />;
-
 const Center = styled.div<{ $isHide: boolean }>`
   position: relative;
   margin: 0 auto;
   max-width: 700px;
   ${(p) => p.$isHide && `visibility: hidden; pointer-events: none;`}
 `;
+
+const renderRoute = (route) => {
+  const Comp = route.component;
+  return <Route key={route.path} path={route.path} element={<Comp />} />;
+};
+
+const RedirectionHome = () => <Navigate to="/" />;
 
 const BackButton = () => {
   const location = useLocation();
@@ -53,6 +55,12 @@ const Common = () => (
   </>
 );
 
+const fallback = () => (
+  <Bloc>
+    <Loader />
+  </Bloc>
+);
+
 const MainRoutes = () => {
   return (
     <HashRouter>
@@ -64,10 +72,12 @@ const MainRoutes = () => {
           <Route path="/" element={<Common />} />
           <Route path="/project/:slug" element={<ProjectCommonContainer />} />
         </Routes>
-        <TransitionRoute>
-          {routes.map(renderRoute)}
-          <Route path="*" element={<RedirectionHome />} />
-        </TransitionRoute>
+        <Suspense fallback={fallback()}>
+          <Routes>
+            {routes.map(renderRoute)}
+            <Route path="*" element={<RedirectionHome />} />
+          </Routes>
+        </Suspense>
       </MinHeight>
       <FooterContainer />
     </HashRouter>

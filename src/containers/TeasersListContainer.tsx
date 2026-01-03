@@ -9,6 +9,5 @@ export default () => {
     categoryId == null
       ? stateEntries
       : stateEntries.filter((entry) => entry.category === categoryId);
-  console.log({ entries, categoryId });
   return <TeasersList entries={entries} isTouchDevice={isTouchDevice} />;
 };
