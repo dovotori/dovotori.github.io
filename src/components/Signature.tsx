@@ -125,7 +125,7 @@ const Text = styled.h4`
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 0.4em;
-  font-size: 0.8em;
+  font-size: 1em;
   line-height: 1;
   white-space: nowrap;
   color: ${(p) => p.theme.background};

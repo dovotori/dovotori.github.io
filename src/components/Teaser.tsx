@@ -18,9 +18,10 @@ const StyledLink = styled(Link).attrs<{
   position: relative;
   overflow: hidden;
   display: inline-block;
-  margin: 10px;
+  margin: 1em;
   width: 400px;
   height: 100px;
+  border-radius: 0.4em;
   opacity: ${(p) => (p.$isVisible ? 1 : 0)};
   box-shadow: ${(p) => (p.$isHover ? `0 0 1em ${p.theme.backgroundHighlight}` : "none")};
   transform: ${(p) => {
@@ -38,8 +39,8 @@ const StyledLink = styled(Link).attrs<{
   clip-path: polygon(
     0 0,
     100% 0,
-    100% calc(100% - 16px),
-    calc(100% - 16px) 100%,
+    100% calc(100% - 50px),
+    calc(100% - 60px) 100%,
     0 100%
   );
 

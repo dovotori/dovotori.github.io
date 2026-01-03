@@ -27,6 +27,7 @@ const LINK = styled(Link)<{ $isFocus: boolean; $colorType?: number }>`
   box-shadow: 2px 2px 0 ${(p) => p.theme.getColor};
   max-width: 400px;
   -webkit-tap-highlight-color: ${(p) => p.theme.getColor};
+  border-radius: 0.4em;
   overflow: hidden;
 
   ${(p) => p.theme.active}
