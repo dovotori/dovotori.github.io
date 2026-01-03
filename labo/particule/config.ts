@@ -11,6 +11,9 @@ const config: LaboConfig = {
   controls: {
     fullscreen: { buttonId: "fullscreen-toggle-btn" },
   },
+  mouse: {
+    events: ["move", "click"],
+  },
 };
 
 export default config;

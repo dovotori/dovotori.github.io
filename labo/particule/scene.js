@@ -5,13 +5,13 @@ const NUM_WORKGROUPS = 1000;
 const NUM_PARTICLES = WORKGROUP_SIZE * NUM_WORKGROUPS;
 const PARTICLE_SIZE = 2;
 
+const MASS_BASE_FACTOR = 0.0001;
+const RECOVER_RATE = 0.6; // lerp rate per frame (tune to taste) - closest to 0 faster to regroup
+const REPULSE_FACTOR = 100.0;
+
 const computeShader = `struct Mass {
-    position1: vec4f,
-    position2: vec4f,
-    position3: vec4f,
-    factor1: f32,
-    factor2: f32,
-    factor3: f32
+    position: vec3f,
+    factor: f32,
 };
 
 @group(0) @binding(0) var<storage, read_write> positions: array<vec4f>;
@@ -24,22 +24,36 @@ fn main(@builtin(global_invocation_id) global_id: vec3u) {
     let position = positions[index].xyz;
     var velocity = velocities[index].xyz;
 
-    var massVec = mass.position1.xyz - position;
-    var massDist2 = max(0.01, dot(massVec, massVec));
-    var acceleration = mass.factor1 * normalize(massVec) / massDist2;
-
-    massVec = mass.position2.xyz - position;
-    massDist2 = max(0.01, dot(massVec, massVec));
-    acceleration += mass.factor2 * normalize(massVec) / massDist2;
-
-    massVec = mass.position3.xyz - position;
-    massDist2 = max(0.01, dot(massVec, massVec));
-    acceleration += mass.factor3 * normalize(massVec) / massDist2;
+    var massVec = mass.position.xyz - position;
+    var massDist = max(0.01, dot(massVec, massVec));
+    var acceleration = mass.factor * normalize(massVec) / massDist;
 
     velocity += acceleration;
     velocity *= 0.9999;
 
-    positions[index] = vec4f(position + velocity, 1);
+    var newPosition = position + velocity;
+
+    let damping = 0.9;
+    if (newPosition.x < -1.0) {
+      // reflect across -1 boundary
+      newPosition.x = -2.0 - newPosition.x;
+      velocity.x = -velocity.x * damping;
+    } else if (newPosition.x > 1.0) {
+      // reflect across +1 boundary
+      newPosition.x = 2.0 - newPosition.x;
+      velocity.x = -velocity.x * damping;
+    }
+    if (newPosition.y < -1.0) {
+      newPosition.y = -2.0 - newPosition.y;
+      velocity.y = -velocity.y * damping;
+    } else if (newPosition.y > 1.0) {
+      newPosition.y = 2.0 - newPosition.y;
+      velocity.y = -velocity.y * damping;
+    }
+
+    newPosition.z = 0.0;
+        
+    positions[index] = vec4f(newPosition, 1);
     velocities[index] = vec4f(velocity, 0);
 }`;
 
@@ -101,32 +115,21 @@ export default class Scene extends WebgpuScene {
     });
 
     // Attractors points + factors
-    const computeUniformData = new Float32Array([
-      Math.random() * 2.0 - 1.0,
-      Math.random() * 2.0 - 1.0,
+    // -1 to 1 (0,0) center of the screen
+    this.massData = new Float32Array([
       0,
-      1.0, // Mass 1 position
-      Math.random() * 2.0 - 1.0,
-      Math.random() * 2.0 - 1.0,
       0,
-      1.0, // Mass 2 position
-      Math.random() * 2.0 - 1.0,
-      Math.random() * 2.0 - 1.0,
-      0,
-      1.0, // Mass 3 position
-      Math.random() / 30000,
-      Math.random() / 30000,
-      Math.random() / 30000,
-      0, // Mass factors
+      0, // Mass position
+      MASS_BASE_FACTOR, // Mass factor
     ]);
 
-    const computeUniformBuffer = device.createBuffer({
-      size: computeUniformData.byteLength,
+    this.computeUniformBuffer = device.createBuffer({
+      size: this.massData.byteLength,
       label: "attractors compute uniform buffer",
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
 
-    device.queue.writeBuffer(computeUniformBuffer, 0, computeUniformData);
+    device.queue.writeBuffer(this.computeUniformBuffer, 0, this.massData);
 
     this.computeBindGroup = device.createBindGroup({
       layout: this.computePipeline.getBindGroupLayout(0),
@@ -147,7 +150,7 @@ export default class Scene extends WebgpuScene {
         {
           binding: 2,
           resource: {
-            buffer: computeUniformBuffer,
+            buffer: this.computeUniformBuffer,
           },
         },
       ],
@@ -321,6 +324,12 @@ export default class Scene extends WebgpuScene {
 
   update() {
     super.update();
+    const device = this.context.getDevice();
+    const target = MASS_BASE_FACTOR;
+    const rate = RECOVER_RATE;
+    const prev = this.massData[3];
+    this.massData[3] = prev + (target - prev) * rate;
+    device.queue.writeBuffer(this.computeUniformBuffer, 0, this.massData);
   }
 
   render() {
@@ -356,6 +365,15 @@ export default class Scene extends WebgpuScene {
 
     device.queue.submit([commandEncoder.finish()]);
   }
+
+  onMouseMove = (mouse) => {
+    this.massData[0] = mouse.rel.x;
+    this.massData[1] = mouse.rel.y;
+  };
+
+  onMouseClick = () => {
+    this.massData[3] *= -REPULSE_FACTOR;
+  };
 
   destroy() {
     super.destroy();
