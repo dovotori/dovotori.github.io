@@ -133,7 +133,7 @@ export default class Scene extends WebgpuScene {
     //////////////// DATA ///////////////////////
     /////////////////////////////////////////////
 
-    const inputArray = new Float32Array([this.numParticules, -500, 500, -250, 250, -500, 500]); // count, xmin/max, ymin/max, zmin/max
+    const inputArray = new Float32Array([this.numParticules, -500, 500, -500, 500, -500, 500]); // count, xmin/max, ymin/max, zmin/max
     const modelArray = new Float32Array(this.numParticules * 4 * Float32Array.BYTES_PER_ELEMENT);
     const velocityArray = new Float32Array(this.numParticules * Float32Array.BYTES_PER_ELEMENT);
     for (let i = 0; i < this.numParticules; i++) {

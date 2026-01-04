@@ -3,6 +3,7 @@
 	margin: 0;
 	padding: 4px;
 	border: solid 2px var(--project-color);
+	border-radius: 4px;
 }
 
 #fullscreen-toggle-btn:hover svg,

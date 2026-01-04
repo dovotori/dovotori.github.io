@@ -30,6 +30,11 @@ type ICamera = {
   angle: number;
 };
 
+type IEffect = {
+  params?: Record<string, number[]>;
+  programName: string;
+};
+
 type IPostProcess = {
   shadow?: {
     epsilon: number;
@@ -48,27 +53,6 @@ type IPostProcess = {
       intensity: number;
     };
   };
-  bright?: {
-    params: {
-      threshold: number[];
-      glowThresholdKnee: number[];
-    };
-    programName: string;
-  };
-  guassianBlurHorizontal?: {
-    params: {
-      direction: number[];
-      radius: number[];
-    };
-    programName: string;
-  };
-  guassianBlurVertical?: {
-    params: {
-      direction: number[];
-      radius: number[];
-    };
-    programName: string;
-  };
   ssao?: {
     // radius: 2.0,
     // strength: 0.5,
@@ -79,16 +63,13 @@ type IPostProcess = {
       intensity: number;
     };
   };
-  blend?: {
-    programName: string;
-  };
-  glitch?: {
-    params: {
-      speed: number[];
-      delta: number[];
-    };
-    programName: string;
-  };
+  bright?: IEffect;
+  gaussianBlurHorizontal?: IEffect;
+  gaussianBlurVertical?: IEffect;
+  gaussianBlurHorizontal2?: IEffect;
+  gaussianBlurVertical2?: IEffect;
+  blend?: IEffect;
+  glitch?: IEffect;
 };
 
 export interface LaboConfig {

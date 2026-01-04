@@ -22,6 +22,12 @@ const config: LaboConfig = {
   mouse: {
     events: ["move", "click"],
   },
+  particules: {
+    workgroupSize: 64, // 1 - 256 // depend on computer limitations
+    workgroupCount: 1000,
+    size: 2,
+    speed: 10.0,
+  },
   postprocess: {
     bright: {
       params: {
@@ -30,14 +36,28 @@ const config: LaboConfig = {
       },
       programName: "bright",
     },
-    guassianBlurHorizontal: {
+    gaussianBlurHorizontal: {
       params: {
         direction: [1, 0],
         radius: [4],
       },
       programName: "gaussianBlur",
     },
-    guassianBlurVertical: {
+    gaussianBlurVertical: {
+      params: {
+        direction: [0, 1],
+        radius: [4],
+      },
+      programName: "gaussianBlur",
+    },
+    gaussianBlurHorizontal2: {
+      params: {
+        direction: [1, 0],
+        radius: [4],
+      },
+      programName: "gaussianBlur",
+    },
+    gaussianBlurVertical2: {
       params: {
         direction: [0, 1],
         radius: [4],
@@ -50,7 +70,7 @@ const config: LaboConfig = {
     glitch: {
       params: {
         speed: [0.7],
-        delta: [0.001],
+        delta: [0.004],
       },
       programName: "glitch",
     },

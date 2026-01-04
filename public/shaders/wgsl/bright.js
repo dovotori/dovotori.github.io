@@ -39,7 +39,7 @@ fn fs_main(@location(0) uv: vec2<f32>) -> @location(0) vec4<f32> {
   // return vec4<f32>(color.rgb * bloomFactor, color.a * bloomFactor);
   // return vec4<f32>(uGlow_ThresholdKnee,0.0,0.0,1.0); // debug
 
-  if (brightness > 0.5) {
+  if (brightness > 0.8) {
     return vec4<f32>(1.0, 1.0, 1.0, 1.0);
   } else {
     return vec4<f32>(0.0, 0.0, 0.0, 0.0);

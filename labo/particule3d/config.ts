@@ -9,6 +9,7 @@ const config: LaboConfig = {
     "/wgsl/postprocess.js",
     "/wgsl/gaussianBlur.js",
     "/wgsl/bright.js",
+    "/wgsl/blend.js",
   ],
   assets: [
     "/gltf/suzanne.glb",
@@ -38,9 +39,9 @@ const config: LaboConfig = {
     angle: 60,
   },
   particules: {
-    workgroupSize: 1, // 1 - 256 // depend on computer limitations
+    workgroupSize: 64, // 1 - 256 // depend on computer limitations
     workgroupCount: 10,
-    size: 200,
+    size: 40,
     speed: 10.0,
   },
   postprocess: {
@@ -51,19 +52,22 @@ const config: LaboConfig = {
       },
       programName: "bright",
     },
-    guassianBlurHorizontal: {
+    gaussianBlurHorizontal: {
       params: {
         direction: [1, 0],
         radius: [4],
       },
       programName: "gaussianBlur",
     },
-    guassianBlurVertical: {
+    gaussianBlurVertical: {
       params: {
         direction: [0, 1],
         radius: [4],
       },
       programName: "gaussianBlur",
+    },
+    blend: {
+      programName: "blend",
     },
   },
 };

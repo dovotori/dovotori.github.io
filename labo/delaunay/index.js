@@ -24,7 +24,7 @@ let boxGrey = null;
 let initialDataImage = null;
 
 const debugFastCorner = (context, corners) => {
-  context.fillStyle = "rgba(255, 0, 0, 1)";
+  context.fillStyle = "rgba(102, 255, 204, 1)";
   corners.forEach(({ x, y }) => {
     context.beginPath();
     context.arc(x, y, 1, 0, 2 * Math.PI, true);

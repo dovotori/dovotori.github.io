@@ -122,39 +122,6 @@ export class PostProcess {
     ];
 
     switch (name) {
-      case "guassianBlurVertical":
-      case "guassianBlurHorizontal": {
-        const texelSize = [1 / this.canvasSize.width, 1 / this.canvasSize.height];
-
-        const radiusBuffer = device.createBuffer({
-          label: "radius buffer",
-          size: 8,
-          usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
-        });
-
-        const directionBuffer = device.createBuffer({
-          label: "direction buffer",
-          size: 8,
-          usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
-        });
-
-        const texelSizeBuffer = device.createBuffer({
-          label: "texel size buffer",
-          size: 8,
-          usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
-        });
-        device.queue.writeBuffer(texelSizeBuffer, 0, new Float32Array(texelSize));
-
-        entries.push(
-          ...[
-            { binding: 2, resource: { buffer: directionBuffer } },
-            { binding: 3, resource: { buffer: texelSizeBuffer } },
-            { binding: 4, resource: { buffer: radiusBuffer } },
-          ],
-        );
-        buffers = { radius: radiusBuffer, direction: directionBuffer };
-        break;
-      }
       case "bright": {
         const thresholdBuffer = device.createBuffer({
           label: "threshold buffer",
@@ -212,8 +179,41 @@ export class PostProcess {
         };
         break;
       }
-      default:
+      default: {
+        if (name.indexOf("gaussianBlur") === -1) break;
+
+        // gaussian blur
+        const texelSize = [1 / this.canvasSize.width, 1 / this.canvasSize.height];
+
+        const radiusBuffer = device.createBuffer({
+          label: "radius buffer",
+          size: 8,
+          usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+        });
+
+        const directionBuffer = device.createBuffer({
+          label: "direction buffer",
+          size: 8,
+          usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+        });
+
+        const texelSizeBuffer = device.createBuffer({
+          label: "texel size buffer",
+          size: 8,
+          usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+        });
+        device.queue.writeBuffer(texelSizeBuffer, 0, new Float32Array(texelSize));
+
+        entries.push(
+          ...[
+            { binding: 2, resource: { buffer: directionBuffer } },
+            { binding: 3, resource: { buffer: texelSizeBuffer } },
+            { binding: 4, resource: { buffer: radiusBuffer } },
+          ],
+        );
+        buffers = { radius: radiusBuffer, direction: directionBuffer };
         break;
+      }
     }
 
     this.effects.set(name, {
@@ -336,5 +336,9 @@ export class PostProcess {
 
   getPingPongTexture(isPing) {
     return isPing ? this.pingTarget : this.pongTarget;
+  }
+
+  debug() {
+    console.log("PostProcess debug:", this.effects);
   }
 }
