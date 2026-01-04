@@ -38,9 +38,7 @@ class Mat4 {
   }
 
   reset() {
-    for (let i = 0; i < 16; i += 1) {
-      this.d[i] = 0.0;
-    }
+    this.d = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     return this;
   }
 

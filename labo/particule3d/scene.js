@@ -33,7 +33,7 @@ export default class Scene extends WebgpuScene {
     this.textures.setup(device, this.context.getCanvasFormat(), this.canvasSize, "depth24plus");
 
     // POST PROCESS
-    this.postProcess = new PostProcess(this.context);
+    this.postProcess = new PostProcess(this.context, 3); // 3 render targets (color/normal/depth) see f_particule_3d.js
     this.postProcess.setup(programs.postprocess.get());
 
     Object.keys(this.config.postprocess).forEach((key) => {

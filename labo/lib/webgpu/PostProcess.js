@@ -1,11 +1,11 @@
 export class PostProcess {
-  constructor(context) {
+  constructor(context, renderTargetsCount = 1) {
     this.context = context;
     this.pipeline = undefined;
     this.renderTargetFormat = navigator.gpu.getPreferredCanvasFormat(); //'rgba8unorm';
     this.presentationFormat = navigator.gpu.getPreferredCanvasFormat();
     this.sampleCount = 1; // should be 1 for a render target used as texture, multisample is allow only for canvas context texture
-    this.renderTargetsCount = 3;
+    this.renderTargetsCount = renderTargetsCount;
     this.effectRenderGroups = new Map();
     this.canvasSize = { width: 1, height: 1 };
     this.effects = new Map(); // name, { pipeline, renderGroup }

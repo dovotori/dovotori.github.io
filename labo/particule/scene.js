@@ -1,3 +1,4 @@
+import { PostProcess } from "../lib/webgpu";
 import WebgpuScene from "../lib/webgpu/WebgpuScene";
 
 const WORKGROUP_SIZE = 64;
@@ -5,9 +6,9 @@ const NUM_WORKGROUPS = 1000;
 const NUM_PARTICLES = WORKGROUP_SIZE * NUM_WORKGROUPS;
 const PARTICLE_SIZE = 2;
 
-const MASS_BASE_FACTOR = 0.0001;
+const MASS_FACTOR = 0.0001;
 const RECOVER_RATE = 0.6; // lerp rate per frame (tune to taste) - closest to 0 faster to regroup
-const REPULSE_FACTOR = 100.0;
+const REPULSE_FACTOR = 0.005;
 
 const computeShader = `struct Mass {
     position: vec3f,
@@ -29,26 +30,25 @@ fn main(@builtin(global_invocation_id) global_id: vec3u) {
     var acceleration = mass.factor * normalize(massVec) / massDist;
 
     velocity += acceleration;
-    velocity *= 0.9999;
+    velocity *= 0.8;
 
     var newPosition = position + velocity;
 
-    let damping = 0.9;
     if (newPosition.x < -1.0) {
       // reflect across -1 boundary
       newPosition.x = -2.0 - newPosition.x;
-      velocity.x = -velocity.x * damping;
+      velocity.x = -velocity.x;
     } else if (newPosition.x > 1.0) {
       // reflect across +1 boundary
       newPosition.x = 2.0 - newPosition.x;
-      velocity.x = -velocity.x * damping;
+      velocity.x = -velocity.x;
     }
     if (newPosition.y < -1.0) {
       newPosition.y = -2.0 - newPosition.y;
-      velocity.y = -velocity.y * damping;
+      velocity.y = -velocity.y;
     } else if (newPosition.y > 1.0) {
       newPosition.y = 2.0 - newPosition.y;
-      velocity.y = -velocity.y * damping;
+      velocity.y = -velocity.y;
     }
 
     newPosition.z = 0.0;
@@ -69,6 +69,14 @@ export default class Scene extends WebgpuScene {
     const { programs } = await super.setupAssets(assets);
 
     const device = this.context.getDevice();
+
+    this.postProcess = new PostProcess(this.context);
+    this.postProcess.setup(programs.postprocess.get());
+
+    Object.keys(this.config.postprocess).forEach((key) => {
+      const effect = this.config.postprocess[key];
+      this.postProcess.addEffect(key, programs[effect.programName].get(), effect.params);
+    });
 
     const positionArrayStride = Float32Array.BYTES_PER_ELEMENT * 4;
     this.positionBuffer = device.createBuffer({
@@ -120,7 +128,7 @@ export default class Scene extends WebgpuScene {
       0,
       0,
       0, // Mass position
-      MASS_BASE_FACTOR, // Mass factor
+      MASS_FACTOR, // Mass factor
     ]);
 
     this.computeUniformBuffer = device.createBuffer({
@@ -313,19 +321,21 @@ export default class Scene extends WebgpuScene {
       colorAttachments: [
         {
           view: this.msaaTexture.createView(),
-          resolveTarget: this.context.getCurrentTexture().createView(),
+          resolveTarget: this.context.getCurrentTexture().createView(), // destination screen
           loadOp: "clear",
           storeOp: "store",
           clearValue: [0, 0, 0, 0],
         },
       ],
     };
+
+    this.postProcess.resize(device, this.canvasSize);
   }
 
   update() {
     super.update();
     const device = this.context.getDevice();
-    const target = MASS_BASE_FACTOR;
+    const target = MASS_FACTOR;
     const rate = RECOVER_RATE;
     const prev = this.massData[3];
     this.massData[3] = prev + (target - prev) * rate;
@@ -363,6 +373,9 @@ export default class Scene extends WebgpuScene {
     renderPass.draw(this.screenPointCount, NUM_PARTICLES);
     renderPass.end();
 
+    // this.postProcess.render(commandEncoder);
+    // this.postProcess.renderEffects(commandEncoder);
+
     device.queue.submit([commandEncoder.finish()]);
   }
 
@@ -372,7 +385,7 @@ export default class Scene extends WebgpuScene {
   };
 
   onMouseClick = () => {
-    this.massData[3] *= -REPULSE_FACTOR;
+    this.massData[3] = -REPULSE_FACTOR;
   };
 
   destroy() {
