@@ -1,11 +1,11 @@
 export class PostProcess {
-  constructor(context, renderTargetsCount = 1) {
+  constructor(context, renderTargetsCount = 3) {
     this.context = context;
     this.pipeline = undefined;
     this.renderTargetFormat = navigator.gpu.getPreferredCanvasFormat(); //'rgba8unorm';
     this.presentationFormat = navigator.gpu.getPreferredCanvasFormat();
     this.sampleCount = 1; // should be 1 for a render target used as texture, multisample is allow only for canvas context texture
-    this.renderTargetsCount = renderTargetsCount;
+    this.renderTargetsCount = renderTargetsCount; // 3 is for color, normal, depth render targets
     this.effectRenderGroups = new Map();
     this.canvasSize = { width: 1, height: 1 };
     this.effects = new Map(); // name, { pipeline, renderGroup }
@@ -203,12 +203,8 @@ export class PostProcess {
     }
   };
 
-  updateTexture(dstTextureView) {
-    // set the canvas context texture as the render target (result of the process, output of the shader)
-    this.renderPassDescriptor.colorAttachments[0].view = dstTextureView;
-  }
-
-  render(encoder) {
+  /// Render the first pass to gather data like color, normal, depth, etc.
+  renderFirstPass(encoder) {
     const pass = encoder.beginRenderPass(this.renderPassDescriptor);
     pass.setPipeline(this.pipeline);
     pass.setBindGroup(0, this.bindGroup);
@@ -216,6 +212,13 @@ export class PostProcess {
     pass.end();
   }
 
+  setFirstPassDestination(dstTextureView) {
+    // set the render target (result of the process, output of the shader)
+    this.renderPassDescriptor.colorAttachments[0].view = dstTextureView;
+  }
+
+  // loop through effect to define destination textures
+  // until the last one and display the final result on the canvas texture
   updateEffectTextures(canvasTextureView) {
     let i = 0;
     for (const [name, _] of this.effects) {

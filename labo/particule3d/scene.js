@@ -33,7 +33,7 @@ export default class Scene extends WebgpuScene {
     this.textures.setup(device, this.context.getCanvasFormat(), this.canvasSize, "depth24plus");
 
     // POST PROCESS
-    this.postProcess = new PostProcess(this.context, 3); // 3 render targets (color/normal/depth) see f_particule_3d.js
+    this.postProcess = new PostProcess(this.context);
     this.postProcess.setup(programs.postprocess.get());
 
     Object.keys(this.config.postprocess).forEach((key) => {
@@ -345,7 +345,7 @@ export default class Scene extends WebgpuScene {
     this.skybox.updateCamera(this.camera);
 
     const pingTargetView = this.postProcess.getPingPongTexture(true).createView();
-    this.postProcess.updateTexture(pingTargetView);
+    this.postProcess.setFirstPassDestination(pingTargetView);
     this.postProcess.updateEffectTextures(canvasCurrentView);
   }
 
@@ -379,8 +379,7 @@ export default class Scene extends WebgpuScene {
 
     renderPass.end();
 
-    this.postProcess.render(commandEncoder);
-
+    this.postProcess.renderFirstPass(commandEncoder);
     this.postProcess.renderEffects(commandEncoder);
 
     device.queue.submit([commandEncoder.finish()]);

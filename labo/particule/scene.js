@@ -202,7 +202,10 @@ export default class Scene extends WebgpuScene {
     }
     device.queue.writeBuffer(this.colorBuffer, 0, colorBufferData);
 
+    this.sampleCount = 1;
+
     this.renderPipeline = await device.createRenderPipelineAsync({
+      label: "Particule Render Pipeline",
       layout: "auto",
       vertex: {
         module: programs.v_particule.get(),
@@ -248,24 +251,39 @@ export default class Scene extends WebgpuScene {
       fragment: {
         module: programs.f_particule.get(),
         entryPoint: "f_main",
-        targets: [
-          {
-            format: this.context.getCanvasFormat(),
-            blend: {
-              color: {
-                srcFactor: "one",
-                dstFactor: "one-minus-src-alpha",
-              },
-              alpha: {
-                srcFactor: "one",
-                dstFactor: "one-minus-src-alpha",
-              },
+        // targets: [
+        //   {
+        //     format: this.context.getCanvasFormat(),
+        //     blend: {
+        //       color: {
+        //         srcFactor: "one",
+        //         dstFactor: "one-minus-src-alpha",
+        //       },
+        //       alpha: {
+        //         srcFactor: "one",
+        //         dstFactor: "one-minus-src-alpha",
+        //       },
+        //     },
+        //   },
+        // ],
+        targets: Array.from({
+          length: this.postProcess.getRenderTargetsCount(),
+        }).map(() => ({
+          format: this.postProcess.getRenderTargetFormat(),
+          blend: {
+            color: {
+              srcFactor: "one",
+              dstFactor: "one-minus-src-alpha",
+            },
+            alpha: {
+              srcFactor: "one",
+              dstFactor: "one-minus-src-alpha",
             },
           },
-        ],
+        })),
       },
       multisample: {
-        count: 4,
+        count: this.sampleCount,
       },
       primitive: {
         topology: "triangle-strip",
@@ -314,19 +332,28 @@ export default class Scene extends WebgpuScene {
       size: [this.canvasSize.width, this.canvasSize.height],
       format: this.context.getCanvasFormat(),
       usage: GPUTextureUsage.RENDER_ATTACHMENT,
-      sampleCount: 4,
+      sampleCount: 1,
     });
 
-    this.renderPassDescription = {
-      colorAttachments: [
-        {
-          view: this.msaaTexture.createView(),
-          resolveTarget: this.context.getCurrentTexture().createView(), // destination screen
-          loadOp: "clear",
-          storeOp: "store",
-          clearValue: [0, 0, 0, 0],
-        },
-      ],
+    this.renderPassDescriptor = {
+      // colorAttachments: [
+      //   {
+      //     view: this.msaaTexture.createView(),
+      //     // resolveTarget: this.context.getCurrentTexture().createView(), // destination screen, when multisampling = 1, should not define
+      //     loadOp: "clear",
+      //     storeOp: "store",
+      //     clearValue: [0, 0, 0, 0],
+      //   },
+      // ],
+
+      colorAttachments: Array.from({
+        length: this.postProcess.getRenderTargetsCount(),
+      }).map(() => ({
+        view: this.msaaTexture.createView(),
+        clearValue: { r: 0, g: 0, b: 0, a: 0 },
+        loadOp: "clear",
+        storeOp: "store",
+      })),
     };
 
     this.postProcess.resize(device, this.canvasSize);
@@ -340,6 +367,19 @@ export default class Scene extends WebgpuScene {
     const prev = this.massData[3];
     this.massData[3] = prev + (target - prev) * rate;
     device.queue.writeBuffer(this.computeUniformBuffer, 0, this.massData);
+
+    // Get current canvas texture and set attachment depending on MSAA sample count
+    // const currentView = this.context.getCurrentTexture().createView();
+    // this.renderPassDescriptor.colorAttachments[0].view = currentView;
+
+    Array.from({ length: this.postProcess.getRenderTargetsCount() }).forEach((_, i) => {
+      this.renderPassDescriptor.colorAttachments[i].view = this.postProcess.getRenderTargetView(i);
+    });
+
+    const canvasCurrentView = this.context.getCurrentTexture().createView();
+    const pingTargetView = this.postProcess.getPingPongTexture(true).createView();
+    this.postProcess.setFirstPassDestination(pingTargetView);
+    this.postProcess.updateEffectTextures(canvasCurrentView);
   }
 
   render() {
@@ -355,12 +395,7 @@ export default class Scene extends WebgpuScene {
     computePass.dispatchWorkgroups(NUM_WORKGROUPS);
     computePass.end();
 
-    // Get current canvas texture
-    this.renderPassDescription.colorAttachments[0].resolveTarget = this.context
-      .getCurrentTexture()
-      .createView();
-
-    const renderPass = commandEncoder.beginRenderPass(this.renderPassDescription);
+    const renderPass = commandEncoder.beginRenderPass(this.renderPassDescriptor);
     renderPass.setPipeline(this.renderPipeline);
 
     // First argument here refers to array index
@@ -373,8 +408,8 @@ export default class Scene extends WebgpuScene {
     renderPass.draw(this.screenPointCount, NUM_PARTICLES);
     renderPass.end();
 
-    // this.postProcess.render(commandEncoder);
-    // this.postProcess.renderEffects(commandEncoder);
+    this.postProcess.renderFirstPass(commandEncoder);
+    this.postProcess.renderEffects(commandEncoder);
 
     device.queue.submit([commandEncoder.finish()]);
   }
