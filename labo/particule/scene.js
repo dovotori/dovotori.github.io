@@ -408,8 +408,11 @@ export default class Scene extends WebgpuScene {
     renderPass.draw(this.screenPointCount, NUM_PARTICLES);
     renderPass.end();
 
+    const dynamicParams = new Map();
+    dynamicParams.set("glitch", [["time", [this.time * 0.01]]]);
+
     this.postProcess.renderFirstPass(commandEncoder);
-    this.postProcess.renderEffects(commandEncoder);
+    this.postProcess.renderEffects(commandEncoder, dynamicParams);
 
     device.queue.submit([commandEncoder.finish()]);
   }

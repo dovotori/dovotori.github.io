@@ -30,7 +30,8 @@ void main() {
     final = vec3(r  * 0.2);
   }
 
-  gl_FragColor = vec4(final, color.a);
+  // gl_FragColor = vec4(final, color.a);
+  gl_FragColor = vec4(color.xyz * r, color.a);
 }`;
 
 export default {

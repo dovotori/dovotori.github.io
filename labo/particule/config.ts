@@ -7,6 +7,9 @@ const config: LaboConfig = {
     "/wgsl/vertex/v_particule.js",
     "/wgsl/postprocess.js",
     "/wgsl/gaussianBlur.js",
+    "/wgsl/bright.js",
+    "/wgsl/blend.js",
+    "/wgsl/glitch.js",
   ],
   canvas: {
     width: 1024,
@@ -20,6 +23,13 @@ const config: LaboConfig = {
     events: ["move", "click"],
   },
   postprocess: {
+    bright: {
+      params: {
+        threshold: [0.2],
+        glowThresholdKnee: [0.3],
+      },
+      programName: "bright",
+    },
     guassianBlurHorizontal: {
       params: {
         direction: [1, 0],
@@ -33,6 +43,16 @@ const config: LaboConfig = {
         radius: [4],
       },
       programName: "gaussianBlur",
+    },
+    blend: {
+      programName: "blend",
+    },
+    glitch: {
+      params: {
+        speed: [0.7],
+        delta: [0.001],
+      },
+      programName: "glitch",
     },
   },
 };

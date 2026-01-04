@@ -79,6 +79,16 @@ type IPostProcess = {
       intensity: number;
     };
   };
+  blend?: {
+    programName: string;
+  };
+  glitch?: {
+    params: {
+      speed: number[];
+      delta: number[];
+    };
+    programName: string;
+  };
 };
 
 export interface LaboConfig {

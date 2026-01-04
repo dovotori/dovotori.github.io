@@ -61,6 +61,14 @@ export class PostProcess {
         })),
       ],
     });
+
+    this.firstTexture = device.createTexture({
+      label: "first render",
+      size: canvasSize,
+      format: this.renderTargetFormat,
+      sampleCount: this.sampleCount,
+      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+    });
   }
 
   setupPingPongTargets(device, canvasSize) {
@@ -170,6 +178,40 @@ export class PostProcess {
         };
         break;
       }
+      case "blend": {
+        entries.push({ binding: 2, resource: this.firstTexture.createView() });
+        break;
+      }
+      case "glitch": {
+        const timeBuffer = device.createBuffer({
+          label: "time buffer",
+          size: 8,
+          usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+        });
+        const speedBuffer = device.createBuffer({
+          label: "speed buffer",
+          size: 8,
+          usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+        });
+        const deltaBuffer = device.createBuffer({
+          label: "delta buffer",
+          size: 8,
+          usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+        });
+        entries.push(
+          ...[
+            { binding: 2, resource: { buffer: timeBuffer } },
+            { binding: 3, resource: { buffer: speedBuffer } },
+            { binding: 4, resource: { buffer: deltaBuffer } },
+          ],
+        );
+        buffers = {
+          time: timeBuffer,
+          speed: speedBuffer,
+          delta: deltaBuffer,
+        };
+        break;
+      }
       default:
         break;
     }
@@ -196,9 +238,14 @@ export class PostProcess {
     this.pongTarget?.destroy();
     this.setupPingPongTargets(device, canvasSize);
 
+    // affect source texture for each effect
     let i = 0;
     for (const [name, _] of this.effects) {
-      this.setupEffectSource(name, this.getPingPongTexture(i % 2 === 0).createView());
+      if (i === 0) {
+        this.setupEffectSource(name, this.firstTexture.createView());
+      } else {
+        this.setupEffectSource(name, this.getPingPongTexture(i % 2 === 0).createView());
+      }
       i++;
     }
   };
@@ -212,9 +259,10 @@ export class PostProcess {
     pass.end();
   }
 
-  setFirstPassDestination(dstTextureView) {
+  setFirstPassDestination(_dstTextureView) {
+    const firstTextureView = this.firstTexture.createView();
     // set the render target (result of the process, output of the shader)
-    this.renderPassDescriptor.colorAttachments[0].view = dstTextureView;
+    this.renderPassDescriptor.colorAttachments[0].view = firstTextureView;
   }
 
   // loop through effect to define destination textures
@@ -223,9 +271,11 @@ export class PostProcess {
     let i = 0;
     for (const [name, _] of this.effects) {
       const isLast = i === this.effects.size - 1;
+
       const destinationView = isLast
         ? canvasTextureView
         : this.getPingPongTexture(i % 2 !== 0).createView();
+
       this.updateEffectTexture(name, destinationView);
       i++;
     }
@@ -237,19 +287,24 @@ export class PostProcess {
     effect.passDescriptor.colorAttachments[0].view = dstTextureView;
   }
 
-  renderEffects(encoder) {
+  renderEffects(encoder, dynamicParams = new Map()) {
     for (const [name, _] of this.effects) {
-      this.applyEffect(name);
+      const dynamicEffectParams = dynamicParams.get(name) ?? [];
+      this.applyEffect(name, dynamicEffectParams);
       this.renderEffect(name, encoder);
     }
   }
 
-  applyEffect(name) {
+  applyEffect(name, dynamicEffectParams = []) {
     const effect = this.effects.get(name);
     if (!effect) return;
     const device = this.context.getDevice();
     for (const key of Object.keys(effect.params)) {
       device.queue.writeBuffer(effect.buffers[key], 0, new Float32Array(effect.params[key]));
+    }
+    for (let i = 0; i < dynamicEffectParams.length; i++) {
+      const [key, paramValue] = dynamicEffectParams[i];
+      device.queue.writeBuffer(effect.buffers[key], 0, new Float32Array(paramValue));
     }
   }
 

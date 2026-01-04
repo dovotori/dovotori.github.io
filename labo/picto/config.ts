@@ -2,7 +2,7 @@ import type { LaboConfig } from "../types";
 
 const config: LaboConfig = {
   slug: "picto",
-  assets: ["/img/signature3.avif"],
+  assets: ["/img/signature.avif"],
   mouse: { events: ["move"] },
   shaders: [
     "/screen/glitch.js",
