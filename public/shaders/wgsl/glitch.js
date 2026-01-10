@@ -48,33 +48,56 @@ fn fs_main(@location(0) uv: vec2<f32>) -> @location(0) vec4<f32> {
   var t = floor(time * speed * 60.0);    
   var outCol = textureSample(myTexture, mySampler, uv);
     
-  // randomly offset slices horizontally
-  var maxOffset = delta / 2.0;
+  // randomly offset slices horizontally — limit to 5% of width scaled by delta
+  var maxOffset = delta * 0.09;
   const LIMIT =  2.0;
   
+  var sliceMask = 0.0;
   for (var i = 0.0; i < LIMIT; i += 1.0) {
     var sliceY = rand(vec2(t , 2345.0 + i));
-    var sliceH = rand(vec2(t , 9035.0 + i)) * 0.25;
+    var sliceH = rand(vec2(t , 9035.0 + i)) * 0.12;
     var hOffset = randomRange(vec2(t , 9625.0 + i), -maxOffset, maxOffset);
     var uvOff = uv;
     uvOff.x += hOffset;
     // sample both original and offset unconditionally, then blend using a mask
     var sampleOff = textureSample(myTexture, mySampler, uvOff);
-    var mask = insideRange(uv.y, sliceY, fract(sliceY + sliceH));
+    // handle slice wrapping (prevent mask from becoming negative)
+    var topRaw = sliceY + sliceH;
+    var mask = 0.0;
+    if (topRaw <= 1.0) {
+      mask = insideRange(uv.y, sliceY, topRaw);
+    } else {
+      // slice wraps past 1.0: combine bottom..1.0 and 0.0..(topRaw-1.0)
+      mask = insideRange(uv.y, sliceY, 1.0) + insideRange(uv.y, 0.0, topRaw - 1.0);
+      mask = min(mask, 1.0);
+    }
     outCol = outCol * (1.0 - mask) + sampleOff * mask;
+    // accumulate mask so we know if this uv was inside any slice
+    sliceMask = max(sliceMask, mask);
   }
     
   // do slight offset on one entire channel
-  var maxColOffset = delta / 6.0;
-  var rnd = rand(vec2(t , 9545.0));
-  var colOffset = vec2(randomRange(vec2(t , 9545.0), -maxColOffset,maxColOffset), randomRange(vec2(t , 7205.0), -maxColOffset,maxColOffset));
-  if (rnd < 0.33) {
-    outCol.r = textureSample(myTexture, mySampler, uv + colOffset).r;  
-  } else if (rnd < 0.66){
-    outCol.g = textureSample(myTexture, mySampler, uv + colOffset).g;  
-  } else {
-    outCol.b = textureSample(myTexture, mySampler, uv + colOffset).b;  
-  }
+  // stronger per-channel color separation applied only inside slices
+  // ensure a visible minimum color offset and amplify it inside slices
+  var baseColOffset = max(delta / 6.0, 0.03);
+  var boostFactor = 8.0; // larger -> more separation inside slices
+  var effectiveOffset = baseColOffset * (1.0 + sliceMask * (boostFactor - 1.0));
+
+  // reduce vertical (Y) offset: scale down Y component and lower Y multipliers
+  var yScale = 0.01;
+  var colOffset = vec2(
+    randomRange(vec2(t , 9545.0), -effectiveOffset, effectiveOffset),
+    randomRange(vec2(t , 7205.0), -effectiveOffset * yScale, effectiveOffset * yScale)
+  );
+
+  // offset each channel in different directions for a visible RGB split
+  var sampledR = textureSample(myTexture, mySampler, uv + colOffset * vec2(0.1, 0.06)).r;
+  var sampledG = textureSample(myTexture, mySampler, uv + colOffset * vec2(-0.02, 0.05)).g;
+  var sampledB = textureSample(myTexture, mySampler, uv + colOffset * vec2(0.015, -0.016)).b;
+
+  outCol.r = outCol.r * (1.0 - sliceMask) + sampledR * sliceMask;
+  outCol.g = outCol.g * (1.0 - sliceMask) + sampledG * sliceMask;
+  outCol.b = outCol.b * (1.0 - sliceMask) + sampledB * sliceMask;
   return vec4<f32>(outCol);
 }
 `;

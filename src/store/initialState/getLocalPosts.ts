@@ -636,7 +636,6 @@ const rawPosts = [
       hasJs: true,
       noBackground: true,
     },
-    isDevOnly: true,
   },
   {
     id: 28,

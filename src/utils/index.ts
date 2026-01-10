@@ -16,7 +16,7 @@ export const isTouchDevice = (): boolean =>
   "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
 export const getEnvPath = (path: string) => `${process.env.ASSET_PATH}${path}`;
-export const getTeaserPath = (slug: string) => getEnvPath(`/img/teasers/${slug}.webp`);
+export const getTeaserPath = (slug: string) => getEnvPath(`/img/teasers/${slug}.avif`);
 export const getProjectImagePath = (slug: string, idx: number) =>
   getEnvPath(`/img/${slug}/${slug}-${idx}.avif`);
 

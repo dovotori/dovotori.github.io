@@ -22,7 +22,7 @@ vec4 applyGlitch(sampler2D tex, vec2 uv, float speed, float AMT) {
   vec4 outCol = texture2D(tex, uv);
     
   // randomly offset slices horizontally
-  float maxOffset = AMT / 2.0;
+  float maxOffset = AMT / 0.8;
   const float LIMIT =  2.0;
   for (float i = 0.0; i < LIMIT; i += 1.0) {
     float sliceY = rand(vec2(time , 2345.0 + float(i)));
