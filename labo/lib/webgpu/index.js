@@ -2,6 +2,7 @@ export { default as Buffer } from "./Buffer";
 export { default as BufferGltf } from "./BufferGltf";
 export { default as BufferMaterial } from "./BufferMaterial";
 export { default as BufferTransform } from "./BufferTransform";
+export * from "./ComputeProcess";
 export { default as Context } from "./Context";
 export * from "./CubeTexture";
 export * from "./DebugPipeline";

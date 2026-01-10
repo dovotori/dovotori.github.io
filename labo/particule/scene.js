@@ -1,56 +1,10 @@
-import { PostProcess } from "../lib/webgpu";
+import { ComputeProcess, PostProcess } from "../lib/webgpu";
 import WebgpuScene from "../lib/webgpu/WebgpuScene";
+import { computeShader } from "./compute";
 
 const MASS_FACTOR = 0.0001;
 const RECOVER_RATE = 0.6; // lerp rate per frame (tune to taste) - closest to 0 faster to regroup
 const REPULSE_FACTOR = 0.005;
-
-const computeShader = (WORKGROUP_SIZE) => `struct Mass {
-    position: vec3f,
-    factor: f32,
-};
-
-@group(0) @binding(0) var<storage, read_write> positions: array<vec4f>;
-@group(0) @binding(1) var<storage, read_write> velocities: array<vec4f>; 
-@group(0) @binding(2) var<uniform> mass: Mass;
-
-@compute @workgroup_size(${WORKGROUP_SIZE})
-fn main(@builtin(global_invocation_id) global_id: vec3u) {
-    let index = global_id.x;
-    let position = positions[index].xyz;
-    var velocity = velocities[index].xyz;
-
-    var massVec = mass.position.xyz - position;
-    var massDist = max(0.01, dot(massVec, massVec));
-    var acceleration = mass.factor * normalize(massVec) / massDist;
-
-    velocity += acceleration;
-    velocity *= 0.8;
-
-    var newPosition = position + velocity;
-
-    if (newPosition.x < -1.0) {
-      // reflect across -1 boundary
-      newPosition.x = -2.0 - newPosition.x;
-      velocity.x = -velocity.x;
-    } else if (newPosition.x > 1.0) {
-      // reflect across +1 boundary
-      newPosition.x = 2.0 - newPosition.x;
-      velocity.x = -velocity.x;
-    }
-    if (newPosition.y < -1.0) {
-      newPosition.y = -2.0 - newPosition.y;
-      velocity.y = -velocity.y;
-    } else if (newPosition.y > 1.0) {
-      newPosition.y = 2.0 - newPosition.y;
-      velocity.y = -velocity.y;
-    }
-
-    newPosition.z = 0.0;
-        
-    positions[index] = vec4f(newPosition, 1);
-    velocities[index] = vec4f(velocity, 0);
-}`;
 
 export default class Scene extends WebgpuScene {
   constructor(context, config) {
@@ -108,19 +62,11 @@ export default class Scene extends WebgpuScene {
     }
     device.queue.writeBuffer(this.velocityBuffer, 0, velocityBufferData);
 
-    const computeShaderModule = device.createShaderModule({
-      code: computeShader(this.config.particules.workgroupSize),
-      label: "Compute Shader",
-    });
-
-    this.computePipeline = device.createComputePipeline({
-      layout: "auto",
-      label: "Compute Pipeline",
-      compute: {
-        module: computeShaderModule,
-        entryPoint: "main",
-      },
-    });
+    this.computeProcess = new ComputeProcess(
+      device,
+      computeShader(this.config.particules.workgroupSize),
+      this.config.particules.workgroupCount,
+    );
 
     // Attractors points + factors
     // -1 to 1 (0,0) center of the screen
@@ -140,7 +86,7 @@ export default class Scene extends WebgpuScene {
     device.queue.writeBuffer(this.computeUniformBuffer, 0, this.massData);
 
     this.computeBindGroup = device.createBindGroup({
-      layout: this.computePipeline.getBindGroupLayout(0),
+      layout: this.computeProcess.getBindGroupLayout(0),
       label: "Compute Bind Group",
       entries: [
         {
@@ -163,10 +109,6 @@ export default class Scene extends WebgpuScene {
         },
       ],
     });
-
-    this.computePassDescription = {
-      label: "Compute Pass description",
-    };
 
     /////////////////////////////////////////////
     ////////////// RENDER PIPELINE //////////////
@@ -393,11 +335,7 @@ export default class Scene extends WebgpuScene {
 
     const commandEncoder = device.createCommandEncoder();
 
-    const computePass = commandEncoder.beginComputePass(this.computePassDescription);
-    computePass.setPipeline(this.computePipeline);
-    computePass.setBindGroup(0, this.computeBindGroup);
-    computePass.dispatchWorkgroups(this.config.particules.workgroupCount);
-    computePass.end();
+    this.computeProcess.render(commandEncoder, [this.computeBindGroup]);
 
     const renderPass = commandEncoder.beginRenderPass(this.renderPassDescriptor);
     renderPass.setPipeline(this.renderPipeline);

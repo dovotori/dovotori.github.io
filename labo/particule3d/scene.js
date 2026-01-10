@@ -1,11 +1,12 @@
 import Mat4 from "../lib/utils/maths/Mat4";
 import Camera from "../lib/utils-3d/cameras/Camera";
+import { ComputeProcess } from "../lib/webgpu";
 import { CubeTexture } from "../lib/webgpu/CubeTexture";
 import PipelineTextures from "../lib/webgpu/PipelineTextures";
 import { PostProcess } from "../lib/webgpu/PostProcess";
 import { Skybox } from "../lib/webgpu/Skybox";
 import WebgpuScene from "../lib/webgpu/WebgpuScene";
-import { getComputeShader } from "./compute";
+import { computeShader } from "./compute";
 
 export default class Scene extends WebgpuScene {
   constructor(context, config) {
@@ -41,19 +42,11 @@ export default class Scene extends WebgpuScene {
       this.postProcess.addEffect(key, programs[effect.programName].get(), effect.params);
     });
 
-    const computeShaderModule = device.createShaderModule({
-      code: getComputeShader(this.config.particules.workgroupSize),
-      label: "Compute Shader",
-    });
-
-    this.computePipeline = device.createComputePipeline({
-      layout: "auto",
-      label: "Compute Pipeline",
-      compute: {
-        module: computeShaderModule,
-        entryPoint: "main",
-      },
-    });
+    this.computeProcess = new ComputeProcess(
+      device,
+      computeShader(this.config.particules.workgroupSize),
+      this.config.particules.workgroupCount,
+    );
 
     /////////////////////////////////////////////
 
@@ -242,7 +235,7 @@ export default class Scene extends WebgpuScene {
     // create bindGroup for computePass
     this.computeGroup = device.createBindGroup({
       label: "Group for computePass",
-      layout: this.computePipeline.getBindGroupLayout(0),
+      layout: this.computeProcess.getBindGroupLayout(0),
       entries: [
         {
           binding: 0,
@@ -264,10 +257,6 @@ export default class Scene extends WebgpuScene {
         },
       ],
     });
-
-    this.computePassDescriptor = {
-      label: "Compute Pass description",
-    };
 
     this.renderPassDescriptor = {
       // can define multiple targets textures, should match pipeline targets
@@ -358,11 +347,7 @@ export default class Scene extends WebgpuScene {
       label: "Command Encoder for render and compute passes",
     });
 
-    const computePass = commandEncoder.beginComputePass(this.computePassDescriptor);
-    computePass.setPipeline(this.computePipeline);
-    computePass.setBindGroup(0, this.computeGroup);
-    computePass.dispatchWorkgroups(this.config.particules.workgroupCount); // Math.ceil(NUM_PARTICLES / WORKGROUP_SIZE)
-    computePass.end();
+    this.computeProcess.render(commandEncoder, [this.computeGroup]);
 
     // same render pass for skybox and model
     const renderPass = commandEncoder.beginRenderPass(this.renderPassDescriptor);
