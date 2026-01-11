@@ -1,23 +1,35 @@
-import { ComputeProcess, PostProcess } from "../lib/webgpu";
-import WebgpuScene from "../lib/webgpu/WebgpuScene";
+import { mapFromRange } from "../lib/utils/numbers";
+import { ComputeProcess, PipelineTextures, PostProcess } from "../lib/webgpu";
+import WebgpuSceneCamera from "../lib/webgpu/WebgpuSceneCamera";
 import { computeShader } from "./compute";
 
 const MASS_FACTOR = 0.0001;
 const RECOVER_RATE = 0.6; // lerp rate per frame (tune to taste) - closest to 0 faster to regroup
 const REPULSE_FACTOR = 0.005;
 
-export default class Scene extends WebgpuScene {
+export default class Scene extends WebgpuSceneCamera {
   constructor(context, config) {
     super(context, config);
 
     const { width, height } = config.canvas;
     this.canvasSize = { width, height };
+
+    this.camera.perspective(width, height);
+
+    this.sampleCount = 1; // because we use post process (4 if not)
+
+    this.textures = new PipelineTextures(1);
+
+    this.downTimestamp = 0;
+    this.mousePressed = false;
   }
 
   async setupAssets(assets) {
     const { programs } = await super.setupAssets(assets);
 
     const device = this.context.getDevice();
+
+    this.textures.setup(device, this.context.getCanvasFormat(), this.canvasSize, "depth24plus");
 
     this.postProcess = new PostProcess(this.context);
     this.postProcess.setup(programs.postprocess.get());
@@ -26,8 +38,6 @@ export default class Scene extends WebgpuScene {
       const effect = this.config.postprocess[key];
       this.postProcess.addEffect(key, programs[effect.programName].get(), effect.params);
     });
-
-    this.postProcess.debug();
 
     this.particulesCount =
       this.config.particules.workgroupSize * this.config.particules.workgroupCount;
@@ -75,10 +85,12 @@ export default class Scene extends WebgpuScene {
       0,
       0, // Mass position
       MASS_FACTOR, // Mass factor
+      0, // 0 attraction / 1 repel
     ]);
 
     this.computeUniformBuffer = device.createBuffer({
-      size: this.massData.byteLength,
+      // Ensure the uniform buffer meets minBindingSize (commonly 32 bytes).
+      size: Math.max(this.massData.byteLength, 32),
       label: "attractors compute uniform buffer",
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
@@ -144,11 +156,61 @@ export default class Scene extends WebgpuScene {
     }
     device.queue.writeBuffer(this.colorBuffer, 0, colorBufferData);
 
-    this.sampleCount = 1;
+    const targetsFromPostProcess = Array.from({
+      length: this.postProcess.getRenderTargetsCount(),
+    }).map(() => ({
+      format: this.postProcess.getRenderTargetFormat(),
+      blend: {
+        color: {
+          srcFactor: "one",
+          dstFactor: "one-minus-src-alpha",
+        },
+        alpha: {
+          srcFactor: "one",
+          dstFactor: "one-minus-src-alpha",
+        },
+      },
+    }));
+
+    const uniformBindGroupLayout = device.createBindGroupLayout({
+      label: "Uniforms Bind Group Layout",
+      entries: [
+        {
+          binding: 0,
+          visibility: GPUShaderStage.VERTEX,
+          buffer: {
+            type: "uniform",
+            hasDynamicOffset: false,
+          },
+        },
+      ],
+    });
+
+    const cameraUniformBindGroupLayout = device.createBindGroupLayout({
+      label: "Camera Uniforms Bind Group Layout",
+      entries: [
+        {
+          binding: 0,
+          visibility: GPUShaderStage.VERTEX,
+          buffer: {
+            type: "uniform",
+            hasDynamicOffset: false,
+            // minBindingSize: 208,
+          },
+        },
+      ],
+    });
+
+    const bindGroupLayouts = [uniformBindGroupLayout, cameraUniformBindGroupLayout];
+
+    const pipelineLayout = device.createPipelineLayout({
+      label: "Pipeline layout",
+      bindGroupLayouts,
+    });
 
     this.renderPipeline = await device.createRenderPipelineAsync({
       label: "Particule Render Pipeline",
-      layout: "auto",
+      layout: pipelineLayout,
       vertex: {
         module: programs.v_particule.get(),
         entryPoint: "v_main",
@@ -208,21 +270,7 @@ export default class Scene extends WebgpuScene {
         //     },
         //   },
         // ],
-        targets: Array.from({
-          length: this.postProcess.getRenderTargetsCount(),
-        }).map(() => ({
-          format: this.postProcess.getRenderTargetFormat(),
-          blend: {
-            color: {
-              srcFactor: "one",
-              dstFactor: "one-minus-src-alpha",
-            },
-            alpha: {
-              srcFactor: "one",
-              dstFactor: "one-minus-src-alpha",
-            },
-          },
-        })),
+        targets: targetsFromPostProcess,
       },
       multisample: {
         count: this.sampleCount,
@@ -231,7 +279,16 @@ export default class Scene extends WebgpuScene {
         topology: "triangle-strip",
         stripIndexFormat: "uint32",
       },
+      // Enable depth testing since we have z-level positions
+      // Fragment closest to the camera is rendered in front
+      depthStencil: {
+        format: this.textures.getDepthFormat(),
+        depthWriteEnabled: true,
+        depthCompare: "less",
+      },
     });
+
+    this.setupCamera(this.renderPipeline.getBindGroupLayout(0));
 
     // Rendering uniform buffer
     this.vertexUniformBuffer = device.createBuffer({
@@ -241,7 +298,7 @@ export default class Scene extends WebgpuScene {
     });
 
     this.vertexUniformBindGroup = device.createBindGroup({
-      layout: this.renderPipeline.getBindGroupLayout(0),
+      layout: this.renderPipeline.getBindGroupLayout(1),
       entries: [
         {
           binding: 0,
@@ -258,6 +315,8 @@ export default class Scene extends WebgpuScene {
   resize(size) {
     this.canvasSize = size;
     const device = this.context.getDevice();
+
+    this.textures.resize(device, this.context.getCanvasFormat(), size);
 
     device.queue.writeBuffer(
       this.vertexUniformBuffer,
@@ -300,6 +359,12 @@ export default class Scene extends WebgpuScene {
         loadOp: "clear",
         storeOp: "store",
       })),
+      depthStencilAttachment: {
+        view: null,
+        depthClearValue: 1.0,
+        depthLoadOp: "clear",
+        depthStoreOp: "store",
+      },
     };
 
     this.postProcess.resize(device, this.canvasSize);
@@ -308,11 +373,14 @@ export default class Scene extends WebgpuScene {
   update() {
     super.update();
     const device = this.context.getDevice();
-    const target = MASS_FACTOR;
+    const target = this.mousePressed ? MASS_FACTOR * 2 : MASS_FACTOR;
     const rate = RECOVER_RATE;
     const prev = this.massData[3];
     this.massData[3] = prev + (target - prev) * rate;
     device.queue.writeBuffer(this.computeUniformBuffer, 0, this.massData);
+
+    const depthTextureView = this.textures.getDepthTextureView();
+    this.renderPassDescriptor.depthStencilAttachment.view = depthTextureView;
 
     // Get current canvas texture and set attachment depending on MSAA sample count
     // const currentView = this.context.getCurrentTexture().createView();
@@ -326,6 +394,10 @@ export default class Scene extends WebgpuScene {
     const pingTargetView = this.postProcess.getPingPongTexture(true).createView();
     this.postProcess.setFirstPassDestination(pingTargetView);
     this.postProcess.updateEffectTextures(canvasCurrentView);
+
+    this.model.identity();
+    this.model.rotate(this.time * 0.1, 0, 1, 0);
+    this.updateCameraUniforms();
   }
 
   render() {
@@ -346,6 +418,7 @@ export default class Scene extends WebgpuScene {
     renderPass.setVertexBuffer(1, this.colorBuffer);
     renderPass.setVertexBuffer(2, this.positionBuffer);
     renderPass.setBindGroup(0, this.vertexUniformBindGroup);
+    renderPass.setBindGroup(1, this.cameraBuffers.bindGroup);
 
     renderPass.draw(this.screenPointCount, this.particulesCount);
     renderPass.end();
@@ -364,8 +437,29 @@ export default class Scene extends WebgpuScene {
     this.massData[1] = mouse.rel.y;
   };
 
-  onMouseClick = () => {
-    this.massData[3] = -REPULSE_FACTOR;
+  onMouseDown = () => {
+    this.downTimestamp = Date.now();
+    this.mousePressed = true;
+  };
+
+  onMouseUp = () => {
+    const duration = Date.now() - this.downTimestamp;
+    if (this.massData[4] === 0) {
+      // attraction mode
+      const strength = mapFromRange(duration, 0, 3000, 0, REPULSE_FACTOR);
+      this.massData[3] = -strength;
+    } else {
+      // repulse mode
+      const strength = mapFromRange(duration, 0, 3000, 0, 0.2);
+      this.massData[3] = -strength;
+    }
+    this.mousePressed = false;
+  };
+
+  setupControls = ({ checkboxes }) => {
+    checkboxes.mode.dom.addEventListener("change", (e) => {
+      this.massData[4] = e.target.checked ? 0 : 1;
+    });
   };
 
   destroy() {

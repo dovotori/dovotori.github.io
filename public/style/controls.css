@@ -20,6 +20,10 @@
 	width: 100%;
 }
 
+#controls div.checkbox-item label {
+	margin-right: 0.5em;
+}
+
 #controls div input[type="checkbox"] {
 	margin-right: 0.5em;
 }

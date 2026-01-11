@@ -84,6 +84,7 @@ export interface LaboConfig {
   controls?: {
     fullscreen: { domId?: string; buttonId: string };
     ranges?: Record<string, IRange>;
+    checkboxes?: Record<string, { label: string; checked: boolean }>;
     modes?: number[];
   };
   useDepthTexture?: boolean;

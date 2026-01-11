@@ -337,8 +337,4 @@ export class PostProcess {
   getPingPongTexture(isPing) {
     return isPing ? this.pingTarget : this.pongTarget;
   }
-
-  debug() {
-    console.log("PostProcess debug:", this.effects);
-  }
 }

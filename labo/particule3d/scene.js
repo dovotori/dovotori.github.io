@@ -321,13 +321,14 @@ export default class Scene extends WebgpuScene {
     // update render pass descriptor texture views
     const canvasCurrentView = this.context.getCurrentTexture().createView();
     // const renderTargetView = this.textures.getRenderTargetView();
-    const depthTextureView = this.textures.getDepthTextureView();
     // this.renderPassDescriptor.colorAttachments[0].resolveTarget = canvasCurrentView; // use for multisampling
     // this.renderPassDescriptor.colorAttachments[0].view = renderTargetView;
 
     Array.from({ length: this.postProcess.getRenderTargetsCount() }).forEach((_, i) => {
       this.renderPassDescriptor.colorAttachments[i].view = this.postProcess.getRenderTargetView(i);
     });
+
+    const depthTextureView = this.textures.getDepthTextureView();
     this.renderPassDescriptor.depthStencilAttachment.view = depthTextureView;
 
     this.camera.moveAroundCenter(this.time * 0.01, this.config.camera.position.z);

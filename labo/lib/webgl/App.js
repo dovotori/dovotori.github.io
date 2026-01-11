@@ -95,8 +95,11 @@ class App {
     if (config.controls) {
       this.controls = new Controls(container, config.controls);
       container.appendChild(this.controls.getDomItem());
-      if (config.controls.ranges && this.scene.setupControls) {
-        this.scene.setupControls({ ranges: this.controls.getRanges() });
+      if ((config.controls.ranges || config.controls.checkboxes) && this.scene.setupControls) {
+        this.scene.setupControls({
+          ranges: this.controls.getRanges(),
+          checkboxes: this.controls.getCheckboxes(),
+        });
       }
     }
 

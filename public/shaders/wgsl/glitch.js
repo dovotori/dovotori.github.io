@@ -91,9 +91,9 @@ fn fs_main(@location(0) uv: vec2<f32>) -> @location(0) vec4<f32> {
   );
 
   // offset each channel in different directions for a visible RGB split
-  var sampledR = textureSample(myTexture, mySampler, uv + colOffset * vec2(0.1, 0.06)).r;
-  var sampledG = textureSample(myTexture, mySampler, uv + colOffset * vec2(-0.02, 0.05)).g;
-  var sampledB = textureSample(myTexture, mySampler, uv + colOffset * vec2(0.015, -0.016)).b;
+  var sampledR = textureSample(myTexture, mySampler, uv + colOffset * vec2(0.03, -0.08)).r;
+  var sampledG = textureSample(myTexture, mySampler, uv + colOffset * vec2(-0.04, 0.1)).g;
+  var sampledB = textureSample(myTexture, mySampler, uv + colOffset * vec2(0.08, -0.06)).b;
 
   outCol.r = outCol.r * (1.0 - sliceMask) + sampledR * sliceMask;
   outCol.g = outCol.g * (1.0 - sliceMask) + sampledG * sliceMask;

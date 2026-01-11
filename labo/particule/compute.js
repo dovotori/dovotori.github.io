@@ -1,6 +1,7 @@
 export const computeShader = (WORKGROUP_SIZE) => `struct Mass {
     position: vec3f,
     factor: f32,
+    mode: f32,
 };
 
 @group(0) @binding(0) var<storage, read_write> positions: array<vec4f>;
@@ -15,7 +16,15 @@ fn main(@builtin(global_invocation_id) global_id: vec3u) {
 
     var massVec = mass.position.xyz - position;
     var massDist = max(0.01, dot(massVec, massVec));
-    var acceleration = mass.factor * normalize(massVec) / massDist;
+
+    var acceleration: vec3f;
+    if (mass.mode == 1.0) {
+      // repel mode
+      acceleration = -mass.factor * normalize(massVec) / massDist;
+    } else {
+      // attract mode
+      acceleration = mass.factor * normalize(massVec) / massDist;
+    }
 
     velocity += acceleration;
     velocity *= 0.8;
@@ -39,8 +48,14 @@ fn main(@builtin(global_invocation_id) global_id: vec3u) {
       velocity.y = -velocity.y;
     }
 
-    newPosition.z = 0.0;
-        
+    if (newPosition.z < -1.0) {
+      newPosition.z = -2.0 - newPosition.z;
+      velocity.z = -velocity.z;
+    } else if (newPosition.z > 1.0) {
+      newPosition.z = 2.0 - newPosition.z;
+      velocity.z = -velocity.z;
+    }
+
     positions[index] = vec4f(newPosition, 1);
     velocities[index] = vec4f(velocity, 0);
 }`;

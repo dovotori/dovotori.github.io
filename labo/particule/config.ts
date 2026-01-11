@@ -18,9 +18,23 @@ const config: LaboConfig = {
   useWebGpu: true,
   controls: {
     fullscreen: { buttonId: "fullscreen-toggle-btn" },
+    checkboxes: {
+      mode: {
+        label: "Attraction Mode",
+        checked: true,
+      },
+    },
+  },
+  camera: {
+    // perspective
+    position: { x: 0, y: 0, z: 40 },
+    target: { x: 0, y: 0, z: 0 },
+    near: 1,
+    far: 100,
+    angle: 60,
   },
   mouse: {
-    events: ["move", "click"],
+    events: ["move", "down", "up"],
   },
   particules: {
     workgroupSize: 64, // 1 - 256 // depend on computer limitations
