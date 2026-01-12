@@ -66,6 +66,9 @@ button,
 a,
 h1,
 input,
+select,
+textarea,
+option,
 html:lang(jp) .numbers {
 	font-family:
 		"typo", "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, FreeSans,

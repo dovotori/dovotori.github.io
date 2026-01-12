@@ -20,6 +20,10 @@ let rangeBright = null;
 let boxHide = null;
 let boxDebug = null;
 let boxGrey = null;
+let selectMode = null;
+let mode = "delaunay";
+let boxHideImage = null;
+let resetBtn = null;
 
 let initialDataImage = null;
 
@@ -28,17 +32,6 @@ const debugFastCorner = (context, corners) => {
   corners.forEach(({ x, y }) => {
     context.beginPath();
     context.arc(x, y, 1, 0, 2 * Math.PI, true);
-    context.fill();
-  });
-};
-
-const _drawOnCanvas = (context, coors) => {
-  coors.forEach(({ x0, y0, x1, y1, x2, y2, color }) => {
-    context.fillStyle = `rgb(${color.r},${color.g},${color.b})`;
-    context.beginPath();
-    context.moveTo(x0, y0);
-    context.lineTo(x1, y1);
-    context.lineTo(x2, y2);
     context.fill();
   });
 };
@@ -73,7 +66,12 @@ const redrawSvg = () => {
   container.innerHTML = "";
   const context = canvas.getContext("2d");
   const { data } = context.getImageData(0, 0, canvas.width, canvas.height);
-  startDelaunayProcess(data, rangeThreshold.value);
+
+  if (mode === "delaunay") {
+    startDelaunayProcess(data, rangeThreshold.value);
+  } else {
+    redrawBars(data);
+  }
 };
 
 const receiveDelaunay = ({ coors, corners, width, height }) => {
@@ -131,7 +129,7 @@ const changeColor = () => {
   const { width, height } = canvas;
   const grey = !!boxGrey.checked;
   const payload = {
-    data: initialDataImage,
+    data: initialDataImage.data,
     width,
     height,
     blue,
@@ -148,6 +146,9 @@ const resetSettings = () => {
   rangeBlue.value = 1;
   rangeRed.value = 1;
   rangeBright.value = 1;
+  const context = canvas.getContext("2d");
+  context.putImageData(initialDataImage, 0, 0);
+  redrawSvg();
 };
 
 const handleFile = async (file) => {
@@ -160,8 +161,8 @@ const handleFile = async (file) => {
     canvas.height = height;
     const context = canvas.getContext("2d");
     context.drawImage(img, 0, 0);
-    const { data: initialData } = context.getImageData(0, 0, width, height);
-    initialDataImage = initialData;
+    const initialImageData = context.getImageData(0, 0, width, height);
+    initialDataImage = initialImageData;
     resetSettings();
     redrawSvg();
   } else {
@@ -179,6 +180,11 @@ const changeHide = (elem) => (e) => {
   elem.classList.toggle("hide");
 };
 
+const onChangeMode = (e) => {
+  mode = e.target.value;
+  redrawSvg();
+};
+
 export default async () => {
   // const url = "/public/app/android-chrome-36x36.png";
   canvasDebug = document.createElement("canvas");
@@ -192,6 +198,9 @@ export default async () => {
   boxHide = document.querySelector("#boxhide");
   boxDebug = document.querySelector("#boxdebug");
   boxGrey = document.querySelector("#boxgrey");
+  selectMode = document.querySelector("#mode");
+  boxHideImage = document.querySelector("#boxhideimage");
+  resetBtn = document.querySelector("#reset");
 
   const url = "/public/img/japon/japon-0.avif";
   const img = await loadImage(url);
@@ -200,14 +209,12 @@ export default async () => {
   canvas.height = height;
   const context = canvas.getContext("2d");
   context.drawImage(img, 0, 0);
-  const { data: initialData } = context.getImageData(0, 0, width, height);
-  initialDataImage = initialData;
+  initialDataImage = context.getImageData(0, 0, width, height);
   webworker = new WebWorker(
     new Worker(new URL("/public/worker/delaunayworker.js", import.meta.url)),
   );
   webworker.setMessageListener(endProcess);
-  startDelaunayProcess(initialData, rangeThreshold.value);
-
+  startDelaunayProcess(initialDataImage.data, rangeThreshold.value);
   rangeThreshold.addEventListener("change", redrawSvg);
   rangeBright.addEventListener("change", changeColor);
   rangeBlue.addEventListener("change", changeColor);
@@ -216,6 +223,9 @@ export default async () => {
   boxHide.addEventListener("change", changeHide(container));
   boxDebug.addEventListener("change", changeHide(canvasDebug));
   boxGrey.addEventListener("change", changeColor);
+  selectMode.addEventListener("change", onChangeMode);
+  boxHideImage.addEventListener("change", changeHide(canvas));
+  resetBtn.addEventListener("click", resetSettings);
 
   selectfile.setup(handleFile);
 };
@@ -229,5 +239,90 @@ export const destroy = () => {
   if (boxHide) boxHide.removeEventListener("change", changeHide(container));
   if (boxDebug) boxDebug.removeEventListener("change", changeHide(canvasDebug));
   if (boxGrey) boxGrey.removeEventListener("change", changeColor);
+  if (selectMode) selectMode.removeEventListener("change", onChangeMode);
+  if (boxHideImage) boxHideImage.removeEventListener("change", changeHide(canvas));
+  if (resetBtn) resetBtn.removeEventListener("click", resetSettings);
   webworker.destroy();
+};
+
+// BARS
+
+const redrawBars = (data) => {
+  const svg = generateBars(canvas.width, canvas.height, data);
+  container.appendChild(svg);
+  downloadSVG(svg, "#downloadsvg", "delaunay");
+};
+
+const getColorPixelFromBuffer = (buffer, x, y, width) => {
+  const indexPixel = width * Math.max(0, y - 1) + x;
+  const offset = 4; // rgba
+  const i = indexPixel * offset;
+  return buffer.subarray(i, i + offset).values();
+};
+
+const generateBars = (width, height, imgBuffer) => {
+  const xmlns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(xmlns, "svg");
+  svg.setAttribute("viewBox", `0 0 ${width} ${height} `);
+  svg.setAttribute("width", width);
+  svg.setAttribute("height", height);
+  svg.setAttribute("version", "1.1");
+  svg.setAttribute("xmlns", xmlns);
+
+  const ROW_HEIGHT = 6;
+  const BAR_HEIGHT = 5;
+  const BAR_DEMI_HEIGHT = BAR_HEIGHT / 2;
+  const MARGIN_Y = (ROW_HEIGHT - BAR_HEIGHT) / 2;
+  const MARGIN_X = 1;
+  for (let y = 0; y < height; y += ROW_HEIGHT) {
+    if (y + ROW_HEIGHT > height) break;
+    let currentX = 0;
+
+    while (currentX < width) {
+      let barWidth = 40 + Math.random() * 200;
+
+      if (width - (currentX + barWidth) < ROW_HEIGHT) {
+        barWidth = width - currentX; // if bar almost at the end, fill to the end
+      } else if (currentX + barWidth > width) {
+        barWidth = width - currentX; // adjust last bar to fit
+      }
+
+      const path = document.createElementNS(xmlns, "path");
+
+      let d = `M ${currentX} ${y + ROW_HEIGHT / 2} `;
+      // d += `L ${currentX + BAR_DEMI_HEIGHT} ${y + MARGIN_Y} `;
+      // d += `L ${currentX + barWidth - BAR_DEMI_HEIGHT} ${y + MARGIN_Y} `;
+      // d += `L ${currentX + barWidth} ${y + ROW_HEIGHT / 2}`;
+      // d += `L ${currentX + barWidth - BAR_DEMI_HEIGHT} ${y + ROW_HEIGHT - MARGIN_Y} `;
+      // d += `L ${currentX + BAR_DEMI_HEIGHT} ${y + ROW_HEIGHT - MARGIN_Y} Z`;
+
+      d += `Q ${currentX} ${y + MARGIN_Y} ${currentX + BAR_DEMI_HEIGHT} ${y + MARGIN_Y} `;
+      d += `L ${currentX + barWidth - BAR_DEMI_HEIGHT} ${y + MARGIN_Y} `;
+      d += `Q ${currentX + barWidth} ${y + MARGIN_Y} ${currentX + barWidth} ${y + ROW_HEIGHT / 2} `;
+      d += `Q ${currentX + barWidth} ${y + ROW_HEIGHT - MARGIN_Y} ${currentX + barWidth - BAR_DEMI_HEIGHT} ${y + ROW_HEIGHT - MARGIN_Y} `;
+      d += `L ${currentX + BAR_DEMI_HEIGHT} ${y + ROW_HEIGHT - MARGIN_Y} `;
+      d += `Q ${currentX} ${y + ROW_HEIGHT - MARGIN_Y} ${currentX} ${y + ROW_HEIGHT / 2} Z`;
+
+      const colorData = getColorPixelFromBuffer(
+        imgBuffer,
+        Math.floor(currentX + barWidth / 2),
+        y + ROW_HEIGHT / 2,
+        width,
+      );
+      const r = colorData.next().value;
+      const g = colorData.next().value;
+      const b = colorData.next().value;
+      const a = colorData.next().value / 255;
+      const fillColor = `rgba(${r}, ${g}, ${b}, ${a})`;
+
+      path.setAttribute("d", d);
+      path.setAttribute("fill", fillColor);
+
+      svg.appendChild(path);
+
+      currentX += barWidth + MARGIN_X;
+    }
+  }
+
+  return svg;
 };

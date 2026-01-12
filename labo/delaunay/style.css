@@ -12,8 +12,11 @@
 	margin: 0 0 1em 0;
 }
 
+#delaunay #controls div.range {
+	margin: 0 0 2em 0;
+}
+
 #delaunay #controls div label:not(.nomargin) {
-	margin: 0 0 1em 0;
 	min-width: 40%;
 }
 

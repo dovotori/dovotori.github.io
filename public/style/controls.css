@@ -20,6 +20,12 @@
 	width: 100%;
 }
 
+#controls div select {
+	padding: 0.3em 0.5em;
+	border: none;
+	border-radius: 4px;
+}
+
 #controls div.checkbox-item label {
 	margin-right: 0.5em;
 }
@@ -37,6 +43,13 @@
 #controls a {
 	font-size: 0.8em;
 }
+
+#controls button {
+	border-radius: 0.2em;
+	padding: 0.5em;
+	color: #222;
+	background-color: var(--project-color);
+} 
 
 @media (max-width: 570px) {
 	#controls.responsive {
