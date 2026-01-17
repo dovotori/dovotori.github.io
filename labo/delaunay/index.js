@@ -7,6 +7,7 @@ import "Assets/style/range-input.css";
 import "Assets/style/selectfile.css";
 
 import "./style.css";
+import { rgbToHex } from "../lib/utils/color";
 
 let canvasDebug = null;
 let webworker = null;
@@ -46,11 +47,11 @@ const generateSvg = (width, height, coors) => {
   svg.setAttribute("xmlns", xmlns);
 
   coors.forEach(({ x0, y0, x1, y1, x2, y2, color }) => {
-    const fc = `rgba(${color.r}, ${color.g}, ${color.b}, 1)`;
+    const hex = rgbToHex(color.r, color.g, color.b);
     const polygon = document.createElementNS(xmlns, "polygon");
     polygon.setAttribute("points", `${x0} ${y0} ${x1} ${y1} ${x2} ${y2} `);
-    polygon.setAttribute("fill", fc);
-    polygon.setAttribute("stroke", fc);
+    polygon.setAttribute("fill", hex);
+    polygon.setAttribute("stroke", hex);
     svg.appendChild(polygon);
   });
   return svg;
@@ -312,11 +313,14 @@ const generateBars = (width, height, imgBuffer) => {
       const r = colorData.next().value;
       const g = colorData.next().value;
       const b = colorData.next().value;
-      const a = colorData.next().value / 255;
-      const fillColor = `rgba(${r}, ${g}, ${b}, ${a})`;
+      // const a = colorData.next().value / 255;
+
+      const hex = rgbToHex(r, g, b);
+
+      // const fillColor = `rgba(${r}, ${g}, ${b}, ${a})`;
 
       path.setAttribute("d", d);
-      path.setAttribute("fill", fillColor);
+      path.setAttribute("fill", hex);
 
       svg.appendChild(path);
 
