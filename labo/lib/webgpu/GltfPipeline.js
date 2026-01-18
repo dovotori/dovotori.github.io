@@ -11,11 +11,11 @@ import Pipeline from "./Pipeline";
 import PipelineTextures from "./PipelineTextures";
 
 export class GltfPipeline {
-  constructor(context, config) {
+  constructor(context, config, sampleCount = 4, depthTextureFormat = "depth32float") {
     this.context = context;
     this.config = config;
-    this.pipeline = new Pipeline();
-    this.textures = new PipelineTextures();
+    this.pipeline = new Pipeline(sampleCount, depthTextureFormat);
+    this.textures = new PipelineTextures(sampleCount);
     this.customTransforms = {};
 
     this.db = null;
@@ -26,7 +26,14 @@ export class GltfPipeline {
     await this.db.setup();
   }
 
-  async setup(gltf, program, canvasSize, depthMapBingGroupEntries, isDebug = false) {
+  async setup(
+    gltf,
+    program,
+    canvasSize,
+    fragmentTargets,
+    depthMapBindGroupEntries,
+    isDebug = false,
+  ) {
     const device = this.context.getDevice();
 
     const nodes = gltf.get("nodes");
@@ -133,7 +140,7 @@ export class GltfPipeline {
 
     this.bindGroupLayouts = buildBindGroupLayouts(device, {
       withSkin: !!gltf.get("skins"),
-      withShadow: depthMapBingGroupEntries !== undefined,
+      withShadow: depthMapBindGroupEntries !== undefined,
     });
 
     await this.pipeline.setup(
@@ -141,7 +148,7 @@ export class GltfPipeline {
       program,
       gltf.get("pipeline"),
       buffersLayout,
-      this.context.getCanvasFormat(),
+      fragmentTargets,
       [
         this.bindGroupLayouts[GltfBindGroups.CAMERA],
         this.bindGroupLayouts[GltfBindGroups.TRANSFORM],
@@ -149,7 +156,6 @@ export class GltfPipeline {
         this.bindGroupLayouts[GltfBindGroups.LIGHT],
       ],
     );
-    this.pipeline.setupRenderPassDescriptor();
 
     // animations
     // TODO should put this outside
@@ -162,7 +168,7 @@ export class GltfPipeline {
       this.getBindGroupLayout(GltfBindGroups.MATERIAL),
       gltf.get("materials"),
       gltf.get("textures"),
-      depthMapBingGroupEntries,
+      depthMapBindGroupEntries,
     );
 
     this.buildDrawNodes(device, nodes, meshBuffersMaps, gltf.get("skins")); // TODO should put node and drawNodes outside as animation to call renderModel on other pipeline
@@ -337,10 +343,10 @@ export class GltfPipeline {
     // };
   }
 
-  update() {
+  update(targetViews) {
     this.pipeline.update(
-      this.context.getCurrentTexture().createView(),
-      this.textures.getRenderTargetView(),
+      targetViews,
+      // this.textures.getRenderTargetView(),
       this.textures.getDepthTextureView(),
     );
   }
@@ -384,7 +390,8 @@ export class GltfPipeline {
     }
   };
 
-  resize = (size) => {
+  resize = (size, colorAttachements) => {
+    this.pipeline.setRenderPassDescriptor(colorAttachements);
     this.textures.resize(this.context.getDevice(), this.context.getCanvasFormat(), size);
   };
 
@@ -434,5 +441,9 @@ export class GltfPipeline {
 
   setCustomTransform(name, matrix) {
     this.customTransforms[name] = matrix;
+  }
+
+  getDepthTexture() {
+    return this.textures.getDepthTexture();
   }
 }

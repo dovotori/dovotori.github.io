@@ -156,22 +156,6 @@ export default class Scene extends WebgpuSceneCamera {
     }
     device.queue.writeBuffer(this.colorBuffer, 0, colorBufferData);
 
-    const targetsFromPostProcess = Array.from({
-      length: this.postProcess.getRenderTargetsCount(),
-    }).map(() => ({
-      format: this.postProcess.getRenderTargetFormat(),
-      blend: {
-        color: {
-          srcFactor: "one",
-          dstFactor: "one-minus-src-alpha",
-        },
-        alpha: {
-          srcFactor: "one",
-          dstFactor: "one-minus-src-alpha",
-        },
-      },
-    }));
-
     const uniformBindGroupLayout = device.createBindGroupLayout({
       label: "Uniforms Bind Group Layout",
       entries: [
@@ -270,7 +254,7 @@ export default class Scene extends WebgpuSceneCamera {
         //     },
         //   },
         // ],
-        targets: targetsFromPostProcess,
+        targets: this.postProcess.getPipelineFragmentTargets(),
       },
       multisample: {
         count: this.sampleCount,
@@ -328,19 +312,10 @@ export default class Scene extends WebgpuSceneCamera {
       ]),
     );
 
-    if (this.msaaTexture) {
-      this.msaaTexture.destroy();
-    }
-
-    this.msaaTexture = device.createTexture({
-      label: "msaa texture",
-      size: [this.canvasSize.width, this.canvasSize.height],
-      format: this.context.getCanvasFormat(),
-      usage: GPUTextureUsage.RENDER_ATTACHMENT,
-      sampleCount: 1,
-    });
+    this.postProcess.resize(device, this.canvasSize);
 
     this.renderPassDescriptor = {
+      label: "Render Pass Descriptor",
       // colorAttachments: [
       //   {
       //     view: this.msaaTexture.createView(),
@@ -350,15 +325,7 @@ export default class Scene extends WebgpuSceneCamera {
       //     clearValue: [0, 0, 0, 0],
       //   },
       // ],
-
-      colorAttachments: Array.from({
-        length: this.postProcess.getRenderTargetsCount(),
-      }).map(() => ({
-        view: this.msaaTexture.createView(),
-        clearValue: { r: 0, g: 0, b: 0, a: 0 },
-        loadOp: "clear",
-        storeOp: "store",
-      })),
+      colorAttachments: this.postProcess.getPassDescriptorColorAttachments(),
       depthStencilAttachment: {
         view: null,
         depthClearValue: 1.0,
@@ -366,8 +333,6 @@ export default class Scene extends WebgpuSceneCamera {
         depthStoreOp: "store",
       },
     };
-
-    this.postProcess.resize(device, this.canvasSize);
   }
 
   update() {
@@ -386,13 +351,12 @@ export default class Scene extends WebgpuSceneCamera {
     // const currentView = this.context.getCurrentTexture().createView();
     // this.renderPassDescriptor.colorAttachments[0].view = currentView;
 
-    Array.from({ length: this.postProcess.getRenderTargetsCount() }).forEach((_, i) => {
-      this.renderPassDescriptor.colorAttachments[i].view = this.postProcess.getRenderTargetView(i);
+    this.postProcess.getColorAttachmentsTargetViews().forEach((view, i) => {
+      this.renderPassDescriptor.colorAttachments[i].view = view;
     });
 
     const canvasCurrentView = this.context.getCurrentTexture().createView();
-    const pingTargetView = this.postProcess.getPingPongTexture(true).createView();
-    this.postProcess.setFirstPassDestination(pingTargetView);
+    this.postProcess.setFirstPassDestination();
     this.postProcess.updateEffectTextures(canvasCurrentView);
 
     this.model.identity();

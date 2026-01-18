@@ -1,4 +1,4 @@
-import { WebGPUComputer } from "./gpuComputer";
+import { WebGPUComputer } from "../lib/webgpucompute";
 
 const sum10wgsl = `
 @group(0) @binding(0) var<storage, read> data: array<f32>;

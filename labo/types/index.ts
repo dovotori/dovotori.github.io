@@ -36,9 +36,6 @@ type IEffect = {
 };
 
 type IPostProcess = {
-  sobel?: {
-    intensity: number;
-  };
   shadow?: {
     epsilon: number;
     lighten: number;
@@ -66,6 +63,7 @@ type IPostProcess = {
       intensity: number;
     };
   };
+  sobel?: IEffect;
   bright?: IEffect;
   gaussianBlurHorizontal?: IEffect;
   gaussianBlurVertical?: IEffect;

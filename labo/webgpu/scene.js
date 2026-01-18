@@ -3,7 +3,14 @@ import { intersectRayWithPlane } from "../lib/utils/maths/intersection";
 import Mat4 from "../lib/utils/maths/Mat4";
 import Vec3 from "../lib/utils/maths/Vec3";
 import Vec4 from "../lib/utils/maths/Vec4";
-import { DebugTexture, GltfBindGroups, GltfPipeline, Picking, Shadow } from "../lib/webgpu";
+import {
+  DebugTexture,
+  GltfBindGroups,
+  GltfPipeline,
+  Picking,
+  PostProcess,
+  Shadow,
+} from "../lib/webgpu";
 import WebgpuSceneCamera from "../lib/webgpu/WebgpuSceneCamera";
 // import { DebugPipeline } from '../lib/webgpu/DebugPipeline';
 import { GltfDb } from "./GltfDb";
@@ -20,11 +27,12 @@ export default class Scene extends WebgpuSceneCamera {
 
     this.canvasSize = { width, height };
 
-    this.gltfPipeline = new GltfPipeline(context, config);
+    this.gltfPipeline = new GltfPipeline(context, config, 1);
     this.picking = new Picking(context);
     this.shadow = new Shadow(context);
     this.debug = new DebugTexture(context);
 
+    this.postProcess = new PostProcess(this.context);
     // this.debugCube = new DebugPipeline(context);
   }
 
@@ -34,6 +42,14 @@ export default class Scene extends WebgpuSceneCamera {
 
     const firstGltfName = Object.keys(assets.gltfs)[0];
     const gltf = assets.gltfs[firstGltfName];
+
+    this.postProcess.setup(programs.postprocess.get());
+
+    Object.keys(this.config.postprocess).forEach((key) => {
+      const effect = this.config.postprocess[key];
+      console.log(programs[effect.programName]);
+      this.postProcess.addEffect(key, programs[effect.programName].get(), effect.params);
+    });
 
     console.log({
       assets,
@@ -59,9 +75,11 @@ export default class Scene extends WebgpuSceneCamera {
       gltf,
       program,
       this.canvasSize,
+      this.postProcess.getPipelineFragmentTargets(),
       this.shadow.getShadowMapBindGroupEntries(device, this.lampe.getPosition()),
       DEBUG_PICKING,
     );
+
     this.cameraBuffers = this.setupCamera(
       this.gltfPipeline.getBindGroupLayout(GltfBindGroups.CAMERA),
       true,
@@ -137,6 +155,7 @@ export default class Scene extends WebgpuSceneCamera {
     this.debug.setTexture(this.shadow.getDepthTexture());
 
     // await testHeavyCompute();
+    this.resize(this.canvasSize);
   }
 
   update(time) {
@@ -152,6 +171,12 @@ export default class Scene extends WebgpuSceneCamera {
     this.model.multiply(quat.toMatrix4());
 
     this.gltfPipeline.updateAnimations(time);
+
+    this.gltfPipeline.update(this.postProcess.getColorAttachmentsTargetViews());
+
+    const canvasCurrentView = this.context.getCurrentTexture().createView();
+    this.postProcess.setFirstPassDestination();
+    this.postProcess.updateEffectTextures(canvasCurrentView);
   }
 
   // for shadow
@@ -175,16 +200,14 @@ export default class Scene extends WebgpuSceneCamera {
   render() {
     const device = this.context.getDevice();
 
-    this.gltfPipeline.update();
-
     this.renderShadowDepthPass();
 
     this.updateCameraUniforms(this.cameraBuffers);
 
-    const encoder = device.createCommandEncoder({
+    const commandEncoder = device.createCommandEncoder({
       label: "GltfCommandEncoder",
     });
-    const pass = encoder.beginRenderPass(this.gltfPipeline.getRenderPassDescriptor());
+    const pass = commandEncoder.beginRenderPass(this.gltfPipeline.getRenderPassDescriptor());
 
     pass.setPipeline(this.gltfPipeline.get());
     // bind group are defined in shader code ex: @group(0) @binding(0)
@@ -200,10 +223,14 @@ export default class Scene extends WebgpuSceneCamera {
 
     pass.end();
 
+    // post process pass
+    this.postProcess.renderFirstPass(commandEncoder);
+    this.postProcess.renderEffects(commandEncoder);
+
     // const commandBuffer = this.devide.getEncodeur().finish()
     // device.queue.submit([commandBuffer])
     // Finish the command buffer and immediately submit it.
-    device.queue.submit([encoder.finish()]);
+    device.queue.submit([commandEncoder.finish()]);
   }
 
   renderShadowDepthPass() {
@@ -217,7 +244,9 @@ export default class Scene extends WebgpuSceneCamera {
 
   resize(size) {
     this.canvasSize = size;
-    this.gltfPipeline.resize(size);
+    const device = this.context.getDevice();
+    this.postProcess.resize(device, this.canvasSize);
+    this.gltfPipeline.resize(size, this.postProcess.getPassDescriptorColorAttachments());
     this.picking.resize(size);
   }
 
@@ -283,59 +312,4 @@ export default class Scene extends WebgpuSceneCamera {
       // );
     }
   };
-}
-
-const sum10wgsl = `
-@group(0) @binding(0) var<storage, read> data: array<f32>;
-@group(0) @binding(1) var<storage, read_write> result: array<f32>;
-
-@compute @workgroup_size(1)
-fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
-    let index = global_id.x;
-    let sum: f32 = 0;
-    for (let i = index * 10; i < (index + 1) * 10; i++) {
-        sum += data[i];
-    }
-
-    result[index] = sum;
-}
-`;
-
-async function _testHeavyCompute() {
-  const arrSize = 100000;
-  let data = new Float32Array(Array.from({ length: arrSize }, () => Math.random()));
-
-  // CPU to verify
-  let startTime = performance.now();
-  const checkData = data.reduce((previousValue, currentValue) => previousValue + currentValue);
-  console.log("cpu result time", performance.now() - startTime, checkData);
-
-  // GPU run
-  startTime = performance.now();
-  const webGPUComputer = await WebGPUComputer.init(sum10wgsl);
-  while (data.length > 1) {
-    const dataBuffer = webGPUComputer.createBuffer(
-      data.byteLength,
-      GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
-    );
-    webGPUComputer.writeToBuffer(dataBuffer, data);
-
-    const resultBuffer = webGPUComputer.createBuffer(
-      Math.ceil(data.length / 10) * 4,
-      GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
-    );
-    const bindGroup = webGPUComputer.createBindGroup([dataBuffer, resultBuffer]);
-
-    const readBuffer = webGPUComputer.createBuffer(
-      Math.ceil(data.length / 10) * 4,
-      GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST,
-    );
-
-    webGPUComputer.run([bindGroup], resultBuffer, readBuffer, data.length / 10);
-
-    await readBuffer.mapAsync(GPUMapMode.READ);
-    data = new Float32Array(readBuffer.getMappedRange());
-  }
-
-  console.log("gpu result time", performance.now() - startTime, data);
 }

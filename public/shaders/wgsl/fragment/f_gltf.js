@@ -34,8 +34,14 @@ struct FragInput {
   // @location(6) face_color: f32,
 };
 
+struct FragOutput {
+  @location(0) color: vec4f,
+  @location(1) normal: vec4f,
+  @location(2) depth: vec4f,
+};
+
 @fragment
-fn f_main(in: FragInput) -> @location(0) vec4f {
+fn f_main(in: FragInput) -> FragOutput {
   var color = material.baseColorFactor;
 
   let baseColorTex = textureSample(baseColorTexture, baseColorSampler, in.texture);
@@ -102,6 +108,10 @@ fn f_main(in: FragInput) -> @location(0) vec4f {
   // result = vec3(in.face_color);
   // result = in.picking_color.xyz;
 
-  return vec4(result, 1.0);
+  var out: FragOutput;
+  out.color = vec4(result, 1.0);
+  out.normal = vec4(result, 1.0);
+  out.depth = vec4(result, 1.0);
+  return out;
 }
 `;

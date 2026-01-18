@@ -1,3 +1,5 @@
+import { blend } from "./constants";
+
 export class PostProcess {
   constructor(context, renderTargetsCount = 3) {
     this.context = context;
@@ -122,6 +124,18 @@ export class PostProcess {
     ];
 
     switch (name) {
+      case "sobel": {
+        const texelSize = [1 / this.canvasSize.width, 1 / this.canvasSize.height];
+        const texelSizeBuffer = device.createBuffer({
+          label: "texel size buffer",
+          size: 8,
+          usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+        });
+        device.queue.writeBuffer(texelSizeBuffer, 0, new Float32Array(texelSize));
+        entries.push({ binding: 2, resource: { buffer: texelSizeBuffer } });
+        buffers = { texelSize: texelSizeBuffer };
+        break;
+      }
       case "bright": {
         const thresholdBuffer = device.createBuffer({
           label: "threshold buffer",
@@ -232,6 +246,7 @@ export class PostProcess {
     this.renderTargets?.forEach((t) => {
       t.destroy();
     });
+    if (this.firstTexture) this.firstTexture.destroy();
     this.setupRenderTextures(device, canvasSize);
 
     this.pingTarget?.destroy();
@@ -259,7 +274,7 @@ export class PostProcess {
     pass.end();
   }
 
-  setFirstPassDestination(_dstTextureView) {
+  setFirstPassDestination() {
     const firstTextureView = this.firstTexture.createView();
     // set the render target (result of the process, output of the shader)
     this.renderPassDescriptor.colorAttachments[0].view = firstTextureView;
@@ -336,5 +351,33 @@ export class PostProcess {
 
   getPingPongTexture(isPing) {
     return isPing ? this.pingTarget : this.pongTarget;
+  }
+
+  getPipelineFragmentTargets() {
+    const targetsFromPostProcess = Array.from({
+      length: this.getRenderTargetsCount(),
+    }).map(() => ({
+      format: this.getRenderTargetFormat(),
+      blend,
+    }));
+    return targetsFromPostProcess;
+  }
+
+  getPassDescriptorColorAttachments() {
+    return Array.from({
+      length: this.getRenderTargetsCount(),
+    }).map(() => ({
+      view: this.firstTexture.createView(),
+      clearValue: { r: 0, g: 0, b: 0, a: 0 },
+      loadOp: "clear", // 'load' -> draw hover / 'clear'
+      storeOp: "store", // 'store' -> save // 'discard' maybe for save in tex
+    }));
+  }
+
+  // for pass descriptor
+  getColorAttachmentsTargetViews() {
+    return Array.from({ length: this.getRenderTargetsCount() }).map((_, i) => {
+      return this.getRenderTargetView(i);
+    });
   }
 }

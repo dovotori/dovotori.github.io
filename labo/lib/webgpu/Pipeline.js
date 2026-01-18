@@ -1,5 +1,3 @@
-import { blend } from "./constants";
-
 class Pipeline {
   constructor(sampleCount = 4, depthTextureFormat = "depth32float") {
     this.pipeline = null;
@@ -8,7 +6,7 @@ class Pipeline {
     this.sampleCount = sampleCount;
   }
 
-  async setup(device, program, config, buffersLayout, canvasFormat, bindGroupLayouts) {
+  async setup(device, program, config, buffersLayout, fragmentFormat, bindGroupLayouts) {
     const pipelineLayout = device.createPipelineLayout({
       label: "Pipeline layout",
       bindGroupLayouts,
@@ -25,12 +23,7 @@ class Pipeline {
       fragment: {
         module: program.fragment,
         entryPoint: "f_main",
-        targets: [
-          {
-            format: canvasFormat,
-            blend,
-          },
-        ],
+        targets: fragmentFormat,
       },
       primitive: config,
       depthStencil: {
@@ -45,19 +38,11 @@ class Pipeline {
     this.pipeline = await device.createRenderPipelineAsync(descriptor);
   }
 
-  setupRenderPassDescriptor = () => {
+  setRenderPassDescriptor = (colorAttachements) => {
     // renderpass descriptor
     this.renderPassDescriptor = {
       label: "Gltf Pass Descriptor",
-      colorAttachments: [
-        {
-          view: null,
-          resolveTarget: null, // context.getCurrentTexture().createView(),
-          clearValue: { r: 0, g: 0, b: 0, a: 0 },
-          loadOp: "clear", // 'load' -> draw hover / 'clear'
-          storeOp: "store", // 'store' -> save // 'discard' maybe for save in tex
-        },
-      ],
+      colorAttachments: colorAttachements,
       depthStencilAttachment: {
         view: null,
         depthClearValue: 1.0,
@@ -70,9 +55,10 @@ class Pipeline {
     };
   };
 
-  update = (currentView, renderTargetView, depthTextureView) => {
-    this.renderPassDescriptor.colorAttachments[0].resolveTarget = currentView;
-    this.renderPassDescriptor.colorAttachments[0].view = renderTargetView;
+  update = (targetViews, depthTextureView) => {
+    targetViews.forEach((currentView, i) => {
+      this.renderPassDescriptor.colorAttachments[i].view = currentView;
+    });
     this.renderPassDescriptor.depthStencilAttachment.view = depthTextureView;
   };
 

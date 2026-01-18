@@ -12,6 +12,7 @@ const config: LaboConfig = {
     "/wgsl/fragment/f_debug_tex.js",
     "/wgsl/vertex/v_model_camera.js",
     "/wgsl/fragment/f_simple.js",
+    "/wgsl/postprocess.js",
     "/wgsl/sobel.js",
   ],
   // assets: ['/gltf/paysage.gltf'],
@@ -42,7 +43,7 @@ const config: LaboConfig = {
   // },
   postprocess: {
     sobel: {
-      intensity: 1.0,
+      programName: "sobel",
     },
   },
   lampes: [

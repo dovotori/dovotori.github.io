@@ -334,8 +334,7 @@ export default class Scene extends WebgpuScene {
     this.camera.moveAroundCenter(this.time * 0.01, this.config.camera.position.z);
     this.skybox.updateCamera(this.camera);
 
-    const pingTargetView = this.postProcess.getPingPongTexture(true).createView();
-    this.postProcess.setFirstPassDestination(pingTargetView);
+    this.postProcess.setFirstPassDestination();
     this.postProcess.updateEffectTextures(canvasCurrentView);
   }
 
