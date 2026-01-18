@@ -3,94 +3,29 @@ import { intersectRayWithPlane } from "../lib/utils/maths/intersection";
 import Mat4 from "../lib/utils/maths/Mat4";
 import Vec3 from "../lib/utils/maths/Vec3";
 import Vec4 from "../lib/utils/maths/Vec4";
-import Camera from "../lib/utils-3d/cameras/Camera";
-import Objectif from "../lib/utils-3d/cameras/Objectif";
 import { DebugTexture, GltfBindGroups, GltfPipeline, Picking, Shadow } from "../lib/webgpu";
-import { BufferCamera } from "../lib/webgpu/BufferCamera";
-import WebgpuScene from "../lib/webgpu/WebgpuScene";
+import WebgpuSceneCamera from "../lib/webgpu/WebgpuSceneCamera";
 // import { DebugPipeline } from '../lib/webgpu/DebugPipeline';
 import { GltfDb } from "./GltfDb";
 
 // to see the color change f_picking with alpha to 1
 const DEBUG_PICKING = false;
 
-export default class Scene extends WebgpuScene {
+export default class Scene extends WebgpuSceneCamera {
   constructor(context, config) {
     super(context, config);
     this.time = 0;
     const { width, height } = config.canvas;
-    this.camera = new Camera(config.camera);
     this.camera.perspective(width, height);
 
     this.canvasSize = { width, height };
-
-    this.model = new Mat4();
-    this.model.identity();
 
     this.gltfPipeline = new GltfPipeline(context, config);
     this.picking = new Picking(context);
     this.shadow = new Shadow(context);
     this.debug = new DebugTexture(context);
 
-    this.lampe = new Objectif(config.lampes[0]);
-    this.lampe.lookAt();
-
     // this.debugCube = new DebugPipeline(context);
-  }
-
-  // should create one for each pipeline
-  setupCamera(layout, withLight) {
-    const device = this.context.getDevice();
-    const bufferCamera = new BufferCamera();
-    return bufferCamera.setup(device, layout, withLight);
-  }
-
-  setupLights(layout) {
-    const device = this.context.getDevice();
-
-    const size = Float32Array.BYTES_PER_ELEMENT * 8 * this.config.lampes.length; // vec3 * 2 + 1
-
-    const buffer = device.createBuffer({
-      label: "Light Storage Buffer",
-      size,
-      usage: window.GPUBufferUsage.STORAGE | window.GPUBufferUsage.COPY_DST,
-    });
-
-    // because it didnt update, we set it directly here
-    const array = [];
-    this.config.lampes.forEach((lampe) => {
-      const t = [
-        lampe.position.x,
-        lampe.position.y,
-        lampe.position.z,
-        0, // pad
-        ...lampe.ambiant,
-        lampe.strength,
-      ];
-      array.push(...t);
-    });
-
-    const uniforms = new Float32Array(array);
-    // direct setup
-    device.queue.writeBuffer(buffer, 0, uniforms.buffer, uniforms.byteOffset, uniforms.byteLength);
-
-    const bindGroup = device.createBindGroup({
-      label: "LightsUniforms",
-      layout,
-      entries: [
-        {
-          binding: 0,
-          resource: {
-            buffer,
-          },
-        },
-      ],
-    });
-
-    return {
-      buffer,
-      bindGroup,
-    };
   }
 
   async setupAssets(assets) {
@@ -127,7 +62,7 @@ export default class Scene extends WebgpuScene {
       this.shadow.getShadowMapBindGroupEntries(device, this.lampe.getPosition()),
       DEBUG_PICKING,
     );
-    this.uniformCamera = this.setupCamera(
+    this.cameraBuffers = this.setupCamera(
       this.gltfPipeline.getBindGroupLayout(GltfBindGroups.CAMERA),
       true,
     );
@@ -219,39 +154,6 @@ export default class Scene extends WebgpuScene {
     this.gltfPipeline.updateAnimations(time);
   }
 
-  updateCameraUniforms(cameraBuffer, lightProjBuffer) {
-    const device = this.context.getDevice();
-
-    const projection = this.camera.getModeProjection().get();
-    const view = this.camera.getView().get();
-
-    const uniforms = new Float32Array(16 * 3 + 3); // 16 elements for projection, 16 for view, 16 for model, 3 for camera position
-    uniforms.set(projection, 0);
-    uniforms.set(view, 16);
-    uniforms.set(this.model.get(), 32);
-    uniforms.set(this.camera.getPosition(), 48);
-
-    device.queue.writeBuffer(
-      cameraBuffer,
-      0,
-      uniforms.buffer,
-      uniforms.byteOffset,
-      uniforms.byteLength,
-    );
-    if (lightProjBuffer) {
-      const newMat = new Mat4().setFromArray(this.lampe.getView().get()); // need a new one, multiply lampe ortho will directly mutate the matrix
-      const uniformsLightProj = new Float32Array(16);
-      uniformsLightProj.set(newMat.multiply(this.lampe.getOrtho()).get(), 0);
-      device.queue.writeBuffer(
-        lightProjBuffer,
-        0, // offset
-        uniformsLightProj.buffer,
-        uniformsLightProj.byteOffset,
-        uniformsLightProj.byteLength,
-      );
-    }
-  }
-
   // for shadow
   updateCameraUniformsWithLight(cameraBindBuffer) {
     const device = this.context.getDevice();
@@ -270,15 +172,6 @@ export default class Scene extends WebgpuScene {
     );
   }
 
-  // render() {
-  //   this.updateCameraUniforms(this.pickingUniformCamera.buffer);
-  //   this.picking.render(
-  //     this.pickingUniformCamera.bindGroup,
-  //     this.gltfPipeline.getNodes(),
-  //     this.gltfPipeline.getAnimations()
-  //   );
-  // }
-
   render() {
     const device = this.context.getDevice();
 
@@ -286,7 +179,7 @@ export default class Scene extends WebgpuScene {
 
     this.renderShadowDepthPass();
 
-    this.updateCameraUniforms(this.uniformCamera.buffer, this.uniformCamera.bufferLightProj);
+    this.updateCameraUniforms(this.cameraBuffers);
 
     const encoder = device.createCommandEncoder({
       label: "GltfCommandEncoder",
@@ -295,7 +188,7 @@ export default class Scene extends WebgpuScene {
 
     pass.setPipeline(this.gltfPipeline.get());
     // bind group are defined in shader code ex: @group(0) @binding(0)
-    pass.setBindGroup(GltfBindGroups.CAMERA, this.uniformCamera.bindGroup);
+    pass.setBindGroup(GltfBindGroups.CAMERA, this.cameraBuffers.bindGroup);
 
     pass.setBindGroup(GltfBindGroups.LIGHT, this.uniformLights.bindGroup);
 

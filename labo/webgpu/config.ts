@@ -12,6 +12,7 @@ const config: LaboConfig = {
     "/wgsl/fragment/f_debug_tex.js",
     "/wgsl/vertex/v_model_camera.js",
     "/wgsl/fragment/f_simple.js",
+    "/wgsl/sobel.js",
   ],
   // assets: ['/gltf/paysage.gltf'],
   // assets: ['/gltf/distributedInstances.gltf'],
@@ -39,6 +40,11 @@ const config: LaboConfig = {
   //   far: 100,
   //   ortho: { left: -20, right: 20, bottom: -20, top: 20 },
   // },
+  postprocess: {
+    sobel: {
+      intensity: 1.0,
+    },
+  },
   lampes: [
     {
       type: 0,

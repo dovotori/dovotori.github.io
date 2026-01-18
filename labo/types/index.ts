@@ -36,6 +36,9 @@ type IEffect = {
 };
 
 type IPostProcess = {
+  sobel?: {
+    intensity: number;
+  };
   shadow?: {
     epsilon: number;
     lighten: number;

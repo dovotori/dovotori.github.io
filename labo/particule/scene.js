@@ -288,7 +288,7 @@ export default class Scene extends WebgpuSceneCamera {
       },
     });
 
-    this.setupCamera(this.renderPipeline.getBindGroupLayout(0));
+    this.cameraBuffers = this.setupCamera(this.renderPipeline.getBindGroupLayout(0));
 
     // Rendering uniform buffer
     this.vertexUniformBuffer = device.createBuffer({
@@ -397,7 +397,7 @@ export default class Scene extends WebgpuSceneCamera {
 
     this.model.identity();
     this.model.rotate(this.time * 0.1, 0, 1, 0);
-    this.updateCameraUniforms();
+    this.updateCameraUniforms(this.cameraBuffers);
   }
 
   render() {

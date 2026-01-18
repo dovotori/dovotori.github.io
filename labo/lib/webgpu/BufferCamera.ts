@@ -1,5 +1,11 @@
+export type CameraBuffers = {
+  buffer: GPUBuffer;
+  bindGroup: GPUBindGroup;
+  bufferLightProj?: GPUBuffer;
+};
+
 export class BufferCamera {
-  setup(device: GPUDevice, layout: GPUBindGroupLayout, withLight = false) {
+  setup(device: GPUDevice, layout: GPUBindGroupLayout, withLight = false): CameraBuffers {
     const buffer = device.createBuffer({
       size: Float32Array.BYTES_PER_ELEMENT * (16 * 3 + 4), // 4x4 matrix view + projection + model + vec3,
       usage: window.GPUBufferUsage.UNIFORM | window.GPUBufferUsage.COPY_DST,
