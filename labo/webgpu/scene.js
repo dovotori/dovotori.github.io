@@ -175,6 +175,7 @@ export default class Scene extends WebgpuSceneCamera {
     this.gltfPipeline.update(this.postProcess.getColorAttachmentsTargetViews());
 
     const canvasCurrentView = this.context.getCurrentTexture().createView();
+
     this.postProcess.setFirstPassDestination();
     this.postProcess.updateEffectTextures(canvasCurrentView);
   }
@@ -246,6 +247,12 @@ export default class Scene extends WebgpuSceneCamera {
     this.canvasSize = size;
     const device = this.context.getDevice();
     this.postProcess.resize(device, this.canvasSize);
+
+    // need to pass depth textuere
+    if (this.postProcess.getRenderTargetsCount() > 2) {
+      this.postProcess.setupEffectSource("sobel", this.postProcess.getRenderTargetView(2));
+    }
+
     this.gltfPipeline.resize(size, this.postProcess.getPassDescriptorColorAttachments());
     this.picking.resize(size);
   }

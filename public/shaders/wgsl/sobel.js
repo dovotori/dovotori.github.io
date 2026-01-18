@@ -90,5 +90,9 @@ fn fs_main(@location(0) uv: vec2<f32>) -> @location(0) vec4<f32> {
 
   var outCol = 1.0 - sobel.rgb;
   return vec4<f32>(outCol, 1.0);
+
+
+  // var rgb = textureSample(depthMap, mySampler, uv).rgb;
+  // return vec4<f32>(rgb, 1.0);
 }
 `;

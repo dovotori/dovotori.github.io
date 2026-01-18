@@ -18,7 +18,7 @@ export const buildBindGroupLayouts = (device, { withShadow = false, withSkin = f
       buffer: {
         type: "uniform",
         hasDynamicOffset: false,
-        minBindingSize: 208,
+        minBindingSize: 224,
       },
     },
   ];
@@ -150,7 +150,7 @@ export const buildShadowBindGroupLayouts = (device) => {
         buffer: {
           type: "uniform",
           hasDynamicOffset: false,
-          minBindingSize: 208,
+          minBindingSize: 224,
         },
       },
     ],
@@ -183,7 +183,7 @@ export const buildPickingBindGroupLayouts = (device) => {
         buffer: {
           type: "uniform",
           hasDynamicOffset: false,
-          minBindingSize: 208,
+          minBindingSize: 224,
         },
       },
     ],

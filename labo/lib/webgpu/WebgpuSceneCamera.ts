@@ -82,11 +82,14 @@ export default class WebgpuSceneCamera extends WebgpuScene {
     const projection = this.camera.getModeProjection().get();
     const view = this.camera.getView().get();
 
-    const uniforms = new Float32Array(16 * 3 + 3); // 16 elements for projection, 16 for view, 16 for model, 3 for camera position
+    const uniforms = new Float32Array(16 * 3 + 5); // projection(16) + view(16) + model(16) + camera position(3) + near + far
     uniforms.set(projection, 0);
     uniforms.set(view, 16);
     uniforms.set(this.model.get(), 32);
     uniforms.set(this.camera.getPosition(), 48);
+    // store near/far after the camera position (padding occupies index 51)
+    uniforms[52] = this.camera.getNear();
+    uniforms[53] = this.camera.getFar();
 
     device.queue.writeBuffer(
       cameraBuffers.buffer,

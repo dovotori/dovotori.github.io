@@ -443,7 +443,7 @@ export class GltfPipeline {
     this.customTransforms[name] = matrix;
   }
 
-  getDepthTexture() {
-    return this.textures.getDepthTexture();
+  getDepthTextureView() {
+    return this.textures.getDepthTextureView();
   }
 }

@@ -4,6 +4,8 @@ struct CameraUniform {
   view: mat4x4<f32>,
   model: mat4x4<f32>,
   position: vec3<f32>,
+  near: f32,
+  far: f32,
 };
 @group(0) @binding(0) var<uniform> camera: CameraUniform;
 @group(0) @binding(1) var<uniform> shadowProjection: mat4x4<f32>;
@@ -31,6 +33,7 @@ struct VertexOutput {
   @location(3) camera_position: vec3f,
   @location(4) shadow_pos: vec3<f32>,
   @location(5) picking_color: vec4<f32>,
+  @location(6) view_depth: f32,
   // @location(6) face_color: f32,
 }
 
@@ -47,6 +50,13 @@ fn v_main(
   out.clip_position = camera.projection * camera.view * camera.model * world_position;
   out.texture = in.texture;
   out.camera_position = camera.position;
+
+  // compute view-space position and linear depth
+  let viewPos: vec4<f32> = camera.view * camera.model * world_position;
+  // viewPos.z is negative in a typical RH camera where forward is -Z
+  let viewZ: f32 = -viewPos.z;
+  let linearDepth: f32 = clamp((viewZ - camera.near) / (camera.far - camera.near), 0.0, 1.0);
+  out.view_depth = linearDepth;
 
   let posFromLight: vec4<f32> = shadowProjection * camera.model * world_position;
   // Convert shadowPos XY to (0, 1) to fit texture UV

@@ -31,7 +31,8 @@ struct FragInput {
   @location(3) camera_position: vec3f,
   @location(4) shadow_pos: vec3<f32>,
   @location(5) picking_color: vec4<f32>,
-  // @location(6) face_color: f32,
+  @location(6) view_depth: f32,
+  // @location(7) face_color: f32,
 };
 
 struct FragOutput {
@@ -111,7 +112,8 @@ fn f_main(in: FragInput) -> FragOutput {
   var out: FragOutput;
   out.color = vec4(result, 1.0);
   out.normal = vec4(result, 1.0);
-  out.depth = vec4(result, 1.0);
+  // write linear depth (single channel) into the depth render target
+  out.depth = vec4<f32>(vec3<f32>(in.view_depth), 1.0);
   return out;
 }
 `;
