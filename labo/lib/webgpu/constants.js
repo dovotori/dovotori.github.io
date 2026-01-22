@@ -18,3 +18,13 @@ export const blend = {
     dstFactor: "one-minus-src-alpha",
   },
 };
+
+export const shadowCompareSample = {
+  magFilter: "nearest",
+  minFilter: "nearest",
+  mipmapFilter: "nearest",
+  compare: "less", // For shadow mapping (depth comparison)
+  addressModeU: "clamp-to-edge",
+  addressModeV: "clamp-to-edge",
+  addressModeW: "clamp-to-edge",
+};

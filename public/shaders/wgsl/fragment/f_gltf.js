@@ -1,7 +1,17 @@
 export default `
+struct CameraUniform {
+  projection: mat4x4<f32>,
+  view: mat4x4<f32>,
+  model: mat4x4<f32>,
+  position: vec3<f32>,
+  near: f32,
+  far: f32,
+};
+@group(0) @binding(0) var<uniform> camera: CameraUniform;
+
 struct MaterialUniform {
-  baseColorFactor: vec4f,
-  emissiveFactor: vec3f,
+  baseColorFactor: vec4<f32>,
+  emissiveFactor: vec3<f32>,
   roughnessFactor: f32,
   metallicFactor: f32,
 };
@@ -9,13 +19,13 @@ struct MaterialUniform {
 @group(2) @binding(0) var<uniform> material : MaterialUniform;
 @group(2) @binding(1) var baseColorSampler: sampler;
 @group(2) @binding(2) var baseColorTexture: texture_2d<f32>;
-@group(2) @binding(3) var<uniform> lightPos: vec3f;
+@group(2) @binding(3) var<uniform> lightPos: vec3<f32>;
 @group(2) @binding(4) var depthMapSampler: sampler_comparison;
 @group(2) @binding(5) var depthMapTexture: texture_depth_2d;
 
 struct PointLight {
-  position: vec3f, 
-  color: vec3f, 
+  position: vec3<f32>, 
+  color: vec3<f32>, 
   intensity: f32,
 };
 @group(3) @binding(0) var<storage> lights: array<PointLight>;
@@ -25,20 +35,20 @@ fn number_of_lights() -> u32 {
 }
 
 struct FragInput {
-  @location(0) world_position: vec3f,
-  @location(1) world_normal: vec3f,
-  @location(2) texture: vec2f,
-  @location(3) camera_position: vec3f,
+  @location(0) world_position: vec3<f32>,
+  @location(1) world_normal: vec3<f32>,
+  @location(2) texture: vec2<f32>,
+  @location(3) camera_position: vec3<f32>,
   @location(4) shadow_pos: vec3<f32>,
   @location(5) picking_color: vec4<f32>,
-  @location(6) view_depth: f32,
+  @location(6) view_pos: vec4<f32>,
   // @location(7) face_color: f32,
 };
 
 struct FragOutput {
-  @location(0) color: vec4f,
-  @location(1) normal: vec4f,
-  @location(2) depth: vec4f,
+  @location(0) color: vec4<f32>,
+  @location(1) normal: vec4<f32>,
+  @location(2) depth: vec4<f32>,
 };
 
 @fragment
@@ -112,8 +122,11 @@ fn f_main(in: FragInput) -> FragOutput {
   var out: FragOutput;
   out.color = vec4(result, 1.0);
   out.normal = vec4(result, 1.0);
+  // compute linear depth per-fragment from interpolated view-space position
+  let viewZ: f32 = -in.view_pos.z;
+  let linearDepth: f32 = clamp((viewZ - camera.near) / (camera.far - camera.near), 0.0, 1.0);
   // write linear depth (single channel) into the depth render target
-  out.depth = vec4<f32>(vec3<f32>(in.view_depth), 1.0);
+  out.depth = vec4<f32>(vec3<f32>(linearDepth), 1.0);
   return out;
 }
 `;

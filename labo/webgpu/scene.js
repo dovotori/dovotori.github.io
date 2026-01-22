@@ -172,6 +172,7 @@ export default class Scene extends WebgpuSceneCamera {
 
     this.gltfPipeline.updateAnimations(time);
 
+    // We say to gltf pipeline to render inside the post process render targets textures
     this.gltfPipeline.update(this.postProcess.getColorAttachmentsTargetViews());
 
     const canvasCurrentView = this.context.getCurrentTexture().createView();
@@ -246,14 +247,17 @@ export default class Scene extends WebgpuSceneCamera {
   resize(size) {
     this.canvasSize = size;
     const device = this.context.getDevice();
+
     this.postProcess.resize(device, this.canvasSize);
+    this.gltfPipeline.resize(size, this.postProcess.getPassDescriptorColorAttachments());
+
+    this.postProcess.resizeEffects(this.gltfPipeline.getDepthTextureView());
 
     // need to pass depth textuere
-    if (this.postProcess.getRenderTargetsCount() > 2) {
-      this.postProcess.setupEffectSource("sobel", this.postProcess.getRenderTargetView(2));
-    }
+    // if (this.postProcess.getRenderTargetsCount() > 2) {
+    //   this.postProcess.setupEffectSource("sobel", this.postProcess.getRenderTargetView(2));
+    // }
 
-    this.gltfPipeline.resize(size, this.postProcess.getPassDescriptorColorAttachments());
     this.picking.resize(size);
   }
 

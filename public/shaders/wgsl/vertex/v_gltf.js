@@ -27,13 +27,13 @@ struct VertexInput {
 
 struct VertexOutput {
   @builtin(position) clip_position: vec4<f32>,
-  @location(0) world_position: vec3f,
-  @location(1) world_normal: vec3f,
-  @location(2) texture: vec2f,
-  @location(3) camera_position: vec3f,
+  @location(0) world_position: vec3<f32>,
+  @location(1) world_normal: vec3<f32>,
+  @location(2) texture: vec2<f32>,
+  @location(3) camera_position: vec3<f32>,
   @location(4) shadow_pos: vec3<f32>,
   @location(5) picking_color: vec4<f32>,
-  @location(6) view_depth: f32,
+  @location(6) view_pos: vec4<f32>,
   // @location(6) face_color: f32,
 }
 
@@ -51,12 +51,9 @@ fn v_main(
   out.texture = in.texture;
   out.camera_position = camera.position;
 
-  // compute view-space position and linear depth
+  // compute view-space position and pass it to the fragment stage
   let viewPos: vec4<f32> = camera.view * camera.model * world_position;
-  // viewPos.z is negative in a typical RH camera where forward is -Z
-  let viewZ: f32 = -viewPos.z;
-  let linearDepth: f32 = clamp((viewZ - camera.near) / (camera.far - camera.near), 0.0, 1.0);
-  out.view_depth = linearDepth;
+  out.view_pos = viewPos;
 
   let posFromLight: vec4<f32> = shadowProjection * camera.model * world_position;
   // Convert shadowPos XY to (0, 1) to fit texture UV

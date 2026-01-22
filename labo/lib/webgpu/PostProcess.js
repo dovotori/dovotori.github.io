@@ -1,4 +1,4 @@
-import { blend } from "./constants";
+import { blend, shadowCompareSample } from "./constants";
 
 export class PostProcess {
   constructor(context, renderTargetsCount = 3) {
@@ -114,7 +114,7 @@ export class PostProcess {
     });
   }
 
-  setupEffectSource(name, sourceTextureView) {
+  setupEffectSource(name, sourceTextureView, depthTextureView = null) {
     const device = this.context.getDevice();
 
     let buffers = {};
@@ -125,15 +125,17 @@ export class PostProcess {
 
     switch (name) {
       case "sobel": {
-        const texelSize = [1 / this.canvasSize.width, 1 / this.canvasSize.height];
-        const texelSizeBuffer = device.createBuffer({
-          label: "texel size buffer",
-          size: 8,
-          usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
-        });
-        device.queue.writeBuffer(texelSizeBuffer, 0, new Float32Array(texelSize));
-        entries.push({ binding: 2, resource: { buffer: texelSizeBuffer } });
-        buffers = { texelSize: texelSizeBuffer };
+        // const texelSize = [1 / this.canvasSize.width, 1 / this.canvasSize.height];
+        // const texelSizeBuffer = device.createBuffer({
+        //   label: "texel size buffer",
+        //   size: 8,
+        //   usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+        // });
+        // device.queue.writeBuffer(texelSizeBuffer, 0, new Float32Array(texelSize));
+        // entries.push({ binding: 2, resource: { buffer: texelSizeBuffer } });
+        entries.push({ binding: 2, resource: depthTextureView });
+        // entries.push({ binding: 4, resource: device.createSampler(shadowCompareSample) });
+        // buffers = { texelSize: texelSizeBuffer };
         break;
       }
       case "bright": {
@@ -252,18 +254,19 @@ export class PostProcess {
     this.pingTarget?.destroy();
     this.pongTarget?.destroy();
     this.setupPingPongTargets(device, canvasSize);
+  };
 
-    // affect source texture for each effect
+  resizeEffects(depthTextureView = null) {
     let i = 0;
     for (const [name, _] of this.effects) {
       if (i === 0) {
-        this.setupEffectSource(name, this.firstTexture.createView());
+        this.setupEffectSource(name, this.firstTexture.createView(), depthTextureView);
       } else {
         this.setupEffectSource(name, this.getPingPongTexture(i % 2 === 0).createView());
       }
       i++;
     }
-  };
+  }
 
   /// Render the first pass to gather data like color, normal, depth, etc.
   renderFirstPass(encoder) {

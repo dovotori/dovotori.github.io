@@ -1,3 +1,4 @@
+import { shadowCompareSample } from "./constants";
 import { buildShadowBindGroupLayouts, GltfBindGroups } from "./GltfPipelineBindGroupLayout";
 
 export class Shadow {
@@ -162,15 +163,7 @@ export class Shadow {
       },
       {
         binding: 4,
-        resource: device.createSampler({
-          magFilter: "nearest",
-          minFilter: "nearest",
-          mipmapFilter: "nearest",
-          compare: "less", // For shadow mapping (depth comparison)
-          addressModeU: "clamp-to-edge",
-          addressModeV: "clamp-to-edge",
-          addressModeW: "clamp-to-edge",
-        }),
+        resource: device.createSampler(shadowCompareSample),
       },
       {
         binding: 5,

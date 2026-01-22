@@ -14,7 +14,7 @@ export const buildBindGroupLayouts = (device, { withShadow = false, withSkin = f
   const cameraEntries = [
     {
       binding: 0,
-      visibility: GPUShaderStage.VERTEX,
+      visibility: GPUShaderStage.VERTEX | GPUShaderStage.FRAGMENT,
       buffer: {
         type: "uniform",
         hasDynamicOffset: false,
