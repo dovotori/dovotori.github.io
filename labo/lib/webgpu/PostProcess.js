@@ -1,4 +1,4 @@
-import { blend, shadowCompareSample } from "./constants";
+import { blend } from "./constants";
 
 export class PostProcess {
   constructor(context, renderTargetsCount = 3) {

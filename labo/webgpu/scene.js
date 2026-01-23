@@ -262,7 +262,7 @@ export default class Scene extends WebgpuSceneCamera {
   }
 
   onMouseClick = async (e) => {
-    this.updateCameraUniforms(this.pickingUniformCamera.buffer);
+    this.updateCameraUniforms(this.pickingUniformCamera);
     // TODO to fix the first call is late
     await this.picking.pick(
       e.pos,
