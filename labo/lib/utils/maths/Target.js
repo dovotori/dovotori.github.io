@@ -1,5 +1,6 @@
 export default class {
-  constructor(value = 0, sampling = 0.04) {
+  constructor(value = 0.0001, sampling = 0.04) {
+    // value can't be zero
     this.value = value;
     this.target = value;
     this.sampling = sampling;

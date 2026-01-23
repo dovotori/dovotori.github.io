@@ -1,8 +1,8 @@
-import DualQuaternion from "../lib/utils/maths/DualQuaternion";
 import { intersectRayWithPlane } from "../lib/utils/maths/intersection";
 import Mat4 from "../lib/utils/maths/Mat4";
 import Vec3 from "../lib/utils/maths/Vec3";
 import Vec4 from "../lib/utils/maths/Vec4";
+import { MouseInteraction } from "../lib/utils-3d/input/MouseInteraction";
 import {
   DebugTexture,
   GltfBindGroups,
@@ -31,6 +31,8 @@ export default class Scene extends WebgpuSceneCamera {
     this.picking = new Picking(context);
     this.shadow = new Shadow(context);
     this.debug = new DebugTexture(context);
+
+    this.interaction = new MouseInteraction();
 
     this.postProcess = new PostProcess(this.context);
     // this.debugCube = new DebugPipeline(context);
@@ -164,11 +166,11 @@ export default class Scene extends WebgpuSceneCamera {
     // view.rotate(time * 0.01, 0, 1, 0)
     // view.pop()
 
+    this.interaction.update();
+
     this.model.identity();
-    const quat = new DualQuaternion();
-    quat.rotateY(time * 0.0001);
-    // quat.rotateX(time * 0.001);
-    this.model.multiply(quat.toMatrix4());
+    this.model.scale(this.interaction.getTargetZ().get());
+    this.model.multiply(this.interaction.getRotation(time));
 
     this.gltfPipeline.updateAnimations(time);
 
@@ -322,5 +324,13 @@ export default class Scene extends WebgpuSceneCamera {
       //   intersectionPoint.getZ(),
       // );
     }
+  };
+
+  onMouseDrag = (mouse) => {
+    this.interaction.onMouseDrag(mouse);
+  };
+
+  onMouseWheel = (mouse) => {
+    this.interaction.onMouseWheel(mouse);
   };
 }

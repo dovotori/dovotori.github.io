@@ -72,7 +72,7 @@ const config: LaboConfig = {
   },
   useWebGpu: true,
   mouse: {
-    events: ["click"],
+    events: ["click", "wheel", "drag"],
   },
 };
 export default config;

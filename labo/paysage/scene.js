@@ -1,8 +1,5 @@
-import DualQuaternion from "../lib/utils/maths/DualQuaternion";
 import Mat4 from "../lib/utils/maths/Mat4";
-import Spring from "../lib/utils/maths/Spring";
-import Target from "../lib/utils/maths/Target";
-import { degToRad } from "../lib/utils/numbers";
+import { MouseInteraction } from "../lib/utils-3d/input/MouseInteraction";
 import primitive from "../lib/utils-3d/primitives/plane";
 import Primitive from "../lib/webgl/gl/Primitive";
 import Buffers from "../lib/webgl/postprocess/Buffers";
@@ -17,11 +14,10 @@ export default class extends Scene {
 
     this.model = new Mat4();
     this.model.identity();
-    this.targetX = new Spring(0);
-    this.targetZ = new Target(0, 0.05);
+
+    this.interaction = new MouseInteraction();
 
     this.fakeShadow = new Primitive(gl, primitive);
-    this.targetZ.set(1.2);
 
     this.buffers = new Buffers(this.gl, config.width, config.height, this.canUseDepth());
   }
@@ -29,16 +25,11 @@ export default class extends Scene {
   update(time) {
     super.update(time);
 
-    this.targetX.update();
-    this.targetZ.update();
+    this.interaction.update();
 
     this.model.identity();
-    this.model.scale(this.targetZ.get());
-
-    const angle = degToRad(this.targetX.get()) + time * 0.0001;
-    const quat = new DualQuaternion();
-    quat.rotateY(-angle);
-    this.model.multiply(quat.toMatrix4());
+    this.model.scale(this.interaction.getTargetZ().get());
+    this.model.multiply(this.interaction.getRotation(time));
 
     const program = this.mngProg.get(this.config.MAIN_PROG);
 
@@ -108,13 +99,10 @@ export default class extends Scene {
   }
 
   onMouseDrag = (mouse) => {
-    this.targetX.set(mouse.relPrevious.x * 0.1);
+    this.interaction.onMouseDrag(mouse);
   };
 
   onMouseWheel = (mouse) => {
-    let target = -mouse.deltaY;
-    target = Math.min(target, 1.2);
-    target = Math.max(target, 0.8);
-    this.targetZ.set(target);
+    this.interaction.onMouseWheel(mouse);
   };
 }
