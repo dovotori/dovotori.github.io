@@ -1,8 +1,9 @@
 import { mapFromRange } from "../lib/utils/numbers";
+import PerlinNoise from "../lib/utils/perlinNoise";
 import { ComputeProcess, PipelineTextures, PostProcess } from "../lib/webgpu";
 import { defaultDepthAttachment } from "../lib/webgpu/constants";
 import WebgpuSceneCamera from "../lib/webgpu/WebgpuSceneCamera";
-import { computeShader } from "./compute";
+import { computeShader } from "./compute2";
 
 const MASS_FACTOR = 0.0001;
 const RECOVER_RATE = 0.6; // lerp rate per frame (tune to taste) - closest to 0 faster to regroup
@@ -49,11 +50,32 @@ export default class Scene extends WebgpuSceneCamera {
       usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST | GPUBufferUsage.STORAGE,
     });
     const positionBufferData = new Float32Array(this.particulesCount * 4);
-    for (let i = 0; i < positionBufferData.length; i += 4) {
-      positionBufferData[i] = Math.random() * 2 - 1;
-      positionBufferData[i + 1] = Math.random() * 2 - 1;
-      positionBufferData[i + 2] = Math.random() * 2 - 1;
-      positionBufferData[i + 3] = 1;
+    // Place particles on a 2D grid that fills the canvas.
+    // Compute grid size (cols x rows) preserving canvas aspect ratio.
+    const count = this.particulesCount;
+    const canvasW = this.canvasSize.width || 1;
+    const canvasH = this.canvasSize.height || 1;
+    const aspect = canvasW / canvasH;
+    const cols = Math.ceil(Math.sqrt(count * aspect));
+    const rows = Math.ceil(count / cols);
+
+    for (let idx = 0; idx < count; idx++) {
+      const col = idx % cols;
+      const row = Math.floor(idx / cols);
+
+      // normalized [0..1] inside the grid cell, centered
+      const u = (col + 0.5) / cols;
+      const v = (row + 0.5) / rows;
+
+      // convert to NDC space [-1..1], with +Y up
+      const ndcX = u * 2 - 1;
+      const ndcY = 1 - v * 2;
+
+      const i = idx * 4;
+      positionBufferData[i] = ndcX;
+      positionBufferData[i + 1] = ndcY;
+      positionBufferData[i + 2] = 0; // z
+      positionBufferData[i + 3] = 1; // w
     }
     device.queue.writeBuffer(this.positionBuffer, 0, positionBufferData);
 
@@ -64,11 +86,52 @@ export default class Scene extends WebgpuSceneCamera {
       usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST | GPUBufferUsage.STORAGE,
     });
     const velocityBufferData = new Float32Array(this.particulesCount * 4);
-    for (let i = 0; i < velocityBufferData.length; i += 4) {
+
+    //  for (let i = 0; i < positionBufferData.length; i += 4) {
+    //       positionBufferData[i] = Math.random() * 2 - 1;
+    //       positionBufferData[i + 1] = Math.random() * 2 - 1;
+    //       positionBufferData[i + 2] = Math.random() * 2 - 1;
+    //       positionBufferData[i + 3] = 1;
+    //  }
+
+    // Use Perlin noise to compute a coherent initial rotation per-particle
+    const noise = new PerlinNoise(64, false); // generated noise, size 64
+    // frequency controls feature size; larger -> more variation
+    const freq = 200 / Math.min(cols, rows);
+    const rotationScale = 1.0; // 1.0 => full [-PI..PI]
+
+    for (let idx = 0, i = 0; idx < this.particulesCount; idx += 1, i += 4) {
+      // small random velocity for motion
       velocityBufferData[i] = Math.random() * 0.002 - 0.001;
       velocityBufferData[i + 1] = Math.random() * 0.002 - 0.001;
       velocityBufferData[i + 2] = Math.random() * 0.002 - 0.001;
-      velocityBufferData[i + 3] = 0;
+
+      // compute grid coords used earlier
+      const col = idx % cols;
+      const row = Math.floor(idx / cols);
+
+      // fractal (3-octave) noise
+      let n = 0.0;
+      let amp = 1.0;
+      let f = freq;
+      let totalAmp = 0.0;
+      for (let o = 0; o < 3; o++) {
+        // sample noise using normalized grid coords scaled by noise size
+        const sx = (col / cols) * noise.size * f;
+        const sy = (row / rows) * noise.size * f;
+        n += noise.get(sx, sy) * amp;
+        totalAmp += amp;
+        amp *= 0.5;
+        f *= 2.0;
+      }
+      n /= totalAmp; // normalize to [0..1]
+
+      // map noise to angle in radians [-PI..PI]
+      const angle = (n * 2.0 - 1.0) * Math.PI * rotationScale;
+
+      // store a random rotation angle (radians) in the 4th component
+      // velocityBufferData[i + 3] = 0;
+      velocityBufferData[i + 3] = angle;
     }
     device.queue.writeBuffer(this.velocityBuffer, 0, velocityBufferData);
 
@@ -148,10 +211,26 @@ export default class Scene extends WebgpuSceneCamera {
     });
 
     const colorBufferData = new Uint8Array(4 * this.particulesCount);
-    for (let i = 0; i < colorBufferData.length; i += 4) {
+    for (let idx = 0, i = 0; idx < this.particulesCount; idx += 1, i += 4) {
       colorBufferData[i] = 0;
-      colorBufferData[i + 1] = Math.floor(Math.random() * 256);
-      colorBufferData[i + 2] = Math.floor(Math.random() * 256);
+      // base random channels
+      const baseG = Math.floor(Math.random() * 256);
+      const baseB = Math.floor(Math.random() * 256);
+
+      // sample coherent noise for this particle to vary color nuance
+      const col = idx % cols;
+      const row = Math.floor(idx / cols);
+      const sx = (col / cols) * noise.size;
+      const sy = (row / rows) * noise.size;
+      const n = noise.get(sx, sy); // [0..1]
+
+      // map noise to a small delta in [-30..30] and apply to G/B channels
+      const delta = (n * 2 - 1) * 30;
+      const g = Math.min(255, Math.max(0, Math.round(baseG + delta)));
+      const b = Math.min(255, Math.max(0, Math.round(baseB + delta)));
+
+      colorBufferData[i + 1] = g;
+      colorBufferData[i + 2] = b;
       colorBufferData[i + 3] = 128;
     }
     device.queue.writeBuffer(this.colorBuffer, 0, colorBufferData);
@@ -234,6 +313,18 @@ export default class Scene extends WebgpuSceneCamera {
               },
             ],
           },
+          {
+            // per-instance rotation stored in velocityBuffer (4th component)
+            arrayStride: velocityArrayStride,
+            stepMode: "instance",
+            attributes: [
+              {
+                shaderLocation: 3,
+                format: "float32",
+                offset: 3 * Float32Array.BYTES_PER_ELEMENT,
+              },
+            ],
+          },
         ],
       },
       fragment: {
@@ -302,6 +393,15 @@ export default class Scene extends WebgpuSceneCamera {
 
     this.textures.resize(device, this.context.getCanvasFormat(), size);
 
+    // compute particle grid spacing (pixels) to pass to the vertex shader
+    const count = this.particulesCount;
+    const canvasW = this.canvasSize.width || 1;
+    const canvasH = this.canvasSize.height || 1;
+    const aspect = canvasW / canvasH;
+    const cols = Math.ceil(Math.sqrt(count * aspect));
+    const rows = Math.ceil(count / cols);
+    const spacing = canvasH / rows; // pixel spacing between rows
+
     device.queue.writeBuffer(
       this.vertexUniformBuffer,
       0,
@@ -309,6 +409,7 @@ export default class Scene extends WebgpuSceneCamera {
         this.canvasSize.width,
         this.canvasSize.height,
         this.config.particules.size,
+        spacing,
       ]),
     );
 
@@ -368,6 +469,8 @@ export default class Scene extends WebgpuSceneCamera {
     renderPass.setVertexBuffer(0, this.vertexBuffer);
     renderPass.setVertexBuffer(1, this.colorBuffer);
     renderPass.setVertexBuffer(2, this.positionBuffer);
+    // bind velocityBuffer (4th component contains rotation) to slot 3
+    renderPass.setVertexBuffer(3, this.velocityBuffer);
     renderPass.setBindGroup(0, this.vertexUniformBindGroup);
     renderPass.setBindGroup(1, this.cameraBuffers.bindGroup);
 

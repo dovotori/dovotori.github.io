@@ -38,7 +38,7 @@ const config: LaboConfig = {
   },
   particules: {
     workgroupSize: 64, // 1 - 256 // depend on computer limitations
-    workgroupCount: 1000,
+    workgroupCount: 100,
     size: 2,
     speed: 10.0,
   },
