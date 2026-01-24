@@ -5,17 +5,19 @@ import Camera from "../lib/utils-3d/cameras/Camera";
 import Objectif from "../lib/utils-3d/cameras/Objectif";
 import { DebugPipeline, DebugTexture, GltfBindGroups, GltfPipeline } from "../lib/webgpu";
 import { BufferCamera } from "../lib/webgpu/BufferCamera";
+import {
+  blend,
+  defaultColorAttachment,
+  defaultMsaaFourSamplesColorAttachment,
+} from "../lib/webgpu/constants";
 import WebgpuScene from "../lib/webgpu/WebgpuScene";
 
 export default class Scene extends WebgpuScene {
   constructor(context, config) {
     super(context, config);
-    this.time = 0;
     const { width, height } = config.canvas;
     this.camera = new Camera(config.camera);
     this.camera.perspective(width, height);
-
-    this.canvasSize = { width, height };
 
     this.model = new Mat4();
     this.model.identity();
@@ -100,7 +102,13 @@ export default class Scene extends WebgpuScene {
       fragment: programs.f_gltf_rig.get(),
     };
 
-    await this.gltfPipeline.setup(gltf, program, this.canvasSize);
+    const fragmentTargets = [
+      {
+        format: this.context.getCanvasFormat(),
+        blend,
+      },
+    ];
+    await this.gltfPipeline.setup(gltf, program, this.canvasSize, fragmentTargets);
     this.uniformCamera = this.setupCamera(
       this.gltfPipeline.getBindGroupLayout(GltfBindGroups.CAMERA),
     );
@@ -116,6 +124,8 @@ export default class Scene extends WebgpuScene {
     this.debugUniformCamera = this.setupCamera(
       this.debugCube.getBindGroupLayout(GltfBindGroups.CAMERA),
     );
+
+    this.resize(this.canvasSize);
   }
 
   update(time) {
@@ -139,6 +149,9 @@ export default class Scene extends WebgpuScene {
     }
 
     this.gltfPipeline.updateAnimations(time);
+    this.gltfPipeline.updateMsaaFourSamples();
+
+    this.updateCameraUniforms(this.uniformCamera.buffer, this.uniformCamera.bufferLightProj);
   }
 
   updateCameraUniforms(cameraBuffer, lightProjBuffer) {
@@ -177,10 +190,6 @@ export default class Scene extends WebgpuScene {
   render() {
     const device = this.context.getDevice();
 
-    this.gltfPipeline.update();
-
-    this.updateCameraUniforms(this.uniformCamera.buffer, this.uniformCamera.bufferLightProj);
-
     const encoder = device.createCommandEncoder({
       label: "GltfCommandEncoder",
     });
@@ -202,7 +211,7 @@ export default class Scene extends WebgpuScene {
 
   resize(size) {
     this.canvasSize = size;
-    this.gltfPipeline.resize(size);
+    this.gltfPipeline.resize(size, [defaultMsaaFourSamplesColorAttachment]);
   }
 
   headFollowMouse(x, y) {

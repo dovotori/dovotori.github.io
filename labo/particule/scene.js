@@ -12,7 +12,6 @@ export default class Scene extends WebgpuSceneCamera {
     super(context, config);
 
     const { width, height } = config.canvas;
-    this.canvasSize = { width, height };
 
     this.camera.perspective(width, height);
 
@@ -313,6 +312,7 @@ export default class Scene extends WebgpuSceneCamera {
     );
 
     this.postProcess.resize(device, this.canvasSize);
+    this.postProcess.resizeEffects();
 
     this.renderPassDescriptor = {
       label: "Render Pass Descriptor",

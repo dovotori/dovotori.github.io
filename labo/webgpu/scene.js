@@ -21,11 +21,8 @@ const DEBUG_PICKING = false;
 export default class Scene extends WebgpuSceneCamera {
   constructor(context, config) {
     super(context, config);
-    this.time = 0;
     const { width, height } = config.canvas;
     this.camera.perspective(width, height);
-
-    this.canvasSize = { width, height };
 
     this.gltfPipeline = new GltfPipeline(context, config, 1);
     this.picking = new Picking(context);

@@ -5,6 +5,7 @@ export default class WebgpuScene {
     this.context = context;
     this.config = config;
     this.time = 0;
+    this.canvasSize = { width: config.canvas.width, height: config.canvas.height };
   }
 
   async setupAssets(assets) {

@@ -28,3 +28,25 @@ export const shadowCompareSample = {
   addressModeV: "clamp-to-edge",
   addressModeW: "clamp-to-edge",
 };
+
+export const defaultColorAttachment = {
+  view: null,
+  clearValue: { r: 0, g: 0, b: 0, a: 0 },
+  loadOp: "clear", // 'load' -> draw hover / 'clear'
+  storeOp: "store", // 'store' -> save // 'discard' maybe for save in tex
+};
+
+export const defaultMsaaFourSamplesColorAttachment = {
+  view: null,
+  resolveTarget: null, // context.getCurrentTexture().createView(),
+  clearValue: { r: 0, g: 0, b: 0, a: 0 },
+  loadOp: "clear", // 'load' -> draw hover / 'clear'
+  storeOp: "store", // 'store' -> save // 'discard' maybe for save in tex
+};
+
+export const defaultDepthAttachment = {
+  view: null,
+  depthClearValue: 1.0,
+  depthLoadOp: "clear",
+  depthStoreOp: "store",
+};

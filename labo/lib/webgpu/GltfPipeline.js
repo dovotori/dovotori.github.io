@@ -344,9 +344,13 @@ export class GltfPipeline {
   }
 
   update(targetViews) {
-    this.pipeline.update(
-      targetViews,
-      // this.textures.getRenderTargetView(),
+    this.pipeline.update(targetViews, this.textures.getDepthTextureView());
+  }
+
+  updateMsaaFourSamples() {
+    this.pipeline.updateMsaaFourSamples(
+      this.context.getCurrentTexture().createView(),
+      this.textures.getRenderTargetView(),
       this.textures.getDepthTextureView(),
     );
   }

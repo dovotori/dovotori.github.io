@@ -1,3 +1,4 @@
+import { defaultColorAttachment } from "./constants";
 import { buildPickingBindGroupLayouts, GltfBindGroups } from "./GltfPipelineBindGroupLayout";
 import PipelineTextures from "./PipelineTextures";
 
@@ -113,14 +114,7 @@ export class Picking {
 
     this.renderPassDescriptor = {
       label: "MousePickRenderPass",
-      colorAttachments: [
-        {
-          view: null,
-          clearValue: { r: 0, g: 0, b: 0, a: 0 },
-          loadOp: "clear", // 'load' -> draw hover / 'clear'
-          storeOp: "store", // 'store' -> save // 'discard' maybe for save in tex
-        },
-      ],
+      colorAttachments: [defaultColorAttachment],
       depthStencilAttachment: {
         view: null,
         depthClearValue: 1.0,

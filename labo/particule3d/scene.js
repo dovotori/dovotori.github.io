@@ -2,6 +2,7 @@ import Mat4 from "../lib/utils/maths/Mat4";
 import Camera from "../lib/utils-3d/cameras/Camera";
 import { ComputeProcess } from "../lib/webgpu";
 import { CubeTexture } from "../lib/webgpu/CubeTexture";
+import { defaultColorAttachment } from "../lib/webgpu/constants";
 import PipelineTextures from "../lib/webgpu/PipelineTextures";
 import { PostProcess } from "../lib/webgpu/PostProcess";
 import { Skybox } from "../lib/webgpu/Skybox";
@@ -13,10 +14,11 @@ export default class Scene extends WebgpuScene {
     super(context, config);
 
     const { width, height } = config.canvas;
-    this.canvasSize = { width, height };
 
     this.camera = new Camera(config.camera);
     this.camera.perspective(width, height);
+
+    this.postProcess = new PostProcess(this.context);
 
     this.model = new Mat4();
 
@@ -34,7 +36,7 @@ export default class Scene extends WebgpuScene {
     this.textures.setup(device, this.context.getCanvasFormat(), this.canvasSize, "depth24plus");
 
     // POST PROCESS
-    this.postProcess = new PostProcess(this.context);
+
     this.postProcess.setup(programs.postprocess.get());
 
     Object.keys(this.config.postprocess).forEach((key) => {
@@ -260,14 +262,10 @@ export default class Scene extends WebgpuScene {
 
     this.renderPassDescriptor = {
       // can define multiple targets textures, should match pipeline targets
+      // clone `defaultColorAttachment` per-slot to avoid sharing the same object
       colorAttachments: Array.from({
         length: this.postProcess.getRenderTargetsCount(),
-      }).map(() => ({
-        view: null,
-        clearValue: { r: 0, g: 0, b: 0, a: 0 },
-        loadOp: "clear",
-        storeOp: "store",
-      })),
+      }).map(() => ({ ...defaultColorAttachment })),
       // [
       //   {
       //     view: null,
@@ -304,6 +302,7 @@ export default class Scene extends WebgpuScene {
 
     this.textures.resize(device, this.context.getCanvasFormat(), size);
     this.postProcess.resize(device, this.canvasSize);
+    this.postProcess.resizeEffects();
   }
 
   update() {

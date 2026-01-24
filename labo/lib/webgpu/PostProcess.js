@@ -1,4 +1,4 @@
-import { blend } from "./constants";
+import { blend, defaultColorAttachment } from "./constants";
 
 export class PostProcess {
   constructor(context, renderTargetsCount = 3) {
@@ -369,12 +369,7 @@ export class PostProcess {
   getPassDescriptorColorAttachments() {
     return Array.from({
       length: this.getRenderTargetsCount(),
-    }).map(() => ({
-      view: this.firstTexture.createView(),
-      clearValue: { r: 0, g: 0, b: 0, a: 0 },
-      loadOp: "clear", // 'load' -> draw hover / 'clear'
-      storeOp: "store", // 'store' -> save // 'discard' maybe for save in tex
-    }));
+    }).map(() => ({ ...defaultColorAttachment }));
   }
 
   // for pass descriptor
