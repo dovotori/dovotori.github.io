@@ -48,7 +48,7 @@ struct FragInput {
 struct FragOutput {
   @location(0) color: vec4<f32>,
   @location(1) normal: vec4<f32>,
-  @location(2) depth: vec4<f32>,
+  // @location(2) depth: vec4<f32>,
 };
 
 @fragment
@@ -122,11 +122,14 @@ fn f_main(in: FragInput) -> FragOutput {
   var out: FragOutput;
   out.color = vec4(result, 1.0);
   out.normal = vec4(result, 1.0);
+  
+  // finally depth is handle in the depth stencil buffer
   // compute linear depth per-fragment from interpolated view-space position
-  let viewZ: f32 = -in.view_pos.z;
-  let linearDepth: f32 = clamp((viewZ - camera.near) / (camera.far - camera.near), 0.0, 1.0);
-  // write linear depth (single channel) into the depth render target
-  out.depth = vec4<f32>(vec3<f32>(linearDepth), 1.0);
+  // let viewZ: f32 = -in.view_pos.z;
+  // let linearDepth: f32 = clamp((viewZ - camera.near) / (camera.far - camera.near), 0.0, 1.0);
+  // // write linear depth (single channel) into the depth render target
+  // out.depth = vec4<f32>(vec3<f32>(linearDepth), 1.0);
+
   return out;
 }
 `;

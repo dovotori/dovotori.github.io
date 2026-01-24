@@ -1,22 +1,22 @@
 import { blend, defaultColorAttachment } from "./constants";
 
 export class PostProcess {
-  constructor(context, renderTargetsCount = 3) {
+  constructor(context, renderTargetsCount = 2) {
     this.context = context;
     this.pipeline = undefined;
     this.renderTargetFormat = navigator.gpu.getPreferredCanvasFormat(); //'rgba8unorm';
     this.presentationFormat = navigator.gpu.getPreferredCanvasFormat();
     this.sampleCount = 1; // should be 1 for a render target used as texture, multisample is allow only for canvas context texture
-    this.renderTargetsCount = renderTargetsCount; // 3 is for color, normal, depth render targets
+    this.renderTargetsCount = renderTargetsCount; // 2 is for color, normal render targets, should be coherent with postprocess shader
     this.effectRenderGroups = new Map();
     this.canvasSize = { width: 1, height: 1 };
     this.effects = new Map(); // name, { pipeline, renderGroup }
   }
 
-  setup(program) {
+  async setup(program) {
     const device = this.context.getDevice();
 
-    this.pipeline = device.createRenderPipeline({
+    this.pipeline = await device.createRenderPipelineAsync({
       label: "post process no attributes",
       layout: "auto",
       vertex: { module: program },
@@ -358,7 +358,7 @@ export class PostProcess {
 
   getPipelineFragmentTargets() {
     const targetsFromPostProcess = Array.from({
-      length: this.getRenderTargetsCount(),
+      length: this.renderTargetsCount,
     }).map(() => ({
       format: this.getRenderTargetFormat(),
       blend,
@@ -368,13 +368,13 @@ export class PostProcess {
 
   getPassDescriptorColorAttachments() {
     return Array.from({
-      length: this.getRenderTargetsCount(),
+      length: this.renderTargetsCount,
     }).map(() => ({ ...defaultColorAttachment }));
   }
 
   // for pass descriptor
   getColorAttachmentsTargetViews() {
-    return Array.from({ length: this.getRenderTargetsCount() }).map((_, i) => {
+    return Array.from({ length: this.renderTargetsCount }).map((_, i) => {
       return this.getRenderTargetView(i);
     });
   }

@@ -15,6 +15,7 @@ export default class Scene extends WebgpuSceneCamera {
     const { width, height } = config.canvas;
 
     this.camera.perspective(width, height);
+    this.postProcess = new PostProcess(this.context);
 
     this.sampleCount = 1; // because we use post process (4 if not)
 
@@ -31,8 +32,7 @@ export default class Scene extends WebgpuSceneCamera {
 
     this.textures.setup(device, this.context.getCanvasFormat(), this.canvasSize, "depth24plus");
 
-    this.postProcess = new PostProcess(this.context);
-    this.postProcess.setup(programs.postprocess.get());
+    await this.postProcess.setup(programs.postprocess.get());
 
     Object.keys(this.config.postprocess).forEach((key) => {
       const effect = this.config.postprocess[key];
@@ -317,15 +317,6 @@ export default class Scene extends WebgpuSceneCamera {
 
     this.renderPassDescriptor = {
       label: "Render Pass Descriptor",
-      // colorAttachments: [
-      //   {
-      //     view: this.msaaTexture.createView(),
-      //     // resolveTarget: this.context.getCurrentTexture().createView(), // destination screen, when multisampling = 1, should not define
-      //     loadOp: "clear",
-      //     storeOp: "store",
-      //     clearValue: [0, 0, 0, 0],
-      //   },
-      // ],
       colorAttachments: this.postProcess.getPassDescriptorColorAttachments(),
       depthStencilAttachment: defaultDepthAttachment,
     };

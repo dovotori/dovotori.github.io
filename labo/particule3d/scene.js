@@ -37,7 +37,7 @@ export default class Scene extends WebgpuScene {
 
     // POST PROCESS
 
-    this.postProcess.setup(programs.postprocess.get());
+    await this.postProcess.setup(programs.postprocess.get());
 
     Object.keys(this.config.postprocess).forEach((key) => {
       const effect = this.config.postprocess[key];
@@ -266,15 +266,6 @@ export default class Scene extends WebgpuScene {
       colorAttachments: Array.from({
         length: this.postProcess.getRenderTargetsCount(),
       }).map(() => ({ ...defaultColorAttachment })),
-      // [
-      //   {
-      //     view: null,
-      //     // resolveTarget: this.context.getCurrentTexture().createView(), // use for multisampling
-      //     clearValue: { r: 0, g: 0, b: 0, a: 0 },
-      //     loadOp: 'clear',
-      //     storeOp: 'store',
-      //   },
-      // ],
       depthStencilAttachment: defaultDepthAttachment,
     };
 
