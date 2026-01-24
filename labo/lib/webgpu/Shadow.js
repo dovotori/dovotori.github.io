@@ -1,4 +1,4 @@
-import { shadowCompareSample } from "./constants";
+import { defaultDepthAttachment, shadowCompareSample } from "./constants";
 import { buildShadowBindGroupLayouts, GltfBindGroups } from "./GltfPipelineBindGroupLayout";
 
 export class Shadow {
@@ -78,13 +78,7 @@ export class Shadow {
     this.renderPassDescriptor = {
       label: "Shadow render pass",
       colorAttachments: [], // no fragment shader, we just want depth map
-      depthStencilAttachment: {
-        view: this.textureDepthView,
-        depthClearValue: 1.0,
-        depthLoadOp: "clear",
-        depthStoreOp: "store",
-        stencilClearValue: 0,
-      },
+      depthStencilAttachment: defaultDepthAttachment,
     };
   }
 

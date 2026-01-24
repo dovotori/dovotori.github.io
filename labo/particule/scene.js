@@ -1,5 +1,6 @@
 import { mapFromRange } from "../lib/utils/numbers";
 import { ComputeProcess, PipelineTextures, PostProcess } from "../lib/webgpu";
+import { defaultDepthAttachment } from "../lib/webgpu/constants";
 import WebgpuSceneCamera from "../lib/webgpu/WebgpuSceneCamera";
 import { computeShader } from "./compute";
 
@@ -326,12 +327,7 @@ export default class Scene extends WebgpuSceneCamera {
       //   },
       // ],
       colorAttachments: this.postProcess.getPassDescriptorColorAttachments(),
-      depthStencilAttachment: {
-        view: null,
-        depthClearValue: 1.0,
-        depthLoadOp: "clear",
-        depthStoreOp: "store",
-      },
+      depthStencilAttachment: defaultDepthAttachment,
     };
   }
 

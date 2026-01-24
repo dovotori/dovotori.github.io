@@ -1,4 +1,4 @@
-import { defaultColorAttachment } from "./constants";
+import { defaultColorAttachment, defaultDepthAttachment } from "./constants";
 import { buildPickingBindGroupLayouts, GltfBindGroups } from "./GltfPipelineBindGroupLayout";
 import PipelineTextures from "./PipelineTextures";
 
@@ -115,13 +115,7 @@ export class Picking {
     this.renderPassDescriptor = {
       label: "MousePickRenderPass",
       colorAttachments: [defaultColorAttachment],
-      depthStencilAttachment: {
-        view: null,
-        depthClearValue: 1.0,
-        depthLoadOp: "clear",
-        depthStoreOp: "store",
-        stencilClearValue: 0,
-      },
+      depthStencilAttachment: defaultDepthAttachment,
     };
 
     this.textures.setup(device, this.context.getCanvasFormat(), canvasSize);

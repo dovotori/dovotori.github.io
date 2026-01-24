@@ -2,7 +2,7 @@ import Mat4 from "../lib/utils/maths/Mat4";
 import Camera from "../lib/utils-3d/cameras/Camera";
 import { ComputeProcess } from "../lib/webgpu";
 import { CubeTexture } from "../lib/webgpu/CubeTexture";
-import { defaultColorAttachment } from "../lib/webgpu/constants";
+import { defaultColorAttachment, defaultDepthAttachment } from "../lib/webgpu/constants";
 import PipelineTextures from "../lib/webgpu/PipelineTextures";
 import { PostProcess } from "../lib/webgpu/PostProcess";
 import { Skybox } from "../lib/webgpu/Skybox";
@@ -275,12 +275,7 @@ export default class Scene extends WebgpuScene {
       //     storeOp: 'store',
       //   },
       // ],
-      depthStencilAttachment: {
-        view: null,
-        depthClearValue: 1.0,
-        depthLoadOp: "clear",
-        depthStoreOp: "store",
-      },
+      depthStencilAttachment: defaultDepthAttachment,
     };
 
     // SKYBOX

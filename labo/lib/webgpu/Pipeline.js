@@ -1,3 +1,5 @@
+import { defaultDepthAttachment } from "./constants";
+
 class Pipeline {
   constructor(sampleCount = 4, depthTextureFormat = "depth32float") {
     this.pipeline = null;
@@ -43,15 +45,7 @@ class Pipeline {
     this.renderPassDescriptor = {
       label: "Gltf Pass Descriptor",
       colorAttachments: colorAttachements,
-      depthStencilAttachment: {
-        view: null,
-        depthClearValue: 1.0,
-        depthLoadOp: "clear",
-        depthStoreOp: "store",
-        stencilClearValue: 0,
-        // stencilLoadOp: 'clear',
-        // stencilStoreOp: 'store',
-      },
+      depthStencilAttachment: defaultDepthAttachment,
     };
   };
 
