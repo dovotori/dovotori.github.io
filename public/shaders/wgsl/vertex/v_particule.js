@@ -50,7 +50,7 @@ fn v_main(
 
 
 
-  if (vertex_uniforms.mode == 0.0) {
+  if (vertex_uniforms.mode == 0.0 || vertex_uniforms.mode == 2.0) {
     // 2d particle billboard
     out.clip_position = vec4f(vertex_position * vertex_uniforms.particleSize / vertex_uniforms.screenDimensions + position.xy, position.z, 1.0);
   } else {

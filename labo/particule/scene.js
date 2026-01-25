@@ -3,6 +3,7 @@ import { ComputeProcess, PipelineTextures, PostProcess } from "../lib/webgpu";
 import { defaultDepthAttachment } from "../lib/webgpu/constants";
 import WebgpuSceneCamera from "../lib/webgpu/WebgpuSceneCamera";
 import { buildAttractorData, computeAttactor } from "./computeAttractor";
+import { buildBoidData, computeBoid } from "./computeBoid";
 import { buildFlowData, computeFlow, wglsPerlinNoise } from "./computeFlow";
 
 const MASS_FACTOR = 0.0001;
@@ -12,6 +13,7 @@ const REPULSE_FACTOR = 0.005;
 const MODES = {
   0: "repulsor",
   1: "flow",
+  2: "boid",
 };
 
 export const computeMainShader = (WORKGROUP_SIZE) => `
@@ -45,8 +47,10 @@ fn main(@builtin(global_invocation_id) global_id: vec3u) {
 
   if (settings.mode == 0.0) {
     ${computeAttactor}
-  } else {
+  } else if (settings.mode == 1.0) {
     ${computeFlow}
+  } else {
+    ${computeBoid}
   }
   
   positions[index] = newPosition;
@@ -69,7 +73,7 @@ export default class Scene extends WebgpuSceneCamera {
     this.downTimestamp = 0;
     this.mousePressed = false;
 
-    this.mode = 0;
+    this.mode = 2;
   }
 
   async setupAssets(assets) {
@@ -86,8 +90,10 @@ export default class Scene extends WebgpuSceneCamera {
     let data;
     if (MODES[this.mode] === "repulsor") {
       data = buildAttractorData(this.particulesCount);
-    } else {
+    } else if (MODES[this.mode] === "flow") {
       data = buildFlowData(this.particulesCount, this.canvasSize);
+    } else {
+      data = buildBoidData(this.particulesCount);
     }
 
     const {
