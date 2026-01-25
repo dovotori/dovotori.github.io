@@ -35,14 +35,7 @@ export default class Scene extends WebgpuScene {
 
     this.textures.setup(device, this.context.getCanvasFormat(), this.canvasSize, "depth24plus");
 
-    // POST PROCESS
-
-    await this.postProcess.setup(programs.postprocess.get());
-
-    Object.keys(this.config.postprocess).forEach((key) => {
-      const effect = this.config.postprocess[key];
-      this.postProcess.addEffect(key, programs[effect.programName].get(), effect.params);
-    });
+    await this.postProcess.setup(programs, this.config.postprocess);
 
     this.computeProcess = new ComputeProcess(
       device,

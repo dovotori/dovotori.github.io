@@ -42,13 +42,7 @@ export default class Scene extends WebgpuSceneCamera {
     const firstGltfName = Object.keys(assets.gltfs)[0];
     const gltf = assets.gltfs[firstGltfName];
 
-    await this.postProcess.setup(programs.postprocess.get());
-
-    Object.keys(this.config.postprocess).forEach((key) => {
-      const effect = this.config.postprocess[key];
-      console.log(programs[effect.programName]);
-      this.postProcess.addEffect(key, programs[effect.programName].get(), effect.params);
-    });
+    await this.postProcess.setup(programs, this.config.postprocess);
 
     console.log({
       assets,

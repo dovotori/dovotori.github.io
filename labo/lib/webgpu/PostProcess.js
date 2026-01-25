@@ -13,15 +13,15 @@ export class PostProcess {
     this.effects = new Map(); // name, { pipeline, renderGroup }
   }
 
-  async setup(program) {
+  async setup(programs, configPostProcess) {
     const device = this.context.getDevice();
 
     this.pipeline = await device.createRenderPipelineAsync({
       label: "post process no attributes",
       layout: "auto",
-      vertex: { module: program },
+      vertex: { module: programs.postprocess.get() },
       fragment: {
-        module: program,
+        module: programs.postprocess.get(),
         targets: [{ format: this.renderTargetFormat }],
       },
       multisample: {
@@ -38,6 +38,11 @@ export class PostProcess {
       label: "post process render pass",
       colorAttachments: [{ loadOp: "clear", storeOp: "store" }],
     };
+
+    Object.keys(configPostProcess).forEach((key) => {
+      const effect = configPostProcess[key];
+      this.addEffect(key, programs[effect.programName].get(), effect.params);
+    });
   }
 
   setupRenderTextures(device, canvasSize) {
