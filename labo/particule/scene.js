@@ -3,7 +3,7 @@ import { ComputeProcess, PipelineTextures, PostProcess } from "../lib/webgpu";
 import { defaultDepthAttachment } from "../lib/webgpu/constants";
 import WebgpuSceneCamera from "../lib/webgpu/WebgpuSceneCamera";
 import { buildAttractorData, computeAttactor } from "./computeAttractor";
-import { buildBoidData, computeBoid } from "./computeBoid";
+import { boidUtils, buildBoidData, computeBoid } from "./computeBoid";
 import { buildFlowData, computeFlow, wglsPerlinNoise } from "./computeFlow";
 
 const MASS_FACTOR = 0.0001;
@@ -26,6 +26,8 @@ struct Mass {
 struct SettingsUniform {
   mode: f32,
   time: f32,
+  particleCount: f32,
+  pad: f32,
 };
 
 @group(0) @binding(0) var<storage, read_write> positions: array<vec4f>;
@@ -34,6 +36,7 @@ struct SettingsUniform {
 @group(0) @binding(3) var<uniform> settings: SettingsUniform;
 
 ${wglsPerlinNoise}
+${boidUtils}
 
 @compute @workgroup_size(${WORKGROUP_SIZE})
 fn main(@builtin(global_invocation_id) global_id: vec3u) {
@@ -396,7 +399,7 @@ export default class Scene extends WebgpuSceneCamera {
     device.queue.writeBuffer(
       this.computeSettingsBuffer,
       0,
-      new Float32Array([this.mode, this.time]),
+      new Float32Array([this.mode, this.time, this.particulesCount, 0]),
     );
 
     const depthTextureView = this.textures.getDepthTextureView();

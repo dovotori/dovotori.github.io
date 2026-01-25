@@ -50,10 +50,10 @@ fn v_main(
 
 
 
-  if (vertex_uniforms.mode == 0.0 || vertex_uniforms.mode == 2.0) {
+  if (vertex_uniforms.mode == 0.0) {
     // 2d particle billboard
     out.clip_position = vec4f(vertex_position * vertex_uniforms.particleSize / vertex_uniforms.screenDimensions + position.xy, position.z, 1.0);
-  } else {
+  } else if (vertex_uniforms.mode == 1.0) {
     // vertical line centered at particle "position.xy" with height = spacing/2
     // convert spacing (pixels) to NDC: spacing_pixels / screenHeight * 2 => simplifies to spacing / screenDimensions.y
     // shorten each line by half
@@ -70,6 +70,32 @@ fn v_main(
     let local = offset - base;
     let rotatedLocal = vec2f(local.x * c - local.y * s, local.x * s + local.y * c);
     let rotated = rotatedLocal + base;
+    out.clip_position = vec4f(position.xy + rotated, position.z, 1.0);
+  } else {
+    // 2d particle triangle oriented by 'rotation'.
+    // Map quad vertex positions to triangle vertices so triangle-strip renders a single triangle:
+    // vertex_position: (-1,-1) -> bottom-left, (1,-1) -> bottom-right, (-1,1) and (1,1) -> top-center (duplicate)
+    // convert pixel half-size to NDC half-size: (pixels/viewport) * 2 * 0.5 => pixels / viewport
+    let halfW = vertex_uniforms.particleSize / vertex_uniforms.screenDimensions.x;
+    let halfH = vertex_uniforms.particleSize / vertex_uniforms.screenDimensions.y;
+    var localOffset = vec2f(0.0, 0.0);
+    if (vertex_position.x < 0.0 && vertex_position.y < 0.0) {
+      // bottom-left (full width)
+      localOffset = vec2f(-halfW, -halfH);
+    } else if (vertex_position.x > 0.0 && vertex_position.y < 0.0) {
+      // bottom-right noticeably narrower to emphasize direction
+      localOffset = vec2f(halfW * 0.1, -halfH);
+    } else {
+      // top center (tip) smaller in Y to make triangle pointed
+      localOffset = vec2f(0.0, halfH * 0.8);
+    }
+    // rotate offset so the triangle's tip points along the velocity angle.
+    // rotation is atan2(vel.y, vel.x) (0 = +X). Our local triangle points up (+Y)
+    // so rotate by (rotation - PI/2) to align the tip with the velocity direction.
+    let rot = rotation - 1.57079632679;
+    let s = sin(rot);
+    let c = cos(rot);
+    let rotated = vec2f(localOffset.x * c - localOffset.y * s, localOffset.x * s + localOffset.y * c);
     out.clip_position = vec4f(position.xy + rotated, position.z, 1.0);
   }
     
