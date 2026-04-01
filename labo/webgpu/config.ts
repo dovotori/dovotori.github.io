@@ -12,12 +12,14 @@ const config: LaboConfig = {
     "/wgsl/fragment/f_debug_tex.js",
     "/wgsl/vertex/v_model_camera.js",
     "/wgsl/fragment/f_simple.js",
+    "/wgsl/vertex/v_dash_line.js",
+    "/wgsl/fragment/f_dash_line.js",
     "/wgsl/postprocess.js",
     "/wgsl/sobel.js",
   ],
   // assets: ['/gltf/paysage.gltf'],
   // assets: ['/gltf/distributedInstances.gltf'],
-  assets: ["/gltf/paysage.glb"],
+  assets: ["/gltf/house.glb"],
   // assets: ["/gltf/plane.gltf"],
   // assets: ["/gltf/head.gltf"],
   // assets: ['/gltf/headinterleaved.gltf'],
@@ -27,10 +29,10 @@ const config: LaboConfig = {
   },
   camera: {
     // perspective
-    position: { x: 0, y: 4, z: 30 },
+    position: { x: 0, y: 4, z: 1000 },
     target: { x: 0, y: 0, z: 0 },
     near: 1,
-    far: 60,
+    far: 2000,
     angle: 60,
   },
   // camera: {

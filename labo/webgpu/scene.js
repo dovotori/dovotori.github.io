@@ -4,6 +4,7 @@ import Vec3 from "../lib/utils/maths/Vec3";
 import Vec4 from "../lib/utils/maths/Vec4";
 import { MouseInteraction } from "../lib/utils-3d/input/MouseInteraction";
 import {
+  DashedLinePipeline,
   DebugTexture,
   GltfBindGroups,
   GltfPipeline,
@@ -28,6 +29,7 @@ export default class Scene extends WebgpuSceneCamera {
     this.picking = new Picking(context);
     this.shadow = new Shadow(context);
     this.debug = new DebugTexture(context);
+    this.dashedLine = new DashedLinePipeline(context);
 
     this.interaction = new MouseInteraction();
 
@@ -147,6 +149,26 @@ export default class Scene extends WebgpuSceneCamera {
     // this.debug.setTexture(this.picking.getColorTexture());
     this.debug.setTexture(this.shadow.getDepthTexture());
 
+    await this.dashedLine.setup(
+      {
+        vertex: programs.v_dash_line.get(),
+        fragment: programs.f_dash_line.get(),
+      },
+      [
+        { x: -0.8, y: -0.65 },
+        { x: -0.3, y: -0.45 },
+        { x: 0.25, y: -0.7 },
+        { x: 0.8, y: -0.52 },
+      ],
+      {
+        fragmentTargets: this.postProcess.getPipelineFragmentTargets(),
+        depthStencilFormat: "depth32float",
+        color: [1, 1, 1, 1],
+        dashSize: 0.06,
+        gapSize: 0.04,
+      },
+    );
+
     // await testHeavyCompute();
     this.resize(this.canvasSize);
   }
@@ -172,6 +194,8 @@ export default class Scene extends WebgpuSceneCamera {
 
     this.postProcess.setFirstPassDestination();
     this.postProcess.updateEffectTextures(canvasCurrentView);
+
+    this.dashedLine.setOffset(time * 0.0002);
   }
 
   // for shadow
@@ -211,6 +235,7 @@ export default class Scene extends WebgpuSceneCamera {
     pass.setBindGroup(GltfBindGroups.LIGHT, this.uniformLights.bindGroup);
 
     this.gltfPipeline.drawModel(device, pass, DEBUG_PICKING);
+    this.dashedLine.render(pass);
 
     // this.updateCameraUniforms(this.debugUniformCamera.buffer);
     // this.debugCube.render(pass, this.debugUniformCamera.bindGroup);

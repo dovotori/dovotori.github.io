@@ -5,6 +5,7 @@ export { default as BufferTransform } from "./BufferTransform";
 export * from "./ComputeProcess";
 export { default as Context } from "./Context";
 export * from "./CubeTexture";
+export * from "./DashedLinePipeline";
 export * from "./DebugPipeline";
 export * from "./DebugTexture";
 export { default as Device } from "./Device";
