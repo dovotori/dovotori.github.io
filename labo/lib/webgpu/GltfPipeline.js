@@ -343,8 +343,8 @@ export class GltfPipeline {
     // };
   }
 
-  update(targetViews) {
-    this.pipeline.update(targetViews, this.textures.getDepthTextureView());
+  update(targetViews, resolveTargetViews = []) {
+    this.pipeline.update(targetViews, this.textures.getDepthTextureView(), resolveTargetViews);
   }
 
   updateMsaaFourSamples() {

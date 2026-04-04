@@ -71,6 +71,7 @@ type IPostProcess = {
   gaussianBlurVertical2?: IEffect;
   blend?: IEffect;
   glitch?: IEffect;
+  fxaa?: IEffect;
 };
 
 export interface LaboConfig {

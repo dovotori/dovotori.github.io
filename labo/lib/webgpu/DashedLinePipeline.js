@@ -91,6 +91,9 @@ export class DashedLinePipeline {
       primitive: {
         topology: "line-strip",
       },
+      multisample: {
+        count: options.sampleCount ?? 1,
+      },
       depthStencil: options.depthStencilFormat
         ? {
             depthWriteEnabled: false,

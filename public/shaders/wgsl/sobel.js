@@ -1,7 +1,7 @@
 export default `
 @group(0) @binding(0) var mySampler: sampler;
 @group(0) @binding(1) var myTexture: texture_2d<f32>;
-@group(0) @binding(2) var depthMapTexture: texture_depth_2d;
+@group(0) @binding(2) var depthMapTexture: texture_depth_multisampled_2d;
 
 struct VertexOutput {
   @builtin(position) position: vec4<f32>,
@@ -28,24 +28,33 @@ fn vs_main(@builtin(vertex_index) vertexIndex: u32) -> VertexOutput {
   return output;
 }
 
+fn read_depth_msaa(tex: texture_depth_multisampled_2d, p: vec2<i32>, samples: u32) -> f32 {
+  var acc = 0.0;
+  for (var i = 0u; i < samples; i = i + 1u) {
+    acc += textureLoad(tex, p, i);
+  }
+  return acc / max(1.0, f32(samples));
+}
+
 fn make_kernel_depth(
-  tex: texture_depth_2d,
+  tex: texture_depth_multisampled_2d,
   coord: vec2<f32>
 ) -> array<f32, 9> {
   let dims = textureDimensions(tex);
   let px = vec2<i32>(coord * vec2<f32>(dims));
+  let sampleCount = textureNumSamples(tex);
 
   var n: array<f32, 9>;
 
-  n[0] = textureLoad(tex, px + vec2<i32>(-1, -1), 0);
-  n[1] = textureLoad(tex, px + vec2<i32>( 0, -1), 0);
-  n[2] = textureLoad(tex, px + vec2<i32>( 1, -1), 0);
-  n[3] = textureLoad(tex, px + vec2<i32>(-1,  0), 0);
-  n[4] = textureLoad(tex, px,                 0);
-  n[5] = textureLoad(tex, px + vec2<i32>( 1,  0), 0);
-  n[6] = textureLoad(tex, px + vec2<i32>(-1,  1), 0);
-  n[7] = textureLoad(tex, px + vec2<i32>( 0,  1), 0);
-  n[8] = textureLoad(tex, px + vec2<i32>( 1,  1), 0);
+  n[0] = read_depth_msaa(tex, px + vec2<i32>(-1, -1), sampleCount);
+  n[1] = read_depth_msaa(tex, px + vec2<i32>( 0, -1), sampleCount);
+  n[2] = read_depth_msaa(tex, px + vec2<i32>( 1, -1), sampleCount);
+  n[3] = read_depth_msaa(tex, px + vec2<i32>(-1,  0), sampleCount);
+  n[4] = read_depth_msaa(tex, px,                 sampleCount);
+  n[5] = read_depth_msaa(tex, px + vec2<i32>( 1,  0), sampleCount);
+  n[6] = read_depth_msaa(tex, px + vec2<i32>(-1,  1), sampleCount);
+  n[7] = read_depth_msaa(tex, px + vec2<i32>( 0,  1), sampleCount);
+  n[8] = read_depth_msaa(tex, px + vec2<i32>( 1,  1), sampleCount);
 
   return n;
 }

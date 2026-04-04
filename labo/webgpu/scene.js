@@ -25,7 +25,7 @@ export default class Scene extends WebgpuSceneCamera {
     const { width, height } = config.canvas;
     this.camera.perspective(width, height);
 
-    this.gltfPipeline = new GltfPipeline(context, config, 1);
+    this.gltfPipeline = new GltfPipeline(context, config, 4);
     this.picking = new Picking(context);
     this.shadow = new Shadow(context);
     this.debug = new DebugTexture(context);
@@ -155,15 +155,16 @@ export default class Scene extends WebgpuSceneCamera {
         fragment: programs.f_dash_line.get(),
       },
       [
-        { x: -3, y: -3, z: -3 },
-        { x: 3, y: -3, z: -3 },
-        { x: 3, y: 3, z: 3 },
-        { x: -3, y: 3, z: 3 },
-        { x: -3, y: -3, z: -3 },
+        { x: -6, y: 0, z: -6 },
+        { x: 6, y: 0, z: -6 },
+        { x: 6, y: 0, z: 6 },
+        { x: -6, y: 0, z: 6 },
+        { x: -6, y: 0, z: -6 },
       ],
       {
         fragmentTargets: this.postProcess.getPipelineFragmentTargets(),
         depthStencilFormat: "depth32float",
+        sampleCount: this.postProcess.getSceneSampleCount(),
         color: [1, 1, 1, 1],
         dashSize: 0.06,
         gapSize: 0.04,
@@ -189,7 +190,10 @@ export default class Scene extends WebgpuSceneCamera {
     this.gltfPipeline.updateAnimations(time);
 
     // We say to gltf pipeline to render inside the post process render targets textures
-    this.gltfPipeline.update(this.postProcess.getColorAttachmentsTargetViews());
+    this.gltfPipeline.update(
+      this.postProcess.getSceneColorAttachmentsTargetViews(),
+      this.postProcess.getSceneResolveTargetViews(),
+    );
 
     const canvasCurrentView = this.context.getCurrentTexture().createView();
 

@@ -45,13 +45,15 @@ class Pipeline {
     this.renderPassDescriptor = {
       label: "Gltf Pass Descriptor",
       colorAttachments: colorAttachements,
-      depthStencilAttachment: defaultDepthAttachment,
+      depthStencilAttachment: { ...defaultDepthAttachment },
     };
   };
 
-  update = (targetViews, depthTextureView) => {
+  update = (targetViews, depthTextureView, resolveTargetViews = []) => {
     for (let i = 0; i < targetViews.length; i++) {
       this.renderPassDescriptor.colorAttachments[i].view = targetViews[i];
+      this.renderPassDescriptor.colorAttachments[i].resolveTarget =
+        resolveTargetViews[i] || undefined;
     }
     this.renderPassDescriptor.depthStencilAttachment.view = depthTextureView;
   };

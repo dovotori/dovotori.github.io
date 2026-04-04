@@ -7,6 +7,7 @@ export class PostProcess {
     this.renderTargetFormat = navigator.gpu.getPreferredCanvasFormat(); //'rgba8unorm';
     this.presentationFormat = navigator.gpu.getPreferredCanvasFormat();
     this.sampleCount = 1; // should be 1 for a render target used as texture, multisample is allow only for canvas context texture
+    this.sceneSampleCount = 4;
     this.renderTargetsCount = renderTargetsCount; // 2 is for color, normal render targets, should be coherent with postprocess shader
     this.effectRenderGroups = new Map();
     this.canvasSize = { width: 1, height: 1 };
@@ -76,6 +77,27 @@ export class PostProcess {
       sampleCount: this.sampleCount,
       usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
     });
+
+    this.setupSceneMsaaTextures(device, canvasSize);
+  }
+
+  setupSceneMsaaTextures(device, canvasSize) {
+    if (this.sceneSampleCount <= 1) {
+      this.sceneMsaaTargets = null;
+      this.sceneMsaaTargetViews = null;
+      return;
+    }
+
+    this.sceneMsaaTargets = Array.from({ length: this.renderTargetsCount }).map((_, i) =>
+      device.createTexture({
+        label: `scene msaa target ${i}`,
+        size: canvasSize,
+        format: this.renderTargetFormat,
+        sampleCount: this.sceneSampleCount,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT,
+      }),
+    );
+    this.sceneMsaaTargetViews = this.sceneMsaaTargets.map((texture) => texture.createView());
   }
 
   setupPingPongTargets(device, canvasSize) {
@@ -253,6 +275,9 @@ export class PostProcess {
     this.renderTargets?.forEach((t) => {
       t.destroy();
     });
+    this.sceneMsaaTargets?.forEach((t) => {
+      t.destroy();
+    });
     if (this.firstTexture) this.firstTexture.destroy();
     this.setupRenderTextures(device, canvasSize);
 
@@ -382,5 +407,23 @@ export class PostProcess {
     return Array.from({ length: this.renderTargetsCount }).map((_, i) => {
       return this.getRenderTargetView(i);
     });
+  }
+
+  getSceneColorAttachmentsTargetViews() {
+    if (this.sceneSampleCount <= 1 || !this.sceneMsaaTargetViews) {
+      return this.getColorAttachmentsTargetViews();
+    }
+    return this.sceneMsaaTargetViews;
+  }
+
+  getSceneResolveTargetViews() {
+    if (this.sceneSampleCount <= 1) {
+      return [];
+    }
+    return this.getColorAttachmentsTargetViews();
+  }
+
+  getSceneSampleCount() {
+    return this.sceneSampleCount;
   }
 }

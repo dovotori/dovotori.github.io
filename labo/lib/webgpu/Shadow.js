@@ -78,7 +78,10 @@ export class Shadow {
     this.renderPassDescriptor = {
       label: "Shadow render pass",
       colorAttachments: [], // no fragment shader, we just want depth map
-      depthStencilAttachment: defaultDepthAttachment,
+      depthStencilAttachment: {
+        ...defaultDepthAttachment,
+        view: this.textureDepthView,
+      },
     };
   }
 

@@ -16,6 +16,7 @@ const config: LaboConfig = {
     "/wgsl/fragment/f_dash_line.js",
     "/wgsl/postprocess.js",
     "/wgsl/sobel.js",
+    "/wgsl/fxaa.js",
   ],
   // assets: ['/gltf/paysage.gltf'],
   // assets: ['/gltf/distributedInstances.gltf'],
@@ -29,10 +30,10 @@ const config: LaboConfig = {
   },
   camera: {
     // perspective
-    position: { x: 0, y: 4, z: 10 },
+    position: { x: 0, y: 4, z: 20 },
     target: { x: 0, y: 0, z: 0 },
     near: 1,
-    far: 20,
+    far: 40,
     angle: 60,
   },
   // camera: {
@@ -46,6 +47,9 @@ const config: LaboConfig = {
   postprocess: {
     sobel: {
       programName: "sobel",
+    },
+    fxaa: {
+      programName: "fxaa",
     },
   },
   lampes: [
