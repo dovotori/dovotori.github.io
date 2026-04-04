@@ -19,7 +19,7 @@ const config: LaboConfig = {
   ],
   // assets: ['/gltf/paysage.gltf'],
   // assets: ['/gltf/distributedInstances.gltf'],
-  assets: ["/gltf/house.glb"],
+  assets: ["/gltf/truck.glb"],
   // assets: ["/gltf/plane.gltf"],
   // assets: ["/gltf/head.gltf"],
   // assets: ['/gltf/headinterleaved.gltf'],
@@ -29,10 +29,10 @@ const config: LaboConfig = {
   },
   camera: {
     // perspective
-    position: { x: 0, y: 4, z: 1000 },
+    position: { x: 0, y: 4, z: 10 },
     target: { x: 0, y: 0, z: 0 },
     near: 1,
-    far: 2000,
+    far: 20,
     angle: 60,
   },
   // camera: {
