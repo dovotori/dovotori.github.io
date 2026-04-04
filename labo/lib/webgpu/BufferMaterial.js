@@ -13,11 +13,33 @@ class BufferMaterial {
   }
 
   async setup(device, layout, materials, textures, depthMapBingGroupEntries) {
-    if (materials.size === 0) {
-      throw new Error("No materials found");
-    }
-
     const empty = await this.setupEmptyTexture(device);
+
+    if (!materials || materials.size === 0) {
+      const buffer = this.setupUniformsBuffer(device, {});
+      const entries = [
+        {
+          binding: 0,
+          resource: { buffer },
+        },
+        { binding: 1, resource: empty.sampler },
+        { binding: 2, resource: empty.textureView },
+      ];
+
+      if (depthMapBingGroupEntries) {
+        entries.push(...depthMapBingGroupEntries);
+      }
+
+      this.bindGroups.set(
+        0,
+        device.createBindGroup({
+          label: "bind group material default",
+          layout,
+          entries,
+        }),
+      );
+      return;
+    }
 
     let i = 0;
     for (const [_matIndex, material] of materials) {

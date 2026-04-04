@@ -95,3 +95,25 @@ export const dataViewToUint8 = (dataView: DataView, byteLength: number) => {
   }
   return result;
 };
+
+export const dataViewToUint32 = (
+  dataView: DataView,
+  length: number,
+  count: number,
+  numElement: number,
+  byteStride?: number,
+) => {
+  const result = new Uint32Array(length); // Final Output at the correct size
+  const stride = byteStride || Uint32Array.BYTES_PER_ELEMENT * numElement;
+  let currentOffset = 0;
+  let cpt = 0;
+  for (let c = 0; c < count; c++) {
+    for (let nb = 0; nb < numElement; nb++) {
+      const pos = currentOffset + nb * Uint32Array.BYTES_PER_ELEMENT;
+      result[cpt] = dataView.getUint32(pos, true);
+      cpt++;
+    }
+    currentOffset += stride;
+  }
+  return result;
+};

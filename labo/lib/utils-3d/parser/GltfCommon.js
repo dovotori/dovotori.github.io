@@ -3,12 +3,15 @@ import {
   dataViewToFloat32,
   dataViewToUint8,
   dataViewToUint16,
+  dataViewToUint32,
 } from "../../utils/base64";
 
 const getConvertMethod = (componentType) => {
   switch (componentType) {
     case 5123: // UNSIGNED_SHORT
       return dataViewToUint16;
+    case 5125: // UNSIGNED_INT
+      return dataViewToUint32;
     case 5126: // FLOAT
       return dataViewToFloat32;
     case 5121: // UNSIGNED_BYTE / Uint8Array
