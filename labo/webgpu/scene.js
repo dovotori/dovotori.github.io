@@ -155,10 +155,11 @@ export default class Scene extends WebgpuSceneCamera {
         fragment: programs.f_dash_line.get(),
       },
       [
-        { x: -0.8, y: -0.65 },
-        { x: -0.3, y: -0.45 },
-        { x: 0.25, y: -0.7 },
-        { x: 0.8, y: -0.52 },
+        { x: -3, y: -3, z: -3 },
+        { x: 3, y: -3, z: -3 },
+        { x: 3, y: 3, z: 3 },
+        { x: -3, y: 3, z: 3 },
+        { x: -3, y: -3, z: -3 },
       ],
       {
         fragmentTargets: this.postProcess.getPipelineFragmentTargets(),
@@ -194,6 +195,12 @@ export default class Scene extends WebgpuSceneCamera {
 
     this.postProcess.setFirstPassDestination();
     this.postProcess.updateEffectTextures(canvasCurrentView);
+
+    this.dashedLine.updateMatrices(
+      this.camera.getModeProjection().get(),
+      this.camera.getView().get(),
+      this.model.get(),
+    );
 
     this.dashedLine.setOffset(time * 0.0002);
   }

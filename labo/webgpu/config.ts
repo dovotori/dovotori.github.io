@@ -19,7 +19,7 @@ const config: LaboConfig = {
   ],
   // assets: ['/gltf/paysage.gltf'],
   // assets: ['/gltf/distributedInstances.gltf'],
-  assets: ["/gltf/truck.glb"],
+  assets: ["/gltf/paysage.glb"],
   // assets: ["/gltf/plane.gltf"],
   // assets: ["/gltf/head.gltf"],
   // assets: ['/gltf/headinterleaved.gltf'],
