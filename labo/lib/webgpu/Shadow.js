@@ -10,6 +10,7 @@ export class Shadow {
       height: 2048,
     };
     this.textureDepthView;
+    this.depthBias = 0.005; // Adjustable bias to prevent shadow acne
   }
 
   async setup(program) {
@@ -64,7 +65,7 @@ export class Shadow {
 
     this.depthTexture = device.createTexture({
       label: "shadow depth texture",
-      size: { width: 2048, height: 2048, depthOrArrayLayers: 1 },
+      size: { width: this.texSize.width, height: this.texSize.height, depthOrArrayLayers: 1 },
       format: "depth32float", // Depth texture format
       usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
     });
@@ -140,6 +141,10 @@ export class Shadow {
   getDepthTexture = () => this.depthTexture;
   getDepthTextureView = () => this.textureDepthView;
   getSize = () => this.texSize;
+  getDepthBias = () => this.depthBias;
+  setDepthBias = (bias) => {
+    this.depthBias = bias;
+  };
 
   getShadowMapBindGroupEntries(device, lightPosition) {
     const buffer = device.createBuffer({

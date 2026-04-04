@@ -20,8 +20,8 @@ export const blend = {
 };
 
 export const shadowCompareSample = {
-  magFilter: "nearest",
-  minFilter: "nearest",
+  magFilter: "linear",
+  minFilter: "linear",
   mipmapFilter: "nearest",
   compare: "less", // For shadow mapping (depth comparison)
   addressModeU: "clamp-to-edge",

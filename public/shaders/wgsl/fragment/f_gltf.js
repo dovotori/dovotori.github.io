@@ -1,4 +1,8 @@
-export default `
+import pcfUtils from "../utils/pcf.js";
+
+const shaderCode = `
+${pcfUtils}
+
 struct CameraUniform {
   projection: mat4x4<f32>,
   view: mat4x4<f32>,
@@ -54,6 +58,7 @@ struct FragOutput {
 @fragment
 fn f_main(in: FragInput) -> FragOutput {
   var color = material.baseColorFactor;
+  let worldNormal = normalize(in.world_normal);
 
   let baseColorTex = textureSample(baseColorTexture, baseColorSampler, in.texture);
   // if it is not the red 1 pixel texture we display the texture
@@ -75,10 +80,10 @@ fn f_main(in: FragInput) -> FragOutput {
     let light_dir = normalize(light.position - in.world_position);
     let half_dir = normalize(view_dir + light_dir);
     
-    let diffuse_strength = max(dot(in.world_normal, light_dir), 0.0);
+    let diffuse_strength = max(dot(worldNormal, light_dir), 0.0);
     let diffuse_color = light.color * diffuse_strength;
 
-    let specular_strength = pow(max(dot(in.world_normal, half_dir), 0.0), 32.0);
+    let specular_strength = pow(max(dot(worldNormal, half_dir), 0.0), 32.0);
     let specular_color = specular_strength * light.color;
 
     result += (ambient_color + diffuse_color + specular_color) * color.xyz;
@@ -88,23 +93,16 @@ fn f_main(in: FragInput) -> FragOutput {
 
 
  // SHADOW
-  let diffuse: f32 = max(dot(normalize(lightPos.xyz), in.world_normal), 0.0);
-  var shadow : f32 = 0.0;
-  // apply Percentage-closer filtering (PCF)
-  // sample nearest 9 texels to smooth result
-  let size = f32(textureDimensions(depthMapTexture).x);
-  for (var y : i32 = -1 ; y <= 1 ; y = y + 1) {
-    for (var x : i32 = -1 ; x <= 1 ; x = x + 1) {
-      let offset = vec2<f32>(f32(x) / size, f32(y) / size);
-      shadow = shadow + textureSampleCompare(
-        depthMapTexture, 
-        depthMapSampler,
-        in.shadow_pos.xy + offset, 
-        in.shadow_pos.z - 0.005  // apply a small bias to avoid acne
-      );
-    }
-  }
-  shadow = shadow / 9.0;
+  let diffuse: f32 = max(dot(normalize(lightPos.xyz), worldNormal), 0.0);
+  
+  // Use PCF for smooth shadow transitions (you can switch between pcfShadow and pcfShadowPoisson)
+  let shadow: f32 = pcfShadowPoisson(
+    depthMapTexture,
+    depthMapSampler,
+    in.shadow_pos,
+    0.005  // depth bias to prevent acne
+  );
+  
   // ambient + diffuse * shadow
   let lightFactor = min(0.3 + shadow * diffuse, 1.0);
   result *= lightFactor;
@@ -114,14 +112,14 @@ fn f_main(in: FragInput) -> FragOutput {
 
   // result = color.xyz;
   // result = vec3(in.texture, 0.0);
-  // result = in.world_normal;
+  // result = worldNormal;
 
   // result = vec3(in.face_color);
   // result = in.picking_color.xyz;
 
   var out: FragOutput;
   out.color = vec4(result, 1.0);
-  out.normal = vec4(result, 1.0);
+  out.normal = vec4(worldNormal, 1.0);
   
   // finally depth is handle in the depth stencil buffer
   // compute linear depth per-fragment from interpolated view-space position
@@ -133,3 +131,5 @@ fn f_main(in: FragInput) -> FragOutput {
   return out;
 }
 `;
+
+export default shaderCode;
