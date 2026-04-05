@@ -117,7 +117,21 @@ class BufferGltf {
 
     this.faceBuffer.unmap();
 
-    this.faceDrawCount = indexCount;
+    const faceStrideFloats = nbFloatPerVertex + 1; // + picking color float
+    const maxCountFromPackedBuffer = Math.floor(buff.length / faceStrideFloats);
+    const maxCountFromIndex = bufferIndex.length;
+    const maxCountFromMeta = indexCount ?? maxCountFromIndex;
+
+    this.faceDrawCount = Math.min(maxCountFromPackedBuffer, maxCountFromIndex, maxCountFromMeta);
+
+    if (this.faceDrawCount !== maxCountFromMeta) {
+      console.warn("[BufferGltf.setupForFaces] adjusted draw count", {
+        requested: maxCountFromMeta,
+        fromIndex: maxCountFromIndex,
+        fromPacked: maxCountFromPackedBuffer,
+        final: this.faceDrawCount,
+      });
+    }
   }
 
   getFaceBuffer = () => this.faceBuffer;
