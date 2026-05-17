@@ -12,14 +12,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "baseUrl": ".",
     "paths": {
-      "Assets/*": ["public/*"],
-      "Assets": ["public"],
-      "Labo/*": ["labo/*"],
-      "Labo": ["labo"],
-      "src/*": ["src/*"],
-      "src": ["src"]
+      "Assets/*": ["./public/*"],
+      "Assets": ["./public"],
+      "Labo/*": ["./labo/*"],
+      "Labo": ["./labo"],
+      "src/*": ["./src/*"],
+      "src": ["./src"]
     },
     "types": ["@webgpu/types"]
   },
