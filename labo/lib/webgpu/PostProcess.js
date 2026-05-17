@@ -151,6 +151,16 @@ export class PostProcess {
     ];
 
     switch (name) {
+      case "ssao": {
+        // SSAO needs source color, scene normal and scene depth.
+        if (this.renderTargetViews?.[1]) {
+          entries.push({ binding: 2, resource: this.renderTargetViews[1] });
+        }
+        if (depthTextureView) {
+          entries.push({ binding: 3, resource: depthTextureView });
+        }
+        break;
+      }
       case "sobel": {
         // const texelSize = [1 / this.canvasSize.width, 1 / this.canvasSize.height];
         // const texelSizeBuffer = device.createBuffer({
@@ -292,7 +302,11 @@ export class PostProcess {
       if (i === 0) {
         this.setupEffectSource(name, this.firstTexture.createView(), depthTextureView);
       } else {
-        this.setupEffectSource(name, this.getPingPongTexture(i % 2 === 0).createView());
+        this.setupEffectSource(
+          name,
+          this.getPingPongTexture(i % 2 === 0).createView(),
+          depthTextureView,
+        );
       }
       i++;
     }

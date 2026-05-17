@@ -7,6 +7,8 @@ class BufferGltf {
   layout = null;
   faceColor = null;
   faceBuffer: GPUBuffer = null;
+  faceBufferSize = 0;
+  faceStrideBytes = 0;
   faceDrawCount = 0;
   indexCount = 0;
 
@@ -105,6 +107,8 @@ class BufferGltf {
 
     const buff = new Float32Array(bufferData);
     const buffSize = getBufferMinSize(buff.byteLength);
+    this.faceBufferSize = buffSize;
+    this.faceStrideBytes = arrayStride + Float32Array.BYTES_PER_ELEMENT;
     this.faceBuffer = device.createBuffer({
       label: "vertex buffer per face",
       size: buffSize,
@@ -135,6 +139,8 @@ class BufferGltf {
   }
 
   getFaceBuffer = () => this.faceBuffer;
+  getFaceBufferSize = () => this.faceBufferSize;
+  getFaceStrideBytes = () => this.faceStrideBytes;
   getFaceBufferCount = () => this.faceDrawCount;
 
   getVertexBuffer = () => this.vertex;

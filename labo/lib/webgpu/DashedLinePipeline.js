@@ -10,8 +10,8 @@ export class DashedLinePipeline {
 
     this.uniforms = {
       color: [1, 1, 1, 1],
-      dashSize: 0.06,
-      gapSize: 0.04,
+      dashSize: 0.6,
+      gapSize: 0.4,
       offset: 0,
     };
   }

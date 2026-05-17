@@ -118,7 +118,7 @@ fn f_main(in: FragInput) -> FragOutput {
   // result = in.picking_color.xyz;
 
   var out: FragOutput;
-  out.color = vec4(result, 1.0);
+  out.color = vec4(result, color.a);
   out.normal = vec4(worldNormal, 1.0);
   
   // finally depth is handle in the depth stencil buffer

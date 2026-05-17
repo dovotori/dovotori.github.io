@@ -251,6 +251,49 @@ class LoadGltfForWebGpu {
           },
         );
 
+        // v_gltf always requires @location(2) texture: vec2<f32>.
+        // Meshes with no TEXCOORD_0 (e.g. bandage meshes) must carry synthetic
+        // zero UVs so the VertexState layout stays consistent across all primitives.
+        const hasUv = newAttributes.some((a) => a.shaderLocation === 2);
+        if (!hasUv) {
+          if (isNotInterleaved) {
+            const uvOffset = Object.keys(toInterleaved.primitives)
+              .map(Number)
+              .sort((a, b) => a - b)
+              .reduce(
+                (acc, loc) =>
+                  acc + toInterleaved.primitives[loc].numElement * arrayType.BYTES_PER_ELEMENT,
+                0,
+              );
+            toInterleaved.primitives[2] = {
+              shaderLocationName: "texture",
+              buffer: new Float32Array(vertexLayoutBuffer.count * 2), // zero-filled UVs
+              numElement: 2,
+            };
+            newAttributes.push({ shaderLocation: 2, format: "float32x2", offset: uvOffset });
+          } else {
+            const vertexCount = vertexLayoutBuffer.count;
+            const oldStrideFloats = arrayStride / Float32Array.BYTES_PER_ELEMENT;
+            const newStrideFloats = oldStrideFloats + 2;
+            const src =
+              bufferVertex instanceof Float32Array
+                ? bufferVertex
+                : new Float32Array(bufferVertex);
+            const newBuf = new Float32Array(vertexCount * newStrideFloats);
+            for (let i = 0; i < vertexCount; i++) {
+              newBuf.set(
+                src.subarray(i * oldStrideFloats, (i + 1) * oldStrideFloats),
+                i * newStrideFloats,
+              );
+              // UV slots at newStrideFloats-2 remain 0 (buffer is zero-initialised)
+            }
+            bufferVertex = newBuf;
+            const uvByteOffset = oldStrideFloats * Float32Array.BYTES_PER_ELEMENT;
+            arrayStride = newStrideFloats * Float32Array.BYTES_PER_ELEMENT;
+            newAttributes.push({ shaderLocation: 2, format: "float32x2", offset: uvByteOffset });
+          }
+        }
+
         if (isNotInterleaved) {
           const interleaved = LoadGltfForWebGpu.setInterleavedBuffer(toInterleaved);
           arrayStride = interleaved.arrayStride;

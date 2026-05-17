@@ -53,16 +53,18 @@ type IPostProcess = {
       intensity: number;
     };
   };
-  ssao?: {
-    // radius: 2.0,
-    // strength: 0.5,
-    radius: number;
-    strength: number;
-    blur: {
-      size: number;
-      intensity: number;
-    };
-  };
+  ssao?:
+    | IEffect
+    | {
+        // radius: 2.0,
+        // strength: 0.5,
+        radius: number;
+        strength: number;
+        blur: {
+          size: number;
+          intensity: number;
+        };
+      };
   sobel?: IEffect;
   bright?: IEffect;
   gaussianBlurHorizontal?: IEffect;

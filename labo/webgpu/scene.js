@@ -166,8 +166,8 @@ export default class Scene extends WebgpuSceneCamera {
         depthStencilFormat: "depth32float",
         sampleCount: this.postProcess.getSceneSampleCount(),
         color: [1, 1, 1, 1],
-        dashSize: 0.06,
-        gapSize: 0.04,
+        dashSize: 0.6,
+        gapSize: 0.4,
       },
     );
 

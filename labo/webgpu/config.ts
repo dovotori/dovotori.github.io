@@ -16,6 +16,7 @@ const config: LaboConfig = {
     "/wgsl/fragment/f_dash_line.js",
     "/wgsl/postprocess.js",
     "/wgsl/sobel.js",
+    "/wgsl/ssao.js",
     "/wgsl/fxaa.js",
   ],
   // assets: ['/gltf/paysage.gltf'],
@@ -45,6 +46,9 @@ const config: LaboConfig = {
   //   ortho: { left: -20, right: 20, bottom: -20, top: 20 },
   // },
   postprocess: {
+    ssao: {
+      programName: "ssao",
+    },
     sobel: {
       programName: "sobel",
     },

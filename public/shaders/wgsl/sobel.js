@@ -73,11 +73,12 @@ fn fs_main(@location(0) uv: vec2<f32>) -> @location(0) vec4<f32> {
   // var THICKNESS: f32 = 1.0;
   // let edge = 1.0 - clamp(sobel * 50.0, 0.0, 1.0); // scale is scene-dependent
 
-  let thickness = 50.0;   // uniform
-  let strength  = 1.0;
+  let thickness = 12.0;
+  let strength  = 0.8;
+  let threshold = 0.02;
   let edge = 1.0 - clamp(sobel * thickness * strength, 0.0, 1.0);
 
-  if (edge < 0.1) {
+  if (edge < threshold) {
   color = vec4<f32>(vec3<f32>(edge), 1.0);
   }
 

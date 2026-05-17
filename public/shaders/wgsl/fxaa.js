@@ -36,6 +36,10 @@ fn safeUnpremul(pm: vec3<f32>, a: f32) -> vec3<f32> {
   return pm / denom;
 }
 
+fn alphaMask(a: f32, cutoff: f32) -> f32 {
+  return select(0.0, 1.0, a >= cutoff);
+}
+
 @fragment
 fn fs_main(@location(0) uv: vec2<f32>) -> @location(0) vec4<f32> {
   let dims = vec2<f32>(textureDimensions(myTexture));
@@ -55,16 +59,27 @@ fn fs_main(@location(0) uv: vec2<f32>) -> @location(0) vec4<f32> {
   let cSW = textureSample(myTexture, mySampler, uv + vec2<f32>(-1.0,  1.0) * inv);
   let cSE = textureSample(myTexture, mySampler, uv + vec2<f32>( 1.0,  1.0) * inv);
 
+  let alphaCutoff = 0.45;
+  let aM  = alphaMask(cM.a, alphaCutoff);
+  let aN  = alphaMask(cN.a, alphaCutoff);
+  let aS  = alphaMask(cS.a, alphaCutoff);
+  let aW  = alphaMask(cW.a, alphaCutoff);
+  let aE  = alphaMask(cE.a, alphaCutoff);
+  let aNW = alphaMask(cNW.a, alphaCutoff);
+  let aNE = alphaMask(cNE.a, alphaCutoff);
+  let aSW = alphaMask(cSW.a, alphaCutoff);
+  let aSE = alphaMask(cSE.a, alphaCutoff);
+
   // Premultiplied colours for alpha-aware luma.
-  let pmM  = cM.rgb  * cM.a;
-  let pmN  = cN.rgb  * cN.a;
-  let pmS  = cS.rgb  * cS.a;
-  let pmW  = cW.rgb  * cW.a;
-  let pmE  = cE.rgb  * cE.a;
-  let pmNW = cNW.rgb * cNW.a;
-  let pmNE = cNE.rgb * cNE.a;
-  let pmSW = cSW.rgb * cSW.a;
-  let pmSE = cSE.rgb * cSE.a;
+  let pmM  = cM.rgb  * aM;
+  let pmN  = cN.rgb  * aN;
+  let pmS  = cS.rgb  * aS;
+  let pmW  = cW.rgb  * aW;
+  let pmE  = cE.rgb  * aE;
+  let pmNW = cNW.rgb * aNW;
+  let pmNE = cNE.rgb * aNE;
+  let pmSW = cSW.rgb * aSW;
+  let pmSE = cSE.rgb * aSE;
 
   let lumaM  = luma(pmM);
   let lumaN  = luma(pmN);
@@ -87,10 +102,10 @@ fn fs_main(@location(0) uv: vec2<f32>) -> @location(0) vec4<f32> {
                               max(max(lumaNW, lumaNE), max(lumaSW, lumaSE))));
 
   // Alpha edge strength from full 3x3.
-  let aMin = min(cM.a, min(min(min(cN.a, cS.a), min(cW.a, cE.a)),
-                           min(min(cNW.a, cNE.a), min(cSW.a, cSE.a))));
-  let aMax = max(cM.a, max(max(max(cN.a, cS.a), max(cW.a, cE.a)),
-                           max(max(cNW.a, cNE.a), max(cSW.a, cSE.a))));
+  let aMin = min(aM, min(min(min(aN, aS), min(aW, aE)),
+                         min(min(aNW, aNE), min(aSW, aSE))));
+  let aMax = max(aM, max(max(max(aN, aS), max(aW, aE)),
+                         max(max(aNW, aNE), max(aSW, aSE))));
   let alphaEdge = aMax - aMin;
 
   // Build blur direction from Sobel gradient, boosted near alpha cutouts.
@@ -100,8 +115,8 @@ fn fs_main(@location(0) uv: vec2<f32>) -> @location(0) vec4<f32> {
     1.0 / 128.0,
   );
   let rcpDirMin = 1.0 / (min(abs(dir.x), abs(dir.y)) + dirReduce);
-  let alphaBoost = 1.0 + alphaEdge * 2.0;
-  dir = clamp(dir * rcpDirMin * alphaBoost, vec2<f32>(-8.0), vec2<f32>(8.0)) * inv;
+  let alphaBoost = 1.0 + alphaEdge * 6.0;
+  dir = clamp(dir * rcpDirMin * alphaBoost, vec2<f32>(-12.0), vec2<f32>(12.0)) * inv;
 
   // 8-tap gather along the edge direction in premultiplied space (4 near + 4 wide).
   let s0 = textureSample(myTexture, mySampler, uv + dir * (-3.0/8.0));
@@ -113,15 +128,24 @@ fn fs_main(@location(0) uv: vec2<f32>) -> @location(0) vec4<f32> {
   let s6 = textureSample(myTexture, mySampler, uv + dir * ( 5.0/8.0));
   let s7 = textureSample(myTexture, mySampler, uv + dir * ( 7.0/8.0));
 
+  let a0 = alphaMask(s0.a, alphaCutoff);
+  let a1 = alphaMask(s1.a, alphaCutoff);
+  let a2 = alphaMask(s2.a, alphaCutoff);
+  let a3 = alphaMask(s3.a, alphaCutoff);
+  let a4 = alphaMask(s4.a, alphaCutoff);
+  let a5 = alphaMask(s5.a, alphaCutoff);
+  let a6 = alphaMask(s6.a, alphaCutoff);
+  let a7 = alphaMask(s7.a, alphaCutoff);
+
   // Near-tap average (inner 4).
-  let pmA = 0.25 * (s0.rgb*s0.a + s1.rgb*s1.a + s2.rgb*s2.a + s3.rgb*s3.a);
-  let aA  = 0.25 * (s0.a + s1.a + s2.a + s3.a);
+  let pmA = 0.25 * (s0.rgb*a0 + s1.rgb*a1 + s2.rgb*a2 + s3.rgb*a3);
+  let aA  = 0.25 * (a0 + a1 + a2 + a3);
 
   // Wide-tap average (all 8).
   let pmB = pmA * 0.5 + 0.125 * (
-    s4.rgb*s4.a + s5.rgb*s5.a + s6.rgb*s6.a + s7.rgb*s7.a
+    s4.rgb*a4 + s5.rgb*a5 + s6.rgb*a6 + s7.rgb*a7
   );
-  let aB = aA * 0.5 + 0.125 * (s4.a + s5.a + s6.a + s7.a);
+  let aB = aA * 0.5 + 0.125 * (a4 + a5 + a6 + a7);
 
   // Fall back to near-tap if wide-tap overshoots luma range.
   let lumaB = luma(pmB);
@@ -130,9 +154,9 @@ fn fs_main(@location(0) uv: vec2<f32>) -> @location(0) vec4<f32> {
   let finalA  = select(aB,  aA,  useFallback);
 
   // Blend smoothly where alpha edges are strong; preserve original elsewhere.
-  let edgeBlend = smoothstep(0.03, 0.25, alphaEdge);
+  let edgeBlend = smoothstep(0.001, 0.08, alphaEdge);
   let lumaEdge  = smoothstep(0.0,  0.5,  lumaMax - lumaMin);
-  let blendAmt  = max(edgeBlend, lumaEdge);
+  let blendAmt  = clamp(max(edgeBlend, lumaEdge) * 1.35, 0.0, 1.0);
   let outPm = mix(pmM, finalPm, blendAmt);
   let outA  = mix(cM.a, finalA, blendAmt);
 

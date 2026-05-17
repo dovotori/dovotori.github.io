@@ -235,8 +235,28 @@ export class Picking {
         // pass.setVertexBuffer(1, buffer.getFaceColorBuffer());
         // pass.setIndexBuffer(buffer.getIndexBuffer(), "uint16");
         // pass.drawIndexed(buffer.getIndexCount());
+        const requestedCount = buffer.getFaceBufferCount();
+        const faceStrideBytes =
+          typeof buffer.getFaceStrideBytes === "function"
+            ? buffer.getFaceStrideBytes()
+            : buffer.getLayout().arrayStride + Float32Array.BYTES_PER_ELEMENT;
+        const faceBufferSize =
+          typeof buffer.getFaceBufferSize === "function"
+            ? buffer.getFaceBufferSize()
+            : requestedCount * faceStrideBytes;
+        const safeCount = Math.min(requestedCount, Math.floor(faceBufferSize / faceStrideBytes));
+
+        if (safeCount !== requestedCount) {
+          console.warn("[Picking.drawModel] clamped draw count", {
+            requestedCount,
+            safeCount,
+            faceStrideBytes,
+            faceBufferSize,
+          });
+        }
+
         pass.setVertexBuffer(0, buffer.getFaceBuffer());
-        pass.draw(buffer.getFaceBufferCount());
+        pass.draw(safeCount);
       });
     }
   };

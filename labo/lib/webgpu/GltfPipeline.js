@@ -116,8 +116,27 @@ export class GltfPipeline {
       await this.db.addFacesData(dataToSotore);
     }
 
-    const firstBuffer = meshBuffersMaps.values().next().value[0]; // we used the first layout because its fit all the mesh
-    this.firstBufferLayout = firstBuffer.getLayout();
+    // Pick a representative layout that matches v_gltf input locations.
+    // Some assets have early primitives without TEXCOORD_0, and using that
+    // layout causes pipeline validation to fail when the shader expects @location(2).
+    const allBufferLayouts = [];
+    for (const meshBuffers of meshBuffersMaps.values()) {
+      meshBuffers.forEach((buffer) => {
+        allBufferLayouts.push(buffer.getLayout());
+      });
+    }
+
+    const hasShaderLocation = (layout, location) =>
+      layout?.attributes?.some((attr) => attr.shaderLocation === location);
+
+    const preferredLayout = allBufferLayouts.find(
+      (layout) =>
+        hasShaderLocation(layout, 0) &&
+        hasShaderLocation(layout, 1) &&
+        hasShaderLocation(layout, 2),
+    );
+
+    this.firstBufferLayout = preferredLayout || allBufferLayouts[0];
 
     let buffersLayout = [this.firstBufferLayout];
 
